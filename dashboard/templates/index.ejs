@@ -1,0 +1,39 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth}) %>
+<div class="jumbotron">
+    <div class="col-sm-8 mx-auto">
+
+      <div class="container">
+
+      <% if (bot.user.avatarURL) { %><div class="col-2"><img style="float:left;padding-right:10px;" class="img-responsive rounded-circle bounce"src='<%= bot.user.avatarURL %>?size=128'></div>
+      <div class="col-8"><% } %>
+      <h1><%= bot.user.username %> Dashboard</h1><% if (bot.user.avatarURL) { %></div><% } %>
+        <p>This is an <a href="https://github.com/Spiderjockey02/discordbot">opensource bot</a> made by I am Ben#6686 to fit his moderation needs.</p>
+      <p>
+        <a class="btn btn-primary" href="/commands" role="button"><i class="fa fa-fw fa-book" aria-hidden="true"></i> Bot Documentation »</a>
+      </p>
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2><i class="fa fa-fw fa-question-circle" aria-hidden="true"></i> Discord Guild</h2>
+          <p>Coming soon</p>
+          <p><a class="btn btn-secondary disabled" href="" role="button">Coming Soon! »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2><i class="fa fa-fw fa-github" aria-hidden="true"></i>Open Source</h2>
+          <p>This bot (complete with the dashboard) is completely opensource.</p>
+          <p><a class="btn btn-secondary" href="https://github.com/Spiderjockey02/discordbot" role="button"> GitHub repository »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2><i class="fa fa-fw fa-cogs" aria-hidden="true"></i> Dashboard!</h2>
+          <p>Yeah, the bot now has a dashboard!</p>
+          <p><a class="btn btn-secondary" href="/login" role="button">Login »</a></p>
+        </div>
+      </div>
+    </div>
+
+<%- include('blocks/footer') %>

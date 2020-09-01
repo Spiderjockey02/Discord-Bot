@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <style>
+    .pageContent {
+      display:none;
+    }
+
+    #loading {
+     position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      align: center;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    #noscript {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      text-align: center;
+      /*border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      align:center;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;*/
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <noscript>
+    <style>
+      #noscript {
+        display: block;
+      }
+      #loading {
+        border: none;
+        -webkit-animation: unset;
+        animation: unset;
+        height: 0;
+        width: 0;
+      }
+      .pageContent {
+        display: none;
+      }
+    </style>
+  </noscript>
+
+	<script>
+    $(window).on('load', function() {
+      $('#loading').hide();
+      $('.pageContent').show();
+
+      function warnConsole () { // Bit useless for the type of site that this is but added it in anyway
+        console.clear();
+        console.log('%c' + 'Oh... Hi, didn\'t expect to see you here...', 'font-size: 18px; font-weight: bold; color: red;');
+        console.log('%c' + 'But you really shouldn\'t be here...', 'font-size: 18px;');
+      }
+      warnConsole();
+      window.onresize = function(){ // Window resize triggers warnConsole function. False positives shouldn't be a problem as the user will only see this if they open the console
+        if ((window.outerHeight - window.innerHeight) > 100) {
+            warnConsole();
+        }
+      }
+    });
+		function setCookie(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			var expires = "expires="+ d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+
+		function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+						var c = ca[i];
+						while (c.charAt(0) == ' ') {
+								c = c.substring(1);
+						}
+						if (c.indexOf(name) == 0) {
+								return c.substring(name.length, c.length);
+						}
+				}
+				return "";
+		}
+	</script>
+		<div id="themeDiv"><link href="/public/theme-dark.css" rel="stylesheet" id="theme"/></div>
+		<script>
+			if (getCookie('theme') === 'light') {
+				document.getElementById('themeDiv').innerHTML = '<link href="/public/theme-light.css" rel="stylesheet" id="theme"/>';
+			} else {
+				document.getElementById('themeDiv').innerHTML = '<link href="/public/theme-dark.css" rel="stylesheet" id="theme"/>';
+			}
+		</script>
+		<!--<link href="/public/theme-light.css" rel="stylesheet" id="theme"/>-->
+
+		<!--<link href="/public/theme-dark.css" rel="stylesheet" id="theme"/>-->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <% if (bot.user.avatar) { %><link rel='icon' href='<%= bot.user.avatar %>'><% } %>
+  <title>
+    <%= bot.user.username %> - The Discord Bot
+  </title>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#7289da"
+    },
+    "button": {
+      "background": "#30252e"
+    }
+  },
+  "showLink": false,
+  "theme": "classic",
+  "position": "bottom-left"
+})});
+</script>
+</head>
+
+<body>
+  <div id="noscript">
+    <h1>
+      You need JavaScript enabled to view this page...
+    </h1>
+  </div>
+  <div id="loading"></div>
+  <div class="pageContent">
+  <!--Nav bar-->
+  <a name="top"></a>
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="/"><% if (bot.user.targetURL) { %><img src="<%= bot.user.avatar %>" width="30" height="30" class="d-inline-block align-top rounded-circle" alt=""><% } %> <%= bot.user.username %></a>
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar01" aria-controls="navbar01" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbar01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/commands"><i class="fa fa-book fa-fw" aria-hidden="true"></i> Commands</a></li>
+          <li class="nav-item"><a class="nav-link" href="/stats"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Stats</a></li>
+          <% var invitePerm = "470019271" %>
+        <li class="nav-item"><a class="nav-link disabled">On <%= bot.guilds.size %> Guilds</a></li>
+				<script>
+					function changeTheme() {
+						var t = document.getElementById('theme').href;
+						if (t === `${document.location.origin}/public/theme-light.css`) {
+							theme = 'light';
+						} else {
+							theme = 'dark';
+						}
+
+						if (theme === 'light') {
+							document.getElementById('theme').href = '/public/theme-dark.css';
+							setCookie('theme', 'dark', 1);
+							console.log('Changed to dark theme');
+						} else {
+							document.getElementById('theme').href = '/public/theme-light.css';
+							setCookie('theme', 'light', 1);
+							console.log('Changed to light theme');
+						}
+
+					}
+				</script>
+				<li class="nav-item"><a class="nav-link" onclick="changeTheme()" style="cursor:pointer;">Change Theme</a></li>
+        </ul>
+        <ul class="navbar-nav">
+          <% if(auth) { %>
+            <li class="dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <% if (user.avatar) { %>
+                <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=32" width="30" height="30" class="d-inline-block align-top rounded-circle" alt="">
+                <% } %>
+                <%= user.username %>#<%= user.discriminator %>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                <h6 class="dropdown-header"><i class="fa fa-user fa-fw" aria-hidden="true"></i> <%= user.username %></h6>
+                <a class="dropdown-item" href="/dashboard"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i> Dashboard</a>
+                <% if(user.id === '184376969016639488') { %>
+                  <a class="dropdown-item" href="/admin"><i class="fa fa-key fa-fw"></i> Admin</a>
+                <% } %>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</a>
+              </div>
+            </li>
+          <% } else { %>
+            <li class="nav-item"><a href="/login" class="nav-link"><i class="fa fa-key fa-fw" aria-hidden="true"></i> Login</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
