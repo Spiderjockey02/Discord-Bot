@@ -11,7 +11,7 @@ module.exports = async bot => {
 	}, 60000);
 	//Sets Bot's activity to !help and status to 'Online'
 	let activities = [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], j = 0;
-	setInterval(() => bot.user.setActivity(`${bot.config.prefix}help | ${activities[j++ % activities.length]}`, { type: "LISTENING"}), 10000)
+	setInterval(() => bot.user.setActivity(`${activities[j++ % activities.length]}`, { type: "WATCHING"}), 10000)
 	bot.user.setStatus('Online') // can only be 'Online', 'idle, 'invisible' & 'dnd'
 	//Check if any servers added the bot while offline
 	bot.guilds.cache.forEach(async item => {

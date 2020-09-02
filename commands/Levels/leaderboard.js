@@ -44,7 +44,7 @@ module.exports.run = async (bot, message, args, settings) => {
 }
 module.exports.config = {
 	command: "leaderboard",
-  aliases: ["lb"]
+  aliases: ["lb", "levels"]
 }
 module.exports.help = {
 	name: "Leaderboard",

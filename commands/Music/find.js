@@ -48,12 +48,12 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	}
 }
 module.exports.config = {
-	command: "search",
+	command: "find",
 	aliases: ["search"]
 }
 module.exports.help = {
-	name: "search",
+	name: "Find",
 	category: "Music",
-	description: "Searchs for a song",
-	usage: '!search [song]',
+	description: "Finds for a song",
+	usage: '!find [song]',
 }

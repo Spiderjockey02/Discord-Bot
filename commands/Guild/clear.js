@@ -1,18 +1,18 @@
 module.exports.run = async (bot, message, args, settings) => {
   //Deletes their (!clear {x}) message
   if (message.deletable) message.delete();
-  if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+  if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
     message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`MANAGE_MESSAGES\` to run this command.`}}).then(m => m.delete({ timeout: 15000 }))
     return;
   }
 	//Make sure bot can delete other peoples messages
-	if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+	if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
 		message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`MANAGE_MESSAGES\`.`}}).then(m => m.delete({ timeout: 15000 }))
 		bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}]`)
     return;
 	}
 	//Make sure the bot can see other peoples' messages
-	if (!message.guild.me.hasPermission("READ_MESSAGE_HISTORY")) {
+	if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
 		message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`READ_MESSAGE_HISTORY\`.`}}).then(m => m.delete({ timeout: 15000 }))
 		bot.logger.error(`Missing permission: \`READ_MESSAGE_HISTORY\` in [${message.guild.id}]`)
     return;

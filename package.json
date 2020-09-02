@@ -28,6 +28,8 @@
     "random-puppy": "^1.1.0",
     "request": "^2.88.2",
     "simple-node-logger": "^18.12.24",
+    "simple-youtube-api": "^5.2.1",
+    "soundcloud-downloader": "^0.1.5",
     "spotify-url-info": "^1.4.0",
     "table": "^5.4.6",
     "yt-search": "^2.2.0",

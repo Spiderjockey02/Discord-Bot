@@ -19,7 +19,9 @@ module.exports.run = async (bot, message, args, settings) => {
 		message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} I was unable to find this user.`}}).then(m => m.delete({ timeout: 10000 }))
 		return
 	}
-	user.voice.setDeaf(true)
+	if (user.voice) {
+		user.voice.setDeaf(true)
+	}
 	message.channel.send({embed:{color:3066993, description:`${bot.config.emojis.tick} *${user.user.username}#${user.user.discriminator} was successfully deafened*.`}}).then(m => m.delete({ timeout: 3000 }))
 }
 module.exports.config = {

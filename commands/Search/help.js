@@ -34,13 +34,13 @@ module.exports.run = async (bot, message, args, settings) => {
         embed.setThumbnail(message.guild.iconURL({ format: 'png', dynamic: true, size: 1024 }))
       }
       embed.setAuthor('Egglord HELP', message.guild.iconURL)
-      embed.setDescription(`The bot prefix is: ${settings.prefix}\n\n**Command:** ${command.help.name}\n**Description:** ${command.help.description}\n**Usage:** ${command.help.usage.replace('!', settings.prefix)}`)
+      embed.setDescription(`The bot prefix is: ${settings.prefix}\n\n**Command:** ${command.help.name}\n**Aliases:** ${command.config.aliases.join(", ")}\n**Description:** ${command.help.description}\n**Usage:** ${command.help.usage.replace('!', settings.prefix)}`)
       message.channel.send(embed)
     } else {
       //Help on plugin
       var embed = new Discord.MessageEmbed()
       bot.commands.forEach(command => {
-        if (command.help.category == args[0]) {
+        if (command.help.category.toLowerCase() == args[0]) {
           embed.addField(command.help.usage, command.help.description)
         }
       });

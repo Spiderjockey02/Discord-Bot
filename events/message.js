@@ -32,7 +32,8 @@ module.exports = async (bot, message) => {
   if (message.mentions.has(bot.user) && message.content == '<@!647203942903840779>') {
 		//make sure egglord has SEND_MESSAGES permission
 		if (message.channel.type != 'dm') {
-			if (!message.guild.me.hasPermission("SEND_MESSAGES")) return bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`)
+			var permissions = message.channel.permissionsFor(bot.user)
+			if (!permissions.has("SEND_MESSAGES")) return bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`)
 		}
 		//Send egglord information to user
 		var embed = new Discord.MessageEmbed()
@@ -68,19 +69,20 @@ module.exports = async (bot, message) => {
 			}
 		} else {
 			//Check for server permissions
+			var permissions = message.channel.permissionsFor(bot.user)
 			//Check for SEND_MESSAGES permission
-			if (!message.guild.me.hasPermission("SEND_MESSAGES")) {
+			if (!permissions.has("SEND_MESSAGES")) {
 				bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`)
 				return
 			}
 			//Check for USE_EXTERNAL_EMOJIS permission
-			if (!message.guild.me.hasPermission("USE_EXTERNAL_EMOJIS")) {
+			if (!permissions.has("USE_EXTERNAL_EMOJIS")) {
 				message.channel.send(`:negative_squared_cross_mark: I am missing the permission: \`USE_EXTERNAL_EMOJIS\`.`).then(m => m.delete({ timeout: 10000 }))
 				bot.logger.log(`Mising permission: \`USE_EXTERNAL_EMOJIS\` in [${message.guild.id}]`)
 				return
 			}
 			//Check for EMBED_LINKS permission
-			if (!message.guild.me.hasPermission("EMBED_LINKS")) {
+			if (!permissions.has("EMBED_LINKS")) {
 				message.channel.send(`<:Cross:746456031332270191> I am missing the permission: \`EMBED_LINKS\`.`).then(m => m.delete({ timeout: 10000 }))
 				bot.logger.error(`Missing permission: \`EMBED_LINKS\` in [${message.guild.id}]`)
 				return
