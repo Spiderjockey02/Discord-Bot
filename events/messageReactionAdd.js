@@ -7,5 +7,6 @@ module.exports = (bot, messageReaction, user) => {
     var role = messageReaction.message.channel.guild.roles.cache.find(role => role.name == 'Users')
     var user = messageReaction.message.channel.guild.member(user)
     user.roles.add(role).catch(e => bot.logger.error(e))
+    bot.logger.log(`${user.username} added to server`)
   }
 }

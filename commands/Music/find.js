@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} This plugin is currently disabled.`}}).then(m => m.delete({ timeout: 10000 }))
 		return;
 	}
-	if (args.length == 0) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('search').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
+	if (args.length == 0) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('find').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
 	let commandFile = require('./play.js')
 	//Check for spotify, youtube, soundcloud etc
 	if (args[0].includes('https://open.spotify.com/')) {

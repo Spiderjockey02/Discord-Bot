@@ -1,7 +1,7 @@
 //Get prefix for bot
 const fs = require('fs')
 const Discord = require('discord.js')
-
+const { moderation } = require("../Utils/moderation");
 //Map for music
 const active = new Map()
 
@@ -116,6 +116,6 @@ module.exports = async (bot, message) => {
 	}
 	//moderation plugin
 	if (settings.ModerationPlugin == true) {
-		bot.moderation(message, settings)
+		moderation(message, settings)
 	}
 }

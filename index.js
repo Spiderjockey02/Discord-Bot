@@ -48,7 +48,9 @@ let y = process.openStdin()
 y.addListener("data", res => {
 	let x = res.toString().trim().split(/ +/g)
 	//now run command
-	bot.channels.cache.find(channel => channel.id == x[0]).send(x.splice(1))
+	var channel = bot.channels.cache.find(channel => channel.id == x[0])
+	if (!channel) return
+	channel.send(x.splice(1))
 })
 
 //Load events (what the bot does)
