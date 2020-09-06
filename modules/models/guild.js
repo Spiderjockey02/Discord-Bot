@@ -7,7 +7,7 @@ const guildScheme = mongoose.Schema({
   prefix: { type: String, default: '!' },
   //Welcome Plugin
   welcomePlugin: { type: Boolean, default: true },
-  welcomeChannel: { type: String, default: 'general' },
+  welcomeChannel: { type: Number, default: 100000000000000000 },
   welcomeMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
   welcomePvt: { type: Boolean, default: true },
   welcomePvtMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
@@ -18,7 +18,7 @@ const guildScheme = mongoose.Schema({
   //Level plugin
   LevelPlugin: { type: Boolean, default: false },
   LevelOption: {type: Number, default: 1}, //0 = no announcement, 1 = reply, 2 = choosen channel, 3 = in DM's
-  LevelChannel: {type: String, default: 'general'},
+  LevelChannel: {type: Number, default: 100000000000000000 },
   LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
   LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
   LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
@@ -27,17 +27,17 @@ const guildScheme = mongoose.Schema({
   //Music plugin
   MusicPlugin: { type: Boolean, default: true },
   MusicDJ: { type: Boolean, default: false },
-  MusicDJRole: { type: Number, default: 000000000000},
+  MusicDJRole: { type: Number, default: 100000000000000000 },
   //Music trivia plugin
   MusicTriviaPlugin: { type: Boolean, default: true },
   MusicTriviaGenres: { type: Array, default: ['pop'] },
   //logging plugin
   ModLog: { type: Boolean, default: true },
-  ModLogEvents: { type: Array, default: ['ban', 'kick', 'mute'] },
-  ModLogChannel: { type: String, default: 'audit-logs' },
+  ModLogEvents: { type: Array, default: ['BAN', 'KICK', 'MUTE'] },
+  ModLogChannel: { type: Number, default: 100000000000000000 },
   //CommandCooldown
   OnlyCommandChannel: { type: Boolean, default: false },
-  CommandChannel: { type: String, default: 'CommandChannel' },
+  CommandChannel: { type: Number, default: 100000000000000000 },
   CommandCooldown: { type: Boolean, default: false },
   CommandCooldownSec: { type: Number, default: 2 },
   //Moderation plugin
@@ -81,12 +81,12 @@ const guildScheme = mongoose.Schema({
   DisabledCommands: { type: Array, default: ["junk"] },
   //Server stats plugin
   ServerStats: { type: Boolean, default: false},
-  ServerStatsCate: { type: String, default: '📊 Server Stats 📊' },
+  ServerStatsCate: { type: String, default: "📊 Server Stats 📊" },
   ServerStatsBot: { type: Boolean, default: false },
-  ServerStatsBotChannel: { type: Number, default: 000000000000 },  //Channel ID
+  ServerStatsBotChannel: { type: Number, default: 100000000000000000 },  //Channel ID
   ServerStatsUser: { type: Boolean, default: false },
-  ServerStatsUserChannel: { type: Number, default: 000000000000 }, //Channel ID
+  ServerStatsUserChannel: { type: Number, default: 100000000000000000 }, //Channel ID
   ServerStatsHuman: { type: Boolean, default: false },
-  ServerStatsHumanChannel: { type: Number, default: 000000000000 } //Channel ID
+  ServerStatsHumanChannel: { type: Number, default: 100000000000000000 } //Channel ID
 });
 module.exports = mongoose.model('Guild', guildScheme)
