@@ -14,6 +14,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "ffmpeg-static": "^4.2.7",
     "fortnite": "^4.3.2",
     "js-yaml": "^3.14.0",
     "ksoft.js": "^3.1.4",
