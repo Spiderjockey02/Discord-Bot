@@ -18,11 +18,28 @@ module.exports = async (bot, reaction, user) => {
     if (reaction.message.channel.id == settings.AntiRaidChannelID) {
       //Make sure its the right emoji as well
       if (reaction._emoji.id == 748984689779540110) {
-        //get user
-        var member = reaction.message.channel.guild.member(user)
-        for (var i = 0; i < settings.welcomeRoleGive.length; i++) {
-          if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
-            member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]))
+        //do welcome plugin here
+        if (settings.welcomePlugin == true && settings.welcomeRaidConnect == true) {
+          var member = reaction.message.channel.guild.member(user)
+          var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.welcomeChannel)
+    			if (channel) channel.send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
+    			//Send private message to user
+    			if (settings.welcomePvt == true) {
+    				member.send(settings.welcomePvtMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
+    			}
+    			//Add role to user
+    			if (settings.welcomeRole == true) {
+    				for (var i = 0; i < settings.welcomeRoleGive.length; i++) {
+    					if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
+    						member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]))
+    					}
+    				}
+    			}
+        } else {
+          for (var i = 0; i < settings.welcomeRoleGive.length; i++) {
+            if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
+              member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]))
+            }
           }
         }
       }

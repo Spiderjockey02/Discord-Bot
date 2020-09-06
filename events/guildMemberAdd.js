@@ -11,33 +11,38 @@ module.exports = async (bot, member) => {
 		console.log(e)
 	}
 	bot.logger.log(`${member.user.tag} has joined the server: [${member.guild.id}]`)
+	//welcome plugin (check for anti-raid plugin too)
 	if (settings.welcomePlugin == true) {
-		//Send message to channel
-		if (member.guild.channels.cache.find(channel => channel.name == settings.welcomeChannel)) {
-			member.guild.channels.cache.find(channel => channel.name == settings.welcomeChannel).send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
-		}
-		//Send private message to user
-		if (settings.welcomePvt == true) {
-			member.send(settings.welcomePvtMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
-		}
-		//Add role to user
-		if (settings.welcomeRole == true) {
-			for (roles in settings.welcomeRoleGive) {
-				if (member.guild.roles.cache.find(role => role.name == roles)) member.addrole(member.guild.roles.find(role => role.name === roles)).catch(e => bot.logger.error(e.message))
+		//anti-raid is disabled so just run like normal
+		if (settings.welcomeRaidConnect == false) {
+			var channel = member.guild.channels.cache.find(channel => channel.id == settings.welcomeChannel)
+			if (channel) channel.send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
+			//Send private message to user
+			if (settings.welcomePvt == true) {
+				member.send(settings.welcomePvtMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
+			}
+			//Add role to user
+			if (settings.welcomeRole == true) {
+				for (var i = 0; i < settings.welcomeRoleGive.length; i++) {
+					if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
+						member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]))
+					}
+				}
 			}
 		}
 	}
 	//Logging plugin
-	if (settings.ModLog == true) {
-		if (member.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel)) {
-			var embed = new Discord.MessageEmbed()
-			.setTitle('USER JOIN')
-			.setThumbnail(`${(member.user.avatar) ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${member.user.discriminator % 5}.png`}`)
-			.addField('User tag:', member.user.tag)
-			.addField('User ID:', member.user.id)
+	if (settings.ModLog == false) return
+	//Check if event guildMemberAdd is for logging
+	if (settings.ModLogEvents.includes('GUILDMEMBERADD')) {
+		var embed = new Discord.MessageEmbed()
+			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
+			.setColor(3066993)
+			.setFooter(`ID: ${member.id}`)
+			.setThumbnail(member.user.displayAvatarURL())
+			.setAuthor(`User joined:`, member.user.displayAvatarURL())
 			.setTimestamp()
-			.setFooter(`Member Count: ${member.guild.members.size}`)
-			member.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel).send(embed).catch(e => bot.logger.error(e.message))
-		}
+		var channel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+		if (channel) channel.send(embed)
 	}
 }

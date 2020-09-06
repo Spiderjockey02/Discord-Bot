@@ -7,6 +7,7 @@ const guildScheme = mongoose.Schema({
   prefix: { type: String, default: '!' },
   //Welcome Plugin
   welcomePlugin: { type: Boolean, default: true },
+  welcomeRaidConnect: {type: Boolean, default: false }, //if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
   welcomeChannel: { type: Number, default: 100000000000000000 },
   welcomeMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
   welcomePvt: { type: Boolean, default: true },
