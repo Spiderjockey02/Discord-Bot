@@ -16,6 +16,7 @@ module.exports = async (bot, channel) => {
   if (settings.ModLogEvents.includes('CHANNELCREATE')) {
     var embed = new Discord.MessageEmbed()
       .setDescription(`**${channel.type === 'category' ? "Category" : "Channel"} Created: ${channel.toString()}**`)
+      .setColor(3066993)
       .setFooter(`ID: ${channel.id}`)
       .setAuthor(bot.user.username, bot.user.displayAvatarURL())
       .setTimestamp()

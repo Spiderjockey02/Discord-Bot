@@ -1,12 +1,14 @@
 const Discord = require('discord.js')
 module.exports.run = async (bot, message, args, settings) => {
   if (message.author.id != bot.config.ownerID) return
+  if (message.deletable) message.delete()
   var embed = new Discord.MessageEmbed()
     .setTitle("Verify")
     .setDescription("Click the reaction below to access this server.")
   message.channel.send(embed).then(async function(message) {
     await message.react(`748984689779540110`)
   })
+  bot.updateGuild(message.guild, { AntiRaidChannelID : message.channel.id }, bot)
 }
 module.exports.config = {
 	command: "verify",

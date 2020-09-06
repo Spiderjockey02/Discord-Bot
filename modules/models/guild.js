@@ -12,7 +12,7 @@ const guildScheme = mongoose.Schema({
   welcomePvt: { type: Boolean, default: true },
   welcomePvtMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
   welcomeRole: { type: Boolean, default: true },
-  welcomeRoleGive: { type: Array, default: ["users"] },
+  welcomeRoleGive: { type: Array, default: ['562297641879470082'] },
   welcomeGoodbye: { type: Boolean, default: true },
   welcomeGoodbyeMessage: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
   //Level plugin
@@ -34,10 +34,10 @@ const guildScheme = mongoose.Schema({
   //logging plugin
   ModLog: { type: Boolean, default: true },
   ModLogEvents: { type: Array, default: ['BAN', 'KICK', 'MUTE'] },
-  ModLogChannel: { type: Number, default: 100000000000000000 },
+  ModLogChannel: { type: Number, default: 752145410033975346 },
   //CommandCooldown
   OnlyCommandChannel: { type: Boolean, default: false },
-  CommandChannel: { type: Number, default: 100000000000000000 },
+  CommandChannel: { type: Number, default: 750760429353173112 },
   CommandCooldown: { type: Boolean, default: false },
   CommandCooldownSec: { type: Number, default: 2 },
   //Moderation plugin
@@ -74,7 +74,8 @@ const guildScheme = mongoose.Schema({
   ModerationZalgoRole: { type: Array, default: ['ForZalgo'] },  //These roles are ignored
   //Anti-raid plugin
   AntiRaidPlugin: { type: Boolean, default: false },
-  AntiRaidCompletion: {type: Number, default: 1 },  //0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
+  AntiRaidCompletion: { type: Number, default: 1 },  //0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
+  AntiRaidChannelID: { type: Number, default: 100000000000000000 },
   //Search PLugin
   SearchPlugin: { type: Boolean, default: true },
   //Misc

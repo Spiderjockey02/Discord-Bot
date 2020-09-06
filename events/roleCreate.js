@@ -14,6 +14,7 @@ module.exports = async (bot, role) => {
   if (settings.ModLogEvents.includes('ROLECREATE')) {
     var embed = new Discord.MessageEmbed()
       .setDescription(`**Role: ${role} (${role.name}) was created**`)
+      .setColor(3066993)
       .setFooter(`ID: ${role.id}`)
       .setAuthor(role.guild.name, role.guild.iconURL())
       .setTimestamp()

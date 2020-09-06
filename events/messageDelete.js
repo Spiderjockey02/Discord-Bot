@@ -1,4 +1,4 @@
-//When an emoji has been created in a server
+//When a messages has been deleted
 const Discord = require('discord.js')
 module.exports = async (bot, message) => {
   //Make sure the message wasn't deleted in a Dm channel
@@ -25,6 +25,7 @@ module.exports = async (bot, message) => {
     }
     var embed = new Discord.MessageEmbed()
       .setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
+      .setColor(15158332)
       .setFooter(`Author: ${message.author.id} | Message: ${message.id}`)
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${message.content.length > 0 ? content : '*no content*'}`)

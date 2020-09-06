@@ -1,4 +1,4 @@
-//Makesure Node.js V12 or hight is being ran.
+//Make sure Node.js V12 or higher is being ran.
 if (process.version.slice(1).split('.')[0] < 12) throw new Error('Node 12.0.0 or higher is required.');
 //Dependencies
 const Discord = require('discord.js');

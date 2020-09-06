@@ -13,7 +13,7 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
   //Check if moderation channel is valid
   if (settings.ModLogEvents.includes('EMOJIUPDATE')) {
     var embed = new Discord.MessageEmbed()
-      .setColor(15844367)
+      .setColor(15105570)
       .setAuthor("~Emoji updated~")
       .addField("Emoji name", newEmoji.name, true)
       .addField("Emoji ID", newEmoji.id, true)

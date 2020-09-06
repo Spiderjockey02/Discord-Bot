@@ -16,6 +16,7 @@ module.exports = async (bot, channel) => {
   if (settings.ModLogEvents.includes('CHANNELDELTE')) {
     var embed = new Discord.MessageEmbed()
       .setDescription(`**${channel.type === 'category' ? "Category" : "Channel"} Deleted: ${'#' + channel.name}**`)
+      .setColor(15158332)
       .setFooter(`ID: ${channel.id}`)
       .setAuthor(bot.user.username, bot.user.displayAvatarURL())
       .setTimestamp()

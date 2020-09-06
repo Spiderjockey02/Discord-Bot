@@ -1,6 +1,13 @@
-//When an emoji has been created in a server
+//When a message gets updated in a server
 const Discord = require('discord.js')
 module.exports = async (bot, oldMessage, newMessage) => {
+  //make sure its not a DM
+  if (newMessage.channel.type == 'dm') return
+  //Check if message is a partial
+  if (oldMessage.partial || newMessage.partial) {
+    return
+  }
+  //only check for message content is different
   if (oldMessage.content == newMessage.content) return
   //Get server settings
   let settings;

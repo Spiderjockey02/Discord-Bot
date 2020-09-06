@@ -1,4 +1,4 @@
-//When a channel has been created in a server
+//When a emoji has been created in a server
 const Discord = require('discord.js')
 module.exports = async (bot, emoji) => {
   //Get server settings
@@ -14,6 +14,7 @@ module.exports = async (bot, emoji) => {
   if (settings.ModLogEvents.includes('EMOJICREATE')) {
     var embed = new Discord.MessageEmbed()
       .setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
+      .setColor(3066993)
       .setFooter(`ID: ${emoji.id}`)
       .setAuthor(emoji.guild.name, emoji.guild.iconURL())
       .setTimestamp()

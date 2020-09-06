@@ -22,6 +22,7 @@ module.exports = async (bot, oldRole, newRole) => {
     if (oldRole.name != newRole.name) {
       var embed = new Discord.MessageEmbed()
         .setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
+        .setColor(15105570)
         .setFooter(`ID: ${newRole.id}`)
         .setAuthor(newRole.guild.name, newRole.guild.iconURL())
         .addField("Before:", oldRole.name)
@@ -33,6 +34,7 @@ module.exports = async (bot, oldRole, newRole) => {
     if (oldRole.color != newRole.color) {
       var embed = new Discord.MessageEmbed()
         .setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
+        .setColor(15105570)
         .setFooter(`ID: ${newRole.id}`)
         .setAuthor(newRole.guild.name, newRole.guild.iconURL())
         .addField("Before:", `${oldRole.color} ([${oldRole.hexColor}](https://www.color-hex.com/color/${oldRole.hexColor.slice(1)}))`)
@@ -43,6 +45,7 @@ module.exports = async (bot, oldRole, newRole) => {
     if (oldRole.permissions != newRole.permissions) {
       var embed = new Discord.MessageEmbed()
         .setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapp.com/developers/docs/topics/permissions)`)
+        .setColor(15105570)
         .setFooter(`ID: ${newRole.id}`)
         .setAuthor(newRole.guild.name, newRole.guild.iconURL())
         .addField("Before:", oldRole.permissions.bitfield)

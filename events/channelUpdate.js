@@ -22,6 +22,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
     if (oldChannel.name != newChannel.name) {
       var embed = new Discord.MessageEmbed()
        .setDescription(`**${newChannel.type === 'category' ? "Category" : "Channel"} name changed of ${newChannel.toString()}**`)
+       .setColor(15105570)
        .setFooter(`ID: ${newChannel.id}`)
        .setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
        .addFields(
@@ -36,6 +37,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
     if (oldChannel.topic != newChannel.topic) {
       var embed = new Discord.MessageEmbed()
        .setDescription(`**${newChannel.type === 'category' ? "Category" : "Channel"} topic changed of ${newChannel.toString()}**`)
+       .setColor(15105570)
        .setFooter(`ID: ${newChannel.id}`)
        .setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
        .addFields(
@@ -61,6 +63,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
      if (permDiff.size) {
        var embed = new Discord.MessageEmbed()
          .setDescription(`**${newChannel.type === 'category' ? "Category" : "Channel"} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
+         .setColor(15105570)
          .setFooter(`ID: ${newChannel.id}`)
          .setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
          .setTimestamp()
