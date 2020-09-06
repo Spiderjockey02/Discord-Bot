@@ -1,31 +1,27 @@
-//When a channel has been created in a server
+//When a channel has been created
 const Discord = require('discord.js')
 module.exports = async (bot, channel) => {
-  //Make sure its not a DM message
+  //When someone DM's the bot for the first time, this event gets triggered (just make sure its not a DM)
   if (channel.type == 'dm') return
   //Get server settings
   let settings;
   try {
       settings = await bot.getGuild(channel.guild)
   } catch (e) {
-    console.log(e)
+      console.log(e)
   }
+  //Check if ModLog plugin is active
   if (settings.ModLog == false) return
-  //Check if moderation channel is valid
-  if (channel.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel)) {
-    console.log(channel)
-    var RoleEmbed = new Discord.MessageEmbed()
-    .setColor(3066993)
-    .setAuthor("~Channel Created~")
-    .addField("Channel name:", channel.name, true)
-    .addField("Channel ID:", channel.id, true)
-    .addField("Channel type:", channel.type, true)
-    .addField("Position:", channel.rawPosition, true)
-    .addField("NSFW:", channel.nsfw, true)
-    //Check audit logs for creator of channel
-    .setTimestamp()
-    channel.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel).send({ embed: RoleEmbed });
+  //Check if event channelCreate is for logging
+  if (settings.ModLogEvents.includes('CHANNELCREATE')) {
+    var embed = new Discord.MessageEmbed()
+      .setDescription(`**${channel.type === 'category' ? "Category" : "Channel"} Created: ${channel.toString()}**`)
+      .setFooter(`ID: ${channel.id}`)
+      .setAuthor(bot.user.username, bot.user.displayAvatarURL())
+      .setTimestamp()
+    //Find channel and send message
+    channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel).send(embed);
   }
-  //Log event in console
-  bot.logger.log(`Channel: ${channel.name} has been created in Server: ${channel.guild.id}`);
+  //log event in console
+  bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
 };

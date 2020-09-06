@@ -1,4 +1,4 @@
-//When an emoji has been created in a server
+//When a channel has been created in a server
 const Discord = require('discord.js')
 module.exports = async (bot, emoji) => {
   //Get server settings
@@ -8,19 +8,21 @@ module.exports = async (bot, emoji) => {
   } catch (e) {
       console.log(e)
   }
-  //Check if moderation plugin is on
+  //Check if ModLog plugin is active
   if (settings.ModLog == false) return
-  //Check if moderation channel is valid
-  if (emoji.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel)) {
-    var EmojiEmbed = new Discord.MessageEmbed()
-    .setColor(3066993)
-    .setAuthor("~Emoji Created~")
-    .addField("Emoji name", emoji.name, true)
-    .addField("Emoji ID", emoji.id, true)
-    .addField("Emoji animated", emoji.animated, true)
-    .addField("Emoji preview", `<:${emoji.name}:${emoji.id}>`)
-    .setTimestamp()
-    emoji.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel).send({ embed: EmojiEmbed });
+  //Check if event channelCreate is for logging
+  if (settings.ModLogEvents.includes('EMOJICREATE')) {
+    var embed = new Discord.MessageEmbed()
+      .setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
+      .setFooter(`ID: ${emoji.id}`)
+      .setAuthor(emoji.guild.name, emoji.guild.iconURL())
+      .setTimestamp()
+    //send message
+    var channel = emoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+    if (channel) {
+      channel.send(embed)
+    }
   }
-  bot.logger.log(`Emoji: ${emoji.name} has been created in Server: ${emoji.guild.id}`);
+  //log event in console
+  bot.logger.log(`Emoji: ${emoji.name} has been created in Server: [${emoji.guild.id}].`);
 };

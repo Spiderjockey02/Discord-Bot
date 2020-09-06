@@ -11,16 +11,20 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
   //Check if moderation plugin is on
   if (settings.ModLog == false) return
   //Check if moderation channel is valid
-  if (newEmoji.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel)) {
-    var EmojiEmbed = new Discord.MessageEmbed()
-    .setColor(15844367)
-    .setAuthor("~Emoji updated~")
-    .addField("Emoji name", newEmoji.name, true)
-    .addField("Emoji ID", newEmoji.id, true)
-    .addField("Emoji animated", newEmoji.animated, true)
-    .addField("Emoji preview", `<:${newEmoji.name}:${newEmoji.id}>`)
-    .setTimestamp()
-    newEmoji.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel).send({ embed: EmojiEmbed });
+  if (settings.ModLogEvents.includes('EMOJIUPDATE')) {
+    var embed = new Discord.MessageEmbed()
+      .setColor(15844367)
+      .setAuthor("~Emoji updated~")
+      .addField("Emoji name", newEmoji.name, true)
+      .addField("Emoji ID", newEmoji.id, true)
+      .addField("Emoji animated", newEmoji.animated, true)
+      .addField("Emoji preview", `<:${newEmoji.name}:${newEmoji.id}>`)
+      .setTimestamp()
+    //send message
+    var channel = newEmoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+    if (channel) {
+      channel.send(embed)
+    }
   }
   bot.logger.log(`Emoji: ${newEmoji.name} has been updated in Server: ${newEmoji.guild.id}`);
 };

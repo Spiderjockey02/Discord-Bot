@@ -1,3 +1,4 @@
+//When a channel has been created in a server
 const Discord = require('discord.js')
 module.exports = async (bot, role) => {
   //Get server settings
@@ -7,21 +8,21 @@ module.exports = async (bot, role) => {
   } catch (e) {
       console.log(e)
   }
-  //Check if moderation plugin is on
+  //Check if ModLog plugin is active
   if (settings.ModLog == false) return
-  //Check if moderation channel is valid
-  if (role.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel)) {
-    var RoleEmbed = new Discord.MessageEmbed()
-    .setColor(15158332)
-    .setAuthor("~Role deleted~")
-    .addField("Role name", role.name, true)
-    .addField("Role ID", role.id, true)
-    .addField("Users in role", role.members.size, true)
-    .addField("Mentionable", role.mentionable, true)
-    .addField("Displayed separately", role.hoist, true)
-    .addField("Color", role.color, true)
-    .setTimestamp()
-    role.guild.channels.cache.find(channel => channel.name == settings.ModLogChannel).send({ embed: RoleEmbed });
+  //Check if event channelCreate is for logging
+  if (settings.ModLogEvents.includes('ROLEDELETE')) {
+    try {
+      var embed = new Discord.MessageEmbed()
+        .setDescription(`**Role: ${role} (${role.name}) was deleted**`)
+        .setFooter(`ID: ${role.id}`)
+        .setAuthor(role.guild.name, role.guild.iconURL())
+        .setTimestamp()
+      role.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel).send(embed);
+    } catch (e) {
+      return
+    }
   }
-  bot.logger.log(`Role: ${role.name} has been deleted in Server: ${role.guild.id}`);
+  //log event in console
+  bot.logger.log(`Role: ${role.name} has been deleted in Server: [${role.guild.id}].`);
 };

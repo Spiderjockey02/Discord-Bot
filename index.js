@@ -2,7 +2,7 @@
 if (process.version.slice(1).split('.')[0] < 12) throw new Error('Node 12.0.0 or higher is required.');
 //Dependencies
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const fs = require('fs');
 const path = require("path");
 const { promisify } = require("util");
