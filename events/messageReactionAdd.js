@@ -19,8 +19,8 @@ module.exports = async (bot, reaction, user) => {
       //Make sure its the right emoji as well
       if (reaction._emoji.id == 748984689779540110) {
         //do welcome plugin here
+        var member = reaction.message.channel.guild.member(user)
         if (settings.welcomePlugin == true && settings.welcomeRaidConnect == true) {
-          var member = reaction.message.channel.guild.member(user)
           var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.welcomeChannel)
     			if (channel) channel.send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message))
     			//Send private message to user
