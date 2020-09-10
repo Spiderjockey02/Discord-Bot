@@ -22,5 +22,10 @@ module.exports = {
     mongoose.connection.on('disconnected', () => {
       bot.logger.log('Mongoose disconnected', "error")
     });
-  }
+  },
+  async ping(bot) {
+        var currentNano = process.hrtime();
+        await mongoose.connection.db.command({ ping: 1 })
+        return await process.hrtime(currentNano);
+    }
 }

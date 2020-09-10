@@ -64,7 +64,7 @@ module.exports.config = {
 }
 module.exports.help = {
 	name: "help",
-	category: "Search",
+	category: "Misc",
 	description: "Sends information about all the commands that I can do.",
 	usage: '!help',
 }

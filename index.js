@@ -15,7 +15,7 @@ bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
 
 //Get Bot commands
-const Cmodules = [`Fun`, `Guild`, 'Host', 'Levels', 'Music', `Search`, `Trivia`]
+const Cmodules = [`Fun`, `Guild`, 'Host', 'Levels', 'Music', `Search`, `Trivia`, `Misc`]
 //Load commands
 Cmodules.forEach(c => {
 	fs.readdir(`./commands/${c}`, (err, files) => {
