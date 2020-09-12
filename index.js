@@ -46,11 +46,11 @@ try {
 //Console chatter (add - allow commands to run from console)
 let y = process.openStdin()
 y.addListener("data", res => {
-	let x = res.toString().trim().split(/ +/g)
+	let message = res.toString().trim()
+	let args = res.toString().trim().split(/ +/g)
 	//now run command
-	var channel = bot.channels.cache.find(channel => channel.id == x[0])
-	if (!channel) return
-	channel.send(x.splice(1))
+	if (args.length == 0) return
+	require('./Utils/console.js').run(args, message, bot)
 })
 
 //Load events (what the bot does)
