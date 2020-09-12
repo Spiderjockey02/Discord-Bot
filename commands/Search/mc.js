@@ -1,4 +1,4 @@
-const ping = require('minecraft-server-util')
+const util = require('minecraft-server-util')
 const Discord = require('discord.js')
 module.exports.run = async (bot, message, args, settings) => {
 	//Ping a minecraft server
@@ -8,24 +8,22 @@ module.exports.run = async (bot, message, args, settings) => {
 	if(!args[1]) {
 		args[1] = "25565";
 	}
-	ping(args[0], parseInt(args[1]), (error, response) => {
-		if(error) {
-			r.delete();
-			message.delete()
-			message.channel.send({embed:{description:"**The server did not respond in time.**"}}).then(m => m.delete({ timeout: 4500 }))
-			return;
-		}
+	util.ping(args[0], { port: parseInt(args[1]) }).then((response) => {
 		var embed = new Discord.MessageEmbed()
-		.setColor(0x0099ff)
-		.setTitle('Server Status')
-		.setURL(`https://mcsrvstat.us/server/${args[0]}:${args[1]}`)
-		.addField('Server IP:', response.host)
-		.addField('Server Version:', response.version)
-		.addField('Description:', response.descriptionText)
-		.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`)
+			.setColor(0x0099ff)
+			.setTitle('Server Status')
+			.setURL(`https://mcsrvstat.us/server/${args[0]}:${args[1]}`)
+			.addField('Server IP:', response.host)
+			.addField('Server Version:', response.version)
+			.addField('Description:', response.description.descriptionText)
+			.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`)
 		r.delete()
     message.channel.send(embed)
-	})
+	}).catch((error) => {
+		r.delete({ timeout: 1000 })
+		message.delete()
+		message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} **No server with that IP was found in time.**`}}).then(m => m.delete({ timeout: 4500 }))
+	});
 }
 module.exports.config = {
 	command: "mc",

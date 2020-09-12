@@ -1,33 +1,27 @@
-const randomPuppy = require("random-puppy");
-var request = require('request');
+const Discord = require('discord.js')
+const { KSoftClient } = require('@ksoft/api');
 module.exports.run = async (bot, message, args, settings) => {
 	if (!args[0]) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('reddit').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
-	var r = await message.channel.send("Getting image..")
-	const img = await randomPuppy(args[0]).catch(e => bot.logger.log(`Subreddit: ${args[0]} was requested but got error: ${e.message}.`, 'error'));
-	//Check if that subreddit exists
-	request({method: 'HEAD', uri:img}, function (error, response, body) {
-  	if (!error && response.statusCode == 200) {
-    	//Stuff
-			const MemeEmbed = {
-				title: `From /r/${args[0]}`,
-				image: {
-					url: `${img}`,
-				},
-				url: `https://reddit.com/r/${args[0]}`,
-				timestamp: new Date(),
-				footer: {
-						text: `Requested by @${message.author.username}`,
-				},
-			};
-			r.delete()
-			message.channel.send({ embed: MemeEmbed })
-  	} else {
-			r.delete()
-			message.delete()
-			message.channel.send("That subreddit does not exist").then(m => m.delete({ timeout: 3500 }))
-			return
+	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
+	//Check if its a NSFW channel or not
+	try {
+		let reddit;
+		if (message.channel.nsfw) {
+			//NSFW content can be shown
+			reddit = await ksoft.images.reddit(args[0], { removeNSFW: false} );
+		} else {
+			reddit = await ksoft.images.reddit(args[0], { removeNSFW: true} );
 		}
-	})
+		var embed = new Discord.MessageEmbed()
+			.setTitle(`From /${reddit.post.subreddit}`)
+			.setURL(reddit.post.link)
+			.setImage(reddit.url)
+			.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | Provided by KSOFT.API`)
+	  message.channel.send(embed)
+	} catch (e) {
+		message.delete()
+		return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} **Subreddit with that name was not found**`}}).then(m => m.delete({ timeout: 4500 }))
+	}
 }
 module.exports.config = {
 	command: "reddit",

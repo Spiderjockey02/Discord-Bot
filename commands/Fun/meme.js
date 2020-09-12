@@ -1,14 +1,13 @@
-const randomPuppy = require("random-puppy");
+const { KSoftClient } = require('@ksoft/api');
 const Discord = require('discord.js')
 module.exports.run = async (bot, message, args, settings) => {
-	const subReddit = ["dankmeme", "meme", "me_irl", "2meirl4meirl", "deepfriedmemes"];
-	const random = subReddit[Math.floor(Math.random() * subReddit.length)];
-	const img = await randomPuppy(random);
+	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
+	meme = await ksoft.images.meme();
 	var embed = new Discord.MessageEmbed()
-	.setTitle(`From /r/${random}`)
-	.setURL(`https://reddit.com/r/${random}`)
-	.setImage(img);
-	//Make sure bot has the right permissions
+	.setTitle(`From /${meme.post.subreddit}`)
+	.setURL(meme.post.link)
+	.setImage(meme.url)
+	.setFooter(`👍 ${meme.post.upvotes}   👎 ${meme.post.downvotes} | Provided by KSOFT.API`)
   message.channel.send(embed)
 }
 module.exports.config = {
