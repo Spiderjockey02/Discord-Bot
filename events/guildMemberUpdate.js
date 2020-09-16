@@ -53,7 +53,7 @@ module.exports = async (bot, oldMember, newMember) => {
           { name: `Removed Roles [${rolesRemoved.size}]:`,  value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString}`, inline: true })
         .setTimestamp()
         //Send message
-        sendMessage(newMember, settings, embed, bot)
+      sendMessage(newMember, settings, embed, bot)
     }
   }
 };

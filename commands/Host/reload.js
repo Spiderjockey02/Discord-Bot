@@ -1,6 +1,3 @@
-const fs = require('fs')
-const load = require('../../index.js');
-
 module.exports.run = async (bot, message, args, settings) => {
 	//Makes sure only 'I am Ben#6686' can do this command (Bot owner)
 	if (message.member.id != bot.config.ownerID) return

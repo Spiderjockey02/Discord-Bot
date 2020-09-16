@@ -31,7 +31,7 @@ module.exports = (bot) => {
 		clientID: '647203942903840779',
 		clientSecret: 'mZpYSfGn-474fKSGS4O5maGkJNgv7Bn4',
 		callbackURL: `${bot.config.Dashboard.domain}/callback`,
-		scope: ['identify', 'guilds', 'email']
+		scope: ['identify', 'guilds']
 	},
 	(accessToken, refreshToken, profile, done) => {
 		process.nextTick(() => done(null, profile));
