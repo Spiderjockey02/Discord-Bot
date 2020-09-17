@@ -4,9 +4,8 @@ This is my first Discord bot made using [discord.js](https://github.com/discordj
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Spiderjockey02/discordbot/graphs/commit-activity)
 ## Features
 * Music
-  * Can play music from [Youtube](https://www.youtube.com/) and [Spotify](https://www.spotify.com/) (more to come soon).
+  * Can play music from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com) (More to come)
   * Searches up lyrics from [KSOFT.API](https://api.ksoft.si/)
-  * Music trivia - Minigame to play with your friends.
   * Shuffles your song queue.
 * Host
   * Add a global ban on a user. (That user will not be able to join any servers with this bot in)
@@ -14,8 +13,6 @@ This is my first Discord bot made using [discord.js](https://github.com/discordj
   * Eval command for bug testing.
   * Bug command for users to write their own bug reports.
   * Reload commands.
-* Radio
-  * Listen to the radio while in a call. (Currently 7 radio-stations)
 * Moderation
   * Auto-Moderation (highly customisable)
   * Get info on role, user and server.
@@ -39,10 +36,14 @@ This is my first Discord bot made using [discord.js](https://github.com/discordj
   * Update member stats
   * Listens for role, user or server updates and displays in a log channel.
   * All of these `Event listener` are highly customisable.
-A total of 63 commands.
+More than 60 commands
+
 ## Upcoming features
 * More event listeners.
 * Improved bot dashboard (web server).
+* Music trivia - Minigame to play with your friends.
+* Radio
+  * Listen to the radio while in a call. (Currently 7 radio-stations)
 ## Installation
 First of all, clone this repository. (Download or run `git clone https://github.com/Spiderjockey02/discordbot.git`)
 
@@ -54,6 +55,7 @@ Once you have that done, edit the config.js file ane sure the callback URL speci
 
 ![Image](https://camo.githubusercontent.com/1ccd4acf2f12a5d29a3e1e51c3e29e30485ede07/68747470733a2f2f692e696d6775722e636f6d2f736563684b76672e706e67)
 It is recommended to run the dashboard with a proxy (like Nginx)
+
 ## Nginx Configuration
 ```
 server {
@@ -67,6 +69,7 @@ server {
 }
 ```
 After that, you can install the dependencies (including [MongoDB](https://www.mongodb.com/)) and start the bot
+
 ### You can use the command line
 ```
 $ cd DiscordBot
