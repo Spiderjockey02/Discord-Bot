@@ -1,4 +1,3 @@
 node_modules
 modules/log/*.log
 config.js
-!commands/Guild/config.js
