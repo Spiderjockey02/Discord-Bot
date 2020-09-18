@@ -53,7 +53,6 @@ Also, please make a channel for mod logs in your Discord server.
 
 Once you have that done, edit the config.js file ane sure the callback URL specified is in the format of {{http|https}}{{domain_name}}/callback (Examples: https://dashoard.bot-website.com/callback OR http://dashboard.bot-website.com/callback OR http://localhost:33445/callback). This should be the public URL (proxied URL (by something like Nginx) is recommended).
 
-![Image](https://camo.githubusercontent.com/1ccd4acf2f12a5d29a3e1e51c3e29e30485ede07/68747470733a2f2f692e696d6775722e636f6d2f736563684b76672e706e67)
 It is recommended to run the dashboard with a proxy (like Nginx)
 
 ## Nginx Configuration
