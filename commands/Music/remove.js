@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
   if (!isNaN(args[0])) {
 		if (args[0] == 0 || args[0] >= fetched.queue.length) return message.channel.send('YOu')
 		//Remove item from queue (also check to make sure args[0] is not greater than queue length and is not current song)
-		message.channel.send({embed:{color:3066993, description:`${bot.config.emojis.tick} Successfully removed \`${fetched.queue[args[0]].songTitle}\` from queue.`}}).then(m => m.delete({ timeout: 3000 }))
+		message.channel.send({embed:{color:3066993, description:`${bot.config.emojis.tick} Successfully removed \`${fetched.queue[args[0]].title}\` from queue.`}})
 		fetched.queue.splice(args[0], 1)
   } else return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('remove').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
 }

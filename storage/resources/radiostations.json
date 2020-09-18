@@ -1,10 +1,22 @@
-[
-  { "name" : "NOISEFM", "url" : "https://play.sas-media.ru/play" },
-  { "name" : "HEART", "url" : "http://www.heart.co.uk/peterborough/on-air/player/" },
-  { "name" : "KISSFM", "url" : "http://radioplayer.kissfmuk.com/live/" },
-  { "name" : "KISSTORY", "url" : "http://kisstory.kissfmuk.com/live/" },
-  { "name" : "KISSFRESH", "url" : "http://kissfresh.kissfmuk.com/live/" },
-  { "name" : "CAPITALFM", "url" : "http://media-ice.musicradio.com/Capital" },
-  { "name" : "BIGTOP40", "url" : "http://media-ice.musicradio.com:80/BigTop40" },
-  { "name" : "CLASSICFM", "url" : "http://media-ice.musicradio.com:80/ClassicFM" }
-]
+{
+    "noisefm": {
+        "name" : "Noise FM",
+        "url" : "https://play.sas-media.ru/play"
+    },
+    "heartfm": {
+        "name" : "Heart",
+        "url" : "http://www.heart.co.uk/peterborough/on-air/player/"
+    },
+    "kissfm": {
+        "name" : "Kiss FM",
+        "url" : "http://radioplayer.kissfmuk.com/live/"
+    },
+	"kisstory": {
+        "name" : "Kisstory",
+        "url" : "http://kisstory.kissfmuk.com/live/"
+    },
+	"kissfresh": {
+        "name" : "Kiss Fresh",
+        "url" : "http://kissfresh.kissfmuk.com/live/"
+    }
+}

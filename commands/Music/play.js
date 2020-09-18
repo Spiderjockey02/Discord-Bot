@@ -1,24 +1,11 @@
 //Dependencies
-const ytdl = require('ytdl-core-discord');
-//const ytdl = require('ytdl-core')
-const streamOptions = { seek: 0, volume: 0.5, quality: 'highestaudio', highWaterMark:50, filter: 'audioonly', type: 'opus'};
 const Discord = require('discord.js')
+const ytdl = require('ytdl-core')
 const config = require("../../config.js");
 const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require("soundcloud-downloader");
-//Time change
-var toHHMMSS = (secs) => {
-    var sec_num = parseInt(secs, 10)
-    var hours   = Math.floor(sec_num / 3600)
-    var minutes = Math.floor(sec_num / 60) % 60
-    var seconds = sec_num % 60
-
-    return [hours,minutes,seconds]
-        .map(v => v < 10 ? "0" + v : v)
-        .filter((v,i) => v !== "00" || i > 0)
-        .join(":")
-}
+var { getData, getPreview } = require("spotify-url-info");
 
 module.exports.run = async (bot, message, args, settings, ops) => {
 	//Checks to see if music is enabled or the server
@@ -49,75 +36,107 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	}
   //Check if an 'entry' was added
   if (args.length == 0) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('play').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
-  //Check if it is a youtube link
-  let validate = await ytdl.validateURL(args[0])
-  if (!validate || message.content.includes('&list=PL')) {
-    //It wasn't a youtube link so directed to search.js
-    return require('./find.js').run(bot, message, args, settings, ops)
+
+  //RegEx formulas
+  const search = args.join(" ")
+  const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
+  const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
+  const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
+  const url = args[0];
+  const urlValid = videoPattern.test(args[0]);
+
+  //Check for playlist and play
+  if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
+    //This checks for youtube playlist
+    return message.client.commands.get('add-playlist').run(bot, message, args, settings, ops)
+  } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
+    //This checks for soundcloud playlist
+    return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
+  } else if (args[0].includes('open.spotify.com/album') || args[0].includes('spotify:album:') || args[0].includes('open.spotify.com/playlist') || args[0].includes('spotify:playlist:')) {
+    //this checks for spotify
+    return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
+  } else if (scRegex.test(url)) {
+    //play soundcloud
+    try {
+        const trackInfo = await scdl.getInfo(url, bot.config.soundcloudAPI_Key);
+        song = {
+          title: trackInfo.title,
+          url: trackInfo.permalink_url,
+          duration: Math.ceil(trackInfo.duration / 1000),
+          thumbnail: trackInfo.artwork_url
+        };
+      } catch (error) {
+        if (error.statusCode === 404) {
+          return message.reply("Could not find that Soundcloud track.").catch(console.error);
+        }
+        return message.reply("There was an error playing that Soundcloud track.").catch(console.error);
+      }
+  } else if (videoPattern.test(url)) {
+    //Get youtube info directly from link
+    try {
+      var songInfo = await ytdl.getInfo(url)
+      var song = {
+        title: songInfo.videoDetails.title,
+        url: songInfo.videoDetails.video_url,
+        duration: songInfo.videoDetails.lengthSeconds,
+        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+      }
+    } catch (e) {
+      console.log(e)
+      return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
+    }
+  } else if (args[0].includes('open.spotify.com/track') || args[0].includes('spotify:track:')) {
+    var spotifyData = await getData(url)
+    var results = await youtube.searchVideos(`${spotifyData.name} | ${spotifyData.artists[0].name}`, 1)
+    var songInfo = await ytdl.getInfo(results[0].url)
+    var song = {
+        title: songInfo.videoDetails.title,
+        url: songInfo.videoDetails.video_url,
+        duration: songInfo.videoDetails.lengthSeconds,
+        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+    }
+  } else {
+    //search for song
+    try {
+      const results = await youtube.searchVideos(search, 1)
+      var songInfo = await ytdl.getInfo(results[0].url)
+      var song = {
+        title: songInfo.videoDetails.title,
+        url: songInfo.videoDetails.video_url,
+        duration: songInfo.videoDetails.lengthSeconds,
+        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+      }
+    } catch (e) {
+      console.log(e)
+      return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
+    }
   }
-  //Get information on youtube link
-  let info = await ytdl.getInfo(args[0])
+  //get server information & join channel
   let data = ops.active.get(message.guild.id) || {}
-  //Join voice channel if not in one
   if (!data.connection) data.connection = await message.member.voice.channel.join()
-  data.connection.voice.setSelfDeaf(true)
+  data.connection.voice.setSelfDeaf(true)  //deafen self (recieve less information from discord)
   if (!data.queue) data.queue = []
   data.guildID = message.guild.id
-  //Add song to queue
-  data.queue.push({
-    songTitle: info.title,
-		requester: message.author.tag,
-		url: args[0],
-		announceChannel: message.channel.id,
-		Id: info.player_response.videoDetails.videoId,
-		duration: info.player_response.videoDetails.lengthSeconds
-  })
-  if (!data.dispatcher) {
-    play(bot, ops, data)
-  } else {
-    //Display (reply) youtube information to user
-		if (info.author.channel_url) {
-			channel_url = info.author.channel_url
-		}
-		//Display information
-		var embed = new Discord.MessageEmbed()
-		  .setTitle("Added to queue")
-		  .setDescription(`[${info.title}](${info.url})`)
-		  .setThumbnail(`https://img.youtube.com/vi/${info.player_response.videoDetails.videoId}/maxresdefault.jpg`)
-		  .addField("Channel:", `[${info.author.name}]`, true)
-		  .addField("Song duration:", `${toHHMMSS(info.player_response.videoDetails.lengthSeconds)}`, true)
-		  .addField("Posititon in Queue:", `${data.queue.length}`, true)
-		message.channel.send(embed)
-  }
   //add songs to queue
+  data.queue.push({
+      title: song.title,
+      requester: message.author.id,
+      url: song.url,
+      duration: song.duration,
+      thumbnail: song.thumbnail
+  })
   ops.active.set(message.guild.id, data)
-  //Play function (including showing now playing when song changes)
-  async function play(bot, ops, data) {
-    //Should update message to 'embed' to title, duration and thumbnail
+  r.delete({ timeout: 0})
+  if (!data.dispatcher) {
+    require('../../Utils/play.js').run(bot, ops, data, message)
+  } else {
+    //show that songs where added to queue
     var embed = new Discord.MessageEmbed()
-      .setThumbnail(`https://img.youtube.com/vi/${data.queue[0].Id}/maxresdefault.jpg`)
-      .addFields(
-          { name: 'Now playing:', value: `[${data.queue[0].songTitle}](${data.queue[0].url})` },
-		      { name: 'Duration:', value: `${toHHMMSS(data.queue[0].duration)}` },
-      )
-	  bot.channels.cache.get(data.queue[0].announceChannel).send(embed).then(m => m.delete({ timeout: info.player_response.videoDetails.lengthSeconds * 1000 }))
-	  data.dispatcher = await data.connection.play(await ytdl('https://www.youtube.com/watch?v=KCmJSuhRhhw'), { type: 'opus' });
-	  data.dispatcher.guildID = data.guildID
-	  data.dispatcher.once('finish', function() { finish(bot, ops, this)});
-  }
-  //Finish function (if song ends and queue isn't empty play next song if not leave channel)
-  function finish(bot, ops, dispatcher) {
-	   let fetched = ops.active.get(dispatcher.guildID)
-	   fetched.queue.shift();
-     //Plays next song if there is one
-	   if (fetched.queue.length > 0) {
-       ops.active.set(dispatcher.guildID, fetched)
-		   play(bot, ops, fetched)
-	   } else {
-       ops.active.delete(dispatcher.guildID)
-		   let vc = bot.guilds.cache.get(dispatcher.guildID).me.voice.channel
-		   if (vc) vc.leave()
-	   }
+      .setTitle("Added to queue")
+  	  .setDescription(`[${song.title}](${song.url})`)
+  		.addField("Song duration:", `${require('../../Utils/time.js').toHHMMSS(song.duration)}`, true)
+  		.addField("Posititon in Queue:", `${data.queue.length}`, true)
+  	message.channel.send(embed)
   }
 }
 module.exports.config = {

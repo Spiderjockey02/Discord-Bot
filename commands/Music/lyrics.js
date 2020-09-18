@@ -1,4 +1,4 @@
-const { KSoftClient } = require('ksoft.js');
+const { KSoftClient } = require('@ksoft/api');
 const Discord = require('discord.js')
 
 //page calculator
@@ -39,15 +39,16 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			if (message.deletable) message.delete()
 			return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} There are no songs currently playing.`}}).then(m => m.delete({ timeout: 10000 }))
 		} else {
-			console.log(fetched.queue[0].songTitle)
-			song = fetched.queue[0].songTitle
+			song = fetched.queue[0].title
 		}
 	} else {
 		song = message.content.slice(8)
 	}
+	console.log(song)
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	try {
-		var results = await ksoft.lyrics.get(`${song}`);
+		var results = await ksoft.lyrics.get(song, { textOnly: true });
+		console.log(results)
 		//Must make sure that description is less than 2048 characters
 		var embed = new Discord.MessageEmbed()
 			.setColor(2067276)
@@ -57,7 +58,6 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			.setTimestamp()
 			.setFooter("Provided by KSOFT.API")
 		await message.channel.send(embed).then(async function(message) {
-			console.log(results.lyrics.length)
 			if (results.lyrics.length < 2048) return
 			//Make sure bot has permissions to add reactions
 			if (!message.guild.me.hasPermission("ADD_REACTIONS")) {
@@ -71,10 +71,10 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			//get collector
 			var page = 0
 			const filter = (reaction, user) => {
-	           return ['⬆', '⬇'].includes(reaction.emoji.name) && !user.bot
-	    };
+				return ['⬆', '⬇'].includes(reaction.emoji.name) && !user.bot
+			};
 			const collector = message.createReactionCollector(filter, { time: 240000 });
-	    collector.on('collect', (reaction, reactionCollector) => {
+			collector.on('collect', (reaction, reactionCollector) => {
 				var totalpages = (Math.ceil(results.lyrics.length/2048) - 1)
 				if (reaction.emoji.name === '⬆') {
 					//back page
@@ -91,8 +91,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 				}
 			})
 		})
-	}
-	catch(e) {
+	} catch(e) {
 		message.channel.send(`An error occured: ${e.message}`)
 	}
 }

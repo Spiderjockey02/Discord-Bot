@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const Discord = require("discord.js")
 module.exports.run = async (bot, message, args, settings) => {
   //Get information on twitch accounts
+  if (message.author.id != bot.config.ownerID) return
   if (!args[0]) return message.channel.send(`Please enter a Twitch username`);
   var r = await message.channel.send("Gathering account details...");
   var embed = new Discord.MessageEmbed()
