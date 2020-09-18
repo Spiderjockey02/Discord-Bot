@@ -1,2 +1,0 @@
-PUT GLOBAL FUNCTIONS IN HERE
-moderator plugin + warning system, rank plugin, time conversion function
