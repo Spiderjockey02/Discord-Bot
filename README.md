@@ -47,7 +47,7 @@ More than 60 commands
 ## Installation
 First of all, clone this repository. (Download or run `git clone https://github.com/Spiderjockey02/discordbot.git`)
 
-This bot requires [Node.js](https://nodejs.org/en/) v8+ (and npm) to run
+This bot requires [Node.js](https://nodejs.org/en/) v12+ (and npm) to run
 
 Also, please make a channel for mod logs in your Discord server.
 
