@@ -76,7 +76,6 @@ $ cd DiscordBot
 $ npm install
 $ npm start
 ```
-**OR** start the bot using the `linux_run.sh` for Linux or `windows_run.bat` for Windows. These files may be outdated.
 
 **NOTE**: Running the bot with a process manager (like PM2) is recommended.
 
