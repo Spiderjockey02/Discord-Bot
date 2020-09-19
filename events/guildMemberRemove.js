@@ -18,7 +18,7 @@ module.exports = async (bot, member) => {
 	if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE')) {
 		var embed = new Discord.MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
-			.setColor(3066993)
+			.setColor(15158332)
 			.setFooter(`ID: ${member.id}`)
 			.setThumbnail(member.user.displayAvatarURL())
 			.setAuthor(`User left:`, member.user.displayAvatarURL())
