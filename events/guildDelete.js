@@ -2,7 +2,7 @@
 const BOATS = require('boats.js');
 
 module.exports = async (bot, guild) => {
-  bot.logger.cmd(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`, 'log');
+  bot.logger.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`);
   //Delete server settings
   await bot.DeleteGuild(guild)
 

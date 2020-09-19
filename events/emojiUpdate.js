@@ -1,5 +1,6 @@
-//When an emoji has been updated in a server
+//When an emoji gets updated
 const Discord = require('discord.js')
+
 module.exports = async (bot, oldEmoji, newEmoji) => {
   //Get server settings
   let settings;
@@ -22,9 +23,8 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
       .setTimestamp()
     //send message
     var channel = newEmoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-    if (channel) {
-      channel.send(embed)
-    }
+    if (channel) channel.send(embed)
+    //log event in console
+    bot.logger.log(`Emoji: ${newEmoji.name} has been updated in Server: ${newEmoji.guild.id}`);
   }
-  bot.logger.log(`Emoji: ${newEmoji.name} has been updated in Server: ${newEmoji.guild.id}`);
 };

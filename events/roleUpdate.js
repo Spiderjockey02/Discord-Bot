@@ -1,7 +1,9 @@
-//When a channel has been created in a server
+//When a role has been updated
 const Discord = require('discord.js')
 
-function sendMessage(newRole, settings, embed) {
+function sendMessage(newRole, settings, embed, bot) {
+  //log event in console
+  bot.logger.log(`Role: ${newRole.name} has been updated in Server: [${newRole.guild.id}].`);
   var channel = newRole.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
   if (!channel) return
   channel.send(embed);

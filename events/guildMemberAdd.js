@@ -1,4 +1,4 @@
-//Dependencies
+//when someones joins a server
 const Discord = require('discord.js');
 
 module.exports = async (bot, member) => {
@@ -10,7 +10,6 @@ module.exports = async (bot, member) => {
 	} catch (e) {
 		console.log(e)
 	}
-	bot.logger.log(`${member.user.tag} has joined the server: [${member.guild.id}]`)
 	//welcome plugin (check for anti-raid plugin too)
 	if (settings.welcomePlugin == true) {
 		//anti-raid is disabled so just run like normal
@@ -44,5 +43,7 @@ module.exports = async (bot, member) => {
 			.setTimestamp()
 		var channel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
 		if (channel) channel.send(embed)
+		//log event in console
+		bot.logger.log(`${member.user.tag} has joined the server: [${member.guild.id}]`)
 	}
 }

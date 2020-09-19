@@ -1,7 +1,8 @@
-//Dependencies
+//when someone leaves a server
 const Discord = require('discord.js');
 const dateFormat = require('dateformat')
 const { timeFormat, getDurationDiff, getDayDiff } = require('../Utils/time');
+
 module.exports = async (bot, member) => {
 	if (member.user.id == bot.user.id) return  //makes sure its not this bot
 	//get server settings
@@ -14,7 +15,7 @@ module.exports = async (bot, member) => {
 	//Logging plugin
 	if (settings.ModLog == false) return
 	//Check if event guildMemberAdd is for logging
-	if (settings.ModLogEvents.includes('GUILDMEMBERADD')) {
+	if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE')) {
 		var embed = new Discord.MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 			.setColor(3066993)
@@ -25,5 +26,7 @@ module.exports = async (bot, member) => {
 			.setTimestamp()
 		var channel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
 		if (channel) channel.send(embed)
+		//log event in console
+		bot.logger.log(`${member.user.tag} has left the server: [${member.guild.id}]`)
 	}
 }

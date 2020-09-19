@@ -1,5 +1,6 @@
-//When a emoji has been created in a server
+//When a emoji has been created
 const Discord = require('discord.js')
+
 module.exports = async (bot, emoji) => {
   //Get server settings
   let settings;
@@ -20,10 +21,8 @@ module.exports = async (bot, emoji) => {
       .setTimestamp()
     //send message
     var channel = emoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-    if (channel) {
-      channel.send(embed)
-    }
+    if (channel) channel.send(embed)
+    //log event in console
+    bot.logger.log(`Emoji: ${emoji.name} has been created in Server: [${emoji.guild.id}].`);
   }
-  //log event in console
-  bot.logger.log(`Emoji: ${emoji.name} has been created in Server: [${emoji.guild.id}].`);
 };

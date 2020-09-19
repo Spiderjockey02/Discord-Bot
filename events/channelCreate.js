@@ -1,5 +1,6 @@
 //When a channel has been created
 const Discord = require('discord.js')
+
 module.exports = async (bot, channel) => {
   //When someone DM's the bot for the first time, this event gets triggered (just make sure its not a DM)
   if (channel.type == 'dm') return
@@ -21,8 +22,9 @@ module.exports = async (bot, channel) => {
       .setAuthor(bot.user.username, bot.user.displayAvatarURL())
       .setTimestamp()
     //Find channel and send message
-    channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel).send(embed);
+    var channel = channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+    if (channel) channel.send(embed);
+    //log event in console
+    bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
   }
-  //log event in console
-  bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
 };

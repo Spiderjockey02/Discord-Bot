@@ -1,5 +1,6 @@
-//When a channel has been created in a server
+//When a channel has been deleted
 const Discord = require('discord.js')
+
 module.exports = async (bot, channel) => {
   //Don't really know but a check for DM must be made
   if (channel.type == 'dm') return
@@ -21,10 +22,8 @@ module.exports = async (bot, channel) => {
       .setAuthor(bot.user.username, bot.user.displayAvatarURL())
       .setTimestamp()
     var channel = channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-    if (channel) {
-      channel.send(embed)
-    }
+    if (channel) channel.send(embed)
+    //log event in console
+    bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
   }
-  //log event in console
-  bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
 };

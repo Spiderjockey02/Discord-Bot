@@ -1,4 +1,4 @@
-//When a channel has been created in a server
+//When a role has been created
 const Discord = require('discord.js')
 module.exports = async (bot, role) => {
   //Get server settings

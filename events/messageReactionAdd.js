@@ -1,4 +1,4 @@
-//When a reaction has been added to a message in a server (This includes verification role)
+//When a reaction has been added to a message (This includes verification role)
 const Discord = require('discord.js')
 module.exports = async (bot, reaction, user) => {
   //make sure it dosen't happen in a DM
@@ -45,16 +45,21 @@ module.exports = async (bot, reaction, user) => {
       }
     }
   }
-  //record all reactions
-  var embed = new Discord.MessageEmbed()
-    .setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
-    .setColor(3066993)
-    .setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
-    .setAuthor(user.tag, user.displayAvatarURL())
-    .setTimestamp()
-  //send message
-  var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-  if (channel) {
-    channel.send(embed)
+  //Check if ModLog plugin is active
+  if (settings.ModLog == false) return
+  //Check if event channelDelete is for logging
+  if (settings.ModLogEvents.includes('MESSAGEREACTIONADD')) {
+    //record all reactions
+    var embed = new Discord.MessageEmbed()
+      .setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
+      .setColor(3066993)
+      .setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
+      .setAuthor(user.tag, user.displayAvatarURL())
+      .setTimestamp()
+    //send message
+    var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+    if (channel) {
+      channel.send(embed)
+    }
   }
 }

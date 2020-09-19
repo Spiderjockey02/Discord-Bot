@@ -1,5 +1,6 @@
-//When a message gets updated in a server
+//When a message gets updated
 const Discord = require('discord.js')
+
 module.exports = async (bot, oldMessage, newMessage) => {
   //make sure its not a DM
   if (newMessage.channel.type == 'dm') return
@@ -46,8 +47,7 @@ module.exports = async (bot, oldMessage, newMessage) => {
     if (channel) {
       channel.send(embed)
     }
+    //Log event to console
+    bot.logger.log(`Message by: ${newMessage.author.username} has been updated in server: [${newMessage.guild.id}]`);
   }
-  //log event in console
-  if (!newMessage.author) return
-  bot.logger.log(`Message by: ${newMessage.author.username} has been updated in server: [${newMessage.guild.id}]`);
 };

@@ -1,12 +1,14 @@
 //When a guild member's account updates
 const Discord = require('discord.js')
 
+//send messages to log channel
 function sendMessage(newMember, settings, embed, bot) {
   var channel = newMember.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
   if (channel) channel.send(embed);
   //log event in console
   bot.logger.log(`Guild member: ${newMember.user.username} has been updated in Server: [${newMember.guild.id}].`);
 }
+
 module.exports = async (bot, oldMember, newMember) => {
   //Get server settings
   let settings;

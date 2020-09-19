@@ -1,5 +1,6 @@
 //When a messages has been deleted
 const Discord = require('discord.js')
+
 module.exports = async (bot, message) => {
   //Make sure the message wasn't deleted in a Dm channel
   if (message.channel.type == 'dm') return
@@ -13,7 +14,7 @@ module.exports = async (bot, message) => {
       console.log(e)
   }
   //Check if ModLog plugin is active
-  if (settings.ModLog == false) return
+  if (settings.ModLog == false || message.content.startsWith(settings.prefix)) return
   //Check if event channelDelete is for logging
   if (settings.ModLogEvents.includes('MESSAGEDELETE')) {
     // shorten message if it's longer then 1024
@@ -23,6 +24,8 @@ module.exports = async (bot, message) => {
         content = content.slice(0, 1020) + '...';
         shortened = true;
     }
+
+    //Basic message construct
     var embed = new Discord.MessageEmbed()
       .setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
       .setColor(15158332)
@@ -30,6 +33,17 @@ module.exports = async (bot, message) => {
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${message.content.length > 0 ? content : '*no content*'}`)
       .setTimestamp()
+    //check for attachment deletion
+    if (message.attachments.size > 0) {
+      let attachments = '';
+        for (const attachment of message.attachments) {
+            attachments += attachment[1].url + '\n';
+            embed.fields.push({
+              "name": "Attachments",
+              "value": attachments
+            });
+        }
+    }
     //send message
     var channel = message.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
     if (channel) {

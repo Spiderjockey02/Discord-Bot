@@ -1,5 +1,6 @@
-//When an emoji has been created in a server
+//When someone is unbanned from a server
 const Discord = require('discord.js')
+
 module.exports = async (bot, guild, user) => {
   let settings;
   try {
@@ -21,7 +22,7 @@ module.exports = async (bot, guild, user) => {
     if (channel) {
       channel.send(embed)
     }
+    //log event in console
+    bot.logger.log(`Guild member: ${user.username} has been unbanned from Server: [${user.guild.id}].`);
   }
-  //log event in console
-  bot.logger.log(`Guild member: ${user.username} has been unbanned from Server: [${user.guild.id}].`);
 };

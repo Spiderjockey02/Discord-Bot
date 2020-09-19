@@ -1,5 +1,6 @@
-//When a reaction has been removed from a message in a server.
+//When a reaction has been removed from a message
 const Discord = require('discord.js')
+
 module.exports = async (bot, reaction, user) => {
   //make sure it dosen't happen in a DM
   if (reaction.message.channel.type == 'dm') return
@@ -13,15 +14,20 @@ module.exports = async (bot, reaction, user) => {
       console.log(e)
   }
   //record all reactions
-  var embed = new Discord.MessageEmbed()
-    .setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
-    .setColor(15158332)
-    .setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
-    .setAuthor(user.tag, user.displayAvatarURL())
-    .setTimestamp()
-  //send message
-  var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-  if (channel) {
-    channel.send(embed)
+  //Check if ModLog plugin is active
+  if (settings.ModLog == false) return
+  //Check if event channelDelete is for logging
+  if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE')) {
+    var embed = new Discord.MessageEmbed()
+      .setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
+      .setColor(15158332)
+      .setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
+      .setAuthor(user.tag, user.displayAvatarURL())
+      .setTimestamp()
+    //send message
+    var channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
+    if (channel) {
+      channel.send(embed)
+    }
   }
 }

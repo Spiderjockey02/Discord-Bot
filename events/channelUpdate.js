@@ -1,11 +1,15 @@
 //When a channel gets updated
 const Discord = require('discord.js')
 
-function sendMessage(newChannel, settings, embed) {
+//send message to log channel
+function sendMessage(newChannel, settings, embed, bot) {
+  //log event in console
+  bot.logger.log(`Channel: ${newChannel.name} has been updated in Server: [${newChannel.guild.id}]`);
+  //send message to channel
   var channel = newChannel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
-  if (!channel) return
-  channel.send(embed);
+  if (channel) channel.send(embed);
 }
+
 module.exports = async (bot, oldChannel, newChannel) => {
   //Get server settings
   let settings;
@@ -106,6 +110,4 @@ module.exports = async (bot, oldChannel, newChannel) => {
        sendMessage(newChannel, settings, embed)
      }
    }
-   //log event in console
-   bot.logger.log(`Channel: ${newChannel.name} has been updated in Server: [${newChannel.guild.id}]`);
 };

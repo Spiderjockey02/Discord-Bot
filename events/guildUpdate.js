@@ -1,11 +1,13 @@
-//When an emoji has been created in a server
+//When the server has been updated
 const Discord = require('discord.js')
 
+//send message to log channel
 function sendMessage(newGuild, settings, embed) {
   var channel = newGuild.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel)
   if (!channel) return
   channel.send(embed);
 }
+
 module.exports = async (bot, oldGuild, newGuild) => {
   //Get server settings
   let settings;
