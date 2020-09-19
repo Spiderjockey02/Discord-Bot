@@ -35,7 +35,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		return
 	}
   //Check if an 'entry' was added
-  if (args.length == 0) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('play').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
+  if (args.length == 0 && message.attachments.size == 0) return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('play').help.usage}\`.`}}).then(m => m.delete({ timeout: 5000 }))
 
   //RegEx formulas
   const search = args.join(" ")
@@ -46,70 +46,75 @@ module.exports.run = async (bot, message, args, settings, ops) => {
   const urlValid = videoPattern.test(args[0]);
 
   //Check for playlist and play
-  if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
-    //This checks for youtube playlist
-    return message.client.commands.get('add-playlist').run(bot, message, args, settings, ops)
-  } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
-    //This checks for soundcloud playlist
-    return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
-  } else if (args[0].includes('open.spotify.com/album') || args[0].includes('spotify:album:') || args[0].includes('open.spotify.com/playlist') || args[0].includes('spotify:playlist:')) {
-    //this checks for spotify
-    return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
-  } else if (scRegex.test(url)) {
-    //play soundcloud
-    try {
-        const trackInfo = await scdl.getInfo(url, bot.config.soundcloudAPI_Key);
-        song = {
-          title: trackInfo.title,
-          url: trackInfo.permalink_url,
-          duration: Math.ceil(trackInfo.duration / 1000),
-          thumbnail: trackInfo.artwork_url
-        };
-      } catch (error) {
-        if (error.statusCode === 404) {
-          return message.reply("Could not find that Soundcloud track.").catch(console.error);
+  if (url) {
+    if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
+      //This checks for youtube playlist
+      return message.client.commands.get('add-playlist').run(bot, message, args, settings, ops)
+    } else if (scdl.isValidUrl(url) && url.includes("/sets/")) {
+      //This checks for soundcloud playlist
+      return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
+    } else if (args[0].includes('open.spotify.com/album') || args[0].includes('spotify:album:') || args[0].includes('open.spotify.com/playlist') || args[0].includes('spotify:playlist:')) {
+      //this checks for spotify
+      return message.client.commands.get("add-playlist").run(bot, message, args, settings, ops)
+    } else if (scRegex.test(url)) {
+      //play soundcloud
+      try {
+          const trackInfo = await scdl.getInfo(url, bot.config.soundcloudAPI_Key);
+          song = {
+            title: trackInfo.title,
+            url: trackInfo.permalink_url,
+            duration: Math.ceil(trackInfo.duration / 1000),
+            thumbnail: trackInfo.artwork_url
+          };
+        } catch (error) {
+          if (error.statusCode === 404) {
+            return message.reply("Could not find that Soundcloud track.").catch(console.error);
+          }
+          return message.reply("There was an error playing that Soundcloud track.").catch(console.error);
         }
-        return message.reply("There was an error playing that Soundcloud track.").catch(console.error);
+    } else if (videoPattern.test(url)) {
+      //Get youtube info directly from link
+      try {
+        var songInfo = await ytdl.getInfo(url)
+        var song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds,
+          thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+        }
+      } catch (e) {
+        console.log(e)
+        return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
       }
-  } else if (videoPattern.test(url)) {
-    //Get youtube info directly from link
-    try {
-      var songInfo = await ytdl.getInfo(url)
-      var song = {
-        title: songInfo.videoDetails.title,
-        url: songInfo.videoDetails.video_url,
-        duration: songInfo.videoDetails.lengthSeconds,
-        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
-      }
-    } catch (e) {
-      console.log(e)
-      return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
-    }
-  } else if (args[0].includes('open.spotify.com/track') || args[0].includes('spotify:track:')) {
-    var spotifyData = await getData(url)
-    var results = await youtube.searchVideos(`${spotifyData.name} | ${spotifyData.artists[0].name}`, 1)
-    var songInfo = await ytdl.getInfo(results[0].url)
-    var song = {
-        title: songInfo.videoDetails.title,
-        url: songInfo.videoDetails.video_url,
-        duration: songInfo.videoDetails.lengthSeconds,
-        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
-    }
-  } else {
-    //search for song
-    try {
-      const results = await youtube.searchVideos(search, 1)
+    } else if (args[0].includes('open.spotify.com/track') || args[0].includes('spotify:track:')) {
+      var spotifyData = await getData(url)
+      var results = await youtube.searchVideos(`${spotifyData.name} | ${spotifyData.artists[0].name}`, 1)
       var songInfo = await ytdl.getInfo(results[0].url)
       var song = {
-        title: songInfo.videoDetails.title,
-        url: songInfo.videoDetails.video_url,
-        duration: songInfo.videoDetails.lengthSeconds,
-        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds,
+          thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
       }
-    } catch (e) {
-      console.log(e)
-      return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
+    } else {
+      //search for song
+      try {
+        const results = await youtube.searchVideos(search, 1)
+        var songInfo = await ytdl.getInfo(results[0].url)
+        var song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds,
+          thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length-1].url
+        }
+      } catch (e) {
+        console.log(e)
+        return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.`}}).then(m => m.delete({ timeout: 5000 }))
+      }
     }
+  } else {
+    console.log(message.attachments)
+    return
   }
   //get server information & join channel
   let data = ops.active.get(message.guild.id) || {}
@@ -117,6 +122,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
   data.connection.voice.setSelfDeaf(true)  //deafen self (recieve less information from discord)
   if (!data.queue) data.queue = []
   data.guildID = message.guild.id
+  data.volume = 100
   //add songs to queue
   data.queue.push({
       title: song.title,
@@ -126,7 +132,6 @@ module.exports.run = async (bot, message, args, settings, ops) => {
       thumbnail: song.thumbnail
   })
   ops.active.set(message.guild.id, data)
-  r.delete({ timeout: 0})
   if (!data.dispatcher) {
     require('../../Utils/play.js').run(bot, ops, data, message)
   } else {

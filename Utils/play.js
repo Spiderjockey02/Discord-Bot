@@ -59,7 +59,7 @@ module.exports.run = async (bot, ops, data, message) => {
     )
   //play song
 	bot.channels.cache.get(message.channel.id).send(embed).then(m => m.delete({ timeout: data.queue[0].duration * 1000 }))
-  data.dispatcher = await data.connection.play(stream, { type: streamType, audioonly: true })
+  data.dispatcher = await data.connection.play(stream, { type: streamType, audioonly: true, volume: data.volume/100 })
   data.dispatcher.on("disconnect", () => {
     console.log("goodbye")
     ops.active.delete(data.dispatcher.guildID)

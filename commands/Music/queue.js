@@ -74,13 +74,13 @@ module.exports.run = async (bot, message, args, settings, ops) => {
       } else if (reaction.emoji.name === '🔽') {
         //Show next 10 songs
         page = page + 1
-        if (page <= 0) page = 0
+        if (page <= 1) page = 1
         if (page >= totalPage) page = totalPage
         Page(page, message, queue, fetched)
       } else if (reaction.emoji.name === '🔼') {
         //show the last 10 previous songs
         page = page - 1
-        if (page <= 0) page = 0
+        if (page <= 1) page = 1
         if (page >= totalPage) page = totalPage
         Page(page, message, queue, fetched)
       } else {

@@ -90,13 +90,13 @@ module.exports.run = async (bot, message, args, settings, ops) => {
       return message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Playlist not found.`}}).then(m => m.delete({ timeout: 10000 }))
     }
   }
-  console.log(videos)
   //get server information & join channel
   let data = ops.active.get(message.guild.id) || {}
   if (!data.connection) data.connection = await message.member.voice.channel.join()
   data.connection.voice.setSelfDeaf(true)  //deafen self (recieve less information from discord)
   if (!data.queue) data.queue = []
   data.guildID = message.guild.id
+  data.volume = 100
   //add songs to queue
   videos.forEach((video) => {
     data.queue.push({
