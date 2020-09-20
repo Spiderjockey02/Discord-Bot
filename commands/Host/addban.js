@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const { Globalban } = require('../../modules/models')
+const { Globalban } = require('../../modules/database/models')
 module.exports.run = async (bot, message, args, settings) => {
 	//Make sure only bot owner can do this command
 	if (message.author.id !== bot.config.ownerID) return

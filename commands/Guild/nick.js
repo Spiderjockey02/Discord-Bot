@@ -1,6 +1,7 @@
 module.exports.run = async (bot, message, args, settings) => {
-	//Get
+	//Get user for nickname change
 	var nickuser =  message.guild.member((message.mentions.users.first()) ? message.mentions.users.first() : message.author)
+
 	if (nickuser == message.author) {
 		if (!message.member.hasPermission("CHANGE_NICKNAMES")) {
 			message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`CHANGE_NICKNAMES\`.`}}).then(m => m.delete({ timeout: 10000 }))
@@ -18,7 +19,6 @@ module.exports.run = async (bot, message, args, settings) => {
 		bot.logger.error(`Missing permission: \`MANAGE_NICKNAMES\` in [${message.guild.id}]`)
 		return
 	}
-
 	console.log(args)
 	if (args.length == 0) {
 			message.channel.send({embed:{color:15158332, description:`${bot.config.emojis.cross} Please enter a nickname.`}}).then(m => m.delete({ timeout: 10000 }))

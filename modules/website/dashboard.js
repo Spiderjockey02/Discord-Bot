@@ -54,7 +54,7 @@ module.exports = (bot) => {
   app.use(bodyParser.urlencoded({
     extended: true
   }))
-  app.use('/public', express.static("./dashboard/public"));  //get external files like css, js, images etc
+  app.use('/public', express.static("./modules/website/public"));  //get external files like css, js, images etc
 
   //Authentication Checks. checkAuth verifies regular authentication,
   //whereas checkAdmin verifies the bot owner. Those are used in url
@@ -78,7 +78,7 @@ module.exports = (bot) => {
   }
 
   var privacyMD = '';
-	fs.readFile(`./dashboard/public/PRIVACY.md`, function(err, data) {
+	fs.readFile(`./modules/website/public/PRIVACY.md`, function(err, data) {
 		if (err) {
 			console.log(err);
 			privacyMD = 'Error';
@@ -90,7 +90,7 @@ module.exports = (bot) => {
 		//}
 	});
   var termsMD = '';
-	fs.readFile(`./dashboard/public/TERMS.md`, function(err, data) {
+	fs.readFile(`./modules/website/public/TERMS.md`, function(err, data) {
 		if (err) {
 			console.log(err);
 			privacyMD = 'Error';
@@ -101,13 +101,13 @@ module.exports = (bot) => {
   //Home page
   app.get('/', function (req, res) {
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/index.ejs`, {
+      res.render(`../modules/website/templates/index.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/index.ejs`, {
+      res.render(`../modules/website/templates/index.ejs`, {
         bot: bot,
         auth: false,
         user: null,
@@ -130,7 +130,7 @@ module.exports = (bot) => {
     const textChannels = bot.channels.cache.filter(c => c.type === 'text').size;
     const voiceChannels = bot.channels.cache.filter(c => c.type === 'voice').size;
     const guilds = bot.guilds.cache.size;
-    res.render(`../dashboard/templates/stats.ejs`, {
+    res.render(`../modules/website/templates/stats.ejs`, {
       bot: bot,
       auth: req.isAuthenticated() ? true : false,
       user: req.isAuthenticated() ? req.user : null,
@@ -215,7 +215,7 @@ module.exports = (bot) => {
 
   //Admin page just for Owner of Egglord
   app.get('/admin', checkAdmin, (req, res) => {
-    res.render(`../dashboard/templates/admin.ejs`, {
+    res.render(`../modules/website/templates/admin.ejs`, {
       bot: bot,
       user: req.user,
       auth: true
@@ -225,7 +225,7 @@ module.exports = (bot) => {
   //Shows dashboard for Server
   app.get('/dashboard', checkAuth, (req, res) => {
     //const perms = Discord.EvaluatedPermissions;
-    res.render(`../dashboard/templates/dashboard.ejs`, {
+    res.render(`../modules/website/templates/dashboard.ejs`, {
       //perms: perms,
       bot: bot,
       user: req.user,
@@ -236,7 +236,7 @@ module.exports = (bot) => {
   //Add bot to owner's server
   app.get('/add/:guildID', checkAuth, (req, res) => {
 		req.session.backURL = '/dashboard';
-		var inviteURL = `https://discordapp.com/api/oauth2/authorize?client_id=647203942903840779&permissions=8&redirect_uri=${bot.config.Dashboard.domain}/callback&scope=bot`;
+		var inviteURL = `https://discordapp.com/api/oauth2/authorize?client_id=647203942903840779&permissions=8&redirect_uri=${bot.config.Dashboard.domain}/callback&scope=bot&guild_id=${req.params.guildID}`;
 		if (bot.guilds.cache.has(req.params.guildID)) {
 			res.send('<p>The bot is already there... <script>setTimeout(function () { window.location="/dashboard"; }, 1000);</script><noscript><meta http-equiv="refresh" content="1; url=/dashboard" /></noscript>');
 		} else {
@@ -254,7 +254,7 @@ module.exports = (bot) => {
 		} else if (!isManaged) {
 			res.redirect('/dashboard');
 		}
-		res.render(`../dashboard/templates/Manage/manage.ejs`, {
+		res.render(`../modules/website/templates/Manage/manage.ejs`, {
 			bot: bot,
 			guild: guild,
 			user: req.user,
@@ -296,13 +296,13 @@ module.exports = (bot) => {
   //Show commands for EggLord
   app.get('/commands', (req, res) => {
 		if (req.isAuthenticated()) {
-			res.render(`../dashboard/templates/commands.ejs`, {
+			res.render(`../modules/website/templates/commands.ejs`, {
 				bot: bot,
 				auth: true,
         user: req.user
 			});
 		} else {
-			res.render(`../dashboard/templates/commands.ejs`, {
+			res.render(`../modules/website/templates/commands.ejs`, {
 				bot: bot,
 				auth: false,
 				user: null
@@ -322,13 +322,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/customcommands.ejs`, {
+      res.render(`../modules/website/templates/Manage/customcommands.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/customcommands.ejs`, {
+      res.render(`../modules/website/templates/Manage/customcommands.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -347,13 +347,13 @@ module.exports = (bot) => {
     }
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/level.ejs`, {
+      res.render(`../modules/website/templates/Manage/level.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/level.ejs`, {
+      res.render(`../modules/website/templates/Manage/level.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -366,13 +366,13 @@ module.exports = (bot) => {
   app.get('/leaderboard/:guildID', checkAuth, (req,res) => {
     //Checks is user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/leaderboard.ejs`, {
+      res.render(`../modules/website/templates/leaderboard.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/leaderboard.ejs`, {
+      res.render(`../modules/website/templates/leaderboard.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -389,13 +389,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/moderator.ejs`, {
+      res.render(`../modules/website/templates/Manage/moderator.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/moderator.ejs`, {
+      res.render(`../wesbite/templates/Manage/moderator.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -414,13 +414,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/music.ejs`, {
+      res.render(`../modules/website/templates/Manage/music.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/music.ejs`, {
+      res.render(`../modules/website/templates/Manage/music.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -439,13 +439,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/reaction.ejs`, {
+      res.render(`../modules/website/templates/Manage/reaction.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/reaction.ejs`, {
+      res.render(`../modules/website/templates/Manage/reaction.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -464,13 +464,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/reddit.ejs`, {
+      res.render(`../modules/website/templates/Manage/reddit.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/reddit.ejs`, {
+      res.render(`../modules/website/templates/Manage/reddit.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -489,13 +489,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/search.ejs`, {
+      res.render(`../modules/website/templates/Manage/search.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/search.ejs`, {
+      res.render(`../modules/website/templates/Manage/search.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -514,13 +514,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/timers.ejs`, {
+      res.render(`../modules/website/templates/Manage/timers.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/timers.ejs`, {
+      res.render(`../modules/website/templates/Manage/timers.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -539,13 +539,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/twitter.ejs`, {
+      res.render(`../modules/website/templates/Manage/twitter.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/twitter.ejs`, {
+      res.render(`../modules/website/templates/Manage/twitter.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -567,7 +567,7 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/welcome.ejs`, {
+      res.render(`../modules/website/templates/Manage/welcome.ejs`, {
         bot: bot,
         auth: true,
         user: req.user,
@@ -575,7 +575,7 @@ module.exports = (bot) => {
         Guildsettings: Guildsettings,
       })
     } else {
-      res.render(`../dashboard/templates/Manage/welcome.ejs`, {
+      res.render(`../modules/website/templates/Manage/welcome.ejs`, {
         bot: bot,
         auth: false,
         user: null,
@@ -619,13 +619,13 @@ module.exports = (bot) => {
 		}
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/youtube.ejs`, {
+      res.render(`../modules/website/templates/Manage/youtube.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/youtube.ejs`, {
+      res.render(`../modules/website/templates/Manage/youtube.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -640,13 +640,13 @@ module.exports = (bot) => {
 		if (!guild) return res.status(404);
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/settings.ejs`, {
+      res.render(`../modules/website/templates/Manage/settings.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/settings.ejs`, {
+      res.render(`../modules/website/templates/Manage/settings.ejs`, {
         bot: bot,
         auth: false,
         user: null
@@ -659,13 +659,13 @@ module.exports = (bot) => {
 		if (!guild) return res.status(404);
     //Check if user is authenticated or not
     if (req.isAuthenticated()) {
-      res.render(`../dashboard/templates/Manage/premium.ejs`, {
+      res.render(`../modules/website/templates/Manage/premium.ejs`, {
         bot: bot,
         auth: true,
         user: req.user
       })
     } else {
-      res.render(`../dashboard/templates/Manage/premium.ejs`, {
+      res.render(`../modules/website/templates/Manage/premium.ejs`, {
         bot: bot,
         auth: false,
         user: null

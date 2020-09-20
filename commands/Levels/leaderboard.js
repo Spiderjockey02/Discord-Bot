@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const Ranks = require('../../modules/models/levels')
+const Ranks = require('../../modules/database/models/levels')
 module.exports.run = async (bot, message, args, settings) => {
   if (settings.LevelPlugin == false) {
     if (message.deletable) message.delete()

@@ -9,7 +9,7 @@ const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 
 //Logger (console log + file log)
-bot.logger = require("./modules/logger");
+bot.logger = require("./modules/logging/logger");
 //For command handler
 bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
@@ -32,8 +32,8 @@ Cmodules.forEach(c => {
 })
 
 //connect to database and get global functions
-bot.mongoose = require('./modules/mongoose')
-require('./modules/function.js')(bot)
+bot.mongoose = require('./modules/database/mongoose')
+require('./utils/guild-settings.js')(bot)
 
 //Load config for Egglord
 try {
@@ -58,7 +58,7 @@ const init = async () => {
 	await require("./modules/eventHandler")(bot)
 	//Get web dashboard if enabled
 	if (bot.config.Dashboard.enabled == true) {
-		require("./modules/dashboard")(bot)
+		require("./modules/website/dashboard")(bot)
 	}
 	//Connect bot to database
 	bot.mongoose.init(bot)

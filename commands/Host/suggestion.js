@@ -26,7 +26,7 @@ module.exports.config = {
 }
 module.exports.help = {
 	name: "suggestion",
-	category: "Guild",
-	description: "Creates a suggestion",
+	category: "Host",
+	description: "Creates a suggestion (only for support server)",
 	usage: '!suggestion {suggestion}',
 }

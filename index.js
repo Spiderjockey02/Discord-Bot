@@ -11,4 +11,4 @@ const manager = new ShardingManager('./bot.js', {
 manager.spawn();
 
 // Emitted when a shard is created
-manager.on('shardCreate', (shard) => require("./modules/logger").log(`Shard ${shard.id} launched`));
+manager.on('shardCreate', (shard) => require("./modules/logging/logger").log(`Shard ${shard.id} launched`));

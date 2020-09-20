@@ -1,6 +1,6 @@
 const fs = require('fs')
 const Discord = require('discord.js')
-const { Guild, Ranks, Warning } = require('./models')
+const { Guild, Ranks, Warning } = require('../modules/database/models')
 const mongoose = require('mongoose')
 
 //Punishment

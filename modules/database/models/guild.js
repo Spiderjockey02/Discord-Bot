@@ -6,7 +6,7 @@ const guildScheme = mongoose.Schema({
   guildName: String,
   prefix: { type: String, default: '!' },
   //Welcome Plugin
-  welcomePlugin: { type: Boolean, default: true },
+  welcomePlugin: { type: Boolean, default: false },
   welcomeRaidConnect: {type: Boolean, default: false }, //if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
   welcomeChannel: { type: Number, default: 100000000000000000 },
   welcomeMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
@@ -33,7 +33,7 @@ const guildScheme = mongoose.Schema({
   MusicTriviaPlugin: { type: Boolean, default: true },
   MusicTriviaGenres: { type: Array, default: ['pop'] },
   //logging plugin
-  ModLog: { type: Boolean, default: true },
+  ModLog: { type: Boolean, default: false },
   ModLogEvents: { type: Array, default: ['BAN', 'KICK', 'MUTE'] },
   ModLogChannel: { type: Number, default: 752145410033975346 },
   //CommandCooldown
@@ -42,7 +42,7 @@ const guildScheme = mongoose.Schema({
   CommandCooldown: { type: Boolean, default: false },
   CommandCooldownSec: { type: Number, default: 2 },
   //Moderation plugin
-  ModerationPlugin: { type: Boolean, default: true },
+  ModerationPlugin: { type: Boolean, default: false },
   ModeratorRoles: { type: Array, default: ['owner'] },
   MutedRole: { type: String, default: 'Muted' },
   ModerationBadwords: { type: Number, default: 1}, //0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member

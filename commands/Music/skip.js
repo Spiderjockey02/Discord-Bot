@@ -15,6 +15,6 @@ module.exports.config = {
 module.exports.help = {
 	name: "skip",
 	category: "Music",
-	description: "Skips the current song",
+	description: "Skips the current song. (Votes needed)",
 	usage: '!skip',
 }

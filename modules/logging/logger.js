@@ -2,7 +2,7 @@
 const chalk = require("chalk");
 const moment = require("moment");
 const opts = {
-    logDirectory:'./modules/log', // NOTE: folder must exist and be writable...
+    logDirectory:'./modules/logging/logs', // NOTE: folder must exist and be writable...
     fileNamePattern:'roll-<DATE>.log',
     dateFormat:'YYYY.MM.DD'
 };
