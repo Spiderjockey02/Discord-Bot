@@ -1,7 +1,7 @@
 # Discord bot
 This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Spiderjockey02/discordbot/graphs/commit-activity) ![Size](https://github-size-badge.herokuapp.com/Spiderjockey02/Discord-Bot.svg)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Spiderjockey02/discordbot/graphs/commit-activity)
 ## Features
 * Music
   * Can play music from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com) (More to come)
