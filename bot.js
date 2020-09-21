@@ -15,9 +15,9 @@ bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
 
 //Get Bot commands
-const Cmodules = [`Fun`, `Guild`, 'Host', 'Levels', 'Music', `Search`, `Trivia`, `Misc`]
+const modules = [`Fun`, `Guild`, 'Host', 'Levels', 'Music', `Search`, `Trivia`, `Misc`]
 //Load commands
-Cmodules.forEach(c => {
+modules.forEach(c => {
 	fs.readdir(`./commands/${c}`, (err, files) => {
 		if (err) console.log(err)
 		files.forEach(f => {
@@ -43,7 +43,7 @@ try {
 	process.exit(1);
 }
 
-//Console chatter (add - allow commands to run from console)
+//Interact with console
 let y = process.openStdin()
 y.addListener("data", res => {
 	let message = res.toString().trim()
