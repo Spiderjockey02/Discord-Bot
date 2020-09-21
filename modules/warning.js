@@ -2,7 +2,6 @@ const { Warning } = require('../modules/database/models')
 const Discord = require('discord.js')
 
 module.exports.run = (bot, message, wUser, wReason, settings) => {
-  console.log("warning issued")
   //retrieve user data in warning database
   Warning.findOne({
     userID: wUser.user.id,
@@ -46,9 +45,8 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
           }, muteTime)
         }
       } else {
-        await wUser.send(`You got kicked from **${message.guild.name}** by ${message.author.username}\n Reason: \`Getting too many warnings\`.`)
         message.guild.member(wUser).kick(wReason)
-        message.channel.send(`${wUser} was kicked for having too many warnings`).then(m => m.delete({ timeout: 3500}))
+        message.channel.send({embed:{color:3066993, description:`${bot.config.emojis.tick} *${kicked.username} was successfully kicked for having too many warnings*.`}}).then(m => m.delete({ timeout: 3500 }))
         bot.logger.log(`${wUser.user.tag} was kicked from server: [${message.channel.guild.id}].`)
         //Delete user from database
         Warning.collection.deleteOne({userID: wUser.user.id, guildID: message.guild.id})
@@ -69,6 +67,7 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
             embed.addField("Warnings:", `${res.Warnings}`, true)
           }
         } else {
+          bot.logger.log(`${wUser.user.tag} was warned from server: [${message.channel.guild.id}].`)
           embed.addField("Warnings:", `1`, true)
         }
         embed.addField("Reason:", wReason)

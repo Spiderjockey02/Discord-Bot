@@ -34,6 +34,7 @@ module.exports.run = (bot, message, settings) => {
           var channel = message.guild.channels.cache.find(channel => channel.id == settings.LevelChannel)
           if (channel) channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level))
         }
+        bot.logger.log(`${message.author.tag} has leveled up to ${Xp.Level} in server: [${message.channel.guild.id}]`)
       }
       //update database
       Xp.save().catch(e => bot.logger.error(e.message))
