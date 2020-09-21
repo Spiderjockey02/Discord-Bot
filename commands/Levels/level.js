@@ -20,14 +20,14 @@ module.exports.run = async (bot, message, args, settings) => {
     if(err) console.log(err)
     var embed = new Discord.MessageEmbed()
     .setAuthor(user.username)
-    if(Xp == null) {
+    if (Xp == null) {
       embed.addField("Xp:", "0", true)
       embed.addField("Level:", "1", true)
-      embed.setFooter(`50 XP till level up`, `${(user.avatar) ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`}`)
+      embed.setFooter(`50 XP till level up`, user.displayAvatarURL())
     } else {
       embed.addField("Xp:", Xp.Xp, true)
       embed.addField("Level:", Xp.Level, true)
-      embed.setFooter(`${(Xp.Level*50)-Xp.Xp} XP till level up`, message.author.displayAvatarURL)
+      embed.setFooter(`${(Xp.Level*50)-Xp.Xp} XP till level up`, message.author.displayAvatarURL())
     }
     message.channel.send(embed)
   })

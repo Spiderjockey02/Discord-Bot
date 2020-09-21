@@ -16,8 +16,8 @@ module.exports.run = async (bot, message, args, settings) => {
   }
   //Display user informaion
   var embed = new Discord.MessageEmbed()
-  .setAuthor(`User info for ${member.user.username}#${member.user.discriminator}`, `${(member.user.avatar) ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${member.user.discriminator % 5}.png`}`)
-  .setThumbnail(`${(member.user.avatar) ? `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${member.user.discriminator % 5}.png`}`)
+  .setAuthor(`User info for ${member.user.username}#${member.user.discriminator}`, member.user.displayAvatarURL())
+  .setThumbnail(member.user.displayAvatarURL())
   .addField("Nickname:", member.nickname != null ? member.nickname : "-", true)
   .addField("Status", `${emoji} ${member.presence.status}`, true)
   .addField("📋Joined Discord", moment(member.user.createdAt).format('lll'), true)

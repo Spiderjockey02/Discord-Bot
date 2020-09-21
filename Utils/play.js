@@ -45,7 +45,7 @@ module.exports.run = async (bot, ops, data, message) => {
     console.log("Error")
     if (data.queue) {
       data.queue.shift();
-      require('../Utils/play.js').run(bot, ops, data, message)
+      require('../utils/play.js').run(bot, ops, data, message)
     }
     console.error(error);
     return message.channel.send(`Error: ${error.message ? error.message : error}`);

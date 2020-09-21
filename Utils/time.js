@@ -10,7 +10,7 @@ module.exports.toHHMMSS = (secs) => {
         .join(":")
 }
 module.exports.getDayDiff = (timestamp0, timestamp1) => {
-    return Math.round(require('../Utils/time.js').getDurationDiff(timestamp0, timestamp1));
+    return Math.round(require('../utils/time.js').getDurationDiff(timestamp0, timestamp1));
 }
  module.exports.getDurationDiff = (timestamp0, timestamp1) => {
     return Math.abs(timestamp0 - timestamp1) / (1000 * 60 * 60 * 24);

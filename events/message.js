@@ -108,13 +108,13 @@ module.exports = async (bot, message) => {
 		}
 		return
 	}
-
-	//Rank plugin
-	if (settings.LevelPlugin == true) {
-		require('../modules/Levels').run(bot, message, settings)
-	}
 	//moderation plugin
 	if (settings.ModerationPlugin == true) {
 		require('../modules/moderation').run(bot, message, settings)
+	}
+	
+	//Rank plugin
+	if (settings.LevelPlugin == true) {
+		require('../modules/Levels').run(bot, message, settings)
 	}
 }

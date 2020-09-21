@@ -47,6 +47,7 @@ module.exports.run = async (args, message, bot) => {
   	bot.logger.log(`Reloaded Command: ${commandName}.js`)
   } else if (args[0] == 'shutdown') {
     //Shutdown the bot
+    //add a check if music is playing on a server
     try {
       await bot.logger.log(`Bot was shutdown.`)
       process.exit()

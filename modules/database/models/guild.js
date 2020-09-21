@@ -44,7 +44,7 @@ const guildScheme = mongoose.Schema({
   //Moderation plugin
   ModerationPlugin: { type: Boolean, default: false },
   ModeratorRoles: { type: Array, default: ['owner'] },
-  MutedRole: { type: String, default: 'Muted' },
+  MutedRole: { type: Number, default: 100000000000000000 },
   ModerationBadwords: { type: Number, default: 1}, //0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
   ModerationBadwordChannel: { type: Array, default: ['Forbadwords'] }, //These Channels are ignored
   ModerationBadwordRole: { type: Array, default: ['Forbadwords'] },  //These roles are ignored
@@ -73,6 +73,7 @@ const guildScheme = mongoose.Schema({
   ModerationZalgo: { type: Number, default: 1 },  //0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
   ModerationZalgoChannel: { type: Array, default: ['ForZalgo'] },  //These channels are ignored
   ModerationZalgoRole: { type: Array, default: ['ForZalgo'] },  //These roles are ignored
+  ModerationWarningCounter: { type: Number, default: 3 }, //How many warnings till the user is kicked from server
   //Anti-raid plugin
   AntiRaidPlugin: { type: Boolean, default: false },
   AntiRaidCompletion: { type: Number, default: 1 },  //0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join

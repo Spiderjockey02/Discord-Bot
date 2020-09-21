@@ -15,7 +15,7 @@ var config = {
 		sessionSecret: 'SpamYourKeyboardHere',
 		domain: 'YourIP',
 		legalTemplates: {
-			contactEmail: 'YourEmailAddress', // This email will be used in the legal page of the dashboard if someone needs to contact you for any reason regarding this page
+			contactEmail: 'YourEmailAddress@something.com', // This email will be used in the legal page of the dashboard if someone needs to contact you for any reason regarding this page
 			lastEdited: '13 August 2020' // Change this if you update the `TERMS.md` or `PRIVACY.md` files in `dashboard/public/`
 		}
 	},
