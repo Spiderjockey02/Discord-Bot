@@ -23,7 +23,7 @@ const guildScheme = mongoose.Schema({
   LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
   LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
   LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
-  LevelMultiplier: { type: Number, default: 1 }, //Range 0 to 3
+  LevelMultiplier: { type: Number, default: 1 }, //Range 1 to 3
   LevelRoleRewards: { type: Array, default: ['gf'] },
   //Music plugin
   MusicPlugin: { type: Boolean, default: true },
