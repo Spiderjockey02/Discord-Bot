@@ -111,10 +111,10 @@ module.exports = async (bot, message) => {
 
 	//Rank plugin
 	if (settings.LevelPlugin == true) {
-		bot.level(message, settings)
+		require('../modules/Levels').run(bot, message, settings)
 	}
 	//moderation plugin
 	if (settings.ModerationPlugin == true) {
-		require('./modules/moderation').run(message, settings)
+		require('../modules/moderation').run(bot, message, settings)
 	}
 }

@@ -18,7 +18,7 @@ const guildScheme = mongoose.Schema({
   welcomeGoodbyeMessage: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
   //Level plugin
   LevelPlugin: { type: Boolean, default: false },
-  LevelOption: {type: Number, default: 1}, //0 = no announcement, 1 = reply, 2 = choosen channel, 3 = in DM's
+  LevelOption: {type: Number, default: 1}, //0 = no announcement, 1 = reply, 2 = choosen channel
   LevelChannel: {type: Number, default: 100000000000000000 },
   LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
   LevelIgnoreRoles: { type: Array, default: ['No-xp'] },

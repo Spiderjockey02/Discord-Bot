@@ -1,3 +1,5 @@
+//remove level plugin & warning system (only guild setting stuff here)
+
 const fs = require('fs')
 const Discord = require('discord.js')
 const { Guild, Ranks, Warning } = require('../modules/database/models')
@@ -61,34 +63,6 @@ module.exports = bot => {
       if (err) throw err
     })
     return
-  };
-  //Level up system
-  bot.level = async (message, settings) => {
-    let xpAdd = Math.floor(Math.random() * 7) + 8
-    //console.log(`XP: ${xpAdd}`)
-    Ranks.findOne({
-      userID: message.author.id,
-      guildID: message.guild.id
-    }, (err, Xp) => {
-      if(err) console.log(err)
-      if(!Xp) {
-        const newXp = new Ranks({
-          userID: message.author.id,
-          guildID: message.guild.id,
-          Xp: xpAdd,
-          Level: 1
-        })
-        newXp.save().catch(e => console.log(e))
-      } else {
-        Xp.Xp = Xp.Xp + xpAdd
-        //Look for level update
-        if (Xp.Xp >= Xp.Level*50) {
-          Xp.Level = Xp.Level + 1
-          message.channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level))
-        }
-        Xp.save().catch(e => console.log(e))
-      }
-    })
   };
   bot.warning = async (message, wUser, wReason, settings) => {
     Warning.findOne({
