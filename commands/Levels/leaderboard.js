@@ -48,7 +48,7 @@ module.exports.run = async (bot, message, args, settings) => {
 };
 module.exports.config = {
 	command: 'leaderboard',
-	aliases: ['lb', 'levels'],
+	aliases: ['lb', 'levels', 'ranks'],
 };
 module.exports.help = {
 	name: 'Leaderboard',

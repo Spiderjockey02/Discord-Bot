@@ -4,7 +4,7 @@ const { ShardingManager } = require('discord.js');
 const manager = new ShardingManager('./bot.js', {
 	// Sharding options
 	totalShards: 'auto',
-	token: 'NjQ3MjAzOTQyOTAzODQwNzc5.XdcTAw.gq5ffGBb2b1sKdjhB_bxo2ZuYH0',
+	token: require('./config.js').token,
 });
 
 // Spawn your shards
