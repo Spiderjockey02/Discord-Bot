@@ -15,7 +15,6 @@ module.exports = bot => {
   //update guild settings
   bot.updateGuild = async (guild, settings, bot) => {
     let data = await bot.getGuild(guild)
-
     if (typeof data !== 'object') data = {}
     for (const key in settings) {
       if (settings.hasOwnProperty(key)) {

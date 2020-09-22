@@ -1,4 +1,4 @@
-var config = {
+const config = {
 	ownerID : 'YourAccountID',
 	token : 'YourBotToken',
 	prefix : '!',
@@ -15,18 +15,20 @@ var config = {
 		sessionSecret: 'SpamYourKeyboardHere',
 		domain: 'YourIP',
 		legalTemplates: {
-			contactEmail: 'YourEmailAddress@something.com', // This email will be used in the legal page of the dashboard if someone needs to contact you for any reason regarding this page
-			lastEdited: '13 August 2020' // Change this if you update the `TERMS.md` or `PRIVACY.md` files in `dashboard/public/`
-		}
+			// This email will be used in the legal page of the dashboard if someone needs to contact you for any reason regarding this page
+			contactEmail: 'YourEmailAddress@something.com',
+			// Change this if you update the `TERMS.md` or `PRIVACY.md` files in `dashboard/public/`
+			lastEdited: '13 August 2020',
+		},
 	},
 	SupportLink: 'LinkToYourSupportServer',
 	defaultSettings: {
-		//default settings
-		prefix: '!'
+		// default settings
+		prefix: '!',
 	},
 	emojis: {
 		cross: 'CrossEmoji',
 		tick: 'TickEmoji',
-	}
-}
+	},
+};
 module.exports = config;
