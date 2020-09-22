@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const rankSchema = mongoose.Schema({
-  userID: String,
-  guildID: String,
-  Xp: Number,
-  Level: Number
-})
+	userID: String,
+	guildID: String,
+	Xp: Number,
+	Level: Number,
+});
 
-module.exports = mongoose.model('Ranks', rankSchema)
+module.exports = mongoose.model('Ranks', rankSchema);

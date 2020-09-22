@@ -24,14 +24,14 @@ module.exports.run = async (bot, message, args) => {
 				message.channel.send('I was unable to find a steam profile with that name').then(m => m.delete({ timeout: 2000 }));
 				return;
 			}
-			const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body.response.players[0];
+			const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body2.response.players[0];
 			fetch(bans).then(res => res.json()).then(body3 => {
 				if (!body3.players) {
 					r.delete();
 					message.channel.send('I was unable to find a steam profile with that name').then(m => m.delete({ timeout: 2000 }));
 					return;
 				}
-				const { NumberOfGameBans } = body.players[0];
+				const { NumberOfGameBans } = body3.players[0];
 				// Display results
 				const embed = new Discord.MessageEmbed()
 					.setColor(0x0099ff)

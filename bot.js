@@ -4,8 +4,6 @@ if (process.version.slice(1).split('.')[0] < 12) throw new Error('Node 12.0.0 or
 const Discord = require('discord.js');
 const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const fs = require('fs');
-// const { promisify } = require('util');
-// const readdir = promisify(require('fs').readdir);
 
 // Logger (console log + file log)
 bot.logger = require('./modules/logging/logger');
