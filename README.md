@@ -4,6 +4,7 @@ This is my first Discord bot made using [discord.js](https://github.com/discordj
 [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Spiderjockey02/Discord-Bot)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 
 ## Features
 * Music
