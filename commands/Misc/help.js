@@ -12,12 +12,11 @@ module.exports.run = async (bot, message, args, settings) => {
 				{ name: 'Guild', value: '!help guild', inline: true },
 				{ name: 'Levels', value: '!help levels', inline: true },
 				{ name: 'Music', value: '!help music', inline: true },
-				{ name: 'Search', value: '!help search', inline: true },
+				{ name: 'Search', value: '!help searcher', inline: true },
 				{ name: 'Trivia', value: '!help trivia', inline: true },
 			);
 		message.channel.send(embed);
-	}
-	else if (args.length <= 1) {
+	} else if (args.length <= 1) {
 		// Shows plugin/command list
 		// Check if it's a command
 		let command = args[0];
@@ -35,10 +34,9 @@ module.exports.run = async (bot, message, args, settings) => {
 				embed.setThumbnail(message.guild.iconURL({ format: 'png', dynamic: true, size: 1024 }));
 			}
 			embed.setAuthor('Egglord HELP', message.guild.iconURL);
-			embed.setDescription(`The bot prefix is: ${settings.prefix}\n\n**Command:** ${command.help.name}\n**Aliases:** ${command.config.aliases.join(', ')}\n**Description:** ${command.help.description}\n**Usage:** ${command.help.usage.replace('!', settings.prefix)}`);
+			embed.setDescription(`The bot's prefix for this server is: ${settings.prefix}\n\n**Command:** ${command.help.name}\n**Aliases:** ${command.config.aliases.join(', ')}\n**Description:** ${command.help.description}\n**Usage:** ${command.help.usage.replace('!', settings.prefix)}`);
 			message.channel.send(embed);
-		}
-		else {
+		} else {
 			// Help on plugin
 			const embed = new Discord.MessageEmbed();
 			bot.commands.forEach(cmd => {
@@ -49,23 +47,23 @@ module.exports.run = async (bot, message, args, settings) => {
 			// Make sure it was a plugin
 			if (embed.fields.length != 0) {
 				message.channel.send(embed);
-			}
-			else {
+			} else {
 				if (message.deletable) message.delete();
 				message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to help you on that.` } }).then(m => m.delete({ timeout: 10000 }));
 			}
 		}
-	}
-	else {
+	} else {
 		// Bot was unable to help user
 		if (message.deletable) message.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to help you on that.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
+
 module.exports.config = {
 	command: 'help',
 	aliases: ['help'],
 };
+
 module.exports.help = {
 	name: 'help',
 	category: 'Misc',

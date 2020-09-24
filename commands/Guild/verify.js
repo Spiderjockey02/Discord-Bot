@@ -1,4 +1,6 @@
+// Dependencies
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message) => {
 	if (message.author.id != bot.config.ownerID) return;
 	if (message.deletable) message.delete();

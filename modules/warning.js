@@ -21,8 +21,7 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 				.setAuthor(`${wUser.user.username}#${wUser.user.discriminator} has been warned`, wUser.user.displayAvatarURL())
 				.setDescription(`**Reason:** ${wReason}`);
 			message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
-		}
-		else {
+		} else {
 			// This is NOT their warning
 			res.Warnings = res.Warnings + 1;
 			if (res.Warnings == 2) {
@@ -46,8 +45,7 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 						wUser.roles.remove(muteRole).catch(e => console.log(e));
 					}, muteTime);
 				}
-			}
-			else {
+			} else {
 				message.guild.member(wUser).kick(wReason);
 				message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${wUser.username} was successfully kicked for having too many warnings*.` } }).then(m => m.delete({ timeout: 3500 }));
 				// Delete user from database
@@ -59,8 +57,7 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 				.setColor(15158332);
 			if (res) {
 				if (res.Warnings == 3) embed.setAuthor(`[KICK] ${wUser.user.username}#${wUser.user.discriminator}`, wUser.user.displayAvatarURL());
-			}
-			else {
+			} else {
 				embed.setAuthor(`[WARN] ${wUser.user.username}#${wUser.user.discriminator}`, wUser.user.displayAvatarURL());
 			}
 			embed.addField('User:', `${wUser}`, true);
@@ -69,8 +66,7 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 				if (res.Warnings != 3) {
 					embed.addField('Warnings:', `${res.Warnings}`, true);
 				}
-			}
-			else {
+			} else {
 				bot.logger.log(`${wUser.user.tag} was warned from server: [${message.channel.guild.id}].`);
 				embed.addField('Warnings:', '1', true);
 			}

@@ -12,8 +12,7 @@ function Page(page, message, results) {
 			.setTimestamp()
 			.setFooter('Provided by KSOFT.API');
 		message.edit(embed);
-	}
-	else {
+	} else {
 		const num1 = (page * 2048);
 		const num2 = num1 + 2048;
 		const embed = new Discord.MessageEmbed()
@@ -33,21 +32,19 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This plugin is currently disabled.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+	let song;
 	if (!args[0]) {
 		// GET current song that is playing
 		const fetched = ops.active.get(message.guild.id);
 		if (fetched == undefined) {
 			if (message.deletable) message.delete();
 			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are no songs currently playing.` } }).then(m => m.delete({ timeout: 10000 }));
+		} else {
+			song = fetched.queue[0].title;
 		}
-		else {
-			const song = fetched.queue[0].title;
-		}
+	} else {
+		song = message.content.slice(8);
 	}
-	else {
-		const song = message.content.slice(8);
-	}
-	console.log(song);
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	try {
 		const results = await ksoft.lyrics.get(song, { textOnly: true });
@@ -85,8 +82,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 					if (page <= 0) page = 0;
 					if (page >= totalpages) page = totalpages;
 					Page(page, msg, results);
-				}
-				else {
+				} else {
 					// forward page
 					page = page + 1;
 					if (page <= 0) page = 0;
@@ -95,8 +91,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 				}
 			});
 		});
-	}
-	catch(e) {
+	} catch(e) {
 		message.channel.send(`An error occured: ${e.message}`);
 	}
 };

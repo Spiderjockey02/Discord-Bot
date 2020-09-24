@@ -10,8 +10,7 @@ function finish(bot, ops, dispatcher, message) {
 	if (fetched.queue.length > 0) {
 		ops.active.set(dispatcher.guildID, fetched);
 		require('../Utils/play.js').run(bot, ops, fetched, message);
-	}
-	else {
+	} else {
 		ops.active.delete(dispatcher.guildID);
 		const vc = bot.guilds.cache.get(dispatcher.guildID).me.voice.channel;
 		if (vc) vc.leave();
@@ -23,20 +22,19 @@ module.exports.run = async (bot, ops, data, message) => {
 	// Get stream type
 	let streamType = data.queue[0].url.includes('youtube.com') ? 'opus' : 'ogg/opus';
 	// get stream
+	let stream;
 	try {
 		if (data.queue[0].url.includes('youtube.com')) {
-			const stream = await ytdlDiscord(data.queue[0].url, { highWaterMark: 1 << 25 });
-		}
-		else if (data.queue[0].url.includes('soundcloud.com')) {
+			stream = await ytdlDiscord(data.queue[0].url, { highWaterMark: 1 << 25 });
+		} else if (data.queue[0].url.includes('soundcloud.com')) {
 			try {
-				const stream = await scdl.downloadFormat(
+				stream = await scdl.downloadFormat(
 					data.queue[0].url,
 					scdl.FORMATS.OPUS,
 					bot.config.soundcloudAPI_Key,
 				);
-			}
-			catch (error) {
-				const stream = await scdl.downloadFormat(
+			} catch (error) {
+				stream = await scdl.downloadFormat(
 					data.queue[0].url,
 					scdl.FORMATS.MP3,
 					bot.config.soundcloudAPI_Key,
@@ -44,14 +42,14 @@ module.exports.run = async (bot, ops, data, message) => {
 				streamType = 'unknown';
 			}
 		}
-	}
-	catch (error) {
-		console.log('Error');
+	} catch (error) {
+		// URL was not youtube or soundcloud
 		if (data.queue) {
+			// play the next song
 			data.queue.shift();
 			require('../utils/play.js').run(bot, ops, data, message);
 		}
-		console.error(error);
+		bot.logger.error(`${error.message ? error.message : error}`);
 		return message.channel.send(`Error: ${error.message ? error.message : error}`);
 	}
 	// create message

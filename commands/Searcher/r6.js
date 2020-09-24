@@ -11,8 +11,7 @@ module.exports.run = async (bot, message, args) => {
 		message.delete();
 		message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
 		return;
-	}
-	else {
+	} else {
 		player = args[0];
 	}
 	// Get platform
@@ -76,13 +75,15 @@ module.exports.run = async (bot, message, args) => {
 	r.delete();
 	message.channel.send(embed).catch(e => message.channel.send(`There was an error: ${e.message}`));
 };
+
 module.exports.config = {
 	command: 'r6',
 	aliases: ['r6'],
 };
+
 module.exports.help = {
 	name: 'r6',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Gets statistics on a Rainbow 6 Account',
 	usage: '!r6 {user} [pc | xbox | ps4] [eu | na | as]',
 };

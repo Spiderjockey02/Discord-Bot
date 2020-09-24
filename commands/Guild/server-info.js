@@ -1,6 +1,7 @@
+// Dependencies
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message) => {
-	// Get number of users server boosting
 	// Get VIP perks
 	const VipPerks = (message.guild.features.length == 0) ? 'None' : message.guild.features.toString().toLowerCase().replace(/,/g, ', ');
 	// Display server information

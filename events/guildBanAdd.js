@@ -5,8 +5,7 @@ module.exports = async (bot, guild, user) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// Check if moderation plugin is on

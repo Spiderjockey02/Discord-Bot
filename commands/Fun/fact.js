@@ -1,12 +1,13 @@
+// Dependencies
 const fs = require('fs');
 const Discord = require('discord.js');
 
 module.exports.run = async (bot, message) => {
-	// Check if this command is banned
+	// Get the random facts file
 	fs.readFile('././storage/resources/random-facts.json', (err, data) => {
 		if (err) throw err;
 		const facts = JSON.parse(data);
-		// Displays a random fact (3056 facts)
+		// Retrieve a random fact
 		const num = (Math.floor((Math.random() * 3056) + 0));
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Random Fact:')

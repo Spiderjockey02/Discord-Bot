@@ -50,13 +50,15 @@ module.exports.run = async (bot, message, args) => {
 		});
 	});
 };
+
 module.exports.config = {
 	command: 'steam',
 	aliases: ['steam'],
 };
+
 module.exports.help = {
 	name: 'Steam',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Get information on a steam account',
 	usage: '!steam [user]',
 };

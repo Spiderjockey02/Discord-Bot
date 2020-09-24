@@ -13,8 +13,9 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		// Remove item from queue (also check to make sure args[0] is not greater than queue length and is not current song)
 		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} Successfully removed \`${fetched.queue[args[0]].title}\` from queue.` } });
 		fetched.queue.splice(args[0], 1);
+	} else {
+		return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('remove').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
-	else {return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('remove').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));}
 };
 
 module.exports.config = {

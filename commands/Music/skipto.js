@@ -10,8 +10,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	// Get position
 	if (args[0] < 1 || args[0] >= fetched.queue.length) {
 		message.channel.send(`Please choose a number from \`1 to ${fetched.queue.length}\``);
-	}
-	else {
+	} else {
 		fetched.queue.splice(0, args[0] - 1);
 		fetched.dispatcher.end();
 	}

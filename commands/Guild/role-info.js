@@ -1,14 +1,17 @@
+// Dependencies
 const Discord = require('discord.js');
 const moment = require('moment');
+
 module.exports.run = async (bot, message, args) => {
 	// Check to see if a role was mentioned
 	const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
-	// Make sure a role was
+	// Make sure it's a role on the messages's server
 	if (!role) {
 		if (message.deletable) message.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+	// Send information to channel
 	const embed = new Discord.MessageEmbed()
 		.setColor(role.color)
 		.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())

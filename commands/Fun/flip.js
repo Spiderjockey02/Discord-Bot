@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message) => {
+	// Pick Head or Tails
 	const choices = ['Head', 'Tails'];
-	// Make sure bot has the right permissions
 	message.channel.send(choices[Math.floor(Math.random() * choices.length)]);
 };
 

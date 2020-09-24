@@ -21,8 +21,7 @@ module.exports.run = (bot, message, settings) => {
 				Level: 1,
 			});
 			newXp.save().catch(e => bot.logger.log(e.message));
-		}
-		else {
+		} else {
 			// user was found
 			Xp.Xp = Xp.Xp + xpAdd;
 			// User has leveled up
@@ -31,8 +30,7 @@ module.exports.run = (bot, message, settings) => {
 				// now check how to send message
 				if (settings.LevelOption == 1) {
 					message.channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
-				}
-				else if (settings.LevelOption == 2) {
+				} else if (settings.LevelOption == 2) {
 					const lvlChannel = message.guild.channels.cache.find(channel => channel.id == settings.LevelChannel);
 					if (lvlChannel) lvlChannel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 				}

@@ -1,21 +1,26 @@
+// Dependencies
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
+
 module.exports.run = async (bot, message, args) => {
-	const name = args.join(' ');
+	const username = args.join(' ');
 	// Checks to see if a username was provided
-	if (!name) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('instagram').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('instagram').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account details...');
-	const url = `https://instagram.com/${name}/?__a=1`;
-	const res = await fetch(url).then(info => info.json()).catch(function() {
-		bot.logger.log(`${message.author.id} requested for an Instagram account that didn't exist.`, 'error');
+	// Gather data from database
+	const url = `https://instagram.com/${username}/?__a=1`;
+	const res = await fetch(url).then(info => info.json()).catch(error => {
+		// An error occured when looking for account
+		bot.logger.error(`${error.message ? error.message : error}`);
 		message.delete();
 		message.channel.send('That Instagram account does not exist.').then(m => m.delete({ timeout: 3500 }));
 		return;
 	});
-	if (!res) {
+	if (res.size == 0) {
 		r.delete();
 		return;
 	}
+	console.log(res);
 	// Checks to see if a username in instagram database
 	if (!res.graphql.user.username) {
 		r.delete();
@@ -26,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
 	const embed = new Discord.MessageEmbed()
 		.setColor(0x0099ff)
 		.setTitle(account.full_name)
-		.setURL(`https://instagram.com/${name}`)
+		.setURL(`https://instagram.com/${username}`)
 		.setThumbnail(account.profile_pic_url)
 		.addField('Username:', account.username)
 		.addField('Full Name:', account.full_name)
@@ -39,13 +44,15 @@ module.exports.run = async (bot, message, args) => {
 	r.delete();
 	message.channel.send(embed);
 };
+
 module.exports.config = {
 	command: 'instagram',
 	aliases: ['insta'],
 };
+
 module.exports.help = {
 	name: 'Instagram',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Gets information on an Instagram account.',
 	usage: '!instagram [user]',
 };

@@ -1,7 +1,8 @@
+// Dependencies
 const Discord = require('discord.js');
 
 module.exports.run = async (bot, message) => {
-	// Make sure bot can see invites
+	// Get information on the services the bot provide
 	const m = await message.channel.send('Pong');
 	const embed = new Discord.MessageEmbed()
 		.addField('Ping:', `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
@@ -10,10 +11,12 @@ module.exports.run = async (bot, message) => {
 		.setTimestamp();
 	message.channel.send(embed);
 };
+
 module.exports.config = {
 	command: 'status',
 	aliases: ['stat'],
 };
+
 module.exports.help = {
 	name: 'Status',
 	category: 'Misc',

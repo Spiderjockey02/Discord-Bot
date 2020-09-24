@@ -68,22 +68,19 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 				// last page
 				page = totalPage;
 				Page(page, msg, queue, fetched);
-			}
-			else if (reaction.emoji.name === '🔽') {
+			} else if (reaction.emoji.name === '🔽') {
 				// Show next 10 songs
 				page = page + 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
 				Page(page, msg, queue, fetched);
-			}
-			else if (reaction.emoji.name === '🔼') {
+			} else if (reaction.emoji.name === '🔼') {
 				// show the last 10 previous songs
 				page = page - 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
 				Page(page, msg, queue, fetched);
-			}
-			else {
+			} else {
 				// This will show the first 10 songs (in queue)
 				page = 1;
 				Page(page, msg, queue, fetched);

@@ -1,8 +1,11 @@
+// Dependencies
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message) => {
+	// Send support info to user
 	const embed = new Discord.MessageEmbed()
 		.setTitle('Egglord Support')
-		.setDescription(`**Our Server:**  [Support Server](${bot.config.SupportLink})\n **Our website:**  [Website](${bot.config.Dashboard.domain})`);
+		.setDescription(`**Our Server:**  [Support Server](${bot.config.SupportLink})\n **Our website:**  [Website](${bot.config.Dashboard.domain})\n **Git Repo:** [Website](https://github.com/Spiderjockey02/Discord-Bot)`);
 	message.channel.send(embed);
 };
 
@@ -13,7 +16,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'support',
-	category: 'Host',
+	category: 'Misc',
 	description: 'Get information for getting support on Egglord.',
 	usage: '!support',
 };

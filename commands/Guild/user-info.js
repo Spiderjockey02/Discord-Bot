@@ -1,5 +1,7 @@
+// Dependencies
 const Discord = require('discord.js');
 const moment = require('moment');
+
 module.exports.run = async (bot, message) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
@@ -8,14 +10,11 @@ module.exports.run = async (bot, message) => {
 	let emoji;
 	if (member.presence.status == 'online') {
 		emoji = '🟢';
-	}
-	else if (member.presence.status == 'idle') {
+	} else if (member.presence.status == 'idle') {
 		emoji = '🟡';
-	}
-	else if (member.presence.status == 'offline') {
+	} else if (member.presence.status == 'offline') {
 		emoji = '⚫';
-	}
-	else {
+	} else {
 		emoji = '🔴';
 	}
 	// Display user informaion

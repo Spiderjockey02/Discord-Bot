@@ -6,8 +6,7 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(newEmoji.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// Check if moderation plugin is on

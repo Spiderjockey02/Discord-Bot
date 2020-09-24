@@ -1,6 +1,7 @@
 module.exports.run = async (bot, message, args) => {
 	// Check if user has permission to ban user
 	if (message.deletable) message.delete();
+	// Make sure user can ban users
 	if (!message.member.hasPermission('BAN_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
@@ -20,8 +21,12 @@ module.exports.run = async (bot, message, args) => {
 		return;
 	}
 	// Ban user with reason
-	message.guild.member(banned).ban({ reason: reason });
-	message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.cross} *${banned.username}#${banned.discriminator} was successfully banned*.` } }).then(m => m.delete({ timeout: 8000 }));
+	try {
+		message.guild.member(banned).ban({ reason: reason });
+		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.cross} *${banned.username}#${banned.discriminator} was successfully banned*.` } }).then(m => m.delete({ timeout: 8000 }));
+	} catch (error) {
+		bot.logger.error(`${error.message ? error.message : error}`);
+	}
 };
 
 module.exports.config = {

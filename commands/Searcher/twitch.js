@@ -9,20 +9,21 @@ module.exports.run = async (bot, message, args) => {
 		.setTitle(`${args[0]}`)
 		.setURL(`https://www.twitch.tv/${args[0]}`);
 	message.channel.send(embed);
-	console.log(bot.config.TwitchAPI);
 	// const res = await fetch(`https://api.twitch.tv/helix/users?login=${args[0]}`, {
 	// method: 'GET',
 	// Authorization: `${bot.config.TwitchAPI}`,
 	// }).then(res => res.json());
 	// console.log(res);
 };
+
 module.exports.config = {
 	command: 'twitch',
 	aliases: ['twitch'],
 };
+
 module.exports.help = {
 	name: 'Twitch',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Gets information on a twitch account',
 	usage: '!twitch [user]',
 };

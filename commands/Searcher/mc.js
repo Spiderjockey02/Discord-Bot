@@ -1,5 +1,7 @@
+// Dependencies
 const util = require('minecraft-server-util');
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message, args) => {
 	// Ping a minecraft server
 	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('mc').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
@@ -8,6 +10,7 @@ module.exports.run = async (bot, message, args) => {
 	if(!args[1]) {
 		args[1] = '25565';
 	}
+	// Ping server
 	util.ping(args[0], { port: parseInt(args[1]) }).then((response) => {
 		const embed = new Discord.MessageEmbed()
 			.setColor(0x0099ff)
@@ -20,19 +23,22 @@ module.exports.run = async (bot, message, args) => {
 		r.delete();
 		message.channel.send(embed);
 	}).catch(error => {
+		// An error occured (either no IP, Open port or timed out)
 		r.delete({ timeout: 1000 });
 		message.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
 		bot.logger.error(error.message);
 	});
 };
+
 module.exports.config = {
 	command: 'mc',
 	aliases: ['minecraft'],
 };
+
 module.exports.help = {
 	name: 'Minecraft',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Gets information on a minecraft server',
 	usage: '!mc [IP] [Port - Optional]',
 };

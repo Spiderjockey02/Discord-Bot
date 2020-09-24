@@ -7,7 +7,6 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (fetched == undefined) return message.channel.send('There are currently no songs playing.');
 	const song = fetched.queue[0];
 	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
-	const left = fetched.queue[0].duration - seek;
 
 	// send message
 	const embed = new Discord.MessageEmbed()

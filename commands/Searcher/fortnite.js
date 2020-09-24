@@ -1,13 +1,16 @@
-// Will show help page
+// Dependencies
 const Fortnite = require('fortnite');
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message, args) => {
+	// Get platform and username
 	const stats = new Fortnite(bot.config.fortniteAPI);
 	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('fortnite').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	if (!args[1]) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('fortnite').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const platform = args.shift();
 	const username = args.join(' ');
 	const r = await message.channel.send(`Getting fortnite information on **${username}**.`);
+	// Retrieve stats from database
 	stats.user(username, platform).then(data => {
 		const embed = new Discord.MessageEmbed()
 			.setColor(0xffffff)
@@ -23,20 +26,23 @@ module.exports.run = async (bot, message, args) => {
 			.addField('K/D Ratio:', data.stats.lifetime.kd, true);
 		r.delete();
 		message.channel.send(embed);
-	}).catch(err => {
+	}).catch(error => {
+		// If data wasn't found
 		if (message.deletable) message.delete();
 		r.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This username was unable to be found.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(err.message);
+		bot.logger.error(`${error.message ? error.message : error}`);
 	});
 };
+
 module.exports.config = {
 	command: 'fortnite',
 	aliases: ['fort', 'fortnight'],
 };
+
 module.exports.help = {
 	name: 'fortnite',
-	category: 'Search',
+	category: 'Searcher',
 	description: 'Get information on a fortnite account.',
 	usage: '!fortnite [psn | pc | xbl] [user]',
 };

@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message, args) => {
+	if (message.deletable) message.delete({ timeout:1000 });
 	// Check if user has deafen permission
-	if (message.deletable) message.delete();
 	if (!message.member.hasPermission('DEAFEN_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`DEAFEN_MEMBERS\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));
 		return;
@@ -14,12 +14,15 @@ module.exports.run = async (bot, message, args) => {
 	// Checks to make sure user is in the server
 	const user = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 	if (!user) {
-		message.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
-	user.voice.setDeaf(false);
-	message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${user.user.username}#${user.user.discriminator} was successfully undeafened*.` } }).then(m => m.delete({ timeout: 3000 }));
+	try {
+		user.voice.setDeaf(false);
+		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${user.user.username}#${user.user.discriminator} was successfully undeafened*.` } }).then(m => m.delete({ timeout: 3000 }));
+	} catch (error) {
+		bot.logger.error(`${error.message ? error.message : error}`);
+	}
 };
 
 module.exports.config = {

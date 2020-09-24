@@ -12,7 +12,7 @@ bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
 
 // Get Bot commands
-const modules = ['Fun', 'Guild', 'Host', 'Levels', 'Music', 'Search', 'Trivia', 'Misc'];
+const modules = ['Fun', 'Guild', 'Host', 'Levels', 'Music', 'Searcher', 'Trivia', 'Misc'];
 // Load commands
 modules.forEach(c => {
 	fs.readdir(`./commands/${c}`, (err, files) => {
@@ -48,7 +48,7 @@ y.addListener('data', res => {
 	const args = res.toString().trim().split(/ +/g);
 	// now run command
 	if (args.length == 0) return;
-	require('./Utils/console.js').run(args, message, bot);
+	require('./utils/console.js').run(args, message, bot);
 });
 
 // Load events (what the bot does)

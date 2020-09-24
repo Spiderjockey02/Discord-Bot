@@ -1,4 +1,6 @@
+// Dependencies
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message) => {
 	// This command can only be done in the official support server
 	if (message.guild.id == 658113349384667198) {
@@ -20,10 +22,12 @@ module.exports.run = async (bot, message) => {
 		}
 	}
 };
+
 module.exports.config = {
 	command: 'suggestion',
 	aliases: ['suggestion'],
 };
+
 module.exports.help = {
 	name: 'suggestion',
 	category: 'Host',

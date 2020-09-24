@@ -16,11 +16,9 @@ module.exports.run = async (bot, message, args) => {
 		let winner;
 		if (choice == args[0]) {
 			winner = 'no one';
-		}
-		else if ((choice == 'rock' && args[0] == 'scissors') || (choice == 'paper' && args[0] == 'rock') || (choice == 'scissors' && args[0] == 'paper')) {
+		} else if ((choice == 'rock' && args[0] == 'scissors') || (choice == 'paper' && args[0] == 'rock') || (choice == 'scissors' && args[0] == 'paper')) {
 			winner = 'bot';
-		}
-		else {
+		} else {
 			winner = 'user';
 		}
 		const embed = new Discord.MessageEmbed()
