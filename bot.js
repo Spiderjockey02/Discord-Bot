@@ -35,8 +35,7 @@ require('./utils/guild-settings.js')(bot);
 // Load config for Egglord
 try {
 	bot.config = require('./config.js');
-}
-catch (err) {
+} catch (err) {
 	console.error('Unable to load config.js \n', err);
 	process.exit(1);
 }

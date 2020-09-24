@@ -11,6 +11,7 @@ module.exports.run = async (bot, message) => {
 		const num = (Math.floor((Math.random() * 3056) + 0));
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Random Fact:')
+			.setColor(5140347)
 			.setDescription(facts.facts[num]);
 		message.channel.send(embed);
 	});

@@ -9,6 +9,7 @@ module.exports.run = async (bot, message) => {
 	// Send the meme to channel
 	const embed = new Discord.MessageEmbed()
 		.setTitle(`From /${meme.post.subreddit}`)
+		.setColor(16333359)
 		.setURL(meme.post.link)
 		.setImage(meme.url)
 		.setFooter(`👍 ${meme.post.upvotes}   👎 ${meme.post.downvotes} | Provided by KSOFT.API`);
