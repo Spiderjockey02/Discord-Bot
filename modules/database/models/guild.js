@@ -7,7 +7,8 @@ const guildScheme = mongoose.Schema({
 	prefix: { type: String, default: '!' },
 	// Welcome Plugin
 	welcomePlugin: { type: Boolean, default: false },
-	welcomeRaidConnect: { type: Boolean, default: false }, // if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
+	// if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
+	welcomeRaidConnect: { type: Boolean, default: false },
 	welcomeChannel: { type: Number, default: 100000000000000000 },
 	welcomeMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
 	welcomePvt: { type: Boolean, default: true },
@@ -18,12 +19,13 @@ const guildScheme = mongoose.Schema({
 	welcomeGoodbyeMessage: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
 	// Level plugin
 	LevelPlugin: { type: Boolean, default: false },
-	LevelOption: { type: Number, default: 1 }, // 0 = no announcement, 1 = reply, 2 = choosen channel
+	// 0 = no announcement, 1 = reply, 2 = choosen channel
+	LevelOption: { type: Number, default: 1 },
 	LevelChannel: { type: Number, default: 100000000000000000 },
 	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
 	LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
 	LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
-	LevelMultiplier: { type: Number, default: 1 }, // Range 1 to 3
+	LevelMultiplier: { type: Number, default: 1 },
 	LevelRoleRewards: { type: Array, default: ['gf'] },
 	// Music plugin
 	MusicPlugin: { type: Boolean, default: true },
@@ -45,38 +47,43 @@ const guildScheme = mongoose.Schema({
 	ModerationPlugin: { type: Boolean, default: false },
 	ModeratorRoles: { type: Array, default: ['owner'] },
 	MutedRole: { type: Number, default: 100000000000000000 },
-	ModerationBadwords: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationBadwordChannel: { type: Array, default: ['Forbadwords'] }, // These Channels are ignored
-	ModerationBadwordRole: { type: Array, default: ['Forbadwords'] }, // These roles are ignored
+	// 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
+	// These Channels are ignored
+	// These roles are ignored
+	ModerationBadwords: { type: Number, default: 1 },
+	ModerationBadwordChannel: { type: Array, default: ['Forbadwords'] },
+	ModerationBadwordRole: { type: Array, default: ['Forbadwords'] },
 	ModerationBadwordList: { type: Array, default: ['IHateGingers'] },
-	ModerationRepeatedText: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationRepeatedTextChannel: { type: Array, default: ['ForRepeatedText'] }, // These Channels are ignored
-	ModerationRepeatedTextRole: { type: Array, default: ['ForRepeatedText'] }, // These roles are ignored
-	ModerationServerInvites: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationServerInvitesChannel: { type: Array, default: ['ForServerInvites'] }, // These Channels are ignored
-	ModerationServerInvitesRole: { type: Array, default: ['ForServerInvites'] }, // These roles are ignored
-	ModerationExternalLinks: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationExternalLinksChannel: { type: Array, default: ['ForExternalLinks'] }, // These Channels are ignored
-	ModerationExternalLinksRole: { type: Array, default: ['ForExternalLinks'] }, // These roles are ignored
-	ModerationSpammedCaps: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationSpammedCapsChannel: { type: Array, default: ['ForSpam'] }, // These Channels are ignored
-	ModerationSpammedCapsRole: { type: Array, default: ['ForSpam'] }, // These roles are ignored
-	ModerationExcessiveEmojis: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationExcessiveEmojisChannel: { type: Array, default: ['ForEmojis'] }, // These Channels are ignored
-	ModerationExcessiveEmojisRole: { type: Array, default: ['ForEmojis'] }, // These roles are ignored
-	ModerationMassSpoilers: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationMassSpoilersChannel: { type: Array, default: ['Forspoilers'] }, // These Channels are ignored
-	ModerationMassSpoilersRole: { type: Array, default: ['Forspoilers'] }, // These roles are ignored
-	ModerationMassMention: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationMassMentionChannel: { type: Array, default: ['ForMentions'] }, // These Channels are ignored
-	ModerationMassMentionRole: { type: Array, default: ['ForMentions'] }, // These roles are ignored
-	ModerationZalgo: { type: Number, default: 1 }, // 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
-	ModerationZalgoChannel: { type: Array, default: ['ForZalgo'] }, // These channels are ignored
-	ModerationZalgoRole: { type: Array, default: ['ForZalgo'] }, // These roles are ignored
-	ModerationWarningCounter: { type: Number, default: 3 }, // How many warnings till the user is kicked from server
+	ModerationRepeatedText: { type: Number, default: 1 },
+	ModerationRepeatedTextChannel: { type: Array, default: ['ForRepeatedText'] },
+	ModerationRepeatedTextRole: { type: Array, default: ['ForRepeatedText'] },
+	ModerationServerInvites: { type: Number, default: 1 },
+	ModerationServerInvitesChannel: { type: Array, default: ['ForServerInvites'] },
+	ModerationServerInvitesRole: { type: Array, default: ['ForServerInvites'] },
+	ModerationExternalLinks: { type: Number, default: 1 },
+	ModerationExternalLinksChannel: { type: Array, default: ['ForExternalLinks'] },
+	ModerationExternalLinksRole: { type: Array, default: ['ForExternalLinks'] },
+	ModerationSpammedCaps: { type: Number, default: 1 },
+	ModerationSpammedCapsChannel: { type: Array, default: ['ForSpam'] },
+	ModerationSpammedCapsRole: { type: Array, default: ['ForSpam'] },
+	ModerationExcessiveEmojis: { type: Number, default: 1 },
+	ModerationExcessiveEmojisChannel: { type: Array, default: ['ForEmojis'] },
+	ModerationExcessiveEmojisRole: { type: Array, default: ['ForEmojis'] },
+	ModerationMassSpoilers: { type: Number, default: 1 },
+	ModerationMassSpoilersChannel: { type: Array, default: ['Forspoilers'] },
+	ModerationMassSpoilersRole: { type: Array, default: ['Forspoilers'] },
+	ModerationMassMention: { type: Number, default: 1 },
+	ModerationMassMentionChannel: { type: Array, default: ['ForMentions'] },
+	ModerationMassMentionRole: { type: Array, default: ['ForMentions'] },
+	ModerationZalgo: { type: Number, default: 1 },
+	ModerationZalgoChannel: { type: Array, default: ['ForZalgo'] },
+	ModerationZalgoRole: { type: Array, default: ['ForZalgo'] },
+	// How many warnings till the user is kicked from server
+	ModerationWarningCounter: { type: Number, default: 3 },
 	// Anti-raid plugin
 	AntiRaidPlugin: { type: Boolean, default: false },
-	AntiRaidCompletion: { type: Number, default: 1 }, // 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
+	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
+	AntiRaidCompletion: { type: Number, default: 1 },
 	AntiRaidChannelID: { type: Number, default: 100000000000000000 },
 	// Search PLugin
 	SearchPlugin: { type: Boolean, default: true },
@@ -86,10 +93,13 @@ const guildScheme = mongoose.Schema({
 	ServerStats: { type: Boolean, default: false },
 	ServerStatsCate: { type: String, default: '📊 Server Stats 📊' },
 	ServerStatsBot: { type: Boolean, default: false },
-	ServerStatsBotChannel: { type: Number, default: 100000000000000000 }, // Channel ID
+	// channel ID
+	ServerStatsBotChannel: { type: Number, default: 100000000000000000 },
 	ServerStatsUser: { type: Boolean, default: false },
-	ServerStatsUserChannel: { type: Number, default: 100000000000000000 }, // Channel ID
+	// channel ID
+	ServerStatsUserChannel: { type: Number, default: 100000000000000000 },
 	ServerStatsHuman: { type: Boolean, default: false },
-	ServerStatsHumanChannel: { type: Number, default: 100000000000000000 }, // Channel ID
+	// channel ID
+	ServerStatsHumanChannel: { type: Number, default: 100000000000000000 },
 });
 module.exports = mongoose.model('Guild', guildScheme);

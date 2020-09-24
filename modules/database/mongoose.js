@@ -17,10 +17,10 @@ module.exports = {
 			bot.logger.log('Mongoose connection successfully opened', 'ready');
 		});
 		mongoose.connection.on('err', (err) => {
-			bot.logger.log(`Mongoose connection error: \n ${err.stack}`, 'error');
+			bot.logger.error(`Mongoose connection error: \n ${err.stack}`);
 		});
 		mongoose.connection.on('disconnected', () => {
-			bot.logger.log('Mongoose disconnected', 'error');
+			bot.logger.error('Mongoose disconnected');
 		});
 	},
 	async ping() {

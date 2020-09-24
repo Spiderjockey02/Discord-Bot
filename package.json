@@ -33,6 +33,7 @@
     "r6api.js": "^1.4.1",
     "random-puppy": "^1.1.0",
     "request": "^2.88.2",
+    "serve-favicon": "^2.5.0",
     "simple-node-logger": "^18.12.24",
     "simple-youtube-api": "^5.2.1",
     "soundcloud-downloader": "^0.1.6",
@@ -46,6 +47,9 @@
   "devDependencies": {},
   "scripts": {
     "start": "node ."
+  },
+  "engines" : {
+    "node" : ">=0.10.3 <0.12"
   },
   "repository": {
     "type": "git",

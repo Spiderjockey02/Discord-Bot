@@ -33,8 +33,8 @@ module.exports.run = (bot, message, settings) => {
 					message.channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 				}
 				else if (settings.LevelOption == 2) {
-					const channel = message.guild.channels.cache.find(channel => channel.id == settings.LevelChannel);
-					if (channel) channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
+					const lvlChannel = message.guild.channels.cache.find(channel => channel.id == settings.LevelChannel);
+					if (lvlChannel) lvlChannel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 				}
 				bot.logger.log(`${message.author.tag} has leveled up to ${Xp.Level} in server: [${message.channel.guild.id}]`);
 			}

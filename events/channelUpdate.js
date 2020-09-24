@@ -36,7 +36,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 				)
 				.setTimestamp();
 			// send message
-			sendMessage(newChannel, settings, embed);
+			sendMessage(newChannel, settings, embed, bot);
 		}
 		// channel topic (description) change
 		if (oldChannel.topic != newChannel.topic) {
@@ -51,7 +51,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 				)
 				.setTimestamp();
 			// send message
-			sendMessage(newChannel, settings, embed);
+			sendMessage(newChannel, settings, embed, bot);
 		}
 		// Check for permission change
 		const permDiff = oldChannel.permissionOverwrites.filter(x => {
@@ -108,7 +108,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 					'value': value,
 				});
 			}
-			sendMessage(newChannel, settings, embed);
+			sendMessage(newChannel, settings, embed, bot);
 		}
 	}
 };
