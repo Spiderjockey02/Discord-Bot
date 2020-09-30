@@ -8,8 +8,7 @@ module.exports = async (bot, member) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(member.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// Logging plugin

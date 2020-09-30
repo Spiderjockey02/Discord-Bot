@@ -10,8 +10,7 @@ module.exports = async (bot, reaction, user) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(reaction.message.channel.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// record all reactions

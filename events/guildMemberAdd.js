@@ -7,8 +7,7 @@ module.exports = async (bot, member) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(member.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// welcome plugin (check for anti-raid plugin too)

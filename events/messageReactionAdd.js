@@ -9,8 +9,7 @@ module.exports = async (bot, reaction, user) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(reaction.message.channel.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// Check if anti-raid plugin is active
@@ -36,8 +35,7 @@ module.exports = async (bot, reaction, user) => {
 							}
 						}
 					}
-				}
-				else {
+				} else {
 					for (let i = 0; i < settings.welcomeRoleGive.length; i++) {
 						if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
 							member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]));

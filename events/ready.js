@@ -18,8 +18,7 @@ module.exports = async bot => {
 		let settings;
 		try {
 			settings = await bot.getGuild(item);
-		}
-		catch (e) {
+		} catch (e) {
 			console.log(e);
 		}
 		if (settings.guildID == undefined) {
@@ -30,8 +29,7 @@ module.exports = async bot => {
 				};
 				await bot.CreateGuild(newGuild);
 				bot.logger.log(`[GUILD JOIN] ${item.name} (${item.id}) added the bot.`);
-			}
-			catch (e) {
+			} catch (e) {
 				console.error(e);
 			}
 		}

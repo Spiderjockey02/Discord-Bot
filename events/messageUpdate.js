@@ -14,8 +14,7 @@ module.exports = async (bot, oldMessage, newMessage) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(newMessage.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.log(e);
 	}
 	// Check if ModLog plugin is active

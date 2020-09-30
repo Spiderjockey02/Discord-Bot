@@ -12,8 +12,7 @@ module.exports = async (bot, guild) => {
 			guildName: guild.name,
 		};
 		await bot.CreateGuild(newGuild);
-	}
-	catch (e) {
+	} catch (e) {
 		console.error(e);
 	}
 

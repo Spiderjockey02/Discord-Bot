@@ -1,31 +1,21 @@
+// dependencies
 const Discord = require('discord.js');
 const moment = require('moment');
-function secNSec2ms(secNSec) {
-	if (Array.isArray(secNSec)) {
-		return secNSec[0] * 1000 + secNSec[1] / 1000000;
-	} else {
-		return secNSec / 1000;
-	}
-}
+
 module.exports.run = async (bot, message) => {
-	// Make sure bot can see invites
-	const startTime = process.hrtime();
-	const startUsage = process.cpuUsage();
-	const now = Date.now();
-	while (Date.now() - now < 500) {console.log(process.cpuUsage());}
-	const elapTime = process.hrtime(startTime);
-	const elapUsage = process.cpuUsage(startUsage);
-	const elapTimeMS = secNSec2ms(elapTime);
-	const elapUserMS = secNSec2ms(elapUsage.user);
-	const elapSystMS = secNSec2ms(elapUsage.system);
-	const cpuPercent = Math.round(100 * (elapUserMS + elapSystMS) / elapTimeMS);
+	console.log(bot);
 	const embed = new Discord.MessageEmbed()
-		.setTitle(`${bot.user.username}'s information`)
-		.setDescription('Stuff')
+		.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+		.setTitle('About')
+		.setDescription(`- [Dashboard](${bot.config.Dashboard.domain})
+		- [Invite Link](https://discordapp.com/api/oauth2/authorize?response_type=code&client_id=${bot.config.botID}&permissions=8&scope=bot)
+		- [Commands](${bot.config.Dashboard.domain}/commands)
+		- [Bot Support Server](${bot.config.SupportLink})
+			${bot.user.username} is a fully customizable Discord Bot. This bot comes fully packed with a wide range of commands, an advanced moderation system and an extensive logging system. These features are highly customizable and easy to setup but there's no point me just telling you so come and find out for yourself.`)
 		.addField('Members:', bot.users.cache.size, true)
-		.addField('Channels', bot.channels.cache.size, true)
-		.addField('Process:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\n${cpuPercent} %`, true)
-		.addField('Servers:', bot.guilds.cache.size, true)
+		.addField('Channels', `${bot.channels.cache.size} total\n${bot.channels.cache.filter(channel => channel.type === 'text').size} text\n${bot.channels.cache.filter(channel => channel.type === 'voice').size} voice`, true)
+		.addField('Process:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
+		.addField('Servers:', `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
 		.addField('Messages seen:', 'some number', true)
 		.addField('Uptime:', moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]'), true);
 	message.channel.send(embed);

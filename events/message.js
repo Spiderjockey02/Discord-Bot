@@ -22,8 +22,7 @@ module.exports = async (bot, message) => {
 	let settings;
 	try {
 		settings = await bot.getGuild(message.guild);
-	}
-	catch (e) {
+	} catch (e) {
 		settings = bot.config.defaultSettings;
 	}
 
@@ -66,8 +65,7 @@ module.exports = async (bot, message) => {
 				message.channel.send({ embed:{ color:15158332, description:'<:Cross:746456031332270191> That command can only be ran in a server.' } }).then(m => m.delete({ timeout: 10000 }));
 				return;
 			}
-		}
-		else {
+		} else {
 			// Check for server permissions
 			const permissions = message.channel.permissionsFor(bot.user);
 			// Check for SEND_MESSAGES permission
@@ -98,8 +96,7 @@ module.exports = async (bot, message) => {
 		if ((settings.OnlyCommandChannel == true) && (settings.CommandChannel !== message.channel.name)) {
 			// Tell user that they cant use commnads in this channel
 			message.channel.send({ embed:{ color:15158332, description:`<:Cross:746456031332270191> **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
-		}
-		else {
+		} else {
 			cmd.run(bot, message, args, settings, ops);
 		}
 		if (settings.CommandCooldown == true) {

@@ -14,19 +14,24 @@ bot.commands = new Discord.Collection();
 // Get Bot commands
 const modules = ['Fun', 'Guild', 'Host', 'Levels', 'Music', 'Searcher', 'Trivia', 'Misc'];
 // Load commands
-modules.forEach(c => {
-	fs.readdir(`./commands/${c}`, (err, files) => {
-		if (err) console.log(err);
-		files.forEach(f => {
-			const cmds = require(`./commands/${c}/${f}`);
-			bot.logger.log(`Loading command: ${f}`);
-			bot.commands.set(cmds.config.command, cmds);
-			cmds.config.aliases.forEach(alias => {
-				bot.aliases.set(alias, cmds.config.command);
+(async () => {
+	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-=');
+	modules.forEach(c => {
+		fs.readdir(`./commands/${c}`, (err, files) => {
+			if (err) console.log(err);
+			files.forEach(f => {
+				const cmds = require(`./commands/${c}/${f}`);
+				bot.logger.log(`Loading command: ${f}`);
+				bot.commands.set(cmds.config.command, cmds);
+				if (cmds.config.aliases) {
+					cmds.config.aliases.forEach(alias => {
+						bot.aliases.set(alias, cmds.config.command);
+					});
+				}
 			});
 		});
 	});
-});
+})();
 
 // connect to database and get global functions
 bot.mongoose = require('./modules/database/mongoose');
@@ -51,7 +56,7 @@ y.addListener('data', res => {
 });
 
 // Load events (what the bot does)
-const init = async () => {
+(async () => {
 	await require('./modules/eventHandler')(bot);
 	// Get web dashboard if enabled
 	if (bot.config.Dashboard.enabled == true) {
@@ -61,8 +66,5 @@ const init = async () => {
 	bot.mongoose.init(bot);
 	// Connect bot to discord API
 	const token = bot.config.token;
-	bot.login(token).catch(e => bot.logger.log(e.message, 'error'));
-};
-
-// Bot logins in
-init();
+	bot.login(token).catch(e => bot.logger.error(e.message));
+})();
