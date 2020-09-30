@@ -5,11 +5,11 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'ping',
-	aliases: ['ping'],
+	permissions: ['SEND_MESSAGES'],
 };
 
 module.exports.help = {
-	name: 'ban',
+	name: 'Ping',
 	category: 'Fun',
 	description: 'Pong',
 	usage: '!ping',

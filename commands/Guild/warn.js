@@ -25,6 +25,7 @@ module.exports.run = async (bot, message, args, settings) => {
 module.exports.config = {
 	command: 'warn',
 	aliases: ['warning'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
 };
 
 module.exports.help = {

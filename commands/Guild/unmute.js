@@ -38,7 +38,8 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'unmute',
-	aliases: ['unmute'],
+	aliases: ['un-mute'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES', 'MUTE_MEMBERS'],
 };
 
 module.exports.help = {

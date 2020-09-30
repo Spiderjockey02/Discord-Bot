@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'ban',
-	aliases: ['ban'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
 };
 
 module.exports.help = {

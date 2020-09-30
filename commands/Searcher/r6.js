@@ -78,7 +78,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'r6',
-	aliases: ['r6'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

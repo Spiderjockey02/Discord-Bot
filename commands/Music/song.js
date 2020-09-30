@@ -20,6 +20,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 module.exports.config = {
 	command: 'song',
 	aliases: ['np'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'song',

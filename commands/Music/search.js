@@ -40,7 +40,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 };
 module.exports.config = {
 	command: 'search',
-	aliases: ['search'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'Search',

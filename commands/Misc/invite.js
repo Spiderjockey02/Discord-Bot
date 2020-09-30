@@ -6,6 +6,7 @@ module.exports.run = async (bot, message) => {
 module.exports.config = {
 	command: 'invite',
 	aliases: ['inv'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

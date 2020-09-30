@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'steam',
-	aliases: ['steam'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

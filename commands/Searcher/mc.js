@@ -34,6 +34,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
 	command: 'mc',
 	aliases: ['minecraft'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

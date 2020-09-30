@@ -20,7 +20,7 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'nsfw',
-	aliases: ['nsfw'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

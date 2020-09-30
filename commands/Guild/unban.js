@@ -29,7 +29,8 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'unban',
-	aliases: ['unban'],
+	aliases: ['un-ban'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
 };
 
 module.exports.help = {

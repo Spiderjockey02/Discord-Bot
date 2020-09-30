@@ -9,6 +9,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 module.exports.config = {
 	command: 'foreceskip',
 	aliases: ['fskip', 'force-skip'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'force skip',

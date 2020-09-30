@@ -4,6 +4,7 @@ const config = require('../../config.js');
 const YouTubeAPI = require('simple-youtube-api');
 const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
+const ytdl = require('ytdl-core');
 
 module.exports.run = async (bot, message, args, settings, ops) => {
 	// Checks to see if music is enabled or the server
@@ -40,14 +41,26 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	const pattern = /^.*(youtu.be\/|list=)([^#]*).*/gi;
 	const url = args[0];
 	const urlValid = pattern.test(args[0]);
-	let videos;
+	let videos = [];
 	// find video/song of playlist
 	const msg = await message.channel.send('Gathering playlist information');
 	if (urlValid) {
 		// This gets videos/songs from youtube
 		try {
 			const playlist = await youtube.getPlaylist(url, { part: 'snippet' });
-			videos = await playlist.getVideos(25, { part: 'snippet' });
+			const plVideos = await playlist.getVideos(25, { part: 'snippet, contentDetails' });
+			await plVideos.forEach(async (video) => {
+				const songInfo = await ytdl.getInfo(`https://www.youtube.com/watch?v=${video.id}`);
+				const song = {
+					title: songInfo.videoDetails.title,
+					url: songInfo.videoDetails.video_url,
+					duration: songInfo.videoDetails.lengthSeconds,
+					thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length - 1].url,
+				};
+				videos.push(song);
+			});
+			console.log(videos);
+			return;
 		} catch (e) {
 			bot.logger.error(e);
 			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
@@ -118,6 +131,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 module.exports.config = {
 	command: 'add-playlist',
 	aliases: ['playlist'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'Playlist',

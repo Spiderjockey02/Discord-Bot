@@ -34,7 +34,8 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'user-info',
-	aliases: ['userinfo'],
+	aliases: ['userinfo', 'whois'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

@@ -41,7 +41,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'nick',
-	aliases: ['nick'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CHANGE_NICKNAME', 'MANAGE_NICKNAMES'],
 };
 
 module.exports.help = {

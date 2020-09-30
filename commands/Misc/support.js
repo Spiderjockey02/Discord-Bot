@@ -12,6 +12,7 @@ module.exports.run = async (bot, message) => {
 module.exports.config = {
 	command: 'support',
 	aliases: ['sup'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

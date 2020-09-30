@@ -6,7 +6,7 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'flip',
-	aliases: ['flip'],
+	permission: ['SEND_MESSAGES'],
 };
 
 module.exports.help = {

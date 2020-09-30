@@ -40,6 +40,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
 	command: 'image',
 	aliases: ['img'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

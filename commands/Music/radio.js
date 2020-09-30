@@ -38,7 +38,7 @@ module.exports.run = async (bot, message, args, settings) => {
 };
 module.exports.config = {
 	command: 'radio',
-	aliases: ['radio'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'radio',

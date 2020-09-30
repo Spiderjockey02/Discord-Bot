@@ -18,7 +18,7 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'meme',
-	aliases: ['meme'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

@@ -35,7 +35,8 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'clear',
-	aliases: ['cl'],
+	aliases: ['cl', 'purge'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES'],
 };
 
 module.exports.help = {

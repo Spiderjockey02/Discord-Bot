@@ -33,6 +33,7 @@ module.exports.run = async (bot, message, args, settings) => {
 module.exports.config = {
 	command: 'level',
 	aliases: ['lvl', 'rank'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

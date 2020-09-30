@@ -31,6 +31,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
 	command: 'deafen',
 	aliases: ['deaf'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'DEAFEN_MEMBERS'],
 };
 
 module.exports.help = {

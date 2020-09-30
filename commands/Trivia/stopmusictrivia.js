@@ -15,6 +15,7 @@ module.exports.run = async (bot, message, args, settings) => {
 module.exports.config = {
 	command: 'stopmusictrivia',
 	aliases: ['smt'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
 	name: 'stopmusictrivia',

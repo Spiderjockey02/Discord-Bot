@@ -45,6 +45,7 @@ module.exports.run = async (bot, message, args, settings) => {
 module.exports.config = {
 	command: 'leaderboard',
 	aliases: ['lb', 'levels', 'ranks'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

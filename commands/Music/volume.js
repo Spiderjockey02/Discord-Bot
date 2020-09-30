@@ -4,7 +4,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	const fetched = ops.active.get(message.guild.id);
 	if (!fetched) return message.channel.send('There are currently no songs playing on this server.');
 	// Check to see if user and bot are in the same channel
-	if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Sorry, you must be in the same voice channel as me` } }).then(m => m.delete({ timeout: 10000 }));
+	if (message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Sorry, you must be in the same voice channel as me` } }).then(m => m.delete({ timeout: 10000 }));
 	// Check if they inputted a number from 0 to 200 (No MAX but music quality lowers after 200)
 	if (!args[0]) return message.channel.send(`:loud_sound: The current volume is: **${fetched.volume}%**.`);
 	if (isNaN(args[0]) || args[0] > 200 || args[0] < 0) return message.channel.send('Please input a number between 0 and 200');
@@ -17,6 +17,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 module.exports.config = {
 	command: 'volume',
 	aliases: ['vol'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 module.exports.help = {
 	name: 'volume',

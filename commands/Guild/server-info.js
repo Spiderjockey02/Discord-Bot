@@ -24,7 +24,8 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'server-info',
-	aliases: ['serverinfo'],
+	aliases: ['serverinfo', 'guildinfo', 'guild'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

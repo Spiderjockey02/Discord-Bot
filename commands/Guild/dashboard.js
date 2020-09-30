@@ -9,6 +9,7 @@ module.exports.run = async (bot, message) => {
 module.exports.config = {
 	command: 'dashboard',
 	aliases: ['db'],
+	permissions: ['SEND_MESSAGES'],
 };
 
 module.exports.help = {

@@ -26,6 +26,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
 	command: 'random',
 	aliases: ['rnd'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 module.exports.help = {
 	name: 'random',

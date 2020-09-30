@@ -15,7 +15,6 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'verify',
-	aliases: ['verify'],
 };
 
 module.exports.help = {

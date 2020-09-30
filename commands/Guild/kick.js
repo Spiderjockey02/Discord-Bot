@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'kick',
-	aliases: ['kick'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
 };
 
 module.exports.help = {

@@ -18,7 +18,7 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'uptime',
-	aliases: ['uptime'],
+	permissions: ['SEND_MESSAGES'],
 };
 
 module.exports.help = {

@@ -40,8 +40,16 @@ module.exports.run = async (bot, message, args, settings) => {
 			bot.logger.error(e);
 		}
 	}
+	// Check to see if user is in a voice channel
+	if (user.voice) {
+		try {
+			user.voice.setMute(true);
+		} catch (e) {
+			bot.logger.error('Unable to mute user eventhough they are in a voice channel');
+		}
+	}
+	// add role to user
 	try {
-		user.voice.setMute(true);
 		user.roles.add(muteRole).then(() => {
 			// reply to user
 			message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${user.user.username} was successfully muted*.` } }).then(m => m.delete({ timeout: 7000 }));
@@ -53,7 +61,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'mute',
-	aliases: ['mute'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES', 'MUTE_MEMBERS'],
 };
 
 module.exports.help = {

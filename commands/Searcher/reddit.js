@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'reddit',
-	aliases: ['reddit', 'redit'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

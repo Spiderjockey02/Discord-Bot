@@ -27,7 +27,8 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'undeafen',
-	aliases: ['undeaf'],
+	aliases: ['undeaf', 'un-deafen'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'DEAFEN_MEMBERS'],
 };
 
 module.exports.help = {

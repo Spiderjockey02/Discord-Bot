@@ -19,7 +19,7 @@ module.exports.run = async (bot, message) => {
 
 module.exports.config = {
 	command: 'fact',
-	aliases: ['fact'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {

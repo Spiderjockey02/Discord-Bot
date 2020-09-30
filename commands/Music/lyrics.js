@@ -97,7 +97,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 };
 module.exports.config = {
 	command: 'lyrics',
-	aliases: ['lyrics'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 module.exports.help = {
 	name: 'lyric',

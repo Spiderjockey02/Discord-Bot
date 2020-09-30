@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.config = {
 	command: 'poll',
-	aliases: ['poll'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
 };
 
 module.exports.help = {
