@@ -4,7 +4,7 @@ const config = require('../../config.js');
 const YouTubeAPI = require('simple-youtube-api');
 const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
-const ytdl = require('ytdl-core');
+// const ytdl = require('ytdl-core');
 
 module.exports.run = async (bot, message, args, settings, ops) => {
 	// Checks to see if music is enabled or the server
@@ -48,18 +48,8 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		// This gets videos/songs from youtube
 		try {
 			const playlist = await youtube.getPlaylist(url, { part: 'snippet' });
-			const plVideos = await playlist.getVideos(25, { part: 'snippet, contentDetails' });
-			await plVideos.forEach(async (video) => {
-				const songInfo = await ytdl.getInfo(`https://www.youtube.com/watch?v=${video.id}`);
-				const song = {
-					title: songInfo.videoDetails.title,
-					url: songInfo.videoDetails.video_url,
-					duration: songInfo.videoDetails.lengthSeconds,
-					thumbnail: songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length - 1].url,
-				};
-				videos.push(song);
-			});
-			console.log(videos);
+			videos = await playlist.getVideos(25, { part: 'snippet, contentDetails' });
+			console.log(videos[1]);
 			return;
 		} catch (e) {
 			bot.logger.error(e);
@@ -102,6 +92,9 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (!data.queue) data.queue = [];
 	data.guildID = message.guild.id;
 	data.volume = 100;
+	data.loopQueue = false;
+	data.loopSong = false;
+	data.bassboost = 0;
 	// add songs to queue
 	videos.forEach((video) => {
 		data.queue.push({

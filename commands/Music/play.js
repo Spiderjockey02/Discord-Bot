@@ -131,6 +131,9 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (!data.queue) data.queue = [];
 	data.guildID = message.guild.id;
 	data.volume = 100;
+	data.loopQueue = false;
+	data.loopSong = false;
+	data.bassboost = 0;
 	// add songs to queue
 	data.queue.push({
 		title: song.title,

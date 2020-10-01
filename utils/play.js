@@ -1,15 +1,25 @@
 // when the bot finishes
-const ytdlDiscord = require('ytdl-core-discord');
+// const ytdlDiscord = require('ytdl-core-discord');
+const ytdlDiscord = require('discord-ytdl-core');
 const scdl = require('soundcloud-downloader');
 const Discord = require('discord.js');
 
 function finish(bot, ops, dispatcher, message) {
 	const fetched = ops.active.get(dispatcher.guildID);
-	fetched.queue.shift();
+	// Check if queue is looping or not
+	if (fetched.loopSong == true) {
+		// do nothing
+	} else if (fetched.loopQueue == true) {
+		const song = fetched.queue.shift();
+		fetched.queue.push(song);
+		fetched.queue.shift();
+	} else {
+		fetched.queue.shift();
+	}
 	// Plays next song if there is one
 	if (fetched.queue.length > 0) {
 		ops.active.set(dispatcher.guildID, fetched);
-		require('../Utils/play.js').run(bot, ops, fetched, message);
+		require('../utils/play.js').run(bot, ops, fetched, message);
 	} else {
 		ops.active.delete(dispatcher.guildID);
 		const vc = bot.guilds.cache.get(dispatcher.guildID).me.voice.channel;
@@ -25,7 +35,11 @@ module.exports.run = async (bot, ops, data, message) => {
 	let stream;
 	try {
 		if (data.queue[0].url.includes('youtube.com')) {
-			stream = await ytdlDiscord(data.queue[0].url, { highWaterMark: 1 << 25 });
+			stream = await ytdlDiscord(data.queue[0].url, {
+				filter: 'audioonly',
+				opusEncoded: true,
+				encoderArgs: ['-af', `bass=g=${data.bassboost}`],
+			});
 		} else if (data.queue[0].url.includes('soundcloud.com')) {
 			try {
 				stream = await scdl.downloadFormat(
@@ -60,8 +74,9 @@ module.exports.run = async (bot, ops, data, message) => {
 			{ name: 'Duration:', value: `${require('../Utils/time.js').toHHMMSS(data.queue[0].duration)}` },
 		);
 	// play song
+	console.log(data);
 	bot.channels.cache.get(message.channel.id).send(embed).then(m => m.delete({ timeout: data.queue[0].duration * 1000 }));
-	data.dispatcher = await data.connection.play(stream, { type: streamType, audioonly: true, volume: data.volume / 100 });
+	data.dispatcher = await data.connection.play(stream, { type: streamType, volume: data.volume / 100 });
 	data.dispatcher.on('disconnect', () => {
 		console.log('goodbye');
 		ops.active.delete(data.dispatcher.guildID);
