@@ -1,5 +1,5 @@
 module.exports.run = async (bot, message, args) => {
-	// Check if user has permission to ban user
+	// Delete message
 	if (message.deletable) message.delete();
 	// Make sure user can ban users
 	if (!message.member.hasPermission('BAN_MEMBERS')) {
@@ -36,7 +36,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Ban',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Ban a user.',
 	usage: '!ban {user} [reason]',
 };

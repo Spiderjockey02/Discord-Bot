@@ -35,7 +35,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Kick',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Kicks a user.',
 	usage: '!kick {user} [reason]',
 };

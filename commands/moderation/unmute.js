@@ -44,7 +44,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Unmute',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Unmutes a user',
 	usage: '!unmute {user} [reason] {time}',
 };

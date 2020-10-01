@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
-	if (message.deletable) message.delete({ timeout:1000 });
+	if (message.deletable) message.delete();
 	// Check bot for add reaction permission
 	if (!message.guild.me.hasPermission('ADD_REACTIONS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));

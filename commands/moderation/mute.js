@@ -66,7 +66,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Mute',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Mutes a user',
 	usage: '!mute {user} [reason]',
 };

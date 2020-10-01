@@ -11,23 +11,23 @@ bot.logger = require('./modules/logging/logger');
 bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
 
-// Get Bot commands
-const modules = ['Fun', 'Guild', 'Host', 'Levels', 'Music', 'Searcher', 'Trivia', 'Misc'];
 // Load commands
 (async () => {
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-=');
-	modules.forEach(c => {
-		fs.readdir(`./commands/${c}`, (err, files) => {
-			if (err) console.log(err);
-			files.forEach(f => {
-				const cmds = require(`./commands/${c}/${f}`);
-				bot.logger.log(`Loading command: ${f}`);
-				bot.commands.set(cmds.config.command, cmds);
-				if (cmds.config.aliases) {
-					cmds.config.aliases.forEach(alias => {
-						bot.aliases.set(alias, cmds.config.command);
-					});
-				}
+	fs.readdir('./commands', function(err, files) {
+		bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-=');
+		files.forEach(file => {
+			fs.readdir(`./commands/${file}`, (err, files) => {
+				if (err) console.log(err);
+				files.forEach(f => {
+					const cmds = require(`./commands/${file}/${f}`);
+					bot.logger.log(`Loading command: ${f}`);
+					bot.commands.set(cmds.config.command, cmds);
+					if (cmds.config.aliases) {
+						cmds.config.aliases.forEach(alias => {
+							bot.aliases.set(alias, cmds.config.command);
+						});
+					}
+				});
 			});
 		});
 	});
@@ -57,7 +57,7 @@ y.addListener('data', res => {
 
 // Load events (what the bot does)
 (async () => {
-	await require('./modules/eventHandler')(bot);
+	await require('./utils/eventHandler')(bot);
 	// Get web dashboard if enabled
 	if (bot.config.Dashboard.enabled == true) {
 		require('./modules/website/dashboard')(bot);

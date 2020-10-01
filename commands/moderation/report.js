@@ -41,7 +41,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Report',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Reports a user',
 	usage: '!report {user} [reason]',
 };

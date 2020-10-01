@@ -41,7 +41,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Clear',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Clears a certain amount of messages.',
 	usage: '!clear [Number(max 100)]',
 };

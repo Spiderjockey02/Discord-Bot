@@ -1,5 +1,5 @@
 module.exports.run = async (bot, message, args, settings) => {
-	if (message.deletable) message.delete({ timeout:1000 });
+	if (message.deletable) message.delete();
 	// Check to see if user can kick members
 	if (!message.member.hasPermission('KICK_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`KICK_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	// Get reason for warning
 	const wReason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Warning is sent to warning manager
-	require('../../modules/warning').run(bot, message, wUser, wReason, settings);
+	require('../../modules/plugins/warning').run(bot, message, wUser, wReason, settings);
 };
 
 module.exports.config = {
@@ -30,7 +30,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Warning',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Warns a user',
 	usage: '!warn {user} [reason]',
 };

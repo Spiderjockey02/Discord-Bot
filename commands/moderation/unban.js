@@ -35,7 +35,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Unban',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Unban a user.',
 	usage: '!unban {user}',
 };
