@@ -11,20 +11,19 @@ module.exports.run = async (bot, message, args, settings) => {
 	const reason = (args.join(' ').slice(8)) ? args.join(' ').slice(8) : 'No reason given';
 	message.guild.channels.create(`ticket-${message.author.id}`, 'text').then(c => {
 		// Support role ID
-		const role = message.guild.roles.cache.find(role => role.id == '750827122209325106');
-		const role2 = message.guild.roles.cache.find(role => role.name == '@everyone');
+		const supportRole = message.guild.roles.cache.find(role => role.id == '750827122209325106');
+		const everyoneRole = message.guild.roles.cache.find(role => role.name == '@everyone');
 		// Category ID - Optional
 		c.setParent('761289149008445461');
-
 		c.updateOverwrite(message.author, {
 			SEND_MESSAGES: true,
 			READ_MESSAGES: true,
 		});
-		c.updateOverwrite(role, {
+		c.updateOverwrite(supportRole, {
 			SEND_MESSAGES: true,
 			READ_MESSAGES: true,
 		});
-		c.updateOverwrite(role2, {
+		c.updateOverwrite(everyoneRole, {
 			SEND_MESSAGES: false,
 			READ_MESSAGES: false,
 		});
@@ -42,6 +41,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			.setTitle('✅ Success!')
 			.setDescription(`Your ticket has been created: ${c}`);
 		message.channel.send(SuccessEmbed);
+
 		const embed = new Discord.MessageEmbed()
 			.setColor(0xFF5555)
 			.addField(`Hey ${message.author.username}!`, 'Our support team will contact you as soon as possible.')
