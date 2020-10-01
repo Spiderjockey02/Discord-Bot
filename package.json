@@ -10,6 +10,7 @@
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
     "dateformat": "^3.0.3",
+    "discord-ytdl-core": "^4.0.9",
     "discord.js": "^12.3.1",
     "ejs": "^3.1.5",
     "eslint": "^7.9.0",
@@ -40,7 +41,8 @@
     "start": "node ."
   },
   "engines": {
-    "node": ">=0.10.3 <0.12"
+    "node": ">=0.10.3 <0.12",
+    "npm": "*"
   },
   "repository": {
     "type": "git",

@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 };
 module.exports.config = {
 	command: 'skipto',
-	aliases: ['goto'],
+	aliases: ['goto', 'jump'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {
