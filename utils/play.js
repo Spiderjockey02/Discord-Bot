@@ -30,17 +30,19 @@ function finish(bot, ops, dispatcher, message) {
 
 module.exports.run = async (bot, ops, data, message) => {
 	// Get stream type
-	let streamType = data.queue[0].url.includes('youtube.com') ? 'opus' : 'ogg/opus';
+	const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
+	const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
+	let streamType = videoPattern.test(data.queue[0].url) ? 'opus' : 'ogg/opus';
 	// get stream
 	let stream;
 	try {
-		if (data.queue[0].url.includes('youtube.com')) {
+		if (videoPattern.test(data.queue[0].url)) {
 			stream = await ytdlDiscord(data.queue[0].url, {
 				filter: 'audioonly',
 				opusEncoded: true,
 				encoderArgs: ['-af', `bass=g=${data.bassboost}`],
 			});
-		} else if (data.queue[0].url.includes('soundcloud.com')) {
+		} else if (scRegex.test(data.queue[0].url)) {
 			try {
 				stream = await scdl.downloadFormat(
 					data.queue[0].url,
@@ -71,7 +73,7 @@ module.exports.run = async (bot, ops, data, message) => {
 		.setThumbnail(data.queue[0].thumbnail)
 		.addFields(
 			{ name: 'Now playing:', value: `[${data.queue[0].title}](${data.queue[0].url})` },
-			{ name: 'Duration:', value: `${require('../Utils/time.js').toHHMMSS(data.queue[0].duration)}` },
+			{ name: 'Duration:', value: `${require('../utils/time.js').toHHMMSS(data.queue[0].duration)}` },
 		);
 	// play song
 	console.log(data);
