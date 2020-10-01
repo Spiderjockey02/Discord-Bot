@@ -44,7 +44,7 @@
    - More to come soon.
   * A total of **21** commands.
   
-##Upcoming features
+## Upcoming features
 * Currently working on a shiny new dashboard (updates to repo will be slowed down while this happens).
 
 **Overall there are over 60 commands.
