@@ -7,42 +7,42 @@
 [Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
 ## Features
 * Music
- * Supports music formats from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com). (more to come soon)
- * Search from lyrics provided by [KSOFT.API](https://api.ksoft.si/).
- * Ability to bassboost your music.
- * Loop queue and/or song.
- * A total of **18** commands.
+  * Supports music formats from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com). (more to come soon)
+  * Search from lyrics provided by [KSOFT.API](https://api.ksoft.si/).
+  * Ability to bassboost your music.
+  * Loop queue and/or song.
+  * A total of **18** commands.
 * Moderation
- * Clear (purge) messages.
- * Ban, Kick & Warn misbehaving members.
- * Auto-moderation feature.
- * Change nicknames of other members.
- * Report and ticket system implemented.
- * A total of **11** commands.
+  * Clear (purge) messages.
+  * Ban, Kick & Warn misbehaving members.
+  * Auto-moderation feature.
+  * Change nicknames of other members.
+  * Report and ticket system implemented.
+  * A total of **11** commands.
 * Ranking System
- * Gain XP from sending messages.
- * XP multiplier.
- * Exempt Channels and/or roles from gaining XP.
- * Leaderboard system implemented.
+  * Gain XP from sending messages.
+  * XP multiplier.
+  * Exempt Channels and/or roles from gaining XP.
+  * Leaderboard system implemented.
 * Logging system
- * Log member leave/join
- * Channel create, delete & update.
- * Role create, delete & update.
- * Emoji create, delete & update.
- * Member (un)bans.
- * Member updates. (nickname, role)
- * Message (un)reactions.
- * Message update & deletion.
- * A total of **20** events.
+  * Log member leave/join
+  * Channel create, delete & update.
+  * Role create, delete & update.
+  * Emoji create, delete & update.
+  * Member (un)bans.
+  * Member updates. (nickname, role)
+  * Message (un)reactions.
+  * Message update & deletion.
+  * A total of **20** events.
 * Fun / Miscellaneous
- * Look up profile stats on Fortnite, Rainbow 6, steam & instagram.
- * Search for random images, memes & facts.
- * Flip a coin
- * Random number generator.
- * Play some mingigames:
+  * Look up profile stats on Fortnite, Rainbow 6, steam & instagram.
+  * Search for random images, memes & facts.
+  * Flip a coin
+  * Random number generator.
+  * Play some mingigames:
    - Rock, Paper, Scissor.
    - More to come soon.
- * A total of **21** commands.
+  * A total of **21** commands.
 
 **Overall there are over 60 commands.
 All these plugins are very easy to set-up and are full with options to make your server stand out and unique.**
@@ -50,7 +50,7 @@ All these plugins are very easy to set-up and are full with options to make your
 Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)?
 ### Installation
 
-First of all, make sure you have download:
+First of all, make sure you have downloaded:
  * [Node.js](https://nodejs.org/en/). (Version 12 or higher)
  * NPM (Normally comes with Node.js)
  * [MongoDB](https://www.mongodb.com/) (This can be a local server or one hosted by them)
