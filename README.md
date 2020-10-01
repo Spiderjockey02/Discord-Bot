@@ -1,65 +1,79 @@
 # Discord bot
-This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)
-
 [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Spiderjockey02/Discord-Bot)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 
+[Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
 ## Features
 * Music
-  * Can play music from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com) (More to come)
-  * Searches up lyrics from [KSOFT.API](https://api.ksoft.si/)
-  * Shuffles your song queue.
-* Host
-  * Add a global ban on a user. (That user will not be able to join any servers with this bot in)
-  * Shutdown the bot via a command.
-  * Eval command for bug testing.
-  * Bug command for users to write their own bug reports.
-  * Reload commands.
+ * Supports music formats from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com). (more to come soon)
+ * Search from lyrics provided by [KSOFT.API](https://api.ksoft.si/).
+ * Ability to bassboost your music.
+ * Loop queue and/or song.
+ * A total of **18** commands.
 * Moderation
-  * Auto-Moderation (highly customisable)
-  * Get info on role, user and server.
-  * (Un)mute and (Un)deafen users.
-  * Nick users.
-  * Ban, kick and warn users.
-  * Clear messages (even purge certain user messages)
-* Rank system
-  * Adds a fun ranking system for your users to see who is the most active. (Very customizable)
-* Custom searches
-  * Search for player stats; This includes Fortnite, Apex, Steam, Instagram, Rainbow 6 Siege and Twitch.
-* Miscellaneous
-  * Flip a coin
-  * Get random facts (over 3000 random facts)
-  * Search for a random image
-  * Search for a meme
-  * Play some minigames; includes Rock, paper, scissors and more
-  * Get a random image from a sub-reddit.
-* Event listening
-  * Sends welcome and goodbye messages
-  * Update member stats
-  * Listens for role, user or server updates and displays in a log channel.
-  * All of these `Event listener` are highly customisable.
-More than 60 commands
+ * Clear (purge) messages.
+ * Ban, Kick & Warn misbehaving members.
+ * Auto-moderation feature.
+ * Change nicknames of other members.
+ * Report and ticket system implemented.
+ * A total of **11** commands.
+* Ranking System
+ * Gain XP from sending messages.
+ * XP multiplier.
+ * Exempt Channels and/or roles from gaining XP.
+ * Leaderboard system implemented.
+* Logging system
+ * Log member leave/join
+ * Channel create, delete & update.
+ * Role create, delete & update.
+ * Emoji create, delete & update.
+ * Member (un)bans.
+ * Member updates. (nickname, role)
+ * Message (un)reactions.
+ * Message update & deletion.
+ * A total of **20** events.
+* Fun / Miscellaneous
+ * Look up profile stats on Fortnite, Rainbow 6, steam & instagram.
+ * Search for random images, memes & facts.
+ * Flip a coin
+ * Random number generator.
+ * Play some mingigames:
+   - Rock, Paper, Scissor.
+   - More to come soon.
+ * A total of **21** commands.
 
-## Upcoming features
-* More event listeners.
-* Improved bot dashboard (web server).
-* Music trivia - Minigame to play with your friends.
-* Radio
-  * Listen to the radio while in a call. (Currently 7 radio-stations)
-## Installation
-First of all, clone this repository. (Download or run `git clone https://github.com/Spiderjockey02/discordbot.git`)
+**Overall there are over 60 commands.
+All these plugins are very easy to set-up and are full with options to make your server stand out and unique.**
+## Self hosting the bot
+Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)?
+### Installation
 
-This bot requires [Node.js](https://nodejs.org/en/) v12+ (and npm) to run
+First of all, make sure you have download:
+ * [Node.js](https://nodejs.org/en/). (Version 12 or higher)
+ * NPM (Normally comes with Node.js)
+ * [MongoDB](https://www.mongodb.com/) (This can be a local server or one hosted by them)
+ * [git](https://git-scm.com/) (optional).
 
-Also, please make a channel for mod logs in your Discord server.
+Now, clone this repository by
+downloading or running the command `git clone https://github.com/Spiderjockey02/Discord-Bot.git`.
 
-Once you have that done, edit the config.js file ane sure the callback URL specified is in the format of {{http|https}}{{domain_name}}/callback (Examples: https://dashoard.bot-website.com/callback OR http://dashboard.bot-website.com/callback OR http://localhost:33445/callback). This should be the public URL (proxied URL (by something like Nginx) is recommended).
+Next run the following commands:
+```
+$ cd Discord-Bot
+$ npm install
+$ npm start
+```
+This will install all the correct dependecies needed to run the bot.
 
+### Setting up the bot
+
+Fill out `config.example.js` with the correct information and then rename it to `config.js`.
+
+**Dashboard Setup**
 It is recommended to run the dashboard with a proxy (like Nginx)
-
-## Nginx Configuration
+#### Nginx Configuration
 ```
 server {
     listen 80;
@@ -71,20 +85,12 @@ server {
     }
 }
 ```
-After that, you can install the dependencies (including [MongoDB](https://www.mongodb.com/)) and start the bot
-
-### You can use the command line
-```
-$ cd DiscordBot
-$ npm install
-$ npm start
-```
-
 **NOTE**: Running the bot with a process manager (like PM2) is recommended.
 
 >This bot must be run on a Discord bot account. Do NOT try to run this on a normal user account. This is against the Discord Terms of Service.
 
 >Also, do NOT play with the `eval` command. You have been warned.
+
 
 ## Changes to the Code
 You may change code if needed under the following conditions:
@@ -96,11 +102,14 @@ ALL copyright notices and credits must be kept as is, not edited in any way (exc
 ## Contributing
 Want to contribute?
 
-Spiderjockey02's Discord Bot is written in Discord.js. If you want to add a feature or work on the code, feel free make a pull request and your code might be accepted.
+Spiderjockey02's Discord Bot is written in [Discord.js](https://github.com/discordjs/discord.js). If you want to add a feature or work on the code, feel free make a pull request and your code might be accepted. But please try and keep a similary code format.
 
 ## Credits
 * Bot based on AnIdiotsGuide's [example bot](https://github.com/AnIdiotsGuide/guidebot).
 * Made using [Discord.js](https://github.com/discordjs/discord.js).
+* Music plugin: [Discord Bot](https://github.com/eritislami/evobot)
+* Logging System: [Code](https://github.com/CodeBullet-Community/BulletBot/blob/master/src/megalogger.ts)
+
 ## Privacy:
 Please read the `PRIVACY.md` file.
 
