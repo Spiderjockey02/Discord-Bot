@@ -2,7 +2,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	// Get queue
 	const fetched = ops.active.get(message.guild.id);
-	if (fetched == undefined) return message.channel.send('There are currently no songs playing.');
+	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	// variables
 	const songs = fetched.queue;
 	for (let i = songs.length - 1; i > 1; i--) {

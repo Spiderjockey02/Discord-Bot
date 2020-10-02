@@ -9,11 +9,7 @@ const { getData } = require('spotify-url-info');
 
 module.exports.run = async (bot, message, args, settings, ops) => {
 	// Checks to see if music is enabled or the server
-	if (settings.MusicPlugin == false) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This plugin is currently disabled.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (settings.MusicPlugin == false) return;
 	// Check if bot can see user in channel (the user is in a channel)
 	if (!message.member.voice.channelID) {
 		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
@@ -134,6 +130,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	data.loopQueue = false;
 	data.loopSong = false;
 	data.bassboost = 0;
+	data.seek = 0;
 	// add songs to queue
 	data.queue.push({
 		title: song.title,

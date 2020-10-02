@@ -27,11 +27,7 @@ function Page(page, message, results) {
 }
 
 module.exports.run = async (bot, message, args, settings, ops) => {
-	if (settings.MusicPlugin == false) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This plugin is currently disabled.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (settings.MusicPlugin == false) return;
 	let song;
 	if (!args[0]) {
 		// GET current song that is playing

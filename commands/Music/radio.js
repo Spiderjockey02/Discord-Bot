@@ -2,11 +2,7 @@
 const radio = require('../../storage/resources/radiostations.json');
 
 module.exports.run = async (bot, message, args, settings) => {
-	if (settings.MusicPlugin == false) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This plugin is currently disabled.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (settings.MusicPlugin == false) return;
 	// Check if user is in a voice channel
 	if (!message.member.voice) {
 		message.channel.send({ embed:{ color:15158332, description:'Please connect to a voice channel.' } }).then(m => m.delete({ timeout: 3500 }));

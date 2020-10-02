@@ -2,9 +2,9 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	// Check to see if there are any songs in queue/playing
 	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send('There are currently no songs playing in this server.');
+	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Check to see if user and bot are in the same channel
-	if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send('Sorry, you currently aren\'t in the same channel as me.');
+	if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Sorry, you must be in the same voice channel as me` } }).then(m => m.delete({ timeout: 10000 }));
 	// Find what to remove
 	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('remove').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Position

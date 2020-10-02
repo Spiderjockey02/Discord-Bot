@@ -25,7 +25,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	// Check to see if there are any songs in queue/playing
 	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send('`There are currently no songs playing in this server..`');
+	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// Check and get queue
 	const queue = fetched.queue;

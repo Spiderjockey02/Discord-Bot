@@ -4,7 +4,7 @@ const createBar = require('string-progressbar');
 module.exports.run = async (bot, message, args, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	const fetched = ops.active.get(message.guild.id);
-	if (fetched == undefined) return message.channel.send('There are currently no songs playing.');
+	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	const song = fetched.queue[0];
 	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
 

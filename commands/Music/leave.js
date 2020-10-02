@@ -1,9 +1,9 @@
 module.exports.run = async (bot, message, args, settings, ops) => {
-	// Check if author is connected to a voice channel
+	// Checks to see if music is enabled or the server
 	if (settings.MusicPlugin == false) return;
 	// Leave channel if still in channel (not force kick was used)
 	if (message.guild.me.voice.channel) {
-		if (message.guild.me.voice.channel !== message.member.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You must be in the same voice channel as me to do that.` } }).then(m => m.delete({ timeout: 10000 }));
+		if (message.guild.me.voice.channel !== message.member.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Sorry, you must be in the same voice channel as me.` } }).then(m => m.delete({ timeout: 10000 }));
 		message.guild.me.voice.channel.leave();
 	}
 	// Send messsage
