@@ -88,7 +88,7 @@ server {
     }
 }
 ```
-**NOTE**: Running the bot with a process manager (like PM2) is recommended.
+**NOTE**: Running the bot with a process manager (like [PM2](https://discordjs.guide/improving-dev-environment/pm2.html)) is recommended.
 
 >This bot must be run on a Discord bot account. Do NOT try to run this on a normal user account. This is against the Discord Terms of Service.
 
