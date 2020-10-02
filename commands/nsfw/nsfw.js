@@ -1,6 +1,9 @@
+// Dependecies
 const Discord = require('discord.js');
 const { KSoftClient } = require('@ksoft/api');
+
 module.exports.run = async (bot, message) => {
+	if (bot.config.NSFWBot == false) return;
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	// Make sure this commands is being run in a NSFW channel
 	if (message.channel.nsfw == false) {
@@ -25,7 +28,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'NSFW',
-	category: 'Searcher',
+	category: 'nsfw',
 	description: 'See some cheeky photos',
 	usage: '!nsfw',
 };

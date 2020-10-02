@@ -38,14 +38,14 @@ module.exports.run = async (bot, message, args) => {
 };
 
 module.exports.config = {
-	command: 'image',
-	aliases: ['img'],
+	command: 'img',
+	aliases: ['image'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
 	name: 'Image',
-	category: 'Searcher',
+	category: 'image',
 	description: 'Finds an image',
 	usage: '!image [topic]',
 };
