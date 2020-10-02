@@ -35,6 +35,7 @@
     "soundcloud-downloader": "^0.1.6",
     "spotify-url-info": "^2.0.0",
     "string-progressbar": "^1.0.1",
+    "superagent": "^6.1.0",
     "weather-js": "^2.0.0",
     "yt-search": "^2.3.1",
     "ytdl-core": "^3.2.2",
