@@ -1,4 +1,4 @@
-const { Ranks } = require('../modules/database/models');
+const { Ranks } = require('../../modules/database/models');
 module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
 	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
