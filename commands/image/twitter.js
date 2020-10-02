@@ -4,17 +4,29 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args) => {
 	// Get user
-	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
+	const user = (message.mentions.users.first()) ? message.mentions.users.first().username : `${args[0]}`;
 	// Get text
-	const text = args.join(' ');
+	args.shift();
+	let text = args.join(' ');
+	text = text.replace(/<@.?[0-9]*?>/g, '');
+	// make sure text was entered
 	if (!text) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('twitter').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	// make sure the text isn't longer than 60 characters
+	if (text.length >= 61) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Your message must not be more than 60 characters.` } }).then(m => m.delete({ timeout: 5000 }));
+	const msg = await message.channel.send('Creating fake twitter image.');
 	try {
-		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${user.username}+${user.discriminator}&text=${text}`));
+		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${user}&text=${text}`));
 		const json = await res.json();
-		const attachment = new Discord.MessageAttachment(json.message, 'tweet.png');
-		message.channel.send(attachment);
+		// send image in embed
+		const embed = new Discord.MessageEmbed()
+			.setImage(json.message);
+		msg.delete();
+		message.channel.send(embed);
 	} catch(e) {
-		console.log(e);
+		// if error occured
+		bot.logger.log(e.message);
+		msg.delete();
+		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
 	}
 };
 
@@ -28,5 +40,5 @@ module.exports.help = {
 	name: 'Twitter',
 	category: 'image',
 	description: 'Fake twitter account',
-	usage: '!phcomment {user - optional} [text]',
+	usage: '!twitter {user} [text]',
 };

@@ -6,7 +6,7 @@ module.exports.run = async (bot, message) => {
 	// Make sure the bot is NSFW
 	if (bot.config.NSFWBot == false) return;
 	// Make sure the message was sent in a NSFW channel
-	if (message.channel.nsfw === true) {
+	if (message.channel.nsfw === true || message.channel.type == 'dm') {
 		superagent.get('https://nekobot.xyz/api/image')
 			.query({ type: 'anal' })
 			.end((err, response) => {
