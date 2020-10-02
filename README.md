@@ -4,7 +4,7 @@
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 
-[Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
+Add this bot to your server: [Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
 ## Features
 * Music
   * Supports music formats from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com). (more to come soon)
