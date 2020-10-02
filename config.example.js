@@ -43,5 +43,10 @@ const config = {
 		cross: ':negative_squared_cross_mark:',
 		tick: ':white_check_mark:',
 	},
+	// If the NSFW commands should be loaded
+	NSFWBot: true,
+	// If you want your bot to use different languages per a server.
+	useCustomLanguage: true,
+	DefaultLanguage: 'en-US.json',
 };
 module.exports = config;
