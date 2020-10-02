@@ -46,7 +46,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Nick',
-	category: 'Guild',
+	category: 'moderation',
 	description: 'Nickname a user',
 	usage: '!nick {user} [name]',
 };
