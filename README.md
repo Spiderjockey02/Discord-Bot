@@ -37,17 +37,25 @@
 * Fun / Miscellaneous
   * Look up profile stats on Fortnite, Rainbow 6, steam & instagram.
   * Search for random images, memes & facts.
-  * Flip a coin
+  * Flip a coin.
   * Random number generator.
+  * Look up facts about pokemon.
+  * Get some random advice.
   * Play some mingigames:
    - Rock, Paper, Scissor.
    - More to come soon.
-  * A total of **21** commands.
-  
+  * A total of **23** commands.
+* Image
+  * Create fake captcha, clyde, Pornhub comments & twitter tweets.
+  * Create QR codes.
+  * Look at pictures of dogs and cats.
+  * A total of **8** commands.
+* NSFW
+  * coming soon
 ## Upcoming features
 * Currently working on a shiny new dashboard (updates to repo will be slowed down while this happens).
 
-**Overall there are over 60 commands.
+**Overall there are over 80 commands.
 All these plugins are very easy to set-up and are full with options to make your server stand out and unique.**
 ## Self hosting the bot
 Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)?
