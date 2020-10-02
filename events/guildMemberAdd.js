@@ -14,14 +14,14 @@ module.exports = async (bot, member) => {
 	if (settings.welcomePlugin == true) {
 		// anti-raid is disabled so just run like normal
 		if (settings.welcomeRaidConnect == false) {
-			const channel = member.guild.channels.cache.find(channel => channel.id == settings.welcomeChannel);
-			if (channel) channel.send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+			const channel = member.guild.channels.cache.find(channel => channel.id == settings.welcomeMessageChannel);
+			if (channel) channel.send(settings.welcomeMessageText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 			// Send private message to user
-			if (settings.welcomePvt == true) {
-				member.send(settings.welcomePvtMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+			if (settings.welcomePrivateToggle == true) {
+				member.send(settings.welcomePrivateText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 			}
 			// Add role to user
-			if (settings.welcomeRole == true) {
+			if (settings.welcomeRoleToggle == true) {
 				for (let i = 0; i < settings.welcomeRoleGive.length; i++) {
 					if (member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i])) {
 						member.roles.add(member.guild.roles.cache.find(role => role.id == settings.welcomeRoleGive[i]));

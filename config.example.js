@@ -43,6 +43,8 @@ const config = {
 		cross: ':negative_squared_cross_mark:',
 		tick: ':white_check_mark:',
 	},
+	// URL to mongodb
+	MongoDBURl: 'mongodb://link',
 	// If the NSFW commands should be loaded
 	NSFWBot: true,
 	// If you want your bot to use different languages per a server.

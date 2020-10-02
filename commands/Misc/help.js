@@ -14,6 +14,7 @@ module.exports.run = async (bot, message, args, settings) => {
 				{ name: 'Music', value: '!help music', inline: true },
 				{ name: 'Search', value: '!help searcher', inline: true },
 				{ name: 'Trivia', value: '!help trivia', inline: true },
+				{ name: 'NSFW', value: '!help nsfw', inline: true },
 			);
 		message.channel.send(embed);
 	} else if (args.length <= 1) {

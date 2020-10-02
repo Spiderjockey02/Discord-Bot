@@ -2,26 +2,27 @@ const mongoose = require('mongoose');
 
 const guildScheme = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
-	guildID: String,
+	guildID: Number,
 	guildName: String,
 	prefix: { type: String, default: '!' },
 	// Welcome Plugin
 	welcomePlugin: { type: Boolean, default: false },
 	// if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
 	welcomeRaidConnect: { type: Boolean, default: false },
-	welcomeChannel: { type: Number, default: 100000000000000000 },
-	welcomeMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
-	welcomePvt: { type: Boolean, default: true },
-	welcomePvtMessage: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
-	welcomeRole: { type: Boolean, default: true },
+	welcomeMessageToggle: { type: Boolean, default: false },
+	welcomeMessageChannel: { type: Number, default: 999999999999999999 },
+	welcomeMessageText: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
+	welcomePrivateToggle: { type: Boolean, default: true },
+	welcomePrivateText: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
+	welcomeRoleToggle: { type: Boolean, default: true },
 	welcomeRoleGive: { type: Array, default: ['562297641879470082'] },
-	welcomeGoodbye: { type: Boolean, default: true },
-	welcomeGoodbyeMessage: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
+	welcomeGoodbyeToggle: { type: Boolean, default: true },
+	welcomeGoodbyeText: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
 	// Level plugin
 	LevelPlugin: { type: Boolean, default: false },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
 	LevelOption: { type: Number, default: 1 },
-	LevelChannel: { type: Number, default: 100000000000000000 },
+	LevelChannel: { type: Number, default: 999999999999999999 },
 	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
 	LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
 	LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
@@ -30,7 +31,7 @@ const guildScheme = mongoose.Schema({
 	// Music plugin
 	MusicPlugin: { type: Boolean, default: true },
 	MusicDJ: { type: Boolean, default: false },
-	MusicDJRole: { type: Number, default: 100000000000000000 },
+	MusicDJRole: { type: Number, default: 999999999999999999 },
 	// Music trivia plugin
 	MusicTriviaPlugin: { type: Boolean, default: true },
 	MusicTriviaGenres: { type: Array, default: ['pop'] },
@@ -46,7 +47,7 @@ const guildScheme = mongoose.Schema({
 	// Moderation plugin
 	ModerationPlugin: { type: Boolean, default: false },
 	ModeratorRoles: { type: Array, default: ['owner'] },
-	MutedRole: { type: Number, default: 100000000000000000 },
+	MutedRole: { type: Number, default: 999999999999999999 },
 	// 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
 	// These Channels are ignored
 	// These roles are ignored
@@ -84,7 +85,7 @@ const guildScheme = mongoose.Schema({
 	AntiRaidPlugin: { type: Boolean, default: false },
 	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
 	AntiRaidCompletion: { type: Number, default: 1 },
-	AntiRaidChannelID: { type: Number, default: 100000000000000000 },
+	AntiRaidChannelID: { type: Number, default: 999999999999999999 },
 	// Search PLugin
 	SearchPlugin: { type: Boolean, default: true },
 	// Misc
@@ -94,12 +95,12 @@ const guildScheme = mongoose.Schema({
 	ServerStatsCate: { type: String, default: '📊 Server Stats 📊' },
 	ServerStatsBot: { type: Boolean, default: false },
 	// channel ID
-	ServerStatsBotChannel: { type: Number, default: 100000000000000000 },
+	ServerStatsBotChannel: { type: Number, default: 999999999999999999 },
 	ServerStatsUser: { type: Boolean, default: false },
 	// channel ID
-	ServerStatsUserChannel: { type: Number, default: 100000000000000000 },
+	ServerStatsUserChannel: { type: Number, default: 999999999999999999 },
 	ServerStatsHuman: { type: Boolean, default: false },
 	// channel ID
-	ServerStatsHumanChannel: { type: Number, default: 100000000000000000 },
+	ServerStatsHumanChannel: { type: Number, default: 999999999999999999 },
 });
 module.exports = mongoose.model('Guild', guildScheme);

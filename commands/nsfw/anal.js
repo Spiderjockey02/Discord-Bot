@@ -27,7 +27,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'anal',
-	category: 'anal',
+	category: 'nsfw',
 	description: 'See some cheeky photos',
 	usage: '!anal',
 };

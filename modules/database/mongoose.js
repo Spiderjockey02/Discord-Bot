@@ -10,7 +10,7 @@ module.exports = {
 			family: 4,
 			useUnifiedTopology: true,
 		};
-		mongoose.connect('mongodb://localhost:27017/database', dbOptions);
+		mongoose.connect(bot.config.MongoDBURl, dbOptions);
 		mongoose.set('useFindAndModify', false);
 		mongoose.Promise = global.Promise;
 		mongoose.connection.on('connected', () => {

@@ -27,7 +27,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'gif',
-	category: 'gif',
+	category: 'nsfw',
 	description: 'See some cheeky photos',
 	usage: '!gif',
 };
