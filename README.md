@@ -52,6 +52,11 @@
   * A total of **8** commands.
 * NSFW
   * coming soon
+* Server stuff
+  * Look up the icons on the users and server.
+  * Create polls & giveaways.
+  * Look up information on a role, user and server.
+  * A total of **10** commands.
 ## Upcoming features
 * Currently working on a shiny new dashboard (updates to repo will be slowed down while this happens).
 
