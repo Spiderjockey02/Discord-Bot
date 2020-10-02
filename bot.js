@@ -10,7 +10,7 @@ bot.logger = require('./modules/logging/logger');
 // For command handler
 bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
-
+bot.messagesSent = 0;
 // Load commands
 (async () => {
 	fs.readdir('./commands', function(err, files) {

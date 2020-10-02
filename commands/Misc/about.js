@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const moment = require('moment');
 
 module.exports.run = async (bot, message) => {
-	console.log(bot);
 	const embed = new Discord.MessageEmbed()
 		.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 		.setTitle('About')
@@ -16,7 +15,7 @@ module.exports.run = async (bot, message) => {
 		.addField('Channels', `${bot.channels.cache.size} total\n${bot.channels.cache.filter(channel => channel.type === 'text').size} text\n${bot.channels.cache.filter(channel => channel.type === 'voice').size} voice`, true)
 		.addField('Process:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
 		.addField('Servers:', `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
-		.addField('Messages seen:', 'some number', true)
+		.addField('Messages seen:', `${bot.messagesSent} messages\n${(bot.messagesSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
 		.addField('Uptime:', moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]'), true);
 	message.channel.send(embed);
 };
