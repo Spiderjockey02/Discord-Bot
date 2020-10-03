@@ -3,6 +3,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Spiderjockey02/Discord-Bot)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 
 Add this bot to your server: [Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
 ## Features
