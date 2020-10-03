@@ -71,7 +71,7 @@ All these plugins are very easy to set-up and are full with options to make your
 ## Self hosting the bot
 Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)?
 
->Support will only be given on setting up your config.js or a missing module error.
+>Support will only be given on errors done by the base source code. (No edits to the code.)
 ### Installation
 
 First of all, make sure you have downloaded:
