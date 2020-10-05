@@ -36,6 +36,7 @@
     "spotify-url-info": "^2.0.0",
     "string-progressbar": "^1.0.1",
     "superagent": "^6.1.0",
+    "tinyurl": "^1.1.7",
     "urban-dictionary": "^2.2.1",
     "weather-js": "^2.0.0",
     "yt-search": "^2.3.1",
