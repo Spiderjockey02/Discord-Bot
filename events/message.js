@@ -57,16 +57,18 @@ module.exports = async (bot, message) => {
 	};
 	// Check for commands (+ command cooldown -2.5 seconds)
 	if (cmd && message.content.startsWith(settings.prefix)) {
-		const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 		// Check for SEND_MESSAGES permission
 		// only run Fun, Host & Search plugin commands in DM's
+		let emoji;
 		if (message.channel.type == 'dm') {
 			// Make sure command is not a server only command.
-			if (cmd.help.category == 'Guild' || cmd.help.category == 'Levels' || cmd.help.category == 'Music' || cmd.help.category == 'Trivia') {
-				message.channel.send({ embed:{ color:15158332, description:`${emoji} That command can only be ran in a server.` } }).then(m => m.delete({ timeout: 5000 }));
+			if (['Guild', 'Levels', 'Music', 'Trivia'].includes(cmd.help.category)) {
+				message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} That command can only be ran in a server.` } }).then(m => m.delete({ timeout: 5000 }));
 				return;
 			}
+			emoji = bot.config.emojis.cross;
 		} else {
+			emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 			// Check for server permissions
 			const permissions = message.channel.permissionsFor(bot.user);
 			// Check for SEND_MESSAGES permission

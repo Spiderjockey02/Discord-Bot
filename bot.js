@@ -13,9 +13,9 @@ bot.commands = new Discord.Collection();
 bot.messagesSent = 0;
 // Load commands
 (async () => {
-	fs.readdir('./commands', function(err, files) {
+	fs.readdir('./commands', function(err, folders) {
 		bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-=');
-		files.forEach(file => {
+		folders.forEach(file => {
 			fs.readdir(`./commands/${file}`, (err, files) => {
 				if (err) console.log(err);
 				files.forEach(f => {
