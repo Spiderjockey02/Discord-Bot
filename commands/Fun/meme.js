@@ -6,6 +6,13 @@ module.exports.run = async (bot, message) => {
 	// Retrieve a random meme
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	const meme = await ksoft.images.meme();
+	// An error has occured
+	if (meme.url == undefined) {
+		bot.logger.error('An error occured when running command: meme.');
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.delete();
+		return;
+	}
 	// Send the meme to channel
 	const embed = new Discord.MessageEmbed()
 		.setTitle(`From /${meme.post.subreddit}`)
@@ -24,6 +31,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Meme',
 	category: 'Fun',
-	description: 'Sends a meme',
-	usage: '!meme',
+	description: 'Sends a meme.',
+	usage: '${prefix}meme',
 };

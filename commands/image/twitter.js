@@ -2,7 +2,8 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
+	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first().username : `${args[0]}`;
 	// Get text
@@ -10,9 +11,9 @@ module.exports.run = async (bot, message, args) => {
 	let text = args.join(' ');
 	text = text.replace(/<@.?[0-9]*?>/g, '');
 	// make sure text was entered
-	if (!text) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('twitter').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!text) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('twitter').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// make sure the text isn't longer than 60 characters
-	if (text.length >= 61) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Your message must not be more than 60 characters.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (text.length >= 61) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Your message must not be more than 60 characters.` } }).then(m => m.delete({ timeout: 5000 }));
 	const msg = await message.channel.send('Creating fake twitter image.');
 	try {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${user}&text=${text}`));
@@ -26,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
 		// if error occured
 		bot.logger.log(e.message);
 		msg.delete();
-		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
@@ -40,5 +41,5 @@ module.exports.help = {
 	name: 'Twitter',
 	category: 'image',
 	description: 'Fake twitter account',
-	usage: '!twitter {user} [text]',
+	usage: '${PREFIX}twitter {user} [text]',
 };

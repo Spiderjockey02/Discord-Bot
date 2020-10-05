@@ -52,5 +52,5 @@ module.exports.help = {
 	name: 'Leaderboard',
 	category: 'Levels',
 	description: 'Displays the Level leaderboard',
-	usage: '!leaderboard',
+	usage: '${PREFIX}leaderboard',
 };

@@ -12,6 +12,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Flip',
 	category: 'Fun',
-	description: 'Flips a coin',
-	usage: '!flip',
+	description: 'Flips a coin.',
+	usage: '${prefix}flip',
 };

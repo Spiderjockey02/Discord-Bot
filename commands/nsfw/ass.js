@@ -16,7 +16,7 @@ module.exports.run = async (bot, message) => {
 			});
 	} else {
 		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
@@ -30,5 +30,5 @@ module.exports.help = {
 	name: 'ass',
 	category: 'nsfw',
 	description: 'See some cheeky photos',
-	usage: '!ass',
+	usage: '${PREFIX}ass',
 };

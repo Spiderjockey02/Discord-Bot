@@ -16,7 +16,7 @@ module.exports.run = async (bot, message) => {
 			});
 	} else {
 		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
@@ -29,5 +29,5 @@ module.exports.help = {
 	name: '4k',
 	category: 'nsfw',
 	description: 'See some 4K images.',
-	usage: '!4k',
+	usage: '${PREFIX}4k',
 };

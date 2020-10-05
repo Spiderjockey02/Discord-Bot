@@ -11,6 +11,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Ping',
 	category: 'Fun',
-	description: 'Pong',
-	usage: '!ping',
+	description: 'Pong.',
+	usage: '${prefix}ping',
 };

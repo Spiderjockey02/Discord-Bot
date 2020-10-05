@@ -2,11 +2,11 @@
 const cheerio = require('cheerio');
 const request = require('request');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure a topic was included
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('image').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} Please use the format \`${bot.commands.get('image').help.usage.replace('${PREFRIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		return;
 	}
 	const word = args.join(' ');
@@ -47,5 +47,5 @@ module.exports.help = {
 	name: 'Image',
 	category: 'image',
 	description: 'Finds an image',
-	usage: '!image [topic]',
+	usage: '${PREFIX}image [topic]',
 };

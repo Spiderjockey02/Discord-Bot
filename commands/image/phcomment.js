@@ -2,16 +2,17 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
+	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// Get text
 	let text = args.join(' ');
 	text = text.replace(/<@.?[0-9]*?>/g, '');
 	// Make sure text was entered
-	if (!text) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('phcomment').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!text) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('phcomment').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// make sure the text isn't longer than 70 characters
-	if (text.length >= 71) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Your message must not be more than 70 characters.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (text.length >= 71) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Your message must not be more than 70 characters.` } }).then(m => m.delete({ timeout: 5000 }));
 	// send 'waiting' message
 	const msg = await message.channel.send('Creating fake pornhub comment.');
 	try {
@@ -40,5 +41,5 @@ module.exports.help = {
 	name: 'phcomment',
 	category: 'image',
 	description: 'Fake pornhub comment',
-	usage: '!phcomment {user - optional} [text]',
+	usage: '${PREFIX}phcomment [user] <text>',
 };

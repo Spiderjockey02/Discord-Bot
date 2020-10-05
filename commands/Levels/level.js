@@ -40,5 +40,5 @@ module.exports.help = {
 	name: 'Level',
 	category: 'Levels',
 	description: 'Shows your rank/Level',
-	usage: '!level [username - optional]',
+	usage: '${PREFIX}level [username]',
 };

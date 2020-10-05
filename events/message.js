@@ -73,18 +73,6 @@ module.exports = async (bot, message) => {
 				bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`);
 				return;
 			}
-			// Check for USE_EXTERNAL_EMOJIS permission
-			if (!permissions.has('USE_EXTERNAL_EMOJIS')) {
-				message.channel.send(':negative_squared_cross_mark: I am missing the permission: `USE_EXTERNAL_EMOJIS`.').then(m => m.delete({ timeout: 10000 }));
-				bot.logger.log(`Mising permission: \`USE_EXTERNAL_EMOJIS\` in [${message.guild.id}]`);
-				return;
-			}
-			// Check for EMBED_LINKS permission
-			if (!permissions.has('EMBED_LINKS')) {
-				message.channel.send('<:Cross:746456031332270191> I am missing the permission: `EMBED_LINKS`.').then(m => m.delete({ timeout: 10000 }));
-				bot.logger.error(`Missing permission: \`EMBED_LINKS\` in [${message.guild.id}]`);
-				return;
-			}
 		}
 		// Check if user is in command cooldown check
 		if (commandcd.has(message.author.id) && (message.author.id != bot.config.ownerID)) {

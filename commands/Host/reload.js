@@ -1,10 +1,12 @@
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return;
+	// Get the right emoji (just in case bot dosen't have external emoji permission)
+	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Checks to see if a command was specified
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('reload').help.usage}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('reload').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		return;
 	}
 	// delete message
@@ -22,12 +24,12 @@ module.exports.run = async (bot, message, args) => {
 			bot.commands.set(commandName, pull);
 		} catch(e) {
 			console.log(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Could not reload: \`${commandName}\`.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Could not reload: \`${commandName}\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	} else {
-		return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emoji} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
-	message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
+	message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
 	bot.logger.log(`Reloaded Command: ${commandName}.js`);
 };
 
@@ -39,5 +41,5 @@ module.exports.help = {
 	name: 'reload',
 	category: 'Host',
 	description: 'Reloads the bot',
-	usage: '!reload [command]',
+	usage: '${prefix}reload <command>',
 };

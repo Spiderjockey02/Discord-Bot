@@ -15,11 +15,11 @@ module.exports.run = async (bot, message) => {
 			.setImage(json.message);
 		msg.delete();
 		message.channel.send(embed);
-	} catch(e) {
+	} catch(err) {
 		// if an error occured
-		bot.logger.log(e.message);
+		bot.logger.log(err.message);
 		msg.delete();
-		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
@@ -32,5 +32,5 @@ module.exports.help = {
 	name: 'captcha',
 	category: 'image',
 	description: 'Create a captcha image.',
-	usage: '!captcha',
+	usage: '${PREFIX}captcha',
 };

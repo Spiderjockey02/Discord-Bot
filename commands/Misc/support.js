@@ -19,5 +19,5 @@ module.exports.help = {
 	name: 'support',
 	category: 'Misc',
 	description: 'Get information for getting support on Egglord.',
-	usage: '!support',
+	usage: '${PREFIX}support',
 };

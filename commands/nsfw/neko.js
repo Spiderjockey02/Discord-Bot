@@ -10,8 +10,9 @@ module.exports.run = async (bot, message) => {
 	try {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/image?type=${word}`));
 		const json = await res.json();
-		const attachment = new Discord.MessageAttachment(json.message, 'deepfry.png');
-		message.channel.send(attachment);
+		const embed = new Discord.MessageEmbed()
+			.setImage(json.message);
+		message.channel.send(embed);
 	} catch(e) {
 		console.log(e);
 	}

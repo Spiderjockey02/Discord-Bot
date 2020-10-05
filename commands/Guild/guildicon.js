@@ -8,13 +8,13 @@ module.exports.run = async (bot, message) => {
 			.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
 		message.channel.send(embed);
 	} else {
-		message.channel.send('This server does not have a server icon.').then(m => m.delete({ timeout:3500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} This server does not have a server icon.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
 module.exports.config = {
 	command: 'guildicon',
-	aliases: ['guildavatar', 'servericon', 'serveravatar'],
+	aliases: ['servericon'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
@@ -22,5 +22,5 @@ module.exports.help = {
 	name: 'Guildicon',
 	category: 'Guild',
 	description: 'Get the server\'s icon',
-	usage: '!guildicon [user]',
+	usage: '${PREFIX}guildicon',
 };

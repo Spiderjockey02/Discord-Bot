@@ -1,7 +1,7 @@
 // Dependencies
 const { inspect } = require('util');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return;
 	const toEval = args.join(' ');
@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
 			const hrDiff = process.hrtime(hrStart);
 			return message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
 		} else {
-			message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('eval').help.usage}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} Please use the format \`${bot.commands.get('eval').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		}
 	} catch(e) {
 		message.channel.send(`Error whilst evaluating: \`${e.message}\``);
@@ -29,5 +29,5 @@ module.exports.help = {
 	name: 'eval',
 	category: 'Host',
 	description: 'Evaluates code',
-	usage: '!eval [code]',
+	usage: '${prefix}eval <code>',
 };

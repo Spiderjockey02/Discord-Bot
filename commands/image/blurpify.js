@@ -1,8 +1,10 @@
 // Dependencies
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
+const fileTypes = ['png', 'jpeg', 'tiff', 'jpg'];
 
 module.exports.run = async (bot, message) => {
+	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// Get file for blurpify
@@ -11,11 +13,13 @@ module.exports.run = async (bot, message) => {
 		// Maybe they have uploaded a photo to deepfry
 		if (message.attachments.size > 0) {
 			const url = message.attachments.first().url;
-			if (url.indexOf('png') !== -1 || url.indexOf('jpeg') !== -1 || url.indexOf('tiff') !== -1) {
-				file = url;
-			} else {
-				return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
+			for (let i = 0; i < fileTypes.length; i++) {
+				if (url.indexOf(fileTypes[i]) !== -1) {
+					file = url;
+				}
 			}
+			// no file with the correct format was found
+			if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emoji} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
 			file = user.displayAvatarURL();
 		}
@@ -23,7 +27,7 @@ module.exports.run = async (bot, message) => {
 		file = user.displayAvatarURL();
 	}
 	// send 'waiting' message
-	const msg = await message.channel.send('Blupifing your avatar.');
+	const msg = await message.channel.send('Blupifing your image.');
 	try {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=blurpify&image=${file}`));
 		const json = await res.json();
@@ -32,11 +36,11 @@ module.exports.run = async (bot, message) => {
 			.setImage(json.message);
 		msg.delete();
 		message.channel.send(embed);
-	} catch(e) {
+	} catch(err) {
 		// if an error occured
-		bot.logger.log(e.message);
+		bot.logger.log(err.message);
 		msg.delete();
-		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
@@ -50,5 +54,5 @@ module.exports.help = {
 	name: 'blurpify',
 	category: 'image',
 	description: 'blurpify your avatar',
-	usage: '!blurpify',
+	usage: '${prefix}blurpify [file]',
 };

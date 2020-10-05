@@ -1,8 +1,10 @@
 // Dependencies
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
+const fileTypes = ['png', 'jpeg', 'tiff', 'jpg'];
 
 module.exports.run = async (bot, message) => {
+	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// Get file for threats
@@ -11,11 +13,13 @@ module.exports.run = async (bot, message) => {
 		// Maybe they have uploaded a photo to deepfry
 		if (message.attachments.size > 0) {
 			const url = message.attachments.first().url;
-			if (url.indexOf('png') !== -1 || url.indexOf('jpg') !== -1 || url.indexOf('tiff') !== -1) {
-				file = url;
-			} else {
-				return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
+			for (let i = 0; i < fileTypes.length; i++) {
+				if (url.indexOf(fileTypes[i]) !== -1) {
+					file = url;
+				}
 			}
+			// no file with the correct format was found
+			if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emoji} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
 			file = user.displayAvatarURL();
 		}
@@ -36,7 +40,7 @@ module.exports.run = async (bot, message) => {
 		// if an error occured
 		bot.logger.log(e.message);
 		msg.delete();
-		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
@@ -50,5 +54,5 @@ module.exports.help = {
 	name: 'threats',
 	category: 'image',
 	description: 'threats your avatar',
-	usage: '!threats',
+	usage: '${PREFIX}threats [file]',
 };

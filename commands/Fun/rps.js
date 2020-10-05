@@ -1,11 +1,11 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure a choice was made
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('rps').help.usage}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} Please use the format \`${bot.commands.get('rps').help.usage.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		return;
 	}
 	// Make sure rock, paper or scissors was their choice
@@ -26,7 +26,6 @@ module.exports.run = async (bot, message, args) => {
 			.setDescription(`**You choose:** ${args[0]}
       **I choose:** ${choice}\n
       Result: ${winner} has win`);
-		// Make sure bot has the right permissions
 		message.channel.send(embed);
 	}
 };
@@ -40,5 +39,6 @@ module.exports.help = {
 	name: 'Rock, Paper, Scissors',
 	category: 'Fun',
 	description: 'Play rock, paper, scissors with me.',
-	usage: '!rps [rock, paper or scissors]',
+	usage: '${prefix}rps <rock | paper | scissors>',
+	example: '${prefix}rps rock',
 };

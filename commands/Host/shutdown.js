@@ -21,5 +21,5 @@ module.exports.help = {
 	name: 'shutdown',
 	category: 'Host',
 	description: 'Shutdown Egglord',
-	usage: '!shutdown',
+	usage: '${prefix}shutdown',
 };

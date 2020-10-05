@@ -29,10 +29,19 @@ const config = {
 			lastEdited: '13 August 2020',
 		},
 		// Version that the bot is running at
-		version: '0.9 BETA',
+		version: '1',
 	},
-	// Link to your support server
-	SupportLink: 'LinkToYourSupportServer',
+	// your support server
+	SupportServer: {
+		// Link to your support server
+		link: 'https://discord.gg/8g6zUQu',
+		// Your support's server ID
+		GuildID: '750822670505082971',
+		// This for using the suggestion command on your server
+		ModRole: '751857618720522341',
+		// What channel to post the suggestions
+		SuggestionChannel: '761619652009787392',
+	},
 	// This is just so some commands can be ran in DM channels
 	defaultSettings: {
 		// default settings

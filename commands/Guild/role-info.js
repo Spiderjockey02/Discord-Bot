@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
 	// Make sure it's a role on the messages's server
 	if (!role) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Send information to channel
@@ -39,5 +39,5 @@ module.exports.help = {
 	name: 'Role info',
 	category: 'Guild',
 	description: 'Gets information on a role',
-	usage: '!role-info {role}',
+	usage: '${prefix}role-info <role>',
 };

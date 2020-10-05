@@ -13,5 +13,5 @@ module.exports.help = {
 	name: 'Invite',
 	category: 'Misc',
 	description: 'Send an invite link so peope can add me to their server',
-	usage: '!invite',
+	usage: '${PREFIX}invite',
 };

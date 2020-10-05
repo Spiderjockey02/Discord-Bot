@@ -8,7 +8,7 @@ module.exports.run = async (bot, message) => {
 
 	const embed = new Discord.MessageEmbed()
 		.setTitle(`Avatar for ${member.user.username}#${member.user.discriminator}`)
-		.setDescription(`**Link:**\n[png](${message.author.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${message.author.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${message.author.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${message.author.displayAvatarURL({ format: 'webp', size: 1024 })})`)
+		.setDescription(`**Links:**\n[png](${message.author.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${message.author.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${message.author.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${message.author.displayAvatarURL({ format: 'webp', size: 1024 })})`)
 		.setImage(`${member.user.displayAvatarURL()}?size=1024`);
 	message.channel.send(embed);
 };
@@ -21,6 +21,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Avatar',
 	category: 'Guild',
-	description: 'Get user\'s avatar',
-	usage: '!avatar [user]',
+	description: 'Displays user\'s avatar.',
+	usage: '${prefix}avatar [user]',
 };
