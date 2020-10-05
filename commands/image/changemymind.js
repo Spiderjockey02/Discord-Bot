@@ -2,9 +2,7 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, settings) => {
-	// Get the right emoji (just in case bot dosen't have external emoji permission)
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Get text
 	const text = args.join(' ');
 	// make sure text was entered

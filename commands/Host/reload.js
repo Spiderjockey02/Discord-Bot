@@ -1,8 +1,6 @@
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return;
-	// Get the right emoji (just in case bot dosen't have external emoji permission)
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 	// Checks to see if a command was specified
 	if (!args[0]) {
 		if (message.deletable) message.delete();
@@ -29,7 +27,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	} else {
 		return message.channel.send({ embed:{ color:15158332, description:`${emoji} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
-	message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
+	message.channel.send({ embed:{ color:3066993, description:`${emoji} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
 	bot.logger.log(`Reloaded Command: ${commandName}.js`);
 };
 
@@ -41,5 +39,5 @@ module.exports.help = {
 	name: 'reload',
 	category: 'Host',
 	description: 'Reloads the bot',
-	usage: '${prefix}reload <command>',
+	usage: '${PREFIX}reload <command>',
 };

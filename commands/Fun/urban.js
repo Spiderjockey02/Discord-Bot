@@ -2,19 +2,17 @@
 const ud = require('urban-dictionary');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, settings) => {
-	// Get the right emoji (just in case bot dosen't have external emoji permission)
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Make sure the message was sent in a NSFW channel
 	if (message.channel.nsfw === true || message.channel.type == 'dm') {
 		// Get phrase
 		const phrase = args.join(' ');
-		if (!phrase) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('urban').help.usage.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		if (!phrase) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('urban').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		// Search up phrase in urban dictionary
 		ud.term(`${phrase}`, (error, entries) => {
 			if (error) {
 				bot.logger.error(`Urban Dictionary: ${error.code} (phrase: ${phrase})`);
-				message.channel.send({ embed:{ color:15158332, description:`${emoji} Phrase: \`${phrase}\` was not found on urban dictionary.` } }).then(m => m.delete({ timeout: 3000 }));
+				message.channel.send({ embed:{ color:15158332, description:`${emoji} Phrase: \`${phrase}\` was not found on urban dictionary.` } }).then(m => m.delete({ timeout: 5000 }));
 			} else {
 				// send message
 				const embed = new Discord.MessageEmbed()
@@ -42,6 +40,6 @@ module.exports.help = {
 	name: 'Urban',
 	category: 'Fun',
 	description: 'Get the urban dictionary of a word',
-	usage: '${prefix}urban <word>',
-	example: '${prefix}urban watermelon sugar',
+	usage: '${PREFIX}urban <word>',
+	example: '${PREFIX}urban watermelon sugar',
 };

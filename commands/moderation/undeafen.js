@@ -1,20 +1,20 @@
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	if (message.deletable) message.delete({ timeout:1000 });
 	// Check if user has deafen permission
 	if (!message.member.hasPermission('DEAFEN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`DEAFEN_MEMBERS\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are missing the permission: \`DEAFEN_MEMBERS\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));
 		return;
 	}
 	// Make sure bot can delete other peoples messages
 	if (!message.guild.me.hasPermission('DEAFEN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`DEAFEN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 15000 }));
-		bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}]`);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`DEAFEN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 15000 }));
+		bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
 		return;
 	}
 	// Checks to make sure user is in the server
 	const user = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 	if (!user) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	try {
@@ -35,5 +35,5 @@ module.exports.help = {
 	name: 'Undeafen',
 	category: 'moderation',
 	description: 'Undeafens a user',
-	usage: '!undeafen {user} [reason] {time}',
+	usage: '${PREFIX}undeafen <user>',
 };

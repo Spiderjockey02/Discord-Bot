@@ -1,9 +1,5 @@
-module.exports.run = async (bot, message, args, settings, ops) => {
-	if (settings.MusicPlugin == false) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:'<:Cross:748984863432114266> This plugin is currently disabled.' } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+	if (settings.MusicPlugin == false) return;
 	// If there is music currently playing stop it, clear queue and leave call to prepare for music trivia
 	const fetched = ops.active.get(message.guild.id) || {};
 	console.log(fetched);
@@ -26,5 +22,5 @@ module.exports.help = {
 	name: 'startmusictrivia',
 	category: 'Trivia',
 	description: 'Starts a music trivia for your server.',
-	usage: '!startmusictrivia [genre - optional]',
+	usage: '${PREFIX}startmusictrivia [genre]',
 };

@@ -26,7 +26,7 @@ function Page(page, message, results) {
 	}
 }
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	let song;
 	if (!args[0]) {
@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		const fetched = ops.active.get(message.guild.id);
 		if (fetched == undefined) {
 			if (message.deletable) message.delete();
-			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are no songs currently playing.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are no songs currently playing.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
 			song = fetched.queue[0].title;
 		}
@@ -57,8 +57,8 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			if (results.lyrics.length < 2048) return;
 			// Make sure bot has permissions to add reactions
 			if (!msg.guild.me.hasPermission('ADD_REACTIONS')) {
-				msg.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
-				bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}]`);
+				msg.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+				bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
 				return;
 			}
 			// send reactions so user can see more lyrcis
@@ -99,5 +99,5 @@ module.exports.help = {
 	name: 'lyric',
 	category: 'Music',
 	description: 'Get lyrics on the current song playing.',
-	usage: '!lyrics [song -optional]',
+	usage: '${PREFIX}lyrics [song]',
 };

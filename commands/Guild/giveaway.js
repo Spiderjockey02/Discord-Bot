@@ -11,15 +11,13 @@ function sleep(milliseconds) {
 	} while (currentDate - date < milliseconds);
 }
 
-module.exports.run = async (bot, message, args, settings) => {
-	// Get the right emoji (just in case bot dosen't have external emoji permission)
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Make sure something was included
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Make sure that a time interval is included
-	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Make sure that the time is a number
-	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// get prize
 	let channel = message.mentions.channels.first();
 	let prize;
@@ -85,6 +83,6 @@ module.exports.help = {
 	name: 'Giveaway',
 	category: 'Guild',
 	description: 'Run a giveaway',
-	usage: '${prefix}giveway <time> <prize> [channel]',
-	example: '${prefix}giveaway 1h30m nitro',
+	usage: '${PREFIX}giveway <time> <prize> [channel]',
+	example: '${PREFIX}giveaway 1h nitro',
 };

@@ -2,7 +2,7 @@
 const superagent = require('superagent');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	// Make sure the bot is NSFW
 	if (bot.config.NSFWBot == false) return;
 	// Make sure the message was sent in a NSFW channel
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message) => {
 			});
 	} else {
 		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 

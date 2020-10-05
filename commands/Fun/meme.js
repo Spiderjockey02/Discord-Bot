@@ -2,14 +2,14 @@
 const { KSoftClient } = require('@ksoft/api');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	// Retrieve a random meme
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	const meme = await ksoft.images.meme();
 	// An error has occured
 	if (meme.url == undefined) {
 		bot.logger.error('An error occured when running command: meme.');
-		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;
 	}
@@ -32,5 +32,5 @@ module.exports.help = {
 	name: 'Meme',
 	category: 'Fun',
 	description: 'Sends a meme.',
-	usage: '${prefix}meme',
+	usage: '${PREFIX}meme',
 };

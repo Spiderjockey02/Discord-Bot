@@ -57,12 +57,13 @@ module.exports = async (bot, message) => {
 	};
 	// Check for commands (+ command cooldown -2.5 seconds)
 	if (cmd && message.content.startsWith(settings.prefix)) {
+		const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
 		// Check for SEND_MESSAGES permission
 		// only run Fun, Host & Search plugin commands in DM's
 		if (message.channel.type == 'dm') {
 			// Make sure command is not a server only command.
 			if (cmd.help.category == 'Guild' || cmd.help.category == 'Levels' || cmd.help.category == 'Music' || cmd.help.category == 'Trivia') {
-				message.channel.send({ embed:{ color:15158332, description:'<:Cross:746456031332270191> That command can only be ran in a server.' } }).then(m => m.delete({ timeout: 10000 }));
+				message.channel.send({ embed:{ color:15158332, description:`${emoji} That command can only be ran in a server.` } }).then(m => m.delete({ timeout: 5000 }));
 				return;
 			}
 		} else {
@@ -77,15 +78,15 @@ module.exports = async (bot, message) => {
 		// Check if user is in command cooldown check
 		if (commandcd.has(message.author.id) && (message.author.id != bot.config.ownerID)) {
 			message.delete();
-			message.channel.send({ embed:{ description:`You must wait ${settings.CommandCooldownSec} seconds between each command.` } }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emoji} You must wait ${settings.CommandCooldownSec} seconds between each command.` } }).then(m => m.delete({ timeout: 5000 }));
 			return;
 		}
 		// Check to see if the command is being ran from a channel thats blacklisted
 		if ((settings.OnlyCommandChannel == true) && (settings.CommandChannel !== message.channel.name)) {
 			// Tell user that they cant use commnads in this channel
-			message.channel.send({ embed:{ color:15158332, description:`<:Cross:746456031332270191> **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emoji} **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
-			cmd.run(bot, message, args, settings, ops);
+			cmd.run(bot, message, args, emoji, settings, ops);
 		}
 		if (settings.CommandCooldown == true) {
 			commandcd.add(message.author.id);

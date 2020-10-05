@@ -2,8 +2,7 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, settings) => {
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// Get text

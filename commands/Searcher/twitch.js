@@ -25,5 +25,5 @@ module.exports.help = {
 	name: 'Twitch',
 	category: 'Searcher',
 	description: 'Gets information on a twitch account',
-	usage: '!twitch [user]',
+	usage: '${PREFIX}twitch <user>',
 };

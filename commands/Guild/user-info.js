@@ -42,5 +42,5 @@ module.exports.help = {
 	name: 'User info',
 	category: 'Guild',
 	description: 'Gets information on a user',
-	usage: '${prefix}user-info [user]',
+	usage: '${PREFIX}user-info [user]',
 };

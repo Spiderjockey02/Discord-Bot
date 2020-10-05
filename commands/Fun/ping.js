@@ -12,5 +12,5 @@ module.exports.help = {
 	name: 'Ping',
 	category: 'Fun',
 	description: 'Pong.',
-	usage: '${prefix}ping',
+	usage: '${PREFIX}ping',
 };

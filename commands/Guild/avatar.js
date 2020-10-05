@@ -22,5 +22,5 @@ module.exports.help = {
 	name: 'Avatar',
 	category: 'Guild',
 	description: 'Displays user\'s avatar.',
-	usage: '${prefix}avatar [user]',
+	usage: '${PREFIX}avatar [user]',
 };

@@ -1,6 +1,6 @@
 // dependencies
 const Discord = require('discord.js');
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// HElp command (find if they need general, command or plugin help)
 	if (!args[0]) {
 		// Shows plugin list

@@ -1,7 +1,7 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	// This command can only be done in the official support server
 	if (message.guild.id == bot.config.SupportServer.GuildID) {
 		// This command can only be done by @suggestion
@@ -18,7 +18,7 @@ module.exports.run = async (bot, message) => {
 			});
 			// Tell user suggestion has been added
 			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} Suggestion has been added.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:3066993, description:`${emoji} Suggestion has been added.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 };
@@ -32,5 +32,5 @@ module.exports.help = {
 	name: 'suggestion',
 	category: 'Host',
 	description: 'Creates a suggestion (only for support server)',
-	usage: '${prefix}suggestion <suggestion>',
+	usage: '${PREFIX}suggestion <suggestion>',
 };

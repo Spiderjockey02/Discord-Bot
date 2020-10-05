@@ -1,9 +1,9 @@
 const yts = require('yt-search');
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	// make sure music plugin is enabled
 	if (settings.MusicPlugin == false) return;
-	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('find').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('search').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Just find top 10 songs on youtube
 	// RENAME THIS TO SEARCH AND OTHER NAME
 	const term = args.join(' ');
@@ -42,5 +42,5 @@ module.exports.help = {
 	name: 'Search',
 	category: 'Music',
 	description: 'Finds for a song',
-	usage: '!search [song]',
+	usage: '${PREFIX}search [song]',
 };

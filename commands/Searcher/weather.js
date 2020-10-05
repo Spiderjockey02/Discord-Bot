@@ -2,7 +2,7 @@
 const weather = require('weather-js');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	if (!args.length) return message.channel.send('Please give the weather location');
 	weather.find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {
 		try {
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
 			message.channel.send(embed);
 		} catch(err) {
 			console.log(err);
-			return message.channel.send('Unable To Get the data of Given location');
+			return message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	});
 };
@@ -34,5 +34,5 @@ module.exports.help = {
 	name: 'weather',
 	category: 'Searcher',
 	description: 'Look up the weather in a certain area',
-	usage: '!weather [topic]',
+	usage: '${PREFIX}weather <location>',
 };

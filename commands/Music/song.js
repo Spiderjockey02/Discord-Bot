@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const createBar = require('string-progressbar');
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	const fetched = ops.active.get(message.guild.id);
-	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	const song = fetched.queue[0];
 	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
 
@@ -26,5 +26,5 @@ module.exports.help = {
 	name: 'song',
 	category: 'Music',
 	description: 'Displays the current song playing.',
-	usage: '!song',
+	usage: '${PREFIX}song',
 };

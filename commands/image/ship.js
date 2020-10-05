@@ -2,8 +2,7 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, settings) => {
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Get user
 	const user1 = message.mentions.users.first();
 	if (!user1) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('ship').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));

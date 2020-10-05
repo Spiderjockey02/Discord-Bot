@@ -2,9 +2,9 @@
 const util = require('minecraft-server-util');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Ping a minecraft server
-	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('mc').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('mc').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Pinging server..');
 	// If no ping use 25565
 	if(!args[1]) {
@@ -22,12 +22,12 @@ module.exports.run = async (bot, message, args) => {
 			.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`);
 		r.delete();
 		message.channel.send(embed);
-	}).catch(error => {
+	}).catch(err => {
 		// An error occured (either no IP, Open port or timed out)
 		r.delete({ timeout: 1000 });
 		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
-		bot.logger.error(error.message);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
+		bot.logger.error(err.message);
 	});
 };
 
@@ -41,5 +41,5 @@ module.exports.help = {
 	name: 'Minecraft',
 	category: 'Searcher',
 	description: 'Gets information on a minecraft server',
-	usage: '!mc [IP] [Port - Optional]',
+	usage: '${PREFIX}mc <IP> [Port]',
 };

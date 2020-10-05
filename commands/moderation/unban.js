@@ -1,13 +1,13 @@
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	if (message.deletable) message.delete();
 	// Check if user has permission to ban user
 	if (!message.member.hasPermission('BAN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Check if bot has permission to unban user
 	if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}]`);
 		return;
 	}
@@ -37,5 +37,5 @@ module.exports.help = {
 	name: 'Unban',
 	category: 'moderation',
 	description: 'Unban a user.',
-	usage: '!unban {user}',
+	usage: '${PREFIX}unban {user}',
 };

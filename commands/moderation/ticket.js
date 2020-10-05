@@ -1,12 +1,12 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Delete message
 	if (message.deletable) message.delete();
 	// Check if a ticket channel is already open
 	if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
-		return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You already have a ticket channel` } }).then(m => m.delete({ timeout: 10000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emoji} You already have a ticket channel` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 	const reason = (args.join(' ').slice(8)) ? args.join(' ').slice(8) : 'No reason given';
 	message.guild.channels.create(`ticket-${message.author.id}`, 'text').then(c => {
@@ -62,5 +62,5 @@ module.exports.help = {
 	name: 'Ticket',
 	category: 'moderation',
 	description: 'Open a support ticket.',
-	usage: '!ticket',
+	usage: '${PREFIX}ticket',
 };

@@ -3,9 +3,7 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch');
 const fileTypes = ['png', 'jpeg', 'tiff', 'jpg'];
 
-module.exports.run = async (bot, message) => {
-	// Get the right emoji (just in case bot dosen't have external emoji permission)
-	const emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+module.exports.run = async (bot, message, args, emoji) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// get file for deepfry

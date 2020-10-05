@@ -1,11 +1,11 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Make sure a choice was made
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} Please use the format \`${bot.commands.get('rps').help.usage.replace('${prefix}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		return;
 	}
 	// Make sure rock, paper or scissors was their choice
@@ -38,7 +38,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Rock, Paper, Scissors',
 	category: 'Fun',
-	description: 'Play rock, paper, scissors with me.',
-	usage: '${prefix}rps <rock | paper | scissors>',
-	example: '${prefix}rps rock',
+	description: 'Play Rock Paper Scissors with me.',
+	usage: '${PREFIX}rps <rock | paper | scissors>',
+	example: '${PREFIX}rps rock',
 };

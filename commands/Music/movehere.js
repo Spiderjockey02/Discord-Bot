@@ -1,10 +1,10 @@
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	if (message.deletable) message.delete();
 	// Move the bot to a new voice channel
 	// Make sure user can move the bot
 	if (!message.member.hasPermission('MOVE_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are missing the permission: \`MOVE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are missing the permission: \`MOVE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// get channel and data info
@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 	const data = ops.active.get(message.guild.id);
 
 	// Make sure there are song playing
-	if (!data) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!data) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// Find what channel to join
 	if (channel && channel.type == 'voice') {
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 		data.connection = await message.member.voice.channel.join();
 	} else {
 		// no channel found - send error message
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('movehere').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('movehere').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		return;
 	}
 };
@@ -36,5 +36,5 @@ module.exports.help = {
 	name: 'Movehere',
 	category: 'Music',
 	description: 'Move the bot to a different voice channel.',
-	usage: '!movehere {channel ID - optional}',
+	usage: '${PREFIX}movehere [channel]',
 };

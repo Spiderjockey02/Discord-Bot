@@ -14,6 +14,12 @@ const config = {
 	soundcloudAPI_Key: 'soundcloudAPI_Key',
 	// This so you can interact with the Discord.Boats API (Discord bot list website)
 	DiscordBoatAPI_Key: 'DiscordBoatAPI_Key',
+	// For searching up Rainbow 6 Siege accounts
+	Rainbow6Siege: {
+		// username & password to your ubisoft account
+		username: 'YourUsername',
+		password: 'YourPassword',
+	},
 	// Information for the Bot's dashboard
 	Dashboard: {
 		// If the dashboard should be enabled or not

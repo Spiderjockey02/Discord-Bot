@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const Ranks = require('../../modules/database/models/levels');
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	if (settings.LevelPlugin == false) return;
 	// Get user
 	let user = message.mentions.users.first();

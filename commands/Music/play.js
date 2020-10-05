@@ -7,31 +7,31 @@ const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
 const { getData } = require('spotify-url-info');
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	// Checks to see if music is enabled or the server
 	if (settings.MusicPlugin == false) return;
 	// Check if bot can see user in channel (the user is in a channel)
 	if (!message.member.voice.channelID) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
 		message.delete();
 		return;
 	}
 	// Check if bot can join channel
 	if (!message.guild.me.hasPermission('CONNECT')) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}]`);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
 		return;
 	}
 	// Check if bot can speak in channel
 	if (!message.guild.me.hasPermission('SPEAK')) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}]`);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
 		return;
 	}
 	// Check if an 'entry' was added
-	if (args.length == 0 && message.attachments.size == 0) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('play').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (args.length == 0 && message.attachments.size == 0) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// RegEx formulas
 	const search = args.join(' ');
@@ -81,7 +81,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 				};
 			} catch (e) {
 				console.log(e);
-				return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.send({ embed:{ color:15158332, description:`${emoji} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (args[0].includes('open.spotify.com/track') || args[0].includes('spotify:track:')) {
 			const spotifyData = await getData(url);
@@ -112,7 +112,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 				};
 			} catch (e) {
 				console.log(e);
-				return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.send({ embed:{ color:15158332, description:`${emoji} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 	}	else {
@@ -161,5 +161,5 @@ module.exports.help = {
 	name: 'play',
 	category: 'Music',
 	description: 'Plays a song',
-	usage: '!play [link | song name]',
+	usage: '${PREFIX}play [link | song name]',
 };

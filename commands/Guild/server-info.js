@@ -32,5 +32,5 @@ module.exports.help = {
 	name: 'Server info',
 	category: 'Guild',
 	description: 'Gets information on the server',
-	usage: '${prefix}server-info',
+	usage: '${PREFIX}server-info',
 };

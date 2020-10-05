@@ -2,13 +2,13 @@
 const Discord = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	// Check to see if a role was mentioned
 	const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
 	// Make sure it's a role on the messages's server
 	if (!role) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Send information to channel
@@ -39,5 +39,5 @@ module.exports.help = {
 	name: 'Role info',
 	category: 'Guild',
 	description: 'Gets information on a role',
-	usage: '${prefix}role-info <role>',
+	usage: '${PREFIX}role-info <role>',
 };

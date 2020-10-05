@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const { Globalban } = require('../../modules/database/models');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	// Make sure only bot owner can do this command
 	if (message.author.id !== bot.config.ownerID) return;
 	// delete message
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
 	const banned = message.mentions.users.first() || bot.users.resolve(args[0]);
 	const bReason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Make sure user was found
-	if (!banned) return	message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
+	if (!banned) return	message.channel.send({ embed:{ color:15158332, description:`${emoji} I was unable to find this user.` } }).then(m => m.delete({ timeout: 5000 }));
 	// update database
 	Globalban.findOne({
 		userID: banned.id,
@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
 			// send message
 			message.channel.send(embed).then(m => m.delete({ timeout: 10000 }));
 		} else {
-			message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} User is already globally banned.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emoji} User is already globally banned.` } }).then(m => m.delete({ timeout: 5000 }));
 		}
 	});
 };
@@ -47,5 +47,5 @@ module.exports.help = {
 	name: 'Addban',
 	category: 'Host',
 	description: 'Add a ban to the global ban',
-	usage: '!addban {user} [reason]',
+	usage: '${PREFIX}addban <user> <reason>',
 };

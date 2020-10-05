@@ -2,11 +2,11 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emoji) => {
 	const res = await fetch('https://nekos.life/api/v2/img/meow').then(info => info.json()).catch(err => {
 		// An error occured when looking for account
 		bot.logger.error(`${err.message}`);
-		message.channel.send({ embed:{ color:15158332, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:'} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;
 	});

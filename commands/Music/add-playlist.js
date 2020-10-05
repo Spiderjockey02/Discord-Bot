@@ -6,32 +6,32 @@ const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
 // const ytdl = require('ytdl-core');
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	// Checks to see if music is enabled or the server
 	if (settings.MusicPlugin == false) return;
 
 	// Check if bot can see user in channel (the user is in a channel)
 	if (!message.member.voice.channelID) {
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
 		message.delete();
 		return;
 	}
 	// Check if bot can join channel
 	if (!message.guild.me.hasPermission('CONNECT')) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}]`);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
 		return;
 	}
 	// Check if bot can speak in channel
 	if (!message.guild.me.hasPermission('SPEAK')) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}]`);
+		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
 		return;
 	}
 	// Check if an 'entry' was added
-	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('playlist').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// RegEx formulas
 	const search = args.join(' ');
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			return;
 		} catch (e) {
 			bot.logger.error(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	} else if (scdl.isValidUrl(args[0])) {
 		// gets videos/songs from soundcloud
@@ -78,7 +78,7 @@ module.exports.run = async (bot, message, args, settings, ops) => {
 			videos = await playlist.getVideos(25, { part: 'snippet' });
 		} catch (e) {
 			bot.logger.log(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 	// get server information & join channel
@@ -128,5 +128,5 @@ module.exports.help = {
 	name: 'Playlist',
 	category: 'Music',
 	description: 'Adds a playlist to queue',
-	usage: '!add-playlist {playlist}',
+	usage: '${PREFIX}add-playlist <link>',
 };

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { KSoftClient } = require('@ksoft/api');
-module.exports.run = async (bot, message, args) => {
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('reddit').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+module.exports.run = async (bot, message, args, emoji, settings) => {
+	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('reddit').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	try {
 		let reddit;
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
 		message.channel.send(embed);
 	} catch (e) {
 		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} **Subreddit with that name was not found**` } }).then(m => m.delete({ timeout: 4500 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
@@ -34,5 +34,5 @@ module.exports.help = {
 	name: 'reddit',
 	category: 'Searcher',
 	description: 'Sends a random image from a chosen subreddit.',
-	usage: '!reddit [subreddit]',
+	usage: '${PREFIX}reddit [subreddit]',
 };

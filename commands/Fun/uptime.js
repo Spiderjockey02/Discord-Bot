@@ -17,5 +17,5 @@ module.exports.help = {
 	name: 'Uptime',
 	category: 'Fun',
 	description: 'Shows how long the bot has been online for.',
-	usage: '${prefix}uptime',
+	usage: '${PREFIX}uptime',
 };

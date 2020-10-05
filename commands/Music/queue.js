@@ -21,11 +21,11 @@ function Page(page, message, queue, fetched) {
 	message.edit(resp);
 }
 
-module.exports.run = async (bot, message, args, settings, ops) => {
+module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	// Check to see if there are any songs in queue/playing
 	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// Check and get queue
 	const queue = fetched.queue;
@@ -97,5 +97,5 @@ module.exports.help = {
 	name: 'queue',
 	category: 'Music',
 	description: 'Displays the queue',
-	usage: '!queue',
+	usage: '${PREFIX}queue',
 };

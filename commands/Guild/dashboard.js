@@ -15,5 +15,5 @@ module.exports.help = {
 	name: 'Dashboard',
 	category: 'Guild',
 	description: 'Displays a link to your Server\'s dashboard.',
-	usage: '${prefix}dashboard',
+	usage: '${PREFIX}dashboard',
 };

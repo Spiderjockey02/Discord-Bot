@@ -2,16 +2,16 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, emoji, settings) => {
 	const username = args.join(' ');
 	// Checks to see if a username was provided
-	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('instagram').help.usage}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account details...');
 	// Gather data from database
 	const url = `https://instagram.com/${username}/?__a=1`;
-	const res = await fetch(url).then(info => info.json()).catch(error => {
+	const res = await fetch(url).then(info => info.json()).catch(err => {
 		// An error occured when looking for account
-		bot.logger.error(`${error.message ? error.message : error}`);
+		bot.logger.error(err);
 		message.delete();
 		message.channel.send('That Instagram account does not exist.').then(m => m.delete({ timeout: 3500 }));
 		return;
@@ -20,7 +20,6 @@ module.exports.run = async (bot, message, args) => {
 		r.delete();
 		return;
 	}
-	console.log(res);
 	// Checks to see if a username in instagram database
 	if (!res.graphql.user.username) {
 		r.delete();
@@ -55,5 +54,5 @@ module.exports.help = {
 	name: 'Instagram',
 	category: 'Searcher',
 	description: 'Gets information on an Instagram account.',
-	usage: '!instagram [user]',
+	usage: '${PREFIX}instagram <user>',
 };
