@@ -7,19 +7,19 @@ const Discord = require('discord.js');
 function finish(bot, ops, dispatcher, message) {
 	const fetched = ops.active.get(dispatcher.guildID);
 	// Check if queue is looping or not
-	if (fetched.loopSong == true) {
+	if (fetched.loopSong == false) {
+		fetched.queue.shift();
 		// do nothing
 	} else if (fetched.loopQueue == true) {
 		const song = fetched.queue.shift();
 		fetched.queue.push(song);
 		fetched.queue.shift();
-	} else {
-		fetched.queue.shift();
 	}
+	console.log('1');
 	// Plays next song if there is one
 	if (fetched.queue.length > 0) {
 		ops.active.set(dispatcher.guildID, fetched);
-		require('../utils/play.js').run(bot, ops, fetched, message);
+		require('../utils/AudioPlayer.js').run(bot, ops, fetched, message).catch(e => console.log(e));
 	} else {
 		ops.active.delete(dispatcher.guildID);
 		const vc = bot.guilds.cache.get(dispatcher.guildID).me.voice.channel;
@@ -42,7 +42,6 @@ module.exports.run = async (bot, ops, data, message) => {
 				encoderArgs: ['-af', `bass=g=${data.bassboost}`],
 				seek: 60,
 			});
-			console.log(stream);
 		} else if (data.queue[0].url.includes('soundcloud.com')) {
 			try {
 				stream = await scdl.downloadFormat(
@@ -64,7 +63,7 @@ module.exports.run = async (bot, ops, data, message) => {
 		if (data.queue) {
 			// play the next song
 			data.queue.shift();
-			require('../utils/play.js').run(bot, ops, data, message);
+			require('../utils/AudioPlayer.js').run(bot, ops, data, message);
 		}
 		bot.logger.error(`${error.message ? error.message : error}`);
 		return message.channel.send(`Error: ${error.message ? error.message : error}`);

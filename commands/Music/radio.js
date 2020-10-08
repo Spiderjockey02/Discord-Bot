@@ -2,7 +2,6 @@
 const radio = require('../../storage/resources/radiostations.json');
 
 module.exports.run = async (bot, message, args, emoji, settings) => {
-	if (settings.MusicPlugin == false) return;
 	// Check if user is in a voice channel
 	if (!message.member.voice) {
 		message.channel.send({ embed:{ color:15158332, description:'Please connect to a voice channel.' } }).then(m => m.delete({ timeout: 3500 }));
@@ -40,5 +39,5 @@ module.exports.help = {
 	name: 'radio',
 	category: 'Music',
 	description: 'Plays the radio, do !radio list to show available stations',
-	usage: '${PREFIX}radio [Radio Station]',
+	usage: '${PREFIX}radio <Station>',
 };

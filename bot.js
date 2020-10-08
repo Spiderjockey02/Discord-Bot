@@ -10,7 +10,12 @@ bot.logger = require('./modules/logging/logger');
 // For command handler
 bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
-bot.messagesSent = 0;
+bot.Stats = {
+	MessageSent: 0,
+	Giveaways: 0,
+	BannedUsers: 0,
+	CommandsUsed: 0,
+};
 // Load commands
 (async () => {
 	fs.readdir('./commands', function(err, folders) {
@@ -35,7 +40,7 @@ bot.messagesSent = 0;
 
 // connect to database and get global functions
 bot.mongoose = require('./modules/database/mongoose');
-require('./utils/guild-settings.js')(bot);
+require('./utils/global-functions.js')(bot);
 
 // Load config for Egglord
 try {

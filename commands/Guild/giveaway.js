@@ -10,7 +10,22 @@ function sleep(milliseconds) {
 		currentDate = Date.now();
 	} while (currentDate - date < milliseconds);
 }
-
+function TotalTime(args) {
+	const totalTime = args[0];
+	console.log('Total time: ' + totalTime);
+	if (totalTime.includes('d')) {
+		totalTime.split('d');
+		console.log(totalTime);
+		const days = totalTime[0];
+		console.log(days);
+		totalTime.shift();
+	}
+	console.log('finished');
+	// console.log(totalTime);
+	// const hours = args[0].split('h')[0];
+	// const seconds = args[0].split('h')[0];
+	// console.log(time);
+}
 module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Make sure something was included
 	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
@@ -18,6 +33,13 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Make sure that the time is a number
 	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	// Check if multiply times were used
+	if (args[0].replace(/\D/g, '').length != 1) {
+		// console.log(ms(args[0]));
+		TotalTime(args);
+	}
+	return;
+	const time = ms(args[0]);
 	// get prize
 	let channel = message.mentions.channels.first();
 	let prize;
@@ -34,12 +56,12 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	// send giveaway embed
 	bot.logger.log(`${message.author.username}#${message.author.discriminator} is hosting a giveaway in the server: [${message.guild.id}].`);
 
-	const time = Date.now() + ms(args[0]);
+	const endTime = Date.now() + ms(args[0]);
 	const embed = new Discord.MessageEmbed()
 		.setTitle('New giveaway!')
-		.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(ms(args[0]), { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
+		.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(time, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
 		.setFooter('Ends at')
-		.setTimestamp(time)
+		.setTimestamp(endTime)
 		.setColor('BLUE');
 	const m = await channel.send(embed);
 	await m.react('🎉');
@@ -48,11 +70,11 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	while (i != -1) {
 		const embed2 = new Discord.MessageEmbed()
 			.setTitle('New giveaway!')
-			.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(ms(args[0]) / 4 * i, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
+			.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(time / 4 * i, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
 			.setFooter('Ends at')
-			.setTimestamp(time)
+			.setTimestamp(endTime)
 			.setColor('BLUE');
-		sleep(ms(args[0]) / 4);
+		sleep(time / 4);
 		await m.edit(embed2);
 		i--;
 	}
@@ -76,7 +98,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 module.exports.config = {
 	command: 'giveaway',
 	aliases: ['give-away', 'give-a-way'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
 };
 
 module.exports.help = {
@@ -84,5 +106,5 @@ module.exports.help = {
 	category: 'Guild',
 	description: 'Run a giveaway',
 	usage: '${PREFIX}giveway <time> <prize> [channel]',
-	example: '${PREFIX}giveaway 1h nitro',
+	example: '${PREFIX}giveaway 10h5m nitro #giveaways',
 };

@@ -20,7 +20,6 @@ module.exports.run = async (bot, message, args, emoji) => {
 			.setDescription(facts.facts[num]);
 		message.channel.send(embed);
 	});
-
 };
 
 module.exports.config = {

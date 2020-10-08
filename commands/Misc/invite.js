@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message) => {
 	// Make sure bot can see invites
-	message.channel.send({ embed:{ description:`[Invite me to your server](https://discord.com/api/oauth2/authorize?client_id=${bot.config.botID}&permissions=8&scope=bot)` } });
+	message.channel.send({ embed:{ description:`[Invite me to your server](https://discord.com/api/oauth2/authorize?client_id=${bot.config.botID}&permissions=485846102&scope=bot)` } });
 };
 
 module.exports.config = {

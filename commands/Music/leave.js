@@ -1,6 +1,4 @@
 module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	// Checks to see if music is enabled or the server
-	if (settings.MusicPlugin == false) return;
 	// Leave channel if still in channel (not force kick was used)
 	if (message.guild.me.voice.channel) {
 		if (message.guild.me.voice.channel !== message.member.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Sorry, you must be in the same voice channel as me.` } }).then(m => m.delete({ timeout: 10000 }));

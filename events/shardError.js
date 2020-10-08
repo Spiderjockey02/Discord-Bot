@@ -1,4 +1,5 @@
-module.exports = async (bot, error) => {
+module.exports = async (bot, error, shardID) => {
 	// LOG error event
-	bot.logger.log(error.message);
+	console.log(error);
+	console.log(shardID);
 };

@@ -7,32 +7,10 @@ const scdl = require('soundcloud-downloader');
 // const ytdl = require('ytdl-core');
 
 module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	// Checks to see if music is enabled or the server
-	if (settings.MusicPlugin == false) return;
-
-	// Check if bot can see user in channel (the user is in a channel)
-	if (!message.member.voice.channelID) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
-		message.delete();
+	// check for bot permissions, song/playlist ( and if needed DJ role)
+	if (!bot.musicHandler(message, args, emoji, settings)) {
 		return;
 	}
-	// Check if bot can join channel
-	if (!message.guild.me.hasPermission('CONNECT')) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-		return;
-	}
-	// Check if bot can speak in channel
-	if (!message.guild.me.hasPermission('SPEAK')) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-		return;
-	}
-	// Check if an 'entry' was added
-	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-
 	// RegEx formulas
 	const search = args.join(' ');
 	const pattern = /^.*(youtu.be\/|list=)([^#]*).*/gi;
@@ -81,18 +59,22 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
+
+	// MOVE ALL THIS TO AUDIO PLAYER
+
 	// get server information & join channel
 	const data = ops.active.get(message.guild.id) || {};
 	if (!data.connection) data.connection = await message.member.voice.channel.join();
 	// deafen self (recieve less information from discord)
 	data.connection.voice.setSelfDeaf(true);
-	if (!data.queue) data.queue = [];
+	// add music variables
 	data.guildID = message.guild.id;
-	data.volume = 100;
-	data.loopQueue = false;
-	data.loopSong = false;
-	data.bassboost = 0;
-	data.seek = 0;
+	if (!data.queue) data.queue = [];
+	if (!data.volume) data.volume = 100;
+	if (!data.loopQueue) data.loopQueue = false;
+	if (!data.loopSong) data.loopSong = false;
+	if (!data.bassboost) data.bassboost = 0;
+	if (!data.seek) data.seek = 0;
 	// add songs to queue
 	videos.forEach((video) => {
 		data.queue.push({
@@ -105,9 +87,9 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	});
 
 	// play the songs
-	msg.delete({ timeout: 1000 });
+	msg.delete();
 	if (!data.dispatcher) {
-		require('../../utils/play.js').run(bot, ops, data, message);
+		require('../../utils/AudioPlayer.js').run(bot, ops, data, message);
 	} else {
 		// show that songs where added to queue
 		const embed = new Discord.MessageEmbed()
@@ -121,7 +103,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 };
 module.exports.config = {
 	command: 'add-playlist',
-	aliases: ['playlist'],
+	aliases: ['playlist', 'addplaylist'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {

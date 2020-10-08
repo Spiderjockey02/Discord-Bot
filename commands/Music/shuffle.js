@@ -1,5 +1,4 @@
 module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	if (settings.MusicPlugin == false) return;
 	// Get queue
 	const fetched = ops.active.get(message.guild.id);
 	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));

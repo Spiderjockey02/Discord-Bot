@@ -3,7 +3,7 @@ const Ranks = require('../../modules/database/models/levels');
 module.exports.run = async (bot, message, args, emoji, settings) => {
 	if (settings.LevelPlugin == false) return;
 	// Get user
-	let user = message.mentions.users.first();
+	let user = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 	if (!user) {
 		user = message.author;
 	}
@@ -31,14 +31,14 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 };
 
 module.exports.config = {
-	command: 'level',
-	aliases: ['lvl', 'rank'],
+	command: 'rank',
+	aliases: ['lvl', 'level'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
 	name: 'Level',
-	category: 'Levels',
+	category: 'Level',
 	description: 'Shows your rank/Level',
 	usage: '${PREFIX}level [username]',
 };

@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	} else {
 		return message.channel.send({ embed:{ color:15158332, description:`${emoji} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
-	message.channel.send({ embed:{ color:3066993, description:`${emoji} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
+	message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
 	bot.logger.log(`Reloaded Command: ${commandName}.js`);
 };
 

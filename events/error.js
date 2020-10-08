@@ -1,4 +1,5 @@
 module.exports = async (bot, error) => {
 	// LOG error event
-	bot.logger.error(error.message);
+	console.log('fdsdfdfs');
+	console.log(error);
 };

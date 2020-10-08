@@ -25,7 +25,7 @@ module.exports = async (bot, message) => {
 	} catch (e) {
 		settings = bot.config.defaultSettings;
 	}
-	bot.messagesSent++;
+	bot.Stats.MessageSent++;
 	// If bot is mentioned show help (User probably dosen't know how to interact to me)
 	if (message.mentions.has(bot.user) && message.content == '<@!647203942903840779>') {
 		// make sure egglord has SEND_MESSAGES permission
@@ -87,16 +87,28 @@ module.exports = async (bot, message) => {
 		if ((settings.OnlyCommandChannel == true) && (settings.CommandChannel !== message.channel.name)) {
 			// Tell user that they cant use commnads in this channel
 			message.channel.send({ embed:{ color:15158332, description:`${emoji} **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
+		} else if ((cmd.help.category == 'nsfw' || cmd.config.command == 'urban' || cmd.config.command == 'advice') && !(message.channel.nsfw === true || message.channel.type == 'dm')) {
+			// Check to make sure NSFW category is not being ran in NSFW channel
+			message.delete();
+			message.channel.send({ embed:{ color:15158332, description:`${emoji} This command can only be dondde in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
+			return;
+		} else if (cmd.help.category == 'Music' && settings.MusicPlugin == false) {
+			// if music plugin is disabled
+			return;
+		} else if (cmd.help.category == 'moderation' && settings.ModerationPlugin == false) {
+			// if moderation plugin is disabled
+			return;
 		} else {
 			cmd.run(bot, message, args, emoji, settings, ops);
+			// add user to command cooldown list
+			if (settings.CommandCooldown == true) {
+				commandcd.add(message.author.id);
+				setTimeout(() => {
+					commandcd.delete(message.author.id);
+				}, settings.CommandCooldownSec * 1000);
+			}
+			return;
 		}
-		if (settings.CommandCooldown == true) {
-			commandcd.add(message.author.id);
-			setTimeout(() => {
-				commandcd.delete(message.author.id);
-			}, settings.CommandCooldownSec * 1000);
-		}
-		return;
 	}
 	// moderation plugin
 	if (settings.ModerationPlugin == true) {

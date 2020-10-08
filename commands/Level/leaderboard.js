@@ -50,7 +50,7 @@ module.exports.config = {
 
 module.exports.help = {
 	name: 'Leaderboard',
-	category: 'Levels',
+	category: 'Level',
 	description: 'Displays the Level leaderboard',
 	usage: '${PREFIX}leaderboard',
 };

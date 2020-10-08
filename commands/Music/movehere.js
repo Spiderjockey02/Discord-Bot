@@ -1,5 +1,4 @@
 module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	if (settings.MusicPlugin == false) return;
 	if (message.deletable) message.delete();
 	// Move the bot to a new voice channel
 	// Make sure user can move the bot

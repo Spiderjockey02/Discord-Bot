@@ -27,7 +27,6 @@ function Page(page, message, results) {
 }
 
 module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	if (settings.MusicPlugin == false) return;
 	let song;
 	if (!args[0]) {
 		// GET current song that is playing
