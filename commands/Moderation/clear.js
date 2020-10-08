@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	// Delete messages
 	await message.channel.messages.fetch({ limit: amount }).then(messages => {
 		message.channel.bulkDelete(messages);
-		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} ${messages.size} messages were successfully deleted.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} ${messages.size} messages were successfully deleted.` } }).then(m => m.delete({ timeout: 3000 }));
 	});
 };
 

@@ -2,9 +2,9 @@
 const fetch = require('node-fetch');
 const dateFormat = require('dateformat');
 const Discord = require('discord.js');
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Steam config
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('steam').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('steam').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account...');
 	const token = bot.config.SteamAPI;
 	const url = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${token}&vanityurl=${args.join(' ')}`;
@@ -21,13 +21,13 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		fetch(summaries).then(res => res.json()).then(body2 => {
 			if (!body2.response) {
 				r.delete();
-				return message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+				return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 			}
 			const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body2.response.players[0];
 			fetch(bans).then(res => res.json()).then(body3 => {
 				if (!body3.players) {
 					r.delete();
-					return message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+					return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 				}
 				const { NumberOfGameBans } = body3.players[0];
 				// Display results

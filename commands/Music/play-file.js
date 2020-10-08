@@ -1,6 +1,6 @@
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// check for bot permissions, song/playlist ( and if needed DJ role)
-	if (!bot.musicHandler(message, args, emoji, settings)) {
+	if (!bot.musicHandler(message, args, emojis, settings)) {
 		return;
 	}
 };

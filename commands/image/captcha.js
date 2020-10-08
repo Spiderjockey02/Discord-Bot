@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// send 'waitng' message
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 		// if an error occured
 		bot.logger.log(err.message);
 		msg.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

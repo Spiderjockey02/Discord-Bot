@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch');
 const fileTypes = ['png', 'jpeg', 'tiff', 'jpg'];
 
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 	// Get file for blurpify
@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 				}
 			}
 			// no file with the correct format was found
-			if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emoji} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
+			if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
 			file = user.displayAvatarURL();
 		}
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 		// if an error occured
 		bot.logger.log(err.message);
 		msg.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

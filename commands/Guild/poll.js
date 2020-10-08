@@ -1,17 +1,17 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (message.deletable) message.delete();
 	// Check bot for add reaction permission
 	if (!message.guild.me.hasPermission('ADD_REACTIONS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}]`);
 		return;
 	}
 	// Make sure a poll was provided
 	if (!args[0]) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('poll').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('poll').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		return;
 	}
 

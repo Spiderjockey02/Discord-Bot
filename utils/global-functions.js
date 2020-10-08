@@ -36,33 +36,33 @@ module.exports = bot => {
 		});
 		return;
 	};
-	bot.musicHandler = (message, args, emoji, settings) => {
+	bot.musicHandler = (message, args, emojis, settings) => {
 		// Check if bot can see user in channel (the user is in a channel)
 		if (!message.member.voice.channelID) {
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
 			message.delete();
 			return false;
 		}
 		// Check if bot can join channel
 		if (!message.guild.me.hasPermission('CONNECT')) {
 			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
 			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
 			return false;
 		}
 		// Check if bot can speak in channel
 		if (!message.guild.me.hasPermission('SPEAK')) {
 			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
 			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
 			return false;
 		}
 		// Check if an 'entry' was added
 		if (args.length == 0) {
 			if (message.content.includes('play') && !message.content.includes('playlist')) {
-				message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 			} else {
-				message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('add-playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('add-playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 			return false;
 		}

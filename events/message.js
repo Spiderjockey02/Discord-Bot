@@ -59,16 +59,16 @@ module.exports = async (bot, message) => {
 	if (cmd && message.content.startsWith(settings.prefix)) {
 		// Check for SEND_MESSAGES permission
 		// only run Fun, Host & Search plugin commands in DM's
-		let emoji;
+		let emojis;
 		if (message.channel.type == 'dm') {
 			// Make sure command is not a server only command.
 			if (['Guild', 'Levels', 'Music', 'Trivia'].includes(cmd.help.category)) {
 				message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} That command can only be ran in a server.` } }).then(m => m.delete({ timeout: 5000 }));
 				return;
 			}
-			emoji = bot.config.emojis.cross;
+			emojis = [bot.config.emojis.cross, bot.config.emojis.tick];
 		} else {
-			emoji = (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:';
+			emojis = [(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:', (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'];
 			// Check for server permissions
 			const permissions = message.channel.permissionsFor(bot.user);
 			// Check for SEND_MESSAGES permission
@@ -80,17 +80,17 @@ module.exports = async (bot, message) => {
 		// Check if user is in command cooldown check
 		if (commandcd.has(message.author.id) && (message.author.id != bot.config.ownerID)) {
 			message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} You must wait ${settings.CommandCooldownSec} seconds between each command.` } }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You must wait ${settings.CommandCooldownSec} seconds between each command.` } }).then(m => m.delete({ timeout: 5000 }));
 			return;
 		}
 		// Check to see if the command is being ran from a channel thats blacklisted
 		if ((settings.OnlyCommandChannel == true) && (settings.CommandChannel !== message.channel.name)) {
 			// Tell user that they cant use commnads in this channel
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
-		} else if ((cmd.help.category == 'nsfw' || cmd.config.command == 'urban' || cmd.config.command == 'advice') && !(message.channel.nsfw === true || message.channel.type == 'dm')) {
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} **${message.author.username}#${message.author.discriminator}**, that command is disabled in this channel.` } }).then(m => m.delete({ timeout: 10000 }));
+		} else if ((cmd.help.category == 'Nsfw' || cmd.config.command == 'urban' || cmd.config.command == 'advice') && !(message.channel.nsfw === true || message.channel.type == 'dm')) {
 			// Check to make sure NSFW category is not being ran in NSFW channel
 			message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} This command can only be dondde in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} This command can only be done in a \`NSFW\` channel.` } }).then(m => m.delete({ timeout: 5000 }));
 			return;
 		} else if (cmd.help.category == 'Music' && settings.MusicPlugin == false) {
 			// if music plugin is disabled
@@ -99,7 +99,7 @@ module.exports = async (bot, message) => {
 			// if moderation plugin is disabled
 			return;
 		} else {
-			cmd.run(bot, message, args, emoji, settings, ops);
+			cmd.run(bot, message, args, emojis, settings, ops);
 			// add user to command cooldown list
 			if (settings.CommandCooldown == true) {
 				commandcd.add(message.author.id);

@@ -1,7 +1,7 @@
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Get queue
 	const fetched = ops.active.get(message.guild.id);
-	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (fetched == undefined) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	// variables
 	const songs = fetched.queue;
 	for (let i = songs.length - 1; i > 1; i--) {

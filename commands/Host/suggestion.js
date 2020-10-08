@@ -1,7 +1,7 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	// This command can only be done in the official support server
 	if (message.guild.id == bot.config.SupportServer.GuildID) {
 		// This command can only be done by @suggestion
@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 			});
 			// Tell user suggestion has been added
 			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:3066993, description:`${emoji} Suggestion has been added.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} Suggestion has been added.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 };

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const R6API = require('r6api.js');
 const { getId, getLevel, getRank, getStats } = new R6API(require('../../config.js').Rainbow6Siege.username, require('../../config.js').Rainbow6Siege.password);
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	// Get platforms and regions (just make it easier for users to use this command)
 	const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4:'PSN' };
 	const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 	// Makes sure that user actually exist
 	if(!player.length) {
 		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${emoji} Couldn't fetch results for user: \`${player}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Couldn't fetch results for user: \`${player}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	}
 	const r = await message.channel.send('Gathering results...');
 	player = player[0];
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 	if (!playerRank.length || !playerStats.length || !playerGame.length) {
 		r.delete();
 		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 	const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
 	const { pvp, pve } = playerStats[0];

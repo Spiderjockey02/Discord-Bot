@@ -21,10 +21,10 @@ function Page(page, message, queue, fetched) {
 	message.edit(resp);
 }
 
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Check to see if there are any songs in queue/playing
 	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 
 	// Check and get queue
 	const queue = fetched.queue;
@@ -56,24 +56,24 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 		await msg.react('🔼');
 		await msg.react('⏫');
 		const filter = (reaction, user) => {
-			return ['⏬', '🔽', '🔼', '⏫'].includes(reaction.emoji.name) && !user.bot;
+			return ['⏬', '🔽', '🔼', '⏫'].includes(reaction.emojis[0].name) && !user.bot;
 		};
 		let page = 1;
 		const collector = msg.createReactionCollector(filter, { time: 240000 });
 		collector.on('collect', (reaction) => {
 			// find what reaction was done
 			const totalPage = Math.ceil(queue.length / 10);
-			if (reaction.emoji.name === '⏬') {
+			if (reaction.emojis[0].name === '⏬') {
 				// last page
 				page = totalPage;
 				Page(page, msg, queue, fetched);
-			} else if (reaction.emoji.name === '🔽') {
+			} else if (reaction.emojis[0].name === '🔽') {
 				// Show next 10 songs
 				page = page + 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
 				Page(page, msg, queue, fetched);
-			} else if (reaction.emoji.name === '🔼') {
+			} else if (reaction.emojis[0].name === '🔼') {
 				// show the last 10 previous songs
 				page = page - 1;
 				if (page <= 1) page = 1;

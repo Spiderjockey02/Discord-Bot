@@ -25,7 +25,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 			bot.logger.error(err.message);
 		}
 	}
-	message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${user.user.username}#${user.user.discriminator} was successfully deafened*.` } }).then(m => m.delete({ timeout: 3000 }));
+	message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} *${user.user.username}#${user.user.discriminator} was successfully deafened*.` } }).then(m => m.delete({ timeout: 3000 }));
 };
 
 module.exports.config = {

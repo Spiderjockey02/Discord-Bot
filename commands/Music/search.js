@@ -1,7 +1,7 @@
 const yts = require('yt-search');
 
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
-	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('search').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
+	if (args.length == 0) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('search').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Just find top 10 songs on youtube
 	// RENAME THIS TO SEARCH AND OTHER NAME
 	const term = args.join(' ');

@@ -2,11 +2,11 @@
 const Fortnite = require('fortnite');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get platform and username
 	const stats = new Fortnite(bot.config.fortniteAPI);
-	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	if (!args[1]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[1]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const platform = args.shift();
 	const username = args.join(' ');
 	const r = await message.channel.send(`Getting fortnite information on **${username}**.`);
@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		// If data wasn't found
 		if (message.deletable) message.delete();
 		r.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} This username was unable to be found.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} This username was unable to be found.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(err.message);
 	});
 };

@@ -6,9 +6,9 @@ const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
 // const ytdl = require('ytdl-core');
 
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// check for bot permissions, song/playlist ( and if needed DJ role)
-	if (!bot.musicHandler(message, args, emoji, settings)) {
+	if (!bot.musicHandler(message, args, emojis, settings)) {
 		return;
 	}
 	// RegEx formulas
@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 			return;
 		} catch (e) {
 			bot.logger.error(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	} else if (scdl.isValidUrl(args[0])) {
 		// gets videos/songs from soundcloud
@@ -56,7 +56,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 			videos = await playlist.getVideos(25, { part: 'snippet' });
 		} catch (e) {
 			bot.logger.log(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Playlist not found.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 

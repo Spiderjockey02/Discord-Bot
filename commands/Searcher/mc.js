@@ -2,9 +2,9 @@
 const util = require('minecraft-server-util');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Ping a minecraft server
-	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('mc').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('mc').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Pinging server..');
 	// If no ping use 25565
 	if(!args[1]) {
@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		// An error occured (either no IP, Open port or timed out)
 		r.delete({ timeout: 1000 });
 		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
 		bot.logger.error(err.message);
 	});
 };

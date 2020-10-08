@@ -1,7 +1,7 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get text for QR encoding (including file URl)
 	let text = args.join(' ');
 	if (!text) {
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		if (message.attachments.size > 0) {
 			text = message.attachments.first().url;
 		} else {
-			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('qrcode').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('qrcode').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 	// send 'waiting' message
@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		// if error has occured
 		bot.logger.log(err.message);
 		msg.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

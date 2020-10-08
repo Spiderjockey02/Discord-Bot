@@ -1,9 +1,9 @@
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Check to see if there are any songs in queue/playing
 	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Check to see if user and bot are in the same channel
-	if (message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Sorry, you must be in the same voice channel as me` } }).then(m => m.delete({ timeout: 10000 }));
+	if (message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Sorry, you must be in the same voice channel as me` } }).then(m => m.delete({ timeout: 10000 }));
 	// Check if they inputted a number from 0 to 200 (No MAX but music quality lowers after 200)
 	if (!args[0]) return message.channel.send(`:loud_sound: The current volume is: **${fetched.volume}%**.`);
 	if (isNaN(args[0]) || args[0] > 200 || args[0] < 0) return message.channel.send('Please input a number between 0 and 200');

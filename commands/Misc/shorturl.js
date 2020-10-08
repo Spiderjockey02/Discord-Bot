@@ -1,7 +1,7 @@
 // Dependencies
 const TinyURL = require('tinyurl');
 
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	const mes = message.content.split(' ').slice(1).join(' ');
 	// const mes = encodeURI(message.content.split(' ').slice(1).join(' '));
 	try {
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 			message.channel.send(res);
 		});
 	} catch (e) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

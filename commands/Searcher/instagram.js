@@ -2,10 +2,10 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	const username = args.join(' ');
 	// Checks to see if a username was provided
-	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account details...');
 	// Gather data from database
 	const url = `https://instagram.com/${username}/?__a=1`;

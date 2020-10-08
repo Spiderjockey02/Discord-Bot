@@ -7,9 +7,9 @@ const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
 const scdl = require('soundcloud-downloader');
 const { getData } = require('spotify-url-info');
 
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// check for bot permissions, song/playlist ( and if needed DJ role)
-	if (!bot.musicHandler(message, args, emoji, settings)) {
+	if (!bot.musicHandler(message, args, emojis, settings)) {
 		return;
 	}
 	// RegEx formulas
@@ -25,13 +25,13 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 	if (url) {
 		if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
 			// This checks for youtube playlist
-			return message.client.commands.get('add-playlist').run(bot, message, args, emoji, settings, ops);
+			return message.client.commands.get('add-playlist').run(bot, message, args, emojis[0], settings, ops);
 		} else if (scdl.isValidUrl(url) && url.includes('/sets/')) {
 			// This checks for soundcloud playlist
-			return message.client.commands.get('add-playlist').run(bot, message, args, emoji, settings, ops);
+			return message.client.commands.get('add-playlist').run(bot, message, args, emojis[0], settings, ops);
 		} else if (args[0].includes('open.spotify.com/album') || args[0].includes('spotify:album:') || args[0].includes('open.spotify.com/playlist') || args[0].includes('spotify:playlist:')) {
 			// this checks for spotify
-			return message.client.commands.get('add-playlist').run(bot, message, args, emoji, settings, ops);
+			return message.client.commands.get('add-playlist').run(bot, message, args, emojis[0], settings, ops);
 		} else if (scRegex.test(url)) {
 			// play soundcloud
 			try {
@@ -60,7 +60,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 				};
 			} catch (e) {
 				console.log(e);
-				return message.channel.send({ embed:{ color:15158332, description:`${emoji} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (args[0].includes('open.spotify.com/track') || args[0].includes('spotify:track:')) {
 			const spotifyData = await getData(url);
@@ -91,7 +91,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 				};
 			} catch (e) {
 				console.log(e);
-				return message.channel.send({ embed:{ color:15158332, description:`${emoji} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Unable to find video with that song.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 	}	else {

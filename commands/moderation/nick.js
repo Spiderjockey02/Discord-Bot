@@ -25,6 +25,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 	}
 	// Get the nickanme
 	const nickname = message.content.slice(6).replace(/<[^}]*>/, '').slice(1);
+	// HERE CHECK IF THE NICKNAME HAS PROHIBTED CHARATACTERS/WORDS IN IT
 	// Make sure nickname is NOT longer than 32 characters
 	if (nickname.length >= 32) {
 		message.channel.send({ embed:{ color:15158332, description:`${emoji} Nickname must be shorter than 32 characters.` } }).then(m => m.delete({ timeout: 5000 }));
@@ -33,7 +34,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 	// Change nickname and tell user (send error message if dosen't work)
 	try {
 		nickuser.setNickname(nickname);
-		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *Successfully changed nickname of ${nickuser.user.username}#${nickuser.user.discriminator}.*` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} *Successfully changed nickname of ${nickuser.user.username}#${nickuser.user.discriminator}.*` } }).then(m => m.delete({ timeout: 5000 }));
 	} catch(e) {
 		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am unable to change ${nickuser.user.username}#${nickuser.user.discriminator} nickname.` } }).then(m => m.delete({ timeout: 10000 }));
 	}

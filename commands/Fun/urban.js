@@ -2,15 +2,15 @@
 const ud = require('urban-dictionary');
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get phrase
 	const phrase = args.join(' ');
-	if (!phrase) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('urban').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!phrase) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('urban').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Search up phrase in urban dictionary
 	ud.term(`${phrase}`, (error, entries) => {
 		if (error) {
 			bot.logger.error(`Urban Dictionary: ${error.code} (phrase: ${phrase})`);
-			message.channel.send({ embed:{ color:15158332, description:`${emoji} Phrase: \`${phrase}\` was not found on urban dictionary.` } }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Phrase: \`${phrase}\` was not found on urban dictionary.` } }).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			// send message
 			const embed = new Discord.MessageEmbed()

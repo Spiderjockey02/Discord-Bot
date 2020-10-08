@@ -52,7 +52,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 	try {
 		user.roles.add(muteRole).then(() => {
 			// reply to user
-			message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${user.user.username} was successfully muted*.` } }).then(m => m.delete({ timeout: 7000 }));
+			message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} *${user.user.username} was successfully muted*.` } }).then(m => m.delete({ timeout: 7000 }));
 		});
 	} catch (error) {
 		bot.logger.error(`${error.message ? error.message : error}`);

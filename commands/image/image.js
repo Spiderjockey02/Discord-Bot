@@ -2,11 +2,11 @@
 const cheerio = require('cheerio');
 const request = require('request');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure a topic was included
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('image').help.usage.replace('${PREFRIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('image').help.usage.replace('${PREFRIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		return;
 	}
 	const word = args.join(' ');

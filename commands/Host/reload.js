@@ -1,10 +1,10 @@
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return;
 	// Checks to see if a command was specified
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('reload').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('reload').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		return;
 	}
 	// delete message
@@ -22,12 +22,12 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 			bot.commands.set(commandName, pull);
 		} catch(e) {
 			console.log(e);
-			return message.channel.send({ embed:{ color:15158332, description:`${emoji} Could not reload: \`${commandName}\`.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Could not reload: \`${commandName}\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	} else {
-		return message.channel.send({ embed:{ color:15158332, description:`${emoji} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} \`${commandName}\` isn't a command.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
-	message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
+	message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} Command: \`${commandName}\` has been reloaded.` } }).then(m => m.delete({ timeout: 8000 }));
 	bot.logger.log(`Reloaded Command: ${commandName}.js`);
 };
 

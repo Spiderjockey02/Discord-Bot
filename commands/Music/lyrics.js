@@ -26,14 +26,14 @@ function Page(page, message, results) {
 	}
 }
 
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	let song;
 	if (!args[0]) {
 		// GET current song that is playing
 		const fetched = ops.active.get(message.guild.id);
 		if (fetched == undefined) {
 			if (message.deletable) message.delete();
-			return message.channel.send({ embed:{ color:15158332, description:`${emoji} There are no songs currently playing.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} There are no songs currently playing.` } }).then(m => m.delete({ timeout: 10000 }));
 		} else {
 			song = fetched.queue[0].title;
 		}
@@ -56,7 +56,7 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 			if (results.lyrics.length < 2048) return;
 			// Make sure bot has permissions to add reactions
 			if (!msg.guild.me.hasPermission('ADD_REACTIONS')) {
-				msg.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+				msg.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`ADD_REACTIONS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 				bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
 				return;
 			}
@@ -66,12 +66,12 @@ module.exports.run = async (bot, message, args, emoji, settings, ops) => {
 			// get collector
 			let page = 0;
 			const filter = (reaction, user) => {
-				return ['⬆', '⬇'].includes(reaction.emoji.name) && !user.bot;
+				return ['⬆', '⬇'].includes(reaction.emojis[0].name) && !user.bot;
 			};
 			const collector = msg.createReactionCollector(filter, { time: 240000 });
 			collector.on('collect', (reaction) => {
 				const totalpages = (Math.ceil(results.lyrics.length / 2048) - 1);
-				if (reaction.emoji.name === '⬆') {
+				if (reaction.emojis[0].name === '⬆') {
 					// back page
 					page = page - 1;
 					if (page <= 0) page = 0;

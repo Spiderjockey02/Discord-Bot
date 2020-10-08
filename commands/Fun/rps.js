@@ -1,11 +1,11 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure a choice was made
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 		return;
 	}
 	// Make sure rock, paper or scissors was their choice

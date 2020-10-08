@@ -26,13 +26,13 @@ function TotalTime(args) {
 	// const seconds = args[0].split('h')[0];
 	// console.log(time);
 }
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure something was included
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Make sure that a time interval is included
-	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Make sure that the time is a number
-	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emoji} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Check if multiply times were used
 	if (args[0].replace(/\D/g, '').length != 1) {
 		// console.log(ms(args[0]));

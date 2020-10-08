@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args, emoji) => {
 	// Kick user with reason
 	try {
 		message.guild.member(kicked).kick({ reason: reason });
-		message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${kicked.username} was successfully kicked*.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.channel.send({ embed:{ color:3066993, description:`${(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'} *${kicked.username} was successfully kicked*.` } }).then(m => m.delete({ timeout: 3000 }));
 	} catch (err) {
 		bot.logger.error(err.message);
 	}
