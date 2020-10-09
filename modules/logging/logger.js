@@ -41,6 +41,11 @@ exports.log = (content, type = 'log') => {
 		log.info(content);
 		return;
 	}
+	case 'website': {
+		console.log(`${timestamp} ${chalk.black.bgMagenta(type.toUpperCase())} ${content}`);
+		log.info(content);
+		return;
+	}
 	default: throw new TypeError('Logger type must be either warn, debug, log, ready, cmd or error.');
 	}
 };

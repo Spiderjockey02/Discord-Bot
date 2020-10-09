@@ -4,6 +4,20 @@ const ytdlDiscord = require('discord-ytdl-core');
 const scdl = require('soundcloud-downloader');
 const Discord = require('discord.js');
 
+// ffmpegFilters
+const ffmpegFilters = {
+	'3d': 'apulsator=hz=0.125',
+	bassboost: 'dynaudnorm=f=150:g=15,equalizer=f=40:width_type=h:width=50:g=10',
+	echo: 'aecho=0.8:0.9:1000:0.3',
+	flanger: 'flanger',
+	gate: 'agate',
+	haas: 'haas',
+	karaoke: 'stereotools=mlev=0.1',
+	nightcore: 'asetrate=48000*1.25,aresample=48000,equalizer=f=40:width_type=h:width=50:g=10',
+	reverse: 'areverse',
+	vaporwave: 'asetrate=48000*0.8,aresample=48000,atempo=1.1',
+};
+
 function finish(bot, ops, dispatcher, message) {
 	const fetched = ops.active.get(dispatcher.guildID);
 	// Check if queue is looping or not

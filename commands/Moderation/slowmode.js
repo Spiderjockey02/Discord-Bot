@@ -1,17 +1,17 @@
 // Dependencies
 const ms = require('ms');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (message.deletable) message.delete();
 
 	// Make sure user can activate slowmode
 	if (!message.member.hasPermission('MANAGE_CHANNELS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Check if bot can activate sowmode
 	if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
 		return;
 	}
@@ -30,10 +30,11 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 
 	}
 	try {
-		message.channel.setRateLimitPerUser(time);
+		await message.channel.setRateLimitPerUser(time);
 		message.channel.send(`Slowmode Set to **${args[0]}**`).then(m => m.delete({ timeout:15000 }));
 	} catch (err) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`${err.message} when running command: slowmode.`);
 	}
 };
 

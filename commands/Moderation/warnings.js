@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (message.deletable) message.delete();
 	// search for user's warnings
 	// if any display them

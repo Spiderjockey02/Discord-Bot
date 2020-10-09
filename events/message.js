@@ -27,7 +27,7 @@ module.exports = async (bot, message) => {
 	}
 	bot.Stats.MessageSent++;
 	// If bot is mentioned show help (User probably dosen't know how to interact to me)
-	if (message.mentions.has(bot.user) && message.content == '<@!647203942903840779>') {
+	if (message.mentions.has(bot.user) && message.content == `<@!${bot.config.botID}>`) {
 		// make sure egglord has SEND_MESSAGES permission
 		if (message.channel.type != 'dm') {
 			const permissions = message.channel.permissionsFor(bot.user);
@@ -35,10 +35,10 @@ module.exports = async (bot, message) => {
 		}
 		// Send egglord information to user
 		const embed = new Discord.MessageEmbed()
-			.setTitle('Egglord Information')
+			.setTitle(`${bot.user.username}'s Information`)
 			.setURL(bot.config.Dashboard.domain)
-			.setThumbnail('https://i.imgur.com/2otMem9.png')
-			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=647203942903840779&permissions=8&scope=bot)`)
+			.setThumbnail(bot.user.displayAvatarURL())
+			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.config.botID}&permissions=8&scope=bot)`)
 			.addField('Server Count:', `${bot.guilds.cache.size} (${bot.users.cache.size} users)`)
 			.addField('Uptime:', `${duration(bot.uptime)}`)
 			.addField('Total Commands:', `${bot.commands.size} (!help)`)
@@ -99,6 +99,7 @@ module.exports = async (bot, message) => {
 			// if moderation plugin is disabled
 			return;
 		} else {
+			bot.Stats.CommandsUsed++;
 			cmd.run(bot, message, args, emojis, settings, ops);
 			// add user to command cooldown list
 			if (settings.CommandCooldown == true) {

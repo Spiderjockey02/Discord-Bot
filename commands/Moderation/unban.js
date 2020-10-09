@@ -1,13 +1,13 @@
-module.exports.run = async (bot, message, args, emoji) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	if (message.deletable) message.delete();
 	// Check if user has permission to ban user
 	if (!message.member.hasPermission('BAN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Check if bot has permission to unban user
 	if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emoji} I am missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}]`);
 		return;
 	}
@@ -20,10 +20,10 @@ module.exports.run = async (bot, message, args, emoji) => {
 			if (!bUser) return;
 			message.guild.members.unban(bUser.user);
 			console.log(bUser);
-			message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${bUser.user.username}#${bUser.user.discriminator} was successfully unbanned*.` } }).then(m => m.delete({ timeout: 3000 }));
+			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${bUser.user.username}#${bUser.user.discriminator} was successfully unbanned*.` } }).then(m => m.delete({ timeout: 3000 }));
 		});
-	} catch (error) {
-		bot.logger.error(`${error.message ? error.message : error}`);
+	} catch (err) {
+		bot.logger.error(`${err.message} when running command: unban.`);
 	}
 };
 
@@ -38,4 +38,5 @@ module.exports.help = {
 	category: 'Moderation',
 	description: 'Unban a user.',
 	usage: '${PREFIX}unban <user> [reason]',
+	example: '${PREFIX}unban @BadPerson wasn\'t that bad actually.',
 };

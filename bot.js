@@ -13,6 +13,8 @@ bot.commands = new Discord.Collection();
 bot.Stats = {
 	MessageSent: 0,
 	Giveaways: 0,
+	WarnedUsers: 0,
+	KickedUsers: 0,
 	BannedUsers: 0,
 	CommandsUsed: 0,
 };

@@ -4,7 +4,7 @@ const guildScheme = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	guildID: Number,
 	guildName: String,
-	prefix: { type: String, default: '!' },
+	prefix: { type: String, default: 'e!' },
 	// Welcome Plugin
 	welcomePlugin: { type: Boolean, default: false },
 	// if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
@@ -81,6 +81,8 @@ const guildScheme = mongoose.Schema({
 	ModerationZalgoRole: { type: Array, default: ['ForZalgo'] },
 	// How many warnings till the user is kicked from server
 	ModerationWarningCounter: { type: Number, default: 3 },
+	TicketSupportRole: { type: Number, default: 751857618720522341 },
+	TicketCategory: { type: Number, default: 764252341200224296 },
 	// Anti-raid plugin
 	AntiRaidPlugin: { type: Boolean, default: false },
 	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
@@ -88,8 +90,9 @@ const guildScheme = mongoose.Schema({
 	AntiRaidChannelID: { type: Number, default: 999999999999999999 },
 	// Search PLugin
 	SearchPlugin: { type: Boolean, default: true },
+	NSFWPlugin: { type: Boolean, default: false },
 	// Misc
-	DisabledCommands: { type: Array, default: ['junk'] },
+	DisabledCommands: { type: Array, default: ['IWannaHackYou'] },
 	// Server stats plugin
 	ServerStats: { type: Boolean, default: false },
 	ServerStatsCate: { type: String, default: '📊 Server Stats 📊' },

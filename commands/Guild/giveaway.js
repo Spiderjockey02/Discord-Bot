@@ -10,22 +10,7 @@ function sleep(milliseconds) {
 		currentDate = Date.now();
 	} while (currentDate - date < milliseconds);
 }
-function TotalTime(args) {
-	const totalTime = args[0];
-	console.log('Total time: ' + totalTime);
-	if (totalTime.includes('d')) {
-		totalTime.split('d');
-		console.log(totalTime);
-		const days = totalTime[0];
-		console.log(days);
-		totalTime.shift();
-	}
-	console.log('finished');
-	// console.log(totalTime);
-	// const hours = args[0].split('h')[0];
-	// const seconds = args[0].split('h')[0];
-	// console.log(time);
-}
+
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure something was included
 	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
@@ -34,11 +19,8 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure that the time is a number
 	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Check if multiply times were used
-	if (args[0].replace(/\D/g, '').length != 1) {
-		// console.log(ms(args[0]));
-		TotalTime(args);
-	}
-	return;
+	if (args[0].length - args[0].replace(/[A-Za-z]/g, '').length != 1) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} For now only \`1\` time interval can be used.` } }).then(m => m.delete({ timeout: 5000 }));
+	// Get time
 	const time = ms(args[0]);
 	// get prize
 	let channel = message.mentions.channels.first();

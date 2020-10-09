@@ -1,54 +1,67 @@
 // Dependencies
 const Discord = require('discord.js');
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (message.deletable) message.delete();
+	// Check if bot can create channel
+	if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
+		bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
+		return;
+	}
 	// Check if a ticket channel is already open
 	if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
-		return message.channel.send({ embed:{ color:15158332, description:`${emoji} You already have a ticket channel` } }).then(m => m.delete({ timeout: 10000 }));
+		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You already have a ticket channel` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 	const reason = (args.join(' ').slice(8)) ? args.join(' ').slice(8) : 'No reason given';
-	message.guild.channels.create(`ticket-${message.author.id}`, 'text').then(c => {
+	message.guild.channels.create(`ticket-${message.author.id}`, 'text').then(channel => {
 		// Support role ID
-		const supportRole = message.guild.roles.cache.find(role => role.id == '750827122209325106');
+		const supportRole = message.guild.roles.cache.find(role => role.id == settings.TicketSupportRole);
+		console.log(supportRole);
+		if (!supportRole) {
+			return message.channel.send(`${emojis[0]} No support role has been created on this server yet.`).then(m => m.delete({ timeout: 10000 }));
+		}
 		const everyoneRole = message.guild.roles.cache.find(role => role.name == '@everyone');
 		// Category ID - Optional
-		c.setParent('761289149008445461');
-		c.updateOverwrite(message.author, {
+		channel.setParent(settings.TicketCategory);
+		// update permissions so only user and support role can see this
+		channel.updateOverwrite(message.author, {
 			SEND_MESSAGES: true,
 			READ_MESSAGES: true,
 		});
-		c.updateOverwrite(supportRole, {
+		channel.updateOverwrite(supportRole, {
 			SEND_MESSAGES: true,
 			READ_MESSAGES: true,
 		});
-		c.updateOverwrite(everyoneRole, {
+		channel.updateOverwrite(everyoneRole, {
 			SEND_MESSAGES: false,
 			READ_MESSAGES: false,
 		});
-
+		// send ticket log (goes in ModLOg channel)
 		const ticketLog = new Discord.MessageEmbed()
 			.setTitle('Ticket Opened!')
-			.setTimestamp()
-			.addField('Ticket', c)
+			.addField('Ticket', channel)
 			.addField('User', message.author)
-			.addField('Reason', reason);
-		const modChannel = message.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+			.addField('Reason', reason)
+			.setTimestamp();
+		const modChannel = message.guild.channels.cache.find(c => c.id == settings.ModLogChannel);
 		if (modChannel) modChannel.send(ticketLog);
 
-		const SuccessEmbed = new Discord.MessageEmbed()
+		// reply to user saying that channel has been created
+		const successEmbed = new Discord.MessageEmbed()
 			.setTitle('✅ Success!')
-			.setDescription(`Your ticket has been created: ${c}`);
-		message.channel.send(SuccessEmbed);
+			.setDescription(`Your ticket has been created: ${channel}`);
+		message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));
 
+		// Add message to ticket channel
 		const embed = new Discord.MessageEmbed()
 			.setColor(0xFF5555)
 			.addField(`Hey ${message.author.username}!`, 'Our support team will contact you as soon as possible.')
 			.addField('Reason', reason)
 			.setTimestamp();
-		c.send({ embed: embed });
-		c.send(`${message.author}`).then(c => c.delete({ timeout:1000 }));
+		channel.send(embed);
+		channel.send(`${message.author}`).then(m => m.delete({ timeout:1000 }));
 	}).catch(console.error);
 };
 
@@ -62,5 +75,6 @@ module.exports.help = {
 	name: 'Ticket',
 	category: 'Moderation',
 	description: 'Open a support ticket.',
-	usage: '${PREFIX}ticket',
+	usage: '${PREFIX}ticket [reason]',
+	example: '${PREFIX}ticket I have found a bug.',
 };
