@@ -59,13 +59,17 @@ module.exports = bot => {
 		}
 		// Check if an 'entry' was added
 		if (args.length == 0) {
-			if (message.content.includes('play') && !message.content.includes('playlist')) {
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-			} else {
+			if (message.content.includes('playlist')) {
 				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('add-playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+			} else {
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 			}
 			return false;
 		}
 		return true;
+	};
+	bot.PermissionHandler = (message, userPermissions, botPermissions, emojis, settings) => {
+		// userPermissions & botPermissions will be arrays
+		console.log('This is to replace all permission checks on commands and make a single permission handler');
 	};
 };

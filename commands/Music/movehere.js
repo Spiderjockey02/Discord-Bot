@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 		return;
 	}
 	// get channel and data info
-	const channel = message.guild.channels.cache.find(channel => channel.id == args[0]);
+	const channel = message.guild.channels.cache.find(c => c.id == args[0]);
 	const data = ops.active.get(message.guild.id);
 
 	// Make sure there are song playing

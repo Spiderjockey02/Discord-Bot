@@ -28,6 +28,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		if (settings.MusicTriviaPlugin) {
 			embed.addField('Trivia', `\`${settings.prefix}help Trivia\``, true);
 		}
+		embed.addField('Plugins', `\`${settings.prefix}help Plugins\``, true);
 		message.channel.send(embed);
 	} else if (args.length == 1) {
 		// Look for command

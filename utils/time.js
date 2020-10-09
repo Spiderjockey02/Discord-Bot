@@ -15,3 +15,7 @@ module.exports.getDayDiff = (timestamp0, timestamp1) => {
 module.exports.getDurationDiff = (timestamp0, timestamp1) => {
 	return Math.abs(timestamp0 - timestamp1) / (1000 * 60 * 60 * 24);
 };
+
+module.exports.getTotalTime = () => {
+	console.log('Not working yet, This will be used for giveaways & temp(ban/mute/warn).');
+};

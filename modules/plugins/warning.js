@@ -26,10 +26,11 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 			res.Warnings = res.Warnings + 1;
 			if (res.Warnings == 2) {
 				// Mutes user
+				let muteTime;
 				const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
 				if (muteRole) {
 					// 5 minutes
-					const muteTime = 300000;
+					muteTime = 300000;
 					await (wUser.roles.add(muteRole));
 				}
 				const embed = new Discord.MessageEmbed()

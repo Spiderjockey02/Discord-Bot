@@ -2,7 +2,7 @@ const { inspect } = require('util');
 
 module.exports.run = async (args, message, bot) => {
 	if (args[0] == 'send') {
-		const channel = bot.channels.cache.find(channel => channel.id == args[1]);
+		const channel = bot.channels.cache.find(c => c.id == args[1]);
 		if (!channel) return bot.logger.error(`No channel with id: ${args[1]} was found.`);
 		channel.send(message.slice(24));
 		bot.logger.log(`Message successfully sent to Channel: ${args[1]}`);
