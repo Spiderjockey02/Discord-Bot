@@ -1,6 +1,6 @@
 // Dependencies
 const Discord = require('discord.js');
-const Ranks = require('../../modules/database/models/levels');
+const { Ranks } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (settings.LevelPlugin == false) return;

@@ -5,6 +5,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`KICK_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('warn').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// Get user to warn
 	const wUser = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
 	if (!wUser) {
@@ -19,7 +20,12 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get reason for warning
 	const wReason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Warning is sent to warning manager
-	require('../../modules/plugins/warning').run(bot, message, wUser, wReason, settings);
+	try {
+		await require('../../modules/plugins/warning').run(bot, message, wUser, wReason, settings);
+	} catch (err) {
+		bot.logger.error(`${err.message} when running command: warn.`);
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+	}
 };
 
 module.exports.config = {

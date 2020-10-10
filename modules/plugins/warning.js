@@ -1,4 +1,4 @@
-const { Warning } = require('../modules/database/models');
+const { Warning } = require('../../modules/database/models');
 const Discord = require('discord.js');
 
 module.exports.run = (bot, message, wUser, wReason, settings) => {
@@ -10,20 +10,29 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 		if (err) bot.logger.error(err.message);
 		// This is their first warning
 		if (!res) {
-			const newWarn = new Warning({
-				userID: wUser.user.id,
-				guildID: message.guild.id,
-				Warnings: 1,
-			});
-			newWarn.save().catch(e => bot.logger.error(e.message));
-			const embed = new Discord.MessageEmbed()
-				.setColor(15158332)
-				.setAuthor(`${wUser.user.username}#${wUser.user.discriminator} has been warned`, wUser.user.displayAvatarURL())
-				.setDescription(`**Reason:** ${wReason}`);
-			message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+			try {
+				const newWarn = new Warning({
+					userID: wUser.user.id,
+					guildID: message.guild.id,
+					Warnings: 1,
+					Reason: [`${wReason}`],
+					IssueDate: new Date().toUTCString(),
+				});
+				await newWarn.save().catch(e => bot.logger.error(e.message));
+				const embed = new Discord.MessageEmbed()
+					.setColor(15158332)
+					.setAuthor(`${wUser.user.username}#${wUser.user.discriminator} has been warned`, wUser.user.displayAvatarURL())
+					.setDescription(`**Reason:** ${wReason}`);
+				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+			} catch (err) {
+				bot.logger.error(`${err.message} when running command: warnings.`);
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+			}
 		} else {
 			// This is NOT their warning
-			res.Warnings = res.Warnings + 1;
+			res.Warnings++;
+			res.Reason.push(wReason);
+			res.IssueDate = new Date().toUTCString();
 			if (res.Warnings == 2) {
 				// Mutes user
 				let muteTime;
