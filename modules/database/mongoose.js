@@ -25,7 +25,7 @@ module.exports = {
 	},
 	async ping() {
 		const currentNano = process.hrtime();
-		await mongoose.connection.db.command({ ping: 1 });
-		return await process.hrtime(currentNano);
+		const r = await mongoose.connection.db.command({ ping: 1 });
+		return require('../../utils/time').toNano(process.hrtime(currentNano));
 	},
 };

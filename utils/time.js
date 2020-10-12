@@ -19,3 +19,7 @@ module.exports.getDurationDiff = (timestamp0, timestamp1) => {
 module.exports.getTotalTime = () => {
 	console.log('Not working yet, This will be used for giveaways & temp(ban/mute/warn).');
 };
+
+module.exports.toNano = (time) => {
+	return (time[0] * 1e9 + time[1]) * 1e-6;
+};
