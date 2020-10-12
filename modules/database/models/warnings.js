@@ -5,7 +5,8 @@ const warningSchema = mongoose.Schema({
 	guildID: String,
 	Warnings: Number,
 	Reason: Array,
-	IssueDate: Date,
+	Moderater: Array,
+	IssueDates: Array,
 });
 
 module.exports = mongoose.model('Warnings', warningSchema);

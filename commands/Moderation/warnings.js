@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const { Warning } = require('../../modules/database/models/index');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, emojis) => {
 	if (message.deletable) message.delete();
 	// Get user
 	let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
@@ -11,16 +11,27 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 	// get warnings of user
 	try {
-		console.log(Warning);
 		await Warning.findOne({
 			userID: user.id,
 			guildID: message.guild.id,
 		}, (err, warn) => {
 			if(err) console.log(err);
 			if (warn == null) {
+				// There are no warnings with this user
 				message.channel.send('This user has not been warned before.').then(m => m.delete({ timeout: 3500 }));
 			} else {
-				console.log(warn);
+				// Warnings have been found
+				let list = `Warnings (${warn.Reason.length}):\n`;
+				let i = 0;
+				while (warn.Reason.length != i) {
+					list += `${i + 1}.) ${warn.Reason[i]} | ${(message.guild.members.cache.get(warn.Moderater[i])) ? message.guild.members.cache.get(warn.Moderater[i]) : 'User left'} (Issue date: ${warn.IssueDates[i]})\n`;
+					i++;
+				}
+				const embed = new Discord.MessageEmbed()
+					.setTitle(`${user.user.username}'s warning list.`)
+					.setDescription(list)
+					.setTimestamp();
+				message.channel.send(embed);
 			}
 		});
 	} catch (err) {

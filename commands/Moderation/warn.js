@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	const wReason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Warning is sent to warning manager
 	try {
-		await require('../../modules/plugins/warning').run(bot, message, wUser, wReason, settings);
+		await require('../../modules/plugins/warning').run(bot, message, emojis, wUser, wReason, settings);
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: warn.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));

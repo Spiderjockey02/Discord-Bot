@@ -1,7 +1,7 @@
 const { Warning } = require('../../modules/database/models');
 const Discord = require('discord.js');
 
-module.exports.run = (bot, message, wUser, wReason, settings) => {
+module.exports.run = (bot, message, emojis, wUser, wReason, settings) => {
 	// retrieve user data in warning database
 	Warning.findOne({
 		userID: wUser.user.id,
@@ -16,7 +16,8 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 					guildID: message.guild.id,
 					Warnings: 1,
 					Reason: [`${wReason}`],
-					IssueDate: new Date().toUTCString(),
+					Moderater: [`${message.author.id}`],
+					IssueDates: [`${new Date().toUTCString()}`],
 				});
 				await newWarn.save().catch(e => bot.logger.error(e.message));
 				const embed = new Discord.MessageEmbed()
@@ -32,7 +33,8 @@ module.exports.run = (bot, message, wUser, wReason, settings) => {
 			// This is NOT their warning
 			res.Warnings++;
 			res.Reason.push(wReason);
-			res.IssueDate = new Date().toUTCString();
+			res.IssueDates.push(new Date().toUTCString());
+			res.Moderater.push(message.author.id);
 			if (res.Warnings == 2) {
 				// Mutes user
 				let muteTime;
