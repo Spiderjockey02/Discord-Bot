@@ -47,7 +47,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 			if (message.guild.icon) {
 				embed.setThumbnail(message.guild.iconURL({ format: 'png', dynamic: true, size: 1024 }));
 			}
-			embed.setAuthor('Egglord HELP', message.guild.iconURL);
+			embed.setAuthor(`${bot.user.username} HELP`, message.guild.iconURL);
 			embed.setDescription(`The bot's prefix for this server is: \`${settings.prefix}\`.\n\n**Command name:** \`${cmd.help.name}\`
 			**Aliases:** \`${(cmd.config.aliases) ? cmd.config.aliases.join(', ') : 'None'}\`
 			**Description:** \`${cmd.help.description}\`
