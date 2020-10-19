@@ -75,6 +75,16 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 			// IF embed is larger than 0 then it is a valid command and wasn't blocked
 			if (embed.fields.length != 0) {
 				message.channel.send(embed);
+			} else if (args[0].charAt(0).toUpperCase() + args[0].slice(1) == 'Plugins') {
+				const embed2 = new Discord.MessageEmbed()
+					.setTitle('Plugin list for this server')
+					.addField('Level plugin', `enabled: \`${settings.LevelPlugin}\``)
+					.addField('Music', `enabled: \`${settings.MusicPlugin}\``)
+					.addField('Moderation', `enabled: \`${settings.ModerationPlugin}\``)
+					.addField('NSFW', `enabled: \`${settings.NSFWPlugin}\``)
+					.addField('Search', `enabled: \`${settings.SearchPlugin}\``)
+					.addField('Trivia', `enabled: \`${settings.MusicTriviaPlugin}\``);
+				message.channel.send(embed2);
 			}
 		}
 	}
