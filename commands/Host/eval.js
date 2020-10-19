@@ -1,17 +1,17 @@
 // Dependencies
 const { inspect } = require('util');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return;
 	const toEval = args.join(' ');
-	const evaluated = inspect(eval(toEval, { depth: 0 }));
 	// Evaluated the code
 	try {
 		if (toEval) {
+			const evaluated = await inspect(eval(toEval, { depth: 0 }));
 			const hrStart = process.hrtime();
 			const hrDiff = process.hrtime(hrStart);
-			return message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
+			return await message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
 		} else {
 			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('eval').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
 		}
