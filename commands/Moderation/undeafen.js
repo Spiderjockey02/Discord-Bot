@@ -1,5 +1,6 @@
-module.exports.run = async (bot, message, args, emojis) => {
-	if (message.deletable) message.delete({ timeout:1000 });
+module.exports.run = async (bot, message, args, emojis, settings) => {
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Check if user has deafen permission
 	if (!message.member.hasPermission('DEAFEN_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`DEAFEN_MEMBERS\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));

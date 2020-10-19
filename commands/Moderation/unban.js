@@ -1,5 +1,6 @@
-module.exports.run = async (bot, message, args, emojis) => {
-	if (message.deletable) message.delete();
+module.exports.run = async (bot, message, args, emojis, settings) => {
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Check if user has permission to ban user
 	if (!message.member.hasPermission('BAN_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`BAN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));

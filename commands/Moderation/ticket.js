@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
-	if (message.deletable) message.delete();
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Check if bot can create channel
 	if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));

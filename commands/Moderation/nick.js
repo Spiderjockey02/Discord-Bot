@@ -1,5 +1,6 @@
-module.exports.run = async (bot, message, args, emojis) => {
-	if (message.deletable) message.delete();
+module.exports.run = async (bot, message, args, emojis, settings) => {
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Get user for nickname change
 	let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
 	if (!user) {

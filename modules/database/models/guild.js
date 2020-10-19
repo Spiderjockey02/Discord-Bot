@@ -11,19 +11,19 @@ const guildScheme = mongoose.Schema({
 	welcomeRaidConnect: { type: Boolean, default: false },
 	welcomeMessageToggle: { type: Boolean, default: false },
 	welcomeMessageChannel: { type: Number, default: 999999999999999999 },
-	welcomeMessageText: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
-	welcomePrivateToggle: { type: Boolean, default: true },
-	welcomePrivateText: { type: String, default: 'Hello {user}, Welcome to the **{server}**:tada::hugging:!' },
-	welcomeRoleToggle: { type: Boolean, default: true },
+	welcomeMessageText: { type: String, default: 'Hello {user}, Welcome to **{server}**!' },
+	welcomePrivateToggle: { type: Boolean, default: false },
+	welcomePrivateText: { type: String, default: 'Have a great time here in **{server}**.' },
+	welcomeRoleToggle: { type: Boolean, default: false },
 	welcomeRoleGive: { type: Array, default: ['562297641879470082'] },
-	welcomeGoodbyeToggle: { type: Boolean, default: true },
-	welcomeGoodbyeText: { type: String, default: 'Oh, {user} has just left the **{server}** :slight_frown:.' },
+	welcomeGoodbyeToggle: { type: Boolean, default: false },
+	welcomeGoodbyeText: { type: String, default: '**{user}** just left the server.' },
 	// Level plugin
 	LevelPlugin: { type: Boolean, default: false },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
 	LevelOption: { type: Number, default: 1 },
 	LevelChannel: { type: Number, default: 999999999999999999 },
-	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}' },
+	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}!' },
 	LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
 	LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
 	LevelMultiplier: { type: Number, default: 1 },
@@ -38,10 +38,11 @@ const guildScheme = mongoose.Schema({
 	// logging plugin
 	ModLog: { type: Boolean, default: false },
 	ModLogEvents: { type: Array, default: ['BAN', 'KICK', 'MUTE'] },
-	ModLogChannel: { type: Number, default: 752145410033975346 },
+	ModLogChannel: { type: Number, default: 999999999999999999 },
+	ModLogIgnoreBot: { type: Boolean, default: true },
 	// CommandCooldown
 	OnlyCommandChannel: { type: Boolean, default: false },
-	CommandChannel: { type: Number, default: 750760429353173112 },
+	CommandChannel: { type: Number, default: 999999999999999999 },
 	CommandCooldown: { type: Boolean, default: false },
 	CommandCooldownSec: { type: Number, default: 2 },
 	// Moderation plugin
@@ -81,8 +82,14 @@ const guildScheme = mongoose.Schema({
 	ModerationZalgoRole: { type: Array, default: ['ForZalgo'] },
 	// How many warnings till the user is kicked from server
 	ModerationWarningCounter: { type: Number, default: 3 },
-	TicketSupportRole: { type: Number, default: 751857618720522341 },
-	TicketCategory: { type: Number, default: 764252341200224296 },
+	// If moderation commands should be deleted after.
+	ModerationClearToggle: { type: Boolean, default: true },
+	// For ticket command
+	TicketToggle: { type: Boolean, default: true },
+	TicketSupportRole: { type: Number, default: 999999999999999999 },
+	TicketCategory: { type: Number, default: 999999999999999999 },
+	// for report command
+	ReportToggle: { type: Boolean, default: true },
 	// Anti-raid plugin
 	AntiRaidPlugin: { type: Boolean, default: false },
 	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join

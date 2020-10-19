@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const { Warning } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis) => {
-	if (message.deletable) message.delete();
 	// Get user
 	let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
 	if (!user) {

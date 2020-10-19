@@ -2,8 +2,8 @@
 const ms = require('ms');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
-	if (message.deletable) message.delete();
-
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Make sure user can activate slowmode
 	if (!message.member.hasPermission('MANAGE_CHANNELS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));

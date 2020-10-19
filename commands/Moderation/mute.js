@@ -1,5 +1,6 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
-	if (message.deletable) message.delete();
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Check if user can mute users
 	if (!message.member.hasPermission('MUTE_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MUTE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));

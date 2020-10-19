@@ -1,5 +1,6 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
-	if (message.deletable) message.delete();
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Make sure user can delete messages themselves
 	if (!message.channel.permissionsFor(message.author).has('MANAGE_MESSAGES')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MANAGE_MESSAGES\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));

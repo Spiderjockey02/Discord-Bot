@@ -2,7 +2,8 @@
 const { Warning } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
-	if (message.deletable) message.delete();
+	// Delete message
+	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Check to see if user can kick members
 	if (!message.member.hasPermission('KICK_MEMBERS')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`KICK_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
