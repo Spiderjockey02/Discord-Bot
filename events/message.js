@@ -62,7 +62,7 @@ module.exports = async (bot, message) => {
 		let emojis;
 		if (message.channel.type == 'dm') {
 			// Make sure command is not a server only command.
-			if (['Guild', 'Levels', 'Music', 'Trivia'].includes(cmd.help.category)) {
+			if (['Guild', 'Level', 'Music', 'Trivia', 'Moderation'].includes(cmd.help.category)) {
 				message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} That command can only be ran in a server.` } }).then(m => m.delete({ timeout: 5000 }));
 				return;
 			}
