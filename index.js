@@ -8,7 +8,7 @@ const manager = new ShardingManager('./bot.js', {
 });
 
 // Spawn your shards
-manager.spawn().then(require('./modules/logging/logger').log('=-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-='));
+manager.spawn().then(require('./modules/logging/logger').log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-='));
 
 // Emitted when a shard is created
 manager.on('shardCreate', (shard) => {

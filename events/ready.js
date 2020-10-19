@@ -5,6 +5,8 @@ module.exports = async bot => {
 	bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
 
 	bot.appInfo = await bot.fetchApplication();
+	// dashboard comes online (moved here so user information can be retrieved from bot to dashboard)
+	require('../modules/website/dashboard')(bot);
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);
