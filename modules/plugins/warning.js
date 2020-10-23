@@ -16,7 +16,7 @@ module.exports.run = (bot, message, emojis, wUser, wReason, settings) => {
 					guildID: message.guild.id,
 					Warnings: 1,
 					Reason: [`${wReason}`],
-					Moderater: [`${message.author.id}`],
+					Moderater: [`${(message.author.id == wUser.user.id) ? bot.user.id : message.author.id}`],
 					IssueDates: [`${new Date().toUTCString()}`],
 				});
 				await newWarn.save().catch(e => bot.logger.error(e.message));
@@ -58,10 +58,15 @@ module.exports.run = (bot, message, emojis, wUser, wReason, settings) => {
 					}, muteTime);
 				}
 			} else {
-				message.guild.member(wUser).kick(wReason);
-				message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${wUser.username} was successfully kicked for having too many warnings*.` } }).then(m => m.delete({ timeout: 3500 }));
-				// Delete user from database
-				Warning.collection.deleteOne({ userID: wUser.user.id, guildID: message.guild.id });
+				try {
+					await message.guild.member(wUser).kick(wReason);
+					message.channel.send({ embed:{ color:3066993, description:`${bot.config.emojis.tick} *${wUser.username} was successfully kicked for having too many warnings*.` } }).then(m => m.delete({ timeout: 3500 }));
+					// Delete user from database
+					Warning.collection.deleteOne({ userID: wUser.user.id, guildID: message.guild.id });
+				} catch (e) {
+					bot.logger.error(`${err.message} when kicking user.`);
+					message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to kick this user due to their power.` } }).then(m => m.delete({ timeout: 10000 }));
+				}
 			}
 		}
 		if (settings.ModLog == true) {

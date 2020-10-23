@@ -30,8 +30,7 @@ module.exports = async (bot, message) => {
 	if (message.mentions.has(bot.user) && message.content == `<@!${bot.config.botID}>`) {
 		// make sure egglord has SEND_MESSAGES permission
 		if (message.channel.type != 'dm') {
-			const permissions = message.channel.permissionsFor(bot.user);
-			if (!permissions.has('SEND_MESSAGES')) return bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`);
+			if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return bot.logger.error(`Missing permission: \`SEND_MESSAGES\` in [${message.guild.id}]`);
 		}
 		// Send egglord information to user
 		const embed = new Discord.MessageEmbed()
@@ -113,7 +112,13 @@ module.exports = async (bot, message) => {
 	}
 	// moderation plugin
 	if (settings.ModerationPlugin == true) {
-		require('../modules/plugins/moderation').run(bot, message, settings);
+		const check = require('../modules/plugins/moderation').run(bot, message, settings);
+		// This makes sure that if the auto-mod punished member, level plugin would not give XP
+		if (settings.LevelPlugin == true && check) {
+			require('../modules/plugins/Levels').run(bot, message, settings);
+			return;
+		}
+		if (!check) return;
 	}
 
 	// Rank plugin

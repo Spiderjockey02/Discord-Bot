@@ -32,6 +32,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		bot.Stats.KickedUsers++;
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: kick.`);
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to kick this user due to their power.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
