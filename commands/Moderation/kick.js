@@ -13,22 +13,22 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	}
 	// Get user and reason
-	const kicked = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+	const user = bot.GetUser(message, args);
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Make sure user is real
-	if (!kicked) {
+	if (!user) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
-	// Make sure banned user does not have ADMINISTRATOR permissions
-	if (kicked.hasPermission('ADMINISTRATOR')) {
+	// Make sure kicked user does not have ADMINISTRATOR permissions
+	if (user.hasPermission('ADMINISTRATOR')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to ban this user due to their power.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
 	// Kick user with reason
 	try {
-		await kicked.kick({ reason: reason });
-		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${kicked.user.username}#${kicked.user.discriminator} was successfully kicked*.` } }).then(m => m.delete({ timeout: 3000 }));
+		await user.kick({ reason: reason });
+		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully kicked*.` } }).then(m => m.delete({ timeout: 3000 }));
 		bot.Stats.KickedUsers++;
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: kick.`);

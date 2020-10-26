@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	}
 	// Get user
-	const user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+	const user = bot.GetUser(message, args);
 	if (!user) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('clear-warning').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	// get warnings of user
 	try {

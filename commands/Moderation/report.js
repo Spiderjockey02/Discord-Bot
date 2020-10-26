@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (settings.ModLogEvents.includes('REPORT')) {
 		if (message.deletable) message.delete();
 		// Find user
-		const user = message.mentions.members.first() || message.guild.members.get(args[0]);
+		const user = bot.GetUser(message, args);
 		if (!user) {
 			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 			return;

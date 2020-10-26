@@ -4,10 +4,7 @@ const { Warning } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Get user
-	let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
-	if (!user) {
-		user = message.guild.member(message.author);
-	}
+	const user = (bot.GetUser(message, args)) ? bot.GetUser(message, args) : message.guild.member(message.author);
 	// get warnings of user
 	try {
 		await Warning.findOne({

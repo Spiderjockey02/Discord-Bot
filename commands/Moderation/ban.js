@@ -16,15 +16,15 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	}
 	// Get user and reason
-	const banned = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+	const user = bot.GetUser(message, args);
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : 'No reason given';
 	// Make sure user is real
-	if (!banned) {
+	if (!user) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
-	// Make sure banned user does not have ADMINISTRATOR permissions
-	if (banned.hasPermission('ADMINISTRATOR')) {
+	// Make sure user user does not have ADMINISTRATOR permissions
+	if (user.hasPermission('ADMINISTRATOR')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to ban this user due to their power.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
@@ -41,11 +41,11 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			// Only 1 time interval can be used
 			if (args[1].length - args[1].replace(/[A-Za-z]/g, '').length != 1) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} For now only \`1\` time interval can be used.` } }).then(m => m.delete({ timeout: 5000 }));
 			setTimeout(function() {
-				bot.commands.get('unban').run(bot, message, [`${banned.user.id}`], emojis);
+				bot.commands.get('unban').run(bot, message, [`${user.user.id}`], emojis);
 			}, ms(args[1]));
 		}
-		await banned.ban({ reason: reason });
-		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${banned.user.username}#${banned.user.discriminator} was successfully banned*.` } }).then(m => m.delete({ timeout: 8000 }));
+		await user.ban({ reason: reason });
+		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully banned*.` } }).then(m => m.delete({ timeout: 8000 }));
 		bot.Stats.BannedUsers++;
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: ban.`);

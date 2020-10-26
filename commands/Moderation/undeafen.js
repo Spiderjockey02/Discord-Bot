@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	}
 	// Checks to make sure user is in the server
-	const user = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+	const user = bot.GetUser(message, args);
 	if (!user) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;

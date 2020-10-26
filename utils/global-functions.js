@@ -11,10 +11,13 @@ module.exports = bot => {
 	};
 	// update guild settings
 	bot.updateGuild = async (guild, settings) => {
+		console.log(settings);
 		let data = await bot.getGuild(guild);
 		if (typeof data !== 'object') data = {};
+		console.log(data);
 		for (const key in settings) {
-			if (settings.hasOwnProperty(key)) {
+			if (settings.key) {
+				console.log('hellopoig');
 				if (data[key] !== settings[key]) data[key] = settings[key];
 				else return;
 			}
@@ -68,8 +71,12 @@ module.exports = bot => {
 		}
 		return true;
 	};
-	bot.PermissionHandler = (message, userPermissions, botPermissions, emojis, settings) => {
-		// userPermissions & botPermissions will be arrays
-		console.log('This is to replace all permission checks on commands and make a single permission handler');
+	// bot.PermissionHandler = (message, userPermissions, botPermissions, emojis, settings) => {
+	// userPermissions & botPermissions will be arrays
+	// console.log('This is to replace all permission checks on commands and make a single permission handler');
+	// };
+	bot.GetUser = (message, args) => {
+		const user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+		return user;
 	};
 };
