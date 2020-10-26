@@ -11,4 +11,41 @@
 * Made sure that if auto-mod punished user, level plugin would not award XP for message.
 * Fixed bug so that it now shows the bot warned the user (if auto-mod activated) and not the message author (offender).
 
-## October 20th
+## October 20<sup>th</sup>
+* Added option so moderators can choose to delete moderator commands or not after use.
+* New guild settings (sneak peak for website)
+
+## October 19<sup>th</sup>
+* Fixed up console load up.
+* Updated list of guild only plugins in `events/message.js`.
+* Add option to see active plugins in `commands/Misc/help.js`.
+* Allowed to see music queue in `commands/Host/eval.js`.
+
+## October 18<sup>th</sup>
+* Added PRIVACY.md
+* Added FUNDING.yml
+
+## October 13<sup>th</sup>
+* Updated `commands/Misc/help.js`.
+
+## October 12<sup>th</sup>
+* Added `commands/Moderation/clear-warning.js`.
+* Updated warning system.
+* Changed warning databade to include moderator.
+
+## October 10<sup>th</sup>
+* Fixed plugin duplication bug.
+
+## October 8<sup>th</sup>
+* Updated emoji check.
+* Added CHANGELOG.md.
+* Added bot.Stats (to see MessageSent, Giveaways, BannedUsers, CommandsUsed).
+* Added NSFW channel check to `events/message.js`.
+* Added `commands/Image`. 
+* Added `commands/Moderation`.
+* Added `commands/NSFW`.
+* Added global function bot.musicHandler() for `commands/Music`.
+* Fixed bug so music settings don't reset.
+* Fixed up commands usage to follow a formula (<> - required, [] - optional)
+* Changed `utils/play.js` to `utils/AudioPlayer.js`
+* Changed `utils/guild-settings` to `utils/global-functions.js`
