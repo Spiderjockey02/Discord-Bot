@@ -19,6 +19,11 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+	// Make sure user isn't trying to punish themselves
+	if (user.user.id == message.author.id) {
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You can't punish yourself.` } }).then(m => m.delete({ timeout: 10000 }));
+		return;
+	}
 	// Make sure that the user is in a voice channel
 	if (user.voice.channelID) {
 		try {

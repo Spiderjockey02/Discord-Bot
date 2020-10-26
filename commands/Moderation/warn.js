@@ -13,6 +13,11 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+	// Make sure user isn't trying to ban themselves
+	if (wUser.user.id == message.author.id) {
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You can't punish yourself.` } }).then(m => m.delete({ timeout: 10000 }));
+		return;
+	}
 	// Make sure that the user that is getting warned has administrator permissions
 	if (wUser.hasPermission('ADMINISTRATOR')) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to warn this user.` } }).then(m => m.delete({ timeout: 10000 }));
