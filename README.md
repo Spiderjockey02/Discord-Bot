@@ -69,6 +69,12 @@ Add this bot to your server: [Invite link](https://discord.com/oauth2/authorize?
 
 **Overall there are over 95 commands.
 All these plugins are very easy to set-up and are full with options to make your server stand out and unique.**
+
+
+Look at [CHANGELOG.md](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CHANGELOG.md) for updates.
+
+Look at [INSTALLATION.md](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md)
+
 ## Changes to the Code
 You may change code if needed under the following conditions:
 
