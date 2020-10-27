@@ -65,5 +65,7 @@ const config = {
 	// If you want your bot to use different languages per a server.
 	useCustomLanguage: true,
 	DefaultLanguage: 'en-US.json',
+	// if you want debugging turned on or not
+	debug: false,
 };
 module.exports = config;
