@@ -1,5 +1,5 @@
 node_modules
-modules/logging/logs/*.log
+src/modules/logging/logs/*.log
 config.js
-modules/website/*.crt
-modules/website/*.key
+src/modules/website/*.crt
+src/modules/website/*.key
