@@ -8,8 +8,8 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Evaluated the code
 	try {
 		if (toEval) {
-			const evaluated = await inspect(eval(toEval, { depth: 0 }));
 			const hrStart = process.hrtime();
+			const evaluated = inspect(eval(toEval, { depth: 0 }));
 			const hrDiff = process.hrtime(hrStart);
 			return await message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
 		} else {
@@ -22,7 +22,6 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 
 module.exports.config = {
 	command: 'eval',
-	aliases: ['eval'],
 };
 
 module.exports.help = {
