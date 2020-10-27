@@ -1,0 +1,48 @@
+<%- include('../blocks/header', {bot:bot, user: user, auth: auth}) %>
+<script src="https://kit.fontawesome.com/a076d05399.js" /></script>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+        <h3 align="center" style="padding-top: 25px;">Please select a server</h3>
+        <div class="row">
+          <div class="col-md-4">
+          </div>
+          <div class="col-md-6">
+            <% user.guilds.forEach( guild => { %>
+              <% const perms = new Permissions(guild.permissions) %>
+              <% if (!perms.has("MANAGE_GUILD")) return %>
+              <li class="media" style="padding:10px;">
+                <% if (guild.icon) { %>
+                  <img class="d-flex mr-3 rounded-circle" src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.jpg?size=128" width="75px" alt="server icon">
+                <% } else { %>
+                  <img class="d-flex mr-3 rounded-circle" src="https://i.imgur.com/2otMem9.png" style="width: 75px;" alt="server icon">
+                <% } %>
+                <div class="media-body">
+                  <h4 class="mt-0 mb-1"><%= guild.name %></h4>
+                  <% let href, text, enabled; %>
+                  <% if(bot.guilds.cache.get(guild.id)) {
+                    href = "/manage/" + guild.id;
+                    text = "Manage";
+                    enabled = true;
+                  } else {
+                    href = `/add/${guild.id}`;
+                    text = "Invite Bot";
+                    enabled = user.id === bot.config.ownerID || bot.appInfo.botPublic;
+                  } %>
+                  <a class="btn btn-lg <% if(!enabled) { %> disabled<% } %> " role="button" href="<%= href %>"> <%= text %><% if (text == "Manage") { %> <i class="fas fa-chevron-right" style="size:1px;"></i> <% } else {%> <i class="fas fa-plus"></i><% }%></a>
+                </div>
+              </li>
+            <% }) %>
+          </div>
+          <div class="col-md-2">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+      </div>
+    </div>
+  </div>
+</body>

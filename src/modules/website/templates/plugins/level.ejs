@@ -1,0 +1,98 @@
+<%- include('../blocks/header', {bot:bot, user: user, auth: auth}) %>
+<script src="https://cdn.tiny.cloud/1/n737ldq8uzinidh1o2ibkfhulisy0n4sccrombva5wcnmtf0/tinymce/5/tinymce.min.js" referrerpolicy="origin" /></script>
+<link rel="stylesheet" href="/static/css/emojionearea.min.css">
+<script src="/static/js/emojionearea.min.js"></script>
+<script>
+  function myFunction() {
+    var x = document.getElementById("mySelect").value;
+    if (x == 'Custom channel') {
+      document.getElementById("annchannel").style.display = "block";
+    } else {
+      document.getElementById("annchannel").style.display = "none";
+    }
+  }
+  $(document).ready(function() {
+    // Load emoji picker
+    $("#textarea").emojioneArea({
+      pickerPosition: "bottom",
+      search: false,
+      recentEmojis: false,
+      tones: false
+    });
+  })
+</script>
+<body onload="myFunction()">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3">
+      </div>
+      <div class="col-lg-6 form-group">
+        <h3 style="padding-top: 25px;">Levels plugin<a class="btn btn-primary btn-lg" style="float:right" role="button" href="/manage/<%= guild.id%>/level/disable"> Disable</a></h3>
+        &nbsp
+        <form method="POST">
+          <div class="form-row">
+            <div class="col-lg-4">
+              <div class="h-50">
+                <b>LEVEL UP ANNOUNCEMENT</b>
+                <select name="LevelAnnouncement" class="custom-select" id="mySelect" onchange="myFunction()">
+                  <% if (settings.LevelOption == 0) { %>
+                    <option selected>Disabled</option>
+                    <option>Current Channel</option>
+                    <option>Custom channel</option>
+                  <% } else if (settings.LevelOption == 1) { %>
+                    <option>Disabled</option>
+                    <option selected>Current Channel</option>
+                    <option>Custom channel</option>
+                  <% } else { %>
+                    <option>Disabled</option>
+                    <option>Current Channel</option>
+                    <option selected>Custom channel</option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="h-50" style="display: none" id="annchannel">
+                <b>ANNOUNCEMENT CHANNEL</b>
+                <select name="AnnoucementChannel" class="custom-select">
+                  <% if (settings.LevelChannel == 999999999999999999) { %><option selected>Please select a channel</option><% } %>
+                  <% for (i = 0; i < guild.channels.cache.size; i++) { %>
+                    <% if (guild.channels.cache.array()[i].type == 'text') { %>
+                      <% if (settings.LevelChannel == guild.channels.cache.array()[i].id) { %>
+                        <option value=<%= guild.channels.cache.array()[i].id%> selected>#<%= guild.channels.cache.array()[i].name%> <% if (guild.channels.cache.array()[i].parentID) { %> (<%= bot.channels.cache.get(guild.channels.cache.array()[i].parentID).name %>) <% } %></option>
+                      <% } else { %>
+                        <option value=<%= guild.channels.cache.array()[i].id%> >#<%= guild.channels.cache.array()[i].name%> <% if (guild.channels.cache.array()[i].parentID) { %> (<%= bot.channels.cache.get(guild.channels.cache.array()[i].parentID).name %>) <% } %></option>
+                      <% } %>
+                    <% } %>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <b>LEVEL UP ANNOUNCEMENT MESSAGE</b>
+              <textarea name="lv_message" id='textarea'><%= String(settings.LevelMessage) %></textarea>
+            </div>
+          </div>
+          <hr>
+          <!--ROLE REWARDS-->
+          <h3>Role Rewards</h3>
+          <hr>
+          <!--ROLE REWARDS-->
+          <h3>XP Rate</h3>
+          <label for="customRange">Custom range</label>
+          <input type="range" class="custom-range" id="customRange" name="xp-rate" min="0" max="300" value="<%= settings.LevelMultiplier * 100%>" step="25">
+          <hr>
+          <!--ROLE REWARDS-->
+          <h3>No-XP Roles</h3>
+          <hr>
+          <!--ROLE REWARDS-->
+          <h3>No-XP Channels</h3>
+          <hr>
+          <!--Submit new settings-->
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class='col-lg-3'>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('../blocks/footer') %>

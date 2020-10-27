@@ -1,0 +1,49 @@
+<%- include('../blocks/header', {bot: bot, user: user, auth: auth, stats: stats}) %>
+  <div class="container">
+    <div class="jumbotron">
+      <h3 class="text-center">Bot Stats</h3>
+      <div class="container text-center">
+      <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-server" aria-hidden="true"></i> Guilds:</div>
+          <div class="col-6 align-middle"><strong><%= stats.servers %></strong></div>
+        </div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-clock-o" aria-hidden="true"></i> Uptime:</div>
+          <div class="col-6 align-middle"><strong><%= stats.uptime %></strong></div>
+        </div>
+				<div class="row justify-content-md-center">
+					<div class="col-6 align-middle"><i class="fa fa-fw fa-terminal" aria-hidden="true"></i> Commands:</div>
+					<div class="col-6 align-middle"><strong><%= stats.commands %></strong></div>
+				</div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Members:</div>
+          <div class="col-6 align-middle"><strong><%= stats.members %></strong></div>
+        </div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-tasks" aria-hidden="true"></i> Memory:</div>
+          <div class="col-6 align-middle"><strong><%= stats.memoryUsage %> MB</strong></div>
+        </div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-hashtag" aria-hidden="true"></i> Text Channels:</div>
+          <div class="col-6 align-middle"><strong><%= stats.text %></strong></div>
+        </div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-microphone" aria-hidden="true"></i> Voice Channels:</div>
+          <div class="col-6 align-middle"><strong><%= stats.voice %></strong></div>
+        </div>
+				<h3 class="text-center">Versions</h3>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-cogs" aria-hidden="true"></i> Discord.js:</div>
+          <div class="col-6 align-middle"><strong>v<%= stats.dVersion %></strong></div>
+        </div>
+        <div class="row justify-content-md-center table-bordered">
+          <div class="col-6 align-middle"><i class="fa fa-fw fa-cog" aria-hidden="true"></i> Node.js:</div>
+          <div class="col-6 align-middle"><strong><%= stats.nVersion %></strong></div>
+        </div>
+				<div class="row justify-content-md-center table-bordered">
+					<div class="col-6 align-middle"><i class="fa fa-fw fa-cog" aria-hidden="true"></i> Bot:</div>
+					<div class="col-6 align-middle"><strong>v<%= stats.bVersion %></strong></div>
+				</div>
+      </div>
+    </div>
+<%- include('../blocks/footer') %>

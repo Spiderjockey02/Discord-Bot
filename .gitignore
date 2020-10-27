@@ -1,3 +1,5 @@
 node_modules
 modules/logging/logs/*.log
 config.js
+modules/website/*.crt
+modules/website/*.key

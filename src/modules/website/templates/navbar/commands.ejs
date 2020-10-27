@@ -1,0 +1,222 @@
+<%- include('../blocks/header', {bot:bot, user: user, auth: auth}) %>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3">
+      </div>
+      <div class="col-lg-6">
+        <h3 style="paddng-top: 25px;">Command list</h3>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        &nbsp
+        <div class="row">
+          <div class="col-lg-6">
+            <nav class="navbar bg-light">
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#allc">All</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#fun">Fun</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#guild">Guild</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#image">Image</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#level">Level</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#misc">Misc</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#moderation">Moderation</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#music">Music</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#nsfw">NSFW</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Searcher">Searcher</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Trivia">Trivia</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="col-lg-6 tab-content">
+            <!-- Tab panes -->
+              <div id="allc" class="container tab-pane active"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Host') return%>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                <% }) %>
+              </div>
+              <div id="fun" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Fun') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="guild" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Guild') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="image" class="container tab-pane"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Image') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="level" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Level') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="misc" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Misc') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="moderation" class="container tab-pane"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Moderation') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="music" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Music') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="nsfw" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Nsfw') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="Searcher" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Searcher') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+              <div id="Trivia" class="container tab-pane fade"><br>
+                <% bot.commands.forEach(command => { %>
+                  <% if (command.help.category == 'Trivia') { %>
+                  <button type="button" id="button" class="btn btn-primary" style='width:100%' data-toggle="collapse" data-target="#<%= command.config.command %>"><%= command.help.name%></button>
+                  <div id="<%= command.config.command%>" class="collapse">
+                    <span style="font-weight: bold;">Description:</span> <%= command.help.description %><br>
+                    <span style="font-weight: bold;">Category:</span> <%= command.help.category %><br>
+                    <span style="font-weight: bold;">Usage Example(s):</span> <%= command.help.usage.replace('${PREFIX}', 'e!') %><br>
+                    <span style="font-weight: bold;">Command Aliases:</span><% if (command.config.aliases) { %> <%= command.config.aliases.join(",  ") %> <% } else { %> None<% } %>
+                  </div>
+                  <% } %>
+                <% }) %>
+              </div>
+          </div>
+        </div>
+        &nbsp
+      </div>
+    </div>
+    <div class="col-lg-3">
+    </div>
+  </div>
+</body>
+<script>
+  $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#allc #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#fun #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#guild #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#image #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#level #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#misc #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#moderation #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#music #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#nsfw #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#Searcher #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#Trivia #button").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>
+<%- include('../blocks/footer') %>

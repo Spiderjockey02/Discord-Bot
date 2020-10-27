@@ -1,0 +1,308 @@
+13:01:33.396 INFO  =-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-= 
+13:01:33.595 INFO  Shard 0 launched 
+13:01:34.201 INFO  =-=-=-=-=-=-=- Loading command(s): 97 -=-=-=-=-=-=-= 
+13:01:34.248 INFO  Loading command: advice.js 
+13:01:34.258 INFO  Loading command: fact.js 
+13:01:34.266 INFO  Loading command: flip.js 
+13:01:34.389 INFO  Loading command: meme.js 
+13:01:34.397 INFO  Loading command: ping.js 
+13:01:34.407 INFO  Loading command: pokemon.js 
+13:01:34.416 INFO  Loading command: random.js 
+13:01:34.425 INFO  Loading command: rps.js 
+13:01:34.466 INFO  Loading command: urban.js 
+13:01:34.479 INFO  Loading command: avatar.js 
+13:01:34.499 INFO  Loading command: dashboard.js 
+13:01:34.544 INFO  Loading command: role-info.js 
+13:01:34.524 INFO  Loading command: giveaway.js 
+13:01:34.530 INFO  Loading command: guildicon.js 
+13:01:34.537 INFO  Loading command: poll.js 
+13:01:34.566 INFO  Loading command: user-info.js 
+13:01:34.556 INFO  Loading command: server-info.js 
+13:01:38.158 INFO  Loading command: addban.js 
+13:01:38.293 INFO  Loading command: eval.js 
+13:01:38.300 INFO  Loading command: reload.js 
+13:01:38.312 INFO  Loading command: suggestion.js 
+13:01:38.306 INFO  Loading command: shutdown.js 
+13:01:38.319 INFO  Loading command: blurpify.js 
+13:01:38.324 INFO  Loading command: captcha.js 
+13:01:38.329 INFO  Loading command: cat.js 
+13:01:38.334 INFO  Loading command: changemymind.js 
+13:01:38.339 INFO  Loading command: clyde.js 
+13:01:38.346 INFO  Loading command: deepfry.js 
+13:01:38.351 INFO  Loading command: dog.js 
+13:01:40.286 INFO  Loading command: image.js 
+13:01:40.296 INFO  Loading command: qrcode.js 
+13:01:40.301 INFO  Loading command: ship.js 
+13:01:40.306 INFO  Loading command: stickbug.js 
+13:01:40.311 INFO  Loading command: threats.js 
+13:01:40.316 INFO  Loading command: twitter.js 
+13:01:40.321 INFO  Loading command: whowouldwin.js 
+13:01:40.291 INFO  Loading command: phcomment.js 
+13:01:40.330 INFO  Loading command: leaderboard.js 
+13:01:40.338 INFO  Loading command: rank.js 
+13:01:40.345 INFO  Loading command: about.js 
+13:01:40.359 INFO  Loading command: invite.js 
+13:01:40.377 INFO  Loading command: shorturl.js 
+13:01:40.383 INFO  Loading command: status.js 
+13:01:40.390 INFO  Loading command: support.js 
+13:01:40.353 INFO  Loading command: help.js 
+13:01:40.398 INFO  Loading command: ban.js 
+13:01:40.406 INFO  Loading command: clear-warning.js 
+13:01:40.418 INFO  Loading command: deafen.js 
+13:01:40.424 INFO  Loading command: kick.js 
+13:01:40.412 INFO  Loading command: clear.js 
+13:01:40.437 INFO  Loading command: mute.js 
+13:01:40.443 INFO  Loading command: nick.js 
+13:01:40.450 INFO  Loading command: report.js 
+13:01:40.456 INFO  Loading command: slowmode.js 
+13:01:40.462 INFO  Loading command: ticket.js 
+13:01:40.468 INFO  Loading command: unban.js 
+13:01:40.474 INFO  Loading command: undeafen.js 
+13:01:40.430 INFO  Loading command: language.js 
+13:01:40.486 INFO  Loading command: warn.js 
+13:01:40.480 INFO  Loading command: unmute.js 
+13:01:40.493 INFO  Loading command: warnings.js 
+13:01:40.500 INFO  Loading command: bassboost.js 
+13:01:40.512 INFO  Loading command: leave.js 
+13:01:40.518 INFO  Loading command: loop.js 
+13:01:40.527 INFO  Loading command: lyrics.js 
+13:01:40.533 INFO  Loading command: movehere.js 
+13:01:40.538 INFO  Loading command: pause.js 
+13:01:40.544 INFO  Loading command: play-file.js 
+13:01:41.214 INFO  Loading command: play.js 
+13:01:41.221 INFO  Loading command: queue.js 
+13:01:40.506 INFO  Loading command: forceskip.js 
+13:01:41.239 INFO  Loading command: remove.js 
+13:01:41.233 INFO  Loading command: radio.js 
+13:01:41.633 INFO  Loading command: search.js 
+13:01:41.638 INFO  Loading command: seek.js 
+13:01:41.644 INFO  Loading command: shuffle.js 
+13:01:41.244 INFO  Loading command: resume.js 
+13:01:41.650 INFO  Loading command: skip.js 
+13:01:41.672 INFO  Loading command: song.js 
+13:01:41.677 INFO  Loading command: volume.js 
+13:01:41.655 INFO  Loading command: skipto.js 
+13:01:42.271 INFO  Loading command: 4k.js 
+13:01:42.281 INFO  Loading command: ass.js 
+13:01:42.290 INFO  Loading command: boob.js 
+13:01:42.303 INFO  Loading command: neko.js 
+13:01:42.308 INFO  Loading command: pussy.js 
+13:01:42.313 INFO  Loading command: thigh.js 
+13:01:42.276 INFO  Loading command: anal.js 
+13:01:42.298 INFO  Loading command: gif.js 
+13:01:42.374 INFO  Loading command: fortnite.js 
+13:01:42.382 INFO  Loading command: instagram.js 
+13:01:42.957 INFO  Loading command: steam.js 
+13:01:42.963 INFO  Loading command: twitch.js 
+13:01:43.267 INFO  Loading command: weather.js 
+13:01:42.531 INFO  Loading command: mc.js 
+13:01:42.935 INFO  Loading command: reddit.js 
+13:01:42.927 INFO  Loading command: r6.js 
+13:01:43.281 INFO  Loading command: startmusictrivia.js 
+13:01:43.287 INFO  Loading command: stopmusictrivia.js 
+13:01:43.291 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+13:01:43.292 INFO  Loading Event: channelCreate 
+13:01:43.300 INFO  Loading Event: channelDelete 
+13:01:43.307 INFO  Loading Event: channelUpdate 
+13:01:43.315 INFO  Loading Event: emojiCreate 
+13:01:43.321 INFO  Loading Event: emojiDelete 
+13:01:43.327 INFO  Loading Event: emojiUpdate 
+13:01:43.334 INFO  Loading Event: error 
+13:01:43.341 INFO  Loading Event: guildBanAdd 
+13:01:43.347 INFO  Loading Event: guildBanRemove 
+13:01:43.355 INFO  Loading Event: guildCreate 
+13:01:43.406 INFO  Loading Event: guildDelete 
+13:01:43.412 INFO  Loading Event: guildMemberAdd 
+13:01:43.418 INFO  Loading Event: guildMemberRemove 
+13:01:43.424 INFO  Loading Event: guildMemberUpdate 
+13:01:43.432 INFO  Loading Event: guildUnavailable 
+13:01:43.438 INFO  Loading Event: guildUpdate 
+13:01:43.445 INFO  Loading Event: message 
+13:01:43.453 INFO  Loading Event: messageDelete 
+13:01:43.460 INFO  Loading Event: messageDeleteBulk 
+13:01:43.468 INFO  Loading Event: messageReactionAdd 
+13:01:43.475 INFO  Loading Event: messageReactionRemove 
+13:01:43.481 INFO  Loading Event: messageUpdate 
+13:01:43.488 INFO  Loading Event: ready 
+13:01:43.494 INFO  Loading Event: roleCreate 
+13:01:43.500 INFO  Loading Event: roleDelete 
+13:01:43.507 INFO  Loading Event: roleUpdate 
+13:01:43.514 INFO  Loading Event: shardDisconnect 
+13:01:43.520 INFO  Loading Event: shardError 
+13:01:43.526 INFO  Loading Event: warn 
+13:01:43.608 INFO  Mongoose connection successfully opened 
+13:01:44.320 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+13:01:44.321 INFO  TestBot123#3999, ready to serve [8] users in [1] servers. 
+13:01:44.321 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+13:01:46.044 INFO  Bot dashboard is coming online 
+13:01:46.145 INFO  Bot dashboard is online, running on port: 80 
+13:01:46.146 INFO  Bot dashboard is online, running on port: 443 
+13:02:50.921 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+13:02:56.278 INFO  I am Ben#6686 has logged on with IP: 192.168.0.8 (undefined, undefined) 
+13:02:58.035 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:03:08.887 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:03:10.626 INFO  Guild: [750822670505083000] updated settings: welcomePlugin 
+13:03:18.907 INFO  Guild: [750822670505083000] updated settings: ModLog 
+13:03:24.249 INFO  Guild: [750822670505083000] updated settings: LevelPlugin 
+13:03:30.032 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:45:35.183 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+13:45:41.853 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:45:46.504 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:46:04.117 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:46:08.628 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:46:11.554 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+13:46:13.538 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

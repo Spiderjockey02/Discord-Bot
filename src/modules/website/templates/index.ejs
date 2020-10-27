@@ -1,0 +1,77 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth}) %>
+<meta property=og:type content=website>
+<meta property=og:url content=<%= bot.config.Dashboard.domain %>>
+<meta property=og:title content="EggLord - The Discord Bot">
+<meta property=og:description content="Manage your Discord server with leveling, moderation, Twitch, Youtube and Reddit notifications.">
+<meta property=og:image content=<%= bot.user.displayAvatarURL()%>>
+<body>
+  <div class="container-fluid">
+    <section class="justify-content-around" style="height: 93vh">
+        <h4 class="display-4">Build the best Discord Bot</h4>
+        <p class="lead">Configure moderation, leveling, Twitch & Youtube alerts, and much more with the most easy-to-use dashboard!</p>
+        <div class="row">
+          <div class="col"><a href="/invite" class="btn btn-lg" style="float:right"><img src="/img/discord-icon.svg" width="20px" alt="discord-logo"> Add to Discord</a></div>
+          <div class="col"><a href="/commands" class="btn btn-lg" style="float:left">See features</a></div>
+        </div>
+    </section>
+    <section class="CustomCommands" style="padding-bottom: 30px">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Easily Create Custom Commands</h1>
+          <p>The <%= bot.user.username%> Dashboard gives you full control to create the command of your dreams! Create commands that automatically give and remove roles and send messages in the current channel or in DM.</p>
+        </div>
+        <div class="col-lg-6">
+          <img class="img-fluid mx-auto d-block" src="https://via.placeholder.com/800x300" alt="image-1" height="auto" width="auto">
+        </div>
+      </div>
+    </section>
+    <section class="WelcomeMessage" style="padding-bottom: 30px">
+      <div class="row">
+        <div class="col-lg-6">
+           <img class="img-fluid mx-auto d-block" src="https://via.placeholder.com/800x300" alt="image-2" height="auto" width="auto">
+        </div>
+        <div class="col-lg-6">
+          <h1>Welcome Message and Auto-Role</h1>
+          <p>Take advantage of the welcome message to inform newcomers about your server rules, topic or ongoing events. You can also give them roles right after they join or just simply give them a warm welcome!</p>
+        </div>
+      </div>
+    </section>
+    <section class="Levels" style="padding-bottom: 30px">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Levels and XP in your Discord Server</h1>
+          <p>Gamers love to grind. Use our leveling system to identify and reward the most active members of your community! Let them show off a cool customizable rank card and compete for the mighty first spot of your leaderboard!</p>
+          <p>Automatically give roles when they reach a certain level to reward the most active members with access to exclusive channels and privileged permissions.</p>
+        </div>
+        <div class="col-lg-6">
+          <img class="img-fluid mx-auto d-block" src="https://via.placeholder.com/800x300" alt="image-3" height="auto" width="auto">
+        </div>
+      </div>
+    </section>
+    <section class="Moderation" style="padding-bottom: 30px">
+      <div class="row">
+        <div class="col-lg-6">
+          <img class="img-fluid mx-auto d-block" src="https://via.placeholder.com/800x300" alt="image-4" height="auto" width="auto">
+        </div>
+        <div class="col-lg-6">
+          <h1>Highly customizable moderation to protect your server from trolls and goblins.</h1>
+          <p>The internet can be a dangerous place. Protect your server from ads, links, swearing, excessive emojis, and much more thanks to our easy-to-use moderation system.</p>
+          <p>Set up automated actions to help you moderate your server depending on the number of infractions a user has committed, and fine-tune the actions with timers. No more manually muting, kicking, and unbanning people, let <%= bot.user.username%> do the job for you.</p>
+        </div>
+      </div>
+    </section>
+    <section class="Announcements" style="padding-bottom: 30px">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1>Easy to set up announcement plugins</h1>
+          <p>Set up one of the various announcement plugins to notify your server when you or your favorite content creators begin to stream, upload, and post content. You can easily set up streaming alerts for Twitch and Mixer, upload alerts for YouTube, and post alerts for Reddit and Twitter.</p>
+          <p>Get your favorite content without ever leaving your Discord server!</p>
+        </div>
+        <div class="col-lg-6">
+          <img class="img-fluid mx-auto d-block" src="https://via.placeholder.com/800x300" alt="image-5" height="auto" width="auto">
+        </div>
+      </div>
+    </section>
+    </div>
+</body>
+<%- include('blocks/footer', {bot:bot}) %>

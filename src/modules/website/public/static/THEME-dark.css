@@ -1,0 +1,33 @@
+html, body {
+  background-color: #322f3d;
+  height: 100%;
+}
+nav {
+  background-color: #4c5f7a
+}
+p {
+  color: #909090
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #909090
+}
+.pricing-card-title {
+  color: #6c757d
+}
+footer {
+  background-color: #393e6f
+}
+b {
+  color: #909090
+}
+.modal-content {
+  background-color: #D8D8D8
+}
+hr {
+  border-color: white
+}
+.btn-lg, .btn-sm {
+  background-color: #343a40;
+  border-color: black;
+  color: #909090
+}

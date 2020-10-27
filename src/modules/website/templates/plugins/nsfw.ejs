@@ -1,0 +1,19 @@
+<%- include('../blocks/header', {bot:bot, user: user, auth: auth}) %>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3">
+      </div>
+      <div class="col-lg-6 form-group">
+        <h3 style="padding-top: 25px;">NSFW plugin<a class="btn btn-primary btn-lg" style="float:right" role="button" href="/manage/<%= guild.id%>/nsfw/disable"> Disable</a></h3>
+        &nbsp
+        <form method="POST">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-lg-3">
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('../blocks/footer') %>

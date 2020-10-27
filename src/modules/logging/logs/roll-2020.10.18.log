@@ -1,0 +1,1918 @@
+15:11:26.490 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+15:11:26.743 INFO  Shard 0 launched 
+15:11:30.412 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+15:11:30.414 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+15:11:30.414 INFO  Loading Event: channelCreate 
+15:11:30.421 INFO  Loading Event: channelDelete 
+15:11:30.424 INFO  Loading Event: channelUpdate 
+15:11:30.427 INFO  Loading Event: emojiCreate 
+15:11:30.429 INFO  Loading Event: emojiDelete 
+15:11:30.435 INFO  Loading Event: emojiUpdate 
+15:11:30.441 INFO  Loading Event: error 
+15:11:30.447 INFO  Loading Event: guildBanAdd 
+15:11:30.453 INFO  Loading Event: guildBanRemove 
+15:11:30.691 INFO  Loading Event: guildCreate 
+15:11:30.722 INFO  Loading Event: guildDelete 
+15:11:30.733 INFO  Loading Event: guildMemberRemove 
+15:11:30.727 INFO  Loading Event: guildMemberAdd 
+15:11:30.747 INFO  Loading Event: guildMemberUpdate 
+15:11:30.755 INFO  Loading Event: guildUnavailable 
+15:11:30.761 INFO  Loading Event: guildUpdate 
+15:11:30.769 INFO  Loading Event: message 
+15:11:30.777 INFO  Loading Event: messageDelete 
+15:11:30.783 INFO  Loading Event: messageDeleteBulk 
+15:11:30.798 INFO  Loading Event: messageReactionRemove 
+15:11:30.791 INFO  Loading Event: messageReactionAdd 
+15:11:30.801 INFO  Loading Event: messageUpdate 
+15:11:30.804 INFO  Loading Event: ready 
+15:11:30.810 INFO  Loading Event: roleCreate 
+15:11:30.816 INFO  Loading Event: roleDelete 
+15:11:30.822 INFO  Loading Event: roleUpdate 
+15:11:30.830 INFO  Loading Event: shardDisconnect 
+15:11:30.832 INFO  Loading Event: shardError 
+15:11:32.159 INFO  Bot dashboard is coming online 
+15:11:30.837 INFO  Loading Event: warn 
+15:11:32.275 INFO  Bot dashboard is online 
+15:11:32.292 INFO  Loading command: advice.js 
+15:11:32.298 INFO  Loading command: fact.js 
+15:11:32.304 INFO  Loading command: flip.js 
+15:11:32.371 INFO  Loading command: meme.js 
+15:11:32.377 INFO  Loading command: ping.js 
+15:11:32.384 INFO  Loading command: pokemon.js 
+15:11:32.390 INFO  Loading command: random.js 
+15:11:32.397 INFO  Loading command: rps.js 
+15:11:32.416 INFO  Loading command: urban.js 
+15:11:32.425 INFO  Loading command: addban.js 
+15:11:32.433 INFO  Loading command: eval.js 
+15:11:32.435 INFO  Loading command: reload.js 
+15:11:32.441 INFO  Loading command: shutdown.js 
+15:11:32.448 INFO  Loading command: suggestion.js 
+15:11:32.454 INFO  Loading command: blurpify.js 
+15:11:32.460 INFO  Loading command: captcha.js 
+15:11:32.466 INFO  Loading command: cat.js 
+15:11:32.471 INFO  Loading command: changemymind.js 
+15:11:32.477 INFO  Loading command: clyde.js 
+15:11:32.483 INFO  Loading command: deepfry.js 
+15:11:32.488 INFO  Loading command: dog.js 
+15:11:34.404 INFO  Loading command: image.js 
+15:11:34.407 INFO  Loading command: phcomment.js 
+15:11:34.412 INFO  Loading command: ship.js 
+15:11:34.417 INFO  Loading command: stickbug.js 
+15:11:34.423 INFO  Loading command: threats.js 
+15:11:34.429 INFO  Loading command: twitter.js 
+15:11:34.432 INFO  Loading command: whowouldwin.js 
+15:11:34.410 INFO  Loading command: qrcode.js 
+15:11:34.441 INFO  Loading command: leaderboard.js 
+15:11:34.444 INFO  Loading command: rank.js 
+15:11:34.451 INFO  Loading command: about.js 
+15:11:34.458 INFO  Loading command: help.js 
+15:11:34.464 INFO  Loading command: invite.js 
+15:11:34.473 INFO  Loading command: shorturl.js 
+15:11:34.476 INFO  Loading command: status.js 
+15:11:34.482 INFO  Loading command: support.js 
+15:11:34.490 INFO  Loading command: ban.js 
+15:11:34.492 INFO  Loading command: clear-warning.js 
+15:11:34.498 INFO  Loading command: clear.js 
+15:11:34.505 INFO  Loading command: deafen.js 
+15:11:34.511 INFO  Loading command: kick.js 
+15:11:34.513 INFO  Loading command: mute.js 
+15:11:34.519 INFO  Loading command: nick.js 
+15:11:34.526 INFO  Loading command: report.js 
+15:11:34.528 INFO  Loading command: slowmode.js 
+15:11:34.535 INFO  Loading command: ticket.js 
+15:11:34.542 INFO  Loading command: unban.js 
+15:11:34.548 INFO  Loading command: undeafen.js 
+15:11:34.554 INFO  Loading command: unmute.js 
+15:11:34.560 INFO  Loading command: warn.js 
+15:11:34.568 INFO  Loading command: warnings.js 
+15:11:34.954 INFO  Loading command: add-playlist.js 
+15:11:34.960 INFO  Loading command: bassboost.js 
+15:11:34.966 INFO  Loading command: forceskip.js 
+15:11:34.968 INFO  Loading command: leave.js 
+15:11:34.971 INFO  Loading command: loop.js 
+15:11:34.979 INFO  Loading command: lyrics.js 
+15:11:34.981 INFO  Loading command: movehere.js 
+15:11:34.983 INFO  Loading command: pause.js 
+15:11:34.989 INFO  Loading command: play-file.js 
+15:11:35.340 INFO  Loading command: play.js 
+15:11:35.348 INFO  Loading command: queue.js 
+15:11:35.359 INFO  Loading command: radio.js 
+15:11:35.366 INFO  Loading command: remove.js 
+15:11:35.371 INFO  Loading command: resume.js 
+15:11:35.718 INFO  Loading command: search.js 
+15:11:35.724 INFO  Loading command: seek.js 
+15:11:35.729 INFO  Loading command: shuffle.js 
+15:11:35.731 INFO  Loading command: skip.js 
+15:11:35.737 INFO  Loading command: skipto.js 
+15:11:35.750 INFO  Loading command: song.js 
+15:11:36.278 INFO  Loading command: 4k.js 
+15:11:35.756 INFO  Loading command: volume.js 
+15:11:36.284 INFO  Loading command: anal.js 
+15:11:36.292 INFO  Loading command: ass.js 
+15:11:36.297 INFO  Loading command: boob.js 
+15:11:36.310 INFO  Loading command: neko.js 
+15:11:36.305 INFO  Loading command: gif.js 
+15:11:36.313 INFO  Loading command: pussy.js 
+15:11:36.318 INFO  Loading command: thigh.js 
+15:11:36.322 INFO  Loading command: avatar.js 
+15:11:36.328 INFO  Loading command: dashboard.js 
+15:11:36.338 INFO  Loading command: giveaway.js 
+15:11:36.345 INFO  Loading command: guildicon.js 
+15:11:36.353 INFO  Loading command: poll.js 
+15:11:36.356 INFO  Loading command: role-info.js 
+15:11:36.363 INFO  Loading command: server-info.js 
+15:11:36.370 INFO  Loading command: user-info.js 
+15:11:36.442 INFO  Loading command: fortnite.js 
+15:11:36.445 INFO  Loading command: instagram.js 
+15:11:36.557 INFO  Loading command: mc.js 
+15:11:36.921 INFO  Loading command: r6.js 
+15:11:36.924 INFO  Loading command: reddit.js 
+15:11:36.935 INFO  Loading command: steam.js 
+15:11:36.948 INFO  Loading command: twitch.js 
+15:11:37.245 INFO  Loading command: weather.js 
+15:11:37.252 INFO  Loading command: startmusictrivia.js 
+15:11:37.259 INFO  Loading command: stopmusictrivia.js 
+15:11:37.291 INFO  Mongoose connection successfully opened 
+15:11:37.805 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+15:11:37.804 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+15:11:37.804 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+15:11:59.089 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+15:12:09.354 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+15:12:38.371 INFO  I am Ben#6686 has logged on with IP: 192.168.0.8 (undefined, undefined) 
+15:12:47.027 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+15:39:03.382 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+15:40:22.935 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+15:40:27.806 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+15:59:49.282 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+16:04:53.962 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:07:38.788 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:07:39.037 INFO  Shard 0 launched 
+16:07:39.954 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:07:39.957 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:07:39.960 INFO  Loading Event: channelDelete 
+16:07:39.958 INFO  Loading Event: channelCreate 
+16:07:39.962 INFO  Loading Event: channelUpdate 
+16:07:39.964 INFO  Loading Event: emojiCreate 
+16:07:39.966 INFO  Loading Event: emojiDelete 
+16:07:39.967 INFO  Loading Event: emojiUpdate 
+16:07:39.969 INFO  Loading Event: error 
+16:07:39.970 INFO  Loading Event: guildBanAdd 
+16:07:39.972 INFO  Loading Event: guildBanRemove 
+16:07:39.973 INFO  Loading Event: guildCreate 
+16:07:39.980 INFO  Loading Event: guildDelete 
+16:07:39.983 INFO  Loading Event: guildMemberRemove 
+16:07:39.981 INFO  Loading Event: guildMemberAdd 
+16:07:39.986 INFO  Loading Event: guildMemberUpdate 
+16:07:39.988 INFO  Loading Event: guildUnavailable 
+16:07:39.989 INFO  Loading Event: guildUpdate 
+16:07:39.991 INFO  Loading Event: message 
+16:07:39.992 INFO  Loading Event: messageDelete 
+16:07:39.994 INFO  Loading Event: messageDeleteBulk 
+16:07:39.996 INFO  Loading Event: messageReactionAdd 
+16:07:39.997 INFO  Loading Event: messageReactionRemove 
+16:07:39.999 INFO  Loading Event: messageUpdate 
+16:07:40.001 INFO  Loading Event: ready 
+16:07:40.003 INFO  Loading Event: roleCreate 
+16:07:40.006 INFO  Loading Event: roleDelete 
+16:07:40.008 INFO  Loading Event: roleUpdate 
+16:07:40.010 INFO  Loading Event: shardDisconnect 
+16:07:40.012 INFO  Loading Event: shardError 
+16:07:40.014 INFO  Loading Event: warn 
+16:07:40.261 INFO  Bot dashboard is coming online 
+16:07:40.312 INFO  Bot dashboard is online 
+16:07:40.318 INFO  Loading command: advice.js 
+16:07:40.320 INFO  Loading command: fact.js 
+16:07:40.322 INFO  Loading command: flip.js 
+16:07:40.332 INFO  Loading command: meme.js 
+16:07:40.333 INFO  Loading command: ping.js 
+16:07:40.335 INFO  Loading command: pokemon.js 
+16:07:40.337 INFO  Loading command: random.js 
+16:07:40.338 INFO  Loading command: rps.js 
+16:07:40.341 INFO  Loading command: urban.js 
+16:07:40.344 INFO  Loading command: avatar.js 
+16:07:40.345 INFO  Loading command: dashboard.js 
+16:07:40.347 INFO  Loading command: giveaway.js 
+16:07:40.348 INFO  Loading command: guildicon.js 
+16:07:40.350 INFO  Loading command: poll.js 
+16:07:40.352 INFO  Loading command: role-info.js 
+16:07:40.353 INFO  Loading command: server-info.js 
+16:07:40.355 INFO  Loading command: user-info.js 
+16:07:40.357 INFO  Loading command: addban.js 
+16:07:40.358 INFO  Loading command: eval.js 
+16:07:40.359 INFO  Loading command: reload.js 
+16:07:40.360 INFO  Loading command: shutdown.js 
+16:07:40.362 INFO  Loading command: suggestion.js 
+16:07:40.364 INFO  Loading command: blurpify.js 
+16:07:40.366 INFO  Loading command: captcha.js 
+16:07:40.367 INFO  Loading command: cat.js 
+16:07:40.369 INFO  Loading command: changemymind.js 
+16:07:40.371 INFO  Loading command: clyde.js 
+16:07:40.372 INFO  Loading command: deepfry.js 
+16:07:40.374 INFO  Loading command: dog.js 
+16:07:40.647 INFO  Loading command: image.js 
+16:07:40.649 INFO  Loading command: phcomment.js 
+16:07:40.651 INFO  Loading command: qrcode.js 
+16:07:40.653 INFO  Loading command: ship.js 
+16:07:40.654 INFO  Loading command: stickbug.js 
+16:07:40.656 INFO  Loading command: threats.js 
+16:07:40.658 INFO  Loading command: twitter.js 
+16:07:40.659 INFO  Loading command: whowouldwin.js 
+16:07:40.662 INFO  Loading command: leaderboard.js 
+16:07:40.664 INFO  Loading command: rank.js 
+16:07:40.666 INFO  Loading command: about.js 
+16:07:40.667 INFO  Loading command: help.js 
+16:07:40.669 INFO  Loading command: invite.js 
+16:07:40.671 INFO  Loading command: shorturl.js 
+16:07:40.672 INFO  Loading command: status.js 
+16:07:40.674 INFO  Loading command: support.js 
+16:07:40.676 INFO  Loading command: ban.js 
+16:07:40.677 INFO  Loading command: clear-warning.js 
+16:07:40.679 INFO  Loading command: clear.js 
+16:07:40.680 INFO  Loading command: deafen.js 
+16:07:40.681 INFO  Loading command: kick.js 
+16:07:40.682 INFO  Loading command: mute.js 
+16:07:40.683 INFO  Loading command: nick.js 
+16:07:40.685 INFO  Loading command: report.js 
+16:07:40.686 INFO  Loading command: slowmode.js 
+16:07:40.688 INFO  Loading command: ticket.js 
+16:07:40.689 INFO  Loading command: unban.js 
+16:07:40.690 INFO  Loading command: undeafen.js 
+16:07:40.691 INFO  Loading command: unmute.js 
+16:07:40.692 INFO  Loading command: warn.js 
+16:07:40.694 INFO  Loading command: warnings.js 
+16:07:40.763 INFO  Loading command: add-playlist.js 
+16:07:40.765 INFO  Loading command: forceskip.js 
+16:07:40.766 INFO  Loading command: leave.js 
+16:07:40.764 INFO  Loading command: bassboost.js 
+16:07:40.767 INFO  Loading command: loop.js 
+16:07:40.769 INFO  Loading command: lyrics.js 
+16:07:40.770 INFO  Loading command: movehere.js 
+16:07:40.774 INFO  Loading command: pause.js 
+16:07:40.776 INFO  Loading command: play-file.js 
+16:07:40.808 INFO  Loading command: play.js 
+16:07:40.809 INFO  Loading command: queue.js 
+16:07:40.811 INFO  Loading command: radio.js 
+16:07:40.812 INFO  Loading command: remove.js 
+16:07:40.813 INFO  Loading command: resume.js 
+16:07:40.865 INFO  Loading command: search.js 
+16:07:40.866 INFO  Loading command: seek.js 
+16:07:40.867 INFO  Loading command: shuffle.js 
+16:07:40.868 INFO  Loading command: skip.js 
+16:07:40.870 INFO  Loading command: skipto.js 
+16:07:40.873 INFO  Loading command: song.js 
+16:07:40.874 INFO  Loading command: volume.js 
+16:07:40.971 INFO  Loading command: 4k.js 
+16:07:40.972 INFO  Loading command: anal.js 
+16:07:40.974 INFO  Loading command: ass.js 
+16:07:40.975 INFO  Loading command: boob.js 
+16:07:40.977 INFO  Loading command: gif.js 
+16:07:40.979 INFO  Loading command: neko.js 
+16:07:40.980 INFO  Loading command: pussy.js 
+16:07:40.982 INFO  Loading command: thigh.js 
+16:07:40.990 INFO  Loading command: fortnite.js 
+16:07:40.991 INFO  Loading command: instagram.js 
+16:07:41.013 INFO  Loading command: mc.js 
+16:07:41.083 INFO  Loading command: r6.js 
+16:07:41.084 INFO  Loading command: reddit.js 
+16:07:41.086 INFO  Loading command: steam.js 
+16:07:41.088 INFO  Loading command: twitch.js 
+16:07:41.127 INFO  Loading command: weather.js 
+16:07:41.129 INFO  Loading command: startmusictrivia.js 
+16:07:41.131 INFO  Loading command: stopmusictrivia.js 
+16:07:41.159 INFO  Mongoose connection successfully opened 
+16:07:41.738 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:07:41.738 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:07:41.739 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:07:53.375 INFO  I am Ben#6686 has logged on with IP: 192.168.0.8 (undefined, undefined) 
+16:12:00.964 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:12:25.893 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:12:38.266 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+16:16:18.823 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+16:20:33.687 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:20:41.179 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:20:45.756 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:20:47.281 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:21:59.454 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:22:04.946 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:22:10.165 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:22:12.215 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:27:27.115 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:27:27.323 INFO  Shard 0 launched 
+16:27:57.537 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:27:57.774 INFO  Shard 0 launched 
+16:27:58.763 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:27:58.766 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:27:58.766 INFO  Loading Event: channelCreate 
+16:27:58.768 INFO  Loading Event: channelDelete 
+16:27:58.770 INFO  Loading Event: channelUpdate 
+16:27:58.771 INFO  Loading Event: emojiCreate 
+16:27:58.773 INFO  Loading Event: emojiDelete 
+16:27:58.775 INFO  Loading Event: emojiUpdate 
+16:27:58.776 INFO  Loading Event: error 
+16:27:58.777 INFO  Loading Event: guildBanAdd 
+16:27:58.779 INFO  Loading Event: guildBanRemove 
+16:27:58.781 INFO  Loading Event: guildCreate 
+16:27:58.787 INFO  Loading Event: guildDelete 
+16:27:58.788 INFO  Loading Event: guildMemberAdd 
+16:27:58.790 INFO  Loading Event: guildMemberRemove 
+16:27:58.793 INFO  Loading Event: guildMemberUpdate 
+16:27:58.795 INFO  Loading Event: guildUnavailable 
+16:27:58.796 INFO  Loading Event: guildUpdate 
+16:27:58.798 INFO  Loading Event: message 
+16:27:58.799 INFO  Loading Event: messageDelete 
+16:27:58.801 INFO  Loading Event: messageDeleteBulk 
+16:27:58.803 INFO  Loading Event: messageReactionAdd 
+16:27:58.805 INFO  Loading Event: messageReactionRemove 
+16:27:58.807 INFO  Loading Event: messageUpdate 
+16:27:58.808 INFO  Loading Event: ready 
+16:27:58.809 INFO  Loading Event: roleCreate 
+16:27:58.811 INFO  Loading Event: roleDelete 
+16:27:58.813 INFO  Loading Event: roleUpdate 
+16:27:58.814 INFO  Loading Event: shardDisconnect 
+16:27:58.815 INFO  Loading Event: shardError 
+16:27:58.816 INFO  Loading Event: warn 
+16:27:59.059 INFO  Bot dashboard is coming online 
+16:27:59.080 INFO  Loading command: addban.js 
+16:27:59.081 INFO  Loading command: eval.js 
+16:27:59.082 INFO  Loading command: reload.js 
+16:27:59.083 INFO  Loading command: shutdown.js 
+16:27:59.084 INFO  Loading command: suggestion.js 
+16:27:59.089 INFO  Loading command: advice.js 
+16:27:59.091 INFO  Loading command: fact.js 
+16:27:59.093 INFO  Loading command: flip.js 
+16:27:59.102 INFO  Loading command: meme.js 
+16:27:59.104 INFO  Loading command: ping.js 
+16:27:59.106 INFO  Loading command: pokemon.js 
+16:27:59.107 INFO  Loading command: random.js 
+16:27:59.108 INFO  Loading command: rps.js 
+16:27:59.111 INFO  Loading command: urban.js 
+16:27:59.115 INFO  Loading command: captcha.js 
+16:27:59.114 INFO  Loading command: blurpify.js 
+16:27:59.117 INFO  Loading command: cat.js 
+16:27:59.118 INFO  Loading command: changemymind.js 
+16:27:59.120 INFO  Loading command: clyde.js 
+16:27:59.121 INFO  Loading command: deepfry.js 
+16:27:59.123 INFO  Loading command: dog.js 
+16:27:59.399 INFO  Loading command: image.js 
+16:27:59.401 INFO  Loading command: phcomment.js 
+16:27:59.402 INFO  Loading command: qrcode.js 
+16:27:59.404 INFO  Loading command: ship.js 
+16:27:59.405 INFO  Loading command: stickbug.js 
+16:27:59.407 INFO  Loading command: threats.js 
+16:27:59.408 INFO  Loading command: twitter.js 
+16:27:59.410 INFO  Loading command: whowouldwin.js 
+16:27:59.413 INFO  Loading command: leaderboard.js 
+16:27:59.414 INFO  Loading command: rank.js 
+16:27:59.417 INFO  Loading command: about.js 
+16:27:59.419 INFO  Loading command: help.js 
+16:27:59.420 INFO  Loading command: invite.js 
+16:27:59.422 INFO  Loading command: shorturl.js 
+16:27:59.424 INFO  Loading command: status.js 
+16:27:59.425 INFO  Loading command: support.js 
+16:27:59.489 INFO  Loading command: add-playlist.js 
+16:27:59.490 INFO  Loading command: bassboost.js 
+16:27:59.491 INFO  Loading command: forceskip.js 
+16:27:59.492 INFO  Loading command: leave.js 
+16:27:59.494 INFO  Loading command: loop.js 
+16:27:59.496 INFO  Loading command: lyrics.js 
+16:27:59.497 INFO  Loading command: movehere.js 
+16:27:59.498 INFO  Loading command: pause.js 
+16:27:59.500 INFO  Loading command: play-file.js 
+16:27:59.540 INFO  Loading command: play.js 
+16:27:59.541 INFO  Loading command: queue.js 
+16:27:59.543 INFO  Loading command: radio.js 
+16:27:59.544 INFO  Loading command: remove.js 
+16:27:59.547 INFO  Loading command: resume.js 
+16:27:59.600 INFO  Loading command: search.js 
+16:27:59.602 INFO  Loading command: seek.js 
+16:27:59.603 INFO  Loading command: shuffle.js 
+16:27:59.604 INFO  Loading command: skip.js 
+16:27:59.605 INFO  Loading command: skipto.js 
+16:27:59.608 INFO  Loading command: song.js 
+16:27:59.609 INFO  Loading command: volume.js 
+16:27:59.611 INFO  Loading command: ban.js 
+16:27:59.613 INFO  Loading command: clear-warning.js 
+16:27:59.614 INFO  Loading command: clear.js 
+16:27:59.615 INFO  Loading command: deafen.js 
+16:27:59.616 INFO  Loading command: kick.js 
+16:27:59.617 INFO  Loading command: mute.js 
+16:27:59.620 INFO  Loading command: report.js 
+16:27:59.618 INFO  Loading command: nick.js 
+16:27:59.621 INFO  Loading command: slowmode.js 
+16:27:59.623 INFO  Loading command: ticket.js 
+16:27:59.624 INFO  Loading command: unban.js 
+16:27:59.625 INFO  Loading command: undeafen.js 
+16:27:59.627 INFO  Loading command: unmute.js 
+16:27:59.628 INFO  Loading command: warn.js 
+16:27:59.630 INFO  Loading command: warnings.js 
+16:27:59.632 INFO  Loading command: avatar.js 
+16:27:59.634 INFO  Loading command: dashboard.js 
+16:27:59.636 INFO  Loading command: giveaway.js 
+16:27:59.638 INFO  Loading command: guildicon.js 
+16:27:59.640 INFO  Loading command: poll.js 
+16:27:59.642 INFO  Loading command: role-info.js 
+16:27:59.644 INFO  Loading command: server-info.js 
+16:27:59.645 INFO  Loading command: user-info.js 
+16:27:59.745 INFO  Loading command: 4k.js 
+16:27:59.746 INFO  Loading command: anal.js 
+16:27:59.748 INFO  Loading command: ass.js 
+16:27:59.749 INFO  Loading command: boob.js 
+16:27:59.751 INFO  Loading command: gif.js 
+16:27:59.752 INFO  Loading command: neko.js 
+16:27:59.754 INFO  Loading command: pussy.js 
+16:27:59.755 INFO  Loading command: thigh.js 
+16:27:59.763 INFO  Loading command: fortnite.js 
+16:27:59.766 INFO  Loading command: instagram.js 
+16:27:59.787 INFO  Loading command: mc.js 
+16:27:59.866 INFO  Loading command: r6.js 
+16:27:59.869 INFO  Loading command: reddit.js 
+16:27:59.871 INFO  Loading command: steam.js 
+16:27:59.874 INFO  Loading command: twitch.js 
+16:27:59.925 INFO  Loading command: weather.js 
+16:27:59.927 INFO  Loading command: startmusictrivia.js 
+16:27:59.929 INFO  Loading command: stopmusictrivia.js 
+16:28:53.771 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:28:53.952 INFO  Shard 0 launched 
+16:29:13.763 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:29:13.950 INFO  Shard 0 launched 
+16:29:14.859 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:29:45.931 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:29:46.155 INFO  Shard 0 launched 
+16:31:41.212 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:31:41.409 INFO  Shard 0 launched 
+16:31:42.410 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:31:42.412 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:31:42.413 INFO  Loading Event: channelCreate 
+16:31:42.417 INFO  Loading Event: channelUpdate 
+16:31:42.415 INFO  Loading Event: channelDelete 
+16:31:42.419 INFO  Loading Event: emojiCreate 
+16:31:42.420 INFO  Loading Event: emojiDelete 
+16:31:42.422 INFO  Loading Event: emojiUpdate 
+16:31:42.423 INFO  Loading Event: error 
+16:31:42.424 INFO  Loading Event: guildBanAdd 
+16:31:42.426 INFO  Loading Event: guildBanRemove 
+16:31:42.427 INFO  Loading Event: guildCreate 
+16:31:42.434 INFO  Loading Event: guildDelete 
+16:31:42.435 INFO  Loading Event: guildMemberAdd 
+16:31:42.437 INFO  Loading Event: guildMemberRemove 
+16:31:42.441 INFO  Loading Event: guildMemberUpdate 
+16:31:42.443 INFO  Loading Event: guildUnavailable 
+16:31:42.444 INFO  Loading Event: guildUpdate 
+16:31:42.445 INFO  Loading Event: message 
+16:31:42.447 INFO  Loading Event: messageDelete 
+16:31:42.449 INFO  Loading Event: messageDeleteBulk 
+16:31:42.450 INFO  Loading Event: messageReactionAdd 
+16:31:42.452 INFO  Loading Event: messageReactionRemove 
+16:31:42.454 INFO  Loading Event: messageUpdate 
+16:31:42.455 INFO  Loading Event: ready 
+16:31:42.456 INFO  Loading Event: roleCreate 
+16:31:42.458 INFO  Loading Event: roleDelete 
+16:31:42.460 INFO  Loading Event: roleUpdate 
+16:31:42.462 INFO  Loading Event: shardDisconnect 
+16:31:42.463 INFO  Loading Event: shardError 
+16:31:42.464 INFO  Loading Event: warn 
+16:31:42.724 INFO  Bot dashboard is coming online 
+16:31:42.792 INFO  Bot dashboard is online 
+16:31:42.797 INFO  Loading command: addban.js 
+16:31:42.799 INFO  Loading command: eval.js 
+16:31:42.801 INFO  Loading command: reload.js 
+16:31:42.802 INFO  Loading command: shutdown.js 
+16:31:42.804 INFO  Loading command: suggestion.js 
+16:31:42.806 INFO  Loading command: avatar.js 
+16:31:42.808 INFO  Loading command: dashboard.js 
+16:31:42.810 INFO  Loading command: giveaway.js 
+16:31:42.812 INFO  Loading command: guildicon.js 
+16:31:42.814 INFO  Loading command: poll.js 
+16:31:42.816 INFO  Loading command: role-info.js 
+16:31:42.817 INFO  Loading command: server-info.js 
+16:31:42.819 INFO  Loading command: user-info.js 
+16:31:42.822 INFO  Loading command: blurpify.js 
+16:31:42.823 INFO  Loading command: captcha.js 
+16:31:42.825 INFO  Loading command: cat.js 
+16:31:42.826 INFO  Loading command: changemymind.js 
+16:31:42.828 INFO  Loading command: clyde.js 
+16:31:42.829 INFO  Loading command: deepfry.js 
+16:31:42.830 INFO  Loading command: dog.js 
+16:31:43.117 INFO  Loading command: image.js 
+16:31:43.118 INFO  Loading command: phcomment.js 
+16:31:43.120 INFO  Loading command: qrcode.js 
+16:31:43.123 INFO  Loading command: ship.js 
+16:31:43.124 INFO  Loading command: stickbug.js 
+16:31:43.127 INFO  Loading command: threats.js 
+16:31:43.129 INFO  Loading command: twitter.js 
+16:31:43.131 INFO  Loading command: whowouldwin.js 
+16:31:43.133 INFO  Loading command: leaderboard.js 
+16:31:43.135 INFO  Loading command: rank.js 
+16:31:43.137 INFO  Loading command: about.js 
+16:31:43.139 INFO  Loading command: help.js 
+16:31:43.141 INFO  Loading command: invite.js 
+16:31:43.143 INFO  Loading command: shorturl.js 
+16:31:43.145 INFO  Loading command: status.js 
+16:31:43.146 INFO  Loading command: support.js 
+16:31:43.148 INFO  Loading command: ban.js 
+16:31:43.150 INFO  Loading command: clear-warning.js 
+16:31:43.151 INFO  Loading command: clear.js 
+16:31:43.152 INFO  Loading command: deafen.js 
+16:31:43.153 INFO  Loading command: kick.js 
+16:31:43.155 INFO  Loading command: mute.js 
+16:31:43.156 INFO  Loading command: nick.js 
+16:31:43.157 INFO  Loading command: report.js 
+16:31:43.158 INFO  Loading command: slowmode.js 
+16:31:43.160 INFO  Loading command: ticket.js 
+16:31:43.161 INFO  Loading command: unban.js 
+16:31:43.163 INFO  Loading command: unmute.js 
+16:31:43.162 INFO  Loading command: undeafen.js 
+16:31:43.166 INFO  Loading command: warnings.js 
+16:31:43.165 INFO  Loading command: warn.js 
+16:31:43.229 INFO  Loading command: add-playlist.js 
+16:31:43.233 INFO  Loading command: bassboost.js 
+16:31:43.235 INFO  Loading command: forceskip.js 
+16:31:43.236 INFO  Loading command: leave.js 
+16:31:43.237 INFO  Loading command: loop.js 
+16:31:43.248 INFO  Loading command: lyrics.js 
+16:31:43.249 INFO  Loading command: movehere.js 
+16:31:43.251 INFO  Loading command: pause.js 
+16:31:43.252 INFO  Loading command: play-file.js 
+16:31:43.289 INFO  Loading command: queue.js 
+16:31:43.291 INFO  Loading command: radio.js 
+16:31:43.288 INFO  Loading command: play.js 
+16:31:43.293 INFO  Loading command: remove.js 
+16:31:43.294 INFO  Loading command: resume.js 
+16:31:43.355 INFO  Loading command: search.js 
+16:31:43.356 INFO  Loading command: seek.js 
+16:31:43.357 INFO  Loading command: shuffle.js 
+16:31:43.359 INFO  Loading command: skipto.js 
+16:31:43.358 INFO  Loading command: skip.js 
+16:31:43.362 INFO  Loading command: song.js 
+16:31:43.363 INFO  Loading command: volume.js 
+16:31:43.502 INFO  Loading command: 4k.js 
+16:31:43.504 INFO  Loading command: anal.js 
+16:31:43.506 INFO  Loading command: ass.js 
+16:31:43.508 INFO  Loading command: boob.js 
+16:31:43.516 INFO  Loading command: gif.js 
+16:31:43.519 INFO  Loading command: neko.js 
+16:31:43.522 INFO  Loading command: pussy.js 
+16:31:43.539 INFO  Loading command: fortnite.js 
+16:31:43.527 INFO  Loading command: thigh.js 
+16:31:43.542 INFO  Loading command: instagram.js 
+16:31:43.567 INFO  Loading command: mc.js 
+16:31:43.637 INFO  Loading command: r6.js 
+16:31:43.639 INFO  Loading command: reddit.js 
+16:31:43.642 INFO  Loading command: steam.js 
+16:31:43.643 INFO  Loading command: twitch.js 
+16:31:43.680 INFO  Loading command: weather.js 
+16:31:43.682 INFO  Loading command: startmusictrivia.js 
+16:31:43.683 INFO  Loading command: stopmusictrivia.js 
+16:31:43.690 INFO  Loading command: flip.js 
+16:31:43.688 INFO  Loading command: advice.js 
+16:31:43.689 INFO  Loading command: fact.js 
+16:31:43.692 INFO  Loading command: meme.js 
+16:31:43.693 INFO  Loading command: ping.js 
+16:31:43.695 INFO  Loading command: pokemon.js 
+16:31:43.696 INFO  Loading command: random.js 
+16:31:43.698 INFO  Loading command: rps.js 
+16:31:43.701 INFO  Loading command: urban.js 
+16:31:43.747 INFO  Mongoose connection successfully opened 
+16:31:44.312 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:31:44.313 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:31:44.312 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:32:14.555 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:35:00.785 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:35:01.004 INFO  Shard 0 launched 
+16:35:02.023 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:35:02.025 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:35:02.026 INFO  Loading Event: channelCreate 
+16:35:02.028 INFO  Loading Event: channelDelete 
+16:35:02.029 INFO  Loading Event: channelUpdate 
+16:35:02.031 INFO  Loading Event: emojiCreate 
+16:35:02.032 INFO  Loading Event: emojiDelete 
+16:35:02.034 INFO  Loading Event: emojiUpdate 
+16:35:02.035 INFO  Loading Event: error 
+16:35:02.036 INFO  Loading Event: guildBanAdd 
+16:35:02.038 INFO  Loading Event: guildBanRemove 
+16:35:02.040 INFO  Loading Event: guildCreate 
+16:35:02.046 INFO  Loading Event: guildDelete 
+16:35:02.047 INFO  Loading Event: guildMemberAdd 
+16:35:02.049 INFO  Loading Event: guildMemberRemove 
+16:35:02.052 INFO  Loading Event: guildMemberUpdate 
+16:35:02.054 INFO  Loading Event: guildUnavailable 
+16:35:02.055 INFO  Loading Event: guildUpdate 
+16:35:02.057 INFO  Loading Event: message 
+16:35:02.059 INFO  Loading Event: messageDelete 
+16:35:02.060 INFO  Loading Event: messageDeleteBulk 
+16:35:02.062 INFO  Loading Event: messageReactionAdd 
+16:35:02.064 INFO  Loading Event: messageReactionRemove 
+16:35:02.067 INFO  Loading Event: messageUpdate 
+16:35:02.069 INFO  Loading Event: ready 
+16:35:02.070 INFO  Loading Event: roleCreate 
+16:35:02.072 INFO  Loading Event: roleDelete 
+16:35:02.073 INFO  Loading Event: roleUpdate 
+16:35:02.075 INFO  Loading Event: shardDisconnect 
+16:35:02.076 INFO  Loading Event: shardError 
+16:35:02.077 INFO  Loading Event: warn 
+16:35:02.320 INFO  Bot dashboard is coming online 
+16:35:02.377 INFO  Bot dashboard is online, running on port: 443 
+16:35:02.380 INFO  Loading command: avatar.js 
+16:35:02.381 INFO  Loading command: dashboard.js 
+16:35:02.383 INFO  Loading command: giveaway.js 
+16:35:02.385 INFO  Loading command: guildicon.js 
+16:35:02.387 INFO  Loading command: poll.js 
+16:35:02.389 INFO  Loading command: role-info.js 
+16:35:02.391 INFO  Loading command: server-info.js 
+16:35:02.392 INFO  Loading command: user-info.js 
+16:35:02.395 INFO  Loading command: addban.js 
+16:35:02.396 INFO  Loading command: eval.js 
+16:35:02.397 INFO  Loading command: reload.js 
+16:35:02.398 INFO  Loading command: shutdown.js 
+16:35:02.399 INFO  Loading command: suggestion.js 
+16:35:02.403 INFO  Loading command: blurpify.js 
+16:35:02.405 INFO  Loading command: captcha.js 
+16:35:02.406 INFO  Loading command: cat.js 
+16:35:02.408 INFO  Loading command: changemymind.js 
+16:35:02.411 INFO  Loading command: deepfry.js 
+16:35:02.409 INFO  Loading command: clyde.js 
+16:35:02.412 INFO  Loading command: dog.js 
+16:35:02.686 INFO  Loading command: image.js 
+16:35:02.688 INFO  Loading command: phcomment.js 
+16:35:02.690 INFO  Loading command: qrcode.js 
+16:35:02.691 INFO  Loading command: ship.js 
+16:35:02.693 INFO  Loading command: stickbug.js 
+16:35:02.696 INFO  Loading command: threats.js 
+16:35:02.698 INFO  Loading command: twitter.js 
+16:35:02.700 INFO  Loading command: whowouldwin.js 
+16:35:02.703 INFO  Loading command: leaderboard.js 
+16:35:02.705 INFO  Loading command: rank.js 
+16:35:02.709 INFO  Loading command: about.js 
+16:35:02.712 INFO  Loading command: invite.js 
+16:35:02.714 INFO  Loading command: shorturl.js 
+16:35:02.710 INFO  Loading command: help.js 
+16:35:02.716 INFO  Loading command: status.js 
+16:35:02.717 INFO  Loading command: support.js 
+16:35:02.721 INFO  Loading command: clear-warning.js 
+16:35:02.720 INFO  Loading command: ban.js 
+16:35:02.722 INFO  Loading command: clear.js 
+16:35:02.724 INFO  Loading command: deafen.js 
+16:35:02.726 INFO  Loading command: mute.js 
+16:35:02.727 INFO  Loading command: nick.js 
+16:35:02.725 INFO  Loading command: kick.js 
+16:35:02.729 INFO  Loading command: report.js 
+16:35:02.730 INFO  Loading command: slowmode.js 
+16:35:02.732 INFO  Loading command: ticket.js 
+16:35:02.733 INFO  Loading command: unban.js 
+16:35:02.735 INFO  Loading command: undeafen.js 
+16:35:02.736 INFO  Loading command: unmute.js 
+16:35:02.737 INFO  Loading command: warn.js 
+16:35:02.739 INFO  Loading command: warnings.js 
+16:35:02.800 INFO  Loading command: add-playlist.js 
+16:35:02.804 INFO  Loading command: bassboost.js 
+16:35:02.805 INFO  Loading command: forceskip.js 
+16:35:02.806 INFO  Loading command: leave.js 
+16:35:02.808 INFO  Loading command: loop.js 
+16:35:02.819 INFO  Loading command: lyrics.js 
+16:35:02.821 INFO  Loading command: movehere.js 
+16:35:02.822 INFO  Loading command: pause.js 
+16:35:02.823 INFO  Loading command: play-file.js 
+16:35:02.859 INFO  Loading command: play.js 
+16:35:02.860 INFO  Loading command: queue.js 
+16:35:02.862 INFO  Loading command: radio.js 
+16:35:02.863 INFO  Loading command: remove.js 
+16:35:02.864 INFO  Loading command: resume.js 
+16:35:02.918 INFO  Loading command: seek.js 
+16:35:02.916 INFO  Loading command: search.js 
+16:35:02.919 INFO  Loading command: shuffle.js 
+16:35:02.921 INFO  Loading command: skip.js 
+16:35:02.922 INFO  Loading command: skipto.js 
+16:35:02.925 INFO  Loading command: song.js 
+16:35:02.926 INFO  Loading command: volume.js 
+16:35:03.025 INFO  Loading command: 4k.js 
+16:35:03.026 INFO  Loading command: anal.js 
+16:35:03.028 INFO  Loading command: ass.js 
+16:35:03.029 INFO  Loading command: boob.js 
+16:35:03.032 INFO  Loading command: gif.js 
+16:35:03.034 INFO  Loading command: neko.js 
+16:35:03.036 INFO  Loading command: pussy.js 
+16:35:03.038 INFO  Loading command: thigh.js 
+16:35:03.046 INFO  Loading command: fortnite.js 
+16:35:03.048 INFO  Loading command: instagram.js 
+16:35:03.068 INFO  Loading command: mc.js 
+16:35:03.140 INFO  Loading command: r6.js 
+16:35:03.142 INFO  Loading command: reddit.js 
+16:35:03.144 INFO  Loading command: steam.js 
+16:35:03.146 INFO  Loading command: twitch.js 
+16:35:03.183 INFO  Loading command: weather.js 
+16:35:03.185 INFO  Loading command: startmusictrivia.js 
+16:35:03.186 INFO  Loading command: stopmusictrivia.js 
+16:35:03.190 INFO  Loading command: advice.js 
+16:35:03.193 INFO  Loading command: fact.js 
+16:35:03.194 INFO  Loading command: flip.js 
+16:35:03.196 INFO  Loading command: meme.js 
+16:35:03.198 INFO  Loading command: ping.js 
+16:35:03.203 INFO  Loading command: pokemon.js 
+16:35:03.205 INFO  Loading command: random.js 
+16:35:03.207 INFO  Loading command: rps.js 
+16:35:03.211 INFO  Loading command: urban.js 
+16:35:03.245 INFO  Mongoose connection successfully opened 
+16:35:03.983 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:35:03.983 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:35:03.982 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:35:14.356 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:36:35.722 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:36:35.959 INFO  Shard 0 launched 
+16:36:37.155 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:36:37.157 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:36:37.158 INFO  Loading Event: channelCreate 
+16:36:37.160 INFO  Loading Event: channelDelete 
+16:36:37.162 INFO  Loading Event: channelUpdate 
+16:36:37.165 INFO  Loading Event: emojiCreate 
+16:36:37.166 INFO  Loading Event: emojiDelete 
+16:36:37.168 INFO  Loading Event: emojiUpdate 
+16:36:37.170 INFO  Loading Event: error 
+16:36:37.172 INFO  Loading Event: guildBanAdd 
+16:36:37.174 INFO  Loading Event: guildBanRemove 
+16:36:37.176 INFO  Loading Event: guildCreate 
+16:36:37.185 INFO  Loading Event: guildDelete 
+16:36:37.187 INFO  Loading Event: guildMemberAdd 
+16:36:37.189 INFO  Loading Event: guildMemberRemove 
+16:36:37.193 INFO  Loading Event: guildMemberUpdate 
+16:36:37.195 INFO  Loading Event: guildUnavailable 
+16:36:37.197 INFO  Loading Event: guildUpdate 
+16:36:37.199 INFO  Loading Event: message 
+16:36:37.201 INFO  Loading Event: messageDelete 
+16:36:37.206 INFO  Loading Event: messageReactionAdd 
+16:36:37.204 INFO  Loading Event: messageDeleteBulk 
+16:36:37.208 INFO  Loading Event: messageReactionRemove 
+16:36:37.210 INFO  Loading Event: messageUpdate 
+16:36:37.212 INFO  Loading Event: ready 
+16:36:37.213 INFO  Loading Event: roleCreate 
+16:36:37.214 INFO  Loading Event: roleDelete 
+16:36:37.216 INFO  Loading Event: roleUpdate 
+16:36:37.218 INFO  Loading Event: shardDisconnect 
+16:36:37.219 INFO  Loading Event: shardError 
+16:36:37.220 INFO  Loading Event: warn 
+16:36:37.473 INFO  Bot dashboard is coming online 
+16:36:37.528 INFO  Bot dashboard is online, running on port: 443 
+16:36:37.532 INFO  Loading command: avatar.js 
+16:36:37.533 INFO  Loading command: dashboard.js 
+16:36:37.536 INFO  Loading command: giveaway.js 
+16:36:37.538 INFO  Loading command: guildicon.js 
+16:36:37.540 INFO  Loading command: poll.js 
+16:36:37.542 INFO  Loading command: role-info.js 
+16:36:37.544 INFO  Loading command: server-info.js 
+16:36:37.545 INFO  Loading command: user-info.js 
+16:36:37.550 INFO  Loading command: advice.js 
+16:36:37.551 INFO  Loading command: fact.js 
+16:36:37.552 INFO  Loading command: flip.js 
+16:36:37.563 INFO  Loading command: meme.js 
+16:36:37.564 INFO  Loading command: ping.js 
+16:36:37.567 INFO  Loading command: pokemon.js 
+16:36:37.568 INFO  Loading command: random.js 
+16:36:37.569 INFO  Loading command: rps.js 
+16:36:37.573 INFO  Loading command: urban.js 
+16:36:37.576 INFO  Loading command: addban.js 
+16:36:37.578 INFO  Loading command: eval.js 
+16:36:37.579 INFO  Loading command: reload.js 
+16:36:37.580 INFO  Loading command: shutdown.js 
+16:36:37.582 INFO  Loading command: suggestion.js 
+16:36:37.585 INFO  Loading command: blurpify.js 
+16:36:37.587 INFO  Loading command: captcha.js 
+16:36:37.589 INFO  Loading command: cat.js 
+16:36:37.591 INFO  Loading command: changemymind.js 
+16:36:37.592 INFO  Loading command: clyde.js 
+16:36:37.594 INFO  Loading command: deepfry.js 
+16:36:37.596 INFO  Loading command: dog.js 
+16:36:37.897 INFO  Loading command: image.js 
+16:36:37.899 INFO  Loading command: phcomment.js 
+16:36:37.901 INFO  Loading command: qrcode.js 
+16:36:37.903 INFO  Loading command: ship.js 
+16:36:37.905 INFO  Loading command: stickbug.js 
+16:36:37.906 INFO  Loading command: threats.js 
+16:36:37.908 INFO  Loading command: twitter.js 
+16:36:37.911 INFO  Loading command: whowouldwin.js 
+16:36:37.913 INFO  Loading command: leaderboard.js 
+16:36:37.915 INFO  Loading command: rank.js 
+16:36:37.918 INFO  Loading command: about.js 
+16:36:37.920 INFO  Loading command: help.js 
+16:36:37.921 INFO  Loading command: invite.js 
+16:36:37.923 INFO  Loading command: shorturl.js 
+16:36:37.925 INFO  Loading command: status.js 
+16:36:37.927 INFO  Loading command: support.js 
+16:36:37.929 INFO  Loading command: ban.js 
+16:36:37.930 INFO  Loading command: clear-warning.js 
+16:36:37.932 INFO  Loading command: clear.js 
+16:36:37.934 INFO  Loading command: deafen.js 
+16:36:37.936 INFO  Loading command: kick.js 
+16:36:37.938 INFO  Loading command: mute.js 
+16:36:37.940 INFO  Loading command: nick.js 
+16:36:37.942 INFO  Loading command: report.js 
+16:36:37.945 INFO  Loading command: slowmode.js 
+16:36:37.947 INFO  Loading command: ticket.js 
+16:36:37.950 INFO  Loading command: unban.js 
+16:36:37.952 INFO  Loading command: undeafen.js 
+16:36:37.954 INFO  Loading command: unmute.js 
+16:36:37.956 INFO  Loading command: warn.js 
+16:36:37.958 INFO  Loading command: warnings.js 
+16:36:38.047 INFO  Loading command: add-playlist.js 
+16:36:38.048 INFO  Loading command: bassboost.js 
+16:36:38.050 INFO  Loading command: forceskip.js 
+16:36:38.051 INFO  Loading command: leave.js 
+16:36:38.053 INFO  Loading command: loop.js 
+16:36:38.059 INFO  Loading command: lyrics.js 
+16:36:38.060 INFO  Loading command: movehere.js 
+16:36:38.063 INFO  Loading command: pause.js 
+16:36:38.065 INFO  Loading command: play-file.js 
+16:36:38.113 INFO  Loading command: play.js 
+16:36:38.115 INFO  Loading command: queue.js 
+16:36:38.117 INFO  Loading command: radio.js 
+16:36:38.119 INFO  Loading command: remove.js 
+16:36:38.120 INFO  Loading command: resume.js 
+16:36:38.172 INFO  Loading command: search.js 
+16:36:38.174 INFO  Loading command: seek.js 
+16:36:38.175 INFO  Loading command: shuffle.js 
+16:36:38.176 INFO  Loading command: skip.js 
+16:36:38.178 INFO  Loading command: skipto.js 
+16:36:38.180 INFO  Loading command: song.js 
+16:36:38.182 INFO  Loading command: volume.js 
+16:36:38.287 INFO  Loading command: 4k.js 
+16:36:38.289 INFO  Loading command: anal.js 
+16:36:38.291 INFO  Loading command: ass.js 
+16:36:38.292 INFO  Loading command: boob.js 
+16:36:38.294 INFO  Loading command: gif.js 
+16:36:38.296 INFO  Loading command: neko.js 
+16:36:38.298 INFO  Loading command: pussy.js 
+16:36:38.299 INFO  Loading command: thigh.js 
+16:36:38.309 INFO  Loading command: fortnite.js 
+16:36:38.311 INFO  Loading command: instagram.js 
+16:36:38.333 INFO  Loading command: mc.js 
+16:36:38.410 INFO  Loading command: r6.js 
+16:36:38.412 INFO  Loading command: reddit.js 
+16:36:38.414 INFO  Loading command: steam.js 
+16:36:38.416 INFO  Loading command: twitch.js 
+16:36:38.457 INFO  Loading command: weather.js 
+16:36:38.459 INFO  Loading command: startmusictrivia.js 
+16:36:38.460 INFO  Loading command: stopmusictrivia.js 
+16:36:38.488 INFO  Mongoose connection successfully opened 
+16:36:38.998 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:36:38.998 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:36:38.999 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:38:04.384 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:38:10.564 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:38:20.724 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:40:45.856 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:40:51.283 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:41:01.519 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:42:25.354 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:46:55.974 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:47:28.230 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:47:38.328 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:48:42.208 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:49:30.911 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:49:35.941 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:50:04.860 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:50:05.082 INFO  Shard 0 launched 
+16:50:06.114 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:50:06.116 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:50:06.119 INFO  Loading Event: channelDelete 
+16:50:06.117 INFO  Loading Event: channelCreate 
+16:50:06.120 INFO  Loading Event: channelUpdate 
+16:50:06.122 INFO  Loading Event: emojiCreate 
+16:50:06.124 INFO  Loading Event: emojiDelete 
+16:50:06.126 INFO  Loading Event: emojiUpdate 
+16:50:06.128 INFO  Loading Event: error 
+16:50:06.128 INFO  Loading Event: guildBanAdd 
+16:50:06.130 INFO  Loading Event: guildBanRemove 
+16:50:06.132 INFO  Loading Event: guildCreate 
+16:50:06.139 INFO  Loading Event: guildMemberAdd 
+16:50:06.138 INFO  Loading Event: guildDelete 
+16:50:06.141 INFO  Loading Event: guildMemberRemove 
+16:50:06.145 INFO  Loading Event: guildMemberUpdate 
+16:50:06.147 INFO  Loading Event: guildUnavailable 
+16:50:06.148 INFO  Loading Event: guildUpdate 
+16:50:06.149 INFO  Loading Event: message 
+16:50:06.151 INFO  Loading Event: messageDelete 
+16:50:06.153 INFO  Loading Event: messageDeleteBulk 
+16:50:06.155 INFO  Loading Event: messageReactionAdd 
+16:50:06.156 INFO  Loading Event: messageReactionRemove 
+16:50:06.160 INFO  Loading Event: ready 
+16:50:06.158 INFO  Loading Event: messageUpdate 
+16:50:06.161 INFO  Loading Event: roleCreate 
+16:50:06.163 INFO  Loading Event: roleDelete 
+16:50:06.164 INFO  Loading Event: roleUpdate 
+16:50:06.166 INFO  Loading Event: shardDisconnect 
+16:50:06.167 INFO  Loading Event: shardError 
+16:50:06.168 INFO  Loading Event: warn 
+16:50:06.413 INFO  Bot dashboard is coming online 
+16:50:06.467 INFO  Bot dashboard is online, running on port: 443 
+16:50:06.472 INFO  Loading command: addban.js 
+16:50:06.475 INFO  Loading command: reload.js 
+16:50:06.474 INFO  Loading command: eval.js 
+16:50:06.476 INFO  Loading command: shutdown.js 
+16:50:06.478 INFO  Loading command: suggestion.js 
+16:50:06.483 INFO  Loading command: fact.js 
+16:50:06.482 INFO  Loading command: advice.js 
+16:50:06.484 INFO  Loading command: flip.js 
+16:50:06.496 INFO  Loading command: meme.js 
+16:50:06.497 INFO  Loading command: ping.js 
+16:50:06.500 INFO  Loading command: pokemon.js 
+16:50:06.501 INFO  Loading command: random.js 
+16:50:06.503 INFO  Loading command: rps.js 
+16:50:06.507 INFO  Loading command: urban.js 
+16:50:06.509 INFO  Loading command: blurpify.js 
+16:50:06.511 INFO  Loading command: captcha.js 
+16:50:06.513 INFO  Loading command: cat.js 
+16:50:06.515 INFO  Loading command: changemymind.js 
+16:50:06.516 INFO  Loading command: clyde.js 
+16:50:06.518 INFO  Loading command: deepfry.js 
+16:50:06.809 INFO  Loading command: image.js 
+16:50:06.520 INFO  Loading command: dog.js 
+16:50:06.811 INFO  Loading command: phcomment.js 
+16:50:06.812 INFO  Loading command: qrcode.js 
+16:50:06.814 INFO  Loading command: ship.js 
+16:50:06.818 INFO  Loading command: threats.js 
+16:50:06.816 INFO  Loading command: stickbug.js 
+16:50:06.819 INFO  Loading command: twitter.js 
+16:50:06.821 INFO  Loading command: whowouldwin.js 
+16:50:06.823 INFO  Loading command: leaderboard.js 
+16:50:06.825 INFO  Loading command: rank.js 
+16:50:06.827 INFO  Loading command: about.js 
+16:50:06.829 INFO  Loading command: help.js 
+16:50:06.830 INFO  Loading command: invite.js 
+16:50:06.833 INFO  Loading command: shorturl.js 
+16:50:06.834 INFO  Loading command: status.js 
+16:50:06.836 INFO  Loading command: support.js 
+16:50:06.838 INFO  Loading command: ban.js 
+16:50:06.839 INFO  Loading command: clear-warning.js 
+16:50:06.841 INFO  Loading command: clear.js 
+16:50:06.842 INFO  Loading command: deafen.js 
+16:50:06.843 INFO  Loading command: kick.js 
+16:50:06.844 INFO  Loading command: mute.js 
+16:50:06.846 INFO  Loading command: nick.js 
+16:50:06.848 INFO  Loading command: report.js 
+16:50:06.849 INFO  Loading command: slowmode.js 
+16:50:06.850 INFO  Loading command: ticket.js 
+16:50:06.852 INFO  Loading command: unban.js 
+16:50:06.853 INFO  Loading command: undeafen.js 
+16:50:06.854 INFO  Loading command: unmute.js 
+16:50:06.855 INFO  Loading command: warn.js 
+16:50:06.856 INFO  Loading command: warnings.js 
+16:50:06.921 INFO  Loading command: add-playlist.js 
+16:50:06.922 INFO  Loading command: bassboost.js 
+16:50:06.923 INFO  Loading command: forceskip.js 
+16:50:06.925 INFO  Loading command: leave.js 
+16:50:06.926 INFO  Loading command: loop.js 
+16:50:06.928 INFO  Loading command: lyrics.js 
+16:50:06.929 INFO  Loading command: movehere.js 
+16:50:06.931 INFO  Loading command: pause.js 
+16:50:06.932 INFO  Loading command: play-file.js 
+16:50:06.966 INFO  Loading command: play.js 
+16:50:06.967 INFO  Loading command: queue.js 
+16:50:06.969 INFO  Loading command: radio.js 
+16:50:06.971 INFO  Loading command: remove.js 
+16:50:07.023 INFO  Loading command: search.js 
+16:50:06.972 INFO  Loading command: resume.js 
+16:50:07.026 INFO  Loading command: shuffle.js 
+16:50:07.024 INFO  Loading command: seek.js 
+16:50:07.027 INFO  Loading command: skip.js 
+16:50:07.028 INFO  Loading command: skipto.js 
+16:50:07.030 INFO  Loading command: song.js 
+16:50:07.031 INFO  Loading command: volume.js 
+16:50:07.040 INFO  Loading command: fortnite.js 
+16:50:07.042 INFO  Loading command: instagram.js 
+16:50:07.064 INFO  Loading command: mc.js 
+16:50:07.147 INFO  Loading command: r6.js 
+16:50:07.150 INFO  Loading command: reddit.js 
+16:50:07.152 INFO  Loading command: steam.js 
+16:50:07.154 INFO  Loading command: twitch.js 
+16:50:07.198 INFO  Loading command: weather.js 
+16:50:07.200 INFO  Loading command: startmusictrivia.js 
+16:50:07.201 INFO  Loading command: stopmusictrivia.js 
+16:50:07.295 INFO  Loading command: 4k.js 
+16:50:07.297 INFO  Loading command: anal.js 
+16:50:07.299 INFO  Loading command: ass.js 
+16:50:07.300 INFO  Loading command: boob.js 
+16:50:07.302 INFO  Loading command: gif.js 
+16:50:07.303 INFO  Loading command: neko.js 
+16:50:07.305 INFO  Loading command: pussy.js 
+16:50:07.306 INFO  Loading command: thigh.js 
+16:50:07.309 INFO  Loading command: avatar.js 
+16:50:07.310 INFO  Loading command: dashboard.js 
+16:50:07.312 INFO  Loading command: giveaway.js 
+16:50:07.313 INFO  Loading command: guildicon.js 
+16:50:07.315 INFO  Loading command: poll.js 
+16:50:07.316 INFO  Loading command: role-info.js 
+16:50:07.318 INFO  Loading command: server-info.js 
+16:50:07.320 INFO  Loading command: user-info.js 
+16:50:07.348 INFO  Mongoose connection successfully opened 
+16:50:07.876 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:50:07.874 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:50:07.875 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:50:10.601 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:50:50.833 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:51:36.700 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:52:02.881 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:52:04.819 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:52:05.029 INFO  Shard 0 launched 
+16:52:05.940 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:52:05.942 INFO  Loading Event: channelCreate 
+16:52:05.942 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:52:05.946 INFO  Loading Event: channelUpdate 
+16:52:05.944 INFO  Loading Event: channelDelete 
+16:52:05.948 INFO  Loading Event: emojiCreate 
+16:52:05.949 INFO  Loading Event: emojiDelete 
+16:52:05.951 INFO  Loading Event: emojiUpdate 
+16:52:05.953 INFO  Loading Event: error 
+16:52:05.954 INFO  Loading Event: guildBanAdd 
+16:52:05.955 INFO  Loading Event: guildBanRemove 
+16:52:05.957 INFO  Loading Event: guildCreate 
+16:52:05.963 INFO  Loading Event: guildDelete 
+16:52:05.964 INFO  Loading Event: guildMemberAdd 
+16:52:05.966 INFO  Loading Event: guildMemberRemove 
+16:52:05.970 INFO  Loading Event: guildMemberUpdate 
+16:52:05.971 INFO  Loading Event: guildUnavailable 
+16:52:05.972 INFO  Loading Event: guildUpdate 
+16:52:05.974 INFO  Loading Event: message 
+16:52:05.975 INFO  Loading Event: messageDelete 
+16:52:05.976 INFO  Loading Event: messageDeleteBulk 
+16:52:05.978 INFO  Loading Event: messageReactionAdd 
+16:52:05.980 INFO  Loading Event: messageReactionRemove 
+16:52:05.982 INFO  Loading Event: messageUpdate 
+16:52:05.983 INFO  Loading Event: ready 
+16:52:05.985 INFO  Loading Event: roleCreate 
+16:52:05.986 INFO  Loading Event: roleDelete 
+16:52:05.988 INFO  Loading Event: roleUpdate 
+16:52:05.989 INFO  Loading Event: shardDisconnect 
+16:52:05.991 INFO  Loading Event: shardError 
+16:52:05.992 INFO  Loading Event: warn 
+16:52:06.234 INFO  Bot dashboard is coming online 
+16:52:06.289 INFO  Bot dashboard is online, running on port: 443 
+16:52:06.295 INFO  Loading command: advice.js 
+16:52:06.297 INFO  Loading command: fact.js 
+16:52:06.298 INFO  Loading command: flip.js 
+16:52:06.308 INFO  Loading command: meme.js 
+16:52:06.309 INFO  Loading command: ping.js 
+16:52:06.313 INFO  Loading command: random.js 
+16:52:06.312 INFO  Loading command: pokemon.js 
+16:52:06.315 INFO  Loading command: rps.js 
+16:52:06.318 INFO  Loading command: urban.js 
+16:52:06.320 INFO  Loading command: addban.js 
+16:52:06.321 INFO  Loading command: eval.js 
+16:52:06.322 INFO  Loading command: reload.js 
+16:52:06.323 INFO  Loading command: shutdown.js 
+16:52:06.325 INFO  Loading command: suggestion.js 
+16:52:06.327 INFO  Loading command: blurpify.js 
+16:52:06.329 INFO  Loading command: captcha.js 
+16:52:06.330 INFO  Loading command: cat.js 
+16:52:06.332 INFO  Loading command: changemymind.js 
+16:52:06.334 INFO  Loading command: clyde.js 
+16:52:06.336 INFO  Loading command: deepfry.js 
+16:52:06.337 INFO  Loading command: dog.js 
+16:52:06.622 INFO  Loading command: image.js 
+16:52:06.625 INFO  Loading command: phcomment.js 
+16:52:06.627 INFO  Loading command: qrcode.js 
+16:52:06.628 INFO  Loading command: ship.js 
+16:52:06.630 INFO  Loading command: stickbug.js 
+16:52:06.631 INFO  Loading command: threats.js 
+16:52:06.633 INFO  Loading command: twitter.js 
+16:52:06.636 INFO  Loading command: whowouldwin.js 
+16:52:06.639 INFO  Loading command: leaderboard.js 
+16:52:06.641 INFO  Loading command: rank.js 
+16:52:06.644 INFO  Loading command: about.js 
+16:52:06.646 INFO  Loading command: help.js 
+16:52:06.648 INFO  Loading command: invite.js 
+16:52:06.651 INFO  Loading command: shorturl.js 
+16:52:06.653 INFO  Loading command: status.js 
+16:52:06.655 INFO  Loading command: support.js 
+16:52:06.658 INFO  Loading command: ban.js 
+16:52:06.661 INFO  Loading command: clear.js 
+16:52:06.660 INFO  Loading command: clear-warning.js 
+16:52:06.662 INFO  Loading command: deafen.js 
+16:52:06.664 INFO  Loading command: kick.js 
+16:52:06.665 INFO  Loading command: mute.js 
+16:52:06.666 INFO  Loading command: nick.js 
+16:52:06.668 INFO  Loading command: report.js 
+16:52:06.669 INFO  Loading command: slowmode.js 
+16:52:06.671 INFO  Loading command: ticket.js 
+16:52:06.672 INFO  Loading command: unban.js 
+16:52:06.674 INFO  Loading command: undeafen.js 
+16:52:06.675 INFO  Loading command: unmute.js 
+16:52:06.676 INFO  Loading command: warn.js 
+16:52:06.677 INFO  Loading command: warnings.js 
+16:52:06.749 INFO  Loading command: add-playlist.js 
+16:52:06.750 INFO  Loading command: bassboost.js 
+16:52:06.752 INFO  Loading command: forceskip.js 
+16:52:06.753 INFO  Loading command: leave.js 
+16:52:06.755 INFO  Loading command: loop.js 
+16:52:06.757 INFO  Loading command: lyrics.js 
+16:52:06.758 INFO  Loading command: movehere.js 
+16:52:06.759 INFO  Loading command: pause.js 
+16:52:06.760 INFO  Loading command: play-file.js 
+16:52:06.795 INFO  Loading command: play.js 
+16:52:06.796 INFO  Loading command: queue.js 
+16:52:06.798 INFO  Loading command: radio.js 
+16:52:06.799 INFO  Loading command: remove.js 
+16:52:06.800 INFO  Loading command: resume.js 
+16:52:06.851 INFO  Loading command: search.js 
+16:52:06.852 INFO  Loading command: seek.js 
+16:52:06.853 INFO  Loading command: shuffle.js 
+16:52:06.855 INFO  Loading command: skip.js 
+16:52:06.856 INFO  Loading command: skipto.js 
+16:52:06.859 INFO  Loading command: song.js 
+16:52:06.860 INFO  Loading command: volume.js 
+16:52:06.862 INFO  Loading command: startmusictrivia.js 
+16:52:06.863 INFO  Loading command: stopmusictrivia.js 
+16:52:06.963 INFO  Loading command: 4k.js 
+16:52:06.967 INFO  Loading command: anal.js 
+16:52:06.969 INFO  Loading command: ass.js 
+16:52:06.970 INFO  Loading command: boob.js 
+16:52:06.972 INFO  Loading command: gif.js 
+16:52:06.974 INFO  Loading command: neko.js 
+16:52:06.975 INFO  Loading command: pussy.js 
+16:52:06.977 INFO  Loading command: thigh.js 
+16:52:06.985 INFO  Loading command: fortnite.js 
+16:52:06.988 INFO  Loading command: instagram.js 
+16:52:07.080 INFO  Loading command: r6.js 
+16:52:07.009 INFO  Loading command: mc.js 
+16:52:07.083 INFO  Loading command: reddit.js 
+16:52:07.086 INFO  Loading command: twitch.js 
+16:52:07.085 INFO  Loading command: steam.js 
+16:52:07.127 INFO  Loading command: weather.js 
+16:52:07.130 INFO  Loading command: dashboard.js 
+16:52:07.129 INFO  Loading command: avatar.js 
+16:52:07.134 INFO  Loading command: guildicon.js 
+16:52:07.133 INFO  Loading command: giveaway.js 
+16:52:07.136 INFO  Loading command: poll.js 
+16:52:07.138 INFO  Loading command: role-info.js 
+16:52:07.140 INFO  Loading command: server-info.js 
+16:52:07.142 INFO  Loading command: user-info.js 
+16:52:07.169 INFO  Mongoose connection successfully opened 
+16:52:07.665 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:52:07.664 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:52:07.663 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:52:09.690 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:52:44.361 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+16:52:44.689 INFO  Shard 0 launched 
+16:52:45.912 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+16:52:45.914 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+16:52:45.916 INFO  Loading Event: channelDelete 
+16:52:45.914 INFO  Loading Event: channelCreate 
+16:52:45.919 INFO  Loading Event: channelUpdate 
+16:52:45.921 INFO  Loading Event: emojiCreate 
+16:52:45.922 INFO  Loading Event: emojiDelete 
+16:52:45.924 INFO  Loading Event: emojiUpdate 
+16:52:45.925 INFO  Loading Event: error 
+16:52:45.927 INFO  Loading Event: guildBanAdd 
+16:52:45.928 INFO  Loading Event: guildBanRemove 
+16:52:45.930 INFO  Loading Event: guildCreate 
+16:52:45.939 INFO  Loading Event: guildDelete 
+16:52:45.940 INFO  Loading Event: guildMemberAdd 
+16:52:45.941 INFO  Loading Event: guildMemberRemove 
+16:52:45.945 INFO  Loading Event: guildMemberUpdate 
+16:52:45.947 INFO  Loading Event: guildUnavailable 
+16:52:45.949 INFO  Loading Event: guildUpdate 
+16:52:45.950 INFO  Loading Event: message 
+16:52:45.951 INFO  Loading Event: messageDelete 
+16:52:45.953 INFO  Loading Event: messageDeleteBulk 
+16:52:45.955 INFO  Loading Event: messageReactionAdd 
+16:52:45.956 INFO  Loading Event: messageReactionRemove 
+16:52:45.960 INFO  Loading Event: messageUpdate 
+16:52:45.961 INFO  Loading Event: ready 
+16:52:45.963 INFO  Loading Event: roleCreate 
+16:52:45.964 INFO  Loading Event: roleDelete 
+16:52:45.966 INFO  Loading Event: roleUpdate 
+16:52:45.967 INFO  Loading Event: shardDisconnect 
+16:52:45.968 INFO  Loading Event: shardError 
+16:52:45.970 INFO  Loading Event: warn 
+16:52:46.242 INFO  Bot dashboard is coming online 
+16:52:46.312 INFO  Loading command: advice.js 
+16:52:46.304 INFO  Bot dashboard is online, running on port: 443 
+16:52:46.314 INFO  Loading command: fact.js 
+16:52:46.315 INFO  Loading command: flip.js 
+16:52:46.326 INFO  Loading command: meme.js 
+16:52:46.327 INFO  Loading command: ping.js 
+16:52:46.329 INFO  Loading command: pokemon.js 
+16:52:46.331 INFO  Loading command: random.js 
+16:52:46.333 INFO  Loading command: rps.js 
+16:52:46.336 INFO  Loading command: urban.js 
+16:52:46.338 INFO  Loading command: avatar.js 
+16:52:46.340 INFO  Loading command: dashboard.js 
+16:52:46.342 INFO  Loading command: giveaway.js 
+16:52:46.345 INFO  Loading command: guildicon.js 
+16:52:46.348 INFO  Loading command: poll.js 
+16:52:46.350 INFO  Loading command: role-info.js 
+16:52:46.351 INFO  Loading command: server-info.js 
+16:52:46.353 INFO  Loading command: user-info.js 
+16:52:46.355 INFO  Loading command: leaderboard.js 
+16:52:46.357 INFO  Loading command: rank.js 
+16:52:46.361 INFO  Loading command: blurpify.js 
+16:52:46.363 INFO  Loading command: captcha.js 
+16:52:46.364 INFO  Loading command: cat.js 
+16:52:46.366 INFO  Loading command: changemymind.js 
+16:52:46.367 INFO  Loading command: clyde.js 
+16:52:46.369 INFO  Loading command: deepfry.js 
+16:52:46.370 INFO  Loading command: dog.js 
+16:52:46.707 INFO  Loading command: image.js 
+16:52:46.710 INFO  Loading command: phcomment.js 
+16:52:46.712 INFO  Loading command: qrcode.js 
+16:52:46.714 INFO  Loading command: ship.js 
+16:52:46.721 INFO  Loading command: stickbug.js 
+16:52:46.724 INFO  Loading command: threats.js 
+16:52:46.729 INFO  Loading command: twitter.js 
+16:52:46.738 INFO  Loading command: whowouldwin.js 
+16:52:46.741 INFO  Loading command: addban.js 
+16:52:46.742 INFO  Loading command: eval.js 
+16:52:46.743 INFO  Loading command: reload.js 
+16:52:46.746 INFO  Loading command: shutdown.js 
+16:52:46.749 INFO  Loading command: suggestion.js 
+16:52:46.752 INFO  Loading command: ban.js 
+16:52:46.753 INFO  Loading command: clear-warning.js 
+16:52:46.754 INFO  Loading command: clear.js 
+16:52:46.757 INFO  Loading command: kick.js 
+16:52:46.755 INFO  Loading command: deafen.js 
+16:52:46.759 INFO  Loading command: mute.js 
+16:52:46.761 INFO  Loading command: nick.js 
+16:52:46.762 INFO  Loading command: report.js 
+16:52:46.763 INFO  Loading command: slowmode.js 
+16:52:46.765 INFO  Loading command: ticket.js 
+16:52:46.767 INFO  Loading command: unban.js 
+16:52:46.768 INFO  Loading command: undeafen.js 
+16:52:46.769 INFO  Loading command: unmute.js 
+16:52:46.770 INFO  Loading command: warn.js 
+16:52:46.773 INFO  Loading command: warnings.js 
+16:52:46.776 INFO  Loading command: about.js 
+16:52:46.778 INFO  Loading command: help.js 
+16:52:46.779 INFO  Loading command: invite.js 
+16:52:46.782 INFO  Loading command: shorturl.js 
+16:52:46.787 INFO  Loading command: status.js 
+16:52:46.789 INFO  Loading command: support.js 
+16:52:46.868 INFO  Loading command: bassboost.js 
+16:52:46.866 INFO  Loading command: add-playlist.js 
+16:52:46.876 INFO  Loading command: lyrics.js 
+16:52:46.869 INFO  Loading command: forceskip.js 
+16:52:46.877 INFO  Loading command: movehere.js 
+16:52:46.883 INFO  Loading command: play-file.js 
+16:52:46.924 INFO  Loading command: play.js 
+16:52:46.926 INFO  Loading command: queue.js 
+16:52:46.927 INFO  Loading command: radio.js 
+16:52:46.871 INFO  Loading command: loop.js 
+16:52:46.929 INFO  Loading command: remove.js 
+16:52:46.930 INFO  Loading command: resume.js 
+16:52:46.989 INFO  Loading command: search.js 
+16:52:46.990 INFO  Loading command: seek.js 
+16:52:46.991 INFO  Loading command: shuffle.js 
+16:52:46.993 INFO  Loading command: skip.js 
+16:52:46.994 INFO  Loading command: skipto.js 
+16:52:46.997 INFO  Loading command: song.js 
+16:52:47.000 INFO  Loading command: volume.js 
+16:52:47.127 INFO  Loading command: 4k.js 
+16:52:47.129 INFO  Loading command: anal.js 
+16:52:47.130 INFO  Loading command: ass.js 
+16:52:47.133 INFO  Loading command: boob.js 
+16:52:47.135 INFO  Loading command: gif.js 
+16:52:47.136 INFO  Loading command: neko.js 
+16:52:47.138 INFO  Loading command: pussy.js 
+16:52:47.139 INFO  Loading command: thigh.js 
+16:52:47.149 INFO  Loading command: fortnite.js 
+16:52:47.151 INFO  Loading command: instagram.js 
+16:52:47.267 INFO  Loading command: r6.js 
+16:52:46.870 INFO  Loading command: leave.js 
+16:52:47.269 INFO  Loading command: reddit.js 
+16:52:47.271 INFO  Loading command: steam.js 
+16:52:47.273 INFO  Loading command: twitch.js 
+16:52:47.317 INFO  Loading command: weather.js 
+16:52:47.321 INFO  Loading command: startmusictrivia.js 
+16:52:47.322 INFO  Loading command: stopmusictrivia.js 
+16:52:47.176 INFO  Loading command: mc.js 
+16:52:46.881 INFO  Loading command: pause.js 
+16:52:47.354 INFO  Mongoose connection successfully opened 
+16:52:47.991 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:52:47.990 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+16:52:47.990 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+16:52:51.948 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:52:56.766 INFO  I am Ben#6686 has logged on with IP: 192.168.0.8 (undefined, undefined) 
+16:52:58.490 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+16:53:03.909 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:53:12.165 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+16:53:23.229 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:13:27.683 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:13:38.001 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:16:51.754 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:19:02.850 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:19:29.989 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:20:05.621 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:20:15.959 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:20:50.806 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:20:56.475 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:22:19.587 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:22:53.399 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+17:28:16.808 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+17:28:35.327 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+17:28:44.256 INFO  I am Ben#6686 has leveled up to 28 in server: [750822670505082971] 
+17:28:54.459 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+17:29:03.168 INFO  I am Ben#6686 has leveled up to 29 in server: [750822670505082971] 
+17:29:15.478 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+17:29:28.745 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+17:29:32.617 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+18:02:46.871 INFO  Connection IP: 192.168.0.13, Location:undefined, undefined. 
+18:03:18.526 INFO  I am Ben#6686 has logged on with IP: 192.168.0.13 (undefined, undefined) 
+18:03:19.912 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:37:50.968 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:37:52.808 INFO  Guild: [750822670505083000] updated settings: welcomePlugin 
+21:39:06.526 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:39:14.310 INFO  Guild: [750822670505083000] updated settings: LevelMultiplier,LevelChannel,LevelOption,LevelMessage 
+21:39:18.184 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:55:44.342 INFO  Guild: [750822670505083000] updated settings: ModerationPlugin 
+21:55:44.346 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:55:46.921 INFO  Guild: [750822670505083000] updated settings: ModerationPlugin 
+21:55:59.410 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:56:29.003 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:56:32.185 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:57:41.253 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+21:57:48.648 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:58:37.534 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+21:58:57.474 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+21:59:00.599 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+21:59:40.173 INFO  Guild: [750822670505083000] updated settings: welcomeMessageChannel,welcomeMessageToggle,welcomePrivateToggle,welcomeRoleToggle,welcomeGoodbyeToggle,welcomeMessageText,welcomePrivateText,welcomeGoodbyeText 
+22:00:07.923 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:00:10.241 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:00:36.569 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:00:47.075 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:00:49.841 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:01:19.124 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:04:01.951 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+22:04:02.190 INFO  Shard 0 launched 
+22:04:08.967 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+22:04:08.969 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+22:04:08.970 INFO  Loading Event: channelCreate 
+22:04:08.979 INFO  Loading Event: channelDelete 
+22:04:08.982 INFO  Loading Event: channelUpdate 
+22:04:08.984 INFO  Loading Event: emojiCreate 
+22:04:08.990 INFO  Loading Event: emojiDelete 
+22:04:08.997 INFO  Loading Event: emojiUpdate 
+22:04:09.007 INFO  Loading Event: error 
+22:04:09.018 INFO  Loading Event: guildBanAdd 
+22:04:09.026 INFO  Loading Event: guildBanRemove 
+22:04:09.034 INFO  Loading Event: guildCreate 
+22:04:09.074 INFO  Loading Event: guildDelete 
+22:04:09.083 INFO  Loading Event: guildMemberAdd 
+22:04:09.098 INFO  Loading Event: guildMemberRemove 
+22:04:09.111 INFO  Loading Event: guildMemberUpdate 
+22:04:09.121 INFO  Loading Event: guildUnavailable 
+22:04:09.126 INFO  Loading Event: guildUpdate 
+22:04:09.134 INFO  Loading Event: message 
+22:04:09.150 INFO  Loading Event: messageDelete 
+22:04:09.162 INFO  Loading Event: messageDeleteBulk 
+22:04:09.176 INFO  Loading Event: messageReactionAdd 
+22:04:09.183 INFO  Loading Event: messageReactionRemove 
+22:04:09.188 INFO  Loading Event: messageUpdate 
+22:04:09.191 INFO  Loading Event: ready 
+22:04:09.200 INFO  Loading Event: roleCreate 
+22:04:09.210 INFO  Loading Event: roleDelete 
+22:04:09.220 INFO  Loading Event: roleUpdate 
+22:04:09.226 INFO  Loading Event: shardDisconnect 
+22:04:09.228 INFO  Loading Event: shardError 
+22:04:09.233 INFO  Loading Event: warn 
+22:04:11.144 INFO  Bot dashboard is coming online 
+22:04:11.315 INFO  Bot dashboard is online, running on port: 443 
+22:04:11.356 INFO  Loading command: advice.js 
+22:04:11.362 INFO  Loading command: fact.js 
+22:04:11.367 INFO  Loading command: flip.js 
+22:04:11.451 INFO  Loading command: meme.js 
+22:04:11.458 INFO  Loading command: ping.js 
+22:04:11.467 INFO  Loading command: pokemon.js 
+22:04:11.484 INFO  Loading command: rps.js 
+22:04:11.475 INFO  Loading command: random.js 
+22:04:11.508 INFO  Loading command: urban.js 
+22:04:11.517 INFO  Loading command: avatar.js 
+22:04:11.532 INFO  Loading command: dashboard.js 
+22:04:11.550 INFO  Loading command: giveaway.js 
+22:04:11.562 INFO  Loading command: guildicon.js 
+22:04:11.569 INFO  Loading command: poll.js 
+22:04:11.571 INFO  Loading command: role-info.js 
+22:04:11.577 INFO  Loading command: server-info.js 
+22:04:11.586 INFO  Loading command: user-info.js 
+22:04:11.597 INFO  Loading command: addban.js 
+22:04:11.605 INFO  Loading command: eval.js 
+22:04:11.606 INFO  Loading command: reload.js 
+22:04:11.625 INFO  Loading command: shutdown.js 
+22:04:11.649 INFO  Loading command: suggestion.js 
+22:04:11.658 INFO  Loading command: blurpify.js 
+22:04:11.663 INFO  Loading command: captcha.js 
+22:04:11.669 INFO  Loading command: cat.js 
+22:04:11.674 INFO  Loading command: changemymind.js 
+22:04:11.682 INFO  Loading command: clyde.js 
+22:04:11.690 INFO  Loading command: deepfry.js 
+22:04:11.710 INFO  Loading command: dog.js 
+22:04:14.843 INFO  Loading command: image.js 
+22:04:14.846 INFO  Loading command: phcomment.js 
+22:04:14.850 INFO  Loading command: qrcode.js 
+22:04:14.853 INFO  Loading command: ship.js 
+22:04:14.863 INFO  Loading command: stickbug.js 
+22:04:14.887 INFO  Loading command: threats.js 
+22:04:14.897 INFO  Loading command: twitter.js 
+22:04:14.902 INFO  Loading command: whowouldwin.js 
+22:04:14.916 INFO  Loading command: leaderboard.js 
+22:04:14.923 INFO  Loading command: rank.js 
+22:04:14.933 INFO  Loading command: about.js 
+22:04:14.963 INFO  Loading command: help.js 
+22:04:14.977 INFO  Loading command: invite.js 
+22:04:14.993 INFO  Loading command: shorturl.js 
+22:04:15.003 INFO  Loading command: status.js 
+22:04:15.031 INFO  Loading command: support.js 
+22:04:15.058 INFO  Loading command: ban.js 
+22:04:15.067 INFO  Loading command: clear-warning.js 
+22:04:15.079 INFO  Loading command: clear.js 
+22:04:15.093 INFO  Loading command: deafen.js 
+22:04:15.103 INFO  Loading command: kick.js 
+22:04:15.106 INFO  Loading command: mute.js 
+22:04:15.115 INFO  Loading command: nick.js 
+22:04:15.123 INFO  Loading command: report.js 
+22:04:15.124 INFO  Loading command: slowmode.js 
+22:04:15.133 INFO  Loading command: ticket.js 
+22:04:15.146 INFO  Loading command: unban.js 
+22:04:15.152 INFO  Loading command: undeafen.js 
+22:04:15.162 INFO  Loading command: unmute.js 
+22:04:15.177 INFO  Loading command: warn.js 
+22:04:15.192 INFO  Loading command: warnings.js 
+22:04:15.734 INFO  Loading command: add-playlist.js 
+22:04:15.757 INFO  Loading command: bassboost.js 
+22:04:15.762 INFO  Loading command: forceskip.js 
+22:04:15.764 INFO  Loading command: leave.js 
+22:04:15.766 INFO  Loading command: loop.js 
+22:04:15.782 INFO  Loading command: lyrics.js 
+22:04:15.784 INFO  Loading command: movehere.js 
+22:04:15.792 INFO  Loading command: pause.js 
+22:04:15.799 INFO  Loading command: play-file.js 
+22:04:16.064 INFO  Loading command: play.js 
+22:04:16.072 INFO  Loading command: queue.js 
+22:04:16.085 INFO  Loading command: radio.js 
+22:04:16.092 INFO  Loading command: remove.js 
+22:04:16.099 INFO  Loading command: resume.js 
+22:04:16.526 INFO  Loading command: search.js 
+22:04:16.534 INFO  Loading command: seek.js 
+22:04:16.543 INFO  Loading command: shuffle.js 
+22:04:16.547 INFO  Loading command: skip.js 
+22:04:16.552 INFO  Loading command: skipto.js 
+22:04:16.571 INFO  Loading command: song.js 
+22:04:16.573 INFO  Loading command: volume.js 
+22:04:17.241 INFO  Loading command: 4k.js 
+22:04:17.247 INFO  Loading command: anal.js 
+22:04:17.253 INFO  Loading command: ass.js 
+22:04:17.258 INFO  Loading command: boob.js 
+22:04:17.263 INFO  Loading command: gif.js 
+22:04:17.269 INFO  Loading command: neko.js 
+22:04:17.271 INFO  Loading command: pussy.js 
+22:04:17.277 INFO  Loading command: thigh.js 
+22:04:17.378 INFO  Loading command: fortnite.js 
+22:04:17.382 INFO  Loading command: instagram.js 
+22:04:17.531 INFO  Loading command: mc.js 
+22:04:18.073 INFO  Loading command: r6.js 
+22:04:18.076 INFO  Loading command: reddit.js 
+22:04:18.083 INFO  Loading command: steam.js 
+22:04:18.090 INFO  Loading command: twitch.js 
+22:04:18.415 INFO  Loading command: weather.js 
+22:04:18.423 INFO  Loading command: startmusictrivia.js 
+22:04:18.433 INFO  Loading command: stopmusictrivia.js 
+22:04:18.509 INFO  Mongoose connection successfully opened 
+22:04:19.098 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+22:04:19.097 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:04:19.099 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:04:23.057 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:04:25.038 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:05:06.102 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+22:05:06.299 INFO  Shard 0 launched 
+22:05:08.195 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+22:05:08.197 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+22:05:08.198 INFO  Loading Event: channelCreate 
+22:05:08.200 INFO  Loading Event: channelDelete 
+22:05:08.202 INFO  Loading Event: channelUpdate 
+22:05:08.204 INFO  Loading Event: emojiCreate 
+22:05:08.205 INFO  Loading Event: emojiDelete 
+22:05:08.208 INFO  Loading Event: emojiUpdate 
+22:05:08.209 INFO  Loading Event: error 
+22:05:08.211 INFO  Loading Event: guildBanAdd 
+22:05:08.212 INFO  Loading Event: guildBanRemove 
+22:05:08.214 INFO  Loading Event: guildCreate 
+22:05:08.224 INFO  Loading Event: guildDelete 
+22:05:08.225 INFO  Loading Event: guildMemberAdd 
+22:05:08.227 INFO  Loading Event: guildMemberRemove 
+22:05:08.230 INFO  Loading Event: guildMemberUpdate 
+22:05:08.232 INFO  Loading Event: guildUnavailable 
+22:05:08.234 INFO  Loading Event: guildUpdate 
+22:05:08.238 INFO  Loading Event: messageDelete 
+22:05:08.240 INFO  Loading Event: messageDeleteBulk 
+22:05:08.242 INFO  Loading Event: messageReactionAdd 
+22:05:08.236 INFO  Loading Event: message 
+22:05:08.244 INFO  Loading Event: messageReactionRemove 
+22:05:08.247 INFO  Loading Event: messageUpdate 
+22:05:08.252 INFO  Loading Event: roleCreate 
+22:05:08.250 INFO  Loading Event: ready 
+22:05:08.254 INFO  Loading Event: roleDelete 
+22:05:08.256 INFO  Loading Event: roleUpdate 
+22:05:08.258 INFO  Loading Event: shardDisconnect 
+22:05:08.259 INFO  Loading Event: shardError 
+22:05:08.260 INFO  Loading Event: warn 
+22:05:08.797 INFO  Bot dashboard is coming online 
+22:05:08.856 INFO  Bot dashboard is online, running on port: 443 
+22:05:08.861 INFO  Loading command: avatar.js 
+22:05:08.863 INFO  Loading command: dashboard.js 
+22:05:08.867 INFO  Loading command: giveaway.js 
+22:05:08.870 INFO  Loading command: guildicon.js 
+22:05:08.872 INFO  Loading command: poll.js 
+22:05:08.876 INFO  Loading command: role-info.js 
+22:05:08.878 INFO  Loading command: server-info.js 
+22:05:08.880 INFO  Loading command: user-info.js 
+22:05:08.883 INFO  Loading command: addban.js 
+22:05:08.884 INFO  Loading command: eval.js 
+22:05:08.887 INFO  Loading command: reload.js 
+22:05:08.890 INFO  Loading command: shutdown.js 
+22:05:08.891 INFO  Loading command: suggestion.js 
+22:05:08.894 INFO  Loading command: blurpify.js 
+22:05:08.896 INFO  Loading command: captcha.js 
+22:05:08.897 INFO  Loading command: cat.js 
+22:05:08.899 INFO  Loading command: changemymind.js 
+22:05:08.902 INFO  Loading command: clyde.js 
+22:05:08.903 INFO  Loading command: deepfry.js 
+22:05:08.905 INFO  Loading command: dog.js 
+22:05:09.307 INFO  Loading command: image.js 
+22:05:09.310 INFO  Loading command: phcomment.js 
+22:05:09.312 INFO  Loading command: qrcode.js 
+22:05:09.316 INFO  Loading command: ship.js 
+22:05:09.319 INFO  Loading command: stickbug.js 
+22:05:09.321 INFO  Loading command: threats.js 
+22:05:09.324 INFO  Loading command: twitter.js 
+22:05:09.326 INFO  Loading command: whowouldwin.js 
+22:05:09.331 INFO  Loading command: leaderboard.js 
+22:05:09.334 INFO  Loading command: rank.js 
+22:05:09.345 INFO  Loading command: ban.js 
+22:05:09.347 INFO  Loading command: clear-warning.js 
+22:05:09.348 INFO  Loading command: clear.js 
+22:05:09.350 INFO  Loading command: deafen.js 
+22:05:09.351 INFO  Loading command: kick.js 
+22:05:09.354 INFO  Loading command: nick.js 
+22:05:09.356 INFO  Loading command: report.js 
+22:05:09.352 INFO  Loading command: mute.js 
+22:05:09.357 INFO  Loading command: slowmode.js 
+22:05:09.359 INFO  Loading command: ticket.js 
+22:05:09.361 INFO  Loading command: unban.js 
+22:05:09.364 INFO  Loading command: unmute.js 
+22:05:09.365 INFO  Loading command: warn.js 
+22:05:09.367 INFO  Loading command: warnings.js 
+22:05:09.371 INFO  Loading command: about.js 
+22:05:09.373 INFO  Loading command: help.js 
+22:05:09.376 INFO  Loading command: invite.js 
+22:05:09.380 INFO  Loading command: shorturl.js 
+22:05:09.383 INFO  Loading command: status.js 
+22:05:09.387 INFO  Loading command: support.js 
+22:05:09.494 INFO  Loading command: add-playlist.js 
+22:05:09.363 INFO  Loading command: undeafen.js 
+22:05:09.501 INFO  Loading command: bassboost.js 
+22:05:09.503 INFO  Loading command: forceskip.js 
+22:05:09.505 INFO  Loading command: leave.js 
+22:05:09.516 INFO  Loading command: loop.js 
+22:05:09.539 INFO  Loading command: lyrics.js 
+22:05:09.543 INFO  Loading command: movehere.js 
+22:05:09.545 INFO  Loading command: pause.js 
+22:05:09.547 INFO  Loading command: play-file.js 
+22:05:09.610 INFO  Loading command: play.js 
+22:05:09.612 INFO  Loading command: queue.js 
+22:05:09.615 INFO  Loading command: radio.js 
+22:05:09.617 INFO  Loading command: remove.js 
+22:05:09.622 INFO  Loading command: resume.js 
+22:05:09.777 INFO  Loading command: search.js 
+22:05:09.781 INFO  Loading command: seek.js 
+22:05:09.784 INFO  Loading command: shuffle.js 
+22:05:09.789 INFO  Loading command: skip.js 
+22:05:09.792 INFO  Loading command: skipto.js 
+22:05:09.797 INFO  Loading command: song.js 
+22:05:09.799 INFO  Loading command: volume.js 
+22:05:09.952 INFO  Loading command: 4k.js 
+22:05:09.954 INFO  Loading command: anal.js 
+22:05:09.958 INFO  Loading command: ass.js 
+22:05:09.960 INFO  Loading command: boob.js 
+22:05:09.963 INFO  Loading command: gif.js 
+22:05:09.965 INFO  Loading command: neko.js 
+22:05:09.969 INFO  Loading command: pussy.js 
+22:05:09.974 INFO  Loading command: thigh.js 
+22:05:09.991 INFO  Loading command: fortnite.js 
+22:05:09.993 INFO  Loading command: instagram.js 
+22:05:10.029 INFO  Loading command: mc.js 
+22:05:10.123 INFO  Loading command: r6.js 
+22:05:10.126 INFO  Loading command: reddit.js 
+22:05:10.129 INFO  Loading command: steam.js 
+22:05:10.131 INFO  Loading command: twitch.js 
+22:05:10.176 INFO  Loading command: weather.js 
+22:05:10.179 INFO  Loading command: startmusictrivia.js 
+22:05:10.182 INFO  Loading command: stopmusictrivia.js 
+22:05:10.188 INFO  Loading command: advice.js 
+22:05:10.190 INFO  Loading command: fact.js 
+22:05:10.192 INFO  Loading command: flip.js 
+22:05:10.194 INFO  Loading command: meme.js 
+22:05:10.196 INFO  Loading command: ping.js 
+22:05:10.199 INFO  Loading command: pokemon.js 
+22:05:10.200 INFO  Loading command: random.js 
+22:05:10.203 INFO  Loading command: rps.js 
+22:05:10.206 INFO  Loading command: urban.js 
+22:05:10.242 INFO  Mongoose connection successfully opened 
+22:05:10.733 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:05:10.734 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+22:05:10.734 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:05:11.671 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:05:14.775 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:05:53.304 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:17:43.871 INFO  =-=-=-=-=-=-=-Loading shard(s)-=-=-=-=-=-=-= 
+22:17:44.060 INFO  Shard 0 launched 
+22:17:46.543 INFO  =-=-=-=-=-=-=- Loading command(s): 63 -=-=-=-=-=-=-= 
+22:17:46.547 INFO  =-=-=-=-=-=-=- Loading events(s): 29 -=-=-=-=-=-=-= 
+22:17:46.548 INFO  Loading Event: channelCreate 
+22:17:46.552 INFO  Loading Event: channelDelete 
+22:17:46.555 INFO  Loading Event: channelUpdate 
+22:17:46.559 INFO  Loading Event: emojiCreate 
+22:17:46.561 INFO  Loading Event: emojiDelete 
+22:17:46.564 INFO  Loading Event: emojiUpdate 
+22:17:46.567 INFO  Loading Event: error 
+22:17:46.571 INFO  Loading Event: guildBanAdd 
+22:17:46.573 INFO  Loading Event: guildBanRemove 
+22:17:46.575 INFO  Loading Event: guildCreate 
+22:17:46.587 INFO  Loading Event: guildDelete 
+22:17:46.589 INFO  Loading Event: guildMemberAdd 
+22:17:46.593 INFO  Loading Event: guildMemberRemove 
+22:17:46.598 INFO  Loading Event: guildMemberUpdate 
+22:17:46.600 INFO  Loading Event: guildUnavailable 
+22:17:46.602 INFO  Loading Event: guildUpdate 
+22:17:46.607 INFO  Loading Event: message 
+22:17:46.609 INFO  Loading Event: messageDelete 
+22:17:46.610 INFO  Loading Event: messageDeleteBulk 
+22:17:46.613 INFO  Loading Event: messageReactionAdd 
+22:17:46.615 INFO  Loading Event: messageReactionRemove 
+22:17:46.616 INFO  Loading Event: messageUpdate 
+22:17:46.618 INFO  Loading Event: ready 
+22:17:46.620 INFO  Loading Event: roleCreate 
+22:17:46.622 INFO  Loading Event: roleDelete 
+22:17:46.624 INFO  Loading Event: roleUpdate 
+22:17:46.627 INFO  Loading Event: shardDisconnect 
+22:17:46.628 INFO  Loading Event: shardError 
+22:17:46.630 INFO  Loading Event: warn 
+22:17:47.249 INFO  Bot dashboard is coming online 
+22:17:47.411 INFO  Bot dashboard is online, running on port: 443 
+22:17:47.423 INFO  Loading command: advice.js 
+22:17:47.428 INFO  Loading command: fact.js 
+22:17:47.432 INFO  Loading command: flip.js 
+22:17:47.457 INFO  Loading command: meme.js 
+22:17:47.461 INFO  Loading command: ping.js 
+22:17:47.465 INFO  Loading command: pokemon.js 
+22:17:47.473 INFO  Loading command: random.js 
+22:17:47.475 INFO  Loading command: rps.js 
+22:17:47.480 INFO  Loading command: urban.js 
+22:17:47.482 INFO  Loading command: avatar.js 
+22:17:47.484 INFO  Loading command: dashboard.js 
+22:17:47.490 INFO  Loading command: giveaway.js 
+22:17:47.493 INFO  Loading command: guildicon.js 
+22:17:47.495 INFO  Loading command: poll.js 
+22:17:47.497 INFO  Loading command: role-info.js 
+22:17:47.503 INFO  Loading command: server-info.js 
+22:17:47.505 INFO  Loading command: user-info.js 
+22:17:47.514 INFO  Loading command: addban.js 
+22:17:47.516 INFO  Loading command: eval.js 
+22:17:47.517 INFO  Loading command: reload.js 
+22:17:47.519 INFO  Loading command: shutdown.js 
+22:17:47.522 INFO  Loading command: suggestion.js 
+22:17:47.530 INFO  Loading command: blurpify.js 
+22:17:47.532 INFO  Loading command: captcha.js 
+22:17:47.534 INFO  Loading command: cat.js 
+22:17:47.536 INFO  Loading command: changemymind.js 
+22:17:47.540 INFO  Loading command: clyde.js 
+22:17:47.542 INFO  Loading command: deepfry.js 
+22:17:47.543 INFO  Loading command: dog.js 
+22:17:47.996 INFO  Loading command: image.js 
+22:17:47.998 INFO  Loading command: phcomment.js 
+22:17:47.999 INFO  Loading command: qrcode.js 
+22:17:48.001 INFO  Loading command: ship.js 
+22:17:48.004 INFO  Loading command: stickbug.js 
+22:17:48.008 INFO  Loading command: threats.js 
+22:17:48.009 INFO  Loading command: twitter.js 
+22:17:48.011 INFO  Loading command: whowouldwin.js 
+22:17:48.014 INFO  Loading command: leaderboard.js 
+22:17:48.016 INFO  Loading command: rank.js 
+22:17:48.022 INFO  Loading command: about.js 
+22:17:48.025 INFO  Loading command: help.js 
+22:17:48.027 INFO  Loading command: invite.js 
+22:17:48.030 INFO  Loading command: shorturl.js 
+22:17:48.032 INFO  Loading command: status.js 
+22:17:48.039 INFO  Loading command: support.js 
+22:17:48.042 INFO  Loading command: ban.js 
+22:17:48.043 INFO  Loading command: clear-warning.js 
+22:17:48.046 INFO  Loading command: clear.js 
+22:17:48.048 INFO  Loading command: deafen.js 
+22:17:48.049 INFO  Loading command: kick.js 
+22:17:48.051 INFO  Loading command: mute.js 
+22:17:48.053 INFO  Loading command: nick.js 
+22:17:48.055 INFO  Loading command: report.js 
+22:17:48.056 INFO  Loading command: slowmode.js 
+22:17:48.061 INFO  Loading command: ticket.js 
+22:17:48.066 INFO  Loading command: unban.js 
+22:17:48.068 INFO  Loading command: undeafen.js 
+22:17:48.069 INFO  Loading command: unmute.js 
+22:17:48.071 INFO  Loading command: warn.js 
+22:17:48.073 INFO  Loading command: warnings.js 
+22:17:48.159 INFO  Loading command: add-playlist.js 
+22:17:48.167 INFO  Loading command: loop.js 
+22:17:48.169 INFO  Loading command: lyrics.js 
+22:17:48.171 INFO  Loading command: movehere.js 
+22:17:48.173 INFO  Loading command: pause.js 
+22:17:48.175 INFO  Loading command: play-file.js 
+22:17:48.218 INFO  Loading command: play.js 
+22:17:48.221 INFO  Loading command: queue.js 
+22:17:48.224 INFO  Loading command: radio.js 
+22:17:48.226 INFO  Loading command: remove.js 
+22:17:48.227 INFO  Loading command: resume.js 
+22:17:48.314 INFO  Loading command: search.js 
+22:17:48.316 INFO  Loading command: seek.js 
+22:17:48.317 INFO  Loading command: shuffle.js 
+22:17:48.318 INFO  Loading command: skip.js 
+22:17:48.319 INFO  Loading command: skipto.js 
+22:17:48.322 INFO  Loading command: song.js 
+22:17:48.323 INFO  Loading command: volume.js 
+22:17:48.464 INFO  Loading command: 4k.js 
+22:17:48.160 INFO  Loading command: bassboost.js 
+22:17:48.467 INFO  Loading command: ass.js 
+22:17:48.469 INFO  Loading command: boob.js 
+22:17:48.471 INFO  Loading command: gif.js 
+22:17:48.473 INFO  Loading command: neko.js 
+22:17:48.475 INFO  Loading command: pussy.js 
+22:17:48.477 INFO  Loading command: thigh.js 
+22:17:48.490 INFO  Loading command: fortnite.js 
+22:17:48.493 INFO  Loading command: instagram.js 
+22:17:48.517 INFO  Loading command: mc.js 
+22:17:48.615 INFO  Loading command: r6.js 
+22:17:48.618 INFO  Loading command: reddit.js 
+22:17:48.620 INFO  Loading command: steam.js 
+22:17:48.623 INFO  Loading command: twitch.js 
+22:17:48.162 INFO  Loading command: forceskip.js 
+22:17:48.675 INFO  Loading command: startmusictrivia.js 
+22:17:48.676 INFO  Loading command: stopmusictrivia.js 
+22:17:48.163 INFO  Loading command: leave.js 
+22:17:48.466 INFO  Loading command: anal.js 
+22:17:48.670 INFO  Loading command: weather.js 
+22:17:48.723 INFO  Mongoose connection successfully opened 
+22:17:48.878 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:17:49.336 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+22:17:49.337 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:17:49.335 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+22:17:51.963 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:25:12.408 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+22:25:19.629 INFO  I am Ben#6686 has logged on with IP: 192.168.0.8 (undefined, undefined) 
+22:25:20.927 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:25:28.025 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:25:37.791 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:25:50.627 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:25:56.510 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+22:36:59.266 INFO  I am Ben#6686 is accessing server: [750822670505082971] 
+23:33:31.428 INFO  Connection IP: 192.168.0.8, Location:undefined, undefined. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

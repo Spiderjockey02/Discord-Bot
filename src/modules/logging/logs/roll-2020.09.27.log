@@ -1,0 +1,198 @@
+23:56:55.130 INFO  Shard 0 launched 
+23:56:58.823 INFO  Loading command: flip.js 
+23:56:58.887 INFO  Loading command: meme.js 
+23:56:58.899 INFO  Loading command: random.js 
+23:56:58.905 INFO  Loading command: rps.js 
+23:56:58.912 INFO  Loading command: uptime.js 
+23:56:58.893 INFO  Loading command: ping.js 
+23:56:58.926 INFO  Loading command: clear.js 
+23:56:58.933 INFO  Loading command: dashboard.js 
+23:56:58.938 INFO  Loading command: deafen.js 
+23:56:58.817 INFO  Loading command: fact.js 
+23:56:58.920 INFO  Loading command: ban.js 
+23:56:58.950 INFO  Loading command: mute.js 
+23:56:58.944 INFO  Loading command: kick.js 
+23:56:58.964 INFO  Loading command: poll.js 
+23:56:58.972 INFO  Loading command: report.js 
+23:56:58.975 INFO  Loading command: role-info.js 
+23:56:58.984 INFO  Loading command: server-info.js 
+23:56:58.956 INFO  Loading command: nick.js 
+23:56:58.990 INFO  Loading command: unban.js 
+23:56:59.008 INFO  Loading command: user-info.js 
+23:56:59.014 INFO  Loading command: verify.js 
+23:56:59.020 INFO  Loading command: warn.js 
+23:56:59.028 INFO  Loading command: leaderboard.js 
+23:56:59.030 INFO  Loading command: level.js 
+23:56:59.040 INFO  Loading command: addban.js 
+23:56:59.049 INFO  Loading command: eval.js 
+23:56:59.060 INFO  Loading command: shutdown.js 
+23:56:59.067 INFO  Loading command: suggestion.js 
+23:56:59.521 INFO  Loading command: add-playlist.js 
+23:56:59.531 INFO  Loading command: forceskip.js 
+23:56:59.533 INFO  Loading command: leave.js 
+23:56:59.055 INFO  Loading command: reload.js 
+23:56:58.996 INFO  Loading command: undeafen.js 
+23:56:59.544 INFO  Loading command: pause.js 
+23:56:59.001 INFO  Loading command: unmute.js 
+23:56:59.706 INFO  Loading command: queue.js 
+23:56:59.699 INFO  Loading command: play.js 
+23:56:59.726 INFO  Loading command: remove.js 
+23:56:59.719 INFO  Loading command: radio.js 
+23:56:59.732 INFO  Loading command: resume.js 
+23:56:59.542 INFO  Loading command: lyrics.js 
+23:57:00.947 INFO  Loading command: shuffle.js 
+23:57:00.953 INFO  Loading command: skip.js 
+23:57:00.958 INFO  Loading command: skipto.js 
+23:57:00.942 INFO  Loading command: search.js 
+23:57:00.981 INFO  Loading command: volume.js 
+23:57:01.043 INFO  Loading command: fortnite.js 
+23:57:02.313 INFO  Loading command: instagram.js 
+23:57:02.437 INFO  Loading command: mc.js 
+23:57:02.305 INFO  Loading command: image.js 
+23:57:02.444 INFO  Loading command: nsfw.js 
+23:57:02.837 INFO  Loading command: r6.js 
+23:57:02.863 INFO  Loading command: steam.js 
+23:57:02.840 INFO  Loading command: reddit.js 
+23:57:02.876 INFO  Loading command: startmusictrivia.js 
+23:57:00.976 INFO  Loading command: song.js 
+23:57:02.890 INFO  Loading command: help.js 
+23:57:02.882 INFO  Loading command: stopmusictrivia.js 
+23:57:02.870 INFO  Loading command: twitch.js 
+23:57:02.896 INFO  Loading command: invite.js 
+23:57:02.905 INFO  Loading command: support.js 
+23:57:02.906 INFO  Loading a total of 27 events. 
+23:57:02.915 INFO  Loading Event: channelDelete 
+23:57:02.909 INFO  Loading Event: channelCreate 
+23:57:02.921 INFO  Loading Event: channelUpdate 
+23:57:02.924 INFO  Loading Event: emojiCreate 
+23:57:02.933 INFO  Loading Event: emojiUpdate 
+23:57:02.939 INFO  Loading Event: error 
+23:57:02.927 INFO  Loading Event: emojiDelete 
+23:57:02.899 INFO  Loading command: status.js 
+23:57:02.950 INFO  Loading Event: guildBanRemove 
+23:57:02.960 INFO  Loading Event: guildCreate 
+23:57:03.000 INFO  Loading Event: guildDelete 
+23:57:03.009 INFO  Loading Event: guildMemberAdd 
+23:57:03.015 INFO  Loading Event: guildMemberRemove 
+23:57:03.022 INFO  Loading Event: guildMemberUpdate 
+23:57:03.030 INFO  Loading Event: guildUnavailable 
+23:57:03.036 INFO  Loading Event: guildUpdate 
+23:57:03.072 INFO  Loading Event: message 
+23:57:03.157 INFO  Loading Event: messageDeleteBulk 
+23:57:03.082 INFO  Loading Event: messageDelete 
+23:57:03.184 INFO  Loading Event: messageReactionAdd 
+23:57:03.192 INFO  Loading Event: messageReactionRemove 
+23:57:02.944 INFO  Loading Event: guildBanAdd 
+23:57:03.194 INFO  Loading Event: messageUpdate 
+23:57:03.197 INFO  Loading Event: ready 
+23:57:03.227 INFO  Loading Event: roleDelete 
+23:57:03.235 INFO  Loading Event: roleUpdate 
+23:57:03.243 INFO  Loading Event: warning 
+23:57:04.885 INFO  Bot dashboard is coming online 
+23:57:03.203 INFO  Loading Event: roleCreate 
+23:57:04.996 INFO  Bot dashboard is online 
+23:57:05.022 INFO  Mongoose connection successfully opened 
+23:57:05.592 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+23:57:05.591 INFO  TestBot123#3999, ready to serve [6] users in [1] servers. 
+23:57:05.591 INFO  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+23:57:05.773 INFO  [GUILD JOIN] sfdfsdasd (750822670505082971) added the bot. 
+23:58:15.184 INFO  Website connection IP: , Location:undefined, undefined. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

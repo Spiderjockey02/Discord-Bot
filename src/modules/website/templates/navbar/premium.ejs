@@ -1,0 +1,65 @@
+<%- include('../blocks/header', {bot:bot, user: user, auth: auth}) %>
+<body>
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">Server Pricing</h1>
+      <p class="lead">Take Your Server To The Next Level with Egglord Premium.</p>
+    </div>
+
+    <div class="container">
+      <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Free</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Access to:</li>
+              <li><%= bot.commands.size%>+ commands.</li>
+              <li>5+ plugins.</li>
+              <li><a href="<%= bot.config.SupportServer.link%>">Support server</a></li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary disabled">Activated</button>
+          </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">1 Premium Server</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$4 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li><b>Everything in the previous tier and:</b></li>
+              <li>- Extra info on logging plugin</li>
+              <li>- Donor role in <a href="<%= bot.config.SupportServer.link%>">official server</a></li>
+              <li>- Quicker support in our support server.</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-primary">Purchase</button>
+          </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">3 Premium Servers</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$10 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li><b>Everything in the previous tier in:</b></li>
+              <li>not 1</li>
+              <li>not 2</li>
+              <li>but 3 servers</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-primary">Purchase</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+  </body>
+<%- include('../blocks/footer') %>

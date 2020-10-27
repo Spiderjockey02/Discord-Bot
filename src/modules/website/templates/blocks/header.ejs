@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--Meta tags-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Manage your Discord server with leveling, moderation, Twitch, Youtube and Reddit notifications.">
+  <meta name="keywords" content="Discord.js, Leveling, JavaScript, Moderation, Twitch, Youtube, Reddit, Music">
+  <meta name="author" content="I am Ben#6686">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="dark light">
+  <!--Links-->
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png" sizes="180x180">
+  <!--scripts-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <title><%= bot.user.username %> - The Discord Bot</title>
+  <style>
+    .pageContent {
+      display:none;
+    }
+    #loading {
+     position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      align: center;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+    #noscript {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      text-align: center;
+    }
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <noscript>
+    <style>
+      #noscript {
+        display: block;
+      }
+      #loading {
+        border: none;
+        -webkit-animation: unset;
+        animation: unset;
+        height: 0;
+        width: 0;
+      }
+      .pageContent {
+        display: none;
+      }
+    </style>
+  </noscript>
+  <script>
+    $(window).on('load', function() {
+      $('#loading').hide();
+      $('.pageContent').show()
+    })
+    //This will just show a message in console
+    function warnConsole () {
+      console.clear();
+      console.log('%c' + 'Oh... Hi, didn\'t expect to see you here...', 'font-size: 18px; font-weight: bold; color: red;');
+      console.log('%c' + 'But you really shouldn\'t be here...', 'font-size: 18px;');
+    }
+    warnConsole();
+    window.onresize = function() {
+      if ((window.outerHeight - window.innerHeight) > 100) {
+        warnConsole();
+      }
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			var expires = "expires="+ d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+
+		function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i < ca.length; i++) {
+						var c = ca[i];
+						while (c.charAt(0) == ' ') {
+								c = c.substring(1);
+						}
+						if (c.indexOf(name) == 0) {
+								return c.substring(name.length, c.length);
+						}
+				}
+				return "";
+		}
+
+    function changeTheme() {
+
+      var t = document.getElementById('theme').href;
+      if (t === `${document.location.origin}/static/theme-light.css`) {
+        theme = 'light';
+      } else {
+        theme = 'dark';
+      }
+      if (theme === 'light') {
+        document.getElementById('theme').href = `${document.location.origin}/static/theme-dark.css`;
+        //apply custom classes
+        var x = document.getElementById('navBar')
+        x.classList.remove('navbar-light')
+        x.classList.remove('bg-light')
+        x.classList.add('navbar-dark')
+        x.classList.add('bg-dark')
+        setCookie('theme', 'dark', 1);
+        console.log('Changed to dark theme');
+      } else {
+        document.getElementById('theme').href = `${document.location.origin}/static/theme-light.css`;
+        setCookie('theme', 'light', 1);
+        var x = document.getElementById('navBar')
+        x.classList.remove('navbar-dark')
+        x.classList.remove('bg-dark')
+        x.classList.add('navbar-light')
+        x.classList.add('bg-light')
+        console.log('Changed to light theme');
+      }
+    }
+  </script>
+  <div id="themeDiv"><link href="/static/theme-dark.css" rel="stylesheet" id="theme"/></div>
+		<script>
+			if (getCookie('theme') === 'light') {
+				document.getElementById('themeDiv').innerHTML = '<link href="/static/theme-light.css" rel="stylesheet" id="theme"/>';
+			} else {
+				document.getElementById('themeDiv').innerHTML = '<link href="/static/theme-dark.css" rel="stylesheet" id="theme"/>';
+			}
+		</script>
+  <div id="noscript">
+    <h1>You need JavaScript enabled to view this page...</h1>
+  </div>
+  <!--Nav bar-->
+  <div id="loading"></div>
+  <div class="pageContent">
+  <nav class="navbar navbar-expand-lg" id="navBar">
+    <script>
+      if (getCookie('theme') === 'light') {
+        var x = document.getElementById('navBar')
+        x.classList.add('navbar-light')
+        x.classList.add('bg-light')
+      } else {
+        var x = document.getElementById('navBar')
+        x.classList.add('navbar-dark')
+        x.classList.add('bg-dark')
+      }
+    </script>
+    <a class="navbar-brand btn" href="/"><%= bot.user.username%></a>
+    <button class="navbar-toggler" style="text-color:black" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link btn" href="/commands">Commands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn" href="/status">Status</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn" href="/help">Help</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn" href="/premium">Premium</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn" href="https://discord.gg/8g6zUQu">Support server</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+      <% if (auth) { %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <% if (user.avatar) { %>
+          <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=32" width="25" height="25" class="rounded-circle" alt="User avatar"> <%= user.username %>
+          <% } else { %>
+          <img src="https://cdn.discordapp.com/embed/avatars/<%= user.discriminator % 5%>.png?size=32" width="25" height="25" class="rounded-circle" alt="User avatar"> <%= user.username %>
+          <% } %>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="/servers">My servers</a>
+          <% if (user.id == bot.config.ownerID) { %>
+          <a class="dropdown-item" href="/admin">Admin</a>
+          <% } %>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout" id="logout">Logout</a>
+        </div>
+      </li>
+      <% } else { %>
+      <li class="navbar-nav">
+        <a class="nav-item nav-link" href="/invite">Add to server</a>
+      </li>
+      <li class="navbar-nav">
+        <a class="nav-item nav-link" href="/login">Login with Discord</a>
+      </li>
+      <% } %>
+    </ul>
+    </div>
+  </nav>
+  <script type="text/javascript" src="https://cookieconsent.popupsmart.com/src/js/popper.js"></script><script> window.start.init({Palette:"palette2",Mode:"floating left",Theme:"block",Time:"0",})</script>
+</head>
