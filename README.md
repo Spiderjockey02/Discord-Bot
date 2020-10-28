@@ -17,24 +17,27 @@ Feel free to add a star ⭐ to the repository to promote the project!
 EggLord offers:
 *   ✉️ Support for commands in direct messages.
 *   ⚙️ Guild configuration (prefix, ignored channels, etc...)
+*   📂 Extensice logging system (message/channel/role/emoji updates, (un)bans/kicks etc...)
+*   🚓 Advanced Auto-moderation feature (stop bad words, excessive emojis/mentions/spoilers/caps, server invites etc...)
+*   👋 Welcome plugin (send welcome/leave message, give roles etc...)
 
 Egglord also adds **a new mention** like @everyone and @here, the `@someone`, which allows you to pick a random member of the server!
 
 ### Many commands
 
-Egglord has a lot of features, with *11 categories**:
+Egglord has a lot of features, with **11 categories**:
 
-*   **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
-*   **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
-*   **Host**: `reload`, `shutdown`, `suggestion`, `eval`, and **1** more! 
-*   **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
-*   **Level**: `leaderboard`, `rank`
-*   **Misc**: `about`, `invite`, `status`, `support`, and **2** more!
-*   **Moderation**: `ban`, `clear`, `kick`, `ticket`, `warn`, `report`, `unmute` and **9** more! 
-*   **Music**: `add-playlist`, `queue`, `bassboost`, `shuffle`, `radio` and **15** more!
-*   **NSFW**: Total of **8** commands!
-*   **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
-*   **Trivia**: `startmusictrivia`, `stopmusictrivia`
+*   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
+*   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
+*   👑  **Host**: `reload`, `shutdown`, `suggestion`, `eval`, and **1** more! 
+*   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
+*   💰  **Level**: `leaderboard`, `rank`
+*   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **2** more!
+*   🚓  **Moderation**: `ban`, `clear`, `kick`, `ticket`, `warn`, `report`, `unmute` and **9** more! 
+*   🎵  **Music**: `add-playlist`, `queue`, `bassboost`, `shuffle`, `radio` and **15** more!
+*   🔞  **NSFW**: Total of **8** commands!
+*   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
+*   ❓  **Trivia**: `startmusictrivia`, `stopmusictrivia`
 
 [See the full commands list](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)
 
@@ -51,7 +54,7 @@ Egglord has a lot of features, with *11 categories**:
 
 Before **creating an issue**, please ensure that it hasn't already been reported/suggested, and double-check the [F.A.Q](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ).   
 And if you have a question, please ask it in the [Discord server](https://discord.gg/8g6zUQu) instead of opening an issue.
-If you wish to contribute to the Atlanta codebase or documentation, feel free to fork the repository and submit a pull request!
+If you wish to contribute to the Egglord's codebase or documentation, feel free to fork the repository and submit a pull request!
 
 ## License
 
