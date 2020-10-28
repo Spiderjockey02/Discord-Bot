@@ -55,7 +55,10 @@ module.exports = async (bot, message) => {
 		active: active,
 	};
 	// Check for commands (+ command cooldown -2.5 seconds)
-	if (cmd && message.content.startsWith(settings.prefix)) {
+	if (message.content == '@someone') {
+		// pick a random user from the server
+		message.channel.send(`Random user selcted: ${message.guild.members.cache.random().user}.`);
+	} else if (cmd && message.content.startsWith(settings.prefix)) {
 		// Check for SEND_MESSAGES permission
 		// only run Fun, Host & Search plugin commands in DM's
 		let emojis;
