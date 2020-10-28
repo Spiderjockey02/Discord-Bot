@@ -54,7 +54,7 @@ Egglord has a lot of features, with **11 categories**:
 
 Before **creating an issue**, please ensure that it hasn't already been reported/suggested, and double-check the [F.A.Q](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ).   
 And if you have a question, please ask it in the [Discord server](https://discord.gg/8g6zUQu) instead of opening an issue.
-If you wish to contribute to the Atlanta codebase or documentation, feel free to fork the repository and submit a pull request!
+If you wish to contribute to the Egglord's codebase or documentation, feel free to fork the repository and submit a pull request!
 
 ## License
 
