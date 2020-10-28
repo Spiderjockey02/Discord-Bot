@@ -5,6 +5,8 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 
+**THIS REPO IS NOT FUNCTIONAL RIGHT NOW AS I MESSED UP SOME FILES. SHOULD BE ALL COMPLETE AND BACK TO NORMAL IN THE NEXT DAY OR SO.**
+
 Add this bot to your server: [Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
 ## Features
 * Music
