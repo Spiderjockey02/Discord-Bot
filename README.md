@@ -5,98 +5,54 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 
-**THIS REPO IS NOT FUNCTIONAL RIGHT NOW AS I MESSED UP SOME FILES. SHOULD BE ALL COMPLETE AND BACK TO NORMAL IN THE NEXT DAY OR SO.**
+> This bot is used by more than 100,000 Discord users and more than 20 servers.
 
-Add this bot to your server: [Invite link](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)
+Egglord is a open source Discord bot coded in JavaScript with [Discord.js](https://discord.js.org) and [Mongoose](https://mongoosejs.com/docs/api.html) by [SpiderJockey02](https://github.com/Spiderjockey02).  
+Feel free to add a star ⭐ to the repository to promote the project!
+
 ## Features
-* Music
-  * Supports music formats from [Youtube](https://www.youtube.com/), [Spotify](https://www.spotify.com/) & [Soundcloud](https://www.soundcloud.com). (more to come soon)
-  * Search from lyrics provided by [KSOFT.API](https://api.ksoft.si/).
-  * Ability to bassboost your music.
-  * Loop queue and/or song.
-  * A total of **18** commands.
-* Moderation
-  * Clear (purge) messages.
-  * Ban, Kick & Warn misbehaving members.
-  * Auto-moderation feature.
-  * Change nicknames of other members.
-  * Report and ticket system implemented.
-  * A total of **11** commands.
-* Ranking System
-  * Gain XP from sending messages.
-  * XP multiplier.
-  * Exempt Channels and/or roles from gaining XP.
-  * Leaderboard system implemented.
-* Logging system
-  * Log member leave/join
-  * Channel create, delete & update.
-  * Role create, delete & update.
-  * Emoji create, delete & update.
-  * Member (un)bans.
-  * Member updates. (nickname, role)
-  * Message (un)reactions.
-  * Message update & deletion.
-  * A total of **20** events.
-* Fun / Miscellaneous
-  * Look up profile stats on Fortnite, Rainbow 6, steam & instagram.
-  * Search for random images, memes & facts.
-  * Flip a coin.
-  * Random number generator.
-  * Look up facts about pokemon.
-  * Get some random advice.
-  * Play some mingigames:
-    - Rock, Paper, Scissor.
-    - More to come soon.
-  * A total of **23** commands.
-* Image
-  * Create fake captcha, clyde, Pornhub comments & twitter tweets.
-  * Bluripfy/Deepfry your images.
-  * Create memes:
-    - Change my mind
-    - Who would win
-    - Threats
-    - ships
-  * Create QR codes.
-  * Look at pictures of dogs and cats.
-  * A total of **14** commands.
-* NSFW
-  * A total of **8** commands.
-* Server stuff
-  * Look up the icons on the users and server.
-  * Create polls & giveaways.
-  * Look up information on a role, user and server.
-  * A total of **10** commands.
-## Upcoming features
-* Currently working on a shiny new dashboard (updates to repo will be slowed down while this happens).
 
-**Overall there are over 95 commands.
-All these plugins are very easy to set-up and are full with options to make your server stand out and unique.**
+### Complete Bot
 
+EggLord offers:
+*   ✉️ Support for commands in direct messages.
+*   ⚙️ Guild configuration (prefix, ignored channels, etc...)
 
-Look at [CHANGELOG.md](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CHANGELOG.md) for updates.
+Egglord also adds **a new mention** like @everyone and @here, the `@someone`, which allows you to pick a random member of the server!
 
-Look at [INSTALLATION.md](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md)
+### Many commands
 
-## Changes to the Code
-You may change code if needed under the following conditions:
+Egglord has a lot of features, with *11 categories**:
 
-For the dashboard, you may change the theme, wording, design, links, etc. however I will not accept any bug reports coming from this. You will also agree to **not remove the copyright notice in the footer. You may add your name here, however, you must keep the original wording used.**
+*   **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
+*   **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
+*   **Host**: `reload`, `shutdown`, `suggestion`, `eval`, and **1** more! 
+*   **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
+*   **Level**: `leaderboard`, `rank`
+*   **Misc**: `about`, `invite`, `status`, `support`, and **2** more!
+*   **Moderation**: `ban`, `clear`, `kick`, `ticket`, `warn`, `report`, `unmute` and **9** more! 
+*   **Music**: `add-playlist`, `queue`, `bassboost`, `shuffle`, `radio` and **15** more!
+*   **NSFW**: Total of **8** commands!
+*   **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
+*   **Trivia**: `startmusictrivia`, `stopmusictrivia`
 
-ALL copyright notices and credits must be kept as is, not edited in any way (except for adding your own name) and not removed.
+[See the full commands list](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)
+
+## Links
+
+*   [Commands List](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)
+*   [Installation Guide](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md)
+*   [F.A.Q](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ)
+*   [Discord](https://discord.gg/8g6zUQu)
+*   [Github](https://github.com/Spiderjockey02/Discord-Bot)
+*   [Dashboard](https://www.google.com)
 
 ## Contributing
-Want to contribute?
 
-Spiderjockey02's Discord Bot is written in [Discord.js](https://github.com/discordjs/discord.js). If you want to add a feature or work on the code, feel free make a pull request and your code might be accepted. But please try and keep a similary code format.
+Before **creating an issue**, please ensure that it hasn't already been reported/suggested, and double-check the [F.A.Q](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ).   
+And if you have a question, please ask it in the [Discord server](https://discord.gg/8g6zUQu) instead of opening an issue.
+If you wish to contribute to the Atlanta codebase or documentation, feel free to fork the repository and submit a pull request!
 
-## Credits
-* Bot based on AnIdiotsGuide's [example bot](https://github.com/AnIdiotsGuide/guidebot).
-* Made using [Discord.js](https://github.com/discordjs/discord.js).
-* Music plugin: [Discord Bot](https://github.com/eritislami/evobot)
-* Logging System: [Code](https://github.com/CodeBullet-Community/BulletBot/blob/master/src/megalogger.ts)
+## License
 
-## Privacy:
-Please read the `PRIVACY.md` file.
-
-## License:
-Please read the `LICENSE` file
+Egglord is licensed under the Apache license. See the file `LICENSE` for more information. If you plan to use any part of this source code in your own bot, I would be grateful if you would include some form of credit somewhere.
