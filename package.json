@@ -43,7 +43,7 @@
     "weather-js": "^2.0.0",
     "yt-search": "^2.3.2",
     "ytdl-core": "^3.3.0",
-    "ytdl-core-discord": "^1.2.3"
+    "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {},
   "scripts": {
