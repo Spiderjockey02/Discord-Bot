@@ -6,7 +6,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "@ksoft/api": "^3.1.9",
-    "akaneko": "^3.3.0",
+    "akaneko": "^3.5.1",
     "amethyste-api": "^1.1.4",
     "boats.js": "^2.4.0",
     "body-parser": "^1.19.0",
