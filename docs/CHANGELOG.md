@@ -1,5 +1,17 @@
 # CHANGE LOG 
 
+## October 28<sup>th</sup>
+* Updated `commands/Fun/fact.js`
+* Updated `README.md`
+* Added `@someone` feature
+* Added dependabot to repo for automatic  package updates.
+* Added `docs/COMMANDS.md`
+
+## October 27<sup>th</sup>
+* Restructed & cleaned the Repo to look better.
+* Updated `command/Host/eval.js` (to create accurate execution time)
+* Updated bot.js
+
 ## October 26<sup>th</sup> ([8a46bb8](https://github.com/Spiderjockey02/Discord-Bot/commit/8a46bb8506e965c478190a114548b53b28028927), [2b84d41](https://github.com/Spiderjockey02/Discord-Bot/commit/2b84d4150546b4833b6efcaa3844c77ad1b96304), [1997a2c](https://github.com/Spiderjockey02/Discord-Bot/commit/2b84d4150546b4833b6efcaa3844c77ad1b96304))
 * Fixed event `guildUpdate`.
 * Update guildName in database if guild name changed.
