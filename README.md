@@ -18,7 +18,7 @@ EggLord offers:
 *   ✉️ Support for commands in direct messages.
 *   ⚙️ Guild configuration (prefix, ignored channels, etc...)
 
-Atlanta also adds **a new mention** like @everyone and @here, the `@someone`, which allows you to pick a random member of the server!
+Egglord also adds **a new mention** like @everyone and @here, the `@someone`, which allows you to pick a random member of the server!
 
 ### Many commands
 
