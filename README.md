@@ -17,6 +17,8 @@ Feel free to add a star ⭐ to the repository to promote the project!
 EggLord offers:
 *   ✉️ Support for commands in direct messages.
 *   ⚙️ Guild configuration (prefix, ignored channels, etc...)
+*   Extensice logging system (message/channel/role/emoji updates, (un)bans/kicks etc)
+*   Advanced Auto-moderation feature (stop bad words, excessive emojis/mentions/spoilers/caps, server invites and more)
 
 Egglord also adds **a new mention** like @everyone and @here, the `@someone`, which allows you to pick a random member of the server!
 
