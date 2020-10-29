@@ -27,5 +27,5 @@ module.exports.help = {
 	name: 'hneko',
 	category: 'Nsfw',
 	description: 'Look at NSFW images.',
-	usage: '${PREFIX}neko',
+	usage: '${PREFIX}hneko',
 };

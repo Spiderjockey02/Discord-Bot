@@ -20,6 +20,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 
 module.exports.config = {
 	command: 'gif',
+	aliases: ['pgif', 'gifs'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 

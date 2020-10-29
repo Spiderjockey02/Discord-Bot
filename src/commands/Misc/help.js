@@ -1,5 +1,6 @@
-// dependencies
+// Dependencies
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message, args, emoji, settings) => {
 	if (!args[0]) {
 		// General help page

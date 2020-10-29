@@ -1,6 +1,3 @@
-// Dependencies
-const ms = require('ms');
-
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();

@@ -1,3 +1,4 @@
+// Dependencies
 const Discord = require('discord.js');
 const createBar = require('string-progressbar');
 
@@ -18,7 +19,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 };
 module.exports.config = {
 	command: 'song',
-	aliases: ['np'],
+	aliases: ['np', 'nowplaying'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 module.exports.help = {

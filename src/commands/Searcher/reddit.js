@@ -1,5 +1,7 @@
+// Dependencies
 const Discord = require('discord.js');
 const { KSoftClient } = require('@ksoft/api');
+
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('reddit').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
@@ -34,5 +36,5 @@ module.exports.help = {
 	name: 'reddit',
 	category: 'Searcher',
 	description: 'Send a random image from a chosen subreddit.',
-	usage: '${PREFIX}reddit [subreddit]',
+	usage: '${PREFIX}reddit <subreddit>',
 };

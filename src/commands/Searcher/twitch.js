@@ -1,5 +1,6 @@
 // const fetch = require('node-fetch');
 const Discord = require('discord.js');
+
 module.exports.run = async (bot, message, args) => {
 	// Get information on twitch accounts
 	if (message.author.id != bot.config.ownerID) return;
@@ -9,11 +10,6 @@ module.exports.run = async (bot, message, args) => {
 		.setTitle(`${args[0]}`)
 		.setURL(`https://www.twitch.tv/${args[0]}`);
 	message.channel.send(embed);
-	// const res = await fetch(`https://api.twitch.tv/helix/users?login=${args[0]}`, {
-	// method: 'GET',
-	// Authorization: `${bot.config.TwitchAPI}`,
-	// }).then(res => res.json());
-	// console.log(res);
 };
 
 module.exports.config = {
