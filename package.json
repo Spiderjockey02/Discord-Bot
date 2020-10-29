@@ -12,7 +12,7 @@
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
     "dateformat": "^3.0.3",
-    "discord-ytdl-core": "^4.1.2",
+    "discord-ytdl-core": "^4.1.3",
     "discord.js": "^12.3.1",
     "ejs": "^3.1.5",
     "eslint": "^7.10.0",
