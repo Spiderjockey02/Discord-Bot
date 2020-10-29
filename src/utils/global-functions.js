@@ -97,10 +97,10 @@ module.exports = bot => {
 				// no file with the correct format was found
 				if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
 			} else {
-				file = user.displayAvatarURL();
+				file = user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
 			}
 		} else {
-			file = user.displayAvatarURL();
+			file = user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
 		}
 		return file;
 	};
