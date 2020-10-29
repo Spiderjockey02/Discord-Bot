@@ -32,6 +32,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'threats',
 	category: 'Image',
-	description: 'threats your avatar',
+	description: 'Creates a threat meme.',
 	usage: '${PREFIX}threats [file]',
 };

@@ -80,6 +80,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'r6',
 	category: 'Searcher',
-	description: 'Gets statistics on a Rainbow 6 Account',
-	usage: '${PREFIX}r6 {user} [pc | xbox | ps4] [eu | na | as]',
+	description: 'Gets statistics on a Rainbow 6 Account.',
+	usage: '${PREFIX}r6 <user> [pc | xbox | ps4] [eu | na | as]',
 };

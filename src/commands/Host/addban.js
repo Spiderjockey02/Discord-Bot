@@ -46,6 +46,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Addban',
 	category: 'Host',
-	description: 'Add a ban to the global ban',
+	description: 'Add a ban to the global ban list.',
 	usage: '${PREFIX}addban <user> <reason>',
 };

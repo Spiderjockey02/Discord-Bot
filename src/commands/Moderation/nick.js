@@ -50,7 +50,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Nick',
 	category: 'Moderation',
-	description: 'Nickname a user',
+	description: 'Change the nickname of a user.',
 	usage: '${PREFIX}nick <user> <name>',
 	example: '${PREFIX}nick @ben Not ben',
 };

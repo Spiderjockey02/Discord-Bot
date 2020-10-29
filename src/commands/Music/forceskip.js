@@ -14,6 +14,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'force skip',
 	category: 'Music',
-	description: 'Force skips a song',
+	description: 'Force skip a song.',
 	usage: '${PREFIX}forceskip <position>',
 };

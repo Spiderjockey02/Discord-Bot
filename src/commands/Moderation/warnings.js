@@ -45,6 +45,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Warnings',
 	category: 'Moderation',
-	description: 'Shows number of warnings a user has',
+	description: 'Display number of warnings a user has.',
 	usage: '${PREFIX}warnings [user]',
 };

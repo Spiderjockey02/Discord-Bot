@@ -16,6 +16,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'stopmusictrivia',
 	category: 'Trivia',
-	description: 'Stops the music trivia in your server',
+	description: 'Stop the music trivia in your server.',
 	usage: '${PREFIX}stopmusictrivia',
 };

@@ -17,6 +17,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'leave',
 	category: 'Music',
-	description: 'Leaves the channel',
+	description: 'Leave the channel.',
 	usage: '${PREFIX}leave',
 };

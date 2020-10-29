@@ -47,6 +47,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Level',
 	category: 'Level',
-	description: 'Shows your rank/Level',
+	description: 'Shows your rank/Level.',
 	usage: '${PREFIX}level [username]',
 };

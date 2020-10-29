@@ -39,6 +39,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'whowouldwin',
 	category: 'Image',
-	description: 'Create a whowouldwin image. Defaults to author',
+	description: 'Create a whowouldwin image.',
 	usage: '${PREFIX}whowouldwin <user1> [user2]',
 };

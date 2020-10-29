@@ -35,6 +35,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Clyde',
 	category: 'Image',
-	description: 'Fake clyde message',
+	description: 'Create a fake Clyde message.',
 	usage: '${PREFIX}clyde <text>',
 };

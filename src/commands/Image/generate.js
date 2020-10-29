@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		try {
 			console.log(require('../../config.js').amethysteAPI_KEY);
 			ameApi.generate(args[0], {
-				'url' : 'https://cdn.discordapp.com/avatars/450352584302002186/c0ff7e943ab89560503b8e99591ff888.png?size=2048',
+				'url' : file,
 			}).then(image => {
 				console.log(image);
 			}).catch(err => {

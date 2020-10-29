@@ -42,7 +42,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Report',
 	category: 'Moderation',
-	description: 'Reports a user',
+	description: 'Report a user.',
 	usage: '${PREFIX}report <user> [reason]',
 	example: '${PREFIX}report @MeanPerson was being mean to me',
 };

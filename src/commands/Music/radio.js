@@ -38,6 +38,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'radio',
 	category: 'Music',
-	description: 'Plays the radio, do !radio list to show available stations',
+	description: 'Play the radio.',
 	usage: '${PREFIX}radio <Station>',
 };

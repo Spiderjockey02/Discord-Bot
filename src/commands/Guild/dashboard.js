@@ -14,6 +14,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Dashboard',
 	category: 'Guild',
-	description: 'Displays a link to your Server\'s dashboard.',
+	description: 'Sends a link to your Server\'s dashboard.',
 	usage: '${PREFIX}dashboard',
 };

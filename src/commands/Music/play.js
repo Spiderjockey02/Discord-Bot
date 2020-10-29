@@ -139,6 +139,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'play',
 	category: 'Music',
-	description: 'Plays a song',
+	description: 'Play a song.',
 	usage: '${PREFIX}play <link | song name>',
 };

@@ -33,6 +33,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'weather',
 	category: 'Searcher',
-	description: 'Look up the weather in a certain area',
+	description: 'Look up the weather in a certain area.',
 	usage: '${PREFIX}weather <location>',
 };

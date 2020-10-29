@@ -38,6 +38,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Role info',
 	category: 'Guild',
-	description: 'Gets information on a role',
+	description: 'Get information on a role.',
 	usage: '${PREFIX}role-info <role>',
 };

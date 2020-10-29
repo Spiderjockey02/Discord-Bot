@@ -23,6 +23,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Bassboost',
 	category: 'Music',
-	description: 'Bassboosts a song',
+	description: 'Bassboost a song.',
 	usage: '${PREFIX}bassboost <value>',
 };

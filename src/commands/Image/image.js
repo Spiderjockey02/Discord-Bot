@@ -46,6 +46,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Image',
 	category: 'Image',
-	description: 'Finds an image',
+	description: 'Finds an image.',
 	usage: '${PREFIX}image <topic>',
 };

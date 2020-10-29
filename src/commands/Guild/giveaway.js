@@ -86,7 +86,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Giveaway',
 	category: 'Guild',
-	description: 'Run a giveaway',
+	description: 'Run a giveaway.',
 	usage: '${PREFIX}giveway <time> <prize> [channel]',
 	example: '${PREFIX}giveaway 10h5m nitro #giveaways',
 };

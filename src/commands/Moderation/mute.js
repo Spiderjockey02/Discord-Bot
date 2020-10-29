@@ -78,7 +78,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Mute',
 	category: 'Moderation',
-	description: 'Mutes a user',
+	description: 'Mute a user.',
 	usage: '${PREFIX}mute <user> [time]',
 	example: '${PREFIX}mute NoisyUser 10m',
 };

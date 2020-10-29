@@ -57,6 +57,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Steam',
 	category: 'Searcher',
-	description: 'Get information on a steam account',
+	description: 'Get information on a Steam account.',
 	usage: '${PREFIX}steam <user>',
 };

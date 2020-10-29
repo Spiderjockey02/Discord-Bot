@@ -27,6 +27,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'eval',
 	category: 'Host',
-	description: 'Evaluates code',
+	description: 'Evaluates code.',
 	usage: '${PREFIX}eval <code>',
 };

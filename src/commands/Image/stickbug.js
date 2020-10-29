@@ -31,6 +31,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'stickbug',
 	category: 'Image',
-	description: 'stickbug your avatar',
+	description: 'Create a stickbug meme.',
 	usage: '${PREFIX}stickbug [file]',
 };

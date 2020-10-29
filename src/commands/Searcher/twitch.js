@@ -24,6 +24,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Twitch',
 	category: 'Searcher',
-	description: 'Gets information on a twitch account',
+	description: 'Get information on a twitch account.',
 	usage: '${PREFIX}twitch <user>',
 };

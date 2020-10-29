@@ -97,6 +97,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'lyric',
 	category: 'Music',
-	description: 'Get lyrics on the current song playing.',
+	description: 'Get lyrics on a song.',
 	usage: '${PREFIX}lyrics [song]',
 };

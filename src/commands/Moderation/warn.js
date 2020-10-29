@@ -43,7 +43,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Warning',
 	category: 'Moderation',
-	description: 'Warns a user',
+	description: 'Warn a user.',
 	usage: '${PREFIX}warn <user> [time] [reason]',
 	example: '${PREFIX}warn @NaughtyPerson 10m Was spamming chat.',
 };

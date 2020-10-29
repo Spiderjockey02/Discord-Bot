@@ -38,7 +38,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Rock, Paper, Scissors',
 	category: 'Fun',
-	description: 'Play Rock Paper Scissors with me.',
+	description: 'Play Rock Paper Scissors.',
 	usage: '${PREFIX}rps <rock | paper | scissors>',
 	example: '${PREFIX}rps rock',
 };

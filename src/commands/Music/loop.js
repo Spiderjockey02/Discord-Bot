@@ -25,6 +25,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Loop',
 	category: 'Music',
-	description: '(un)Loop the queue',
+	description: '(un)Loop the queue.',
 	usage: '${PREFIX}loop <song | queue>',
 };

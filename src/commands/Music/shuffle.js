@@ -20,6 +20,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'shuffle',
 	category: 'Music',
-	description: 'Shuffles up the queue',
+	description: 'Shuffles up the queue.',
 	usage: '${PREFIX}shuffle',
 };

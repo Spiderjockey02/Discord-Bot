@@ -3,7 +3,6 @@ const TinyURL = require('tinyurl');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	const mes = message.content.split(' ').slice(1).join(' ');
-	// const mes = encodeURI(message.content.split(' ').slice(1).join(' '));
 	try {
 		TinyURL.shorten(mes, function(res) {
 			message.channel.send(res);
@@ -22,6 +21,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'shorturl',
 	category: 'Misc',
-	description: 'Gets the shorturl for me',
+	description: 'Creates a shorturl on the URl you sent.',
 	usage: '${PREFIX}shorturl',
 };
