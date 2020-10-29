@@ -23,12 +23,12 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 				// They haven't sent any messages yet
 				embed.addField('Xp:', '0', true);
 				embed.addField('Level:', '1', true);
-				embed.setFooter('50 XP till level up', user.user.displayAvatarURL());
+				embed.setFooter('155 XP till level up', user.user.displayAvatarURL());
 			} else {
 				// Show users Rank
 				embed.addField('Xp:', Xp.Xp, true);
 				embed.addField('Level:', Xp.Level, true);
-				embed.setFooter(`${(Xp.Level * 50) - Xp.Xp} XP till level up`, message.author.displayAvatarURL());
+				embed.setFooter(`${(5 * (Xp.Level ** 2) + 50 * Xp.Level + 100) - Xp.Xp} XP till level up`, message.author.displayAvatarURL());
 			}
 			message.channel.send(embed);
 		});

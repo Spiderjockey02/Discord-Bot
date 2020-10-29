@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 				if (name == 'User left') {
 					embed.addField(`${i + 1}. ${name}`, `**XP:** ${res[i].Xp}`);
 				} else {
-					embed.addField(`${i + 1}. ${name.user.username}`, `**XP:** ${res[i].Xp}`);
+					embed.addField(`${i + 1}. ${name.user.username}`, `**XP:** ${res[i].Xp} | **Level:** ${res[i].Level}`);
 				}
 			}
 		} else {

@@ -24,8 +24,9 @@ module.exports.run = (bot, message, settings) => {
 		} else {
 			// user was found
 			Xp.Xp = Xp.Xp + xpAdd;
+			const xpNeed = (5 * (Xp.Level ** 2) + 50 * Xp.Level + 100);
 			// User has leveled up
-			if (Xp.Xp >= Xp.Level * 50) {
+			if (Xp.Xp >= xpNeed) {
 				Xp.Level = Xp.Level + 1;
 				// now check how to send message
 				if (settings.LevelOption == 1) {
