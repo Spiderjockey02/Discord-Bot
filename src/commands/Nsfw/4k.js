@@ -26,6 +26,6 @@ module.exports.config = {
 module.exports.help = {
 	name: '4k',
 	category: 'Nsfw',
-	description: 'See some 4K images.',
+	description: 'Look at NSFW images.',
 	usage: '${PREFIX}4k',
 };

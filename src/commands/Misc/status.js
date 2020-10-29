@@ -21,6 +21,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Status',
 	category: 'Misc',
-	description: 'Gets the status for me',
+	description: 'Gets the status of the bot.',
 	usage: '${PREFIX}status',
 };

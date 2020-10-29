@@ -25,6 +25,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'remove',
 	category: 'Music',
-	description: 'Remove song(s) from the queue',
+	description: 'Remove song(s) from the queue.',
 	usage: '${PREFIX}remove <position>',
 };

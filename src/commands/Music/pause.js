@@ -17,6 +17,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'pause',
 	category: 'Music',
-	description: 'Pauses the music',
+	description: 'Pause the music.',
 	usage: '${PREFIX}pause',
 };

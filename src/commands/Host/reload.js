@@ -38,6 +38,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'reload',
 	category: 'Host',
-	description: 'Reloads the bot',
+	description: 'Reloads a command.',
 	usage: '${PREFIX}reload <command>',
 };

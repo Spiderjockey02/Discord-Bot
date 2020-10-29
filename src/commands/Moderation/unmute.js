@@ -46,7 +46,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Unmute',
 	category: 'Moderation',
-	description: 'Unmutes a user',
-	usage: '${PREFIX}unmute <user>',
-	example: '${PREFIX}unmute NoisyUser 10m',
+	description: 'Unmute a user.',
+	usage: '${PREFIX}unmute <user> ',
+	example: '${PREFIX}unmute NoisyUser',
 };

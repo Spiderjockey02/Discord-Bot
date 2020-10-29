@@ -12,6 +12,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Invite',
 	category: 'Misc',
-	description: 'Send an invite link so peope can add me to their server',
+	description: 'Send an invite link so people can add me to their server.',
 	usage: '${PREFIX}invite',
 };

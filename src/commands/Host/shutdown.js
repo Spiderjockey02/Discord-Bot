@@ -20,6 +20,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'shutdown',
 	category: 'Host',
-	description: 'Shutdown Egglord',
+	description: 'Shutdowns the bot.',
 	usage: '${PREFIX}shutdown',
 };

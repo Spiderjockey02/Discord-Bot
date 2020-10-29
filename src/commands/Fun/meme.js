@@ -31,6 +31,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Meme',
 	category: 'Fun',
-	description: 'Sends a meme.',
+	description: 'Sends a random meme.',
 	usage: '${PREFIX}meme',
 };

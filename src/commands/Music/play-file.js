@@ -11,6 +11,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'radio',
 	category: 'Music',
-	description: 'Plays a file',
+	description: 'Play a file.',
 	usage: '${PREFIX}play <file>',
 };

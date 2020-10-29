@@ -21,6 +21,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Guildicon',
 	category: 'Guild',
-	description: 'Get the server\'s icon',
+	description: 'Get the server\'s icon.',
 	usage: '${PREFIX}guildicon',
 };

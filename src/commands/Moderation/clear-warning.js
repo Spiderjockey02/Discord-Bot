@@ -43,7 +43,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Clear warnings',
 	category: 'Moderation',
-	description: 'Removes warnings from a user',
+	description: 'Remove warnings from a user.',
 	usage: '${PREFIX}clear-warning <user>',
 	example: '${PREFIX}clear-warning @NaughtyPerson',
 };

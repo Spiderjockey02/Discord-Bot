@@ -47,7 +47,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Slowmode',
 	category: 'Moderation',
-	description: 'Slowmodes a channel',
+	description: 'Activate slowmode on a channel.',
 	usage: '${PREFIX}slowmode <time>',
 	example: '${PREFIX}slowmode 1h',
 };

@@ -35,7 +35,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Undeafen',
 	category: 'Moderation',
-	description: 'Undeafens a user',
+	description: 'Undeafen a user.',
 	usage: '${PREFIX}undeafen <user>',
 	example: '${PREFIX}undeafen @NoseyUser',
 };

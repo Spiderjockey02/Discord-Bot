@@ -33,7 +33,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Urban',
 	category: 'Fun',
-	description: 'Get the urban dictionary of a word',
+	description: 'Get the urban dictionary of a word.',
 	usage: '${PREFIX}urban <word>',
 	example: '${PREFIX}urban watermelon sugar',
 };

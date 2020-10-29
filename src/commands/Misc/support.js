@@ -18,6 +18,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'support',
 	category: 'Misc',
-	description: 'Get information for getting support on Egglord.',
+	description: 'Get support on the bot.',
 	usage: '${PREFIX}support',
 };

@@ -44,6 +44,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'fortnite',
 	category: 'Searcher',
-	description: 'Get information on a fortnite account.',
+	description: 'Get information on a Fortnite account.',
 	usage: '${PREFIX}fortnite <psn | pc | xbl> <user>',
 };

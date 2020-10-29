@@ -51,6 +51,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Leaderboard',
 	category: 'Level',
-	description: 'Displays the Level leaderboard',
+	description: 'Displays the Servers\'s level leaderboard.',
 	usage: '${PREFIX}leaderboard',
 };

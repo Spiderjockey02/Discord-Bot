@@ -21,6 +21,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'volume',
 	category: 'Music',
-	description: 'Sets the volume of the song.',
+	description: 'Change the volume of the song.',
 	usage: '${PREFIX}volume <number>',
 };

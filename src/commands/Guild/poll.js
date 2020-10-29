@@ -36,7 +36,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Poll',
 	category: 'Guild',
-	description: 'Will create a poll for users to answer',
+	description: 'Create a poll for users to answer.',
 	usage: '${PREFIX}poll <question>',
 	example: '${PREFIX}poll is Egglord the best?',
 };

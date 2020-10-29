@@ -33,6 +33,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'reddit',
 	category: 'Searcher',
-	description: 'Sends a random image from a chosen subreddit.',
+	description: 'Send a random image from a chosen subreddit.',
 	usage: '${PREFIX}reddit [subreddit]',
 };

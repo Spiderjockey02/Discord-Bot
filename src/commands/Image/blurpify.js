@@ -33,6 +33,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'blurpify',
 	category: 'Image',
-	description: 'blurpify your avatar',
+	description: 'Blurpify your avatar.',
 	usage: '${PREFIX}blurpify [file]',
 };

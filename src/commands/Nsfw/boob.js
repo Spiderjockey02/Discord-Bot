@@ -27,6 +27,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'boob',
 	category: 'Nsfw',
-	description: 'See some cheeky photos',
+	description: 'Look at NSFW images.',
 	usage: '${PREFIX}boob',
 };

@@ -32,6 +32,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'deepfry',
 	category: 'Image',
-	description: 'Deepfry an image. Defaults to user\'s avatar',
+	description: 'Deepfry an image.',
 	usage: '${PREFIX}deepfry [file]',
 };

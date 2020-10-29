@@ -36,6 +36,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'changemymind',
 	category: 'Image',
-	description: 'Fake changemymind message',
+	description: 'Create a change my mind image.',
 	usage: '${PREFIX}changemymind <text>',
 };

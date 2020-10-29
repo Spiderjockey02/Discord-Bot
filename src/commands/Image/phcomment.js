@@ -39,6 +39,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'phcomment',
 	category: 'Image',
-	description: 'Fake pornhub comment',
+	description: 'Create a fake Pornhub comment.',
 	usage: '${PREFIX}phcomment [user] <text>',
 };

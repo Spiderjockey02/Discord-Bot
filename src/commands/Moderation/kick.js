@@ -49,7 +49,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Kick',
 	category: 'Moderation',
-	description: 'Kicks a user.',
+	description: 'Kick a user.',
 	usage: '${PREFIX}kick <user> [reason]',
 	example: '${PREFIX}kick @AnnoyingUser Spamming chat',
 };

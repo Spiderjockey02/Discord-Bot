@@ -53,6 +53,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Instagram',
 	category: 'Searcher',
-	description: 'Gets information on an Instagram account.',
+	description: 'Get information on an Instagram account.',
 	usage: '${PREFIX}instagram <user>',
 };

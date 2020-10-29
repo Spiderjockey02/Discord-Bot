@@ -40,6 +40,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Minecraft',
 	category: 'Searcher',
-	description: 'Gets information on a minecraft server',
+	description: 'Pings a minecraft for information.',
 	usage: '${PREFIX}mc <IP> [Port]',
 };

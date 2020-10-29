@@ -95,6 +95,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'queue',
 	category: 'Music',
-	description: 'Displays the queue',
+	description: 'Displays the music queue.',
 	usage: '${PREFIX}queue',
 };

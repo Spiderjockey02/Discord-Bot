@@ -18,6 +18,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'resume',
 	category: 'Music',
-	description: 'Resumes the music',
+	description: 'Resume the music.',
 	usage: '${PREFIX}resume',
 };

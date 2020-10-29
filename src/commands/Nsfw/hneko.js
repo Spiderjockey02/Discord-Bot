@@ -19,13 +19,13 @@ module.exports.run = async (bot, message, args, emojis) => {
 };
 
 module.exports.config = {
-	command: 'neko',
+	command: 'hneko',
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
-	name: 'neko',
+	name: 'hneko',
 	category: 'Nsfw',
-	description: 'Have a nice picture of a cat.',
+	description: 'Look at NSFW images.',
 	usage: '${PREFIX}neko',
 };

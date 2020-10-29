@@ -38,6 +38,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'ship',
 	category: 'Image',
-	description: 'Create a ship image. Defaults to author',
+	description: 'Create a ship image.',
 	usage: '${PREFIX}ship <user1> [user2]',
 };

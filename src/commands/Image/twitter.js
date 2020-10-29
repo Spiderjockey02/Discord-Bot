@@ -39,6 +39,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Twitter',
 	category: 'Image',
-	description: 'Fake twitter account',
+	description: 'Create a fake Twitter tweet.',
 	usage: '${PREFIX}twitter <user> <text>',
 };

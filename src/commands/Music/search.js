@@ -34,6 +34,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Search',
 	category: 'Music',
-	description: 'Finds for a song',
+	description: 'Searches for a song.',
 	usage: '${PREFIX}search <song>',
 };

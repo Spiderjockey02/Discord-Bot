@@ -22,6 +22,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'skipto',
 	category: 'Music',
-	description: 'Skips to a particular song in the queue.',
+	description: 'Skip to a song in the queue.',
 	usage: '${PREFIX}skipto <position>',
 };

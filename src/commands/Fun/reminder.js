@@ -37,7 +37,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Reminder',
 	category: 'Fun',
-	description: 'Get some random advice.',
+	description: 'Set a reminder.',
 	usage: '${PREFIX}reminder <time> <information>',
 	example: '${PREFIX}reminder 1h let dog out',
 };

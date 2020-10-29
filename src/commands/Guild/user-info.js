@@ -40,6 +40,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'User info',
 	category: 'Guild',
-	description: 'Gets information on a user',
+	description: 'Get information on a user.',
 	usage: '${PREFIX}user-info [user]',
 };

@@ -43,7 +43,7 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Clear',
 	category: 'Moderation',
-	description: 'Clears a certain amount of messages.',
+	description: 'Clear a certain amount of messages.',
 	usage: '${PREFIX}clear <Number>',
 	example: '${PREFIX}clear 10',
 };
