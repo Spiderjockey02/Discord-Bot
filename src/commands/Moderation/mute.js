@@ -1,3 +1,6 @@
+// Dependencies
+const ms = require('ms');
+
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -25,7 +28,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	}
 	// Make sure user isn't trying to punish themselves
-	if (user.user.id == message.author.id) {
+	if ((user.user.id == message.author.id) && (message.author.id != bot.config.ownerID)) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You can't punish yourself.` } }).then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
@@ -44,7 +47,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			// update server with no muted role
 			bot.updateGuild(message.channel.guild, { MutedRole: muteRole.id }, bot);
 		} catch (e) {
-			bot.logger.error(e);
+			bot.logger.error(e.message);
 		}
 	}
 	// Make sure that the user is in a voice channel
@@ -55,14 +58,20 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		} catch (err) {
 			bot.logger.error(`${err.message} when running command: mute. {1}`);
 		}
-	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} ${user.user.username} is not in a voice channel. ` } }).then(m => m.delete({ timeout: 3000 }));
 	}
 	// add role to user
 	try {
 		user.roles.add(muteRole).then(() => {
 			// reply to user
 			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully muted*.` } }).then(m => m.delete({ timeout: 7000 }));
+			// see if it was a tempmute
+			if (args[1]) {
+				const time = require('../../utils/Time-Handler.js').getTotalTime(args[1], message, emojis);
+				if (!time) return;
+				setTimeout(() => {
+					user.roles.remove(muteRole, 'Temporary mute expired.');
+				}, time);
+			}
 		});
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: mute. {2}`);

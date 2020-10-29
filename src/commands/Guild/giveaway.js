@@ -2,26 +2,11 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 
-// TIme interval
-function sleep(milliseconds) {
-	const date = Date.now();
-	let currentDate = null;
-	do {
-		currentDate = Date.now();
-	} while (currentDate - date < milliseconds);
-}
-
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure something was included
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	// Make sure that a time interval is included
-	if (!args[0].endsWith('d') && !args[0].endsWith('h') && !args[0].endsWith('m')) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Example of how to do a \`giveaway\`: \`${bot.commands.get('giveaway').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	// Make sure that the time is a number
-	if (isNaN(args[0][0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	// Check if multiply times were used
-	if (args[0].length - args[0].replace(/[A-Za-z]/g, '').length != 1) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} For now only \`1\` time interval can be used.` } }).then(m => m.delete({ timeout: 5000 }));
-	// Get time
-	const time = ms(args[0]);
+	if (!args[0] || !args[1]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('giveaway').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, emojis);
+	if (!time) return;
 	// get prize
 	let channel = message.mentions.channels.first();
 	let prize;
@@ -47,34 +32,38 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		.setColor('BLUE');
 	const m = await channel.send(embed);
 	await m.react('🎉');
-	// Update
+
+	// Time countdown calculator
 	let i = 3;
-	while (i != -1) {
+	const x = await setInterval(async function() {
 		const embed2 = new Discord.MessageEmbed()
 			.setTitle('New giveaway!')
 			.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(time / 4 * i, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
 			.setFooter('Ends at')
 			.setTimestamp(endTime)
 			.setColor('BLUE');
-		sleep(time / 4);
 		await m.edit(embed2);
 		i--;
-	}
-	// wait for giveaway to finish and then find winner
-	if (m.reactions.cache.get('🎉').count <= 1) {
-		message.channel.send(`Reactions: ${m.reactions.cache.get('🎉').count}`);
-		return message.channel.send('🎉Not enough people reacted for me to start draw a winner!');
-	}
-	const winner = m.reactions.cache.get('🎉').users.cache.filter((u) => !u.bot).random();
-	channel.send(`🎉The winner of the giveaway for **${prize}** is... ${winner}`);
-	// update embed so people know its finished
-	const embed3 = new Discord.MessageEmbed()
-		.setTitle('Giveaway ended!')
-		.setDescription(`Winner: ${winner}\nPrize was: **${prize}**\nHosted by: ${message.author}`)
-		.setFooter('Ended at')
-		.setTimestamp(Date.now())
-		.setColor('BLUE');
-	m.edit(embed3);
+		if (i == -1) {
+			// wait for giveaway to finish and then find winner
+			if (m.reactions.cache.get('🎉').count <= 1) {
+				message.channel.send(`Reactions: ${m.reactions.cache.get('🎉').count}`);
+				return message.channel.send('🎉Not enough people reacted for me to start draw a winner!');
+			}
+			const winner = m.reactions.cache.get('🎉').users.cache.filter((u) => !u.bot).random();
+			channel.send(`🎉The winner of the giveaway for **${prize}** is... ${winner}`);
+			// update embed so people know its finished
+			const embed3 = new Discord.MessageEmbed()
+				.setTitle('Giveaway ended!')
+				.setDescription(`Winner: ${winner}\nPrize was: **${prize}**\nHosted by: ${message.author}`)
+				.setFooter('Ended at')
+				.setTimestamp(Date.now())
+				.setColor('BLUE');
+			m.edit(embed3);
+			// giveaway ended
+			clearInterval(x);
+		}
+	}, time / 4);
 };
 
 module.exports.config = {

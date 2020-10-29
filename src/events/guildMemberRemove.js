@@ -21,7 +21,7 @@ module.exports = async (bot, member) => {
 			.setFooter(`ID: ${member.id}`)
 			.setThumbnail(member.user.displayAvatarURL())
 			.setAuthor('User left:', member.user.displayAvatarURL())
-			.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${require('../utils/time.js').getDayDiff(member.joinedTimestamp, Date.now())} days ago)`)
+			.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${require('../utils/Time-Handler.js').getDayDiff(member.joinedTimestamp, Date.now())} days ago)`)
 			.setTimestamp();
 		const modChannel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);

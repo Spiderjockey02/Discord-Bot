@@ -1,6 +1,3 @@
-// Dependencies
-const ms = require('ms');
-
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -35,23 +32,18 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 	// Ban user with reason and check if timed ban
 	try {
-		if (args[1]) {
-			// Makes sure it ends in d, h, m
-			if (!args[1].endsWith('d') && !args[1].endsWith('h') && !args[1].endsWith('m')) {
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Example on how to do a timed ban. \`${bot.commands.get('ban').help.example.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-				return;
-			}
-			// Make sure its a number
-			if (isNaN(args[1][0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('ban').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-			// Only 1 time interval can be used
-			if (args[1].length - args[1].replace(/[A-Za-z]/g, '').length != 1) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} For now only \`1\` time interval can be used.` } }).then(m => m.delete({ timeout: 5000 }));
-			setTimeout(function() {
-				bot.commands.get('unban').run(bot, message, [`${user.user.id}`], emojis);
-			}, ms(args[1]));
-		}
 		await user.ban({ reason: reason });
 		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully banned*.` } }).then(m => m.delete({ timeout: 8000 }));
 		bot.Stats.BannedUsers++;
+		const possibleTime = args[args.length - 1];
+		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
+			// do tempban
+			const time = require('../../utils/Time-Handler.js').getTotalTime(possibleTime, message, emojis);
+			if (!time) return;
+			setTimeout(() => {
+				bot.commands.get('unban').run(bot, message, [`${user.user.id}`], emojis, settings);
+			}, time);
+		}
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: ban.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));

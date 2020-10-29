@@ -14,7 +14,7 @@ function Page(page, message, queue, fetched) {
 		}
 		// make song has been found
 		if (queue[i] != undefined) {
-			resp += `${i}) ${queue[i].title} ${require('../../Utils/time.js').toHHMMSS(queue[i].duration)}\n`;
+			resp += `${i}) ${queue[i].title} ${require('../../Utils/Time-Handler.js').toHHMMSS(queue[i].duration)}\n`;
 		}
 	}
 	resp += '```';
@@ -42,7 +42,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	resp += '\t⬑ current track \n';
 	for (let i = 1; i < 10; i++) {
 		if (queue[i] != undefined) {
-			resp += `${i}) ${queue[i].title} ${require('../../Utils/time.js').toHHMMSS(queue[i].duration)}\n`;
+			resp += `${i}) ${queue[i].title} ${require('../../Utils/Time-Handler.js').toHHMMSS(queue[i].duration)}\n`;
 		}
 	}
 	if (queue.length < 10) {
