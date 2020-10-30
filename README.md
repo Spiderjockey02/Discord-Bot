@@ -43,6 +43,7 @@ Egglord has a lot of features, with **11 categories**:
 
 ## Links
 
+*   [Invite link](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot)
 *   [Commands List](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)
 *   [Installation Guide](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md)
 *   [F.A.Q](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ)
