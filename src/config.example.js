@@ -12,14 +12,17 @@ const config = {
 	// For playing youtube, soundcloud songs
 	YoutubeAPI_Key: 'YoutubeAPI_Key',
 	soundcloudAPI_Key: 'soundcloudAPI_Key',
-	// This so you can interact with the Discord.Boats API (Discord bot list website)
-	DiscordBoatAPI_Key: 'DiscordBoatAPI_Key',
 	// SO you can use the generate command
 	amethysteAPI_KEY: 'amethysteAPI_KEY',
-	// so you can update the https://arcane-center.xyz/ bot stats
-	ArcaneBotAPI_KEY: '',
-	// so you can update the https://botlist.space/ bot stats
-	botlist_spaceAPI_KEY: '',
+	// This is a list of websites that the bot is on. API to interect with server/shard count
+	DiscordBotLists: {
+		// https://discord.boats/
+		DiscordBoatAPI_Key: '',
+		// https://arcane-center.xyz/
+		ArcaneBotAPI_KEY: '',
+		// https://botlist.space/
+		botlist_spaceAPI_KEY: '',
+	},
 	// For searching up Rainbow 6 Siege accounts
 	Rainbow6Siege: {
 		// username & password to your ubisoft account
