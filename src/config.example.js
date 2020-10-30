@@ -18,6 +18,8 @@ const config = {
 	amethysteAPI_KEY: 'amethysteAPI_KEY',
 	// so you can update the https://arcane-center.xyz/ bot stats
 	ArcaneBotAPI_KEY: '',
+	// so you can update the https://botlist.space/ bot stats
+	botlist_spaceAPI_KEY: '',
 	// For searching up Rainbow 6 Siege accounts
 	Rainbow6Siege: {
 		// username & password to your ubisoft account

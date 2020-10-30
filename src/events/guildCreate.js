@@ -1,6 +1,8 @@
 // When the bot joins a server
 const BOATS = require('boats.js');
 const { post } = require('axios');
+const BotList = require('botlist.space');
+
 module.exports = async (bot, guild) => {
 	// LOG server Join
 	bot.logger.log(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot.`);
@@ -31,4 +33,8 @@ module.exports = async (bot, guild) => {
 	}).catch(err => {
 		console.error(err);
 	});
+
+	// update https://botlist.space/ bot stats
+	const client = new BotList.Client({ id: bot.user.id, botToken: require('../config.js').botlist_spaceAPI_KEY });
+	client.postServerCount(bot.guilds.cache.size);
 };
