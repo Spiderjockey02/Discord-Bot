@@ -4,11 +4,11 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Get image, defaults to author's avatar
-	const file = bot.GetImage(message);
+	const file = bot.GetImage(message, emojis);
 	// send 'waiting' message
 	const msg = await message.channel.send('Creating threat image');
 	try {
-		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file}`));
+		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`));
 		const json = await res.json();
 		// send image in embed
 		const embed = new Discord.MessageEmbed()

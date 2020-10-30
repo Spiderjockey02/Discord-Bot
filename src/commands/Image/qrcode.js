@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 	// Get text for QR encoding (including file URl)
 	let text = args.join(' ');
 	if (!text) {
-		text = bot.GetImage(message);
+		text = bot.GetImage(message, emojis)[0];
 	}
 	// send 'waiting' message
 	const msg = await message.channel.send('Creating QR code image.');

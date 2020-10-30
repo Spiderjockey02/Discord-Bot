@@ -3,12 +3,14 @@ const { Guild } = require('../modules/database/models');
 const mongoose = require('mongoose');
 
 module.exports = bot => {
+
 	// Get guild settings
 	bot.getGuild = async (guild) => {
 		const data = await Guild.findOne({ guildID: guild.id });
 		if (data) return data;
 		else return bot.config.defaultSettings;
 	};
+
 	// update guild settings
 	bot.updateGuild = async (guild, settings) => {
 		console.log(settings);
@@ -25,6 +27,7 @@ module.exports = bot => {
 		bot.logger.log(`Guild: [${data.guildID}] updated settings: ${Object.keys(settings)}`);
 		return await data.updateOne(settings);
 	};
+
 	// when the bot joins add guild settings to server
 	bot.CreateGuild = async (settings) => {
 		const merged = Object.assign({ _id: mongoose.Types.ObjectId() }, settings);
@@ -39,6 +42,8 @@ module.exports = bot => {
 		});
 		return;
 	};
+
+	// This handlers music permissin/check to see if user is in voice channel
 	bot.musicHandler = (message, args, emojis, settings) => {
 		// Check if bot can see user in channel (the user is in a channel)
 		if (!message.member.voice.channelID) {
@@ -71,37 +76,37 @@ module.exports = bot => {
 		}
 		return true;
 	};
-	// bot.PermissionHandler = (message, userPermissions, botPermissions, emojis, settings) => {
-	// userPermissions & botPermissions will be arrays
-	// console.log('This is to replace all permission checks on commands and make a single permission handler');
-	// };
+
+	// Get User from @ or ID
 	bot.GetUser = (message, args) => {
 		const user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
 		return user;
 	};
-	bot.GetImage = (message) => {
+
+	// Get image, from file download or avatar
+	bot.GetImage = (message, emojis) => {
 		const fileTypes = ['png', 'jpeg', 'tiff', 'jpg'];
 		// Get user
 		const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
-		// Get file for blurpify
-		let file;
-		if (user == message.author) {
-			// Maybe they have uploaded a photo to deepfry
-			if (message.attachments.size > 0) {
-				const url = message.attachments.first().url;
-				for (let i = 0; i < fileTypes.length; i++) {
-					if (url.indexOf(fileTypes[i]) !== -1) {
-						file = url;
-					}
+		// get image if there is one
+		const file = [];
+		if (message.attachments.size > 0) {
+			const url = message.attachments.first().url;
+			for (let i = 0; i < fileTypes.length; i++) {
+				if (url.indexOf(fileTypes[i]) !== -1) {
+					file.push(url);
 				}
-				// no file with the correct format was found
-				if (!file) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
-			} else {
-				file = user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
 			}
-		} else {
-			file = user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
+			// no file with the correct format was found
+			if (!file) message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That file format is not currently supported.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
+		// check user
+		if (user != message.author) {
+			file.push(user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }));
+		}
+		// add user
+		file.push(message.author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }));
+		// send file;
 		return file;
 	};
 };
