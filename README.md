@@ -39,7 +39,7 @@ Egglord has a lot of features, with **11 categories**:
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
 *   ❓  **Trivia**: `startmusictrivia`, `stopmusictrivia`
 
-[See the full commands list](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)
+[See the full commands list](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md)    (over 100)
 
 ## Links
 
