@@ -45,25 +45,30 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		await m.edit(embed2);
 		i--;
 		if (i == -1) {
-			// wait for giveaway to finish and then find winner
-			if (m.reactions.cache.get('🎉').count <= 1) {
-				message.channel.send(`Reactions: ${m.reactions.cache.get('🎉').count}`);
-				return message.channel.send('🎉Not enough people reacted for me to start draw a winner!');
-			}
-			const winner = m.reactions.cache.get('🎉').users.cache.filter((u) => !u.bot).random();
-			channel.send(`🎉The winner of the giveaway for **${prize}** is... ${winner}`);
-			// update embed so people know its finished
-			const embed3 = new Discord.MessageEmbed()
-				.setTitle('Giveaway ended!')
-				.setDescription(`Winner: ${winner}\nPrize was: **${prize}**\nHosted by: ${message.author}`)
-				.setFooter('Ended at')
-				.setTimestamp(Date.now())
-				.setColor('BLUE');
-			m.edit(embed3);
-			// giveaway ended
 			clearInterval(x);
+			giveawayEnded();
 		}
 	}, time / 4);
+
+	// end giveaway
+	function giveawayEnded() {
+	// wait for giveaway to finish and then find winner
+		if (m.reactions.cache.get('🎉').count <= 1) {
+			// message.channel.send(`Reactions: ${m.reactions.cache.get('🎉').count}`);
+			message.channel.send('🎉Not enough people reacted for me to start draw a winner!');
+		}
+		const winner = m.reactions.cache.get('🎉').users.cache.filter((u) => !u.bot).random();
+		channel.send(`🎉The winner of the giveaway for **${prize}** is... ${(winner) ? winner : 'no one.'}`);
+		// update embed so people know its finished
+		const embed3 = new Discord.MessageEmbed()
+			.setTitle('Giveaway ended!')
+			.setDescription(`Winner: ${(winner) ? winner : 'No winner'}\nPrize was: **${prize}**\nHosted by: ${message.author}`)
+			.setFooter('Ended at')
+			.setTimestamp(Date.now())
+			.setColor('BLUE');
+		m.edit(embed3);
+	}
+	// giveaway ende
 };
 
 module.exports.config = {
