@@ -13,10 +13,9 @@ module.exports.run = async (bot, message, args, emojis) => {
 		// send image in embed
 		const attachment = new Discord.MessageAttachment(json.message, 'stickbug.mp4');
 		message.channel.send(attachment);
-	} catch(e) {
-		console.log(e);
+	} catch(err) {
 		// if an error occured
-		bot.logger.log(e.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: stickbug.`);
 		msg.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}

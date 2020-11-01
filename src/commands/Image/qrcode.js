@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		message.channel.send(embed);
 	} catch(err) {
 		// if error has occured
-		bot.logger.log(err.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: qrcode.`);
 		msg.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}

@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		if (message.deletable) message.delete();
 		r.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} This username was unable to be found.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(err.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: fortnite.`);
 	});
 };
 

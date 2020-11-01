@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			await user.voice.setMute(true);
 			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully muted*.` } }).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
-			bot.logger.error(`${err.message} when running command: mute. {1}`);
+			if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
 		}
 	}
 	// add role to user
@@ -71,7 +71,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			}
 		});
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: mute. {2}`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {2}.`);
 	}
 	// add timed unmute
 };

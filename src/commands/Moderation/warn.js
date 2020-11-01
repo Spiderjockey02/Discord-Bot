@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	try {
 		await require('../../modules/plugins/warning').run(bot, message, emojis, wUser, wReason, settings);
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: warn.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: warn.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };

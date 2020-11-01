@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.channel.send(embed);
 	} catch(err) {
 		// if an error occured
-		bot.logger.log(err.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: clyde.`);
 		msg.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}

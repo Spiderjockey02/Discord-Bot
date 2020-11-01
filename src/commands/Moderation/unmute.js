@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		}
 		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully unmuted*.` } }).then(m => m.delete({ timeout: 3000 }));
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: unmute.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: unmute.`);
 	}
 };
 

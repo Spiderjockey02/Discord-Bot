@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 	// Get the random facts file
 	fs.readFile('./src/storage/resources/random-facts.json', (err, data) => {
 		if (err) {
-			bot.logger.error(err.message);
+			if (bot.config.debug) bot.logger.error(`${err.message} - command: fact.`);
 			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
 			message.delete();
 			return;

@@ -21,9 +21,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			.setImage(reddit.url)
 			.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | Provided by KSOFT.API`);
 		message.channel.send(embed);
-	} catch (e) {
+	} catch (err) {
 		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: reddit.`);
+		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

@@ -7,7 +7,8 @@ module.exports.run = async (bot, message, args, emojis) => {
 		TinyURL.shorten(mes, function(res) {
 			message.channel.send(res);
 		});
-	} catch (e) {
+	} catch (err) {
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: shorturl.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };

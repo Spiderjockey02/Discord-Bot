@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Search for pokemon
 	const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${args.join(' ')}`).then(info => info.json()).catch(err => {
 		// An error occured when looking for account
-		bot.logger.error(err.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: pokemon.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That Pokemon dosen't exist.` } }).then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;

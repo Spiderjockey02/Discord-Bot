@@ -20,8 +20,8 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			bot.commands.delete(commandName);
 			const pull = require(`../${command.help.category}/${commandName}.js`);
 			bot.commands.set(commandName, pull);
-		} catch(e) {
-			console.log(e);
+		} catch(err) {
+			if (bot.config.debug) bot.logger.error(`${err.message} - command: reload.`);
 			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Could not reload: \`${commandName}\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		}
 	} else {

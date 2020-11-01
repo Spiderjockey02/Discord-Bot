@@ -22,9 +22,9 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			.setImage(json.message);
 		msg.delete();
 		message.channel.send(embed);
-	} catch(e) {
+	} catch(err) {
 		// if error has occured
-		bot.logger.log(e.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: phcomment.`);
 		msg.delete();
 		message.channel.send('An error has occured when running this command.').then(m => m.delete({ timeout:3500 }));
 	}

@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.channel.send(`Slowmode Set to **${args[0]}**`).then(m => m.delete({ timeout:15000 }));
 	} catch (err) {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
-		bot.logger.error(`${err.message} when running command: slowmode.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: slowmode.`);
 	}
 };
 

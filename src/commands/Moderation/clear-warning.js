@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			message.channel.send('This user has not been warned before.').then(m => m.delete({ timeout: 3500 }));
 		}
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: clear-warnings.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: clear-warnings.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };

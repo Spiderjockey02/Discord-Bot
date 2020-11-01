@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${bUser.user.username}#${bUser.user.discriminator} was successfully unbanned*.` } }).then(m => m.delete({ timeout: 3000 }));
 		});
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: unban.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: unban.`);
 	}
 };
 

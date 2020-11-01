@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 	const meme = await ksoft.images.meme();
 	// An error has occured
 	if (meme.url == undefined) {
-		bot.logger.error('An error occured when running command: meme.');
+		if (bot.config.debug) bot.logger.error('An error occured when running command: meme.');
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;

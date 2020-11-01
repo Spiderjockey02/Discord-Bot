@@ -16,7 +16,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			userID: user.id,
 			guildID: message.guild.id,
 		}, (err, Xp) => {
-			if(err) console.log(err);
+			if (err) {
+				if (bot.config.debug) bot.logger.error(`${err.message} - command: rank.`);
+				return;
+			}
 			const embed = new Discord.MessageEmbed()
 				.setAuthor(user.user.username);
 			if (Xp == null) {

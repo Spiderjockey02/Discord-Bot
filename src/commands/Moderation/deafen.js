@@ -29,8 +29,8 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		try {
 			await user.voice.setDeaf(true);
 			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully deafened*.` } }).then(m => m.delete({ timeout: 3000 }));
-		} catch (err) {
-			bot.logger.error(`${err.message} when running command: deafen.`);
+		} catch(err) {
+			// do nothing
 		}
 	} else {
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} ${user.user.username} is not in a voice channel. ` } }).then(m => m.delete({ timeout: 3000 }));

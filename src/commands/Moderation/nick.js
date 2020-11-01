@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		await user.setNickname(nickname);
 		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *Successfully changed nickname of ${user.user.username}#${user.user.discriminator}.*` } }).then(m => m.delete({ timeout: 5000 }));
 	} catch (err) {
-		bot.logger.error(`${err.message} when running command: nick.`);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: nick.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am unable to change ${user.user.username}#${user.user.discriminator} nickname.` } }).then(m => m.delete({ timeout: 10000 }));
 	}
 };

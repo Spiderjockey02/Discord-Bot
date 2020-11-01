@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		r.delete({ timeout: 1000 });
 		message.delete();
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
-		bot.logger.error(err.message);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: mc.`);
 	});
 };
 

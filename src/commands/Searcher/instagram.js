@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	const url = `https://instagram.com/${username}/?__a=1`;
 	const res = await fetch(url).then(info => info.json()).catch(err => {
 		// An error occured when looking for account
-		bot.logger.error(err);
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: instagram.`);
 		message.delete();
 		message.channel.send('That Instagram account does not exist.').then(m => m.delete({ timeout: 3500 }));
 		return;
