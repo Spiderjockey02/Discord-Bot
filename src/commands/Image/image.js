@@ -23,14 +23,23 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			},
 		};
 		request(options, function(error, response, responseBody) {
-			if (error) return;
+			if (error) {
+				if (message.deletable) message.delete();
+				r.delete();
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+				return;
+			}
 			// Retrieve image(s)
 			const $ = load(responseBody);
 			const links = $('.image a.link');
 			const urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr('href'));
 			// If no images found
-			if (!urls.length) return;
-			r.delete();
+			if (!urls.length) {
+				if (message.deletable) message.delete();
+				r.delete();
+				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+				return;
+			}
 			// Displays image in channel
 			message.channel.send({ embed:{ image:{ url:`${urls[Math.floor(Math.random() * urls.length)]}` } } });
 		});
