@@ -3,7 +3,7 @@ const { inspect } = require('util');
 
 module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Makes sure only the bot owner can do this command
-	if (message.member.id != bot.config.ownerID) return;
+	if (message.member.id != bot.config.ownerID) return message.channel.send('**What do you think you\'re doing?**');
 	const toEval = args.join(' ');
 	// Evaluated the code
 	try {
