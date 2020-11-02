@@ -33,5 +33,5 @@ module.exports.help = {
 	name: 'threats',
 	category: 'Image',
 	description: 'Creates a threat meme.',
-	usage: '${PREFIX}threats [file]',
+	usage: '${PREFIX}threats [image]',
 };

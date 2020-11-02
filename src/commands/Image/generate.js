@@ -61,6 +61,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'Generate',
 	category: 'Image',
-	description: 'Generate a custom image',
+	description: 'Generate a custom image.',
 	usage: '${PREFIX}generate <option> [image]',
 };
