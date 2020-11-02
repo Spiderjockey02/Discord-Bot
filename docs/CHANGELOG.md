@@ -1,8 +1,36 @@
 # CHANGE LOG
-## November 1
-## October 31
-## October 30
-## October 29
+
+## November 2<sup>nd</sup>
+* Removed `commands/Host/debug.js`.
+* Removed `commands/Host/suggestion.js`.
+* Added new `docs/.`.
+* Updated `commands/Host/eval.js`.
+* Updated `commands/Image/image.js`.
+* Updated file system.
+
+## November 1<sup>st</sup>
+
+* Added debug option on `events/.js`
+* Added `commands/Misc/privacy.js`.
+* Updated `commands/guild/giveaway.js`.
+* Updated `modules/database/mongoose.js`
+
+## October 31<sup>st</sup>
+* Updated README.md
+
+## October 30<sup>th</sup>
+* Updated image commands to include emojis in bot.getImage()
+* Added botlist.space API support
+* Added arcane-center.xyz API support
+
+## October 29<sup>th</sup>
+* Cleaned up some files.
+* Fixed timed commands 'freezing' the bot.
+* Fixed descriptions on some commands.
+* Updated Level plugin to follow a formula instead of just 50XP each level. `(5 * (Level ** 2) + 50 * Level + 100)`
+* Updated bot.getImage() to force user avatar to be '.png'.
+* Updated dependencies.
+
 ## October 28<sup>th</sup>
 * Updated `commands/Fun/fact.js`
 * Updated `README.md`
