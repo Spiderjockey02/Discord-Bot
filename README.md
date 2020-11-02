@@ -29,7 +29,7 @@ Egglord has a lot of features, with **11 categories**:
 
 *   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
 *   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
-*   👑  **Host**: `reload`, `shutdown`, `suggestion`, `eval`! 
+*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval`! 
 *   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
 *   💰  **Level**: `leaderboard`, `rank`
 *   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **3** more!
