@@ -1,5 +1,5 @@
 // get radios
-const radio = require('../../storage/resources/radiostations.json');
+const radio = require('../../assets/datafiles/radiostations.json');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Check if user is in a voice channel
