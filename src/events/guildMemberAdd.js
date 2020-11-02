@@ -1,5 +1,5 @@
-// when someones joins a server
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, member) => {
 	if (member.user.id == bot.user.id) return;
@@ -34,7 +34,7 @@ module.exports = async (bot, member) => {
 	if (settings.ModLog == false) return;
 	// Check if event guildMemberAdd is for logging
 	if (settings.ModLogEvents.includes('GUILDMEMBERADD')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 			.setColor(3066993)
 			.setFooter(`ID: ${member.id}`)

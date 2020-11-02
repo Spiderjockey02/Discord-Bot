@@ -1,5 +1,5 @@
-// When a messages has been deleted
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, message) => {
 	// Make sure the message wasn't deleted in a Dm channel
@@ -28,7 +28,7 @@ module.exports = async (bot, message) => {
 		}
 
 		// Basic message construct
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 			.setColor(15158332)
 			.setFooter(`Author: ${message.author.id} | Message: ${message.id}`)

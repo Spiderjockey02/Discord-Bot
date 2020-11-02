@@ -1,5 +1,5 @@
-// When a emoji has been deleted
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, emoji) => {
 	// Get server settings
@@ -13,7 +13,7 @@ module.exports = async (bot, emoji) => {
 	if (settings.ModLog == false) return;
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('EMOJIDELETE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**Emoji: ${emoji} (${emoji.name}) was deleted**`)
 			.setColor(15158332)
 			.setFooter(`ID: ${emoji.id}`)

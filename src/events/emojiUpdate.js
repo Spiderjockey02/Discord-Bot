@@ -1,5 +1,5 @@
-// When an emoji gets updated
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, oldEmoji, newEmoji) => {
 	// Get server settings
@@ -13,7 +13,7 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
 	if (settings.ModLog == false) return;
 	// Check if moderation channel is valid
 	if (settings.ModLogEvents.includes('EMOJIUPDATE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(15105570)
 			.setAuthor('~Emoji updated~')
 			.addField('Emoji name', newEmoji.name, true)

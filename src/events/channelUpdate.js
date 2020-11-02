@@ -1,5 +1,5 @@
-// When a channel gets updated
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 // send message to log channel
 function sendMessage(newChannel, settings, embed, bot) {
@@ -24,7 +24,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 	if (settings.ModLogEvents.includes('CHANNELUPDATE')) {
 		// Channel name change
 		if (oldChannel.name != newChannel.name) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newChannel.id}`)
@@ -39,7 +39,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 		}
 		// channel topic (description) change
 		if (oldChannel.topic != newChannel.topic) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newChannel.id}`)
@@ -65,7 +65,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 			return true;
 		}));
 		if (permDiff.size) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newChannel.id}`)

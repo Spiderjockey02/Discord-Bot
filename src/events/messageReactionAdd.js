@@ -1,5 +1,6 @@
-// When a reaction has been added to a message (This includes verification role)
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports = async (bot, reaction, user) => {
 	// make sure it dosen't happen in a DM
 	if (reaction.message.channel.type == 'dm') return;
@@ -21,7 +22,7 @@ module.exports = async (bot, reaction, user) => {
 				// do welcome plugin here
 				const member = reaction.message.channel.guild.member(user);
 				if (settings.welcomePlugin == true && settings.welcomeRaidConnect == true) {
-					const channel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.welcomeChannel);
+					const channel = reaction.message.channel.guild.channels.cache.find(c => c.id == settings.welcomeChannel);
 					if (channel) channel.send(settings.welcomeMessage.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 					// Send private message to user
 					if (settings.welcomePvt == true) {
@@ -50,7 +51,7 @@ module.exports = async (bot, reaction, user) => {
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('MESSAGEREACTIONADD')) {
 		// record all reactions
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 			.setColor(3066993)
 			.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)

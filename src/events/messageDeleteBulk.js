@@ -1,7 +1,6 @@
-// when a bulk of messages have been deleted at one time
+// Dependencies
 const dateFormat = require('dateformat');
-const Discord = require('discord.js');
-const { MessageAttachment } = require('discord.js');
+const { MessageAttachment, MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, messages) => {
 	// Get server settings
@@ -25,7 +24,7 @@ module.exports = async (bot, messages) => {
 			const attachment = new MessageAttachment(Buffer.from(humanLog, 'utf-8'), 'DeletedMessages.txt');
 			const msg = await modChannel.send(attachment);
 			// embed
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter(`Channel: ${messages.first().channel.id}`)

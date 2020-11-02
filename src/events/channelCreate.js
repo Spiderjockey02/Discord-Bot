@@ -1,8 +1,8 @@
-// When a channel has been created
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, channel) => {
-	// When someone DM's the bot for the first time, this event gets triggered (just make sure its not a DM)
+	// Make sure the channel isn't a DM
 	if (channel.type == 'dm') return;
 	// Get server settings
 	let settings;
@@ -15,7 +15,7 @@ module.exports = async (bot, channel) => {
 	if (settings.ModLog == false) return;
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('CHANNELCREATE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**${channel.type === 'category' ? 'Category' : 'Channel'} Created: ${channel.toString()}**`)
 			.setColor(3066993)
 			.setFooter(`ID: ${channel.id}`)
@@ -25,6 +25,6 @@ module.exports = async (bot, channel) => {
 		const modChannel = channel.guild.channels.cache.find(c => c.id == settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
 		// log event in console
-		bot.logger.log(`Channel: ${channel.name} has been deleted in Server: [${channel.guild.id}].`);
+		bot.logger.log(`Channel: ${channel.name} has been created in Server: [${channel.guild.id}].`);
 	}
 };

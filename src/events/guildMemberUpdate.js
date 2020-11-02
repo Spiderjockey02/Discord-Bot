@@ -1,9 +1,9 @@
-// When a guild member's account updates
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 // send messages to log channel
 function sendMessage(newMember, settings, embed, bot) {
-	const channel = newMember.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+	const channel = newMember.guild.channels.cache.find(c => c.id == settings.ModLogChannel);
 	if (channel) channel.send(embed);
 	// log event in console
 	bot.logger.log(`Guild member: ${newMember.user.username} has been updated in Server: [${newMember.guild.id}].`);
@@ -23,7 +23,7 @@ module.exports = async (bot, oldMember, newMember) => {
 	if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE')) {
 		// nickname change
 		if (oldMember.nickname != newMember.nickname) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**${newMember.toString()} nickname changed**`)
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
@@ -46,7 +46,7 @@ module.exports = async (bot, oldMember, newMember) => {
 			for (const role of rolesRemoved.array()) {
 				roleRemovedString += role.toString();
 			}
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**${newMember.toString()} roles changed**`)
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())

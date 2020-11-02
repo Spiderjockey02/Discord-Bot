@@ -1,5 +1,6 @@
-// When a role has been created
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports = async (bot, role) => {
 	// Get server settings
 	let settings;
@@ -12,7 +13,7 @@ module.exports = async (bot, role) => {
 	if (settings.ModLog == false) return;
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('ROLECREATE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**Role: ${role} (${role.name}) was created**`)
 			.setColor(3066993)
 			.setFooter(`ID: ${role.id}`)

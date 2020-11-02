@@ -1,5 +1,5 @@
-// when someone leaves a server
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 const dateFormat = require('dateformat');
 
 module.exports = async (bot, member) => {
@@ -15,7 +15,7 @@ module.exports = async (bot, member) => {
 	if (settings.ModLog == false) return;
 	// Check if event guildMemberAdd is for logging
 	if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 			.setColor(15158332)
 			.setFooter(`ID: ${member.id}`)

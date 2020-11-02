@@ -1,5 +1,6 @@
-// When a role has been deleted
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports = async (bot, role) => {
 	// Get server settings
 	let settings;
@@ -13,7 +14,7 @@ module.exports = async (bot, role) => {
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('ROLEDELETE')) {
 		try {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**Role: ${role} (${role.name}) was deleted**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${role.id}`)

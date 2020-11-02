@@ -1,5 +1,5 @@
-// When a role has been updated
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 function sendMessage(newRole, settings, embed, bot) {
 	// log event in console
@@ -21,7 +21,7 @@ module.exports = async (bot, oldRole, newRole) => {
 	if (settings.ModLogEvents.includes('ROLEUPDATE')) {
 		// role name change
 		if (oldRole.name != newRole.name) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newRole.id}`)
@@ -33,7 +33,7 @@ module.exports = async (bot, oldRole, newRole) => {
 		}
 		// role colour change
 		if (oldRole.color != newRole.color) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newRole.id}`)
@@ -44,7 +44,7 @@ module.exports = async (bot, oldRole, newRole) => {
 			sendMessage(newRole, settings, embed);
 		}
 		if (oldRole.permissions != newRole.permissions) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapp.com/developers/docs/topics/permissions)`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newRole.id}`)

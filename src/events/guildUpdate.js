@@ -1,5 +1,5 @@
-// When the server has been updated
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 // send message to log channel
 function sendMessage(newGuild, settings, embed) {
@@ -19,7 +19,7 @@ module.exports = async (bot, oldGuild, newGuild) => {
 	// Check for updates
 	let embed;
 	if (oldGuild.name != newGuild.name) {
-		embed = new Discord.MessageEmbed()
+		embed = new MessageEmbed()
 			.setDescription('**Server name changed**')
 			.setAuthor(newGuild.name, newGuild.iconURL())
 			.addField('Before:', oldGuild.name)
@@ -29,7 +29,7 @@ module.exports = async (bot, oldGuild, newGuild) => {
 	}
 	// region change
 	if (oldGuild.region != newGuild.region) {
-		embed = new Discord.MessageEmbed()
+		embed = new MessageEmbed()
 			.setDescription('**Server region changed**')
 			.setAuthor(newGuild.name, newGuild.iconURL())
 			.addField('Before:', oldGuild.region)

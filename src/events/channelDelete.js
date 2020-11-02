@@ -1,5 +1,5 @@
-// When a channel has been deleted
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, channel) => {
 	// Don't really know but a check for DM must be made
@@ -15,7 +15,7 @@ module.exports = async (bot, channel) => {
 	if (settings.ModLog == false) return;
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('CHANNELDELTE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**${channel.type === 'category' ? 'Category' : 'Channel'} Deleted: ${'#' + channel.name}**`)
 			.setColor(15158332)
 			.setFooter(`ID: ${channel.id}`)

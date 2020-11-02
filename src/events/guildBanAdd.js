@@ -1,5 +1,5 @@
-// When someone is banned from a server
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, guild, user) => {
 	let settings;
@@ -12,7 +12,7 @@ module.exports = async (bot, guild, user) => {
 	if (settings.ModLog == false) return;
 	// Check if moderation channel is valid
 	if (settings.ModLogEvents.includes('GUILDBANADD')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`${user.toString()}\n${user.tag}`)
 			.setFooter(`ID: ${user.id}`)
 			.setThumbnail(`${user.displayAvatarURL()}`)

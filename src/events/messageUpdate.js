@@ -1,5 +1,5 @@
-// When a message gets updated
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, oldMessage, newMessage) => {
 	// make sure its not a DM
@@ -34,7 +34,7 @@ module.exports = async (bot, oldMessage, newMessage) => {
 			newContent = newContent.slice(0, 1020) + '...';
 			newShortened = true;
 		}
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**Message of ${newMessage.author.toString()} edited in ${newMessage.channel.toString()}** [Jump to Message](${newMessage.url})`)
 			.setFooter(`Author: ${newMessage.author.id} | Message: ${newMessage.id}`)
 			.setAuthor(newMessage.author.tag, newMessage.author.displayAvatarURL())

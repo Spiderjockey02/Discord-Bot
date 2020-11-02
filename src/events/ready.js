@@ -1,3 +1,5 @@
+const { Guild } = require('../modules/database/models');
+
 module.exports = async bot => {
 	// LOG ready event
 	bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
@@ -24,16 +26,16 @@ module.exports = async bot => {
 			console.log(e);
 		}
 		if (settings.guildID == undefined) {
-			try {
-				const newGuild = {
-					guildID: item.id,
-					guildName: item.name,
-				};
-				await bot.CreateGuild(newGuild);
-				bot.logger.log(`[GUILD JOIN] ${item.name} (${item.id}) added the bot.`);
-			} catch (e) {
-				console.error(e);
-			}
+			// new guild has been found
+			eval('bot.emit(\'guildCreate\', item)', { depth: 0 });
 		}
 	});
+	// Delete server settings on servers that removed the bot while it was offline
+	const data = await Guild.find({});
+	bot.guilds.cache.forEach(async item => {
+		for (let i = 0; i < data.length; i++) {
+			if (item.id !=)
+		}
+	});
+	console.log(data);
 };

@@ -1,5 +1,5 @@
-// When a reaction has been removed from a message
-const Discord = require('discord.js');
+// Dependencies
+const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, reaction, user) => {
 	// make sure it dosen't happen in a DM
@@ -18,7 +18,7 @@ module.exports = async (bot, reaction, user) => {
 	if (settings.ModLog == false) return;
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE')) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 			.setColor(15158332)
 			.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
