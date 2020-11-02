@@ -1,14 +1,17 @@
-# CHANGE LOG 
-
+# CHANGE LOG
+## November 1
+## October 31
+## October 30
+## October 29
 ## October 28<sup>th</sup>
 * Updated `commands/Fun/fact.js`
 * Updated `README.md`
 * Added `@someone` feature
-* Added dependabot to repo for automatic  package updates.
+* Added @dependabot to repo for automatic  package updates.
 * Added `docs/COMMANDS.md`
 
 ## October 27<sup>th</sup>
-* Restructed & cleaned the Repo to look better.
+* Re-structed & cleaned the Repo to look better.
 * Updated `command/Host/eval.js` (to create accurate execution time)
 * Updated bot.js
 
@@ -43,7 +46,7 @@
 ## October 12<sup>th</sup>
 * Added `commands/Moderation/clear-warning.js`.
 * Updated warning system.
-* Changed warning databade to include moderator.
+* Changed warning database to include moderator.
 
 ## October 10<sup>th</sup>
 * Fixed plugin duplication bug.
@@ -53,7 +56,7 @@
 * Added CHANGELOG.md.
 * Added bot.Stats (to see MessageSent, Giveaways, BannedUsers, CommandsUsed).
 * Added NSFW channel check to `events/message.js`.
-* Added `commands/Image`. 
+* Added `commands/Image`.
 * Added `commands/Moderation`.
 * Added `commands/NSFW`.
 * Added global function bot.musicHandler() for `commands/Music`.
