@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { Warning } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 					list += `${i + 1}.) ${warn.Reason[i]} | ${(message.guild.members.cache.get(warn.Moderater[i])) ? message.guild.members.cache.get(warn.Moderater[i]) : 'User left'} (Issue date: ${warn.IssueDates[i]})\n`;
 					i++;
 				}
-				const embed = new Discord.MessageEmbed()
+				const embed = new MessageEmbed()
 					.setTitle(`${user.user.username}'s warning list.`)
 					.setDescription(list)
 					.setTimestamp();

@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		message.delete();
 		return;
 	});
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setImage(res.url);
 	message.channel.send(embed);
 };

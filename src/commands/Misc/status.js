@@ -1,10 +1,10 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message) => {
 	// Get information on the services the bot provide
 	const m = await message.channel.send('Pong');
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.addField('Ping:', `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
 		.addField('Client API:', `\`${Math.round(bot.ws.ping)}ms\``, true)
 		.addField('MongoDB:', `\`${Math.round(await bot.mongoose.ping())}ms\``, true)

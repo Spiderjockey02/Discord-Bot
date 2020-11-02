@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (message.deletable) message.delete();
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// Send poll to channel
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(0xffffff)
 		.setTitle(`Poll created by ${message.author.username}`)
 		.setDescription(args.join(' '))

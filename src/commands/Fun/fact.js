@@ -1,6 +1,6 @@
 // Dependencies
 const fs = require('fs');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Get the random facts file
@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		const facts = JSON.parse(data);
 		// Retrieve a random fact
 		const num = (Math.floor((Math.random() * facts.facts.length) + 0));
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setTitle('Random Fact:')
 			.setColor('RANDOM')
 			.setDescription(facts.facts[num]);

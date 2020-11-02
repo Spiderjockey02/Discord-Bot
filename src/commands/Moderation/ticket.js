@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			READ_MESSAGES: false,
 		});
 		// send ticket log (goes in ModLOg channel)
-		const ticketLog = new Discord.MessageEmbed()
+		const ticketLog = new MessageEmbed()
 			.setTitle('Ticket Opened!')
 			.addField('Ticket', channel)
 			.addField('User', message.author)
@@ -49,13 +49,13 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		if (modChannel) modChannel.send(ticketLog);
 
 		// reply to user saying that channel has been created
-		const successEmbed = new Discord.MessageEmbed()
+		const successEmbed = new MessageEmbed()
 			.setTitle('✅ Success!')
 			.setDescription(`Your ticket has been created: ${channel}`);
 		message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));
 
 		// Add message to ticket channel
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(0xFF5555)
 			.addField(`Hey ${message.author.username}!`, 'Our support team will contact you as soon as possible.')
 			.addField('Reason', reason)

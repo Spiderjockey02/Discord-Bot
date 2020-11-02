@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const R6API = require('r6api.js');
 const { getId, getLevel, getRank, getStats } = new R6API(require('../../config.js').Rainbow6Siege.username, require('../../config.js').Rainbow6Siege.password);
 
@@ -61,7 +61,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 	platform = Object.keys(platforms).find(key => platforms[key] === platform).toLowerCase();
 	region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setAuthor(player.username, bot.user.displayAvatarURL)
 		.setDescription(`Stats for the **${region.toUpperCase()}** region on **${platform.toUpperCase()}**`)
 		.setThumbnail(current.image)

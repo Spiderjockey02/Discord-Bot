@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { KSoftClient } = require('@ksoft/api');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			reddit = await ksoft.images.reddit(args[0], { removeNSFW: true });
 		}
 		// Send message to channel
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setTitle(`From /${reddit.post.subreddit}`)
 			.setURL(reddit.post.link)
 			.setImage(reddit.url)

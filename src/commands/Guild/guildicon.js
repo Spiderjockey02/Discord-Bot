@@ -1,9 +1,9 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	if (message.guild.icon) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`[Download](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
 			.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
 		message.channel.send(embed);

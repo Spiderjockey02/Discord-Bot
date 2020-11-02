@@ -1,9 +1,9 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
 module.exports.run = async (bot, message) => {
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 		.setTitle('About')
 		.setDescription(`- [Dashboard](${bot.config.Dashboard.domain})

@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure a choice was made
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		} else {
 			winner = 'user';
 		}
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setTitle('Rock Paper Scissors')
 			.setDescription(`**You choose:** ${args[0]}
       **I choose:** ${choice}\n

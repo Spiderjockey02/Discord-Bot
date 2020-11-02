@@ -1,13 +1,13 @@
 // Dependecies
-const superagent = require('superagent');
-const Discord = require('discord.js');
+const { get } = require('superagent');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	try {
-		superagent.get('https://nekobot.xyz/api/image')
+		get('https://nekobot.xyz/api/image')
 			.query({ type: 'pussy' })
 			.end((err, response) => {
-				const embed = new Discord.MessageEmbed()
+				const embed = new MessageEmbed()
 					.setImage(response.body.message);
 				message.channel.send(embed);
 			});

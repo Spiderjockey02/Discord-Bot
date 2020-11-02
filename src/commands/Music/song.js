@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const createBar = require('string-progressbar');
 
 module.exports.run = async (bot, message, args, emojis, settings, ops) => {
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
 
 	// send message
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setAuthor('Now playing')
 		.setDescription(`[${song.title}](${song.url}) [${message.guild.members.cache.find(member => member.id == song.requester)}]`)
 		.setThumbnail(song.thumbnail)

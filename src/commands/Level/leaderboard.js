@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		['Xp', 'descending'],
 	]).exec((err, res) => {
 		if (err) console.log(err);
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setTitle('Leaderboard');
 		if (res.length === 0) {
 			// If there no results

@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -20,7 +20,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 				if (bot.config.debug) bot.logger.error(`${err.message} - command: rank.`);
 				return;
 			}
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setAuthor(user.user.username);
 			if (Xp == null) {
 				// They haven't sent any messages yet

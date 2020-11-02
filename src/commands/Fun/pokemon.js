@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return;
 	});
 	// Send response to channel
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
 		.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 		.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)

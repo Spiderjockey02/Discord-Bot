@@ -1,11 +1,11 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message) => {
 	// Get VIP perks
 	const VipPerks = (message.guild.features.length == 0) ? 'None' : message.guild.features.toString().toLowerCase().replace(/,/g, ', ');
 	// Display server information
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(0x0099ff);
 	if (message.guild.icon) {
 		embed.setThumbnail(message.guild.iconURL());

@@ -1,6 +1,6 @@
 // Dependencies
 const { KSoftClient } = require('@ksoft/api');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Retrieve a random meme
@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		return;
 	}
 	// Send the meme to channel
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setTitle(`From /${meme.post.subreddit}`)
 		.setColor(16333359)
 		.setURL(meme.post.link)

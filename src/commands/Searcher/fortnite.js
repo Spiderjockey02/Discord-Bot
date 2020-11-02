@@ -1,6 +1,6 @@
 // Dependencies
 const Fortnite = require('fortnite');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get platform and username
@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	const r = await message.channel.send(`Getting fortnite information on **${username}**.`);
 	// Retrieve stats from database
 	stats.user(username, platform).then(data => {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(0xffffff)
 			.setTitle(`Stats for ${data.username}`)
 			.setURL(data.url)

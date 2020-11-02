@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const ytdl = require('ytdl-core');
 const config = require('../../config.js');
 const YouTubeAPI = require('simple-youtube-api');
@@ -123,7 +123,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 		require('../../utils/AudioPlayer.js').run(bot, ops, data, message);
 	} else {
 		// show that songs where added to queue
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setTitle('Added to queue')
 			.setDescription(`[${song.title}](${song.url})`)
 			.addField('Song duration:', `${require('../../utils/time.js').toHHMMSS(song.duration)}`, true)

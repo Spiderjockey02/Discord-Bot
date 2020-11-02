@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 	// Displays Data
 	const account = res.graphql.user;
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(0x0099ff)
 		.setTitle(account.full_name)
 		.setURL(`https://instagram.com/${username}`)

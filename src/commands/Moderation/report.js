@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure that REPORT is in the mod logs
@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			return;
 		}
 		// Send messages to ModLog channel
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setAuthor('~Member Reported~', user.user.displayAvatarURL)
 			.addField('Member:', user, true)
 			.addField('Reported by:', message.member, true)

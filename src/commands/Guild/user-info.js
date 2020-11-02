@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
 module.exports.run = async (bot, message, args) => {
@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
 		emoji = '🔴';
 	}
 	// Display user informaion
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setAuthor(`User info for ${user.user.username}#${user.user.discriminator}`, user.user.displayAvatarURL())
 		.setThumbnail(user.user.displayAvatarURL())
 		.addField('Nickname:', user.nickname != null ? user.nickname : '-', true)

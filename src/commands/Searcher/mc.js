@@ -1,6 +1,6 @@
 // Dependencies
-const util = require('minecraft-server-util');
-const Discord = require('discord.js');
+const { ping } = require('minecraft-server-util');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Ping a minecraft server
@@ -11,8 +11,8 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		args[1] = '25565';
 	}
 	// Ping server
-	util.ping(args[0], { port: parseInt(args[1]) }).then((response) => {
-		const embed = new Discord.MessageEmbed()
+	ping(args[0], { port: parseInt(args[1]) }).then((response) => {
+		const embed = new MessageEmbed()
 			.setColor(0x0099ff)
 			.setTitle('Server Status')
 			.setURL(`https://mcsrvstat.us/server/${args[0]}:${args[1]}`)

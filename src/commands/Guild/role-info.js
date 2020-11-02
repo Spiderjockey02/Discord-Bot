@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		return;
 	}
 	// Send information to channel
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(role.color)
 		.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
 		.setDescription(`Role | ${role.name}`)

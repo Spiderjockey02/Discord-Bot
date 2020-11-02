@@ -1,5 +1,5 @@
 // Dependencies
-const cheerio = require('cheerio');
+const { load } = require('cheerio');
 const request = require('request');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -25,7 +25,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		request(options, function(error, response, responseBody) {
 			if (error) return;
 			// Retrieve image(s)
-			const $ = cheerio.load(responseBody);
+			const $ = load(responseBody);
 			const links = $('.image a.link');
 			const urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr('href'));
 			// If no images found

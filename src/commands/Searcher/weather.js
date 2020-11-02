@@ -1,12 +1,12 @@
 // Dependencies
-const weather = require('weather-js');
-const Discord = require('discord.js');
+const { find } = require('weather-js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	if (!args.length) return message.channel.send('Please give the weather location');
-	weather.find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {
+	find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {
 		try {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setTitle(`Weather - ${result[0].location.name}`)
 				.setDescription('Temperature units can may be differ some time')
 				.addField('Temperature', `${result[0].current.temperature}°C`, true)

@@ -1,7 +1,7 @@
 // Dependencies
 const fetch = require('node-fetch');
 const dateFormat = require('dateformat');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Steam config
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 				}
 				const { NumberOfGameBans } = body3.players[0];
 				// Display results
-				const embed = new Discord.MessageEmbed()
+				const embed = new MessageEmbed()
 					.setColor(0x0099ff)
 					.setAuthor(`Steam Services | ${personaname}`, avatarfull)
 					.setThumbnail(avatarfull)

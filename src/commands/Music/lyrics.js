@@ -1,10 +1,10 @@
 const { KSoftClient } = require('@ksoft/api');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 // page calculator
 function Page(page, message, results) {
 	if (page == 0) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(2067276)
 			.setTitle(results.name)
 			.setURL(results.url)
@@ -15,7 +15,7 @@ function Page(page, message, results) {
 	} else {
 		const num1 = (page * 2048);
 		const num2 = num1 + 2048;
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(2067276)
 			.setTitle(results.name)
 			.setURL(results.url)
@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 		const results = await ksoft.lyrics.get(song, { textOnly: true });
 		console.log(results);
 		// Must make sure that description is less than 2048 characters
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(2067276)
 			.setTitle(results.name)
 			.setURL(results.url)

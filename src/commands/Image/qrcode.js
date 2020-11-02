@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Get text for QR encoding (including file URl)
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 	const msg = await message.channel.send('Creating QR code image.');
 	try {
 		// send image in embed
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setImage(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`);
 		msg.delete();
 		message.channel.send(embed);

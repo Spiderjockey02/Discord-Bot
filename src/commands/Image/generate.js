@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { post } = require('axios');
 
 // image types
@@ -11,7 +11,7 @@ const image_2 = ['afusion', 'batslap', 'vs'];
 
 module.exports.run = async (bot, message, args, emojis) => {
 	if (args[0] == 'list' || args[0] == '?' || !args[0]) {
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(`**1 Image is needed**:\n\`${image_1.join('`, `')}\`. \n**2 images is needed**:\n\`${image_2.join('`, `')}\`.`);
 		message.channel.send(embed);
 	} else {
@@ -48,7 +48,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		}
 		// send embed
 		msg.delete();
-		const attachment = new Discord.MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
+		const attachment = new MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
 		message.channel.send(attachment);
 	}
 };

@@ -1,10 +1,10 @@
 // Dependencies
-const TinyURL = require('tinyurl');
+const { shorten } = require('tinyurl');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	const mes = message.content.split(' ').slice(1).join(' ');
 	try {
-		TinyURL.shorten(mes, function(res) {
+		shorten(mes, function(res) {
 			message.channel.send(res);
 		});
 	} catch (err) {

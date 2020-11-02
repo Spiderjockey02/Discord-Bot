@@ -1,11 +1,10 @@
-// const fetch = require('node-fetch');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args) => {
 	// Get information on twitch accounts
 	if (message.author.id != bot.config.ownerID) return;
 	if (!args[0]) return message.channel.send('Please enter a Twitch username');
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(10181046)
 		.setTitle(`${args[0]}`)
 		.setURL(`https://www.twitch.tv/${args[0]}`);

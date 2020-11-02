@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageAttachment } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${file[0]}`));
 		const json = await res.json();
 		// send image in embed
-		const attachment = new Discord.MessageAttachment(json.message, 'stickbug.mp4');
+		const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
 		message.channel.send(attachment);
 	} catch(err) {
 		// if an error occured

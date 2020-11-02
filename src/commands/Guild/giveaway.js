@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	bot.logger.log(`${message.author.username}#${message.author.discriminator} is hosting a giveaway in the server: [${message.guild.id}].`);
 
 	const endTime = Date.now() + ms(args[0]);
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setTitle('New giveaway!')
 		.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(time, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
 		.setFooter('Ends at')
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Time countdown calculator
 	let i = 3;
 	const x = await setInterval(async function() {
-		const embed2 = new Discord.MessageEmbed()
+		const embed2 = new MessageEmbed()
 			.setTitle('New giveaway!')
 			.setDescription(`React with 🎉 to enter.\nTime remaining: ${ms(time / 4 * i, { long: true })}\nPrize is: **${prize}**.\nHosted by: ${message.author}.`)
 			.setFooter('Ends at')
@@ -60,7 +60,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		const winner = m.reactions.cache.get('🎉').users.cache.filter((u) => !u.bot).random();
 		channel.send(`🎉The winner of the giveaway for **${prize}** is... ${(winner) ? winner : 'no one.'}`);
 		// update embed so people know its finished
-		const embed3 = new Discord.MessageEmbed()
+		const embed3 = new MessageEmbed()
 			.setTitle('Giveaway ended!')
 			.setDescription(`Winner: ${(winner) ? winner : 'No winner'}\nPrize was: **${prize}**\nHosted by: ${message.author}`)
 			.setFooter('Ended at')

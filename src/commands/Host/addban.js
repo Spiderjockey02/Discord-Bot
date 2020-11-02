@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { Globalban } = require('../../modules/database/models');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 				reason: bReason,
 			});
 			newBan.save().catch(e => console.log(e));
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setColor(8359053)
 				.setAuthor(`[GLO-BAN] ${banned.username}#${banned.discriminator} has been globally banned`, `${(banned.avatar) ? `https://cdn.discordapp.com/avatars/${banned.id}/${banned.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${banned.discriminator % 5}.png`}`)
 				.setDescription(`**Reason:** ${bReason}`);

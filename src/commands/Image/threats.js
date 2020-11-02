@@ -1,5 +1,5 @@
 // Dependencies
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, emojis) => {
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`));
 		const json = await res.json();
 		// send image in embed
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setImage(json.message);
 		msg.delete();
 		message.channel.send(embed);
