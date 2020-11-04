@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.10.11",
+    "mongoose-long": "^0.3.2",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "path-to-regexp": "^6.2.0",
