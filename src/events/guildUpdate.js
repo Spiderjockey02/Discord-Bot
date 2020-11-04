@@ -36,6 +36,51 @@ module.exports = async (bot, oldGuild, newGuild) => {
 			.addField('After:', newGuild.region)
 			.setTimestamp();
 	}
+	// Server's boost level has increased
+	if (oldGuild.premiumTier < newGuild.premiumTier) {
+		embed = new MessageEmbed()
+			.setDescription('**Server boost increased**')
+			.setAuthor(newGuild.name, newGuild.iconURL())
+			.addField('Before:', oldGuild.premiumTier)
+			.addField('After:', newGuild.premiumTier)
+			.setTimestamp();
+	}
+	// Server's boost level has decreased
+	if (oldGuild.premiumTier > newGuild.premiumTier) {
+		embed = new MessageEmbed()
+			.setDescription('**Server boost decreased**')
+			.setAuthor(newGuild.name, newGuild.iconURL())
+			.addField('Before:', oldGuild.premiumTier)
+			.addField('After:', newGuild.premiumTier)
+			.setTimestamp();
+	}
+	// Server has got a new banner
+	if (!oldGuild.banner && newGuild.banner) {
+		embed = new MessageEmbed()
+			.setDescription('**Server banner changed**')
+			.setAuthor(newGuild.name, newGuild.iconURL())
+			.addField('Before:', oldGuild.banner)
+			.addField('After:', newGuild.banner)
+			.setTimestamp();
+	}
+	// Server has made a AFK channel
+	if (!oldGuild.afkChannel && newGuild.afkChannel) {
+		embed = new MessageEmbed()
+			.setDescription('**Server AFK channel changed**')
+			.setAuthor(newGuild.name, newGuild.iconURL())
+			.addField('Before:', oldGuild.afkChannel)
+			.addField('After:', newGuild.afkChannel)
+			.setTimestamp();
+	}
+	// Server now has a vanity URL
+	if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
+		embed = new MessageEmbed()
+			.setDescription('**Server Vanity URL changed**')
+			.setAuthor(newGuild.name, newGuild.iconURL())
+			.addField('Before:', oldGuild.vanityURLCode)
+			.addField('After:', newGuild.vanityURLCode)
+			.setTimestamp();
+	}
 	// Check if event channelDelete is for logging
 	if (settings.ModLog & settings.ModLogEvents.includes('GUILDUPDATE')) {
 		sendMessage(newGuild, settings, embed);
