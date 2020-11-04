@@ -34,6 +34,24 @@ module.exports = async (bot, oldMember, newMember) => {
 			// Send message
 			sendMessage(newMember, settings, embed, bot);
 		}
+		// Look to see if user has boosted the server
+		if (!oldMember.premiumSince && newMember.premiumSince) {
+			const embed = MessageEmbed()
+				.seDescripition(`**${newMember.toString()} has boosted the server**`)
+				.setFooter(`ID: ${newMember.id}`)
+				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+				.setTimestamp();
+			sendMessage(newMember, settings, embed, bot);
+		}
+		// Look to see if user has stopped boosted the server
+		if (oldMember.premiumSince && !newMember.premiumSince) {
+			const embed = MessageEmbed()
+				.seDescripition(`**${newMember.toString()} has unboosted the server**`)
+				.setFooter(`ID: ${newMember.id}`)
+				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+				.setTimestamp();
+			sendMessage(newMember, settings, embed, bot);
+		}
 		// look for role change
 		const rolesAdded = newMember.roles.cache.filter(x => !oldMember.roles.cache.get(x.id));
 		const rolesRemoved = oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id));
