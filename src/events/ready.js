@@ -32,10 +32,22 @@ module.exports = async bot => {
 	});
 	// Delete server settings on servers that removed the bot while it was offline
 	const data = await Guild.find({});
-	bot.guilds.cache.forEach(async item => {
-		for (let i = 0; i < data.length; i++) {
-			if (item.id !=)
+	if (data.length > bot.guilds.cache.size) {
+		// A server kicked the bot when it was offline
+		const guildCount = [];
+		// Get bot guild ID's
+		for (let i = 0; i < bot.guilds.cache.size; i++) {
+			guildCount.push(bot.guilds.cache.array()[i].id);
 		}
-	});
-	console.log(data);
+		// Now check database for bot guild ID's
+		for (let i = 0; i < data.length; i++) {
+			if (!guildCount.includes(data[i].guildID.toString())) {
+				const guild = {
+					id: `${data[i].guildID.toString()}`,
+					name: `${data[i].guildName}`,
+				};
+				eval('bot.emit(\'guildDelete\', guild)', { depth:0 });
+			}
+		}
+	}
 };
