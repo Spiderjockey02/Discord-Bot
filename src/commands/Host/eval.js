@@ -8,8 +8,16 @@ module.exports.run = async (bot, message, args, emojis, settings, ops) => {
 	// Evaluated the code
 	try {
 		if (toEval) {
+			// Auto-complete commands
 			const hrStart = process.hrtime();
-			const evaluated = inspect(eval(toEval, { depth: 0 }));
+			let evaluated;
+			if (toEval == 'serverlist') {
+				evaluated = `Total server count: ${bot.guilds.cache.size}\n\n${bot.guilds.cache.sort((a, b) => b.memberCount - a.memberCount).map((r) => r).map((r, i) => `${i + 1}.) ${r.name} | ${r.memberCount}`).slice(0, 10).join('\n')}`;
+			} else if (toEval == 'queue') {
+				evaluated = (inspect(eval(ops.active, { depth: 0 })).length == 9) ? 'No music playing.' : inspect(eval(ops.active, { depth: 0 }));
+			} else {
+				evaluated = inspect(eval(toEval, { depth: 0 }));
+			}
 			const hrDiff = process.hrtime(hrStart);
 			return await message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
 		} else {
