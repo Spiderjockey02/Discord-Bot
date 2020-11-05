@@ -16,7 +16,7 @@ module.exports = async (bot, channel) => {
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('CHANNELDELTE')) {
 		const embed = new MessageEmbed()
-			.setDescription(`**${channel.type === 'category' ? 'Category' : 'Channel'} Deleted: ${'#' + channel.name}**`)
+			.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Deleted: ${'#' + channel.name}**`)
 			.setColor(15158332)
 			.setFooter(`ID: ${channel.id}`)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())

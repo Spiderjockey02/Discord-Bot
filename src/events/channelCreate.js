@@ -16,7 +16,7 @@ module.exports = async (bot, channel) => {
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('CHANNELCREATE')) {
 		const embed = new MessageEmbed()
-			.setDescription(`**${channel.type === 'category' ? 'Category' : 'Channel'} Created: ${channel.toString()}**`)
+			.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Created: ${channel.toString()}**`)
 			.setColor(3066993)
 			.setFooter(`ID: ${channel.id}`)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
