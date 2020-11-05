@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 	// Remove mutedRole from user
 	try {
-		const muteRole = message.guild.roles.cache.find(role => role.name == settings.MutedRole);
+		const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
 		user.roles.remove(muteRole);
 		if (user.voice.channelID) {
 			user.voice.setMute(false);
