@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
-require('mongoose-long')(mongoose);
-const { Types: { Long } } = mongoose;
 
 const guildScheme = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
-	guildID: Long,
+	guildID: String,
 	guildName: String,
 	prefix: { type: String, default: 'e!' },
 	// Welcome Plugin
@@ -12,7 +10,7 @@ const guildScheme = mongoose.Schema({
 	// if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
 	welcomeRaidConnect: { type: Boolean, default: false },
 	welcomeMessageToggle: { type: Boolean, default: false },
-	welcomeMessageChannel: { type: Long, default: 999999999999999999 },
+	welcomeMessageChannel: { type: String, default: '00' },
 	welcomeMessageText: { type: String, default: 'Hello {user}, Welcome to **{server}**!' },
 	welcomePrivateToggle: { type: Boolean, default: false },
 	welcomePrivateText: { type: String, default: 'Have a great time here in **{server}**.' },
@@ -24,7 +22,7 @@ const guildScheme = mongoose.Schema({
 	LevelPlugin: { type: Boolean, default: false },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
 	LevelOption: { type: Number, default: 1 },
-	LevelChannel: { type: Long, default: 999999999999999999 },
+	LevelChannel: { type: String, default: '00' },
 	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}!' },
 	LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
 	LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
@@ -33,14 +31,14 @@ const guildScheme = mongoose.Schema({
 	// Music plugin
 	MusicPlugin: { type: Boolean, default: true },
 	MusicDJ: { type: Boolean, default: false },
-	MusicDJRole: { type: Long, default: 999999999999999999 },
+	MusicDJRole: { type: String, default: '00' },
 	// Music trivia plugin
 	MusicTriviaPlugin: { type: Boolean, default: true },
 	MusicTriviaGenres: { type: Array, default: ['pop'] },
 	// logging plugin
 	ModLog: { type: Boolean, default: false },
 	ModLogEvents: { type: Array, default: ['BAN', 'KICK', 'MUTE'] },
-	ModLogChannel: { type: Long, default: 999999999999999999 },
+	ModLogChannel: { type: String, default: '00' },
 	ModLogIgnoreBot: { type: Boolean, default: true },
 	// CommandCooldown
 	CommandChannelToggle: { type: Boolean, default: false },
@@ -50,7 +48,7 @@ const guildScheme = mongoose.Schema({
 	// Moderation plugin
 	ModerationPlugin: { type: Boolean, default: false },
 	ModeratorRoles: { type: Array, default: ['owner'] },
-	MutedRole: { type: Long, default: 999999999999999999 },
+	MutedRole: { type: String, default: '00' },
 	// 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
 	// These Channels are ignored
 	// These roles are ignored
@@ -95,15 +93,15 @@ const guildScheme = mongoose.Schema({
 	ModerationIgnoreBotToggle: { type: Boolean, default: true },
 	// For ticket command
 	TicketToggle: { type: Boolean, default: true },
-	TicketSupportRole: { type: Long, default: 999999999999999999 },
-	TicketCategory: { type: Long, default: 999999999999999999 },
+	TicketSupportRole: { type: String, default: '00' },
+	TicketCategory: { type: String, default: '00' },
 	// for report command
 	ReportToggle: { type: Boolean, default: true },
 	// Anti-raid plugin
 	AntiRaidPlugin: { type: Boolean, default: false },
 	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
 	AntiRaidCompletion: { type: Number, default: 1 },
-	AntiRaidChannelID: { type: Long, default: 999999999999999999 },
+	AntiRaidChannelID: { type: String, default: '00' },
 	// Search PLugin
 	SearchPlugin: { type: Boolean, default: true },
 	NSFWPlugin: { type: Boolean, default: false },
@@ -111,15 +109,15 @@ const guildScheme = mongoose.Schema({
 	DisabledCommands: { type: Array, default: ['IWannaHackYou'] },
 	// Server stats plugin
 	ServerStats: { type: Boolean, default: false },
-	ServerStatsCate: { type: String, default: '📊 Server Stats 📊' },
+	ServerStatsCate: { type: String, default: '00' },
+	// bot
 	ServerStatsBot: { type: Boolean, default: false },
-	// channel ID
-	ServerStatsBotChannel: { type: Long, default: 999999999999999999 },
+	ServerStatsBotChannel: { type: String, default: '00' },
+	// user
 	ServerStatsUser: { type: Boolean, default: false },
-	// channel ID
-	ServerStatsUserChannel: { type: Long, default: 999999999999999999 },
+	ServerStatsUserChannel: { type: String, default: '00' },
+	// human
 	ServerStatsHuman: { type: Boolean, default: false },
-	// channel ID
-	ServerStatsHumanChannel: { type: Long, default: 999999999999999999 },
+	ServerStatsHumanChannel: { type: String, default: '00' },
 });
 module.exports = mongoose.model('Guild', guildScheme);
