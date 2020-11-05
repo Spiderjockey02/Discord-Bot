@@ -10,7 +10,8 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 			.addField('Fun', `\`${settings.prefix}help Fun\``, true)
 			.addField('Guild', `\`${settings.prefix}help Guild\``, true)
 			.addField('Image', `\`${settings.prefix}help Image\``, true)
-			.addField('Misc', `\`${settings.prefix}help Misc\``, true);
+			.addField('Misc', `\`${settings.prefix}help Misc\``, true)
+			.addField('Plugins', `\`${settings.prefix}help Plugins\``, true);
 		if (settings.MusicPlugin == true) {
 			embed.addField('Music', `\`${settings.prefix}help Music\``, true);
 		}
@@ -29,7 +30,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		if (settings.MusicTriviaPlugin) {
 			embed.addField('Trivia', `\`${settings.prefix}help Trivia\``, true);
 		}
-		embed.addField('Plugins', `\`${settings.prefix}help Plugins\``, true);
+		embed.addField('Plugins', `\`${settings.prefix}help plugin-list\``, true);
 		message.channel.send(embed);
 	} else if (args.length == 1) {
 		// Look for command
@@ -59,7 +60,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 		} else {
 			// Look for plugin
 			const embed = new Discord.MessageEmbed()
-				.setTitle(`${args[0].charAt(0).toUpperCase() + args[0].slice(1)} plugin`);
+				.setTitle(`${args[0].charAt(0).toUpperCase() + args[0].slice(1)} Plugin`);
 			bot.commands.forEach(cmd => {
 				if (cmd.help.category == args[0].charAt(0).toUpperCase() + args[0].slice(1)) {
 					// Make sure they have the cmd's plugin enabled
@@ -76,7 +77,7 @@ module.exports.run = async (bot, message, args, emoji, settings) => {
 			// IF embed is larger than 0 then it is a valid command and wasn't blocked
 			if (embed.fields.length != 0) {
 				message.channel.send(embed);
-			} else if (args[0].charAt(0).toUpperCase() + args[0].slice(1) == 'Plugins') {
+			} else if (args[0].charAt(0).toUpperCase() + args[0].slice(1) == 'Plugin-list') {
 				const embed2 = new Discord.MessageEmbed()
 					.setTitle('Plugin list for this server')
 					.addField('Level plugin', `enabled: \`${settings.LevelPlugin}\``)
