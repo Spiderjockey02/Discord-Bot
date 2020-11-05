@@ -23,17 +23,21 @@ bot.Stats = {
 (async () => {
 	// load commands
 	const cmdFolders = await readdir('./src/commands/');
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 97 -=-=-=-=-=-=-=');
+	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 101 -=-=-=-=-=-=-=');
 	for (let i = 0; i < cmdFolders.length; i++) {
 		const cmdFiles = await readdir(`./src/commands/${cmdFolders[i]}`);
 		cmdFiles.forEach(file => {
-			const cmds = require(`./commands/${cmdFolders[i]}/${file}`);
-			bot.logger.log(`Loading command: ${file}`);
-			bot.commands.set(cmds.config.command, cmds);
-			if (cmds.config.aliases) {
-				cmds.config.aliases.forEach(alias => {
-					bot.aliases.set(alias, cmds.config.command);
-				});
+			try {
+				const cmds = require(`./commands/${cmdFolders[i]}/${file}`);
+				bot.logger.log(`Loading command: ${file}`);
+				bot.commands.set(cmds.config.command, cmds);
+				if (cmds.config.aliases) {
+					cmds.config.aliases.forEach(alias => {
+						bot.aliases.set(alias, cmds.config.command);
+					});
+				}
+			} catch (e) {
+				console.log(e);
 			}
 		});
 	}
