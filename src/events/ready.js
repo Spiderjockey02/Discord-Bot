@@ -41,9 +41,9 @@ module.exports = async bot => {
 		}
 		// Now check database for bot guild ID's
 		for (let i = 0; i < data.length; i++) {
-			if (!guildCount.includes(data[i].guildID.toString())) {
+			if (!guildCount.includes(data[i].guildID)) {
 				const guild = {
-					id: `${data[i].guildID.toString()}`,
+					id: `${data[i].guildID}`,
 					name: `${data[i].guildName}`,
 				};
 				eval('bot.emit(\'guildDelete\', guild)', { depth:0 });
