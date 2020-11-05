@@ -25,7 +25,7 @@ module.exports.run = async (bot, message, args) => {
 		.addField('📋Joined Discord', moment(user.user.createdAt).format('lll'), true)
 		.addField('📋Joined Server', moment(user.joinedAt).format('lll'), true)
 		.addField(`Roles [${user.roles.cache.size}]`, user.roles.cache.map(roles => roles).join(', '), true)
-		.addField('Activity', (user.presence.game) ? user.presence.game.name : '-', true)
+		.addField('Activity', (user.presence.activities.length >= 1) ? `${user.presence.activities[0].name} - ${user.presence.activities[0].details}` : '-', true)
 		.setTimestamp()
 		.setFooter(`Requested by ${message.author.username}`);
 	message.channel.send(embed);
