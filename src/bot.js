@@ -6,6 +6,20 @@ const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], f
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 
+// giveaway manager
+const { GiveawaysManager } = require('discord-giveaways');
+const manager = new GiveawaysManager(bot, {
+	storage: './src/assets/json/giveaways.json',
+	updateCountdownEvery: 10000,
+	default: {
+		botsCanWin: false,
+		exemptPermissions: [],
+		embedColor: '#FF0000',
+		reaction: '🎉',
+	},
+});
+// We now have a giveawaysManager property to access the manager everywhere!
+bot.giveawaysManager = manager;
 // Logger (console log + file log)
 bot.logger = require('./modules/logging/logger');
 // For command handler

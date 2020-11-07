@@ -3,3 +3,4 @@ src/modules/logging/logs/*.log
 config.js
 src/modules/website/*.crt
 src/modules/website/*.key
+src/assets/json/giveaways.json
