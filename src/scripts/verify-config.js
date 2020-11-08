@@ -11,6 +11,13 @@ module.exports.run = async (config) => {
 	logger.log('=-=-=-=-=-=-=- Config file Verification -=-=-=-=-=-=-=');
 	logger.log('Verifing config..');
 	let error;
+
+	// Make sure Node.js V12 or higher is being ran.
+	if (process.version.slice(1).split('.')[0] < 12) {
+		logger.error('Node 12 or higher is required.');
+		error = true;
+	}
+
 	// check owner ID
 	if (!config.ownerID) {
 		logger.error(`${chalk.red('✗')} Bot ownerID is missing.`);
