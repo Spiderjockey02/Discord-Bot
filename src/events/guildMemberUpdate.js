@@ -52,6 +52,21 @@ module.exports = async (bot, oldMember, newMember) => {
 				.setTimestamp();
 			sendMessage(newMember, settings, embed, bot);
 		}
+		// Look to see if user has changed their surname
+		if (oldMember.username !== newMember.username) {
+			const embed = new MessageEmbed()
+				.setDescription(`**username changed of ${newMember.toString()}**`)
+				.setColor(15105570)
+				.setFooter(`ID: ${newMember.id}`)
+				.setAuthor(newMember.guild.name, newMember.guild.iconURL())
+				.addFields(
+					{ name: 'Old:', value: `${oldMember.name}`, inline: true },
+					{ name: 'New:', value: `${newMember.name}`, inline: true },
+				)
+				.setTimestamp();
+			// send message
+			sendMessage(newMember, settings, embed, bot);
+		}
 		// look for role change
 		const rolesAdded = newMember.roles.cache.filter(x => !oldMember.roles.cache.get(x.id));
 		const rolesRemoved = oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id));
