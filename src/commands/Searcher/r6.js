@@ -1,7 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 const R6API = require('r6api.js');
-const { getId, getLevel, getRank, getStats } = new R6API(require('../../config.js').Rainbow6Siege.username, require('../../config.js').Rainbow6Siege.password);
+const { getId, getLevel, getRank, getStats } = new R6API('sd', 'sd');
 
 module.exports.run = async (bot, message, args, emojis) => {
 	// Get platforms and regions (just make it easier for users to use this command)
