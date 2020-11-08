@@ -1,6 +1,10 @@
+// Dependecies
 const logger = require('../modules/logging/logger');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
+const Discord = require('discord.js');
+const Fortnite = require('fortnite');
+const { KSoftClient } = require('@ksoft/api');
 
 module.exports.run = async (config) => {
 	// This will check if the config is correct
@@ -17,6 +21,14 @@ module.exports.run = async (config) => {
 	if (!config.token) {
 		logger.error(`${chalk.red('✗')} Bot token is missing.`);
 		error = true;
+	} else {
+		const client = new Discord.Client();
+		await client.login(config.token).catch(e => {
+			if (e.message == 'An invalid token was provided.') {
+				logger.error(`${chalk.red('✗')} Bot token is incorrect.`);
+				error = true;
+			}
+		});
 	}
 
 	// Check twitch API
@@ -29,18 +41,42 @@ module.exports.run = async (config) => {
 	if (!config.fortniteAPI) {
 		logger.error(`${chalk.red('✗')} Fortnite API key is missing.`);
 		error = true;
+	} else {
+		const stats = new Fortnite(config.fortniteAPI);
+		await stats.user('Ninja', 'pc').catch(e => {
+			if (e.message == 'Invalid authentication credentials') {
+				logger.error(`${chalk.red('✗')} Fortnite API key is incorrect.`);
+				error = true;
+			}
+		});
 	}
 
 	// Check Ksoft API
 	if (!config.KSoftSiAPI) {
 		logger.error(`${chalk.red('✗')} Ksoft API key is missing.`);
 		error = true;
+	} else {
+		const ksoft = new KSoftClient(config.KSoftSiAPI);
+		const resp = await ksoft.images.meme();
+		if (!resp.url) {
+			logger.error(`${chalk.red('✗')} Ksoft API key is incorrect.`);
+			error = true;
+		}
 	}
 
 	// Check Steam API
 	if (!config.SteamAPI) {
 		logger.error(`${chalk.red('✗')} Steam API key is missing.`);
 		error = true;
+	} else {
+		try {
+			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.SteamAPI}&vanityurl=eroticgaben`).then(res => res.json());
+		} catch (e) {
+			if (e.type == 'invalid-json') {
+				logger.error(`${chalk.red('✗')} Steam API key is incorrect.`);
+				error = true;
+			}
+		}
 	}
 
 	// Check Youtube API
@@ -90,18 +126,6 @@ module.exports.run = async (config) => {
 		}
 	}
 
-	// Check Rainbow 6 API
-	if (!config.Rainbow6Siege) {
-		logger.error(`${chalk.red('✗')} Rainbow 6 API key is missing.`);
-		error = true;
-	} else if (!config.Rainbow6Siege.username) {
-		logger.error(`${chalk.red('✗')} Rainbow 6 username is missing.`);
-		error = true;
-	} else if (!config.Rainbow6Siege.password) {
-		logger.error(`${chalk.red('✗')} Rainbow 6 password is missing.`);
-		error = true;
-	}
-
 	// Check dashbaord
 	if (!config.Dashboard) {
 		logger.error(`${chalk.red('✗')} Dashboard setup is missing.`);
@@ -135,12 +159,6 @@ module.exports.run = async (config) => {
 			logger.log(`${chalk.red('✗')} Unable to connect to database.`);
 			error = true;
 		});
-	}
-
-	// Check default language
-	if (!config.DefaultLanguage) {
-		logger.error(`${chalk.red('✗')} Default language is missing.`);
-		error = true;
 	}
 
 	// keep at end
