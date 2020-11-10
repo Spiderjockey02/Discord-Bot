@@ -4,7 +4,8 @@ const moment = require('moment');
 
 module.exports.run = async (bot, message, args) => {
 	// Get user
-	const user = (bot.GetUser(message, args)) ? bot.GetUser(message, args) : message.guild.member(message.author);
+	const user = bot.GetUser(message, args);
+
 	// Get emoji (for status)
 	let emoji;
 	if (user.presence.status == 'online') {
@@ -16,6 +17,7 @@ module.exports.run = async (bot, message, args) => {
 	} else {
 		emoji = '🔴';
 	}
+
 	// Display user informaion
 	const embed = new MessageEmbed()
 		.setAuthor(`User info for ${user.user.username}#${user.user.discriminator}`, user.user.displayAvatarURL())
@@ -24,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
 		.addField('Status', `${emoji} ${user.presence.status}`, true)
 		.addField('📋Joined Discord', moment(user.user.createdAt).format('lll'), true)
 		.addField('📋Joined Server', moment(user.joinedAt).format('lll'), true)
-		.addField(`Roles [${user.roles.cache.size}]`, user.roles.cache.map(roles => roles).join(', '), true)
+		.addField(`Roles [${user.roles.cache.size}/${message.guild.roles.cache.size}]`, user.roles.cache.map(roles => roles).join(', '), true)
 		.addField('Activity', (user.presence.activities.length >= 1) ? `${user.presence.activities[0].name} - ${(user.presence.activities[0].type == 'CUSTOM_STATUS') ? user.presence.activities[0].state : user.presence.activities[0].details}` : '-', true)
 		.setTimestamp()
 		.setFooter(`Requested by ${message.author.username}`);

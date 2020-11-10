@@ -4,6 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message) => {
 	// Get VIP perks
 	const VipPerks = (message.guild.features.length == 0) ? 'None' : message.guild.features.toString().toLowerCase().replace(/,/g, ', ');
+
 	// Display server information
 	const embed = new MessageEmbed()
 		.setColor(0x0099ff);

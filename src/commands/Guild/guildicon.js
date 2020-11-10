@@ -1,14 +1,16 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
+	// Check for guild icon & send message
 	if (message.guild.icon) {
 		const embed = new MessageEmbed()
-			.setDescription(`[Download](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
+			.setDescription(`[${message.translate(settings.Language, 'GUILD/GUILD_ICON')}](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
 			.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
 		message.channel.send(embed);
 	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} This server does not have a server icon.` } }).then(m => m.delete({ timeout: 5000 }));
+		if (message.deletable) message.delete();
+		message.error(settings.Language, 'GUILD/NO_GUILD_ICON').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 

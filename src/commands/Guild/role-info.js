@@ -2,30 +2,32 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Check to see if a role was mentioned
 	const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
-	// Make sure it's a role on the messages's server
+
+	// Make sure it's a role on the server
 	if (!role) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this role.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
+
 	// Send information to channel
 	const embed = new MessageEmbed()
 		.setColor(role.color)
 		.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
-		.setDescription(`Role | ${role.name}`)
-		.addField('Members:', role.members.size, true)
-		.addField('Color:', role.hexColor, true)
-		.addField('Position:', role.position, true)
-		.addField('Mention:', `<@${role.id}>`, true)
-		.addField('Hoisted:', role.hoist, true)
-		.addField('Mentionable:', role.mentionable, true)
-		.addField('Key permissions:', 'Does stuff')
-		.addField('Created at', moment(role.createdAt).format('lll'))
+		.setDescription(message.translate(settings.Language, 'GUILD/ROLE_NAME', role.name))
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MEMBERS')}:`, role.members.size, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_COLOR')}:`, role.hexColor, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_POSITION')}:`, role.position, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MENTION')}:`, `<@&${role.id}>`, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_HOISTED')}:`, role.hoist, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MENTIONABLE')}:`, role.mentionable, true)
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_PERMISSION')}:`, 'Does stuff')
+		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_CREATED')}`, moment(role.createdAt).format('lll'))
 		.setTimestamp()
-		.setFooter(`${message.author.username} | Role ID: ${role.id}`);
+		.setFooter(message.translate(settings.Language, 'ROLE_FOOTER', [`${message.author.username}`, `${role.id}`]));
 	message.channel.send(embed);
 };
 
