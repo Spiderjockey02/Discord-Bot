@@ -5,45 +5,52 @@ const request = require('request');
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure a topic was included
 	if (!args[0]) {
-		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('image').help.usage.replace('${PREFRIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-		return;
+		try {
+			if (message.deletable) message.delete();
+			return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('img').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		} catch (e) {
+			console.log(e);
+		}
 	}
 	const word = args.join(' ');
-	const r = await message.channel.send(`Loading image of: \`${word}\`.`);
-	image(r, message);
-	// Function for getting image
-	function image() {
-		const options = {
-			url: 'http://results.dogpile.com/serp?qc=images&q=' + `${word}`,
-			method: 'GET',
-			headers: {
-				'Accept': 'text/html',
-				'User-Agent': 'Chrome',
-			},
-		};
-		request(options, function(error, response, responseBody) {
-			if (error) {
-				if (message.deletable) message.delete();
-				r.delete();
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
-				return;
-			}
-			// Retrieve image(s)
-			const $ = load(responseBody);
-			const links = $('.image a.link');
-			const urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr('href'));
-			// If no images found
-			if (!urls.length) {
-				if (message.deletable) message.delete();
-				r.delete();
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
-				return;
-			}
-			// Displays image in channel
-			message.channel.send({ embed:{ image:{ url:`${urls[Math.floor(Math.random() * urls.length)]}` } } });
-		});
-	}
+	// send 'waiting' message
+	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+
+	// Option for searching for image
+	const options = {
+		url: 'http://results.dogpile.com/serp?qc=images&q=' + `${word}`,
+		method: 'GET',
+		headers: {
+			'Accept': 'text/html',
+			'User-Agent': 'Chrome',
+		},
+	};
+
+	// search for image
+	request(options, function(error, response, responseBody) {
+		// if an error occured
+		if (error) {
+			if (message.deletable) message.delete();
+			msg.delete();
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+			return;
+		}
+		// Retrieve image(s)
+		const $ = load(responseBody);
+		const links = $('.image a.link');
+		const urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr('href'));
+		// If no images found
+		if (!urls.length) {
+			if (message.deletable) message.delete();
+			msg.delete();
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+			return;
+		}
+		// Displays image in channel
+		msg.delete();
+		message.channel.send({ embed:{ image:{ url:`${urls[Math.floor(Math.random() * urls.length)]}` } } });
+	});
+
 };
 
 module.exports.config = {

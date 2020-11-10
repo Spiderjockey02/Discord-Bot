@@ -1,14 +1,15 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get text for QR encoding (including file URl)
 	let text = args.join(' ');
-	if (!text) {
-		text = bot.GetImage(message, emojis)[0];
-	}
+	if (!text) text = bot.GetImage(message, emojis)[0];
+
 	// send 'waiting' message
-	const msg = await message.channel.send('Creating QR code image.');
+	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+
+	// Try and convert image
 	try {
 		// send image in embed
 		const embed = new MessageEmbed()
@@ -19,7 +20,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		// if error has occured
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: qrcode.`);
 		msg.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

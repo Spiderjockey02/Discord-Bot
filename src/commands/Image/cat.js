@@ -2,15 +2,18 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	const res = await fetch('https://nekos.life/api/v2/img/meow').then(info => info.json()).catch(err => {
-		// An error occured when looking for account
+		// An error occured when looking for image
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: cat.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;
 	});
+
+	// send image
 	const embed = new MessageEmbed()
+		.setColor(3426654)
 		.setImage(res.url);
 	message.channel.send(embed);
 };

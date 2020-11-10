@@ -2,11 +2,14 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get image, defaults to author's avatar
 	const file = bot.GetImage(message, emojis);
+
 	// send 'waiting' message
-	const msg = await message.channel.send('Creating threat image');
+	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+
+	// Try and convert image
 	try {
 		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`));
 		const json = await res.json();
@@ -19,7 +22,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		// if an error occured
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: threats.`);
 		msg.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
