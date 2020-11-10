@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		if (error) {
 			if (message.deletable) message.delete();
 			msg.delete();
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			return;
 		}
 		// Retrieve image(s)
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		if (!urls.length) {
 			if (message.deletable) message.delete();
 			msg.delete();
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			return;
 		}
 		// Displays image in channel

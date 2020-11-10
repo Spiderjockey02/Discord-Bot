@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('twitter').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 	// make sure the text isn't longer than 60 characters
-	if (text.length >= 61) return message.error(settings.Language, 'IMAGE/TWITTER_TEXT').then(m => m.delete({ timeout: 5000 }));
+	if (text.length >= 61) return message.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => m.delete({ timeout: 5000 }));
 
 	// send 'waiting' message
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		// if error occured
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: twitter.`);
 		msg.delete();
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 

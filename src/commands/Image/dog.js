@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	const res = await fetch('https://nekos.life/api/v2/img/woof').then(info => info.json()).catch(err => {
 		// An error occured when looking for image
 		bot.logger.error(`${err.message}`);
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		message.delete();
 		return;
 	});

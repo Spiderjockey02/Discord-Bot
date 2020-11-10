@@ -20,7 +20,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		// if error has occured
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: qrcode.`);
 		msg.delete();
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
