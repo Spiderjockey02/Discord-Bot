@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, version } = require('discord.js');
 const moment = require('moment');
 
 module.exports.run = async (bot, message) => {
@@ -13,7 +13,7 @@ module.exports.run = async (bot, message) => {
 			${bot.user.username} is a fully customizable Discord Bot. This bot comes fully packed with a wide range of commands, an advanced moderation system and an extensive logging system. These features are highly customizable and easy to setup but there's no point me just telling you so come and find out for yourself.`)
 		.addField('Members:', bot.users.cache.size, true)
 		.addField('Channels:', `${bot.channels.cache.size} total\n${bot.channels.cache.filter(channel => channel.type === 'text').size} text, ${bot.channels.cache.filter(channel => channel.type === 'voice').size} voice\n${bot.channels.cache.filter(channel => channel.type === 'dm').size} DM`, true)
-		.addField('Process:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
+		.addField('Process:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\nNode.js: ${process.version.slice(1).split('.')[0]}v\nDiscord.js: ${version}v`, true)
 		.addField('Servers:', `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
 		.addField('Messages seen:', `${bot.Stats.MessageSent} messages\n${(bot.Stats.MessageSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
 		.addField('Uptime:', moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]'), true);
