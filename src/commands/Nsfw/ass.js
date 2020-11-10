@@ -2,7 +2,7 @@
 const { get } = require('superagent');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	try {
 		get('https://nekobot.xyz/api/image')
 			.query({ type: 'ass' })
@@ -13,8 +13,8 @@ module.exports.run = async (bot, message, args, emojis) => {
 			});
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: ass.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
-		message.delete();
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+		if (message.deletable) message.delete();
 	}
 };
 
