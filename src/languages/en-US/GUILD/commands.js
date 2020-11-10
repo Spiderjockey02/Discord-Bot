@@ -1,6 +1,7 @@
 // This contains language files for the commands
 const languageData = {
 	// Guild commands
+	AVATAR_TITLE: (user) => `Avatar for ${user}`,
 	AVATAR_DESCRIPTION:	'**Links:**',
 	NO_GUILD_ICON: 'This server does not have a server icon.',
 	GUILD_ICON: 'Download',
