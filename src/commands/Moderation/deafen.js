@@ -1,39 +1,31 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 	// Check if user has deafen permission
-	if (!message.member.hasPermission('DEAFEN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`DEAFEN_MEMBERS\` to run this command.` } }).then(m => m.delete({ timeout: 15000 }));
-		return;
-	}
+	if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+
 	// Make sure bot can delete other peoples messages
 	if (!message.guild.me.hasPermission('DEAFEN_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`DEAFEN_MEMBERS\`.` } }).then(m => m.delete({ timeout: 15000 }));
 		bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 	}
 	// Checks to make sure user is in the server
 	const user = bot.GetUser(message, args);
-	// Make sure that user is in the server
-	if (!user) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+
 	// Make sure user isn't trying to punish themselves
-	if (user.user.id == message.author.id) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You can't punish yourself.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (user.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+
 	// Make sure that the user is in a voice channel
 	if (user.voice.channelID) {
 		try {
 			await user.voice.setDeaf(true);
-			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully deafened*.` } }).then(m => m.delete({ timeout: 3000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFUL_DEAFEN', [`${user.user.username}`, `${user.user.discriminator}`]).then(m => m.delete({ timeout: 3000 }));
 		} catch(err) {
 			// do nothing
 		}
 	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} ${user.user.username} is not in a voice channel. ` } }).then(m => m.delete({ timeout: 3000 }));
+		message.error(settings.Language, 'MODERATION/NOT_INVOICE', user.user.username).then(m => m.delete({ timeout: 3000 }));
 	}
 };
 

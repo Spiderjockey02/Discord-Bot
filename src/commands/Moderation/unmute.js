@@ -1,29 +1,28 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 	// Check if user can mute users
-	if (!message.member.hasPermission('MUTE_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MUTE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (!message.member.hasPermission('MUTE_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+
 	// check if bot can add 'mute' role to user
 	if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_ROLES\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// Check if bot can mute users
 	if (!message.guild.me.hasPermission('MUTE_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MUTE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// Find user
 	const user = bot.GetUser(message, args);
 	if (!user) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
+		return message.error(settings.Language, 'MISSING_USER').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// Remove mutedRole from user
 	try {
 		const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
@@ -31,7 +30,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		if (user.voice.channelID) {
 			user.voice.setMute(false);
 		}
-		message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully unmuted*.` } }).then(m => m.delete({ timeout: 3000 }));
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: unmute.`);
 	}

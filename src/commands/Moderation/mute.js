@@ -1,34 +1,28 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 	// Check if user can mute users
-	if (!message.member.hasPermission('MUTE_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MUTE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (!message.member.hasPermission('MUTE_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+
 	// check if bot can add 'mute' role to user
 	if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_ROLES\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// Check if bot can mute users
 	if (!message.guild.me.hasPermission('MUTE_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MUTE_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// add user to role (if no role, make role)
 	const user = bot.GetUser(message, args);
-	if (!user) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I was unable to find this user.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+
 	// Make sure user isn't trying to punish themselves
-	if ((user.user.id == message.author.id) && (message.author.id != bot.config.ownerID)) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You can't punish yourself.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (user.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+
 	// get mute role
 	let muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
 	// If role not found then make role
@@ -47,20 +41,22 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			bot.logger.error(e.message);
 		}
 	}
-	// Make sure that the user is in a voice channel
-	if (user.voice.channelID) {
-		try {
-			await user.voice.setMute(true);
-			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully muted*.` } }).then(m => m.delete({ timeout: 3000 }));
-		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
-		}
-	}
+
+
 	// add role to user
 	try {
-		user.roles.add(muteRole).then(() => {
+		user.roles.add(muteRole).then(async () => {
+			// Make sure that the user is in a voice channel
+			if (user.voice.channelID) {
+				try {
+					await user.voice.setMute(true);
+					message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+				} catch (err) {
+					if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
+				}
+			}
 			// reply to user
-			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username}#${user.user.discriminator} was successfully muted*.` } }).then(m => m.delete({ timeout: 7000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
 			// see if it was a tempmute
 			if (args[1]) {
 				const time = require('../../utils/Time-Handler.js').getTotalTime(args[1], message, emojis);

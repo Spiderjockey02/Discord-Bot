@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Warning } = require('../../modules/database/models/index');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get user
 	const user = (bot.GetUser(message, args)) ? bot.GetUser(message, args) : message.guild.member(message.author);
 	// get warnings of user
@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 			if(err) console.log(err);
 			if (warn == null) {
 				// There are no warnings with this user
-				message.channel.send('This user has not been warned before.').then(m => m.delete({ timeout: 3500 }));
+				message.sendT(settings.Language, 'MODERATION/NO_WARNINGS').then(m => m.delete({ timeout: 3500 }));
 			} else {
 				// Warnings have been found
 				let list = `Warnings (${warn.Reason.length}):\n`;
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		});
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: warnings.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

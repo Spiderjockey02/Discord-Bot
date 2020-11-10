@@ -4,17 +4,16 @@ const ms = require('ms');
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 	// Make sure user can activate slowmode
-	if (!message.member.hasPermission('MANAGE_CHANNELS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
+
 	// Check if bot can activate sowmode
 	if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`MANAGE_CHANNELS\`.` } }).then(m => m.delete({ timeout: 10000 }));
 		bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-		return;
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// get time
 	let time;
 	if (args[0] == 'off') {
@@ -22,18 +21,20 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	} else {
 		time = ms(args[0]) / 1000;
 		// Get slowmode time
-		if (!time) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		if (!time) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
-		if(isNaN(time)) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		if(isNaN(time)) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
-		if(time > 21600) return message.channel.send({ embed:{ color:15158332, description:`${bot.config.emojis.cross} Please use the format \`${bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		if(time > 21600) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 	}
+
+	// Activate slowmode
 	try {
 		await message.channel.setRateLimitPerUser(time);
-		message.channel.send(`Slowmode Set to **${args[0]}**`).then(m => m.delete({ timeout:15000 }));
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', args[0]).then(m => m.delete({ timeout:15000 }));
 	} catch (err) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: slowmode.`);
 	}
 };

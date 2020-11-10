@@ -4,14 +4,13 @@ const { Warning } = require('../../modules/database/models/index');
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 	// Check to see if user can kick members
-	if (!message.member.hasPermission('KICK_MEMBERS')) {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are missing the permission: \`KICK_MEMBERS\`.` } }).then(m => m.delete({ timeout: 10000 }));
-		return;
-	}
+	if (!message.member.hasPermission('KICK_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+
 	// Get user
 	const user = bot.GetUser(message, args);
-	if (!user) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('clear-warning').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+
 	// get warnings of user
 	try {
 		// find data
@@ -24,13 +23,13 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			await Warning.deleteOne(data, function(err) {
 				if (err) throw err;
 			});
-			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} Warnings for ${user} has been cleared.` } }).then(m => m.delete({ timeout: 10000 }));
+			message.success(settings.Language, 'MODERATION/CLEARED_WARNINGS', user).then(m => m.delete({ timeout: 10000 }));
 		} else {
-			message.channel.send('This user has not been warned before.').then(m => m.delete({ timeout: 3500 }));
+			message.sendT(settings.Language, 'MODERATION/NO_WARNINGS').then(m => m.delete({ timeout: 3500 }));
 		}
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: clear-warnings.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
