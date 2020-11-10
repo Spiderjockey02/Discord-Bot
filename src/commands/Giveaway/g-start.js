@@ -1,12 +1,21 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get time
 	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, emojis);
-	console.log('sdasd');
 	if (!time) return;
+
 	// Make sure that number of winners is a number
-	if (isNaN(args[1])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Winner count must be a number.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (isNaN(args[1])) {
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
+	}
+
 	// Check for prize
-	if (!args[2]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('g-start').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!args[2]) {
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('g-start').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	}
+
+	// Start the giveaway
 	bot.giveawaysManager.start(message.channel, {
 		time: time,
 		prize: args.slice(2).join(' '),

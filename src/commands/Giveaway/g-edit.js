@@ -1,17 +1,21 @@
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure the message ID of the giveaway embed is entered
-	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('g-edit').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	const messageID = args[0];
+	if (!args[0]) {
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('g-edit').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	}
+
 	// edit the giveaway
+	const messageID = args[0];
 	bot.giveawaysManager.edit(messageID, {
 		newWinnerCount: 3,
 		newPrize: 'New Prize!',
 		addTime: 5000,
 	}).then(() => {
-		message.channel.send('Success! Giveaway will updated in less than ' + (bot.giveawaysManager.options.updateCountdownEvery / 1000) + ' seconds.');
+		message.sendT(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`);
 	}).catch((err) => {
 		bot.logger.error(err);
-		message.channel.send('No giveaway found for ' + messageID + ', please check and try again');
+		message.sendT(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID);
 	});
 };
 
