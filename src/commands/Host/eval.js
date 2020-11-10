@@ -1,31 +1,25 @@
 // Dependencies
 const { inspect } = require('util');
 
-module.exports.run = async (bot, message, args, emojis, settings, ops) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Makes sure only the bot owner can do this command
-	if (message.member.id != bot.config.ownerID) return message.channel.send('**What do you think you\'re doing?**');
-	const toEval = args.join(' ');
+	if (message.member.id != bot.config.ownerID) return message.sendT(settings.Language, 'HOST/EVAL_NO_OWNER');
+
 	// Evaluated the code
+	const toEval = args.join(' ');
 	try {
 		if (toEval) {
 			// Auto-complete commands
 			const hrStart = process.hrtime();
-			let evaluated;
-			if (toEval == 'serverlist') {
-				evaluated = `Total server count: ${bot.guilds.cache.size}\n\n${bot.guilds.cache.sort((a, b) => b.memberCount - a.memberCount).map((r) => r).map((r, i) => `${i + 1}.) ${r.name} | ${r.memberCount}`).slice(0, 10).join('\n')}`;
-			} else if (toEval == 'queue') {
-				evaluated = (inspect(eval(ops.active, { depth: 0 })).length == 9) ? 'No music playing.' : inspect(eval(ops.active, { depth: 0 }));
-			} else {
-				evaluated = inspect(eval(toEval, { depth: 0 }));
-			}
+			const evaluated = inspect(eval(toEval, { depth: 0 }));
 			const hrDiff = process.hrtime(hrStart);
-			return await message.channel.send(`*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*\`\`\`javascript\n${evaluated}\n\`\`\``, { maxLength: 1900 });
+			return await message.channel.send(message.translate(settings.Language, 'HOST/EVAL_RESPONSE', [hrDiff, evaluated]), { maxLength: 1900 });
 		} else {
-			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('eval').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 3000 }));
+			return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('eval').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 		}
 	} catch(err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: eval.`);
-		message.channel.send(`Error whilst evaluating: \`${err.message}\``);
+		message.sendT(settings.Language, 'HOST/EVAL_ERROR', err.message);
 	}
 };
 

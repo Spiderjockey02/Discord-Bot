@@ -36,6 +36,6 @@ module.exports = async (bot) => {
 	// This will add the success emoji as the prefix and then translate the message
 	Message.prototype.success = function(language, key, args) {
 		const emoji = (this.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:';
-		return this.channel.send({ embed:{ color:15158332, description:`${emoji} ${this.translate(language, key, args)}` } });
+		return this.channel.send({ embed:{ color:3066993, description:`${emoji} ${this.translate(language, key, args)}` } });
 	};
 };

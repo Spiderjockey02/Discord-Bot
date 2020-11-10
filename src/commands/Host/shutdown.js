@@ -1,15 +1,15 @@
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Makes sure only the bot owner can run this command
-	if (message.member.id == bot.config.ownerID) {
-		try {
-			// Shutdown the bot
-			await message.channel.send('Oh.. ok goodbye :disappointed_relieved:');
-			await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
-			process.exit();
-		} catch(err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: shutdown.`);
-			message.channel.send(`ERROR: ${err.message}`);
-		}
+	if (message.author.id != bot.config.ownerID) return;
+
+	// try and shutdown the server
+	try {
+		await message.sendT(settings.Language, 'HOST/SHUTDOWN');
+		await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
+		process.exit();
+	} catch(err) {
+		if (bot.config.debug) bot.logger.error(`${err.message} - command: shutdown.`);
+		message.error(settings.Language, 'HOST/SHUTDOWN_ERROR', err.message);
 	}
 };
 
