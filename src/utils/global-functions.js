@@ -13,13 +13,10 @@ module.exports = bot => {
 
 	// update guild settings
 	bot.updateGuild = async (guild, settings) => {
-		console.log(settings);
 		let data = await bot.getGuild(guild);
 		if (typeof data !== 'object') data = {};
-		console.log(data);
 		for (const key in settings) {
 			if (settings.key) {
-				console.log('hellopoig');
 				if (data[key] !== settings[key]) data[key] = settings[key];
 				else return;
 			}
@@ -79,7 +76,9 @@ module.exports = bot => {
 
 	// Get User from @ or ID
 	bot.GetUser = (message, args) => {
-		const user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+		let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+		// if user isn't mentioned then use avatar
+		if (!user) user = message.guild.member(message.author);
 		return user;
 	};
 
