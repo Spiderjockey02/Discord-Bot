@@ -27,7 +27,7 @@ module.exports = async bot => {
 		}
 		if (settings.guildID == undefined) {
 			// new guild has been found
-			eval('bot.emit(\'guildCreate\', item)', { depth: 0 });
+			bot.emit('guildCreate', item);
 		}
 	});
 	// Delete server settings on servers that removed the bot while it was offline
@@ -46,7 +46,7 @@ module.exports = async bot => {
 					id: `${data[i].guildID}`,
 					name: `${data[i].guildName}`,
 				};
-				eval('bot.emit(\'guildDelete\', guild)', { depth:0 });
+				bot.emit('guildDelete', guild);
 			}
 		}
 	}
