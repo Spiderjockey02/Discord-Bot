@@ -4,6 +4,9 @@ const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], f
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 
+// For translating messages
+require('./handlers/extenders')(bot);
+
 // giveaway manager
 const { GiveawaysManager } = require('discord-giveaways');
 const manager = new GiveawaysManager(bot, {

@@ -1,7 +1,6 @@
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Pick Head or Tails
-	const choices = ['Head', 'Tails'];
-	message.channel.send(choices[Math.floor(Math.random() * choices.length)]);
+	message.sendT(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random()));
 };
 
 module.exports.config = {

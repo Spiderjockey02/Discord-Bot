@@ -1,17 +1,24 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
+const choices = ['rock', 'paper', 'scissors'];
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Make sure a choice was made
 	if (!args[0]) {
 		if (message.deletable) message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-		return;
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
+
+	// Check that the response is from choices
+	if (!choices.includes(args[0].toLowerCase())) {
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('rps').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	}
+
 	// Make sure rock, paper or scissors was their choice
 	if (args[0].includes('paper') || args[0].includes('rock') || args[0].includes('scissors')) {
+
 		// Bot decision time
-		const choices = ['rock', 'paper', 'scissors'];
 		const choice = choices[Math.floor(Math.random() * choices.length)];
 		let winner;
 		if (choice == args[0]) {
@@ -21,11 +28,13 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		} else {
 			winner = 'user';
 		}
+
+		// send results
 		const embed = new MessageEmbed()
 			.setTitle('Rock Paper Scissors')
-			.setDescription(`**You choose:** ${args[0]}
-      **I choose:** ${choice}\n
-      Result: ${winner} has win`);
+			.setDescription(`**${message.translate(settings.Language, 'FUN/RPS_FIRST')}:** ${args[0]}
+      **${message.translate(settings.Language, 'FUN/RPS_SECOND')}:** ${choice}\n
+      ${message.translate(settings.Language, 'FUN/RPS_RESULT', winner)}`);
 		message.channel.send(embed);
 	}
 };

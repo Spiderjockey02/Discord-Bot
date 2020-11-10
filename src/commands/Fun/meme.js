@@ -2,24 +2,26 @@
 const { KSoftClient } = require('@ksoft/api');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Retrieve a random meme
 	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
 	const meme = await ksoft.images.meme();
+
 	// An error has occured
 	if (meme.url == undefined) {
 		if (bot.config.debug) bot.logger.error('An error occured when running command: meme.');
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 5000 }));
-		message.delete();
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+		if (message.deletable) message.delete();
 		return;
 	}
+
 	// Send the meme to channel
 	const embed = new MessageEmbed()
-		.setTitle(`From /${meme.post.subreddit}`)
+		.setTitle(`${message.translate(settings.Language, 'FUN/MEME_TITLE')} /${meme.post.subreddit}`)
 		.setColor(16333359)
 		.setURL(meme.post.link)
 		.setImage(meme.url)
-		.setFooter(`👍 ${meme.post.upvotes}   👎 ${meme.post.downvotes} | Provided by KSOFT.API`);
+		.setFooter(`👍 ${meme.post.upvotes}   👎 ${meme.post.downvotes} | ${message.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
 	message.channel.send(embed);
 };
 

@@ -119,5 +119,6 @@ const guildScheme = mongoose.Schema({
 	// human
 	ServerStatsHuman: { type: Boolean, default: false },
 	ServerStatsHumanChannel: { type: String, default: '00' },
+	Language: { type: String, default: 'en-US' },
 });
 module.exports = mongoose.model('Guild', guildScheme);

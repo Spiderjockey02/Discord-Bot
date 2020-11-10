@@ -5,19 +5,23 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get phrase
 	const phrase = args.join(' ');
-	if (!phrase) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('urban').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!phrase) {
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('urban').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	}
+
 	// Search up phrase in urban dictionary
 	term(`${phrase}`, (err, entries) => {
 		if (err) {
 			if (bot.config.debug) bot.logger.error(`${err.message} - command: urban.`);
-			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Phrase: \`${phrase}\` was not found on urban dictionary.` } }).then(m => m.delete({ timeout: 5000 }));
+			message.error(settings.Language, 'FUN/INCORRECT_URBAN', phrase).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			// send message
 			const embed = new MessageEmbed()
-				.setTitle(`Definition of ${phrase}`)
+				.setTitle(message.translate(settings.Language, 'FUN/URBAN_TITLE', phrase))
 				.setURL(entries[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-				.setDescription(`${entries[0].definition}\n**Example:**\n${entries[0].example}`)
+				.setDescription(message.translate(settings.Language, 'FUN/URBAN_DESCRIPTION', [`${entries[0].definition}`, `${entries[0].example}`]))
 				.addField('👍', entries[0].thumbs_up, true)
 				.addField('👎', entries[0].thumbs_down, true);
 			message.channel.send(embed);

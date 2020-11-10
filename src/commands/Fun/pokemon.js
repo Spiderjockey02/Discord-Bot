@@ -5,15 +5,20 @@ const fetch = require('node-fetch');
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get pokemon
 	const pokemon = args.join(' ');
-	if (!pokemon) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('pokemon').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!pokemon) {
+		if (message.deletable) message.delete();
+		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} ${bot.translate(settings, 'USE_CORRECT_FORMAT')} \`${bot.commands.get('pokemon').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	}
+
 	// Search for pokemon
 	const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${args.join(' ')}`).then(info => info.json()).catch(err => {
 		// An error occured when looking for account
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: pokemon.`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} That Pokemon dosen't exist.` } }).then(m => m.delete({ timeout: 5000 }));
-		message.delete();
+		if (message.deletable) message.delete();
 		return;
 	});
+
 	// Send response to channel
 	const embed = new MessageEmbed()
 		.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
