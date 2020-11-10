@@ -1,11 +1,11 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Send support info to user
 	const embed = new MessageEmbed()
-		.setTitle('Egglord Support')
-		.setDescription(`**Our Server:**  [Support Server](${bot.config.SupportServer.link})\n **Our website:**  [Website](${bot.config.Dashboard.domain})\n **Git Repo:** [Website](https://github.com/Spiderjockey02/Discord-Bot)`);
+		.setTitle(message.translate(settings.Language, 'MISC/SUPPORT_TITLE', bot.user.username))
+		.setDescription(message.translate(settings.Language, 'MISC/SUPPORT_DESC', [`${bot.config.SupportServer.link}`, `${bot.config.Dashboard.domain}`]));
 	message.channel.send(embed);
 };
 

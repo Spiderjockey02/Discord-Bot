@@ -1,7 +1,7 @@
 // Dependencies
 const { shorten } = require('tinyurl');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	const mes = message.content.split(' ').slice(1).join(' ');
 	try {
 		shorten(mes, function(res) {
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, emojis) => {
 		});
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: shorturl.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 
