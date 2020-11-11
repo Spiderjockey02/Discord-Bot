@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		await message.channel.setRateLimitPerUser(time);
 		message.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', args[0]).then(m => m.delete({ timeout:15000 }));
 	} catch (err) {
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: slowmode.`);
 	}
 };

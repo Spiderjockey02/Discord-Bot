@@ -18,10 +18,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// add user to role (if no role, make role)
-	const user = bot.GetUser(message, args);
+	const member = bot.GetUser(message, args);
 
 	// Make sure user isn't trying to punish themselves
-	if (user.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+	if (member.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 	// get mute role
 	let muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
@@ -45,24 +45,24 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 
 	// add role to user
 	try {
-		user.roles.add(muteRole).then(async () => {
+		member.roles.add(muteRole).then(async () => {
 			// Make sure that the user is in a voice channel
-			if (user.voice.channelID) {
+			if (member.voice.channelID) {
 				try {
-					await user.voice.setMute(true);
-					message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+					await member.voice.setMute(true);
+					message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member.user).then(m => m.delete({ timeout: 3000 }));
 				} catch (err) {
 					if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
 				}
 			}
 			// reply to user
-			message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member.user).then(m => m.delete({ timeout: 3000 }));
 			// see if it was a tempmute
 			if (args[1]) {
 				const time = require('../../utils/Time-Handler.js').getTotalTime(args[1], message, emojis);
 				if (!time) return;
 				setTimeout(() => {
-					user.roles.remove(muteRole, 'Temporary mute expired.');
+					member.roles.remove(muteRole, 'Temporary mute expired.');
 				}, time);
 			}
 		});

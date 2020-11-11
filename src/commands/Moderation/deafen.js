@@ -11,21 +11,21 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		return message.error(settings.Language, 'MISSING_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 	}
 	// Checks to make sure user is in the server
-	const user = bot.GetUser(message, args);
+	const member = bot.GetUser(message, args);
 
 	// Make sure user isn't trying to punish themselves
-	if (user.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+	if (member.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure that the user is in a voice channel
-	if (user.voice.channelID) {
+	if (member.voice.channelID) {
 		try {
-			await user.voice.setDeaf(true);
-			message.success(settings.Language, 'MODERATION/SUCCESSFUL_DEAFEN', [`${user.user.username}`, `${user.user.discriminator}`]).then(m => m.delete({ timeout: 3000 }));
+			await member.voice.setDeaf(true);
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_DEAFEN', member.user).then(m => m.delete({ timeout: 3000 }));
 		} catch(err) {
 			// do nothing
 		}
 	} else {
-		message.error(settings.Language, 'MODERATION/NOT_INVOICE', user.user.username).then(m => m.delete({ timeout: 3000 }));
+		message.error(settings.Language, 'MODERATION/NOT_INVOICE', member.user).then(m => m.delete({ timeout: 3000 }));
 	}
 };
 

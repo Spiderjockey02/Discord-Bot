@@ -6,15 +6,15 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (settings.ModLogEvents.includes('REPORT')) {
 		if (message.deletable) message.delete();
 		// Find user
-		const user = bot.GetUser(message, args);
+		const member = bot.GetUser(message, args);
 
 		// Make sure a reason was added
 		if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('report').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 		// Send messages to ModLog channel
 		const embed = new MessageEmbed()
-			.setAuthor(message.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), user.user.displayAvatarURL)
-			.addField(message.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), user, true)
+			.setAuthor(message.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), member.user.displayAvatarURL)
+			.addField(message.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), member, true)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_BY'), message.member, true)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_IN'), message.channel)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_REASON'), args.slice(1).join(' '))
@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 		if (repChannel) {
 			repChannel.send(embed);
-			message.channel.send({ embed:{ color:3066993, description:`${emojis[1]} *${user.user.username} has been successfully reported*.` } }).then(m => m.delete({ timeout: 3000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member.user).then(m => m.delete({ timeout: 3000 }));
 		}
 	}
 };

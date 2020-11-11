@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 					i++;
 				}
 				const embed = new MessageEmbed()
-					.setTitle(`${user.user.username}'s warning list.`)
+					.setTitle(message.translate(settings.Language, 'MODERATION/WARNS_TITLE', user.user.username))
 					.setDescription(list)
 					.setTimestamp();
 				message.channel.send(embed);
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		});
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: warnings.`);
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 

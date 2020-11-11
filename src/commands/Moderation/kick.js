@@ -12,19 +12,19 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// Get user and reason
-	const user = bot.GetUser(message, args);
+	const member = bot.GetUser(message, args);
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
 
 	// Make sure user isn't trying to punish themselves
-	if (user.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+	if (member.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure user user does not have ADMINISTRATOR permissions
-	if (user.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+	if (member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 
 	// Kick user with reason
 	try {
-		await user.kick({ reason: reason });
-		message.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+		await member.kick({ reason: reason });
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', member.user).then(m => m.delete({ timeout: 3000 }));
 		bot.Stats.KickedUsers++;
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: kick.`);

@@ -3,10 +3,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 	// Get user for nickname change
-	const user = (bot.GetUser(message, args)) ? bot.GetUser(message, args) : message.guild.member(message.author);
+	const member = bot.GetUser(message, args);
 
 	// Check if they are changing their own name or not (and check permission)
-	if (user == message.author) {
+	if (member == message.author) {
 		if (!message.member.hasPermission('CHANGE_NICKNAMES')) {
 			return message.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
 		}
@@ -31,11 +31,11 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 
 	// Change nickname and tell user (send error message if dosen't work)
 	try {
-		await user.setNickname(nickname);
-		message.success(settings.Language, 'MODERATION/SUCCESSFUL_NICK', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 5000 }));
+		await member.setNickname(nickname);
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_NICK', member.user).then(m => m.delete({ timeout: 5000 }));
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: nick.`);
-		message.error(settings.Language, 'MODERATION/UNSUCCESSFULL_NICK', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'MODERATION/UNSUCCESSFULL_NICK', member.user).then(m => m.delete({ timeout: 10000 }));
 	}
 };
 

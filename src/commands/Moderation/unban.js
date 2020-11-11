@@ -20,7 +20,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			const bUser = bans.find(ban => ban.user.id == user);
 			if (!bUser) return;
 			message.guild.members.unban(bUser.user);
-			message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', [bUser.user.username, bUser.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => m.delete({ timeout: 3000 }));
 		});
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: unban.`);

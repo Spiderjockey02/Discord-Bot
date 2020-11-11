@@ -18,19 +18,19 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// Find user
-	const user = bot.GetUser(message, args);
-	if (!user) {
+	const member = bot.GetUser(message, args);
+	if (!member) {
 		return message.error(settings.Language, 'MISSING_USER').then(m => m.delete({ timeout: 10000 }));
 	}
 
 	// Remove mutedRole from user
 	try {
 		const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
-		user.roles.remove(muteRole);
-		if (user.voice.channelID) {
-			user.voice.setMute(false);
+		member.roles.remove(muteRole);
+		if (member.voice.channelID) {
+			member.voice.setMute(false);
 		}
-		message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.delete({ timeout: 3000 }));
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: unmute.`);
 	}

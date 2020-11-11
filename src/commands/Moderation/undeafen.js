@@ -12,13 +12,13 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// Checks to make sure user is in the server
-	const user = bot.GetUser(message, args);
-	if (!user) {
+	const member = bot.GetUser(message, args);
+	if (!member) {
 		return message.error(settings.Language, 'MISSING_USER').then(m => m.delete({ timeout: 10000 }));
 	}
 	try {
-		await user.voice.setDeaf(false);
-		message.success(settings.Language, 'MODERATION/SUCCESSFUL_UNDEAFEN', [user.user.username, user.user.discriminator]).then(m => m.delete({ timeout: 3000 }));
+		await member.voice.setDeaf(false);
+		message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNDEAFEN', member.user).then(m => m.delete({ timeout: 3000 }));
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: undeafen.`);
 	}
