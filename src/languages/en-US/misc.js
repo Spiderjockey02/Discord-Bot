@@ -1,9 +1,9 @@
 const languageData = {
 	// Miscellenous
 	ERROR_MESSAGE: 'An error occured when running this command, please try again or contact support.',
-	INCORRECT_FORMAT: (res) => `Please use the format: \`${res}\`.`,
-	MISSING_PERMISSION: (res) => `I am missing the permission: \`${res}\`.`,
-	USER_PERMISSION: (res) => `You are missing the permission: \`${res}\`.`,
+	INCORRECT_FORMAT: (commandExample) => `Please use the format: \`${commandExample}\`.`,
+	MISSING_PERMISSION: (permission) => `I am missing the permission: \`${permission}\`.`,
+	USER_PERMISSION: (permission) => `You are missing the permission: \`${permission}\`.`,
 	MISSING_ROLE: 'I was unable to find this role.',
 	NO_REASON: 'No reason given.',
 	// Level
