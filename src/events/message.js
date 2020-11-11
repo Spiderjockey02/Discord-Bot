@@ -25,7 +25,9 @@ module.exports = async (bot, message) => {
 	} catch (e) {
 		settings = bot.config.defaultSettings;
 	}
+	// update messages sent
 	bot.Stats.MessageSent++;
+
 	// If bot is mentioned show help (User probably dosen't know how to interact to me)
 	if (message.mentions.has(bot.user) && message.content == `<@!${bot.config.botID}>`) {
 		// make sure egglord has SEND_MESSAGES permission
