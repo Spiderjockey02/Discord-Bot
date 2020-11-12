@@ -2,34 +2,31 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args) => {
+// Emojis for statuses
+const emojiList = {
+	'online': '🟢',
+	'offline': '⚫',
+	'idle': '🟡',
+	'dnd': '🔴',
+};
+// ${emojis[member.presence.status]}
+module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Get user
-	const user = bot.GetUser(message, args);
+	const member = bot.GetUser(message, args);
 
-	// Get emoji (for status)
-	let emoji;
-	if (user.presence.status == 'online') {
-		emoji = '🟢';
-	} else if (user.presence.status == 'idle') {
-		emoji = '🟡';
-	} else if (user.presence.status == 'offline') {
-		emoji = '⚫';
-	} else {
-		emoji = '🔴';
-	}
-
-	// Display user informaion
+	// send user info
 	const embed = new MessageEmbed()
-		.setAuthor(`User info for ${user.user.username}#${user.user.discriminator}`, user.user.displayAvatarURL())
-		.setThumbnail(user.user.displayAvatarURL())
-		.addField('Nickname:', user.nickname != null ? user.nickname : '-', true)
-		.addField('Status', `${emoji} ${user.presence.status}`, true)
-		.addField('📋Joined Discord', moment(user.user.createdAt).format('lll'), true)
-		.addField('📋Joined Server', moment(user.joinedAt).format('lll'), true)
-		.addField(`Roles [${user.roles.cache.size}/${message.guild.roles.cache.size}]`, user.roles.cache.map(roles => roles).join(', '), true)
-		.addField('Activity', (user.presence.activities.length >= 1) ? `${user.presence.activities[0].name} - ${(user.presence.activities[0].type == 'CUSTOM_STATUS') ? user.presence.activities[0].state : user.presence.activities[0].details}` : '-', true)
+		.setAuthor(`${emojiList[member.presence.status]} ${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
+		.setColor(3447003)
+		.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
+		.addField(message.translate(settings.Language, 'GUILD/USER_NICKNAME'), `\`${member.nickname != null ? member.nickname : 'None'}\``, true)
+		.addField(message.translate(settings.Language, 'GUILD/USER_GAME'), `\`${(member.presence.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None'}\``, true)
+		.addField(message.translate(settings.Language, 'GUILD/USER_ROLES', [member.roles.cache.size, message.guild.roles.cache.size]), member.roles.cache.map(roles => roles).join(', '), true)
+		.addField(message.translate(settings.Language, 'GUILD/USER_JOINED'), `${moment(member.joinedAt).format('lll')} \`${moment(member.joinedAt).fromNow()} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)\``)
+		.addField(message.translate(settings.Language, 'GUILD/USER_REGISTERED'), `${moment(member.user.createdAt).format('lll')} \`${moment(member.user.createdAt).fromNow()} (${Math.round((new Date() - member.user.createdAt) / 86400000)} day(s) ago)\``)
+		.addField(message.translate(settings.Language, 'GUILD/USER_PERMISSIONS', member.permissions.toArray().length), member.permissions.toArray().toString().toLowerCase().replace(/_/g, ' ').replace(/,/g, ' » '))
 		.setTimestamp()
-		.setFooter(`Requested by ${message.author.username}`);
+		.setFooter(message.translate(settings.Language, 'GUILD/INFO_FOOTER', message.author.tag));
 	message.channel.send(embed);
 };
 

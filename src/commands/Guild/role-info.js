@@ -12,22 +12,21 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		message.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 		return;
 	}
-
 	// Send information to channel
 	const embed = new MessageEmbed()
 		.setColor(role.color)
-		.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+		.setAuthor(message.author.tag, message.author.displayAvatarURL())
 		.setDescription(message.translate(settings.Language, 'GUILD/ROLE_NAME', role.name))
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MEMBERS')}:`, role.members.size, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_COLOR')}:`, role.hexColor, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_POSITION')}:`, role.position, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MENTION')}:`, `<@&${role.id}>`, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_HOISTED')}:`, role.hoist, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_MENTIONABLE')}:`, role.mentionable, true)
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_PERMISSION')}:`, 'Does stuff')
-		.addField(`${message.translate(settings.Language, 'GUILD/ROLE_CREATED')}`, moment(role.createdAt).format('lll'))
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_MEMBERS'), role.members.size, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_COLOR'), role.hexColor, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_POSITION'), role.position, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_MENTION'), `<@&${role.id}>`, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_HOISTED'), role.hoist, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_MENTIONABLE'), role.mentionable, true)
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_PERMISSION'), role.permissions.toArray().toString().toLowerCase().replace(/_/g, ' ').replace(/,/g, ' » '))
+		.addField(message.translate(settings.Language, 'GUILD/ROLE_CREATED'), moment(role.createdAt).format('lll'))
 		.setTimestamp()
-		.setFooter(message.translate(settings.Language, 'ROLE_FOOTER', [`${message.author.username}`, `${role.id}`]));
+		.setFooter(message.translate(settings.Language, 'GUILD/ROLE_FOOTER', [`${message.author.tag}`, `${role.id}`]));
 	message.channel.send(embed);
 };
 
