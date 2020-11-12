@@ -4,7 +4,7 @@ const languageData = {
 	FLIP_CHOICE: (choice) => `${['Head', 'Tails'][choice]}`,
 	MEME_TITLE: 'From',
 	MEME_FOOTER: 'Provided by',
-	MISSING_POKEMON: 'That Pokemon dosen\'t exist.',
+	MISSING_POKEMON: 'That pokemon doesn\'t exist',
 	RANDOM_RESPONSE: (number) => `Random number: ${number}`,
 	REMINDER_MESSAGE: (r) => `I'll remind you about \`${r[0]}\` in about ${r[1]}.`,
 	REMINDER_DESCRIPTION: 'Message link',

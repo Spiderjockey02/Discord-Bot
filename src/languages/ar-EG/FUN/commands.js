@@ -4,8 +4,8 @@ const languageData = {
 	FLIP_CHOICE: (choice) => `${['رئيس', 'ذيول'][choice]}`,
 	MEME_TITLE: 'من عند',
 	MEME_FOOTER: 'مقدمة من',
-	MISSING_POKEMON: 'That Pokemon dosen\'t exist.',
-	RANDOM_RESPONSE: (number) => `Random number: ${number}`,
+	MISSING_POKEMON: 'هذا البوكيمون غير موجود.',
+	RANDOM_RESPONSE: (number) => `رقم عشوائي: ${number}`,
 	REMINDER_MESSAGE: (r) => `سوف أذكرك \`${r[0]}\` في حوالي ${r[1]}.`,
 	REMINDER_DESCRIPTION: 'رابط الرسالة',
 	REMINDER_RESPONSE: (r) => `${r[0]} تذكيرك: ${r[1]}`,
@@ -14,9 +14,9 @@ const languageData = {
 	RPS_FIRST: 'اختار أنت',
 	RPS_SECOND: 'انا اخترت',
 	RPS_RESULT: (winner) => `نتيجة: ${winner} فاز!`,
-	INCORRECT_URBAN: (phrase) => ` Phrase: \`${phrase}\` لم يتم العثور عليها في القاموس الحضري.`,
-	URBAN_TITLE: (word) => `Definition of ${word}`,
-	URBAN_DESCRIPTION: (r) => `${r[0]}\n**Example:**\n${r[1]}`,
+	INCORRECT_URBAN: (phrase) => `العبارة: \`${phrase}\` لم يتم العثور عليها في القاموس الحضري.`,
+	URBAN_TITLE: (word) => `تعريف ال ${word}`,
+	URBAN_DESCRIPTION: (r) => `${r[0]}\n**مثال:**\n${r[1]}`,
 };
 
 const translate = (key, args) => {
