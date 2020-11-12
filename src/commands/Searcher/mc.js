@@ -1,5 +1,5 @@
 // Dependencies
-const { ping } = require('minecraft-server-util');
+const { status } = require('minecraft-server-util');
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		args[1] = '25565';
 	}
 	// Ping server
-	ping(args[0], { port: parseInt(args[1]) }).then((response) => {
+	status(args[0], { port: parseInt(args[1]) }).then((response) => {
 		const embed = new MessageEmbed()
 			.setColor(0x0099ff)
 			.setTitle('Server Status')

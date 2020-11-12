@@ -2,24 +2,25 @@
 const { find } = require('weather-js');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis) => {
-	if (!args.length) return message.channel.send('Please give the weather location');
+module.exports.run = async (bot, message, args, emojis, settings) => {
+	if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('weather').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	// search up weather stats
 	find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {
 		try {
 			const embed = new MessageEmbed()
-				.setTitle(`Weather - ${result[0].location.name}`)
-				.setDescription('Temperature units can may be differ some time')
-				.addField('Temperature', `${result[0].current.temperature}°C`, true)
-				.addField('Sky Text', result[0].current.skytext, true)
-				.addField('Humidity', `${result[0].current.humidity}%`, true)
-				.addField('Wind Speed', result[0].current.windspeed, true)
-				.addField('Observation Time', result[0].current.observationtime, true)
-				.addField('Wind Display', result[0].current.winddisplay, true)
+				.setTitle(message.translate(settings.Language, 'SEARCHER/WEATHER_TITLE', result[0].location.name))
+				.setDescription(message.translate(settings.Language, 'SEARCHER/WEATHER_DESCRIPTION'))
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_TEMP'), `${result[0].current.temperature}°C`, true)
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_SKY'), result[0].current.skytext, true)
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_HUMIDITY'), `${result[0].current.humidity}%`, true)
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_SPEED'), result[0].current.windspeed, true)
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_TIME'), result[0].current.observationtime, true)
+				.addField(message.translate(settings.Language, 'SEARCHER/WEATHER_DISPLAY'), result[0].current.winddisplay, true)
 				.setThumbnail(result[0].current.imageUrl);
 			message.channel.send(embed);
 		} catch(err) {
 			if (bot.config.debug) bot.logger.error(`${err.message} - command: weather.`);
-			return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+			return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	});
 };
