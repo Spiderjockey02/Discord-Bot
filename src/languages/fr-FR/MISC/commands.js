@@ -6,6 +6,8 @@ const languageData = {
 	ABOUT_SERVERS: 'Servers:',
 	ABOUT_MESSAGES: 'Messages seen:',
 	ABOUT_UPTIME: 'Uptime:',
+	MISSING_COMMAND: 'Not a command nor a plugin.',
+	NO_COMMAND: 'That is not a command running on this server.',
 	INVITE_TEXT: 'Invite me to your server',
 	PRIVACY_POLICY: 'Privacy Policy',
 	STATUS_PING: 'Ping:',
