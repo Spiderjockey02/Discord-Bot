@@ -12,11 +12,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	]).exec((err, res) => {
 		if (err) console.log(err);
 		const embed = new MessageEmbed()
-			.setTitle('Leaderboard');
+			.setTitle(message.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'));
 		if (res.length === 0) {
 			// If there no results
-			embed.setColor();
-			embed.addField('No data found', 'Please type in chat to gain experience.');
+			embed.addField(message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
 		} else if (res.length < 10) {
 			// If there are less than 10 results and then show this
 			for (let i = 0; i < res.length; i++) {

@@ -1,15 +1,13 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { MessageAttachment } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
+const { Rank } = require('canvacord');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// check to make sure Level plugin is enabled
 	if (settings.LevelPlugin == false) return;
 	// Get user
-	let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
-	if (!user) {
-		user = message.guild.member(message.author);
-	}
+	const user = bot.GetUser(message, args);
 	// Retrieve Rank from databse
 	try {
 		await Ranks.findOne({
@@ -20,24 +18,43 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 				if (bot.config.debug) bot.logger.error(`${err.message} - command: rank.`);
 				return;
 			}
-			const embed = new MessageEmbed()
-				.setAuthor(user.user.username);
 			if (Xp == null) {
 				// They haven't sent any messages yet
-				embed.addField('Xp:', '0', true);
-				embed.addField('Level:', '1', true);
-				embed.setFooter('155 XP till level up', user.user.displayAvatarURL());
+				message.error(settings.Language, 'LEVEL/NO_MESSAGES');
 			} else {
-				// Show users Rank
-				embed.addField('Xp:', Xp.Xp, true);
-				embed.addField('Level:', Xp.Level, true);
-				embed.setFooter(`${(5 * (Xp.Level ** 2) + 50 * Xp.Level + 100) - Xp.Xp} XP till level up`, message.author.displayAvatarURL());
+				// Get rank
+				Ranks.find({
+					guildID: message.guild.id,
+				}).sort([
+					['Xp', 'descending'],
+				]).exec((err, res) => {
+					if (err) console.log(err);
+					let rankScore;
+					for (let i = 0; i < res.length; i++) {
+						if (res[i].userID == user.user.id) rankScore = i;
+					}
+					// create rank card
+					const rank = new Rank()
+						.setAvatar(user.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+						.setCurrentXP(Xp.Xp)
+						.setLevel(Xp.Level)
+						.setRank(rankScore + 1)
+						.setRequiredXP((5 * (Xp.Level ** 2) + 50 * Xp.Level + 100))
+						.setStatus(user.presence.status)
+						.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
+						.setUsername(user.user.username)
+						.setDiscriminator(user.user.discriminator);
+					// send rank card
+					rank.build().then(buffer => {
+						const attachment = new MessageAttachment(buffer, 'RankCard.png');
+						message.channel.send(attachment);
+					});
+				});
 			}
-			message.channel.send(embed);
 		});
 	} catch (err) {
 		bot.logger.error(`${err.message} when running command: rank.`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
