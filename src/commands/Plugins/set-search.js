@@ -11,22 +11,24 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// update search plugin
 	if (args[0] == 'on') {
 		bot.updateGuild(message.guild, { SearchPlugin: true });
+		message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else if (args[0] == 'off') {
 		bot.updateGuild(message.guild, { SearchPlugin: false });
+		message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('p-search').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-search').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
 module.exports.config = {
-	command: 'p-search',
+	command: 'set-search',
 	aliases: ['search'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
-	name: 'p-search',
+	name: 'set-search',
 	category: 'Plugins',
 	description: 'Turn on or off the search plugin.',
-	usage: '${PREFIX}p-search <on | off>',
+	usage: '${PREFIX}set-search <true | false>',
 };

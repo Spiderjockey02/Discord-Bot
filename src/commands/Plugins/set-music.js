@@ -11,22 +11,24 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	// update music plugin
 	if (args[0] == 'on') {
 		bot.updateGuild(message.guild, { MusicPlugin: true });
+		message.success(settings.Language, 'PLUGINS/MUSIC_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else if (args[0] == 'off') {
 		bot.updateGuild(message.guild, { MusicPlugin: false });
+		message.success(settings.Language, 'PLUGINS/MUSIC_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('p-music').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-music').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
 module.exports.config = {
-	command: 'p-music',
+	command: 'set-music',
 	aliases: ['music'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
-	name: 'p-music',
+	name: 'set-music',
 	category: 'Plugins',
 	description: 'Turn on or off the music plugin.',
-	usage: '${PREFIX}p-music <on | off>',
+	usage: '${PREFIX}set-music <true | false>',
 };

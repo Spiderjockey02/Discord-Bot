@@ -9,24 +9,26 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// update level plugin
-	if (args[0] == 'on') {
+	if (args[0] == 'true') {
 		bot.updateGuild(message.guild, { LevelPlugin: true });
-	} else if (args[0] == 'off') {
+		message.success(settings.Language, 'PLUGINS/LEVEL_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+	} else if (args[0] == 'false') {
 		bot.updateGuild(message.guild, { LevelPlugin: false });
+		message.success(settings.Language, 'PLUGINS/LEVEL_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else {
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('p-level').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-level').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
 module.exports.config = {
-	command: 'p-level',
-	aliases: ['level'],
+	command: 'set-level',
+	aliases: ['setlevel'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
 module.exports.help = {
-	name: 'p-level',
+	name: 'set-level',
 	category: 'Plugins',
 	description: 'Turn on or off the level plugin.',
-	usage: '${PREFIX}p-level <on | off>',
+	usage: '${PREFIX}set-level <true | false>',
 };
