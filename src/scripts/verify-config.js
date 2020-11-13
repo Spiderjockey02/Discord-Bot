@@ -39,13 +39,13 @@ module.exports.run = async (config) => {
 	}
 
 	// Check twitch API
-	if (!config.TwitchAPI) {
+	if (!config.api_keys.twitch) {
 		logger.error(`${chalk.red('✗')} Twitch API key is missing.`);
 		error = true;
 	}
 
 	// Check fortnite API
-	if (!config.fortniteAPI) {
+	if (!config.api_keys.fortnite) {
 		logger.error(`${chalk.red('✗')} Fortnite API key is missing.`);
 		error = true;
 	} else {
@@ -59,7 +59,7 @@ module.exports.run = async (config) => {
 	}
 
 	// Check Ksoft API
-	if (!config.KSoftSiAPI) {
+	if (!config.api_keys.ksoft) {
 		logger.error(`${chalk.red('✗')} Ksoft API key is missing.`);
 		error = true;
 	} else {
@@ -72,7 +72,7 @@ module.exports.run = async (config) => {
 	}
 
 	// Check Steam API
-	if (!config.SteamAPI) {
+	if (!config.api_keys.steam) {
 		logger.error(`${chalk.red('✗')} Steam API key is missing.`);
 		error = true;
 	} else {
@@ -87,13 +87,13 @@ module.exports.run = async (config) => {
 	}
 
 	// Check Youtube API
-	if (!config.YoutubeAPI_Key) {
+	if (!config.api_keys.youtube) {
 		logger.error(`${chalk.red('✗')} Youtube API key is missing.`);
 		error = true;
 	}
 
 	// Check Soundcloud API
-	if (!config.soundcloudAPI_Key) {
+	if (!config.api_keys.soundcloud) {
 		logger.error(`${chalk.red('✗')} Soundcloud API key is missing.`);
 		error = true;
 	}
@@ -116,7 +116,7 @@ module.exports.run = async (config) => {
 	}
 
 	// Check Amethyste API
-	if (!config.amethysteAPI_KEY) {
+	if (!config.api_keys.amethyste) {
 		logger.error(`${chalk.red('✗')} Amethyste API key is missing.`);
 		error = true;
 	} else {

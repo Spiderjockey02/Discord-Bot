@@ -4,7 +4,7 @@ const { KSoftClient } = require('@ksoft/api');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('reddit').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
+	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
 	try {
 		let reddit;
 		// Check if its a NSFW channel or not

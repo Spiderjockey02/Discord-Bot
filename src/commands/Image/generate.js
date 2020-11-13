@@ -25,7 +25,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			image = await post(`https://v1.api.amethyste.moe/generate/${args[0]}`, { 'url' : file[0] }, {
 				responseType: 'arraybuffer',
 				headers: {
-					'Authorization': `Bearer ${bot.config.amethysteAPI_KEY}`,
+					'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
 				},
 			}).catch(err => {
 				// if an error occured
@@ -38,7 +38,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			image = await post(`https://v1.api.amethyste.moe/generate/${args[0]}`, { 'avatar': file[1], 'url' : file[0] }, {
 				responseType: 'arraybuffer',
 				headers: {
-					'Authorization': `Bearer ${bot.config.amethysteAPI_KEY}`,
+					'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
 				},
 			}).catch(e => {
 				// if an error occured

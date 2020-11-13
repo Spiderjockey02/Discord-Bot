@@ -1,19 +1,20 @@
 const config = {
 	ownerID: 'YourAccountID',
 	token: 'YourBotToken',
-	botID: 'YourBotID',
 	botClient: 'YourBotClientSecret',
 	// For looking up Twitch, Fortnite, Steam accounts
-	TwitchAPI: 'TwitchAPI-Key',
-	fortniteAPI: 'fortniteAPI-Key',
-	SteamAPI: 'SteamAPI-Key',
-	// For searching up lyrics
-	KSoftSiAPI: 'KSoftSiAPI-Key',
-	// For playing youtube, soundcloud songs
-	YoutubeAPI_Key: 'YoutubeAPI_Key',
-	soundcloudAPI_Key: 'soundcloudAPI_Key',
-	// SO you can use the generate command
-	amethysteAPI_KEY: 'amethysteAPI_KEY',
+	api_keys: {
+		twitch: 'twitchAPI-Key',
+		fortnite: 'fortniteAPI-Key',
+		ksoft: 'ksoftAPI-Key',
+		steam: 'steamAPI-Key',
+		youtube: 'youtubeAPI-Key',
+		soudcloud: 'soundcloudAPI-Key',
+		amethyste: 'amethysteAPI-Key',
+	},
+	// IF you want any commands/plugins disabled
+	disabledCommands: [],
+	disabledPlugins: [],
 	// This is a list of websites that the bot is on. API to interect with server/shard count
 	DiscordBotLists: {
 		// https://discord.boats/
@@ -23,12 +24,7 @@ const config = {
 		// https://botlist.space/
 		botlist_spaceAPI_KEY: '',
 	},
-	// For searching up Rainbow 6 Siege accounts
-	Rainbow6Siege: {
-		// username & password to your ubisoft account
-		username: 'YourUsername',
-		password: 'YourPassword',
-	},
+
 	// Information for the Bot's dashboard
 	Dashboard: {
 		// If the dashboard should be enabled or not
@@ -45,8 +41,6 @@ const config = {
 			// Change this if you update the `TERMS.md` or `PRIVACY.md` files in `dashboard/public/`
 			lastEdited: '13 August 2020',
 		},
-		// Version that the bot is running at
-		version: '1',
 	},
 	// your support server
 	SupportServer: {
@@ -63,6 +57,7 @@ const config = {
 	defaultSettings: {
 		// default settings
 		prefix: '!',
+		Language: 'en-US',
 	},
 	// Custom emojis, just for cosmetic (change these if you wish)
 	emojis: {
@@ -71,11 +66,6 @@ const config = {
 	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
-	// If the NSFW commands should be loaded
-	NSFWBot: true,
-	// If you want your bot to use different languages per a server.
-	useCustomLanguage: true,
-	DefaultLanguage: 'en-US.json',
 	// if you want debugging turned on or not
 	debug: false,
 };

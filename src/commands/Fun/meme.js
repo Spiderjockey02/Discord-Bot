@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, emojis, settings) => {
 	// Retrieve a random meme
-	const ksoft = new KSoftClient(bot.config.KSoftSiAPI);
+	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
 	const meme = await ksoft.images.meme();
 
 	// An error has occured
