@@ -1,4 +1,6 @@
 const ms = require('ms');
+
+// convert seconds to format (HHMMSS)
 module.exports.toHHMMSS = (secs) => {
 	const sec_num = parseInt(secs, 10);
 	const hours = Math.floor(sec_num / 3600);
@@ -10,36 +12,42 @@ module.exports.toHHMMSS = (secs) => {
 		.filter((v, i) => v !== '00' || i > 0)
 		.join(':');
 };
+
+// Get the difference of time in days
 module.exports.getDayDiff = (timestamp0, timestamp1) => {
 	return Math.round(this.getDurationDiff(timestamp0, timestamp1));
 };
+
+// Get the difference between times
 module.exports.getDurationDiff = (timestamp0, timestamp1) => {
 	return Math.abs(timestamp0 - timestamp1) / (1000 * 60 * 60 * 24);
 };
 
-module.exports.getTotalTime = (timeFormat, message, emojis) => {
+// comvert time format (1m) to ms - for timed commands
+module.exports.getTotalTime = (timeFormat, message, language) => {
 	// Make sure it ends with the correct time delimiter
 	if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
-		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use one of the following time delimiters: \`d\`,  \`h\`,  \`m\`, \`s\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		if (message.deletable) message.delete();
+		message.error(language, 'INCORRECT_DELIMITERS').then(m => m.delete({ timeout:5000 }));
 		return false;
 	}
 	// make sure its a number infront of the time delimiter
 	if (isNaN(timeFormat.slice(0, -1))) {
-		message.channel.send({ embed:{ color:15158332, description:'Must be a number.' } }).then(m => m.delete({ timeout: 5000 }));
+		message.error(language, 'NOT_NUMBER').then(m => m.delete({ timeout:5000 }));
 		return false;
 	}
 	// convert timeFormat to milliseconds
 	const time = ms(timeFormat);
 	// Make sure time isn't over 10 days
 	if (time >= 864000000) {
-		message.channel.send({ embed:{ color:15158332, description:'Can\'t be longer than 10 days.' } }).then(m => m.delete({ timeout: 5000 }));
+		message.error(language, 'MAX_TIME').then(m => m.delete({ timeout: 5000 }));
 		return false;
 	}
 	// return time to requested command
 	return time;
 };
 
+// Convert time to nanoseconds
 module.exports.toNano = (time) => {
 	return (time[0] * 1e9 + time[1]) * 1e-6;
 };
