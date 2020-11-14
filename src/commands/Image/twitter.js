@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const user = (message.mentions.users.first()) ? message.mentions.users.first().username : `${args[0]}`;
+	const member = bot.getUsers(message, args);
 
 	// Get text
 	args.shift();
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Try and convert image
 	try {
-		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${user}&text=${text}`));
+		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${member[0]}&text=${text}`));
 		const json = await res.json();
 		// send image in embed
 		const embed = new MessageEmbed()

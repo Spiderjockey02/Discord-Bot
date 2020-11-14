@@ -4,14 +4,14 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const user = bot.GetUser(message, args);
+	const member = bot.getUsers(message, args);
 
 	// send 'waitng' message
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 
 	// Try and convert image
 	try {
-		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${user.user.username}&url=${user.user.displayAvatarURL({ format: 'png', size: 512 })}`));
+		const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${member[0].user.username}&url=${member[0].user.displayAvatarURL({ format: 'png', size: 512 })}`));
 		const json = await res.json();
 		// send image
 		const embed = new MessageEmbed()

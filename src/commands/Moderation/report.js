@@ -13,8 +13,8 @@ module.exports.run = async (bot, message, args, settings) => {
 
 		// Send messages to ModLog channel
 		const embed = new MessageEmbed()
-			.setAuthor(message.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), member.user.displayAvatarURL)
-			.addField(message.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), member, true)
+			.setAuthor(message.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), member[0].user.displayAvatarURL)
+			.addField(message.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), member[0], true)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_BY'), message.member, true)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_IN'), message.channel)
 			.addField(message.translate(settings.Language, 'MODERATION/REPORT_REASON'), args.slice(1).join(' '))
@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 		if (repChannel) {
 			repChannel.send(embed);
-			message.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member.user).then(m => m.delete({ timeout: 3000 }));
+			message.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => m.delete({ timeout: 3000 }));
 		}
 	}
 };

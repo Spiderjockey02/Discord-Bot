@@ -7,8 +7,7 @@ module.exports = bot => {
 	// Get guild settings
 	bot.getGuild = async (guild) => {
 		const data = await Guild.findOne({ guildID: guild.id });
-		if (data) return data;
-		else return bot.config.defaultSettings;
+		return data;
 	};
 
 	// update guild settings
@@ -40,46 +39,16 @@ module.exports = bot => {
 		return;
 	};
 
-	// This handlers music permissin/check to see if user is in voice channel
-	bot.musicHandler = (message, args, emojis, settings) => {
-		// Check if bot can see user in channel (the user is in a channel)
-		if (!message.member.voice.channelID) {
-			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} You are not connected to a voice channel.` } }).then(m => m.delete({ timeout: 10000 }));
-			message.delete();
-			return false;
-		}
-		// Check if bot can join channel
-		if (!message.guild.me.hasPermission('CONNECT')) {
-			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`CONNECT\`.` } }).then(m => m.delete({ timeout: 10000 }));
-			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return false;
-		}
-		// Check if bot can speak in channel
-		if (!message.guild.me.hasPermission('SPEAK')) {
-			if (message.deletable) message.delete();
-			message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} I am missing the permission: \`SPEAK\`.` } }).then(m => m.delete({ timeout: 10000 }));
-			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return false;
-		}
-		// Check if an 'entry' was added
-		if (args.length == 0) {
-			if (message.content.includes('playlist')) {
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('add-playlist').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-			} else {
-				message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('play').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-			}
-			return false;
-		}
-		return true;
-	};
-
 	// Get User from @ or ID
-	bot.GetUser = (message, args) => {
-		let user = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
-		// if user isn't mentioned then use avatar
-		if (!user) user = message.guild.member(message.author);
-		return user;
+	bot.getUsers = (message, args) => {
+		const users = [];
+		// add all mentioned users
+		for (let i = 0; i < args.length; i++) {
+			users.push(message.guild.member(message.mentions.users.array()[i] || message.guild.members.cache.get(args[i])));
+		}
+		// add author at the end
+		users.push(message.member);
+		return users;
 	};
 
 	// Get image, from file download or avatar

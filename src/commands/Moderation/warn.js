@@ -11,17 +11,17 @@ module.exports.run = async (bot, message, args, settings) => {
 	const member = bot.GetUser(message, args);
 
 	// Make sure user isn't trying to punish themselves
-	if (member.user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+	if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure that the user that is getting warned has administrator permissions
-	if (member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+	if (member[0].hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 
 	// Get reason for warning
 	const wReason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
 
 	// Warning is sent to warning manager
 	try {
-		await require('../../modules/plugins/warning').run(bot, message, member, wReason, settings);
+		await require('../../modules/plugins/warning').run(bot, message, member[0], wReason, settings);
 	} catch (err) {
 		console.log(err);
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: warn.`);
