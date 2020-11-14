@@ -8,7 +8,19 @@ module.exports = async bot => {
 
 	bot.appInfo = await bot.fetchApplication();
 	// dashboard comes online (moved here so user information can be retrieved from bot to dashboard)
-	require('../modules/website/dashboard')(bot);
+	try {
+		await require('../modules/website/dashboard')(bot);
+	} catch (err) {
+		bot.logger.error('Dashboard: ' + err.message);
+	}
+
+	// for music
+	try {
+		await require('../handlers/Audio-Player')(bot);
+	} catch (err) {
+		bot.logger.error('Lavalink: ' + err.message);
+	}
+
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);
@@ -25,7 +37,7 @@ module.exports = async bot => {
 		} catch (e) {
 			console.log(e);
 		}
-		if (settings.guildID == undefined) {
+		if (!settings) {
 			// new guild has been found
 			bot.emit('guildCreate', item);
 		}
