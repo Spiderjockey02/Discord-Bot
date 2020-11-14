@@ -6,8 +6,10 @@ const languageData = {
 	USER_PERMISSION: (permission) => `أنت تفتقد الإذن: \`${permission}\`.`,
 	MISSING_ROLE: 'لم أتمكن من العثور على هذا الدور.',
 	NO_REASON: 'لا يوجد سبب معين.',
-	// Level
-	// Misc
+	// external files/plugins
+	INCORRECT_DELIMITERS: 'Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.',
+	NOT_NUMBER:'Must be a number.',
+	MAX_TIME: 'Can\'t be longer than 10 days.',
 };
 
 const translate = (key, args) => {

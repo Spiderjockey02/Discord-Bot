@@ -5,6 +5,10 @@ const languageData = {
 	USER_PERMISSION: (permission) => `You are missing the permission: \`${permission}\`.`,
 	MISSING_ROLE: 'I was unable to find this role.',
 	NO_REASON: 'No reason given.',
+	// external files/plugins
+	INCORRECT_DELIMITERS: 'Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.',
+	NOT_NUMBER:'Must be a number.',
+	MAX_TIME: 'Can\'t be longer than 10 days.',
 };
 
 const translate = (key, args) => {
