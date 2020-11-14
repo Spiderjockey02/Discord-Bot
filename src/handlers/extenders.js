@@ -6,7 +6,7 @@ module.exports = async (bot) => {
 		let languageFile;
 		if (key.includes('/')) {
 			const word = key.split('/');
-			languageFile = require(`../languages/${language}/${word[0]}/commands`);
+			languageFile = require(`../languages/${language}/${word[0]}/translation`);
 			return languageFile(word[1], args);
 		} else {
 			languageFile = require(`../languages/${language}/misc`);
