@@ -5,11 +5,16 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message, args, settings) => {
 	// Get platform and username
 	const stats = new Fortnite(bot.config.api_keys.fortnite);
-	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
-	if (!args[1]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+
+	// Check if platform and user was entered
+	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+
+	// Get platform and user
 	const platform = args.shift();
 	const username = args.join(' ');
-	const r = await message.channel.send(`Getting fortnite information on **${username}**.`);
+	const r = await message.channel.send(`Retrieving Fortnite information on **${username}**.`);
+
 	// Retrieve stats from database
 	stats.user(username, platform).then(data => {
 		const embed = new MessageEmbed()
@@ -30,7 +35,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// If data wasn't found
 		if (message.deletable) message.delete();
 		r.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} This username was unable to be found.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: fortnite.`);
 	});
 };

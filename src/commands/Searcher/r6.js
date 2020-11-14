@@ -3,11 +3,12 @@ const { MessageEmbed } = require('discord.js');
 const R6API = require('r6api.js');
 const { getId, getLevel, getRank, getStats } = new R6API('sd', 'sd');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get platforms and regions (just make it easier for users to use this command)
 	const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4:'PSN' };
 	const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
 	let player, platform, region;
+
 	// Checks to make sure a username was entered
 	if (!args[0]) {
 		message.delete();
@@ -16,8 +17,8 @@ module.exports.run = async (bot, message, args) => {
 	} else {
 		player = args[0];
 	}
+
 	// Get platform
-	// Presets
 	platform = platforms['pc'];
 	region = regions['eu'];
 	for (let i = 0; i < args.length; i++) {
@@ -35,13 +36,15 @@ module.exports.run = async (bot, message, args) => {
 			args.splice(i);
 		}
 	}
+
 	player = args.join(' ');
 	if(platform === 'xbl') player = player.replace('_', '');
 	player = await getId(platform, player);
+
 	// Makes sure that user actually exist
 	if(!player.length) {
-		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Couldn't fetch results for user: \`${player}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 	}
 	const r = await message.channel.send('Gathering results...');
 	player = player[0];
@@ -51,8 +54,8 @@ module.exports.run = async (bot, message, args) => {
 
 	if (!playerRank.length || !playerStats.length || !playerGame.length) {
 		r.delete();
-		message.delete();
-		return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when running this command, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 	const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
 	const { pvp, pve } = playerStats[0];

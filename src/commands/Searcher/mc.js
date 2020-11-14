@@ -4,12 +4,12 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Ping a minecraft server
-	if(!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('mc').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if(!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('mc').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Pinging server..');
+
 	// If no ping use 25565
-	if(!args[1]) {
-		args[1] = '25565';
-	}
+	if(!args[1]) args[1] = '25565';
+
 	// Ping server
 	status(args[0], { port: parseInt(args[1]) }).then((response) => {
 		const embed = new MessageEmbed()
@@ -24,9 +24,9 @@ module.exports.run = async (bot, message, args, settings) => {
 		message.channel.send(embed);
 	}).catch(err => {
 		// An error occured (either no IP, Open port or timed out)
-		r.delete({ timeout: 1000 });
-		message.delete();
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} **No server with that IP was found in time.**` } }).then(m => m.delete({ timeout: 4500 }));
+		r.delete();
+		if (message.deletable) message.delete();
+		message.error(settings.Language, 'SEARCHER/INCORRECT_IP').then(m => m.delete({ timeout: 4500 }));
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: mc.`);
 	});
 };

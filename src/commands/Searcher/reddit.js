@@ -3,8 +3,11 @@ const { MessageEmbed } = require('discord.js');
 const { KSoftClient } = require('@ksoft/api');
 
 module.exports.run = async (bot, message, args, settings) => {
+	// Get subreddit
 	if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('reddit').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
+
+	// try and retrieve image from reddit
 	try {
 		let reddit;
 		// Check if its a NSFW channel or not
@@ -14,6 +17,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		} else {
 			reddit = await ksoft.images.reddit(args[0], { removeNSFW: true });
 		}
+
 		// Send message to channel
 		const embed = new MessageEmbed()
 			.setTitle(`From /${reddit.post.subreddit}`)

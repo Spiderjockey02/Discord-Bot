@@ -1,4 +1,7 @@
 const languageData = {
+	UNKNOWN_USER: 'This username was unable to be found.',
+	INCORRECT_IP: '**No server with that IP was found in time.**',
+
 	WEATHER_TITLE: (place) => `Weather - ${place}`,
 	WEATHER_DESCRIPTION: 'Temperature units can may be differ some time',
 	WEATHER_TEMP: 'Temperature:',

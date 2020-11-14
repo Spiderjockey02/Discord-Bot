@@ -4,27 +4,30 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
 	const username = args.join(' ');
+
 	// Checks to see if a username was provided
-	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
+	if (!username) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account details...');
+
 	// Gather data from database
 	const url = `https://instagram.com/${username}/?__a=1`;
 	const res = await fetch(url).then(info => info.json()).catch(err => {
 		// An error occured when looking for account
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: instagram.`);
-		message.delete();
-		message.channel.send('That Instagram account does not exist.').then(m => m.delete({ timeout: 3500 }));
-		return;
+		if (message.deletable) message.delete();
+		return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	});
 	if (res.size == 0) {
 		r.delete();
 		return;
 	}
+
 	// Checks to see if a username in instagram database
 	if (!res.graphql.user.username) {
 		r.delete();
-		return message.channel.send('I couldn\'t find that account.');
+		message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	// Displays Data
 	const account = res.graphql.user;
 	const embed = new MessageEmbed()
