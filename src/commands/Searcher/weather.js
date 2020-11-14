@@ -2,7 +2,7 @@
 const { find } = require('weather-js');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('weather').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	// search up weather stats
 	find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {

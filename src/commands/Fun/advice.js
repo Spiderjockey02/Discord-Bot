@@ -2,7 +2,7 @@
 const { Random } = require('something-random-on-discord');
 const random = new Random();
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	try {
 		const data = await random.getAdvice();
 		message.channel.send(data);

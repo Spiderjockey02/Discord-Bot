@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const choices = ['rock', 'paper', 'scissors'];
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure a choice was made
 	if (!args[0]) {
 		if (message.deletable) message.delete();

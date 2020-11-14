@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Send server information
 	const member = message.guild.members.cache;
 	const embed2 = new MessageEmbed()

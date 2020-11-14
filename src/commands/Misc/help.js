@@ -13,7 +13,7 @@ function checkPlugins(settings) {
 	return plugins;
 }
 
-module.exports.run = async (bot, message, args, emoji, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	const plugins = checkPlugins(settings);
 	if (!args[0]) {
 		// Show default help page

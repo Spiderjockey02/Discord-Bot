@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 	// Make sure user can ban users
@@ -30,10 +30,10 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 		const possibleTime = args[args.length - 1];
 		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
 			// do tempban
-			const time = require('../../utils/Time-Handler.js').getTotalTime(possibleTime, message, emojis);
+			const time = require('../../utils/Time-Handler.js').getTotalTime(possibleTime, message, settings.Language);
 			if (!time) return;
 			setTimeout(() => {
-				bot.commands.get('unban').run(bot, message, [`${member.user.id}`], emojis, settings);
+				bot.commands.get('unban').run(bot, message, [`${member.user.id}`], settings);
 			}, time);
 		}
 	} catch (err) {

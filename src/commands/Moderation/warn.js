@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 
 	// Warning is sent to warning manager
 	try {
-		await require('../../modules/plugins/warning').run(bot, message, emojis, member, wReason, settings);
+		await require('../../modules/plugins/warning').run(bot, message, member, wReason, settings);
 	} catch (err) {
 		console.log(err);
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: warn.`);

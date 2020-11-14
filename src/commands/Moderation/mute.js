@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -59,7 +59,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 			message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member.user).then(m => m.delete({ timeout: 3000 }));
 			// see if it was a tempmute
 			if (args[1]) {
-				const time = require('../../utils/Time-Handler.js').getTotalTime(args[1], message, emojis);
+				const time = require('../../utils/Time-Handler.js').getTotalTime(args[1], message, settings.Language);
 				if (!time) return;
 				setTimeout(() => {
 					member.roles.remove(muteRole, 'Temporary mute expired.');

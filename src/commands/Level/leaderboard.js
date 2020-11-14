@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	if (settings.LevelPlugin == false) return;
 	// Retrieve Ranks from database
 	Ranks.find({

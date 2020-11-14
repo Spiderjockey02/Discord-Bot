@@ -2,7 +2,7 @@
 const { KSoftClient } = require('@ksoft/api');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Retrieve a random meme
 	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
 	const meme = await ksoft.images.meme();

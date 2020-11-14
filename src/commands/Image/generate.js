@@ -9,14 +9,14 @@ const image_1 = ['3000years', 'approved', 'beautiful', 'brazzers', 'burn', 'chal
 
 const image_2 = ['afusion', 'batslap', 'vs'];
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	if (args[0] == 'list' || args[0] == '?' || !args[0]) {
 		const embed = new MessageEmbed()
 			.setDescription(message.translate(settings.Language, 'IMAGE/GENERATE_DESC', [`${image_1.join('`, `')}`, `${image_2.join('`, `')}`]));
 		message.channel.send(embed);
 	} else {
 		// Get image, defaults to author's avatar
-		const file = bot.GetImage(message, emojis);
+		const file = bot.GetImage(message);
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 		let image;

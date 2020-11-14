@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Check to see if a role was mentioned
 	const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
 

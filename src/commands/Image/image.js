@@ -2,7 +2,7 @@
 const { load } = require('cheerio');
 const request = require('request');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure a topic was included
 	if (!args[0]) {
 		try {

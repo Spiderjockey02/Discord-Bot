@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get user
 	const user = (message.mentions.users.first()) ? message.mentions.users.first().username : `${args[0]}`;
 

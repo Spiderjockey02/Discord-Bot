@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	const username = args.join(' ');
 	// Checks to see if a username was provided
 	if (!username) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));

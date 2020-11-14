@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const R6API = require('r6api.js');
 const { getId, getLevel, getRank, getStats } = new R6API('sd', 'sd');
 
-module.exports.run = async (bot, message, args, emojis) => {
+module.exports.run = async (bot, message, args) => {
 	// Get platforms and regions (just make it easier for users to use this command)
 	const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4:'PSN' };
 	const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };

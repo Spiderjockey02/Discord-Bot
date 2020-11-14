@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const dateFormat = require('dateformat');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Steam config
 	if (!args[0]) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} Please use the format \`${bot.commands.get('steam').help.usage.replace('${PREFIX}', settings.prefix)}\`.` } }).then(m => m.delete({ timeout: 5000 }));
 	const r = await message.channel.send('Gathering account...');

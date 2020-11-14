@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emoji, settings, ops) => {
+module.exports.run = async (bot, message, args, settings, ops) => {
 	if (settings.MusicPlugin == false) return;
 	// If there is music currently playing stop it, clear queue and leave call to prepare for music trivia
 	const fetched = ops.active.get(message.guild.id) || {};

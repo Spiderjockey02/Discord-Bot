@@ -1,7 +1,7 @@
 // Dependencies
 const { inspect } = require('util');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Makes sure only the bot owner can do this command
 	if (message.member.id != bot.config.ownerID) return message.sendT(settings.Language, 'HOST/EVAL_NO_OWNER');
 

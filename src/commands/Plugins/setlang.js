@@ -1,7 +1,9 @@
 const languages = {
 	'english': 'en-US',
+	'arabic': 'ar-EG',
+	'french': 'fr-FR',
 };
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 

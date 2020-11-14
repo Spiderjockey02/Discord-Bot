@@ -2,7 +2,7 @@
 const { MessageEmbed, version } = require('discord.js');
 const moment = require('moment');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	const embed = new MessageEmbed()
 		.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 		.setTitle('About')

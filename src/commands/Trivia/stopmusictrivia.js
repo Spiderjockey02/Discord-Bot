@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, settings) => {
+module.exports.run = async (bot, message, settings) => {
 	if (settings.MusicPlugin == false) return;
 	// Check if user is participating in the music trivia
 	if (message.guild.me.voiceChannelID !== message.member.voiceChannelID) return message.channel.send('Sorry, you are not connected to the same channel.');

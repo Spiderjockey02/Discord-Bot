@@ -2,7 +2,7 @@
 const { get } = require('superagent');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	try {
 		get('https://nekobot.xyz/api/image')
 			.query({ type: '4k' })

@@ -1,7 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 	// Check bot for add reaction permission

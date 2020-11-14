@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Pick Head or Tails
 	message.sendT(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random()));
 };

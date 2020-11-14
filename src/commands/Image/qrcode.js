@@ -1,10 +1,10 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get text for QR encoding (including file URl)
 	let text = args.join(' ');
-	if (!text) text = bot.GetImage(message, emojis)[0];
+	if (!text) text = bot.GetImage(message)[0];
 
 	// send 'waiting' message
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');

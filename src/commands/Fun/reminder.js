@@ -2,7 +2,7 @@
 const ms = require('ms');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make something that time and information is entered
 	if (!args[0] || !args[1]) {
 		if (message.deletable) message.delete();
@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args, emojis, settings) => {
 	}
 
 	// Get time
-	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, emojis);
+	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, settings.Language);
 	if (!time) return;
 	args.shift();
 

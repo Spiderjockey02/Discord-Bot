@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure the message ID of the giveaway embed is entered
 	if (!args[0]) {
 		if (message.deletable) message.delete();

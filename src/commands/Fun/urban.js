@@ -2,7 +2,7 @@
 const { term } = require('urban-dictionary');
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get phrase
 	const phrase = args.join(' ');
 	if (!phrase) {

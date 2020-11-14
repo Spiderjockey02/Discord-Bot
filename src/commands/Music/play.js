@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const ytdl = require('ytdl-core');
 const config = require('../../config.js');
 const YouTubeAPI = require('simple-youtube-api');
-const youtube = new YouTubeAPI(config.YoutubeAPI_Key);
+const youtube = new YouTubeAPI(config.api_keys.youtube);
 const scdl = require('soundcloud-downloader');
 const { getData } = require('spotify-url-info');
 

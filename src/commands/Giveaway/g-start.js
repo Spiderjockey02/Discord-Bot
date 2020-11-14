@@ -1,6 +1,6 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get time
-	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, emojis);
+	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, settings.Language);
 	if (!time) return;
 
 	// Make sure that number of winners is a number

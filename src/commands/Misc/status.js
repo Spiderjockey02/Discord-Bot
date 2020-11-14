@@ -1,7 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get information on the services the bot provide
 	const m = await message.channel.send('Pong');
 	const embed = new MessageEmbed()

@@ -3,7 +3,7 @@ const { MessageAttachment } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 const { Rank } = require('canvacord');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// check to make sure Level plugin is enabled
 	if (settings.LevelPlugin == false) return;
 	// Get user

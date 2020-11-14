@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	const res = await fetch('https://nekos.life/api/v2/img/meow').then(info => info.json()).catch(err => {
 		// An error occured when looking for image
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: cat.`);

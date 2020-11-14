@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Warning } = require('../../modules/database/models/index');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get user
 	const user = bot.GetUser(message, args);
 	// get warnings of user

@@ -1,7 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Make sure that REPORT is in the mod logs
 	if (settings.ModLogEvents.includes('REPORT')) {
 		if (message.deletable) message.delete();

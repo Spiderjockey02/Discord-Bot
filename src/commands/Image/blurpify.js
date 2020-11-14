@@ -2,9 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Get image, defaults to author's avatar
-	const file = bot.GetImage(message, emojis);
+	const file = bot.GetImage(message);
 
 	// send 'waiting' message
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');

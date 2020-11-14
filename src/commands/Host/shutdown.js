@@ -1,4 +1,4 @@
-module.exports.run = async (bot, message, args, emojis, settings) => {
+module.exports.run = async (bot, message, args, settings) => {
 	// Makes sure only the bot owner can run this command
 	if (message.author.id != bot.config.ownerID) return;
 
