@@ -58,6 +58,7 @@ module.exports = bot => {
 		const user = (message.mentions.users.first()) ? message.mentions.users.first() : message.author;
 		// get image if there is one
 		const file = [];
+		// Check attachments
 		if (message.attachments.size > 0) {
 			const url = message.attachments.first().url;
 			for (let i = 0; i < fileTypes.length; i++) {
@@ -71,6 +72,11 @@ module.exports = bot => {
 		// check user
 		if (user != message.author) {
 			file.push(user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }));
+		}
+		// Checks if a link to image was entered
+		const args = message.content.split(' ');
+		if (args) {
+			file.push(args[1]);
 		}
 		// add user
 		file.push(message.author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }));
