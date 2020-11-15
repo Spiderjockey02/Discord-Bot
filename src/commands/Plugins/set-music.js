@@ -6,10 +6,10 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 	// update music plugin
-	if (args[0] == 'on') {
+	if (args[0] == 'true') {
 		bot.updateGuild(message.guild, { MusicPlugin: true });
 		message.success(settings.Language, 'PLUGINS/MUSIC_SET', args[0]).then(m => m.delete({ timeout:10000 }));
-	} else if (args[0] == 'off') {
+	} else if (args[0] == 'false') {
 		bot.updateGuild(message.guild, { MusicPlugin: false });
 		message.success(settings.Language, 'PLUGINS/MUSIC_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else {
