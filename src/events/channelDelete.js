@@ -14,7 +14,7 @@ module.exports = async (bot, channel) => {
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false) return;
 	// Check if event channelDelete is for logging
-	if (settings.ModLogEvents.includes('CHANNELDELTE')) {
+	if (settings.ModLogEvents.includes('CHANNELDELETE')) {
 		const embed = new MessageEmbed()
 			.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Deleted: ${'#' + channel.name}**`)
 			.setColor(15158332)
