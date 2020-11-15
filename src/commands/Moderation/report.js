@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (settings.ModLogEvents.includes('REPORT')) {
 		if (message.deletable) message.delete();
 		// Find user
-		const member = bot.GetUser(message, args);
+		const member = bot.getUsers(message, args);
 
 		// Make sure a reason was added
 		if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('report').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));

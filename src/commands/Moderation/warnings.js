@@ -4,7 +4,7 @@ const { Warning } = require('../../modules/database/models/index');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const member = bot.GetUser(message, args);
+	const member = bot.getUsers(message, args);
 	// get warnings of user
 	try {
 		await Warning.findOne({
