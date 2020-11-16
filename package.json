@@ -24,7 +24,7 @@
     "express-session": "^1.17.1",
     "fortnite": "^4.3.2",
     "lavacord": "^1.1.9",
-    "marked": "^1.2.3",
+    "marked": "^1.2.4",
     "minecraft-server-util": "^3.1.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
