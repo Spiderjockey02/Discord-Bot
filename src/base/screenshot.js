@@ -1,42 +1,48 @@
 const Puppeteer = require('puppeteer');
 
 class Snowshot {
-	async screenshot(url = false) {
-		try {
-			const options = { removeTags: [], removeAttributes: [], args: [], height: 800, width: 1280 };
-			const rawHTML = '';
-			const userAgent = 'Chrome';
-			const puppeteerOptions = {};
-			if (options && typeof options !== 'object') throw console.log('Option type must be an object');
-			if (options && options['path']) delete options['path'];
-			const browser = await Puppeteer.launch(puppeteerOptions);
-			const page = await browser.newPage();
-			await page.setViewport({
-				width: options.width,
-				height: options.height,
-			});
-			if (!url) {
-				if (!rawHTML) {
-					await browser.close();
-					return console.log('No html content found, Please load HTML before using screenshot method!');
-				}
-				await page.setContent(rawHTML);
-				const buffer = await page.screenshot(options);
+
+	constructor(options = { removeTags: [], removeAttributes: [], args: [], height: 800, width: 1280 }, puppeteerOptions = {}) {
+		this.options = options;
+		this.puppeteerOptions = puppeteerOptions;
+		this.rawHTML = '';
+	}
+
+	async screenshot(url = false, options) {
+		console.log('screenshot');
+		if (options && typeof options !== 'object') throw new Error('Option type must be an object');
+		if (options && options['path']) delete options['path'];
+		const browser = await Puppeteer.launch(this.puppeteerOptions);
+		const page = await browser.newPage();
+		await page.setViewport({
+			width: this.options.width,
+			height: this.options.height,
+		});
+		if (!url) {
+			if (!this.rawHTML) {
 				await browser.close();
-				return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
-			} else {
-				if (typeof url !== 'string') {
-					await browser.close();
-					return console.log(`URL type must be a string, received ${typeof url}`);
-				}
-				if (userAgent) await page.setUserAgent(userAgent);
-				await page.goto(url);
-				const buffer = await page.screenshot(options);
-				await browser.close();
-				return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
+				console.log('No html content found, Please load HTML before using screenshot method!');
+				return false;
 			}
-		} catch (e) {
-			console.log(e);
+			await page.setContent(this.rawHTML);
+			const buffer = await page.screenshot(options);
+			await browser.close();
+			return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
+		} else {
+			if (typeof url !== 'string') {
+				await browser.close();
+				console.log(`URL type must be a string, received ${typeof url}`);
+				return false;
+			}
+			try {
+				await page.goto(url);
+			} catch (e) {
+				console.log('Not a website');
+				return false;
+			}
+			const buffer = await page.screenshot(options);
+			await browser.close();
+			return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
 		}
 	}
 }
