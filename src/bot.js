@@ -7,8 +7,11 @@ const readdir = promisify(require('fs').readdir);
 // For translating messages
 require('./handlers/extenders')(bot);
 
+
 // giveaway manager
-const { GiveawaysManager } = require('discord-giveaways');
+
+const GiveawaysManager = require('./base/Manager');
+
 const manager = new GiveawaysManager(bot, {
 	storage: './src/assets/json/giveaways.json',
 	updateCountdownEvery: 10000,
@@ -19,8 +22,9 @@ const manager = new GiveawaysManager(bot, {
 		reaction: '🎉',
 	},
 });
-// We now have a giveawaysManager property to access the manager everywhere!
 bot.giveawaysManager = manager;
+
+
 // Logger (console log + file log)
 bot.logger = require('./modules/logging/logger');
 // For command handler
@@ -34,6 +38,7 @@ bot.Stats = {
 	BannedUsers: 0,
 	CommandsUsed: 0,
 };
+
 // Load commands
 (async () => {
 	// load commands
@@ -85,7 +90,7 @@ bot.Stats = {
 		const args = res.toString().trim().split(/ +/g);
 		// now run command
 		if (args.length == 0) return;
-		require('./utils/console.js').run(args, message, bot);
+		require('./handlers/console.js').run(args, message, bot);
 	});
 
 	// Connect bot to database
