@@ -9,7 +9,7 @@ const config = {
 		ksoft: 'ksoftAPI-Key',
 		steam: 'steamAPI-Key',
 		youtube: 'youtubeAPI-Key',
-		soudcloud: 'soundcloudAPI-Key',
+		soundcloud: 'soundcloudAPI-Key',
 		amethyste: 'amethysteAPI-Key',
 	},
 	// IF you want any commands/plugins disabled

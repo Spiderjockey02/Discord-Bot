@@ -49,8 +49,9 @@ module.exports.run = async (config) => {
 		logger.error(`${chalk.red('✗')} Fortnite API key is missing.`);
 		error = true;
 	} else {
-		const stats = new Fortnite(config.fortniteAPI);
+		const stats = new Fortnite(config.api_keys.fortnite);
 		await stats.user('Ninja', 'pc').catch(e => {
+			console.log(e);
 			if (e.message == 'Invalid authentication credentials') {
 				logger.error(`${chalk.red('✗')} Fortnite API key is incorrect.`);
 				error = true;
@@ -63,7 +64,7 @@ module.exports.run = async (config) => {
 		logger.error(`${chalk.red('✗')} Ksoft API key is missing.`);
 		error = true;
 	} else {
-		const ksoft = new KSoftClient(config.KSoftSiAPI);
+		const ksoft = new KSoftClient(config.api_keys.ksoft);
 		const resp = await ksoft.images.meme();
 		if (!resp.url) {
 			logger.error(`${chalk.red('✗')} Ksoft API key is incorrect.`);
@@ -77,7 +78,7 @@ module.exports.run = async (config) => {
 		error = true;
 	} else {
 		try {
-			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.SteamAPI}&vanityurl=eroticgaben`).then(res => res.json());
+			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.api_keys.steam}&vanityurl=eroticgaben`).then(res => res.json());
 		} catch (e) {
 			if (e.type == 'invalid-json') {
 				logger.error(`${chalk.red('✗')} Steam API key is incorrect.`);
@@ -123,7 +124,7 @@ module.exports.run = async (config) => {
 		const res = await fetch('https://v1.api.amethyste.moe/generate/blurple', {
 			method: 'POST',
 			headers: {
-				Authorization: `Bearer ${config.amethysteAPI_KEY}`,
+				Authorization: `Bearer ${config.api_keys.amethyste}`,
 			},
 		});
 		const result = await res.json();
