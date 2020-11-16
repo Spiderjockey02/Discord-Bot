@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Warning is sent to warning manager
 	try {
-		await require('../../modules/plugins/warning').run(bot, message, member[0], wReason, settings);
+		await require('../../helpers/warning-system').run(bot, message, member[0], wReason, settings);
 	} catch (err) {
 		console.log(err);
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: warn.`);

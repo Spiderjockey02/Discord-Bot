@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	}
 
 	// Get time
-	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, settings.Language);
+	const time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
 	if (!time) return;
 	args.shift();
 

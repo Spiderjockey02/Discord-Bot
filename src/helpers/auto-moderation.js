@@ -3,7 +3,7 @@ async function warnMember(bot, message, wReason, settings) {
 	const emojis = [(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:', (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'];
 	const wUser = message.guild.member(message.author);
 	try {
-		await require('../../modules/plugins/warning').run(bot, message, emojis, wUser, wReason, settings);
+		await require('./warning-system').run(bot, message, emojis, wUser, wReason, settings);
 	} catch (err) {
 		bot.logger.error(`${err.message} when trying to warn user`);
 		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when warning user, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));

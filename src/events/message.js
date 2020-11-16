@@ -94,10 +94,14 @@ module.exports = async (bot, message) => {
 			}, settings.CommandCooldownSec * 1000);
 		}
 	} else if (settings.ModerationPlugin) {
-		const check = require('../modules/plugins/moderation').run(bot, message, settings);
-		// This makes sure that if the auto-mod punished member, level plugin would not give XP
-		if (settings.LevelPlugin == true && check) return require('../modules/plugins/Levels').run(bot, message, settings);
+		try {
+			const check = require('../helpers/auto-moderation').run(bot, message, settings);
+			// This makes sure that if the auto-mod punished member, level plugin would not give XP
+			if (settings.LevelPlugin == true && check) return require('../helpers/level-system').run(bot, message, settings);
+		} catch (e) {
+			console.log(e);
+		}
 	} else if (settings.LevelPlugin) {
-		require('../modules/plugins/Levels').run(bot, message, settings);
+		require('../helpers/level-system').run(bot, message, settings);
 	}
 };

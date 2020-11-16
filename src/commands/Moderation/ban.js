@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		const possibleTime = args[args.length - 1];
 		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
 			// do tempban
-			const time = require('../../utils/Time-Handler.js').getTotalTime(possibleTime, message, settings.Language);
+			const time = require('../../helpers/time-converter.js').getTotalTime(possibleTime, message, settings.Language);
 			if (!time) return;
 			setTimeout(() => {
 				bot.commands.get('unban').run(bot, message, [`${member[0].user.id}`], settings);

@@ -3,7 +3,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'USER_PERMISSION', 'ADMINISTRATOR').then(m => m.delete({ timeout: 10000 }));
 
 	// Get time
-	const time = require('../../utils/Time-Handler.js').getTotalTime(args[0], message, settings.Language);
+	const time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
 	if (!time) return;
 
 	// Make sure that number of winners is a number
