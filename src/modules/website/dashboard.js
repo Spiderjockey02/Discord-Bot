@@ -38,7 +38,7 @@ module.exports = (bot) => {
 	app.use(limiter);
 	// Discord Ouath2 data
 	passport.use(new Strategy({
-		clientID: bot.config.botID,
+		clientID: bot.appInfo.id,
 		clientSecret: bot.config.botClient,
 		callbackURL: `${bot.config.Dashboard.domain}/callback`,
 		scope: ['identify', 'guilds'],
