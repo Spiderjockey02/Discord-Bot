@@ -28,7 +28,7 @@ Egglord also adds **a new mention** like @everyone and @here, the `@someone`, wh
 Egglord has a lot of features, with **11 categories**:
 
 *   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
-*       **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
+* **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
 *   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
 *   👑  **Host**: `reload`, `shutdown`, `addban`, `eval`! 
 *   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
