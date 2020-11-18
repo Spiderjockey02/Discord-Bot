@@ -3,7 +3,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'USER_PERMISSION', 'ADMINISTRATOR').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure a time, winner count & prize is entered
-	if (!args[0] || !args[1] || !args[2]) {
+	if (args.length != 3) {
 		if (message.deletable) message.delete();
 		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('g-start').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'g-start',
-	aliases: ['gstart', 'giveaway'],
+	aliases: ['gstart', 'giveaway', 'g-create'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
