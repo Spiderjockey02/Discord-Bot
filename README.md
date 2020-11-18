@@ -28,7 +28,7 @@ Egglord also adds **a new mention** like @everyone and @here, the `@someone`, wh
 Egglord has a lot of features, with **11 categories**:
 
 *   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokmeon` and **5** more! 
-* **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
+*   🎁  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
 *   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **4** more! 
 *   👑  **Host**: `reload`, `shutdown`, `addban`, `eval`! 
 *   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
@@ -37,7 +37,7 @@ Egglord has a lot of features, with **11 categories**:
 *   🚓  **Moderation**: `ban`, `clear`, `kick`, `ticket`, `warn`, `report`, `unmute` and **9** more! 
 *   🎵  **Music**: `add-playlist`, `queue`, `bassboost`, `shuffle`, `radio` and **15** more!
 *   🔞  **NSFW**: Total of **8** commands!
-*       **Plugins**: `serverstats`, `set-(level | moderation | music | nsfw | search)` and `setlang`!
+* **Plugins**: `serverstats`, `set-(level | moderation | music | nsfw | search)` and `setlang`!
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
 *   ❓  **Trivia**: `startmusictrivia`, `stopmusictrivia`
 
