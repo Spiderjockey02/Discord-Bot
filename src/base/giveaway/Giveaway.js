@@ -6,9 +6,7 @@ const {
 	GiveawayMessages,
 	GiveawayRerollOptions,
 } = require('./Constants.js');
-
 const GiveawaysManager = require('./Manager.js');
-
 
 /**
  * Represents a Giveaway
