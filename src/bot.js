@@ -11,9 +11,6 @@ require('./handlers/extenders')(bot);
 // giveaway manager
 
 const GiveawaysManager = require('./base/giveaway/Manager');
-const backup = require('./base/backup');
-backup.setStorageFolder('./src/assets/json/');
-bot.backup = backup;
 
 const manager = new GiveawaysManager(bot, {
 	storage: './src/assets/json/giveaways.json',
