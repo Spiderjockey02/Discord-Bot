@@ -33,8 +33,6 @@ class GiveawaysManager extends EventEmitter {
 		// The manager options
 		this.options = merge(defaultManagerOptions, options);
 
-		// Whether the Discord.js library version is the v12 one
-		this.v12 = this.options.DJSlib === 'v12';
 		this._init();
 
 		this.client.on('raw', async (packet) => {
@@ -44,15 +42,11 @@ class GiveawaysManager extends EventEmitter {
 			if (giveaway.ended) return;
 			const guild = this.client.guilds.cache.get(packet.d.guild_id);
 			if (!guild) return;
-			const member =
-                (this.v12 ? guild.members.cache : guild.members).get(packet.d.user_id) ||
-                (await guild.members.fetch(packet.d.user_id).catch(() => {}));
+			const member = guild.members.cache.get(packet.d.user_id) || await guild.members.fetch(packet.d.user_id).catch((e) => console.log(e));
 			if (!member) return;
-			const channel = (this.v12 ? guild.channels.cache : guild.channels).get(packet.d.channel_id);
+			const channel = guild.channels.cache.get(packet.d.channel_id);
 			if (!channel) return;
-			const message =
-                (this.v12 ? channel.messages.cache : channel.messages).get(packet.d.message_id) ||
-                (await channel.messages.fetch(packet.d.message_id));
+			const message = channel.messages.cache.get(packet.d.message_id) || await channel.messages.fetch(packet.d.message_id);
 			if (!message) return;
 			const reaction = message.reactions.cache.get(giveaway.reaction || this.options.default.reaction);
 			if (!reaction) return;

@@ -32,7 +32,6 @@ exports.GiveawaysManagerOptions = {};
 exports.defaultManagerOptions = {
 	storage: './giveaways.json',
 	updateCountdownEvery: 5000,
-	DJSlib: 'v12',
 	default: {
 		botsCanWin: false,
 		exemptPermissions: [],
