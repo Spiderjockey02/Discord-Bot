@@ -52,7 +52,7 @@
     "urban-dictionary": "^2.2.1",
     "weather-js": "^2.0.0",
     "yt-search": "^2.5.0",
-    "ytdl-core": "^4.0.5",
+    "ytdl-core": "^4.0.6",
     "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {},
