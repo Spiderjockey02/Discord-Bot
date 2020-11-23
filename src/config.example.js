@@ -8,8 +8,11 @@ const config = {
 		fortnite: 'fortniteAPI-Key',
 		ksoft: 'ksoftAPI-Key',
 		steam: 'steamAPI-Key',
-		youtube: 'youtubeAPI-Key',
-		soundcloud: 'soundcloudAPI-Key',
+		spotify: {
+			iD: 'spotify-ID',
+			secret: 'spotify-secret',
+		},
+		genuis: 'genuisAPI-KEY',
 		amethyste: 'amethysteAPI-Key',
 	},
 	// IF you want any commands/plugins disabled
