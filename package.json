@@ -17,7 +17,7 @@
     "deepmerge": "^4.2.2",
     "discord-player": "^3.0.2",
     "discord-ytdl-core": "^4.1.5",
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.0",
     "ejs": "^3.1.5",
     "erela.js": "^2.2.0",
     "eslint": "^7.13.0",
