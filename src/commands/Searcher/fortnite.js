@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	const stats = new Fortnite(bot.config.api_keys.fortnite);
 
 	// Check if platform and user was entered
-	if (!['pc', 'xbl', 'psn'].includes(args[0])) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+	if (!['kbm', 'gamepad', 'touch'].includes(args[0])) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 	// Get platform and user
@@ -50,5 +50,5 @@ module.exports.help = {
 	name: 'fortnite',
 	category: 'Searcher',
 	description: 'Get information on a Fortnite account.',
-	usage: '${PREFIX}fortnite <psn | pc | xbl> <user>',
+	usage: '${PREFIX}fortnite <kbm | gamepad | touch> <user>',
 };
