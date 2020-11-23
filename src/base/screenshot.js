@@ -1,7 +1,6 @@
 const Puppeteer = require('puppeteer');
 
 class Snowshot {
-
 	constructor(options = { removeTags: [], removeAttributes: [], args: [], height: 800, width: 1280 }, puppeteerOptions = {}) {
 		this.options = options;
 		this.puppeteerOptions = puppeteerOptions;
