@@ -20,23 +20,23 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// update the time
 	const time = hmsToSecondsOnly(args[0]) * 1000;
-	if (time > player.queue.current.duration) {
-		message.channel.send(`Less than ${player.queue.current.duration}`);
+	if (time + player.position >= player.queue.current.duration) {
+		message.channel.send(`The song is only ${new Date(player.queue.current.duration).toISOString().slice(14, 19)}`);
 	} else {
-		player.seek(time);
+		player.seek(player.position + time);
+		message.channel.send('Time moved');
 	}
-
-	message.channel.send('Time moved');
 };
 
 module.exports.config = {
-	command: 'seek',
+	command: 'fast-forward',
+	aliases: ['ffw', 'fastforward'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 
 module.exports.help = {
-	name: 'Seek',
+	name: 'Fast forward',
 	category: 'Music',
-	description: 'Sets the playing track\'s position to the specified position.',
-	usage: '${PREFIX}seek <time>',
+	description: 'Fast forwards the player by your specified amount.',
+	usage: '${PREFIX}fast-forward <time>',
 };

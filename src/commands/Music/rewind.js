@@ -20,23 +20,24 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// update the time
 	const time = hmsToSecondsOnly(args[0]) * 1000;
-	if (time > player.queue.current.duration) {
-		message.channel.send(`Less than ${player.queue.current.duration}`);
+	if (time + player.position <= 0) {
+		message.channel.send('A song can not be less than 0 seconds long');
 	} else {
-		player.seek(time);
+		player.seek(player.position - time);
+		message.channel.send('Time moved');
 	}
-
-	message.channel.send('Time moved');
 };
 
+
 module.exports.config = {
-	command: 'seek',
+	command: 'rewind',
+	aliases: ['rw'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 
 module.exports.help = {
-	name: 'Seek',
+	name: 'Rewind',
 	category: 'Music',
-	description: 'Sets the playing track\'s position to the specified position.',
-	usage: '${PREFIX}seek <time>',
+	description: 'Rewinds the player by your specified amount.',
+	usage: '${PREFIX}rewind <time>',
 };

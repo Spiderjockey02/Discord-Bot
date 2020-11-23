@@ -1,100 +1,122 @@
-// queue page calculator
-function Page(page, message, queue, fetched) {
-	const total = queue[0].duration;
-	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
-	const left = total - seek;
-
-	const songs = page * 10;
-	let resp = '```ml\n';
-	for (let i = (songs - 10); i < songs; i++) {
-		if (i == 0 & songs == 10) {
-			resp += '\t⬐ current track   \n';
-			resp += `0) ${queue[0].title} ${new Date(left * 1000).toISOString().substr(11, 8)} left\n`;
-			resp += '\t⬑ current track \n';
+// paginator
+function paginator(page, msg, queue, Currentposition, prefix) {
+	if (page == 1) {
+		// display queue
+		let resp = '```ml\n';
+		resp += '\t⬐ current track   \n';
+		resp += `0) ${queue.current.title} ${new Date(queue.current.duration - Currentposition).toISOString().slice(14, 19)} left\n`;
+		resp += '\t⬑ current track \n';
+		for (let i = 0; i < 10; i++) {
+			if (queue[i] != undefined) {
+				resp += `${i + 1}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
+			}
 		}
-		// make song has been found
-		if (queue[i] != undefined) {
-			resp += `${i}) ${queue[i].title} ${require('../../Utils/Time-Handler.js').toHHMMSS(queue[i].duration)}\n`;
+		if (queue.length < 10) {
+			resp += `\n\tThis is the end of the queue!\n\tUse ${prefix}play to add more :^)\n`;
 		}
+		resp += '```';
+		msg.edit(resp);
+	} else {
+		const songs = page * 10;
+		let resp = '```ml\n',
+			end = false;
+		for (let i = (songs - 10); i < songs; i++) {
+			// make song has been found
+			if (queue[i] != undefined) {
+				resp += `${i}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
+			} else if (!end) {
+				// show end of queue message
+				resp += `\n\tThis is the end of the queue!\n\tUse ${prefix}play to add more :^)\n`;
+				end = true;
+			}
+		}
+		resp += '```';
+		msg.edit(resp);
 	}
-	resp += '```';
-	message.edit(resp);
 }
 
-module.exports.run = async (bot, message, args, emojis, settings, ops) => {
-	// Check to see if there are any songs in queue/playing
-	const fetched = ops.active.get(message.guild.id);
-	if (!fetched) return message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} There are currently no songs playing in this server.` } }).then(m => m.delete({ timeout: 5000 }));
+module.exports.run = async (bot, message, args, settings) => {
+	// Check that a song is being played
+	const player = bot.manager.players.get(message.guild.id);
+	if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
-	// Check and get queue
-	const queue = fetched.queue;
-	if (queue.length == 0) return message.channel.send('`There are currently no songs playing in this server.`');
-	// console.log(queue) //-debugging
+	// get queue
+	const queue = player.queue;
 
-	// get current track time left
-	const total = queue[0].duration;
-	const seek = (fetched.connection.dispatcher.streamTime - fetched.connection.dispatcher.pausedTime) / 1000;
-	const left = total - seek;
-
+	// display queue
 	let resp = '```ml\n';
 	resp += '\t⬐ current track   \n';
-	resp += `0) ${queue[0].title} ${new Date(left * 1000).toISOString().substr(11, 8)} left\n`;
+	resp += `0) ${queue.current.title} ${new Date(queue.current.duration - player.position).toISOString().slice(14, 19)} left\n`;
 	resp += '\t⬑ current track \n';
-	for (let i = 1; i < 10; i++) {
+	for (let i = 0; i < 10; i++) {
 		if (queue[i] != undefined) {
-			resp += `${i}) ${queue[i].title} ${require('../../Utils/Time-Handler.js').toHHMMSS(queue[i].duration)}\n`;
+			resp += `${i + 1}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
 		}
 	}
 	if (queue.length < 10) {
 		resp += `\n\tThis is the end of the queue!\n\tUse ${settings.prefix}play to add more :^)\n`;
 	}
 	resp += '```';
+
 	// Displays message
-	message.channel.send(resp).then(async function(msg) {
+	message.channel.send(resp).then(async (msg) => {
+		// react to queue message
 		await msg.react('⏬');
 		await msg.react('🔽');
 		await msg.react('🔼');
 		await msg.react('⏫');
+
+		// set up filter and page number
 		const filter = (reaction, user) => {
-			return ['⏬', '🔽', '🔼', '⏫'].includes(reaction.emojis[0].name) && !user.bot;
+			return ['⏬', '🔽', '🔼', '⏫'].includes(reaction.emoji.name) && !user.bot;
 		};
 		let page = 1;
-		const collector = msg.createReactionCollector(filter, { time: 240000 });
-		collector.on('collect', (reaction) => {
+		// create collector
+		const collector = msg.createReactionCollector(filter, { time: queue.current.duration - player.position });
+		collector.on('collect', (reaction, user) => {
 			// find what reaction was done
 			const totalPage = Math.ceil(queue.length / 10);
-			if (reaction.emojis[0].name === '⏬') {
+			if (reaction.emoji.name === '⏬') {
 				// last page
 				page = totalPage;
-				Page(page, msg, queue, fetched);
-			} else if (reaction.emojis[0].name === '🔽') {
+				paginator(page, msg, queue, player.position, settings.prefix);
+				reaction.users.remove(user);
+			} else if (reaction.emoji.name === '🔽') {
 				// Show next 10 songs
 				page = page + 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
-				Page(page, msg, queue, fetched);
-			} else if (reaction.emojis[0].name === '🔼') {
+				paginator(page, msg, queue, player.position, settings.prefix);
+				reaction.users.remove(user);
+			} else if (reaction.emoji.name === '🔼') {
 				// show the last 10 previous songs
 				page = page - 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
-				Page(page, msg, queue, fetched);
+				paginator(page, msg, queue, player.position, settings.prefix);
+				reaction.users.remove(user);
 			} else {
 				// This will show the first 10 songs (in queue)
 				page = 1;
-				Page(page, msg, queue, fetched);
+				paginator(page, msg, queue, player.position, settings.prefix);
+				reaction.users.remove(user);
 			}
+		});
+		collector.on('end', collected => {
+			console.log(`Collected ${collected.size} items`);
 		});
 	});
 };
+
 module.exports.config = {
 	command: 'queue',
 	aliases: ['que'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
+
 module.exports.help = {
-	name: 'queue',
+	name: 'Queue',
 	category: 'Music',
-	description: 'Displays the music queue.',
+	description: 'Displays the queue.',
 	usage: '${PREFIX}queue',
 };

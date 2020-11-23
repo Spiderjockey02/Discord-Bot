@@ -13,11 +13,12 @@ module.exports = async bot => {
 	} catch (err) {
 		bot.logger.error('Dashboard: ' + err.message);
 	}
-	try {
-		require('../base/Audio-Player')(bot);
-	} catch (err) {
-		console.log('Lavalink: ' + err.message);
-	}
+
+	// Load up audio player
+	bot.manager.init(bot.user.id);
+
+	// Load up discord bot
+	require('../helpers/DiscordBotListUpdate')(bot);
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);

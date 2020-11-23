@@ -1,15 +1,13 @@
 // Dependencies
 const Discord = require('discord.js');
-const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES'] } });
+const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES'] } });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 
 // For translating messages
 require('./handlers/extenders')(bot);
 
-
 // giveaway manager
-
 const GiveawaysManager = require('./base/giveaway/Manager');
 
 const manager = new GiveawaysManager(bot, {
@@ -82,6 +80,8 @@ bot.Stats = {
 		console.error('Unable to load config.js \n', err);
 		process.exit(1);
 	}
+	// music
+	require('./base/Audio-player')(bot);
 
 	// Interact with console
 	const y = process.openStdin();
