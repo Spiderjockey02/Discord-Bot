@@ -50,10 +50,14 @@ exports.log = (content, type = 'log') => {
 	}
 };
 
-exports.error = (...args) => this.log(...args, 'error');
-
 exports.warn = (...args) => this.log(...args, 'warn');
+
+exports.error = (...args) => this.log(...args, 'error');
 
 exports.debug = (...args) => this.log(...args, 'debug');
 
 exports.cmd = (...args) => this.log(...args, 'cmd');
+
+exports.ready = (...args) => this.log(...args, 'ready');
+
+exports.website = (...args) => this.log(...args, 'website');
