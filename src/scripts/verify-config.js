@@ -87,18 +87,6 @@ module.exports.run = async (config) => {
 		}
 	}
 
-	// Check Youtube API
-	if (!config.api_keys.youtube) {
-		logger.error(`${chalk.red('✗')} Youtube API key is missing.`);
-		error = true;
-	}
-
-	// Check Soundcloud API
-	if (!config.api_keys.soundcloud) {
-		logger.error(`${chalk.red('✗')} Soundcloud API key is missing.`);
-		error = true;
-	}
-
 	// Check for bot list API keys
 	if (config.DiscordBotLists) {
 		// Check discord api
