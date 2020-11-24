@@ -20,8 +20,8 @@ module.exports = async (bot) => {
 			if (guild) guild.shard.send(payload);
 		},
 	})
-		.on('nodeConnect', node => console.log(`Node ${node.options.identifier} connected`))
-		.on('nodeError', (node, error) => console.log(`Node ${node.options.identifier} had an error: ${error.message}`))
+		.on('nodeConnect', node => bot.logger.ready(`Node ${node.options.identifier} has connected.`))
+		.on('nodeError', (node, error) => bot.logger.error(`Node: '${node.options.identifier}', has error: '${error.message}'.`))
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new MessageEmbed()

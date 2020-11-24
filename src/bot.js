@@ -81,7 +81,11 @@ bot.Stats = {
 		process.exit(1);
 	}
 	// music
-	require('./base/Audio-player')(bot);
+	try {
+		require('./base/Audio-Player')(bot);
+	} catch (e) {
+		bot.logger.error(e);
+	}
 
 	// Interact with console
 	const y = process.openStdin();
