@@ -1,4 +1,4 @@
-const { Warning } = require('../../modules/database/models');
+const { Warning } = require('../modules/database/models');
 const Discord = require('discord.js');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
