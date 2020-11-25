@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		message.channel.send(embed);
 	} else {
 		// Get image, defaults to author's avatar
-		const file = bot.GetImage(message);
+		const file = bot.GetImage(message, args, settings.Language);
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 		let image;
@@ -35,6 +35,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			});
 		} else if (image_2.includes(args[0])) {
 			// get image
+			console.log(file);
 			image = await post(`https://v1.api.amethyste.moe/generate/${args[0]}`, { 'avatar': file[1], 'url' : file[0] }, {
 				responseType: 'arraybuffer',
 				headers: {

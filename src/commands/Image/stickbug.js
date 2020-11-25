@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get image, defaults to author's avatar
-	const file = bot.GetImage(message);
+	const file = bot.GetImage(message, args, settings.Language);
 
 	// send 'waiting' message
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
