@@ -6,7 +6,7 @@ async function warnMember(bot, message, wReason, settings) {
 		await require('./warning-system').run(bot, message, emojis, wUser, wReason, settings);
 	} catch (err) {
 		bot.logger.error(`${err.message} when trying to warn user`);
-		message.channel.send({ embed:{ color:15158332, description:`${emojis[0]} An error occured when warning user, please try again or contact support.` } }).then(m => m.delete({ timeout: 10000 }));
+		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 10000 }));
 	}
 }
 
