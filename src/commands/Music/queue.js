@@ -1,5 +1,6 @@
 // paginator
 function paginator(page, msg, queue, Currentposition, prefix) {
+	console.log(page);
 	if (page == 1) {
 		// display queue
 		let resp = '```ml\n';
@@ -40,6 +41,18 @@ module.exports.run = async (bot, message, args, settings) => {
 	const player = bot.manager.players.get(message.guild.id);
 	if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
+	// Check if bot has permission to connect to voice channel
+	if (!message.channel.permissionsFor(message.guild.me).has('ADD_REACTIONS')) {
+		bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+	}
+
+	// Check if bot has permission to delete emojis
+	if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
+		bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+	}
+
 	// get queue
 	const queue = player.queue;
 
@@ -73,37 +86,30 @@ module.exports.run = async (bot, message, args, settings) => {
 		let page = 1;
 		// create collector
 		const collector = msg.createReactionCollector(filter, { time: queue.current.duration - player.position });
-		collector.on('collect', (reaction, user) => {
+		collector.on('collect', (reaction) => {
 			// find what reaction was done
-			const totalPage = Math.ceil(queue.length / 10);
+			const totalPage = Math.round(queue.length / 10);
 			if (reaction.emoji.name === '⏬') {
 				// last page
 				page = totalPage;
 				paginator(page, msg, queue, player.position, settings.prefix);
-				reaction.users.remove(user);
 			} else if (reaction.emoji.name === '🔽') {
 				// Show next 10 songs
 				page = page + 1;
 				if (page <= 1) page = 1;
 				if (page >= totalPage) page = totalPage;
 				paginator(page, msg, queue, player.position, settings.prefix);
-				reaction.users.remove(user);
 			} else if (reaction.emoji.name === '🔼') {
 				// show the last 10 previous songs
 				page = page - 1;
-				if (page <= 1) page = 1;
+				if (page == 0) page = 1;
 				if (page >= totalPage) page = totalPage;
 				paginator(page, msg, queue, player.position, settings.prefix);
-				reaction.users.remove(user);
 			} else {
 				// This will show the first 10 songs (in queue)
 				page = 1;
 				paginator(page, msg, queue, player.position, settings.prefix);
-				reaction.users.remove(user);
 			}
-		});
-		collector.on('end', collected => {
-			console.log(`Collected ${collected.size} items`);
 		});
 	});
 };

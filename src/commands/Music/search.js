@@ -3,7 +3,22 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.voice.channel) return message.channel.send('You\'re not in a voice channel that I can connect to.');
 
 	// Check that user is in the same voice channel
-	if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+	if (bot.manager.players.get(message.guild.id)) {
+		if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+	}
+
+	// Check if bot has permission to connect to voice channel
+	if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
+		bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
+	}
+
+	// Check if bot has permission to speak in the voice channel
+	if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
+		bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
+		return message.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
+	}
+
 
 	// Make sure that a song/url has been entered
 	if (!args) return message.channel.send('Please enter a song name/url');
@@ -15,7 +30,6 @@ module.exports.run = async (bot, message, args, settings) => {
 		textChannel: message.channel.id,
 	});
 
-	if (player.state !== 'CONNECTED') player.connect();
 	const search = args.join(' ');
 	let res;
 
@@ -29,7 +43,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	} catch (err) {
 		return message.channel.send(`There was an error while searching: ${err.message}`);
 	}
-	console.log(res);
+
 	// Workout what to do with the results
 	if (res.loadType == 'NO_MATCHES') {
 		// An error occured or couldn't find the track
@@ -65,6 +79,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (index < 0 || index > max - 1) return message.reply(`the number you provided too small or too big (1-${max}).`);
 
 		const track = res.tracks[index];
+		if (player.state !== 'CONNECTED') player.connect();
 		player.queue.add(track);
 
 		if (!player.playing && !player.paused && !player.queue.size) {

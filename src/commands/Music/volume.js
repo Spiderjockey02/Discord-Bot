@@ -7,12 +7,12 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 	// Make sure a correct volume was entered
-	if (!args[0]) return message.channel.send(`:loud_sound: The current volume is: **${player.volume}%**.`);
+	if (!args[0]) return message.channel.send({ embed:{ description: `:loud_sound: The current volume is: **${player.volume}%**.` } });
 	if (Number(args) <= 0 || Number(args) > 100) return message.channel.send('Please input a number between 0 and 100');
 
 	// Update volume
 	player.setVolume(Number(args));
-	return message.channel.send(`:loud_sound: Player sound set to **${player.volume}%**.`);
+	return message.channel.send({ embed:{ description: `:loud_sound: Player sound set to **${player.volume}%**.` } });
 };
 
 module.exports.config = {
