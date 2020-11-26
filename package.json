@@ -32,7 +32,7 @@
     "cheerio": "^1.0.0-rc.3",
     "dateformat": "^4.0.0",
     "deepmerge": "^4.2.2",
-    "discord.js": "^12.5.0",
+    "discord.js": "^12.5.1",
     "ejs": "^3.1.5",
     "erela.js": "^2.2.0",
     "eslint": "^7.14.0",
