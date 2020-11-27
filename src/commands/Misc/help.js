@@ -19,6 +19,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// Show default help page
 		const embed = new MessageEmbed()
 			.setColor(3447003)
+			.setThumbnail(bot.user.displayAvatarURL())
 			.setTitle(`${bot.user.username}'s Plugin list.`)
 			.addField('Fun', `\`${settings.prefix}help Fun\``, true)
 			.addField('Guild', `\`${settings.prefix}help Guild\``, true)
@@ -32,9 +33,9 @@ module.exports.run = async (bot, message, args, settings) => {
 		message.channel.send(embed);
 	} else if (args.length == 1) {
 		// Check if arg is command
-		if (bot.commands.get(args[0])) {
+		if (bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]))) {
 			// arg was a command
-			const cmd = bot.commands.get(args[0]);
+			const cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
 			// Check if the command is allowed on the server
 			if (plugins.includes(cmd.help.category) || ['Fun', 'Guild', 'Image', 'Misc', 'Plugins'].includes(cmd.help.category)) {
 				const embed = new MessageEmbed()
