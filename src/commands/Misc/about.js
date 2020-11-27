@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 		.setTitle('About')
 		.setDescription(`- [Dashboard](${bot.config.Dashboard.domain})
-		- [Invite Link](https://discordapp.com/api/oauth2/authorize?response_type=code&client_id=${bot.config.botID}&permissions=485846102&scope=bot)
+		- [Invite Link](https://discordapp.com/api/oauth2/authorize?response_type=code&client_id=${bot.user.id}&permissions=485846102&scope=bot)
 		- [Commands](${bot.config.Dashboard.domain}/commands)
 		- [Bot Support Server](${bot.config.SupportServer.link})
 			${bot.user.username} is a fully customizable Discord Bot. This bot comes fully packed with a wide range of commands, an advanced moderation system and an extensive logging system. These features are highly customizable and easy to setup but there's no point me just telling you so come and find out for yourself.`)
