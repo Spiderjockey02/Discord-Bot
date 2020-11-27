@@ -2,6 +2,7 @@
 const { Manager } = require('erela.js');
 const { Spotify } = require('./Music/SpotifyHandler');
 const { MessageEmbed } = require('discord.js');
+require('./music/BetterPlayer');
 
 module.exports = async (bot) => {
 	const clientID = bot.config.api_keys.spotify.iD;
@@ -25,14 +26,19 @@ module.exports = async (bot) => {
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new MessageEmbed()
-				.setTitle('Now playing:')
+				.setTitle('» Now playing:')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			bot.channels.cache.get(player.textChannel).send(embed).then(m => m.delete({ timeout: track.duration }));
 		})
 		.on('queueEnd', (player) => {
 			// When the queue has finished
-			bot.channels.cache.get(player.textChannel).send('Queue has ended.');
+			const embed = new MessageEmbed()
+				.setDescription('Queue has ended.');
+			bot.channels.cache.get(player.textChannel).send(embed);
 			player.destroy();
+		})
+		.on('playerMove', (player, currentChannel, newChannel) => {
+			player.voiceChannel = bot.channels.cache.get(newChannel);
 		});
 
 	// update voice states

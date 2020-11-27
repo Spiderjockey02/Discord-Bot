@@ -1,3 +1,6 @@
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports.run = async (bot, message, args, settings) => {
 	// Check that a song is being played
 	const player = bot.manager.players.get(message.guild.id);
@@ -8,7 +11,10 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// shuffle queue
 	player.queue.shuffle();
-	return message.channel.send('Queue has been shuffled');
+	const embed = new MessageEmbed()
+		.setColor(message.member.displayHexColor)
+		.setDescription('Queue has been shuffled');
+	message.channel.send(embed);
 };
 
 module.exports.config = {

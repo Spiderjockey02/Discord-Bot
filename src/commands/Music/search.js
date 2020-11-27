@@ -1,3 +1,6 @@
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports.run = async (bot, message, args, settings) => {
 	// make sure user is in a voice channel
 	if (!message.member.voice.channel) return message.channel.send('You\'re not in a voice channel that I can connect to.');
@@ -19,9 +22,8 @@ module.exports.run = async (bot, message, args, settings) => {
 		return message.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
 	}
 
-
 	// Make sure that a song/url has been entered
-	if (!args) return message.channel.send('Please enter a song name/url');
+	if (!args) return message.error(settings.Language, 'MUSIC/NO_ARGS');
 
 	// Create player
 	const player = bot.manager.create({
@@ -41,7 +43,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			throw res.exception;
 		}
 	} catch (err) {
-		return message.channel.send(`There was an error while searching: ${err.message}`);
+		return message.error(settings.Language, 'MUSIC/ERROR', err.message);
 	}
 
 	// Workout what to do with the results
@@ -50,22 +52,24 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (!player.queue.current) player.destroy();
 		return message.error(settings.Language, 'MUSIC/NO_SONG');
 	} else {
-		let max = 5, collected;
+		// Display the options for search
+		let max = 10, collected;
 		const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
 		if (res.tracks.length < max) max = res.tracks.length;
 
-		const results = res.tracks
-			.slice(0, max)
-			.map((track, index) => `${++index} - \`${track.title}\``)
-			.join('\n');
-
-		message.channel.send(results);
+		const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+		const embed = new MessageEmbed()
+			.setTitle(`Results for ${args.join(' ')}`)
+			.setColor(message.member.displayHexColor)
+			.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
+		message.channel.send(embed);
+		// message.channel.send(`${results}\n\tPick a number from 1-10 or cancel.\n`);
 
 		try {
 			collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
 		} catch (e) {
 			if (!player.queue.current) player.destroy();
-			return message.reply('you didn\'t provide a selection.');
+			return message.reply('You didn\'t choose a song in time.');
 		}
 
 		const first = collected.first().content;
@@ -76,7 +80,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		}
 
 		const index = Number(first) - 1;
-		if (index < 0 || index > max - 1) return message.reply(`the number you provided too small or too big (1-${max}).`);
+		if (index < 0 || index > max - 1) return message.reply(`The number you provided was too small or too big (1-${max}).`);
 
 		const track = res.tracks[index];
 		if (player.state !== 'CONNECTED') player.connect();
