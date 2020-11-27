@@ -1,10 +1,13 @@
+// Dependecies
+const { MessageEmbed } = require('discord.js');
+
 module.exports.run = async (bot, message, args, settings) => {
 	// Check that a song is being played
 	const player = bot.manager.players.get(message.guild.id);
 	if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 	// Make sure the user is in a voice channel
-	if (!message.member.voice.channel) return message.channel.send('You\'re not in a voice channel that I can connect to.');
+	if (!message.member.voice.channel) return message.error(settings.Language, 'MUSIC/MISSING_VOICE');
 
 	// Check if bot has permission to connect to voice channel
 	if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
@@ -19,8 +22,15 @@ module.exports.run = async (bot, message, args, settings) => {
 	}
 
 	// Move the bot to the new voice channel
-	player.setVoiceChannel(message.member.voice.channel.id);
-	message.channel.send('I have successfully moved channel');
+	try {
+		await player.setVoiceChannel(message.member.voice.channel.id);
+		const embed = new MessageEmbed()
+			.setColor(message.member.displayHexColor)
+			.setDescription(message.translate(settings.Language, 'MUSIC/CHANNEL_MOVE'));
+		message.channel.send(embed);
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 module.exports.config = {

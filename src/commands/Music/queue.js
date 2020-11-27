@@ -1,6 +1,5 @@
 // paginator
 function paginator(page, msg, queue, Currentposition, prefix) {
-	console.log(page);
 	if (page == 1) {
 		// display queue
 		let resp = '```ml\n';
@@ -88,7 +87,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		const collector = msg.createReactionCollector(filter, { time: queue.current.duration - player.position });
 		collector.on('collect', (reaction) => {
 			// find what reaction was done
-			const totalPage = Math.round(queue.length / 10);
+			const totalPage = (queue.length >= 1) ? Math.round(queue.length / 10) : 1;
 			if (reaction.emoji.name === '⏬') {
 				// last page
 				page = totalPage;

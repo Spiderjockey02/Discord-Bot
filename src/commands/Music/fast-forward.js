@@ -9,6 +9,7 @@ function hmsToSecondsOnly(str) {
 	}
 	return s;
 }
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Check that a song is being played
@@ -21,10 +22,13 @@ module.exports.run = async (bot, message, args, settings) => {
 	// update the time
 	const time = hmsToSecondsOnly(args[0]) * 1000;
 	if (time + player.position >= player.queue.current.duration) {
-		message.channel.send(`The song is only ${new Date(player.queue.current.duration).toISOString().slice(14, 19)}`);
+		message.channel.send(`The song is only ${new Date(player.queue.current.duration).toISOString().slice(14, 19)}.`);
 	} else {
 		player.seek(player.position + time);
-		message.channel.send('Time moved');
+		const embed = new MessageEmbed()
+			.setColor(message.member.displayHexColor)
+			.setDescription(message.translate(settings.Language, 'MUSIC/TIME_MOVED', new Date(player.position).toISOString().slice(14, 19)));
+		message.channel.send(embed);
 	}
 };
 
