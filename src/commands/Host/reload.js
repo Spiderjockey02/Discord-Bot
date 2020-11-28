@@ -10,9 +10,9 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// checks to make sure command exists
 	const commandName = args[0].toLowerCase();
-	if (bot.commands.has(commandName)) {
+	if (bot.commands.has(commandName) || bot.commands.get(bot.aliases.get(commandName))) {
 		// Finds command
-		const command = bot.commands.get(commandName);
+		const command = bot.commands.get(commandName) || bot.commands.get(bot.aliases.get(commandName));
 
 		// reloads command
 		try {
