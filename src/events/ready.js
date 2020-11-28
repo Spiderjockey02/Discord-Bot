@@ -7,26 +7,28 @@ module.exports = async bot => {
 	bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
 
 	bot.appInfo = await bot.fetchApplication();
-	// dashboard comes online (moved here so user information can be retrieved from bot to dashboard)
-	try {
-		await require('../modules/website/dashboard')(bot);
-	} catch (err) {
-		bot.logger.error('Dashboard: ' + err.message);
-	}
 
 	// Load up audio player
 	bot.manager.init(bot.user.id);
 
 	// Load up discord bot
-	require('../helpers/DiscordBotListUpdate')(bot);
+	try {
+		await require('../helpers/DiscordBotListUpdate')(bot);
+	} catch (err) {
+		bot.logger.error(err.message);
+	}
+
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);
-	// Sets Bot's activity to !help and status to 'Online'
+
+	// Updates the bot's status
 	const activities = [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`];
 	let j = 0;
 	setInterval(() => bot.user.setActivity(`${activities[j++ % activities.length]}`, { type: 'WATCHING' }), 10000);
 	bot.user.setStatus('Online');
+
+
 	// Check if any servers added the bot while offline
 	bot.guilds.cache.forEach(async item => {
 		let settings;
@@ -40,6 +42,7 @@ module.exports = async bot => {
 			bot.emit('guildCreate', item);
 		}
 	});
+
 	// Delete server settings on servers that removed the bot while it was offline
 	const data = await Guild.find({});
 	if (data.length > bot.guilds.cache.size) {
