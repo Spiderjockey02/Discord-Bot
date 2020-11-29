@@ -1,0 +1,5 @@
+This is where all the voice clips will
+
+run this command once you have you're merge.pcm file
+ 
+ffmpeg -f s16le -ar 44.1k -ac 2 -i merge.pcm file.wav
