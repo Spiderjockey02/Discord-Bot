@@ -35,7 +35,7 @@ Egglord has a lot of features, with **11 categories**:
 *   💰  **Level**: `leaderboard`, `rank`
 *   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **3** more!
 *   🚓  **Moderation**: `ban`, `clear`, `kick`, `ticket`, `warn`, `report`, `unmute` and **9** more! 
-*   🎵  **Music**: `add-playlist`, `queue`, `bassboost`, `shuffle`, `radio` and **15** more!
+*   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **12** more!
 *   🔞  **NSFW**: Total of **8** commands!
 * **Plugins**: `serverstats`, `set-(level | moderation | music | nsfw | search)` and `setlang`!
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
