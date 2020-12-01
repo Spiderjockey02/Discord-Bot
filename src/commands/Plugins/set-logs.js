@@ -53,11 +53,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			bot.logger.error(err);
 		}
 	} else {
-		const embed = new MessageEmbed()
-			.setTitle('Logging plugin')
-			.setColor(message.member.displayHexColor)
-			.setDescription(`\`${settings.prefix}set-logs <true | false>\`\n\`${settings.prefix}set-logs channel <ChannelID>\`\n\`${settings.prefix}set-logs <add | remove> LOG\``);
-		message.channel.send(embed);
+		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-logs').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
 };
 

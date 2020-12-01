@@ -19,6 +19,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'set-search',
+	aliases: ['setsearch'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 

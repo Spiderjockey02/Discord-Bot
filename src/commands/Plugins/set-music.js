@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'set-music',
-	aliases: ['music'],
+	aliases: ['setmusic'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
