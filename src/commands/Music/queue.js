@@ -86,6 +86,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// create collector
 		const collector = msg.createReactionCollector(filter, { time: queue.current.duration - player.position });
 		collector.on('collect', (reaction) => {
+			console.log(reaction);
 			// find what reaction was done
 			const totalPage = (queue.length >= 1) ? Math.round(queue.length / 10) : 1;
 			if (reaction.emoji.name === '⏬') {

@@ -7,19 +7,18 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 	// Change bassboost value
-	player.setBassboost(!player.bassboost);
-	message.channel.send(`Bassboost is ${!player.bassboost}`);
+	player.setSpeed(Number(args[0]));
+	message.channel.send(`Bassboost is ${player.speed}`);
 };
 
 module.exports.config = {
-	command: 'bassboost',
-	aliases: ['bb'],
+	command: 'speed',
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 };
 
 module.exports.help = {
-	name: 'Bassboost',
+	name: 'Speed',
 	category: 'Music',
-	description: 'Sets the player\'s bass boost setting.',
-	usage: '${PREFIX}bassboost',
+	description: 'Sets the player\'s playback speed.',
+	usage: '${PREFIX}speed <Number>',
 };

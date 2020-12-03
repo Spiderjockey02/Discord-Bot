@@ -1,3 +1,4 @@
+// Dependecies
 const { MessageEmbed } = require('discord.js');
 const createBar = require('string-progressbar');
 
@@ -12,9 +13,9 @@ module.exports.run = async (bot, message, args, settings) => {
 	// Display current song information
 	const embed = new MessageEmbed()
 		.setAuthor('Now playing:')
-		.setDescription(`[${title}](${uri}) [${message.guild.member(requester)}]`)
+		.setColor(message.member.displayHexColor)
 		.setThumbnail(thumbnail)
-		.setColor(3066993)
+		.setDescription(`[${title}](${uri}) [${message.guild.member(requester)}]`)
 		.addField('\u200b', new Date(player.position).toISOString().slice(14, 19) + ' [' + createBar(duration == 0 ? player.position : duration, player.position, 15)[0] + '] ' + new Date(duration).toISOString().slice(14, 19), false);
 	message.channel.send(embed);
 };

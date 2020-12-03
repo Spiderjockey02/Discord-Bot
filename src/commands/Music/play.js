@@ -50,14 +50,14 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (!player.queue.current) player.destroy();
 		return message.error(settings.Language, 'MUSIC/NO_SONG');
 	} else if (res.loadType == 'PLAYLIST_LOADED') {
-		// Add playlist to queue
+		// Connect to voice channel if not already
 		if (player.state !== 'CONNECTED') player.connect();
+		// Show how many songs have been added
+		message.channel.send({ embed:{ description: `Queued **${res.tracks.length}** tracks` } });
+		// Add songs to queue
 		player.queue.add(res.tracks);
-		if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) {
-			player.play();
-		} else {
-			message.channel.send({ embed:{ description: `Queued **${res.tracks.length}** tracks` } });
-		}
+		// PLay the song(s) if not already
+		if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 	} else {
 		// add track to queue and play
 		if (player.state !== 'CONNECTED') player.connect();
