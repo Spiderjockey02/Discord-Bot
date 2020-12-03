@@ -1,6 +1,3 @@
-// Dependencies
-const ms = require('ms');
-
 module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -19,14 +16,8 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (args[0] == 'off') {
 		time = 0;
 	} else {
-		time = ms(args[0]) / 1000;
-		// Get slowmode time
-		if (!time) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-
-		if(isNaN(time)) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-
-		if(time > 21600) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('slowmode').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-
+		time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
+		if (!time) return;
 	}
 
 	// Activate slowmode
