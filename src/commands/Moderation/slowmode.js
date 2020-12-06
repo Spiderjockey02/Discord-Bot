@@ -15,14 +15,16 @@ module.exports.run = async (bot, message, args, settings) => {
 	let time;
 	if (args[0] == 'off') {
 		time = 0;
-	} else {
+	} else if (args[0]) {
 		time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
 		if (!time) return;
+	} else {
+		return message.error(settings.Language, 'NOT_NUMBER').then(m => m.delete({ timeout: 10000 }));
 	}
 
 	// Activate slowmode
 	try {
-		await message.channel.setRateLimitPerUser(time);
+		await message.channel.setRateLimitPerUser(time / 1000);
 		message.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', args[0]).then(m => m.delete({ timeout:15000 }));
 	} catch (err) {
 		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
@@ -40,6 +42,6 @@ module.exports.help = {
 	name: 'Slowmode',
 	category: 'Moderation',
 	description: 'Activate slowmode on a channel.',
-	usage: '${PREFIX}slowmode <time>',
+	usage: '${PREFIX}slowmode <time | off>',
 	example: '${PREFIX}slowmode 1h',
 };
