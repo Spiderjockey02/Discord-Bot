@@ -1,5 +1,4 @@
-const Snowshot = require('../../base/screenshot');
-const window = new Snowshot();
+const Puppeteer = require('puppeteer');
 const { MessageAttachment } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
@@ -13,7 +12,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	const msg = await message.channel.send('Creating screenshot of website.');
 
 	// try and create screenshot
-	window.screenshot(args[0]).then(async data => {
+	screenshot(args[0]).then(async data => {
 		if (!data) {
 			if (message.deletable) message.delete();
 			msg.delete();
@@ -24,6 +23,42 @@ module.exports.run = async (bot, message, args, settings) => {
 			msg.delete();
 		}
 	});
+
+	// screenshot function
+	async function screenshot(url) {
+		const browser = await Puppeteer.launch({});
+		const page = await browser.newPage();
+		await page.setViewport({
+			width: 1280,
+			height: 800,
+		});
+
+		if (!url) {
+			if (!this.rawHTML) {
+				await browser.close();
+				console.log('No html content found, Please load HTML before using screenshot method!');
+				return false;
+			}
+			await page.setContent(this.rawHTML);
+			const buffer = await page.screenshot();
+			await browser.close();
+			return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
+		} else {
+			if (typeof url !== 'string') {
+				await browser.close();
+				console.log(`URL type must be a string, received ${typeof url}`);
+				return false;
+			}
+			try {
+				await page.goto(url);
+			} catch (e) {
+				await page.goto('https://' + url);
+			}
+			const buffer = await page.screenshot();
+			await browser.close();
+			return buffer instanceof Buffer ? buffer : Buffer.from(buffer);
+		}
+	}
 };
 
 module.exports.config = {
