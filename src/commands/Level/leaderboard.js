@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		} else {
 			// more than 10 results
 			for (let i = 0; i < 10; i++) {
-				const name = message.guild.members.get(res[i].userID) || 'User left';
+				const name = message.guild.members.cache.get(res[i].userID) || 'User left';
 				if (name == 'User left') {
 					embed.addField(`${i + 1}. ${name}`, `**XP:** ${res[i].Xp}`);
 				} else {
