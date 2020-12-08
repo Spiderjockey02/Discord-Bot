@@ -4,7 +4,6 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get the random facts file
-	console.log('1');
 	fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 		if (err) {
 			if (bot.config.debug) bot.logger.error(`${err.message} - command: fact.`);
