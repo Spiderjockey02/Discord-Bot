@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// Show default help page
 		const embed = new MessageEmbed()
 			.setColor(3447003)
-			.setThumbnail(bot.user.displayAvatarURL())
+			.setThumbnail(bot.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
 			.setTitle(`${bot.user.username}'s Plugin list.`)
 			.addField('Fun', `\`${settings.prefix}help Fun\``, true)
 			.addField('Guild', `\`${settings.prefix}help Guild\``, true)
