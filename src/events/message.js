@@ -13,7 +13,6 @@ module.exports = async (bot, message) => {
 	try {
 		settings = await bot.getGuild(message.guild);
 	} catch (err) {
-		bot.logger.error(err.message);
 		settings = bot.config.defaultSettings;
 	}
 	if (!settings && message.channel.type != 'dm') {
