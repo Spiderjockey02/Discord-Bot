@@ -16,6 +16,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// send image in embed
 		const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
 		message.channel.send(attachment);
+		msg.delete();
 	} catch(err) {
 		// if an error occured
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: stickbug.`);
