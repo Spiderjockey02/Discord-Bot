@@ -30,6 +30,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		guild: message.guild.id,
 		voiceChannel: message.member.voice.channel.id,
 		textChannel: message.channel.id,
+		selfDeafen: true,
 	});
 
 	const search = args.join(' ');
