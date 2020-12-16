@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		// Connect to voice channel if not already
 		if (player.state !== 'CONNECTED') player.connect();
 		// Show how many songs have been added
-		message.channel.send({ embed:{ description: `Queued **${res.tracks.length}** tracks` } });
+		message.channel.send({ embed:{ color: message.member.displayHexColor, description: `Queued **${res.tracks.length}** tracks` } });
 		// Add songs to queue
 		player.queue.add(res.tracks);
 		// PLay the song(s) if not already
@@ -65,7 +65,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (!player.playing && !player.paused && !player.queue.size) {
 			player.play();
 		} else {
-			message.channel.send(`Added to queue: [${res.tracks[0].title}]`);
+			message.channel.send({ embed: { color: message.member.displayHexColor, description:`Added to queue: [${res.tracks[0].title}](${res.tracks[0].url})` } });
 		}
 	}
 };

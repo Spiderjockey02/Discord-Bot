@@ -19,6 +19,11 @@ module.exports.run = async (bot, message, args, settings) => {
 	// Check that user is in the same voice channel
 	if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
+	// Make sure song isn't a stream
+	if (!player.queue.current.isSeekable) {
+		return message.error(settings.Language, 'MUSIC/LIVESTREAM');
+	}
+
 	// update the time
 	const time = hmsToSecondsOnly(args[0]) * 1000;
 	if (time + player.position <= 0) {
