@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			// arg was a command
 			const cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
 			// Check if the command is allowed on the server
-			if (plugins.includes(cmd.help.category) || ['Fun', 'Guild', 'Image', 'Misc', 'Plugins'].includes(cmd.help.category)) {
+			if (plugins.includes(cmd.help.category) || ['Fun', 'Guild', 'Image', 'Misc', 'Plugins'].includes(cmd.help.category) || message.author.id == bot.config.ownerID) {
 				const embed = new MessageEmbed()
 					.setThumbnail(message.guild.iconURL())
 					.setAuthor(`${bot.user.username} HELP`, message.guild.iconURL)
