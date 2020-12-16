@@ -30,7 +30,7 @@ module.exports = async (bot, message) => {
 			.setTitle(`${bot.user.username}'s Information`)
 			.setURL(bot.config.Dashboard.domain)
 			.setThumbnail(bot.user.displayAvatarURL())
-			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.config.botID}&permissions=8&scope=bot)`)
+			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`)
 			.addField('Server Count:', `${bot.guilds.cache.size} (${bot.users.cache.size} users)`)
 			.addField('Uptime:', moment.duration(bot.uptime).format('D [days], H [hrs], m [mins], s [secs]'))
 			.addField('Total Commands:', `${bot.commands.size} (!help)`)
