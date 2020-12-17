@@ -4,15 +4,22 @@ const config = {
 	botClient: 'YourBotClientSecret',
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
+		// https://dev.twitch.tv/console/apps
 		twitch: 'twitchAPI-Key',
+		// https://fortnitetracker.com/site-api
 		fortnite: 'fortniteAPI-Key',
+		// https://api.ksoft.si/
 		ksoft: 'ksoftAPI-Key',
+		// https://steamcommunity.com/dev
 		steam: 'steamAPI-Key',
+		// https://developer.spotify.com/documentation/web-api/
 		spotify: {
 			iD: 'spotify-ID',
 			secret: 'spotify-secret',
 		},
+		// https://genius.com/developers
 		genuis: 'genuisAPI-KEY',
+		// https://amethyste.moe/en
 		amethyste: 'amethysteAPI-Key',
 	},
 	// IF you want any commands/plugins disabled
