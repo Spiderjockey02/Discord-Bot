@@ -44,7 +44,9 @@ module.exports = bot => {
 		const users = [];
 		// add all mentioned users
 		for (let i = 0; i < args.length; i++) {
-			users.push(message.guild.member(message.mentions.users.array()[i] || message.guild.members.cache.get(args[i])));
+			if (message.guild.member(message.mentions.users.array()[i] || message.guild.members.cache.get(args[i]))) {
+				users.push(message.guild.member(message.mentions.users.array()[i] || message.guild.members.cache.get(args[i])));
+			}
 		}
 		// add author at the end
 		users.push(message.member);
