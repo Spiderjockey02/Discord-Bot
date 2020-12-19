@@ -3,7 +3,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'USER_PERMISSION', 'ADMINISTRATOR').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure a time, winner count & prize is entered
-	if (args.length != 3) {
+	if (args.length <= 2) {
 		if (message.deletable) message.delete();
 		return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('g-start').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	}
@@ -16,6 +16,12 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (isNaN(args[1])) {
 		if (message.deletable) message.delete();
 		return message.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
+	}
+
+	// Make sure prize is less than 256 characters
+	if (args.slice(2).join(' ').length >= 256) {
+		if (message.deletable) message.delete();
+		return message.channel.send('Prize must be less than 256 characters long.').then(m => m.delete({ timeout: 5000 }));
 	}
 
 	// Start the giveaway
