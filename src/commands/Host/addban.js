@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message) => {
 	// Make sure only bot owner can do this command
-	if (message.author.id !== bot.config.ownerID) return;
+	if (!bot.config.ownerID.includes(message.author.id)) return;
 };
 
 module.exports.config = {

@@ -2,8 +2,8 @@
 const { inspect } = require('util');
 
 module.exports.run = async (bot, message, args, settings) => {
-	// Makes sure only the bot owner can do this command
-	if (message.member.id != bot.config.ownerID) return message.sendT(settings.Language, 'HOST/EVAL_NO_OWNER');
+	// Make sure only bot owner can do this command
+	if (!bot.config.ownerID.includes(message.author.id)) return message.sendT(settings.Language, 'HOST/EVAL_NO_OWNER');
 
 	// Evaluated the code
 	const toEval = args.join(' ');

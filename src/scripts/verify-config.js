@@ -122,12 +122,6 @@ module.exports.run = async (config) => {
 		}
 	}
 
-	// Check dashbaord
-	if (!config.Dashboard) {
-		logger.error(`${chalk.red('✗')} Dashboard setup is missing.`);
-		error = true;
-	}
-
 	// Check support server set up
 	if (!config.SupportServer) {
 		logger.error(`${chalk.red('✗')} Support server setup is missing.`);

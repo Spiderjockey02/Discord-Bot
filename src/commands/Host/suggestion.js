@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Make sure only bot owner can do this command
-	if (message.author.id !== bot.config.ownerID) return;
+	if (!bot.config.ownerID.includes(message.author.id)) return;
 
 	// Make sure a support server has been entered
 	if (bot.config.SupportServer) {

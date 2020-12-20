@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message, args, settings) => {
-	// Makes sure only the bot owner can run this command
-	if (message.author.id != bot.config.ownerID) return;
+	// Make sure only bot owner can do this command
+	if (!bot.config.ownerID.includes(message.author.id)) return;
 
 	// try and shutdown the server
 	try {
