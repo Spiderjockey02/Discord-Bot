@@ -25,7 +25,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
     "@ksoft/api": "^3.1.9",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "boats.js": "^2.5.0",
     "botlist.space": "^3.3.1",
     "canvacord": "^5.0.8",
