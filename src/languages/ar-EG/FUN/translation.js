@@ -17,6 +17,8 @@ const languageData = {
 	INCORRECT_URBAN: (phrase) => `العبارة: \`${phrase}\` لم يتم العثور عليها في القاموس الحضري.`,
 	URBAN_TITLE: (word) => `تعريف ال ${word}`,
 	URBAN_DESCRIPTION: (r) => `${r[0]}\n**مثال:**\n${r[1]}`,
+	PERSON_AUTHOR: 'لقد وجدت شخصًا عبر الإنترنت اسمه ',
+	PERSON_FOOTER: 'ملاحظة: يتم إنشاء كل هذه بشكل عشوائي من خلال API.',
 };
 
 const translate = (key, args) => {

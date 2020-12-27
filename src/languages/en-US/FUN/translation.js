@@ -17,6 +17,8 @@ const languageData = {
 	INCORRECT_URBAN: (phrase) => ` Phrase: \`${phrase}\` was not found on the urban dictionary.`,
 	URBAN_TITLE: (word) => `Definition of ${word}`,
 	URBAN_DESCRIPTION: (r) => `${r[0]}\n**Example:**\n${r[1]}`,
+	PERSON_AUTHOR: 'I found a person over internet whose name is ',
+	PERSON_FOOTER: 'NOTE : These all are randomly generated through an API.',
 };
 
 const translate = (key, args) => {
