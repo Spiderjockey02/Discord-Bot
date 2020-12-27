@@ -41,7 +41,7 @@ module.exports = async (bot, message) => {
 	}
 
 	// Check if the message was @someone
-	if (message.content == '@someone') {
+	if (['@someone', '@person'].includes(message.content)) {
 		if (message.channel.type == 'dm') return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR');
 		return message.channel.send({ embed:{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` } });
 	}
