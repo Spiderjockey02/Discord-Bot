@@ -2,7 +2,7 @@
 const { Manager } = require('erela.js');
 const { Spotify } = require('./Music/SpotifyHandler');
 const { MessageEmbed } = require('discord.js');
-require('./music/BetterPlayer');
+require('./Music/BetterPlayer');
 
 module.exports = async (bot) => {
 	const clientID = bot.config.api_keys.spotify.iD;
