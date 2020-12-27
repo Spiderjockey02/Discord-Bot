@@ -28,7 +28,7 @@ module.exports = async (bot, message) => {
 	if (message.content == `<@!${bot.user.id}>`) {
 		const embed = new MessageEmbed()
 			.setTitle(`${bot.user.username}'s Information`)
-			.setURL(bot.config.Dashboard.domain)
+			.setURL(bot.config.websiteURL)
 			.setThumbnail(bot.user.displayAvatarURL())
 			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`)
 			.addField('Server Count:', `${bot.guilds.cache.size} (${bot.users.cache.size} users)`)

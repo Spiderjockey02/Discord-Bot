@@ -34,6 +34,7 @@ const config = {
 		// https://botlist.space/
 		botlist_spaceAPI_KEY: '',
 	},
+	websiteURL: 'Bot\'s dashboard',
 	// your support server
 	SupportServer: {
 		// Link to your support server
