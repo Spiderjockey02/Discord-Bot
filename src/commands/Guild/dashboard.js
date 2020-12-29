@@ -1,8 +1,5 @@
 module.exports.run = async (bot, message) => {
-	// Check if dashboard is enabled (config.js)
-	if (bot.config.Dashboard.enabled == true) {
-		message.channel.send(`${bot.config.Dashboard.domain}/manage/${message.guild.id}`);
-	}
+	message.channel.send(`${bot.config.websiteURL}/dashboard/${message.guild.id}`);
 };
 
 module.exports.config = {
