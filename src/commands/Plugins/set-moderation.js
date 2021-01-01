@@ -26,6 +26,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'set-moderation',
 	category: 'Plugins',
-	description: 'Turn on or off the level plugin.',
+	description: 'Turn on or off the moderation plugin.',
 	usage: '${PREFIX}set-moderation <true | false>',
 };
