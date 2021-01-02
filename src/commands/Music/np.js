@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Get current song information
 	const { title, requester, thumbnail, uri, duration } = player.queue.current;
-	const end = (duration > 6.048e+8) ? '🔴 LIVE' : new Date(duration).toISOString().slice(14, 19);
+	const end = (duration > 6.048e+8) ? '🔴 LIVE' : new Date(duration).toISOString().slice(11, 19);
 	// Display current song information
 	try {
 		const embed = new MessageEmbed()
@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			.setColor(message.member.displayHexColor)
 			.setThumbnail(thumbnail)
 			.setDescription(`[${title}](${uri}) [${message.guild.member(requester)}]`)
-			.addField('\u200b', new Date(player.position).toISOString().slice(14, 19) + ' [' + createBar(duration > 6.048e+8 ? player.position : duration, player.position, 15)[0] + '] ' + end, false);
+			.addField('\u200b', new Date(player.position).toISOString().slice(11, 19) + ' [' + createBar(duration > 6.048e+8 ? player.position : duration, player.position, 15)[0] + '] ' + end, false);
 		message.channel.send(embed);
 	} catch (e) {
 		console.log(e);
