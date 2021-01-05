@@ -42,7 +42,7 @@
     "marked": "^1.2.7",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.9",
+    "mongoose": "^5.11.10",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "puppeteer": "^5.5.0",
