@@ -1,2 +1,2 @@
-java -jar Lavalink.jar
+java -jar andesite.jar
 pause
