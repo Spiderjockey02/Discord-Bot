@@ -38,21 +38,24 @@
     "erela.js": "^2.3.1",
     "eslint": "^7.17.0",
     "fortnite": "^4.3.2",
-    "genius-lyrics-api": "^3.0.4",
+    "genius-lyrics-api": "^3.0.5",
     "marked": "^1.2.7",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.9",
+    "mongoose": "^5.11.10",
+    "nekos.life": "^2.0.7",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "puppeteer": "^5.5.0",
     "r6api.js": "^1.6.0",
+    "reddit-api-image-getter": "^1.0.9",
     "simple-node-logger": "^18.12.24",
     "something-random-on-discord": "0.0.2",
     "string-progressbar": "^1.0.1",
     "superagent": "^6.1.0",
     "tinyurl": "^1.1.7",
     "urban-dictionary": "^2.2.1",
-    "weather-js": "^2.0.0"
+    "weather-js": "^2.0.0",
+    "youtube-notification": "^1.1.0"
   }
 }
