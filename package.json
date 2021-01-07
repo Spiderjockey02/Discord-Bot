@@ -54,7 +54,7 @@
     "string-progressbar": "^1.0.1",
     "superagent": "^6.1.0",
     "tinyurl": "^1.1.7",
-    "urban-dictionary": "^2.2.1",
+    "urban-dictionary": "^3.0.0",
     "weather-js": "^2.0.0",
     "youtube-notification": "^1.1.0"
   }
