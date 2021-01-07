@@ -1,39 +1,30 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
-const { KSoftClient } = require('@ksoft/api');
+const	redditApiImageGetter = require('reddit-api-image-getter'),
+	getter = new redditApiImageGetter();
 
 module.exports.run = async (bot, message, args, settings) => {
-	// Get subreddit
 	if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('reddit').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
 
-	// try and retrieve image from reddit
-	try {
-		let reddit;
-		// Check if its a NSFW channel or not
-		if (message.channel.nsfw) {
-			// NSFW content can be shown
-			reddit = await ksoft.images.reddit(args[0], { removeNSFW: false });
+	getter.getHotImagesOfSubReddit(args[0]).then(function(result) {
+		DisplayMessage(result);
+		console.log(result.length);
+	}).catch((err) => {
+		console.log(err);
+	});
+
+	function DisplayMessage(result) {
+		const rInt = Math.floor(Math.random() * (result.length - 0) + 0) + 1;
+		if (!result[rInt]) {
+			DisplayMessage(result);
 		} else {
-			reddit = await ksoft.images.reddit(args[0], { removeNSFW: true });
+			message.channel.send(result[rInt].url);
 		}
-
-		// Send message to channel
-		const embed = new MessageEmbed()
-			.setTitle(`From /${reddit.post.subreddit}`)
-			.setURL(reddit.post.link)
-			.setImage(reddit.url)
-			.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | ${message.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
-		message.channel.send(embed);
-	} catch (err) {
-		if (message.deletable) message.delete();
-		if (bot.config.debug) bot.logger.error(`${err.message} - command: reddit.`);
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 	}
 };
 
 module.exports.config = {
 	command: 'reddit',
+	aliases: ['subreddit'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
