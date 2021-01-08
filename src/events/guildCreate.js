@@ -1,3 +1,6 @@
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 // When the bot joins a server
 module.exports = async (bot, guild) => {
 	// LOG server Join
@@ -13,4 +16,12 @@ module.exports = async (bot, guild) => {
 	} catch (e) {
 		console.error(e);
 	}
+
+	// Send message to channel that bot has joined a server
+	const embed = new MessageEmbed()
+		.setTitle(`[GUILD JOIN] ${guild.name}`)
+		.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
+		.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
+	const channel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
+	if (channel) channel.send(embed);
 };
