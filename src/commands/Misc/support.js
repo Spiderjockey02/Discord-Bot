@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	// Send support info to user
 	const embed = new MessageEmbed()
 		.setTitle(message.translate(settings.Language, 'MISC/SUPPORT_TITLE', bot.user.username))
-		.setDescription(message.translate(settings.Language, 'MISC/SUPPORT_DESC', [`${bot.config.SupportServer.link}`, `${bot.config.Dashboard.domain}`]));
+		.setDescription(message.translate(settings.Language, 'MISC/SUPPORT_DESC', [`${bot.config.SupportServer.link}`, `${bot.config.websiteURL}`]));
 	message.channel.send(embed);
 };
 
