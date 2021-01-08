@@ -25,6 +25,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			.addField('Guild', `\`${settings.prefix}help Guild\``, true)
 			.addField('Image', `\`${settings.prefix}help Image\``, true)
 			.addField('Misc', `\`${settings.prefix}help Misc\``, true)
+			.addField('Giveaway', `\`${settings.prefix}help Giveaway\``, true)
 			.addField('Plugins', `\`${settings.prefix}help Plugins\``, true);
 		for (let i = 0; i < plugins.length; i++) {
 			embed.addField(plugins[i], `\`${settings.prefix}help ${plugins[i]}\``, true);
