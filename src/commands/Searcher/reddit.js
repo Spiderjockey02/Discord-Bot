@@ -7,7 +7,6 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	getter.getHotImagesOfSubReddit(args[0]).then(function(result) {
 		DisplayMessage(result);
-		console.log(result.length);
 	}).catch((err) => {
 		console.log(err);
 	});
