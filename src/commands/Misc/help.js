@@ -7,7 +7,7 @@ function checkPlugins(settings) {
 	if (settings.MusicPlugin) plugins.push('Music');
 	if (settings.LevelPlugin) plugins.push('Level');
 	if (settings.ModerationPlugin) plugins.push('Moderation');
-	if (settings.SearchPlugin) plugins.push('Search');
+	if (settings.SearchPlugin) plugins.push('Searcher');
 	if (settings.NSFWPlugin) plugins.push('Nsfw');
 	if (settings.MusicTriviaPlugin) plugins.push('Trivia');
 	return plugins;
