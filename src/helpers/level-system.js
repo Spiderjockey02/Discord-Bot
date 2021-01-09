@@ -2,7 +2,6 @@
 const { Ranks } = require('../modules/database/models');
 const levelcd = new Set();
 
-
 module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
 	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
@@ -12,10 +11,8 @@ module.exports.run = (bot, message, settings) => {
 
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {
-		bot.logger.log('user');
 		// calculate xp added
 		const xpAdd = (Math.floor(Math.random() * 7) + 8) * settings.LevelMultiplier;
-		console.log(xpAdd);
 		// find user
 		Ranks.findOne({
 			userID: message.author.id,
@@ -54,7 +51,6 @@ module.exports.run = (bot, message, settings) => {
 		// add user to cooldown (1 minute cooldown)
 		levelcd.add(message.author.id);
 		setTimeout(() => {
-			bot.logger.log('user deleted from level cache');
 			levelcd.delete(message.author.id);
 		}, 60000);
 	}
