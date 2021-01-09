@@ -45,6 +45,8 @@ const config = {
 		ModRole: '751857618720522341',
 		// What channel to post the suggestions
 		SuggestionChannel: '761619652009787392',
+		// Where the bot will send Guild join/leave messages to
+		GuildChannel: '761619652009787392',
 	},
 	// This is just so some commands can be ran in DM channels
 	defaultSettings: {
