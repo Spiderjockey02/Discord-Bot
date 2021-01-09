@@ -1,11 +1,11 @@
 # EggLord
 [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
 [![](https://img.shields.io/badge/discord.js-v12.0.0-blue.svg?logo=npm)](https://github.com/discordjs)
-![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
+![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2F86.25.177.233%2F)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Spiderjockey02/Discord-Bot)
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 
-> This bot is used by more than 130,000 Discord users and more than 70 servers.
+> This bot is used by more than 150,000 Discord users and more than 80 servers.
 
 Egglord is a open source Discord bot coded in JavaScript with [Discord.js](https://discord.js.org) and [Mongoose](https://mongoosejs.com/docs/api.html) by [SpiderJockey02](https://github.com/Spiderjockey02).  
 Feel free to add a star ⭐ to the repository to promote the project!
