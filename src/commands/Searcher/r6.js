@@ -1,7 +1,8 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 const R6API = require('r6api.js');
-const { getId, getLevel, getRank, getStats } = new R6API('sd', 'sd');
+const config = require('../../config.js');
+const { getId, getLevel, getRank, getStats } = new R6API(config.api_keys.rainbow.email, config.api_keys.rainbow.password);
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get platforms and regions (just make it easier for users to use this command)
@@ -39,13 +40,19 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	player = args.join(' ');
 	if(platform === 'xbl') player = player.replace('_', '');
-	player = await getId(platform, player);
+	try {
+		player = await getId(platform, player);
+	} catch (e) {
+		console.log(e);
+		return message.channel.send('Error getting ID');
+	}
 
 	// Makes sure that user actually exist
 	if(!player.length) {
 		if (message.deletable) message.delete();
 		return message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 	}
+
 	const r = await message.channel.send('Gathering results...');
 	player = player[0];
 	const playerRank = await getRank(platform, player.id);

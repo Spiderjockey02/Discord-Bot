@@ -17,6 +17,10 @@ const config = {
 			iD: 'spotify-ID',
 			secret: 'spotify-secret',
 		},
+		// Your Ubisoft email and password (You don't need to enable anything)
+		rainbow: {
+			email: 'email',
+			password: 'password',
 		// https://genius.com/developers
 		genuis: 'genuisAPI-KEY',
 		// https://amethyste.moe/en
