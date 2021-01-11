@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 module.exports.config = {
 	command: 'g-start',
-	aliases: ['gstart', 'giveaway', 'g-create'],
+	aliases: ['gstart', 'g-create'],
 	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 };
 
