@@ -52,7 +52,11 @@ module.exports.run = async (bot, message, args, settings) => {
 			try {
 				await page.goto(url);
 			} catch (e) {
-				await page.goto('https://' + url);
+				try {
+					await page.goto('https://' + url);
+				} catch (err) {
+					return null;
+				}
 			}
 			const buffer = await page.screenshot();
 			await browser.close();
