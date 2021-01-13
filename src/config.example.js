@@ -21,6 +21,7 @@ const config = {
 		rainbow: {
 			email: 'email',
 			password: 'password',
+		},
 		// https://genius.com/developers
 		genuis: 'genuisAPI-KEY',
 		// https://amethyste.moe/en
