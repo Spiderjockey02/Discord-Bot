@@ -1,5 +1,7 @@
+// Dependencies
 const { Message } = require('discord.js');
 
+// Create new message functions
 module.exports = async (bot) => {
 // This will translate the message to the server's language
 	Message.prototype.translate = function(language, key, args) {
