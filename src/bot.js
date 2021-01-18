@@ -6,13 +6,17 @@ const readdir = promisify(require('fs').readdir);
 
 // For translating messages
 require('./handlers/extenders')(bot);
+require('./handlers/Notification-Handler');
 
 // giveaway manager
 const GiveawaysManager = require('./base/giveaway/Manager');
 
+// create the manager for giveaway
 const manager = new GiveawaysManager(bot, {
-	storage: './src/assets/json/giveaways.json',
+	storage: false,
 	updateCountdownEvery: 10000,
+	// giveaways are deleted 1 week after end
+	endedGiveawaysLifetime: 10000,
 	default: {
 		botsCanWin: false,
 		exemptPermissions: [],
@@ -22,20 +26,15 @@ const manager = new GiveawaysManager(bot, {
 });
 bot.giveawaysManager = manager;
 
+// for voice recording
+bot.recordings = [];
 
 // Logger (console log + file log)
 bot.logger = require('./modules/logging/logger');
+
 // For command handler
 bot.aliases = new Discord.Collection();
 bot.commands = new Discord.Collection();
-bot.Stats = {
-	MessageSent: 0,
-	Giveaways: 0,
-	WarnedUsers: 0,
-	KickedUsers: 0,
-	BannedUsers: 0,
-	CommandsUsed: 0,
-};
 
 // Load commands
 (async () => {

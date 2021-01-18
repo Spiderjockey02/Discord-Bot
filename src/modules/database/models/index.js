@@ -3,4 +3,5 @@ module.exports = {
 	Ranks: require('./levels'),
 	Warning: require('./warnings'),
 	Globalban: require('./globalban'),
+	giveawayDB: require('./Giveaway'),
 };

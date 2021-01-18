@@ -1,63 +1,77 @@
-const { EventEmitter } = require('events');
-const merge = require('deepmerge');
-const { writeFile, readFile, exists } = require('fs');
-const { promisify } = require('util');
-const writeFileAsync = promisify(writeFile);
-const existsAsync = promisify(exists);
-const readFileAsync = promisify(readFile);
-const Discord = require('discord.js');
-const { defaultGiveawayMessages, defaultManagerOptions, defaultRerollOptions } = require('./Constants.js');
-const Giveaway = require('./Giveaway.js');
+// Dependencies
+const { EventEmitter } = require('events'),
+	merge = require('deepmerge'),
+	Discord = require('discord.js'),
+	{ defaultGiveawayMessages, defaultManagerOptions, defaultRerollOptions } = require('./Constants.js'),
+	Giveaway = require('./Giveaway.js'),
+	{ giveawayDB } = require('../../modules/database/models');
 
-/**
- * Giveaways Manager
- */
+// Giveaway manager
 class GiveawaysManager extends EventEmitter {
-	/**
-     * @param {Discord.Client} client The Discord Client
-     * @param {GiveawaysManagerOptions} options The manager options
-     */
-	constructor(client, options) {
+	constructor(client, options, init = true) {
 		super();
 		if (!client) throw new Error('Client is a required option.');
-
-		//* The Discord Client
 		this.client = client;
-
-		// Whether the manager is ready
 		this.ready = false;
-
-		// The giveaways managed by this manager
 		this.giveaways = [];
-
-		// The manager options
 		this.options = merge(defaultManagerOptions, options);
+		if (init) this._init();
+	}
 
-		this._init();
+	// Generate an embed displayed when a giveaway is running (with the remaining time)
+	generateMainEmbed(giveaway) {
+		const embed = new Discord.MessageEmbed();
+		embed
+			.setAuthor(giveaway.prize)
+			.setColor(giveaway.embedColor)
+			.setFooter(`${giveaway.winnerCount} ${giveaway.messages.winners} • ${giveaway.messages.embedFooter}`)
+			.setDescription(
+				giveaway.messages.inviteToParticipate +
+                    '\n' +
+                    giveaway.remainingTimeText +
+                    '\n' +
+                    (giveaway.hostedBy ? giveaway.messages.hostedBy.replace('{user}', giveaway.hostedBy) : ''),
+			)
+			.setTimestamp(new Date(giveaway.endAt).toISOString());
+		return embed;
+	}
 
-		this.client.on('raw', async (packet) => {
-			if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
-			const giveaway = this.giveaways.find((g) => g.messageID === packet.d.message_id);
-			if (!giveaway) return;
-			if (giveaway.ended) return;
-			const guild = this.client.guilds.cache.get(packet.d.guild_id);
-			if (!guild) return;
-			const member = guild.members.cache.get(packet.d.user_id) || await guild.members.fetch(packet.d.user_id).catch((e) => console.log(e));
-			if (!member) return;
-			const channel = guild.channels.cache.get(packet.d.channel_id);
-			if (!channel) return;
-			const message = channel.messages.cache.get(packet.d.message_id) || await channel.messages.fetch(packet.d.message_id);
-			if (!message) return;
-			const reaction = message.reactions.cache.get(giveaway.reaction || this.options.default.reaction);
-			if (!reaction) return;
-			if(reaction.emoji.name !== packet.d.emoji.name) return;
-			if(reaction.emoji.id && reaction.emoji.id !== packet.d.emoji.id) return;
-			if (packet.t === 'MESSAGE_REACTION_ADD') {
-				this.emit('giveawayReactionAdded', giveaway, member, reaction);
-			} else {
-				this.emit('giveawayReactionRemoved', giveaway, member, reaction);
-			}
-		});
+	// Generate an embed displayed when a giveaway is ended (with the winners list)
+	generateEndEmbed(giveaway, winners) {
+		const formattedWinners = winners.map((w) => `<@${w.id}>`).join(', ');
+		const winnersString =
+            giveaway.messages.winners.substr(0, 1).toUpperCase() +
+            giveaway.messages.winners.substr(1, giveaway.messages.winners.length) +
+            ': ' +
+            formattedWinners;
+		const embed = new Discord.MessageEmbed();
+		embed
+			.setAuthor(giveaway.prize)
+			.setColor(giveaway.embedColorEnd)
+			.setFooter(giveaway.messages.endedAt)
+			.setDescription(
+				winnersString +
+                    '\n' +
+                    (giveaway.hostedBy ? giveaway.messages.hostedBy.replace('{user}', giveaway.hostedBy) : ''),
+			)
+			.setTimestamp(new Date(giveaway.endAt).toISOString());
+		return embed;
+	}
+
+	// Generate an embed displayed when a giveaway is ended and when there is no valid participations
+	generateNoValidParticipantsEndEmbed(giveaway) {
+		const embed = new Discord.MessageEmbed();
+		embed
+			.setAuthor(giveaway.prize)
+			.setColor(giveaway.embedColorEnd)
+			.setFooter(giveaway.messages.endedAt)
+			.setDescription(
+				giveaway.messages.noWinner +
+                    '\n' +
+                    (giveaway.hostedBy ? giveaway.messages.hostedBy.replace('{user}', giveaway.hostedBy) : ''),
+			)
+			.setTimestamp(new Date(giveaway.endAt).toISOString());
+		return embed;
 	}
 
 	// Ends a giveaway. This method is automatically called when a giveaway ends.
@@ -77,9 +91,9 @@ class GiveawaysManager extends EventEmitter {
 			if (!this.ready) {
 				return reject('The manager is not ready yet.');
 			}
-			if (!options.messages) {
-				options.messages = defaultGiveawayMessages;
-			}
+			options.messages = options.messages
+				? merge(defaultGiveawayMessages, options.messages)
+				: defaultGiveawayMessages;
 			if (!channel || !channel.id) {
 				return reject(`channel is not a valid guildchannel. (val=${channel})`);
 			}
@@ -96,6 +110,7 @@ class GiveawaysManager extends EventEmitter {
 				startAt: Date.now(),
 				endAt: Date.now() + options.time,
 				winnerCount: options.winnerCount,
+				winnerIDs: [],
 				channelID: channel.id,
 				guildID: channel.guild.id,
 				ended: false,
@@ -108,18 +123,10 @@ class GiveawaysManager extends EventEmitter {
 				exemptMembers: options.exemptMembers,
 				embedColor: options.embedColor,
 				embedColorEnd: options.embedColorEnd,
+				extraData: options.extraData,
 			});
-			const embed = new Discord.MessageEmbed()
-				.setAuthor(giveaway.prize)
-				.setColor(giveaway.embedColor)
-				.setFooter(`${giveaway.winnerCount} ${giveaway.messages.winners}`)
-				.setDescription(
-					`${options.messages.inviteToParticipate}\n${giveaway.content}\n${
-						giveaway.hostedBy ? giveaway.messages.hostedBy.replace('{user}', giveaway.hostedBy) : ''
-					}`,
-				)
-				.setTimestamp(new Date(giveaway.endAt).toISOString());
-			const message = await channel.send(options.messages.giveaway, { embed });
+			const embed = this.generateMainEmbed(giveaway);
+			const message = await channel.send(giveaway.messages.giveaway, { embed });
 			message.react(giveaway.reaction);
 			giveaway.messageID = message.id;
 			this.giveaways.push(giveaway);
@@ -137,10 +144,13 @@ class GiveawaysManager extends EventEmitter {
 				return reject('No giveaway found with ID ' + messageID + '.');
 			}
 			const giveaway = new Giveaway(this, giveawayData);
-			giveaway.reroll(options).then((winners) => {
-				this.emit('giveawayRerolled', giveaway, winners);
-				resolve();
-			}).catch(reject);
+			giveaway
+				.reroll(options)
+				.then((winners) => {
+					this.emit('giveawayRerolled', giveaway, winners);
+					resolve();
+				})
+				.catch(reject);
 		});
 	}
 
@@ -166,7 +176,7 @@ class GiveawaysManager extends EventEmitter {
 				return reject('Unable to get the channel of the giveaway with message ID ' + giveaway.messageID + '.');
 			}
 			if (!doNotDeleteMessage) {
-				await giveaway.fetchMessage().catch((e) => console.log(e));
+				await giveaway.fetchMessage();
 				if (giveaway.message) {
 					// Delete the giveaway message
 					giveaway.message.delete();
@@ -174,103 +184,61 @@ class GiveawaysManager extends EventEmitter {
 			}
 			this.giveaways = this.giveaways.filter((g) => g.messageID !== messageID);
 			await this.deleteGiveaway(messageID);
+			this.emit('giveawayDeleted', giveaway);
 			resolve();
 		});
 	}
 
-	// Delete a giveaway from the database
 	async deleteGiveaway(messageID) {
-		await writeFileAsync(
-			this.options.storage,
-			JSON.stringify(this.giveaways.map((giveaway) => giveaway.data)),
-			'utf-8',
-		);
-		this.refreshStorage();
+		const data = await giveawayDB.findOne({ messageID: messageID });
+		giveawayDB.deleteOne(data, function(err) {
+			if (err) throw err;
+		});
 		return;
 	}
 
-	// Refresh the cache to support shards.
-	async refreshStorage() {
-		return true;
+	async refreshStorage(client) {
+		return client.shard.broadcastEval(() => this.giveawaysManager.getAllGiveaways());
 	}
 
-	// Gets the giveaways from the storage file, or create it
 	async getAllGiveaways() {
-		// Whether the storage file exists, or not
-		const storageExists = await existsAsync(this.options.storage);
-		// If it doesn't exists
-		if (!storageExists) {
-			// Create the file with an empty array
-			await writeFileAsync(this.options.storage, '[]', 'utf-8');
-			return [];
-		} else {
-			// If the file exists, read it
-			const storageContent = await readFileAsync(this.options.storage);
-			try {
-				const giveaways = await JSON.parse(storageContent.toString());
-				if (Array.isArray(giveaways)) {
-					return giveaways;
-				} else {
-					console.log(storageContent, giveaways);
-					throw new SyntaxError('The storage file is not properly formatted (giveaways is not an array).');
-				}
-			} catch (e) {
-				if (e.message === 'Unexpected end of JSON input') {
-					throw new SyntaxError('The storage file is not properly formatted (Unexpected end of JSON input).');
-				} else {
-					throw e;
-				}
+		return await giveawayDB.find({});
+	}
+
+	async editGiveaway(_messageID, _giveawayData) {
+		let data = await giveawayDB.findOne({ messageID: _messageID });
+		if (typeof data !== 'object') data = {};
+		for (const key in _giveawayData) {
+			if (_giveawayData.key) {
+				if (data[key] !== _giveawayData[key]) data[key] = _giveawayData[key];
+				else return;
 			}
 		}
-	}
-
-	// Edit the giveaway in the database
-	async editGiveaway(messageID, giveawayData) {
-		await writeFileAsync(
-			this.options.storage,
-			JSON.stringify(this.giveaways.map((giveaway) => giveaway.data)),
-			'utf-8',
-		);
-		this.refreshStorage();
+		await data.updateOne(_giveawayData);
 		return;
 	}
 
-	// Save the giveaway in the database
 	async saveGiveaway(messageID, giveawayData) {
-		await writeFileAsync(
-			this.options.storage,
-			JSON.stringify(this.giveaways.map((giveaway) => giveaway.data)),
-			'utf-8',
-		);
-		this.refreshStorage();
+		const newGuild = await new giveawayDB(giveawayData);
+		await newGuild.save();
 		return;
 	}
 
-	// Checks each giveaway and update it if needed
 	_checkGiveaway() {
 		if (this.giveaways.length <= 0) return;
 		this.giveaways.forEach(async (giveaway) => {
 			if (giveaway.ended) return;
 			if (!giveaway.channel) return;
 			if (giveaway.remainingTime <= 0) {
-				return this.end(giveaway.messageID).catch((e) => console.log(e));
+				return this.end(giveaway.messageID);
 			}
-			await giveaway.fetchMessage().catch((e) => console.log(e));
+			await giveaway.fetchMessage();
 			if (!giveaway.message) {
 				giveaway.ended = true;
 				await this.editGiveaway(giveaway.messageID, giveaway.data);
 				return;
 			}
-			const embed = new Discord.MessageEmbed()
-				.setAuthor(giveaway.prize)
-				.setColor(giveaway.embedColor)
-				.setFooter(`${giveaway.winnerCount} ${giveaway.messages.winners}`)
-				.setDescription(
-					`${giveaway.messages.inviteToParticipate}\n${giveaway.content}\n${
-						giveaway.hostedBy ? giveaway.messages.hostedBy.replace('{user}', giveaway.hostedBy) : ''
-					}`,
-				)
-				.setTimestamp(new Date(giveaway.endAt).toISOString());
+			const embed = this.generateMainEmbed(giveaway);
 			giveaway.message.edit(giveaway.messages.giveaway, { embed });
 			if (giveaway.remainingTime < this.options.updateCountdownEvery) {
 				setTimeout(() => this.end.call(this, giveaway.messageID), giveaway.remainingTime);
@@ -278,7 +246,32 @@ class GiveawaysManager extends EventEmitter {
 		});
 	}
 
-	// Inits the manager
+	async _handleRawPacket(packet) {
+		if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+		const giveaway = this.giveaways.find((g) => g.messageID === packet.d.message_id);
+		if (!giveaway) return;
+		if (giveaway.ended && packet.t === 'MESSAGE_REACTION_REMOVE') return;
+		const guild = this.client.guilds.cache.get(packet.d.guild_id);
+		if (!guild) return;
+		if (packet.d.user_id === this.client.user.id) return;
+		const member = guild.members.cache.get(packet.d.user_id) || (await guild.members.fetch(packet.d.user_id));
+		if (!member) return;
+		const channel = guild.channels.cache.get(packet.d.channel_id);
+		if (!channel) return;
+		const message = channel.messages.cache.get(packet.d.message_id) || (await channel.messages.fetch(packet.d.message_id));
+		if (!message) return;
+		const reaction = message.reactions.cache.get(giveaway.reaction || this.options.default.reaction);
+		if (!reaction) return;
+		if (reaction.emoji.name !== packet.d.emoji.name) return;
+		if (reaction.emoji.id && reaction.emoji.id !== packet.d.emoji.id) return;
+		if (packet.t === 'MESSAGE_REACTION_ADD') {
+			if (giveaway.ended) return this.emit('endedGiveawayReactionAdded', giveaway, member, reaction);
+			this.emit('giveawayReactionAdded', giveaway, member, reaction);
+		} else {
+			this.emit('giveawayReactionRemoved', giveaway, member, reaction);
+		}
+	}
+
 	async _init() {
 		const rawGiveaways = await this.getAllGiveaways();
 		rawGiveaways.forEach((giveaway) => {
@@ -288,6 +281,16 @@ class GiveawaysManager extends EventEmitter {
 			if (this.client.readyAt) this._checkGiveaway.call(this);
 		}, this.options.updateCountdownEvery);
 		this.ready = true;
+		if (
+			!isNaN(this.options.endedGiveawaysLifetime) &&
+            this.options.endedGiveawaysLifetime
+		) {
+			this.giveaways
+				.filter((g) => g.ended && ((g.endAt + this.options.endedGiveawaysLifetime) <= Date.now()))
+				.forEach((giveaway) => this.deleteGiveaway(giveaway.messageID));
+		}
+
+		this.client.on('raw', (packet) => this._handleRawPacket(packet));
 	}
 }
 

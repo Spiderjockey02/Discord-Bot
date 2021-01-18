@@ -4,6 +4,25 @@ const languageData = {
 	UNKNOWN_GIVEAWAY: (message) => `No giveaway found with Message ID: \`${message}\`, please check and try again.`,
 	EDIT_GIVEAWAY: (time) => `Success! Giveaway will updated in less than ${time} seconds.`,
 	INCORRECT_WINNER_COUNT: 'Winner count must be a number.',
+	//
+	GIVEAWAY_DATA: {
+		giveaway: '@everyone\n\n🎉🎉 **GIVEAWAY** 🎉🎉',
+		giveawayEnded: '@everyone\n\n🎉🎉 **GIVEAWAY ENDED** 🎉🎉',
+		timeRemaining: 'Time remaining: **{duration}**!',
+		inviteToParticipate: 'React with 🎉 to participate!',
+		winMessage: 'Congratulations, {winners}! You won **{prize}**!\n{messageURL}',
+		embedFooter: 'Giveaways',
+		noWinner: 'Giveaway cancelled, no valid participations.',
+		hostedBy: 'Hosted by: {user}',
+		winners: 'winner(s)',
+		endedAt: 'Ended at',
+		units: {
+			seconds: 'seconds',
+			minutes: 'minutes',
+			hours: 'hours',
+			days: 'days',
+		},
+	},
 };
 
 const translate = (key, args) => {

@@ -29,6 +29,9 @@ module.exports.run = async (bot, message, args, settings) => {
 		time: time,
 		prize: args.slice(2).join(' '),
 		winnerCount: parseInt(args[1]),
+		hostedBy: message.member,
+		messages: message.translate(settings.Language, 'GIVEAWAY/GIVEAWAY_DATA'),
+		// language settings
 	}).then(() => {
 		bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 	});

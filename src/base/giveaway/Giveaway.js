@@ -1,21 +1,15 @@
-const Discord = require('discord.js');
-const { EventEmitter } = require('events');
+// Dependencies
+const merge = require('deepmerge'),
+	{ EventEmitter } = require('events');
 
-
-/**
- * Represents a Giveaway
- */
+// Giveaway
 class Giveaway extends EventEmitter {
-	/**
-     * @param {GiveawaysManager} manager The Giveaway Manager
-     * @param {GiveawayData} options The giveaway data
-     */
 	constructor(manager, options) {
 		super();
 		// The Giveaway manager
 		this.manager = manager;
 
-		//* The Discord Client
+		// The Discord Client
 		this.client = manager.client;
 
 		// The giveaway prize
@@ -42,17 +36,28 @@ class Giveaway extends EventEmitter {
 		// The number of winners for this giveaway
 		this.winnerCount = options.winnerCount;
 
+		// An array with the IDs of winners
+		this.winnerIDs = options.winnerIDs;
+
 		// The mention of the user who hosts this giveaway
 		this.hostedBy = options.hostedBy;
 
 		// The giveaway messages
 		this.messages = options.messages;
 
+		// Extra data concerning this giveaway
+		this.extraData = options.extraData;
+
 		// The giveaway data
 		this.options = options;
 
 		// The message instance of the embed of this giveaway
 		this.message = null;
+	}
+
+	// The link to the giveaway message
+	get messageURL() {
+		return `https://discord.com/channels/${this.guildID}/${this.channelID}/${this.messageID}`;
 	}
 
 	// The remaining time before the end of the giveaway
@@ -92,16 +97,19 @@ class Giveaway extends EventEmitter {
 
 	// Function to filter members. If true is returned, the member won't be able to win the giveaway.
 	async exemptMembers(member) {
-		if(this.options.exemptMembers && typeof this.options.exemptMembers === 'function') {
+		if (this.options.exemptMembers && typeof this.options.exemptMembers === 'function') {
 			try {
 				const result = await this.options.exemptMembers(member);
 				return result;
-			} catch(error) {
+			} catch (error) {
 				console.error(error);
 				return false;
 			}
 		}
-		if(this.manager.options.default.exemptMembers && typeof this.manager.options.default.exemptMembers === 'function') {
+		if (
+			this.manager.options.default.exemptMembers &&
+            typeof this.manager.options.default.exemptMembers === 'function'
+		) {
 			return await this.manager.options.default.exemptMembers(member);
 		}
 		return false;
@@ -113,7 +121,7 @@ class Giveaway extends EventEmitter {
 	}
 
 	// Gets the content of the giveaway
-	get content() {
+	get remainingTimeText() {
 		const roundTowardsZero = this.remainingTime > 0 ? Math.floor : Math.ceil;
 		// Gets days, hours, minutes and seconds
 		const days = roundTowardsZero(this.remainingTime / 86400000),
@@ -126,7 +134,7 @@ class Giveaway extends EventEmitter {
 		const isDay = days > 0,
 			isHour = hours > 0,
 			isMinute = minutes > 0;
-		const dayUnit = days < 2 && (this.messages.units.pluralS || this.messages.units.days.endsWith('s')) ? this.messages.units.days.substr(0, this.messages.units.days.length - 1) : this.messages.units.days,
+		const dayUnit = days < 2 && (this.messages.units.pluralS || this.messages.units.days.endsWith('s')) ? this.messages.units.days.substr(0, this.messages.units.days.length - 1)	: this.messages.units.days,
 			hourUnit = hours < 2 && (this.messages.units.pluralS || this.messages.units.hours.endsWith('s')) ? this.messages.units.hours.substr(0, this.messages.units.hours.length - 1) : this.messages.units.hours,
 			minuteUnit = minutes < 2 && (this.messages.units.pluralS || this.messages.units.minutes.endsWith('s')) ? this.messages.units.minutes.substr(0, this.messages.units.minutes.length - 1) : this.messages.units.minutes,
 			secondUnit = seconds < 2 && (this.messages.units.pluralS || this.messages.units.seconds.endsWith('s')) ? this.messages.units.seconds.substr(0, this.messages.units.seconds.length - 1) : this.messages.units.seconds;
@@ -156,6 +164,7 @@ class Giveaway extends EventEmitter {
 			endAt: this.endAt,
 			ended: this.ended,
 			winnerCount: this.winnerCount,
+			winners: this.winnerIDs,
 			prize: this.prize,
 			messages: this.messages,
 			hostedBy: this.options.hostedBy,
@@ -165,6 +174,9 @@ class Giveaway extends EventEmitter {
 			exemptPermissions: this.options.exemptPermissions,
 			exemptMembers: this.options.exemptMembers,
 			reaction: this.options.reaction,
+			requirements: this.requirements,
+			winnerIDs: this.winnerIDs,
+			extraData: this.extraData,
 		};
 		return baseData;
 	}
@@ -172,9 +184,8 @@ class Giveaway extends EventEmitter {
 	// Fetches the giveaway message in its channel
 	async fetchMessage() {
 		return new Promise(async (resolve, reject) => {
-			if(!this.messageID) return;
-			let message = null;
-			message = await this.channel.messages.fetch(this.messageID).catch((e) => console.log(e));
+			if (!this.messageID) return;
+			const message = await this.channel.messages.fetch(this.messageID);
 			if (!message) {
 				this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageID !== this.messageID);
 				this.manager.deleteGiveaway(this.messageID);
@@ -185,34 +196,55 @@ class Giveaway extends EventEmitter {
 		});
 	}
 
+	// Check if member is winner
+	async checkWinnerEntry(user) {
+		const guild = this.channel.guild;
+		const member = guild.member(user.id) || await guild.members.fetch(user.id).catch(() => {});
+		if (!member) return false;
+		const exemptMember = await this.exemptMembers(member);
+		if (exemptMember) return false;
+		const hasPermission = this.exemptPermissions.some((permission) => member.hasPermission(permission));
+		if (hasPermission) return false;
+		return true;
+	}
+
 	// Gets the giveaway winner(s)
 	async roll(winnerCount) {
-		if(!this.message) return [];
+		if (!this.message) return [];
 		// Pick the winner
 		const reactions = this.message.reactions.cache;
-		const reaction = reactions.get(this.reaction) || reactions.find(r => r.emoji.name === this.reaction);
-		if (!reaction) return new Discord.Collection().array();
-		const guild = await this.channel.guild.fetch();
-		let users = await reaction.users.cache
-			.filter(u => u.bot === this.botsCanWin)
-			.filter(u => u.id !== this.message.client.user.id)
-			.filter(u => guild.member(u.id));
+		const reaction = reactions.get(this.reaction) || reactions.find((r) => r.emoji.name === this.reaction);
+		if (!reaction) return [];
+		const guild = this.channel.guild;
+		// Fetch guild members
+		if (this.manager.options.hasGuildMembersIntent) await guild.members.fetch();
+		const users = (await reaction.users.fetch())
+			.filter((u) => !u.bot || u.bot === this.botsCanWin)
+			.filter((u) => u.id !== this.message.client.user.id);
 
-		for(const u of users.array()) {
-			const exemptMember = await this.exemptMembers(guild.member(u.id));
-			if(exemptMember) {
-				users.delete(u.id);
+		const rolledWinners = users.random(winnerCount || this.winnerCount);
+		const winners = [];
+
+		for (const u of rolledWinners) {
+			const isValidEntry = await this.checkWinnerEntry(u) && !winners.some((winner) => winner.id === u.id);
+			if (isValidEntry) {winners.push(u);} else {
+				// find a new winner
+				for (const user of users.array()) {
+					const alreadyRolled = winners.some((winner) => winner.id === user.id);
+					if (alreadyRolled) continue;
+					const isUserValidEntry = await this.checkWinnerEntry(user);
+					if (!isUserValidEntry) {continue;} else {
+						winners.push(user);
+						break;
+					}
+				}
 			}
 		}
 
-		users = users.filter(u => !this.exemptPermissions.some(p => guild.member(u.id).hasPermission(p)))
-			.random(winnerCount || this.winnerCount)
-			.filter(u => u)
-			.map(u => guild.member(u));
-		return users;
+		return winners.map((user) => guild.member(user) || user);
 	}
 
-	// Edit the giveaway
+	// Edits the giveaway
 	edit(options = {}) {
 		return new Promise(async (resolve, reject) => {
 			if (this.ended) {
@@ -221,7 +253,7 @@ class Giveaway extends EventEmitter {
 			if (!this.channel) {
 				return reject('Unable to get the channel of the giveaway with message ID ' + this.messageID + '.');
 			}
-			await this.fetchMessage().catch((e) => console.log(e));
+			await this.fetchMessage();
 			if (!this.message) {
 				return reject('Unable to fetch message with ID ' + this.messageID + '.');
 			}
@@ -230,8 +262,10 @@ class Giveaway extends EventEmitter {
 			if (options.newPrize) this.prize = options.newPrize;
 			if (options.addTime) this.endAt = this.endAt + options.addTime;
 			if (options.setEndTimestamp) this.endAt = options.setEndTimestamp;
+			if (options.newMessages) this.messages = merge(this.messages, options.newMessages);
+			if (options.newExtraData) this.extraData = options.newExtraData;
 			// Call the db method
-			this.manager.editGiveaway(this.messageID, this.data);
+			await this.manager.editGiveaway(this.messageID, this.data);
 			resolve(this);
 		});
 	}
@@ -245,52 +279,37 @@ class Giveaway extends EventEmitter {
 			if (!this.channel) {
 				return reject('Unable to get the channel of the giveaway with message ID ' + this.messageID + '.');
 			}
-			await this.fetchMessage().catch((e) => console.log(e));
+			this.ended = true;
+			await this.fetchMessage();
 			if (!this.message) {
 				return reject('Unable to fetch message with ID ' + this.messageID + '.');
 			}
-			try {
-				const winners = await this.roll();
-				this.manager.emit('giveawayEnded', this, winners);
-				this.ended = true;
+			const winners = await this.roll();
+			this.manager.emit('giveawayEnded', this, winners);
+			this.manager.editGiveaway(this.messageID, this.data);
+			if (winners.length > 0) {
+				this.winnerIDs = winners.map((w) => w.id);
 				this.manager.editGiveaway(this.messageID, this.data);
-				if (winners.length > 0) {
-					const formattedWinners = winners.map(w => `<@${w.id}>`).join(', ');
-					const str =
-											this.messages.winners.substr(0, 1).toUpperCase() +
-											this.messages.winners.substr(1, this.messages.winners.length) +
-											': ' +
-											formattedWinners;
-					const embed = new Discord.MessageEmbed()
-						.setAuthor(this.prize)
-						.setColor(this.embedColorEnd)
-						.setFooter(this.messages.endedAt)
-						.setDescription(`${str}\n${this.hostedBy ? this.messages.hostedBy.replace('{user}', this.hostedBy) : ''}`)
-						.setTimestamp(new Date(this.endAt).toISOString());
-					this.message.edit(this.messages.giveawayEnded, { embed });
-					this.message.channel.send(
-						this.messages.winMessage
-							.replace('{winners}', formattedWinners)
-							.replace('{prize}', this.prize),
-					);
-					resolve(winners);
-				} else {
-					const embed = new Discord.MessageEmbed()
-						.setAuthor(this.prize)
-						.setColor(this.embedColorEnd)
-						.setFooter(this.messages.endedAt)
-						.setDescription(`${this.messages.noWinner}\n${this.hostedBy ? this.messages.hostedBy.replace('{user}', this.hostedBy) : ''}`)
-						.setTimestamp(new Date(this.endAt).toISOString());
-					this.message.edit(this.messages.giveawayEnded, { embed });
-					resolve();
-				}
-			} catch (e) {
-				console.log(e);
+				const embed = this.manager.generateEndEmbed(this, winners);
+				this.message.edit(this.messages.giveawayEnded, { embed });
+				const formattedWinners = winners.map((w) => `<@${w.id}>`).join(', ');
+				this.message.channel.send(
+					this.messages.winMessage
+						.replace('{winners}', formattedWinners)
+						.replace('{prize}', this.prize)
+						.replace('{messageURL}', this.messageURL),
+
+				);
+				resolve(winners);
+			} else {
+				const embed = this.manager.generateNoValidParticipantsEndEmbed(this);
+				this.message.edit(this.messages.giveawayEnded, { embed });
+				resolve();
 			}
 		});
 	}
 
-	// Reroll the giveaway
+	// Rerolls the giveaway
 	reroll(options) {
 		return new Promise(async (resolve, reject) => {
 			if (!this.ended) {
@@ -299,14 +318,21 @@ class Giveaway extends EventEmitter {
 			if (!this.channel) {
 				return reject('Unable to get the channel of the giveaway with message ID ' + this.messageID + '.');
 			}
-			await this.fetchMessage().catch((e) => console.log(e));
+			await this.fetchMessage();
 			if (!this.message) {
 				return reject('Unable to fetch message with ID ' + this.messageID + '.');
 			}
-			const winners = this.roll();
+			const winners = await this.roll(options.winnerCount);
 			if (winners.length > 0) {
-				const formattedWinners = winners.map(w => '<@' + w.id + '>').join(', ');
-				this.channel.send(options.messages.congrat.replace('{winners}', formattedWinners));
+				this.winnerIDs = winners.map((w) => w.id);
+				this.manager.editGiveaway(this.messageID, this.data);
+				const embed = this.manager.generateEndEmbed(this, winners);
+				this.message.edit(this.messages.giveawayEnded, { embed });
+				const formattedWinners = winners.map((w) => '<@' + w.id + '>').join(', ');
+				this.channel.send(options.messages.congrat
+					.replace('{winners}', formattedWinners)
+					.replace('{messageURL}', this.messageURL),
+				);
 				resolve(winners);
 			} else {
 				this.channel.send(options.messages.error);
