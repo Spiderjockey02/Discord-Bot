@@ -1,6 +1,6 @@
 module.exports.run = async (bot, message, args, settings) => {
 	// Make sure the user has the right permissions to use giveaway
-	if (!message.member.hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'USER_PERMISSION', 'ADMINISTRATOR').then(m => m.delete({ timeout: 10000 }));
+	if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 	// Make sure the message ID of the giveaway embed is entered
 	if (!args[0]) {
