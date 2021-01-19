@@ -6,7 +6,6 @@ const readdir = promisify(require('fs').readdir);
 
 // For translating messages
 require('./handlers/extenders')(bot);
-require('./handlers/Notification-Handler');
 
 // giveaway manager
 const GiveawaysManager = require('./base/giveaway/Manager');
