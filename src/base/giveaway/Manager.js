@@ -190,10 +190,7 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async deleteGiveaway(messageID) {
-		const data = await giveawayDB.findOne({ messageID: messageID });
-		giveawayDB.deleteOne(data, function(err) {
-			if (err) throw err;
-		});
+		await giveawayDB.findOneAndDelete({ messageID: messageID }).exec();
 		return;
 	}
 

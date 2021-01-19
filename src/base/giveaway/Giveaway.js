@@ -106,10 +106,7 @@ class Giveaway extends EventEmitter {
 				return false;
 			}
 		}
-		if (
-			this.manager.options.default.exemptMembers &&
-            typeof this.manager.options.default.exemptMembers === 'function'
-		) {
+		if (this.manager.options.default.exemptMembers && typeof this.manager.options.default.exemptMembers === 'function') {
 			return await this.manager.options.default.exemptMembers(member);
 		}
 		return false;
@@ -199,7 +196,7 @@ class Giveaway extends EventEmitter {
 	// Check if member is winner
 	async checkWinnerEntry(user) {
 		const guild = this.channel.guild;
-		const member = guild.member(user.id) || await guild.members.fetch(user.id).catch(() => {});
+		const member = guild.member(user.id) || await guild.members.fetch(user.id);
 		if (!member) return false;
 		const exemptMember = await this.exemptMembers(member);
 		if (exemptMember) return false;
