@@ -31,7 +31,7 @@
     "canvacord": "^5.0.8",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.5",
-    "dateformat": "^4.4.1",
+    "dateformat": "^4.4.2",
     "deepmerge": "^4.2.2",
     "discord.js": "^12.5.1",
     "duckduckgo-images-api": "^1.0.5",
