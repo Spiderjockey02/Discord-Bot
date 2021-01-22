@@ -12,7 +12,7 @@ module.exports.run = (bot, message, settings) => {
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {
 		// calculate xp added
-		const xpAdd = (Math.floor(Math.random() * 7) + 8) * settings.LevelMultiplier;
+		const xpAdd = Math.round((Math.floor(Math.random() * 7) + 8) * settings.LevelMultiplier);
 		// find user
 		Ranks.findOne({
 			userID: message.author.id,
