@@ -15,7 +15,7 @@ const manager = new GiveawaysManager(bot, {
 	storage: false,
 	updateCountdownEvery: 10000,
 	// giveaways are deleted 1 week after end
-	endedGiveawaysLifetime: 10000,
+	endedGiveawaysLifetime: 604800000,
 	default: {
 		botsCanWin: false,
 		exemptPermissions: [],
