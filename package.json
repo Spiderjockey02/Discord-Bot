@@ -50,7 +50,6 @@
     "puppeteer": "^5.5.0",
     "r6api.js": "^1.6.0",
     "reddit-api-image-getter": "^1.0.10",
-    "simple-node-logger": "^18.12.24",
     "something-random-on-discord": "0.0.2",
     "string-progressbar": "^1.0.2",
     "superagent": "^6.1.0",
