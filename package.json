@@ -51,7 +51,7 @@
     "r6api.js": "^1.6.0",
     "reddit-api-image-getter": "^1.0.10",
     "something-random-on-discord": "0.0.2",
-    "string-progressbar": "^1.0.2",
+    "string-progressbar": "^1.0.3",
     "superagent": "^6.1.0",
     "tinyurl": "^1.1.7",
     "urban-dictionary": "^3.0.0",
