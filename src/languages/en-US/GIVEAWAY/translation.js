@@ -6,12 +6,11 @@ const languageData = {
 	INCORRECT_WINNER_COUNT: 'Winner count must be a number.',
 	//
 	GIVEAWAY_DATA: {
-		giveaway: '@everyone\n\n🎉🎉 **GIVEAWAY** 🎉🎉',
-		giveawayEnded: '@everyone\n\n🎉🎉 **GIVEAWAY ENDED** 🎉🎉',
+		giveaway: '🎉\t**GIVEAWAY**\t🎉',
+		giveawayEnded: '🎉\t**GIVEAWAY ENDED**\t🎉',
 		timeRemaining: 'Time remaining: **{duration}**!',
 		inviteToParticipate: 'React with 🎉 to participate!',
 		winMessage: 'Congratulations, {winners}! You won **{prize}**!\n{messageURL}',
-		embedFooter: 'Giveaways',
 		noWinner: 'Giveaway cancelled, no valid participations.',
 		hostedBy: 'Hosted by: {user}',
 		winners: 'winner(s)',
