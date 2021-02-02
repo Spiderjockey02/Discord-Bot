@@ -2,11 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 
-// Show the ordinal for the rank
-function ordinal(num) {
-	// eslint-disable-next-line no-sparse-arrays
-	`${num}${[, 'st', 'nd', 'rd'][(num / 10) % 10 ^ 1 && num % 10] || 'th'}`;
-}
+// Show the ordinal for the ranks
+// eslint-disable-next-line no-sparse-arrays
+const ordinal = (num) => `${num.toLocaleString('en-US')}${[, 'st', 'nd', 'rd'][(num / 10) % 10 ^ 1 && num % 10] || 'th'}`;
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Make sure the level plugin is enabled
