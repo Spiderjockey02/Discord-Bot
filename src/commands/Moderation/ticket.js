@@ -85,8 +85,11 @@ module.exports.run = async (bot, message, args, settings) => {
 		// will close the current ticket channel
 		// get support role
 		try {
-			if (message.member.roles.cache.has(r => r.id == settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) return message.error(settings.Language, 'MODERATION/NOT_SUPPORT');
-			message.channel.delete();
+			if (message.member.roles.cache.has(r => r.id == settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) {
+				message.channel.delete();
+			} else {
+				return message.error(settings.Language, 'MODERATION/NOT_SUPPORT');
+			}
 		} catch (e) {
 			console.log(e);
 		}
