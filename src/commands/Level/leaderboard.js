@@ -2,8 +2,16 @@
 const { MessageEmbed } = require('discord.js');
 const { Ranks } = require('../../modules/database/models/index');
 
+// Show the ordinal for the rank
+function ordinal(num) {
+	// eslint-disable-next-line no-sparse-arrays
+	`${num}${[, 'st', 'nd', 'rd'][(num / 10) % 10 ^ 1 && num % 10] || 'th'}`;
+}
+
 module.exports.run = async (bot, message, args, settings) => {
+	// Make sure the level plugin is enabled
 	if (settings.LevelPlugin == false) return;
+
 	// Retrieve Ranks from database
 	Ranks.find({
 		guildID: message.guild.id,
@@ -21,9 +29,9 @@ module.exports.run = async (bot, message, args, settings) => {
 			for (let i = 0; i < res.length; i++) {
 				const name = message.guild.members.cache.get(res[i].userID) || 'User left';
 				if (name == 'User left') {
-					embed.addField(`${i + 1}. ${name}`, `**XP:** ${res[i].Xp}`);
+					embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
 				} else {
-					embed.addField(`${i + 1}. ${name.user.username}`, `**XP:** ${res[i].Xp} | **Level:** ${res[i].Level}`);
+					embed.addField(`${ordinal(i + 1)}. ${name.user.username}`, `**XP:** ${res[i].Xp} | **Level:** ${res[i].Level}`);
 				}
 			}
 		} else {
