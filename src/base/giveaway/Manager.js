@@ -76,6 +76,7 @@ class GiveawaysManager extends EventEmitter {
 
 	// Ends a giveaway. This method is automatically called when a giveaway ends.
 	end(messageID) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			const giveaway = this.giveaways.find((g) => g.messageID === messageID);
 			if (!giveaway) {
@@ -87,6 +88,7 @@ class GiveawaysManager extends EventEmitter {
 
 	// Starts a new giveaway
 	start(channel, options) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.ready) {
 				return reject('The manager is not ready yet.');
@@ -137,6 +139,7 @@ class GiveawaysManager extends EventEmitter {
 
 	// Choose new winner(s) for the giveaway
 	reroll(messageID, options = {}) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			options = merge(defaultRerollOptions, options);
 			const giveawayData = this.giveaways.find((g) => g.messageID === messageID);
@@ -156,6 +159,7 @@ class GiveawaysManager extends EventEmitter {
 
 	// Edits a giveaway. The modifications will be applicated when the giveaway will be updated.
 	edit(messageID, options = {}) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			const giveaway = this.giveaways.find((g) => g.messageID === messageID);
 			if (!giveaway) {
@@ -167,6 +171,7 @@ class GiveawaysManager extends EventEmitter {
 
 	// Deletes a giveaway. It will delete the message and all the giveaway data.
 	delete(messageID, doNotDeleteMessage) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			const giveaway = this.giveaways.find((g) => g.messageID === messageID);
 			if (!giveaway) {

@@ -180,6 +180,7 @@ class Giveaway extends EventEmitter {
 
 	// Fetches the giveaway message in its channel
 	async fetchMessage() {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.messageID) return;
 			const message = await this.channel.messages.fetch(this.messageID);
@@ -243,6 +244,7 @@ class Giveaway extends EventEmitter {
 
 	// Edits the giveaway
 	edit(options = {}) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (this.ended) {
 				return reject('Giveaway with message ID ' + this.messageID + ' is already ended.');
@@ -269,6 +271,7 @@ class Giveaway extends EventEmitter {
 
 	// Ends the giveaway
 	end() {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (this.ended) {
 				return reject('Giveaway with message ID ' + this.messageID + ' is already ended');
@@ -308,6 +311,7 @@ class Giveaway extends EventEmitter {
 
 	// Rerolls the giveaway
 	reroll(options) {
+		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.ended) {
 				return reject('Giveaway with message ID ' + this.messageID + ' is not ended.');
