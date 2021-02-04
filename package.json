@@ -43,7 +43,7 @@
     "marked": "^1.2.8",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.14",
+    "mongoose": "^5.11.15",
     "nekos.life": "^2.0.7",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
