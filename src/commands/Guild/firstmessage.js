@@ -27,6 +27,6 @@ module.exports.config = {
 module.exports.help = {
 	name: 'firstmessage',
 	category: 'Guild',
-	description: 'Get the first fMessage.',
+	description: 'Gets the first message from the channel.',
 	usage: '${PREFIX}firstmessage',
 };
