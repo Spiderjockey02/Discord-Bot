@@ -41,20 +41,20 @@ module.exports.run = async (config) => {
 	// Check twitch API
 	if (!config.api_keys.twitch) {
 		logger.error(`${chalk.red('✗')} Twitch API key is missing.`);
-		error = true;
+		error = false;
 	}
 
 	// Check fortnite API
 	if (!config.api_keys.fortnite) {
 		logger.error(`${chalk.red('✗')} Fortnite API key is missing.`);
-		error = true;
+		error = false;
 	} else {
 		const stats = new Fortnite(config.api_keys.fortnite);
 		await stats.user('Ninja', 'pc').catch(e => {
 			console.log(e);
 			if (e.message == 'Invalid authentication credentials') {
 				logger.error(`${chalk.red('✗')} Fortnite API key is incorrect.`);
-				error = true;
+				error = false;
 			}
 		});
 	}
@@ -62,27 +62,27 @@ module.exports.run = async (config) => {
 	// Check Ksoft API
 	if (!config.api_keys.ksoft) {
 		logger.error(`${chalk.red('✗')} Ksoft API key is missing.`);
-		error = true;
+		error = false;
 	} else {
 		const ksoft = new KSoftClient(config.api_keys.ksoft);
 		const resp = await ksoft.images.meme();
 		if (!resp.url) {
 			logger.error(`${chalk.red('✗')} Ksoft API key is incorrect.`);
-			error = true;
+			error = false;
 		}
 	}
 
 	// Check Steam API
 	if (!config.api_keys.steam) {
 		logger.error(`${chalk.red('✗')} Steam API key is missing.`);
-		error = true;
+		error = false;
 	} else {
 		try {
 			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.api_keys.steam}&vanityurl=eroticgaben`).then(res => res.json());
 		} catch (e) {
 			if (e.type == 'invalid-json') {
 				logger.error(`${chalk.red('✗')} Steam API key is incorrect.`);
-				error = true;
+				error = false;
 			}
 		}
 	}
@@ -92,22 +92,22 @@ module.exports.run = async (config) => {
 		// Check discord api
 		if (!config.DiscordBotLists.DiscordBoatAPI_Key) {
 			logger.log(`${chalk.red('✓')} Discord Boat API key is missing.`);
-			error = true;
+			error = false;
 		}
 		if (!config.DiscordBotLists.ArcaneBotAPI_KEY) {
 			logger.log(`${chalk.red('✓')} Arcane Bot API key is missing.`);
-			error = true;
+			error = false;
 		}
 		if (!config.DiscordBotLists.botlist_spaceAPI_KEY) {
 			logger.log(`${chalk.red('✓')} Botlist Space API key is missing.`);
-			error = true;
+			error = false;
 		}
 	}
 
 	// Check Amethyste API
 	if (!config.api_keys.amethyste) {
 		logger.error(`${chalk.red('✗')} Amethyste API key is missing.`);
-		error = true;
+		error = false;
 	} else {
 		const res = await fetch('https://v1.api.amethyste.moe/generate/blurple', {
 			method: 'POST',
@@ -118,7 +118,7 @@ module.exports.run = async (config) => {
 		const result = await res.json();
 		if (result.status === 401) {
 			logger.error(`${chalk.red('✗')} Invalid Amethyste API key.`);
-			error = true;
+			error = false;
 		}
 	}
 
@@ -152,7 +152,7 @@ module.exports.run = async (config) => {
 	}
 
 	// keep at end
-	if (error != true) {
+	if (!error) {
 		logger.log(`${chalk.green('✓')} Config has been verified.`);
 		error = false;
 		return error;
