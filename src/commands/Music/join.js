@@ -4,7 +4,6 @@ const { MessageEmbed } = require('discord.js');
 module.exports.run = async (bot, message, args, settings) => {
 	// Check that a song is being played
 	const player = bot.manager.players.get(message.guild.id);
-	if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 	// Make sure the user is in a voice channel
 	if (!message.member.voice.channel) return message.error(settings.Language, 'MUSIC/MISSING_VOICE');
@@ -21,15 +20,26 @@ module.exports.run = async (bot, message, args, settings) => {
 		return message.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
 	}
 
-	// Move the bot to the new voice channel
-	try {
-		await player.setVoiceChannel(message.member.voice.channel.id);
-		const embed = new MessageEmbed()
-			.setColor(message.member.displayHexColor)
-			.setDescription(message.translate(settings.Language, 'MUSIC/CHANNEL_MOVE'));
-		message.channel.send(embed);
-	} catch (e) {
-		console.log(e);
+	// If no player (no song playing) create one and join channel
+	if (!player) {
+		const player = bot.manager.create({
+			guild: message.guild.id,
+			voiceChannel: message.member.voice.channel.id,
+			textChannel: message.channel.id,
+			selfDeafen: true,
+		});
+		player.connect();
+	} else {
+		// Move the bot to the new voice channel
+		try {
+			await player.setVoiceChannel(message.member.voice.channel.id);
+			const embed = new MessageEmbed()
+				.setColor(message.member.displayHexColor)
+				.setDescription(message.translate(settings.Language, 'MUSIC/CHANNEL_MOVE'));
+			message.channel.send(embed);
+		} catch (e) {
+			console.log(e);
+		}
 	}
 };
 

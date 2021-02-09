@@ -17,8 +17,8 @@ module.exports.run = async (bot, message, args, settings) => {
 		return message.channel.send(embed);
 	}
 
-	// make sure the number was between 0 and 100
-	if (Number(args[0]) <= 0 || Number(args[0]) > 100) {
+	// make sure the number was between 0 and 1000
+	if (Number(args[0]) <= 0 || Number(args[0]) > 1000) {
 		return message.error(settings.Language, 'MUSIC/TOO_HIGH');
 	}
 
