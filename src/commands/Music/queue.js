@@ -54,7 +54,6 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// get queue
 	const queue = player.queue;
-	console.log(queue);
 	if (queue.size == 0) {
 		// eslint-disable-next-line quotes
 		message.channel.send('```ml\n The queue is empty ;-;```');
