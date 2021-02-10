@@ -5,8 +5,10 @@ module.exports.run = async (bot, message, args, settings) => {
 	// Make sure that REPORT is in the mod logs
 	if (settings.ModLogEvents.includes('REPORT')) {
 		if (message.deletable) message.delete();
+
 		// Find user
 		const member = bot.getUsers(message, args);
+		if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure a reason was added
 		if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('report').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
