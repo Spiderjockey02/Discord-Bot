@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)",
   "main": "src/index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node ."
   },
   "engines": {
-    "node": "12.x",
+    "node": "15.x",
     "npm": "*"
   },
   "repository": {
