@@ -1,5 +1,6 @@
 // Dependecies
 const { Manager } = require('erela.js');
+const Deezer = require('erela.js-deezer');
 const { Spotify } = require('./Music/SpotifyHandler');
 const { MessageEmbed } = require('discord.js');
 require('./Music/BetterPlayer');
@@ -12,8 +13,9 @@ module.exports = async (bot) => {
 			{ host: 'localhost', port: 2333, password: 'youshallnotpass' },
 		],
 		plugins: [
-			// Initiate the plugin and pass the two required options.
+			// Allow spotify songs/playlists to be played
 			new Spotify({ clientID, clientSecret }),
+			new Deezer({ playlistLimit: 1, albumLimit:1 }),
 		],
 		autoPlay: true,
 		send(id, payload) {
