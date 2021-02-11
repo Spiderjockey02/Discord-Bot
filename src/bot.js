@@ -39,7 +39,7 @@ bot.commands = new Discord.Collection();
 (async () => {
 	// load commands
 	const cmdFolders = await readdir('./src/commands/');
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 101 -=-=-=-=-=-=-=');
+	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
 	for (let i = 0; i < cmdFolders.length; i++) {
 		const cmdFiles = await readdir(`./src/commands/${cmdFolders[i]}`);
 		cmdFiles.forEach(file => {
