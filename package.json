@@ -41,7 +41,7 @@
     "fortnite": "^4.3.2",
     "genius-lyrics-api": "^3.0.6",
     "leagueoflegends-js": "0.0.6",
-    "marked": "^1.2.9",
+    "marked": "^2.0.0",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
     "mongoose": "^5.11.15",
