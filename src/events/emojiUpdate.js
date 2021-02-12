@@ -9,10 +9,9 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if moderation plugin is on
-	if (settings.ModLog == false) return;
-	// Check if moderation channel is valid
-	if (settings.ModLogEvents.includes('EMOJIUPDATE')) {
+
+	// Check if event emojiUpdate is for logging
+	if (settings.ModLogEvents.includes('EMOJIUPDATE') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setColor(15105570)
 			.setAuthor('~Emoji updated~')
@@ -21,10 +20,9 @@ module.exports = async (bot, oldEmoji, newEmoji) => {
 			.addField('Emoji animated', newEmoji.animated, true)
 			.addField('Emoji preview', `<:${newEmoji.name}:${newEmoji.id}>`)
 			.setTimestamp();
-		// send message
-		const modChannel = newEmoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = newEmoji.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
-		// log event in console
-		bot.logger.log(`Emoji: ${newEmoji.name} has been updated in Server: ${newEmoji.guild.id}`);
 	}
 };

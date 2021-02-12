@@ -10,16 +10,16 @@ module.exports = async (bot, messages) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
-	// Check if event channelDelete is for logging
-	if (settings.ModLogEvents.includes('MESSAGEDELETEBULK')) {
+
+	// Check if event messageDeleteBulk is for logging
+	if (settings.ModLogEvents.includes('MESSAGEDELETEBULK') && settings.ModLog) {
 		let humanLog = `**Deleted Messages from #${messages.first().channel.name} (${messages.first().channel.id}) in ${messages.first().guild.name} (${messages.first().guild.id})**`;
 		for (const message of messages.array().reverse()) {
 			humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author.tag} (${message.id})`;
 			humanLog += ' : ' + message.content;
 		}
-		const modChannel = messages.first().channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+		//
+		const modChannel = messages.first().channel.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) {
 			const attachment = new MessageAttachment(Buffer.from(humanLog, 'utf-8'), 'DeletedMessages.txt');
 			const msg = await modChannel.send(attachment);
@@ -34,7 +34,5 @@ module.exports = async (bot, messages) => {
 				.setTimestamp();
 			modChannel.send(embed);
 		}
-		// log event in console
-		bot.logger.log(`[${messages.size}] messages were deleted in server [${messages.first().channel.guild.id}].`);
 	}
 };

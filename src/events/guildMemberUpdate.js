@@ -2,11 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 // send messages to log channel
-function sendMessage(newMember, settings, embed, bot) {
-	const channel = newMember.guild.channels.cache.find(c => c.id == settings.ModLogChannel);
+function sendMessage(newMember, settings, embed) {
+	const channel = newMember.guild.channels.cache.get(settings.ModLogChannel);
 	if (channel) channel.send(embed);
-	// log event in console
-	bot.logger.log(`Guild member: ${newMember.user.username} has been updated in Server: [${newMember.guild.id}].`);
 }
 
 module.exports = async (bot, oldMember, newMember) => {
@@ -17,10 +15,10 @@ module.exports = async (bot, oldMember, newMember) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
+
 	// Check if event channelCreate is for logging
-	if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE')) {
+	if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
+
 		// nickname change
 		if (oldMember.nickname != newMember.nickname) {
 			const embed = new MessageEmbed()
@@ -34,6 +32,7 @@ module.exports = async (bot, oldMember, newMember) => {
 			// Send message
 			sendMessage(newMember, settings, embed, bot);
 		}
+
 		// Look to see if user has boosted the server
 		if (!oldMember.premiumSince && newMember.premiumSince) {
 			const embed = MessageEmbed()
@@ -41,8 +40,9 @@ module.exports = async (bot, oldMember, newMember) => {
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 				.setTimestamp();
-			sendMessage(newMember, settings, embed, bot);
+			sendMessage(newMember, settings, embed);
 		}
+
 		// Look to see if user has stopped boosted the server
 		if (oldMember.premiumSince && !newMember.premiumSince) {
 			const embed = MessageEmbed()
@@ -50,8 +50,9 @@ module.exports = async (bot, oldMember, newMember) => {
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 				.setTimestamp();
-			sendMessage(newMember, settings, embed, bot);
+			sendMessage(newMember, settings, embed);
 		}
+
 		// Look to see if user has changed their surname
 		if (oldMember.username !== newMember.username) {
 			const embed = new MessageEmbed()
@@ -65,8 +66,9 @@ module.exports = async (bot, oldMember, newMember) => {
 				)
 				.setTimestamp();
 			// send message
-			sendMessage(newMember, settings, embed, bot);
+			sendMessage(newMember, settings, embed);
 		}
+
 		// look for role change
 		const rolesAdded = newMember.roles.cache.filter(x => !oldMember.roles.cache.get(x.id));
 		const rolesRemoved = oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id));
@@ -88,7 +90,7 @@ module.exports = async (bot, oldMember, newMember) => {
 					{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString}`, inline: true })
 				.setTimestamp();
 			// Send message
-			sendMessage(newMember, settings, embed, bot);
+			sendMessage(newMember, settings, embed);
 		}
 	}
 };

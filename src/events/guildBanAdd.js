@@ -8,19 +8,18 @@ module.exports = async (bot, guild, user) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if moderation plugin is on
-	if (settings.ModLog == false) return;
-	// Check if moderation channel is valid
-	if (settings.ModLogEvents.includes('GUILDBANADD')) {
+
+	// Check if event guildBanAdd is for logging
+	if (settings.ModLogEvents.includes('GUILDBANADD') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`${user.toString()}\n${user.tag}`)
 			.setFooter(`ID: ${user.id}`)
 			.setThumbnail(`${user.displayAvatarURL()}`)
 			.setAuthor('User: Banned')
 			.setTimestamp();
-		const modChannel = guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
-		// log event in console
-		bot.logger.log(`Guild member: ${user.username} has been banned from Server: [${user.guild.id}].`);
 	}
 };

@@ -37,10 +37,8 @@ module.exports = async (bot, member) => {
 		}
 	}
 
-	// Logging plugin
-	if (settings.ModLog == false) return;
-	// Check if event guildMemberAdd is for logging
-	if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE')) {
+	// Check if event guildMemberRemove is for logging
+	if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 			.setColor(15158332)
@@ -49,9 +47,9 @@ module.exports = async (bot, member) => {
 			.setAuthor('User left:', member.user.displayAvatarURL())
 			.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${require('../helpers/time-converter.js').getDayDiff(member.joinedTimestamp, Date.now())} days ago)`)
 			.setTimestamp();
-		const modChannel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
-		// log event in console
-		bot.logger.log(`${member.user.tag} has left the server: [${member.guild.id}]`);
 	}
 };

@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, member) => {
 	if (member.user.id == bot.user.id) return;
+
 	// get server settings
 	let settings;
 	try {
@@ -57,10 +58,8 @@ module.exports = async (bot, member) => {
 		}
 	}
 
-	// Logging plugin
-	if (settings.ModLog == false) return;
 	// Check if event guildMemberAdd is for logging
-	if (settings.ModLogEvents.includes('GUILDMEMBERADD')) {
+	if (settings.ModLogEvents.includes('GUILDMEMBERADD') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 			.setColor(3066993)
@@ -68,9 +67,7 @@ module.exports = async (bot, member) => {
 			.setThumbnail(member.user.displayAvatarURL())
 			.setAuthor('User joined:', member.user.displayAvatarURL())
 			.setTimestamp();
-		const modChannel = member.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+		const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
-		// log event in console
-		bot.logger.log(`${member.user.tag} has joined the server: [${member.guild.id}]`);
 	}
 };

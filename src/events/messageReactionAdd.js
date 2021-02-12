@@ -46,19 +46,18 @@ module.exports = async (bot, reaction, user) => {
 			}
 		}
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
-	// Check if event channelDelete is for logging
-	if (settings.ModLogEvents.includes('MESSAGEREACTIONADD')) {
-		// record all reactions
+
+	// Check if event messageReactionAdd is for logging
+	if (settings.ModLogEvents.includes('MESSAGEREACTIONADD') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 			.setColor(3066993)
 			.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
 			.setAuthor(user.tag, user.displayAvatarURL())
 			.setTimestamp();
-		// send message
-		const modChannel = reaction.message.channel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = reaction.message.channel.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
 	}
 };

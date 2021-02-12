@@ -9,20 +9,18 @@ module.exports = async (bot, emoji) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
-	// Check if event channelCreate is for logging
-	if (settings.ModLogEvents.includes('EMOJICREATE')) {
+
+	// Check if event emojiCreate is for logging
+	if (settings.ModLogEvents.includes('EMOJICREATE') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
 			.setColor(3066993)
 			.setFooter(`ID: ${emoji.id}`)
 			.setAuthor(emoji.guild.name, emoji.guild.iconURL())
 			.setTimestamp();
-		// send message
-		const modChannel = emoji.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = emoji.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
-		// log event in console
-		bot.logger.log(`Emoji: ${emoji.name} has been created in Server: [${emoji.guild.id}].`);
 	}
 };

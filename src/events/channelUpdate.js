@@ -2,9 +2,7 @@
 const { MessageEmbed } = require('discord.js');
 
 // send message to log channel
-function sendMessage(newChannel, settings, embed, bot) {
-	// log event in console
-	bot.logger.log(`Channel: ${newChannel.name} has been updated in Server: [${newChannel.guild.id}]`);
+function sendMessage(newChannel, settings, embed) {
 	// send message to channel
 	const modChannel = newChannel.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
 	if (modChannel) modChannel.send(embed);
@@ -18,10 +16,10 @@ module.exports = async (bot, oldChannel, newChannel) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
+
 	// Check if event channelDelete is for logging
-	if (settings.ModLogEvents.includes('CHANNELUPDATE')) {
+	if (settings.ModLogEvents.includes('CHANNELUPDATE') && settings.ModLog) {
+
 		// Channel name change
 		if (oldChannel.name != newChannel.name) {
 			const embed = new MessageEmbed()
@@ -35,8 +33,9 @@ module.exports = async (bot, oldChannel, newChannel) => {
 				)
 				.setTimestamp();
 			// send message
-			sendMessage(newChannel, settings, embed, bot);
+			sendMessage(newChannel, settings, embed);
 		}
+
 		// channel topic (description) change
 		if (oldChannel.topic != newChannel.topic) {
 			const embed = new MessageEmbed()
@@ -50,8 +49,9 @@ module.exports = async (bot, oldChannel, newChannel) => {
 				)
 				.setTimestamp();
 			// send message
-			sendMessage(newChannel, settings, embed, bot);
+			sendMessage(newChannel, settings, embed);
 		}
+
 		// Check for permission change
 		const permDiff = oldChannel.permissionOverwrites.filter(x => {
 			if (newChannel.permissionOverwrites.find(y => y.allow.bitfield == x.allow.bitfield) && newChannel.permissionOverwrites.find(y => y.deny.bitfield == x.deny.bitfield)) {
@@ -107,7 +107,7 @@ module.exports = async (bot, oldChannel, newChannel) => {
 					'value': value,
 				});
 			}
-			sendMessage(newChannel, settings, embed, bot);
+			sendMessage(newChannel, settings, embed);
 		}
 	}
 };

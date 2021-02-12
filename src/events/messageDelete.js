@@ -4,10 +4,13 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async (bot, message) => {
 	// Make sure the message wasn't deleted in a Dm channel
 	if (message.channel.type == 'dm') return;
+
 	// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
 	if (!message.content) return;
+
 	// Make sure its not the bot
 	if (message.author.id == bot.user.id) return;
+
 	// Get server settings
 	let settings;
 	try {
@@ -15,9 +18,11 @@ module.exports = async (bot, message) => {
 	} catch (e) {
 		console.log(e);
 	}
+
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false || message.content.startsWith(settings.prefix)) return;
-	// Check if event channelDelete is for logging
+
+	// Check if event messageDelete is for logging
 	if (settings.ModLogEvents.includes('MESSAGEDELETE')) {
 		// shorten message if it's longer then 1024
 		let shortened = false;
@@ -46,10 +51,9 @@ module.exports = async (bot, message) => {
 				});
 			}
 		}
-		// send message
+
+		// Find channel and send message
 		const modChannel = message.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
 	}
-	// log event in console
-	bot.logger.log(`Message by: ${message.author.username} has been deleted in server: [${message.guild.id}]`);
 };

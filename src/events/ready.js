@@ -12,11 +12,11 @@ module.exports = async bot => {
 	bot.manager.init(bot.user.id);
 
 	// Load up discord bot
-	// try {
-	// await require('../helpers/DiscordBotListUpdate')(bot);
-	// } catch (err) {
-	// bot.logger.error(err.message);
-	// }
+	try {
+		await require('../helpers/DiscordBotListUpdate')(bot);
+	} catch (err) {
+		bot.logger.error(err.message);
+	}
 
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();

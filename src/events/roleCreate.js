@@ -9,20 +9,18 @@ module.exports = async (bot, role) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
-	// Check if event channelCreate is for logging
-	if (settings.ModLogEvents.includes('ROLECREATE')) {
+
+	// Check if event roleCreate is for logging
+	if (settings.ModLogEvents.includes('ROLECREATE') && settings.ModLog) {
 		const embed = new MessageEmbed()
 			.setDescription(`**Role: ${role} (${role.name}) was created**`)
 			.setColor(3066993)
 			.setFooter(`ID: ${role.id}`)
 			.setAuthor(role.guild.name, role.guild.iconURL())
 			.setTimestamp();
-		// send message
-		const modChannel = role.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+
+		// Find channel and send message
+		const modChannel = role.guild.channels.cache.get(settings.ModLogChannel);
 		if (modChannel) modChannel.send(embed);
 	}
-	// log event in console
-	bot.logger.log(`Role: ${role.name} has been created in Server: [${role.guild.id}].`);
 };

@@ -1,12 +1,11 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js');
 
-function sendMessage(newRole, settings, embed, bot) {
-	// log event in console
-	bot.logger.log(`Role: ${newRole.name} has been updated in Server: [${newRole.guild.id}].`);
-	const modChannel = newRole.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
+function sendMessage(newRole, settings, embed) {
+	const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
 	if (modChannel) modChannel.send(embed);
 }
+
 module.exports = async (bot, oldRole, newRole) => {
 	// Get server settings
 	let settings;
@@ -15,10 +14,10 @@ module.exports = async (bot, oldRole, newRole) => {
 	} catch (e) {
 		console.log(e);
 	}
-	// Check if ModLog plugin is active
-	if (settings.ModLog == false) return;
-	// Check if event channelDelete is for logging
-	if (settings.ModLogEvents.includes('ROLEUPDATE')) {
+
+	// Check if event roleUpdate is for logging
+	if (settings.ModLogEvents.includes('ROLEUPDATE') && settings.ModLog) {
+
 		// role name change
 		if (oldRole.name != newRole.name) {
 			const embed = new MessageEmbed()
@@ -31,6 +30,7 @@ module.exports = async (bot, oldRole, newRole) => {
 				.setTimestamp();
 			sendMessage(newRole, settings, embed);
 		}
+
 		// role colour change
 		if (oldRole.color != newRole.color) {
 			const embed = new MessageEmbed()
@@ -43,6 +43,8 @@ module.exports = async (bot, oldRole, newRole) => {
 				.setTimestamp();
 			sendMessage(newRole, settings, embed);
 		}
+
+		// role permission change
 		if (oldRole.permissions != newRole.permissions) {
 			const embed = new MessageEmbed()
 				.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapp.com/developers/docs/topics/permissions)`)
