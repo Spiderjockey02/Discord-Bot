@@ -22,6 +22,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// If no player (no song playing) create one and join channel
 	if (!player) {
+		// eslint-disable-next-line no-shadow
 		const player = bot.manager.create({
 			guild: message.guild.id,
 			voiceChannel: message.member.voice.channel.id,
