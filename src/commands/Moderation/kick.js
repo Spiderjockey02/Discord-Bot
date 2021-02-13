@@ -1,3 +1,6 @@
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -23,9 +26,22 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Kick user with reason
 	try {
+		// send DM to user
+		try {
+			const embed = new MessageEmbed()
+				.setTitle('KICKED')
+				.setColor(15158332)
+				.setThumbnail(message.guild.iconURL())
+				.setDescription(`You have been kicked from ${message.guild.name}.`)
+				.addField('Kicked by:', message.author.tag, true)
+				.addField('Reason:', 'UNPOG', true);
+			await member[0].send(embed);
+			// eslint-disable-next-line no-empty
+		} catch (e) {}
+
+		// kick user from guild
 		await member[0].kick({ reason: reason });
 		message.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', member[0].user).then(m => m.delete({ timeout: 3000 }));
-		bot.Stats.KickedUsers++;
 	} catch (err) {
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: kick.`);
 		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));

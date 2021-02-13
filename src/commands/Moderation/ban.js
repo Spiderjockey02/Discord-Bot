@@ -1,3 +1,6 @@
+// Dependencies
+const { MessageEmbed } = require('discord.js');
+
 module.exports.run = async (bot, message, args, settings) => {
 	// Delete message
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -13,6 +16,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Get user and reason
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
+
 	// Make sure user is real
 	const member = bot.getUsers(message, args);
 
@@ -24,12 +28,26 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Ban user with reason and check if timed ban
 	try {
+		// send DM to user
+		try {
+			const embed = new MessageEmbed()
+				.setTitle('BANNED')
+				.setColor(15158332)
+				.setThumbnail(message.guild.iconURL())
+				.setDescription(`You have been banned from ${message.guild.name}.`)
+				.addField('Banned by:', message.author.tag, true)
+				.addField('Reason:', 'UNPOG', true);
+			await member[0].send(embed);
+			// eslint-disable-next-line no-empty
+		} catch (e) {}
+
+		// Ban user from guild
 		await member[0].ban({ reason: reason });
 		message.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
-		bot.Stats.BannedUsers++;
+
+		// Check to see if this ban is a tempban
 		const possibleTime = args[args.length - 1];
 		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-			// do tempban
 			const time = require('../../helpers/time-converter.js').getTotalTime(possibleTime, message, settings.Language);
 			if (!time) return;
 			setTimeout(() => {
