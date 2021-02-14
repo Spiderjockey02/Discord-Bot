@@ -1,7 +1,7 @@
 // Dependecies
 const { Manager } = require('erela.js');
 const Deezer = require('erela.js-deezer');
-const { Spotify } = require('./Music/SpotifyHandler');
+const Spotify = require('erela.js-spotify');
 const { MessageEmbed } = require('discord.js');
 require('./Music/BetterPlayer');
 
