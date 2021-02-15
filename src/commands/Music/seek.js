@@ -24,6 +24,9 @@ module.exports.run = async (bot, message, args, settings) => {
 		return message.error(settings.Language, 'MUSIC/LIVESTREAM');
 	}
 
+	// Make sure a time was inputted
+	if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('seek').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+
 	// update the time
 	const time = hmsToSecondsOnly(args[0]) * 1000;
 	if (time > player.queue.current.duration) {
