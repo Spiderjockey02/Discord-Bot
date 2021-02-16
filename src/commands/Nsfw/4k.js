@@ -1,17 +1,17 @@
 // Dependecies
-const { get } = require('superagent');
+const { get } = require('axios');
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	try {
-		get('https://nekobot.xyz/api/image')
-			.query({ type: '4k' })
-			.end((err, response) => {
+		get('https://nekobot.xyz/api/image?type=4k')
+			.then(res => {
 				const embed = new MessageEmbed()
-					.setImage(response.body.message);
+					.setImage(res.data.message);
 				message.channel.send(embed);
 			});
 	} catch (err) {
+		console.log(err);
 		if (bot.config.debug) bot.logger.error(`${err.message} - command: 4k.`);
 		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		if (message.deletable) message.delete();
