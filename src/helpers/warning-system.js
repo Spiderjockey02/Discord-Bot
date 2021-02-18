@@ -99,7 +99,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				// try and kick user from guild
 				try {
 					await message.guild.member(member).kick(wReason);
-					message.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS').then(m => m.delete({ timeout: 3500 }));
+					message.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database
 					Warning.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
 				} catch (e) {
