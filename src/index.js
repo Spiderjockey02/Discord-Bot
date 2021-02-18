@@ -1,4 +1,4 @@
-const logger = require('./modules/logging/logger');
+const logger = require('./modules/logging');
 
 (async function load() {
 	// This is to verify config file

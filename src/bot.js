@@ -1,39 +1,11 @@
 // Dependencies
-const Discord = require('discord.js');
-const bot = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES'] } });
+const Client = require('./base/Egglord.js');
+const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES'] } });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 
 // For translating messages
 require('./handlers/extenders')(bot);
-
-// giveaway manager
-const GiveawaysManager = require('./base/giveaway/Manager');
-
-// create the manager for giveaway
-const manager = new GiveawaysManager(bot, {
-	storage: false,
-	updateCountdownEvery: 10000,
-	// giveaways are deleted 1 week after end
-	endedGiveawaysLifetime: 604800000,
-	default: {
-		botsCanWin: false,
-		exemptPermissions: [],
-		embedColor: '#FF0000',
-		reaction: '🎉',
-	},
-});
-bot.giveawaysManager = manager;
-
-// for voice recording
-bot.recordings = [];
-
-// Logger (console log + file log)
-bot.logger = require('./modules/logging/logger');
-
-// For command handler
-bot.aliases = new Discord.Collection();
-bot.commands = new Discord.Collection();
 
 // Load commands
 (async () => {
@@ -57,6 +29,7 @@ bot.commands = new Discord.Collection();
 			}
 		});
 	}
+
 	// load events
 	const evtFiles = await readdir('./src/events/');
 	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFiles.length} -=-=-=-=-=-=-=`);
@@ -67,17 +40,6 @@ bot.commands = new Discord.Collection();
 		bot.on(eventName, event.bind(null, bot));
 	});
 
-	// connect to database and get global functions
-	bot.mongoose = require('./modules/database/mongoose');
-	require('./utils/global-functions.js')(bot);
-
-	// Load config for bot
-	try {
-		bot.config = require('./config.js');
-	} catch (err) {
-		console.error('Unable to load config.js \n', err);
-		process.exit(1);
-	}
 	// music
 	try {
 		require('./base/Audio-Player')(bot);
