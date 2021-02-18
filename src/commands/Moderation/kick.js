@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args, settings) => {
 				.setThumbnail(message.guild.iconURL())
 				.setDescription(`You have been kicked from ${message.guild.name}.`)
 				.addField('Kicked by:', message.author.tag, true)
-				.addField('Reason:', 'UNPOG', true);
+				.addField('Reason:', reason, true);
 			await member[0].send(embed);
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
