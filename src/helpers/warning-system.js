@@ -40,7 +40,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 						.setThumbnail(message.guild.iconURL())
 						.setDescription(`You have been warned in ${message.guild.name}.`)
 						.addField('Warned by:', message.author.tag, true)
-						.addField('Reason:', 'UNPOG', true)
+						.addField('Reason:', wReason, true)
 						.addField('Warnings:', '1/3');
 					member.send(embed2);
 					// eslint-disable-next-line no-empty
@@ -82,7 +82,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 						.setThumbnail(message.guild.iconURL())
 						.setDescription(`You have been warned in ${message.guild.name}.`)
 						.addField('Warned by:', message.author.tag, true)
-						.addField('Reason:', 'UNPOG', true)
+						.addField('Reason:', wReason, true)
 						.addField('Warnings:', '2/3');
 					member.send(embed2);
 					// eslint-disable-next-line no-empty
