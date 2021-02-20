@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (toEval) {
 			// Auto-complete commands
 			const hrStart = process.hrtime();
-			const evaluated = inspect(eval(toEval, { depth: 0 }));
+			const evaluated = inspect(await eval(toEval, { depth: 0 }));
 			const hrDiff = process.hrtime(hrStart);
 			return await message.channel.send(message.translate(settings.Language, 'HOST/EVAL_RESPONSE', [hrDiff, evaluated]), { maxLength: 1900 });
 		} else {
