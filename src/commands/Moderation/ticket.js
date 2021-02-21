@@ -40,6 +40,7 @@ module.exports.run = async (bot, message, args, settings) => {
 				channel.updateOverwrite(message.author, {
 					SEND_MESSAGES: true,
 					READ_MESSAGES: true,
+					VIEW_CHANNEL: true,
 				});
 				channel.updateOverwrite(supportRole, {
 					SEND_MESSAGES: true,
