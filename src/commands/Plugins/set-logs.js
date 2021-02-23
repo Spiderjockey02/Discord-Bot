@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, settings) => {
 			.setDescription(`\`${settings.prefix}set-logs <true | false>\`\n\`${settings.prefix}set-logs channel <ChannelID>\`\n\`${settings.prefix}set-logs <add | remove> LOG\``);
 		message.channel.send(embed);
 	} else if (args[0] == 'true' || args[0] == 'false') {
-		bot.updateGuild(message.guild, { ModLog: args[0] });
+		await message.guild.updateGuild({ ModLog: args[0] });
 		message.success(settings.Language, 'PLUGINS/LOGS_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 	} else if (args[0] == 'add' || args[0] == 'remove') {
 		const currentFeatures = settings.ModLogEvents;
@@ -29,15 +29,14 @@ module.exports.run = async (bot, message, args, settings) => {
 			message.channel.send(embed);
 		} else if (args[0] == 'add') {
 			currentFeatures.push(args[1].toUpperCase());
-			bot.updateGuild(message.guild, { ModLogEvents: currentFeatures });
+			await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 			message.channel.send(`Added: ${args[1].toUpperCase()} to logging.`);
 		} else if (args[0] == 'remove') {
 			// remove features
 			if (currentFeatures.indexOf(args[1].toUpperCase()) > -1) {
-				console.log('1');
 				currentFeatures.splice(currentFeatures.indexOf(args[1].toUpperCase()), 1);
 			}
-			bot.updateGuild(message.guild, { ModLogEvents: currentFeatures });
+			await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 			message.channel.send(`Removed: ${args[1].toUpperCase()} from logging.`);
 		} else {
 			// incorrect entry
@@ -46,7 +45,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		try {
 			const channelID = (message.guild.channels.cache.find(channel => channel.id == args[1])) ? message.guild.channels.cache.find(channel => channel.id == args[1]).id : message.channel.id;
 			if (channelID) {
-				await bot.updateGuild(message.guild, { ModLogChannel: channelID });
+				await message.guild.updateGuild({ ModLogChannel: channelID });
 				message.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
 			}
 		} catch (err) {

@@ -16,8 +16,12 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Check what language
 	if (languages[args[0].toLowerCase()]) {
-		await bot.updateGuild(message.guild, { Language: languages[args[0].toLowerCase()] });
-		message.success(settings.Language, 'PLUGINS/LANGUAGE_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+		try {
+			await message.guild.updateGuild({ Language: languages[args[0].toLowerCase()] });
+			message.success(settings.Language, 'PLUGINS/LANGUAGE_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+		} catch (e) {
+			console.log(e);
+		}
 	} else {
 		message.error(settings.Language, 'PLUGINS/NO_LANGUAGE').then(m => m.delete({ timeout:10000 }));
 	}
