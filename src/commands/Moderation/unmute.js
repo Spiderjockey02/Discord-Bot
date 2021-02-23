@@ -18,7 +18,8 @@ module.exports.run = async (bot, message, args, settings) => {
 	}
 
 	// Find user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
+
 	// Remove mutedRole from user
 	try {
 		const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);

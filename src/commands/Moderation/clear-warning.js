@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!message.member.hasPermission('KICK_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 	// Get user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	// get warnings of user
 	try {

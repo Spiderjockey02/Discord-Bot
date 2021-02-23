@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	}
 
 	// Checks to make sure user is in the server
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	try {
 		await member[0].voice.setDeaf(false);

@@ -3,11 +3,10 @@ const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
-	// Get user
-	const user1 = bot.GetImage(message, args, settings.Language);
+	// Get image, defaults to author's avatar
+	const user1 = message.guild.GetImage(message, args, settings.Language);
 	if (!user1) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('phcomment').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 	const user2 = (args[1]) ? message.mentions.users.array()[1] : message.author;
-	console.log(user1);
 	// send 'waitng' message
 
 	const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');

@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 	if (args.join(' ').replace(/<@.?[0-9]*?>/g, '').length == args.length) args.shift();
 
 	// Get text

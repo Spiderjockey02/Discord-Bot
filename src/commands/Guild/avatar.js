@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	// send embed
 	const embed = new MessageEmbed()

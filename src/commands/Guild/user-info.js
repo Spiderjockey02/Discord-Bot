@@ -12,7 +12,7 @@ const emojiList = {
 // ${emojis[member.presence.status]}
 module.exports.run = async (bot, message, args, settings) => {
 	// Get user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	// send user info
 	const embed = new MessageEmbed()

@@ -1,11 +1,9 @@
 // Dependencies
-const { KSoftClient } = require('@ksoft/api');
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
 	// Retrieve a random meme
-	const ksoft = new KSoftClient(bot.config.api_keys.ksoft);
-	const meme = await ksoft.images.meme();
+	const meme = await bot.Ksoft.images.meme();
 
 	// An error has occured
 	if (meme.url == undefined) {

@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('warn').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 	// Get user to warn
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	// Make sure user isn't trying to punish themselves
 	if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

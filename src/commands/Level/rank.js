@@ -6,8 +6,10 @@ const { Rank } = require('canvacord');
 module.exports.run = async (bot, message, args, settings) => {
 	// check to make sure Level plugin is enabled
 	if (settings.LevelPlugin == false) return;
+
 	// Get user
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
+
 	// Retrieve Rank from databse
 	try {
 		await Ranks.findOne({

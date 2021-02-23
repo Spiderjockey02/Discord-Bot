@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
 
 	// Make sure user is real
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 
 	// Make sure user isn't trying to punish themselves
 	if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

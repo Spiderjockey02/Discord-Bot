@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		if (message.deletable) message.delete();
 
 		// Find user
-		const member = bot.getUsers(message, args);
+		const member = message.guild.getMember(message, args);
 		if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure a reason was added

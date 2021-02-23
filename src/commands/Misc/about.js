@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, settings) => {
 		.addField(message.translate(settings.Language, 'MISC/ABOUT_CHANNELS'), `${bot.channels.cache.size} total\n${bot.channels.cache.filter(channel => channel.type === 'text').size} text, ${bot.channels.cache.filter(channel => channel.type === 'voice').size} voice\n${bot.channels.cache.filter(channel => channel.type === 'dm').size} DM`, true)
 		.addField(message.translate(settings.Language, 'MISC/ABOUT_PROCESS'), `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\nNode.js: ${process.version.slice(1).split('.')[0]}v\nDiscord.js: ${version}v`, true)
 		.addField(message.translate(settings.Language, 'MISC/ABOUT_SERVERS'), `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
-		.addField(message.translate(settings.Language, 'MISC/ABOUT_MESSAGES'), '? messages\n ? msg/sec', true)
+		.addField(message.translate(settings.Language, 'MISC/ABOUT_MESSAGES'), `${bot.messagesSent} messages\n ${(bot.messagesSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
 		.addField(message.translate(settings.Language, 'MISC/ABOUT_UPTIME'), moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]'), true);
 	message.channel.send(embed);
 };

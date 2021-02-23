@@ -3,7 +3,8 @@ module.exports.run = async (bot, message, args, settings) => {
 	if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 	// Get user for nickname change
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
+	console.log(member);
 
 	// Check if they are changing their own name or not (and check permission)
 	if (member[0] == message.author) {

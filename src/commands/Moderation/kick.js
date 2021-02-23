@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	}
 
 	// Get user and reason
-	const member = bot.getUsers(message, args);
+	const member = message.guild.getMember(message, args);
 	const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
 
 	// Make sure user isn't trying to punish themselves

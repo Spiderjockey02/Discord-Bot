@@ -16,7 +16,9 @@ module.exports.run = async (bot, message, args) => {
 		} else {
 			message.channel.send('Could not find that documentation.');
 		}
-	}).catch(err => console.log(err));
+	}).catch(err => {
+		message.channel.send(err.response.data.message);
+	});
 };
 
 module.exports.config = {
