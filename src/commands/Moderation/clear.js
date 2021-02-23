@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, settings) => {
 
 	// Delete messages
 	await message.channel.messages.fetch({ limit: amount }).then(async messages => {
-		await message.channel.bulkDelete(messages);
+		await message.channel.bulkDelete(messages, true);
 		message.success(settings.Language, 'MODERATION/MESSAGES_DELETED', messages.size).then(m => m.delete({ timeout: 3000 }));
 	});
 };
