@@ -1,10 +1,7 @@
 // Dependencies
-const Fortnite = require('fortnite');
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = async (bot, message, args, settings) => {
-	// Get platform and username
-	const stats = new Fortnite(bot.config.api_keys.fortnite);
 
 	// Check if platform and user was entered
 	if (!['kbm', 'gamepad', 'touch'].includes(args[0])) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('fortnite').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
@@ -15,8 +12,7 @@ module.exports.run = async (bot, message, args, settings) => {
 	const username = args.join(' ');
 	const r = await message.channel.send(`Retrieving Fortnite information on **${username}**.`);
 
-	// Retrieve stats from database
-	stats.user(username, platform).then(data => {
+	bot.Fortnite.user(username, platform).then(data => {
 		const embed = new MessageEmbed()
 			.setColor(0xffffff)
 			.setTitle(`Stats for ${data.username}`)
