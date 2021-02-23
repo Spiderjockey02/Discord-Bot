@@ -5,24 +5,14 @@ const moment = require('moment');
 const commandcd = new Set();
 
 module.exports = async (bot, message) => {
+	// record how many messages the bot see
+	bot.messagesSent++;
+
 	// Should not respond to bots
 	if (message.author.bot) return;
 
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(message.guild);
-	} catch (err) {
-		settings = bot.config.defaultSettings;
-	}
-	if (!settings && message.channel.type != 'dm') {
-		await bot.emit('guildCreate', message.guild);
-		try {
-			settings = await bot.getGuild(message.guild);
-		} catch (err) {
-			bot.logger.error(err.message);
-		}
-	}
+	const settings = (message.guild) ? message.guild.settings : bot.config.defaultSettings;
 
 	// Check if bot was mentioned
 	if (message.content == `<@!${bot.user.id}>`) {
@@ -48,9 +38,15 @@ module.exports = async (bot, message) => {
 
 	// Check if message was a command
 	const args = message.content.split(' ');
-	const command = args.shift().slice(settings.prefix.length).toLowerCase();
-	const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
-	if (cmd && message.content.startsWith(settings.prefix)) {
+	if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
+		let command = args.shift().slice(settings.prefix.length).toLowerCase();
+		let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+		if (!cmd) {
+			command = args.shift().slice(`<@!${bot.user.id}>`).toLowerCase();
+			cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+			if (!cmd) return;
+		}
+
 		// Make sure guild only commands are done in the guild only
 		if (message.channel.type == 'dm') {
 			if (['Giveaway', 'Guild', 'Level', 'Misc', 'Music', 'Moderation', 'Trivia'].includes(cmd.help.category)) {
@@ -85,6 +81,7 @@ module.exports = async (bot, message) => {
 		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.config.command))) return;
 
 		// run command
+		bot.commandsUsed++;
 		cmd.run(bot, message, args, settings);
 		if (settings.CommandCooldown) {
 			commandcd.add(message.author.id);
