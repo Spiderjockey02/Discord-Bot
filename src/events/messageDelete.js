@@ -12,12 +12,7 @@ module.exports = async (bot, message) => {
 	if (message.author.id == bot.user.id) return;
 
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(message.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = message.guild.settings;
 
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false || message.content.startsWith(settings.prefix)) return;

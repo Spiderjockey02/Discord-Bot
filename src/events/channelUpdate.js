@@ -10,12 +10,7 @@ function sendMessage(newChannel, settings, embed) {
 
 module.exports = async (bot, oldChannel, newChannel) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(newChannel.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = newChannel.guild.settings;
 
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('CHANNELUPDATE') && settings.ModLog) {

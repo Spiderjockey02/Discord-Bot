@@ -9,12 +9,7 @@ module.exports = async (bot, reaction, user) => {
 	if (user.bot) return;
 
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(reaction.message.channel.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = reaction.message.channel.guild.settings;
 
 	// Check if event messageReactionRemove is for logging
 	if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {

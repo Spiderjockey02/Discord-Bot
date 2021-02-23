@@ -22,6 +22,6 @@ module.exports = async (bot, guild) => {
 		.setTitle(`[GUILD JOIN] ${guild.name}`)
 		.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
 		.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
-	const channel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
-	if (channel) channel.send(embed);
+	// const channel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
+	// if (channel) channel.send(embed);
 };

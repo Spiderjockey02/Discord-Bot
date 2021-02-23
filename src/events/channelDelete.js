@@ -6,12 +6,7 @@ module.exports = async (bot, channel) => {
 	if (channel.type == 'dm') return;
 
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(channel.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = channel.guild.settings;
 
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('CHANNELDELETE') && settings.ModLog) {

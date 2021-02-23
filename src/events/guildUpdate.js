@@ -9,12 +9,7 @@ function sendMessage(newGuild, settings, embed) {
 
 module.exports = async (bot, oldGuild, newGuild) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(newGuild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = newGuild.guild.settings;
 
 	let embed;
 	// Check if event guildUpdate is for logging

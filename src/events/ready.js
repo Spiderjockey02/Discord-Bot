@@ -23,44 +23,44 @@ module.exports = async bot => {
 	}, 60000);
 
 	// Updates the bot's status
-	const activities = [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`];
-	let j = 0;
-	setInterval(() => bot.user.setActivity(`${activities[j++ % activities.length]}`, { type: 'WATCHING' }), 10000);
-	bot.user.setStatus('Online');
+	setTimeout(() => {
+		bot.SetStatus('Online');
+		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
+	}, 3000);
 
 
 	// Check if any servers added the bot while offline
 	bot.guilds.cache.forEach(async item => {
-		let settings;
-		try {
-			settings = await bot.getGuild(item);
-		} catch (e) {
-			console.log(e);
-		}
-		if (!settings) {
+		await item.fetchGuildConfig();
+		if (JSON.stringify(item.settings) == '{}') {
 			// new guild has been found
 			bot.emit('guildCreate', item);
 		}
 	});
 
 	// Delete server settings on servers that removed the bot while it was offline
-	const data = await Guild.find({});
-	if (data.length > bot.guilds.cache.size) {
-		// A server kicked the bot when it was offline
-		const guildCount = [];
-		// Get bot guild ID's
-		for (let i = 0; i < bot.guilds.cache.size; i++) {
-			guildCount.push(bot.guilds.cache.array()[i].id);
-		}
-		// Now check database for bot guild ID's
-		for (let i = 0; i < data.length; i++) {
-			if (!guildCount.includes(data[i].guildID)) {
-				const guild = {
-					id: `${data[i].guildID}`,
-					name: `${data[i].guildName}`,
-				};
-				bot.emit('guildDelete', guild);
+	async function DeleteGuildCheck() {
+		const data = await Guild.find({});
+		if (data.length > bot.guilds.cache.size) {
+			// A server kicked the bot when it was offline
+			const guildCount = [];
+			// Get bot guild ID's
+			for (let i = 0; i < bot.guilds.cache.size; i++) {
+				guildCount.push(bot.guilds.cache.array()[i].id);
+			}
+			// Now check database for bot guild ID's
+			for (let i = 0; i < data.length; i++) {
+				if (!guildCount.includes(data[i].guildID)) {
+					const guild = {
+						id: `${data[i].guildID}`,
+						name: `${data[i].guildName}`,
+					};
+					bot.emit('guildDelete', guild);
+				}
 			}
 		}
 	}
+
+	await DeleteGuildCheck();
+	bot.logger.ready('All guilds have been initialized.');
 };

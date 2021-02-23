@@ -3,12 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, emoji) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(emoji.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = emoji.guild.settings;
 
 	// Check if event emojiDelete is for logging
 	if (settings.ModLogEvents.includes('EMOJIDELETE') && settings.ModLog) {

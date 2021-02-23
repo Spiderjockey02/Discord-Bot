@@ -4,15 +4,13 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async (bot, reaction, user) => {
 	// make sure it dosen't happen in a DM
 	if (reaction.message.channel.type == 'dm') return;
+
 	// Make sure it's not a BOT
 	if (user.bot) return;
+
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(reaction.message.channel.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = reaction.message.channel.guild.settings;
+
 	// Check if anti-raid plugin is active
 	if (settings.AntiRaidPlugin == true && settings.AntiRaidCompletion == 1) {
 		// check if the reaction was done in the #verify channel

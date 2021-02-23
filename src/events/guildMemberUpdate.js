@@ -8,13 +8,8 @@ function sendMessage(newMember, settings, embed) {
 }
 
 module.exports = async (bot, oldMember, newMember) => {
-	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(newMember.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	// get server settings
+	const settings = newMember.guild.settings;
 
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE') && settings.ModLog) {

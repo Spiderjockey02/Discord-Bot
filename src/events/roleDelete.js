@@ -3,12 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, role) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(role.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = role.guild.settings;
 
 	// Check if event roleDelete is for logging
 	if (settings.ModLogEvents.includes('ROLEDELETE') && settings.ModLog) {

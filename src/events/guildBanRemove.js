@@ -2,12 +2,8 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, guild, user) => {
-	let settings;
-	try {
-		settings = await bot.getGuild(guild);
-	} catch (e) {
-		console.log(e);
-	}
+	// Get server settings
+	const settings = guild.settings;
 
 	// Check if event guildBanRemove is for logging
 	if (settings.ModLogEvents.includes('GUILDBANREMOVE') && settings.ModLog) {

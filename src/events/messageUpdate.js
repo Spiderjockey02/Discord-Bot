@@ -4,21 +4,20 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async (bot, oldMessage, newMessage) => {
 	// make sure its not a DM
 	if (newMessage.channel.type == 'dm') return;
+
 	// Check if message is a partial
-	if (oldMessage.partial || newMessage.partial) {
-		return;
-	}
+	if (oldMessage.partial || newMessage.partial) return;
+
 	// only check for message content is different
 	if (oldMessage.content == newMessage.content) return;
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(newMessage.guild);
-	} catch (e) {
-		console.log(e);
-	}
+
+	// Get server settings
+	const settings = newMessage.guild.settings;
+
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false) return;
+
 	// Check if event channelDelete is for logging
 	if (settings.ModLogEvents.includes('MESSAGEUPDATE')) {
 		// shorten both messages when the content is larger then 1024 chars

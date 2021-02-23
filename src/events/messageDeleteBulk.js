@@ -4,12 +4,7 @@ const { MessageAttachment, MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, messages) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(messages.first().channel.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = messages.guild.settings;
 
 	// Check if event messageDeleteBulk is for logging
 	if (settings.ModLogEvents.includes('MESSAGEDELETEBULK') && settings.ModLog) {

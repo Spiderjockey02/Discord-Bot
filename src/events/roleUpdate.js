@@ -8,12 +8,7 @@ function sendMessage(newRole, settings, embed) {
 
 module.exports = async (bot, oldRole, newRole) => {
 	// Get server settings
-	let settings;
-	try {
-		settings = await bot.getGuild(newRole.guild);
-	} catch (e) {
-		console.log(e);
-	}
+	const settings = newRole.guild.settings;
 
 	// Check if event roleUpdate is for logging
 	if (settings.ModLogEvents.includes('ROLEUPDATE') && settings.ModLog) {
@@ -47,7 +42,7 @@ module.exports = async (bot, oldRole, newRole) => {
 		// role permission change
 		if (oldRole.permissions != newRole.permissions) {
 			const embed = new MessageEmbed()
-				.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapp.com/developers/docs/topics/permissions)`)
+				.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapi.com/permissions.html#${oldRole.permissions.bitfield})`)
 				.setColor(15105570)
 				.setFooter(`ID: ${newRole.id}`)
 				.setAuthor(newRole.guild.name, newRole.guild.iconURL())
