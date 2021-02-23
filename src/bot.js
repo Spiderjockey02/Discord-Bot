@@ -1,11 +1,9 @@
 // Dependencies
 const Client = require('./base/Egglord.js');
+require('./structures');
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES'] } });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
-
-// For translating messages
-require('./handlers/extenders')(bot);
 
 // Load commands
 (async () => {
@@ -46,16 +44,6 @@ require('./handlers/extenders')(bot);
 	} catch (e) {
 		bot.logger.error(e);
 	}
-
-	// Interact with console
-	const y = process.openStdin();
-	y.addListener('data', res => {
-		const message = res.toString().trim();
-		const args = res.toString().trim().split(/ +/g);
-		// now run command
-		if (args.length == 0) return;
-		require('./handlers/console.js').run(args, message, bot);
-	});
 
 	// Connect bot to database
 	bot.mongoose.init(bot);
