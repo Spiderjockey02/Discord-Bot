@@ -32,7 +32,7 @@ module.exports = async bot => {
 	// Check if any servers added the bot while offline
 	bot.guilds.cache.forEach(async item => {
 		await item.fetchGuildConfig();
-		if (JSON.stringify(item.settings) == '{}') {
+		if (item.settings == null) {
 			// new guild has been found
 			bot.emit('guildCreate', item);
 		}
