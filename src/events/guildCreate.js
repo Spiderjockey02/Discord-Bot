@@ -16,6 +16,7 @@ module.exports = async (bot, guild) => {
 	} catch (e) {
 		console.error(e);
 	}
+	await guild.fetchGuildConfig();
 
 	// Send message to channel that bot has joined a server
 	const embed = new MessageEmbed()
