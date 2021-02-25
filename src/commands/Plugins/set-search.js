@@ -1,36 +1,41 @@
-module.exports.run = async (bot, message, args, settings) => {
-	// Delete message
-	if (settings.ModerationClearToggle & message.deletable) message.delete();
+// Dependecies
+const Command = require('../../structures/Command.js');
 
-	// Make sure user can edit server plugins
-	if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
-	// update search plugin
-	try {
-		if (args[0] == 'true') {
-			await message.guild.updateGuild({ SearchPlugin: true });
-			message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
-		} else if (args[0] == 'false') {
-			await message.guild.updateGuild({ SearchPlugin: false });
-			message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
-		} else {
-			return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-search').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-		}
-	} catch (e) {
-		console.log(e);
-		return message.error(settings.Language, 'ERROR_MESSAGE');
+module.exports = class SetSearch extends Command {
+	constructor(bot) {
+		super(bot, {
+			command: 'set-search',
+			dirname: __dirname,
+			aliases: ['setsearch'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Turn on or off the search plugin.',
+			usage: 'set-search <true | false>',
+			cooldown: 3000,
+		});
 	}
-};
 
-module.exports.config = {
-	command: 'set-search',
-	aliases: ['setsearch'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-};
+	// Run command
+	async run(bot, message, args, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-module.exports.help = {
-	name: 'set-search',
-	category: 'Plugins',
-	description: 'Turn on or off the search plugin.',
-	usage: '${PREFIX}set-search <true | false>',
+		// Make sure user can edit server plugins
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+
+		// update search plugin
+		try {
+			if (args[0] == 'true') {
+				await message.guild.updateGuild({ SearchPlugin: true });
+				message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+			} else if (args[0] == 'false') {
+				await message.guild.updateGuild({ SearchPlugin: false });
+				message.success(settings.Language, 'PLUGINS/SEARCH_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+			} else {
+				return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-search').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+			}
+		} catch (e) {
+			console.log(e);
+			return message.error(settings.Language, 'ERROR_MESSAGE');
+		}
+	}
 };

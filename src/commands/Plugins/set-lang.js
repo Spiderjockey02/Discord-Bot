@@ -1,41 +1,46 @@
+// Dependecies
+const Command = require('../../structures/Command.js');
+
 // Languages supported
 const languages = {
 	'english': 'en-US',
 	'arabic': 'ar-EG',
 };
 
-module.exports.run = async (bot, message, args, settings) => {
-	// Delete message
-	if (settings.ModerationClearToggle & message.deletable) message.delete();
-
-	// Make sure user can edit server plugins
-	if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
-	// Make sure a language was entered
-	if (!args[0]) return message.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => m.delete({ timeout:10000 }));
-
-	// Check what language
-	if (languages[args[0].toLowerCase()]) {
-		try {
-			await message.guild.updateGuild({ Language: languages[args[0].toLowerCase()] });
-			message.success(settings.Language, 'PLUGINS/LANGUAGE_SET', args[0]).then(m => m.delete({ timeout:10000 }));
-		} catch (e) {
-			console.log(e);
-		}
-	} else {
-		message.error(settings.Language, 'PLUGINS/NO_LANGUAGE').then(m => m.delete({ timeout:10000 }));
+module.exports = class Setlang extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'setlang',
+			dirname: __dirname,
+			aliases: ['setlanguage'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Choose the language for the bot.',
+			usage: 'setlang <language>',
+			cooldown: 3000,
+		});
 	}
-};
 
-module.exports.config = {
-	command: 'setlang',
-	aliases: ['setlanguage'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-};
+	// Run command
+	async run(bot, message, args, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-module.exports.help = {
-	name: 'setlang',
-	category: 'Plugins',
-	description: 'Choose the language for the bot.',
-	usage: '${PREFIX}setlang <language>',
+		// Make sure user can edit server plugins
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+
+		// Make sure a language was entered
+		if (!args[0]) return message.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => m.delete({ timeout:10000 }));
+
+		// Check what language
+		if (languages[args[0].toLowerCase()]) {
+			try {
+				await message.guild.updateGuild({ Language: languages[args[0].toLowerCase()] });
+				message.success(settings.Language, 'PLUGINS/LANGUAGE_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+			} catch (e) {
+				console.log(e);
+			}
+		} else {
+			message.error(settings.Language, 'PLUGINS/NO_LANGUAGE').then(m => m.delete({ timeout:10000 }));
+		}
+	}
 };
