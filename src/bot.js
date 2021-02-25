@@ -14,12 +14,12 @@ const readdir = promisify(require('fs').readdir);
 		const cmdFiles = await readdir(`./src/commands/${cmdFolders[i]}`);
 		cmdFiles.forEach(file => {
 			try {
-				const cmds = require(`./commands/${cmdFolders[i]}/${file}`);
+				const cmds = new (require(`./commands/${cmdFolders[i]}/${file}`))(bot);
 				bot.logger.log(`Loading command: ${file}`);
-				bot.commands.set(cmds.config.command, cmds);
-				if (cmds.config.aliases) {
-					cmds.config.aliases.forEach(alias => {
-						bot.aliases.set(alias, cmds.config.command);
+				bot.commands.set(cmds.help.name, cmds);
+				if (cmds.help.aliases) {
+					cmds.help.aliases.forEach(alias => {
+						bot.aliases.set(alias, cmds.help.name);
 					});
 				}
 			} catch (e) {

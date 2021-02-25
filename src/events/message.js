@@ -1,8 +1,9 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 const moment = require('moment');
+
 // List of users in command cooldown
-const commandcd = new Set();
+const cooldowns = new Collection();
 
 module.exports = async (bot, message) => {
 	// record how many messages the bot see
@@ -48,16 +49,7 @@ module.exports = async (bot, message) => {
 		}
 
 		// Make sure guild only commands are done in the guild only
-		if (message.channel.type == 'dm') {
-			if (['Giveaway', 'Guild', 'Level', 'Misc', 'Music', 'Moderation', 'Trivia'].includes(cmd.help.category)) {
-				return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
-			}
-		}
-		// Check to see if user is in 'cooldown'
-		if (commandcd.has(message.author.id)) {
-			if (message.deletable) message.delete();
-			return message.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', settings.CommandCooldownSec).then(m => m.delete({ timeout:5000 }));
-		}
+		if (message.channel.type == 'dm' && cmd.guildOnly)	return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
 
 		// Check to see if the command is being run in a blacklisted channel
 		if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
@@ -66,7 +58,7 @@ module.exports = async (bot, message) => {
 		}
 
 		// Make sure NSFW commands are only being run in a NSFW channel
-		if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.help.category == 'Nsfw' || ['urban', 'advice'].includes(cmd.config.command)))) {
+		if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.conf.nsfw))) {
 			if (message.deletable) message.delete();
 			return message.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
 		}
@@ -78,17 +70,34 @@ module.exports = async (bot, message) => {
 		if (cmd.help.category == 'Trivia' && !settings.MusicTriviaPlugin) return;
 		if (cmd.help.category == 'Search' && !settings.SearchPlugin) return;
 		if (cmd.help.category == 'Nsfw' && !settings.NSFWPlugin) return;
-		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.config.command))) return;
+		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
-		// run command
+		// make sure user doesn't access HOST commands
+		if (!bot.config.ownerID.includes(message.author.id) && cmd.conf.ownerID) return;
+
+		// Check to see if user is in 'cooldown'
+		if (!cooldowns.has(command.name)) {
+			cooldowns.set(command.name, new Collection());
+		}
+
+		const now = Date.now();
+		const timestamps = cooldowns.get(command.name);
+		const cooldownAmount = (command.cooldown || 3000);
+
+		if (timestamps.has(message.author.id)) {
+			const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+			if (now < expirationTime) {
+				const timeLeft = (expirationTime - now) / 1000;
+				return message.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => m.delete({ timeout:5000 }));
+			}
+		}
+
+		// run the command
 		bot.commandsUsed++;
 		cmd.run(bot, message, args, settings);
-		if (settings.CommandCooldown) {
-			commandcd.add(message.author.id);
-			setTimeout(() => {
-				commandcd.delete(message.author.id);
-			}, settings.CommandCooldownSec * 1000);
-		}
+		timestamps.set(message.author.id, now);
+		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	} else if (settings.ModerationPlugin) {
 		try {
 			const check = require('../helpers/auto-moderation').run(bot, message, settings);
