@@ -1,38 +1,45 @@
-module.exports.run = async (bot, message, args, settings) => {
-	// Random number and facts command
-	const max = 100000;
-	// Make sure both entries are there
-	if (!args[0] || !args[1]) {
-		if (message.deletable) message.delete();
-		message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('random').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-		return;
-	} else {
-		// Make sure both entries are numbers
-		if (isNaN(args[0]) || isNaN(args[1])) {
-			if (message.deletable) message.delete();
-			message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('random').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-			return;
-		}
+// Dependencies
+const Command = require('../../structures/Command.js');
 
-		// Make sure they follow correct rules
-		if ((args[1] < args[0]) || (args[0] === args[1]) || (args[1] > max) || (args[0] < 0)) {
-			if (message.deletable) message.delete();
-			message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('random').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
-			return;
-		}
-		const r = Math.floor(Math.random() * (args[1] - args[0]) + args[0]) + 1;
-		message.sendT(settings.Language, 'FUN/RANDOM_RESPONSE', r);
+module.exports = class Random extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'random',
+			dirname: __dirname,
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Replies with a random number.',
+			usage: 'random <LowNum> <HighNum>',
+			cooldown: 3000,
+		});
 	}
-};
-module.exports.config = {
-	command: 'random',
-	aliases: ['rnd'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-};
-module.exports.help = {
-	name: 'random',
-	category: 'Fun',
-	description: 'Replies with a random number.',
-	usage: '${PREFIX}random <LowNum> <HighNum>',
-	example: '${PREFIX}random 1 10',
+
+	// Run command
+	async run(bot, message, args, settings) {
+		// Random number and facts command
+		const max = 100000,
+			num1 = parseInt(args[0]),
+			num2 = parseInt(args[1]);
+		// Make sure both entries are there
+		if (!num1 || !args[1]) {
+			if (message.deletable) message.delete();
+			message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return;
+		} else {
+			// Make sure both entries are numbers
+			if (isNaN(num1) || isNaN(num2)) {
+				if (message.deletable) message.delete();
+				message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+				return;
+			}
+
+			// Make sure they follow correct rules
+			if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
+				if (message.deletable) message.delete();
+				message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+				return;
+			}
+			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
+			message.sendT(settings.Language, 'FUN/RANDOM_RESPONSE', r);
+		}
+	}
 };

@@ -1,23 +1,30 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
-module.exports.run = async (bot, message, args, settings) => {
-	// Send support info to user
-	const embed = new MessageEmbed()
-		.setTitle(message.translate(settings.Language, 'MISC/SUPPORT_TITLE', bot.user.username))
-		.setDescription(message.translate(settings.Language, 'MISC/SUPPORT_DESC', [`${bot.config.SupportServer.link}`, `${bot.config.websiteURL}`]));
-	message.channel.send(embed);
-};
+module.exports = class Support extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'status',
+			dirname: __dirname,
+			aliases: ['sup'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Get support on the bot.',
+			usage: 'support',
+			cooldown: 3000,
+		});
+	}
 
-module.exports.config = {
-	command: 'support',
-	aliases: ['sup'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-};
-
-module.exports.help = {
-	name: 'support',
-	category: 'Misc',
-	description: 'Get support on the bot.',
-	usage: '${PREFIX}support',
+	// Run command
+	async run(bot, message, args, settings) {
+		// Get information on the services the bot provide
+		const m = await message.channel.send('Pong');
+		const embed = new MessageEmbed()
+			.addField(message.translate(settings.Language, 'MISC/STATUS_PING'), `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
+			.addField(message.translate(settings.Language, 'MISC/STATUS_CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
+			.addField(message.translate(settings.Language, 'MISC/STATUS_MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+			.setTimestamp();
+		await message.channel.send(embed);
+		m.delete();
+	}
 };

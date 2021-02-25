@@ -1,16 +1,22 @@
-module.exports.run = async (bot, message) => {
-	// Make sure only bot owner can do this command
-	if (!bot.config.ownerID.includes(message.author.id)) return;
-};
+// Dependencies
+const	Command = require('../../structures/Command.js');
 
-module.exports.config = {
-	command: 'addban',
-	aliases: ['addban'],
-};
+module.exports = class Addban extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'addban',
+			ownerOnly: true,
+			dirname: __dirname,
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Add a ban to the global ban list.',
+			usage: 'addban <user> <reason>',
+			cooldown: 3000,
+		});
+	}
 
-module.exports.help = {
-	name: 'Addban',
-	category: 'Host',
-	description: 'Add a ban to the global ban list.',
-	usage: '${PREFIX}addban <user> <reason>',
+	// Run command
+	async run(bot, message, args, settings) {
+		// something will happen
+		return settings;
+	}
 };

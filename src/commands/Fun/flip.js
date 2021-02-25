@@ -1,16 +1,21 @@
-module.exports.run = async (bot, message, args, settings) => {
-	// Pick Head or Tails
-	message.sendT(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random()));
-};
+// Dependencies
+const Command = require('../../structures/Command.js');
 
-module.exports.config = {
-	command: 'flip',
-	permission: ['SEND_MESSAGES'],
-};
+module.exports = class Flip extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'fact',
+			dirname: __dirname,
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Flip a coin.',
+			usage: 'flip',
+			cooldown: 3000,
+		});
+	}
 
-module.exports.help = {
-	name: 'Flip',
-	category: 'Fun',
-	description: 'Flip a coin.',
-	usage: '${PREFIX}flip',
+	// Run command
+	async run(bot, message, args, settings) {
+		// Get the random facts file
+		message.sendT(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random()));
+	}
 };

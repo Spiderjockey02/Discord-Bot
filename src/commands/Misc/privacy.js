@@ -1,17 +1,22 @@
-module.exports.run = async (bot, message, args, settings) => {
-	// Send link to privacy policy
-	message.channel.send({ embed:{ description:`[${message.translate(settings.Language, 'MISC/PRIVACY_POLICY')}](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md)` } });
-};
+// Dependencies
+const Command = require('../../structures/Command.js');
 
-module.exports.config = {
-	command: 'privacy',
-	aliases: ['priv'],
-	permissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-};
+module.exports = class Privacy extends Command {
+	constructor(bot) {
+		super(bot, {
+			name: 'privacy',
+			dirname: __dirname,
+			aliases: ['priv'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			description: 'Sends a link to the privacy policy.',
+			usage: 'privacy',
+			cooldown: 3000,
+		});
+	}
 
-module.exports.help = {
-	name: 'Privacy',
-	category: 'Misc',
-	description: 'Sends a link to the privacy policy.',
-	usage: '${PREFIX}privacy',
+	// Run command
+	async run(bot, message, args, settings) {
+		// Send link to privacy policy
+		message.channel.send({ embed:{ description:`[${message.translate(settings.Language, 'MISC/PRIVACY_POLICY')}](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md)` } });
+	}
 };
