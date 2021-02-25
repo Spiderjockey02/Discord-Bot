@@ -31,7 +31,7 @@ module.exports = class SetNSFW extends Command {
 				await message.guild.updateGuild({ NSFWPlugin: false });
 				message.success(settings.Language, 'PLUGINS/NSFW_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 			} else {
-				return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-nsfw').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+				return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 		} catch (e) {
 			console.log(e);

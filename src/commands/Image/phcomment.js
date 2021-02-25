@@ -25,7 +25,7 @@ module.exports = class PHcomment extends Command {
 		text = text.replace(/<@.?[0-9]*?>/g, '');
 
 		// Make sure text was entered
-		if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('phcomment').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 70 characters
 		if (text.length >= 71) return message.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 70).then(m => m.delete({ timeout: 5000 }));

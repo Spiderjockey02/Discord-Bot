@@ -21,7 +21,7 @@ module.exports = class Fortnite extends Command {
 		const username = args.join(' ');
 
 		// Checks to see if a username was provided
-		if (!username) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('instagram').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!username) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const r = await message.channel.send('Gathering account details...');
 
 		// Gather data from database

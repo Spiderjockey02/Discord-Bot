@@ -31,7 +31,7 @@ module.exports = class SetMusic extends Command {
 				await message.guild.updateGuild({ MusicPlugin: false });
 				message.success(settings.Language, 'PLUGINS/MUSIC_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 			} else {
-				return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-music').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+				return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 		} catch (e) {
 			console.log(e);

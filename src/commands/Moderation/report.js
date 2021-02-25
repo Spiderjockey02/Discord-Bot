@@ -27,7 +27,7 @@ module.exports = class Report extends Command {
 			if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 			// Make sure a reason was added
-			if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('report').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+			if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 			// Send messages to ModLog channel
 			const embed = new MessageEmbed()

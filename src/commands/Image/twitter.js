@@ -27,7 +27,7 @@ module.exports = class Twitter extends Command {
 		text = text.replace(/<@.?[0-9]*?>/g, '');
 
 		// make sure text was entered
-		if (args.length == 0) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('twitter').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (args.length == 0) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 60 characters
 		if (text.length >= 61) return message.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => m.delete({ timeout: 5000 }));

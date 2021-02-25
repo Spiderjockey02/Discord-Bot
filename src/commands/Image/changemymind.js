@@ -22,7 +22,7 @@ module.exports = class ChangeMyMind extends Command {
 		const text = args.join(' ');
 
 		// make sure text was entered
-		if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('changemymind').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 80 characters
 		if (text.length >= 81) return message.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 80).then(m => m.delete({ timeout: 5000 }));

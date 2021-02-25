@@ -24,7 +24,7 @@ module.exports = class G_edit extends Command {
 		// Make sure the message ID of the giveaway embed is entered
 		if (args.length != 4) {
 			if (message.deletable) message.delete();
-			return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('g-edit').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 

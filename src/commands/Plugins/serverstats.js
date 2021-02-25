@@ -23,7 +23,7 @@ module.exports = class Serverstats extends Command {
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Check to see if user dosesn't know how to use command or not
-		if (!args[0] | args[0] == '?') return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('serverstats').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0] | args[0] == '?') return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 
 		if (args[0] == 'on') {

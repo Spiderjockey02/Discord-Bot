@@ -19,7 +19,7 @@ module.exports = class Steam extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Steam config
-		if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('steam').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const r = await message.channel.send('Gathering account...');
 		const token = bot.config.api_keys.steam;
 		const url = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${token}&vanityurl=${args.join(' ')}`;

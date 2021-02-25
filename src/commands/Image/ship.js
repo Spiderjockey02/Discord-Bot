@@ -19,7 +19,7 @@ module.exports = class Ship extends Command {
 	async run(bot, message, args, settings) {
 		// Get image, defaults to author's avatar
 		const user1 = message.guild.GetImage(message, args, settings.Language);
-		if (!user1) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('phcomment').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!user1) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const user2 = (args[1]) ? message.mentions.users.array()[1] : message.author;
 		// send 'waitng' message
 

@@ -39,10 +39,10 @@ module.exports = class Clear extends Command {
 		const amount = args.join(' ');
 		// Make something was entered after `!clear`
 
-		if (!amount) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('clear').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!amount) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure x is a number
-		if (isNaN(amount) || (amount > 100) || (amount < 1)) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('clear').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (isNaN(amount) || (amount > 100) || (amount < 1)) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 
 		// Delete messages

@@ -69,7 +69,7 @@ module.exports = class SetLog extends Command {
 				bot.logger.error(err);
 			}
 		} else {
-			return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('set-logs').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

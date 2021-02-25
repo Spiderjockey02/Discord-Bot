@@ -23,7 +23,7 @@ module.exports = class Warn extends Command {
 		// Check to see if user can kick members
 		if (!message.member.hasPermission('KICK_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('warn').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user to warn
 		const member = message.guild.getMember(message, args);
