@@ -4,7 +4,7 @@ const Command = require('../../structures/Command.js');
 module.exports = class SetModeration extends Command {
 	constructor(bot) {
 		super(bot, {
-			command: 'set-moderation',
+			name: 'set-moderation',
 			dirname: __dirname,
 			aliases: ['setmod', 'setmoderation'],
 			userPermissions: ['MANAGE_GUILD'],

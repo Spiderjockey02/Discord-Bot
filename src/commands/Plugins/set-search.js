@@ -4,7 +4,7 @@ const Command = require('../../structures/Command.js');
 module.exports = class SetSearch extends Command {
 	constructor(bot) {
 		super(bot, {
-			command: 'set-search',
+			name: 'set-search',
 			dirname: __dirname,
 			aliases: ['setsearch'],
 			userPermissions: ['MANAGE_GUILD'],

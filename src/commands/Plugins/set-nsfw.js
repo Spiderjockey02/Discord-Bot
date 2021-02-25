@@ -4,7 +4,7 @@ const Command = require('../../structures/Command.js');
 module.exports = class SetNSFW extends Command {
 	constructor(bot) {
 		super(bot, {
-			command: 'set-nsfw',
+			name: 'set-nsfw',
 			dirname: __dirname,
 			aliases: ['setnsfw'],
 			userPermissions: ['MANAGE_GUILD'],

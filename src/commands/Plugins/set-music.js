@@ -4,7 +4,7 @@ const Command = require('../../structures/Command.js');
 module.exports = class SetMusic extends Command {
 	constructor(bot) {
 		super(bot, {
-			command: 'set-music',
+			name: 'set-music',
 			dirname: __dirname,
 			aliases: ['setmusic'],
 			userPermissions: ['MANAGE_GUILD'],
