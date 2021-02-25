@@ -5,6 +5,7 @@ const Command = require('../../structures/Command.js');
 const languages = {
 	'english': 'en-US',
 	'arabic': 'ar-EG',
+	'portuguese': 'pt-BR',
 };
 
 module.exports = class Setlang extends Command {
