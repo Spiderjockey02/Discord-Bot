@@ -10,23 +10,13 @@ const readdir = promisify(require('fs').readdir);
 	// load commands
 	const cmdFolders = await readdir('./src/commands/');
 	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
-	for (let i = 0; i < cmdFolders.length; i++) {
-		const cmdFiles = await readdir(`./src/commands/${cmdFolders[i]}`);
-		cmdFiles.forEach(file => {
-			try {
-				const cmds = new (require(`./commands/${cmdFolders[i]}/${file}`))(bot);
-				bot.logger.log(`Loading command: ${file}`);
-				bot.commands.set(cmds.help.name, cmds);
-				if (cmds.help.aliases) {
-					cmds.help.aliases.forEach(alias => {
-						bot.aliases.set(alias, cmds.help.name);
-					});
-				}
-			} catch (e) {
-				console.log(e);
-			}
+	cmdFolders.forEach(async (dir) => {
+		const commands = await readdir('./src/commands/' + dir + '/');
+		commands.forEach((cmd) => {
+			const resp = bot.loadCommand('./commands/' + dir, cmd);
+			if (resp) bot.logger.error(resp);
 		});
-	}
+	});
 
 	// load events
 	const evtFiles = await readdir('./src/events/');

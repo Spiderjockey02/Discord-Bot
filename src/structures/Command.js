@@ -1,5 +1,7 @@
+// Dependecies
 const path = require('path');
 
+// Command structure
 module.exports = class Command {
 	constructor(bot, {
 		name = null,

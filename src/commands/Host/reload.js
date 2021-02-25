@@ -26,20 +26,19 @@ module.exports = class Reload extends Command {
 		const commandName = args[0].toLowerCase();
 		if (bot.commands.has(commandName) || bot.commands.get(bot.aliases.get(commandName))) {
 			// Finds command
-			const command = bot.commands.get(commandName) || bot.commands.get(bot.aliases.get(commandName));
+			const cmd = bot.commands.get(commandName) || bot.commands.get(bot.aliases.get(commandName));
 
 			// reloads command
 			try {
-				delete require.cache[require.resolve(`../${command.help.category}/${commandName}.js`)];
-				bot.commands.delete(commandName);
-				const pull = require(`../${command.help.category}/${commandName}.js`);
-				bot.commands.set(commandName, pull);
-				message.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
-				bot.logger.log(`Reloaded Command: ${commandName}.js`);
+				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
+				await bot.loadCommand(cmd.conf.location, cmd.help.name);
 			} catch(err) {
+				console.log(err);
 				if (bot.config.debug) bot.logger.error(`${err.message} - command: reload.`);
 				return message.error(settings.Language, 'HOST/RELOAD_ERROR', commandName).then(m => m.delete({ timeout: 10000 }));
 			}
+			message.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
+			bot.logger.log(`Reloaded Command: ${commandName}.js`);
 		} else {
 			return message.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));
 		}

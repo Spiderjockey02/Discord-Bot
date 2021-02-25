@@ -1,10 +1,11 @@
 // Dependecies
-const { Client, Collection } = require('discord.js');
-const { Guild } = require('../modules/database/models');
-const mongoose = require('mongoose');
-const GiveawaysManager = require('./giveaway/Manager');
-const Fortnite = require('fortnite');
-const { KSoftClient } = require('@ksoft/api');
+const { Client, Collection } = require('discord.js'),
+	{ Guild } = require('../modules/database/models'),
+	mongoose = require('mongoose'),
+	GiveawaysManager = require('./giveaway/Manager'),
+	Fortnite = require('fortnite'),
+	{ KSoftClient } = require('@ksoft/api'),
+	path = require('path');
 
 // Creates Egglord class
 module.exports = class Egglord extends Client {
@@ -77,10 +78,12 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
+	// Get a channel in cache
 	async getChannel(id) {
 		const channel = await this.channels.cache.get(id);
 		return channel;
 	}
+
 	// Set this's status
 	async SetStatus(status = 'online') {
 		try {
@@ -104,4 +107,37 @@ module.exports = class Egglord extends Client {
 			console.log(e);
 		}
 	}
+
+	// Load a command
+	loadCommand(commandPath, commandName) {
+		try {
+			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
+			this.logger.log(`Loading Command: ${cmd.help.name}.`);
+			cmd.conf.location = commandPath;
+			if (cmd.init) cmd.init(this);
+			this.commands.set(cmd.help.name, cmd);
+			cmd.help.aliases.forEach((alias) => {
+				this.aliases.set(alias, cmd.help.name);
+			});
+			return false;
+		} catch (err) {
+			return `Unable to load command ${commandName}: ${err}`;
+		}
+	}
+
+	// Unload a command (you need to load them again)
+	async unloadCommand(commandPath, commandName) {
+		let command;
+		if (this.commands.has(commandName)) {
+			command = this.commands.get(commandName);
+		} else if (this.aliases.has(commandName)) {
+			command = this.commands.get(this.aliases.get(commandName));
+		}
+		if(!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
+		if(command.shutdown) await command.shutdown(this);
+		delete require.cache[require.resolve(`.${commandPath}${path.sep}${commandName}.js`)];
+		return false;
+	}
+
+
 };
