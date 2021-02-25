@@ -7,6 +7,7 @@ module.exports = class SetMusic extends Command {
 			command: 'set-music',
 			dirname: __dirname,
 			aliases: ['setmusic'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the music plugin.',
 			usage: 'set-music <true | false>',

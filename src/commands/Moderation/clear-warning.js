@@ -9,6 +9,7 @@ module.exports = class ClearWarning extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['cl-warning', 'cl-warnings', 'clear-warnings'],
+			userPermissions: ['KICK_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user>',

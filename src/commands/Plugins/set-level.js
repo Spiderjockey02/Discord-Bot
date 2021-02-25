@@ -7,6 +7,7 @@ module.exports = class SetLevel extends Command {
 			name: 'set-level',
 			dirname: __dirname,
 			aliases: ['setlevel'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the level plugin.',
 			usage: 'set-level <true | false>',

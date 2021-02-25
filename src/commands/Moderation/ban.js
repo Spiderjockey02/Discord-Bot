@@ -8,9 +8,10 @@ module.exports = class Ban extends Command {
 			name: 'ban',
 			guildOnly: true,
 			dirname: __dirname,
+			userPermissions: ['BAN_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
 			description: 'Ban a user.',
-			usage: '${PREFIX}ban <user> [reason] [time]',
+			usage: 'ban <user> [reason] [time]',
 			cooldown: 3000,
 		});
 	}

@@ -7,6 +7,7 @@ module.exports = class SetNSFW extends Command {
 			command: 'set-nsfw',
 			dirname: __dirname,
 			aliases: ['setnsfw'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the NSFW plugin.',
 			usage: 'set-nsfw <true | false>',

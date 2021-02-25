@@ -7,6 +7,7 @@ module.exports = class SetSearch extends Command {
 			command: 'set-search',
 			dirname: __dirname,
 			aliases: ['setsearch'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the search plugin.',
 			usage: 'set-search <true | false>',

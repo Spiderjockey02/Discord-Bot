@@ -13,6 +13,7 @@ module.exports = class Setlang extends Command {
 			name: 'setlang',
 			dirname: __dirname,
 			aliases: ['setlanguage'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Choose the language for the bot.',
 			usage: 'setlang <language>',

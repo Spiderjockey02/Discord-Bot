@@ -11,6 +11,7 @@ module.exports = class SetLog extends Command {
 			name: 'set-logs',
 			dirname: __dirname,
 			aliases: ['setlogs'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Update the log plugin.',
 			usage: 'set-logs <add | removed> [log]',

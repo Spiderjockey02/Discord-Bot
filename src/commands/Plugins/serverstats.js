@@ -7,6 +7,7 @@ module.exports = class Serverstats extends Command {
 			name: 'serverstats',
 			dirname: __dirname,
 			aliases: ['server-stats'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the serverstats.',
 			usage: 'serverstats <on | off>',

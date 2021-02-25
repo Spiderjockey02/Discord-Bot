@@ -7,6 +7,7 @@ module.exports = class SetModeration extends Command {
 			command: 'set-moderation',
 			dirname: __dirname,
 			aliases: ['setmod', 'setmoderation'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the moderation plugin.',
 			usage: 'set-moderation <true | false>',
