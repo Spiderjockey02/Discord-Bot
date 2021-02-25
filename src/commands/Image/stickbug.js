@@ -25,12 +25,11 @@ module.exports = class Stickbug extends Command {
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 
 		// Try and convert image
-		//	console.log(`https://gsbl.sujalgoel.ml/?image=${file[0]}`);
 		try {
-			const res = await fetch(encodeURI(`http://localhost:3000?image=${file[0].slice(0, file[0].length - 10)}`));
+			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${file[0]}`));
 			const json = await res.json();
 			// send image in embed
-			const attachment = new MessageAttachment(json.video, 'stickbug.mp4');
+			const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
 			message.channel.send(attachment);
 			msg.delete();
 		} catch(err) {
