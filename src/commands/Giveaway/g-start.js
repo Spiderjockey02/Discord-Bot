@@ -12,7 +12,7 @@ module.exports = class G_start extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
 			description: 'Start a giveaway',
 			usage: 'g-start <time> <Number of winners> <prize>',
-			cooldown: 3000,
+			cooldown: 30000,
 		});
 	}
 

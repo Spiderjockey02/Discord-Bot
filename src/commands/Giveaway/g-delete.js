@@ -12,7 +12,7 @@ module.exports = class G_delete extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Delete a giveaway',
 			usage: 'g-delete <messageID>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class G_reroll extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'reroll a giveaway.',
 			usage: 'g-reroll <messageID>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class G_edit extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Edit a giveaway.',
 			usage: 'g-edit <messageID> <AddedTime> <NewPrize> <newWinnerCount>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
