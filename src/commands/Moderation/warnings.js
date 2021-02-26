@@ -13,7 +13,7 @@ module.exports = class Warnings extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Display number of warnings a user has.',
 			usage: 'warnings [user]',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

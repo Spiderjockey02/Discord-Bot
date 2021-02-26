@@ -13,7 +13,7 @@ module.exports = class ClearWarning extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

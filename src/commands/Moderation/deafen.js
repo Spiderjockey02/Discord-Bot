@@ -11,7 +11,7 @@ module.exports = class Deafen extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'DEAFEN_MEMBERS'],
 			description: 'Deafen a user.',
 			usage: 'deafen <user> [time]',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

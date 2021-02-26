@@ -12,7 +12,7 @@ module.exports = class Clear extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES'],
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

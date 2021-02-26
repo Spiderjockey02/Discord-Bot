@@ -12,7 +12,7 @@ module.exports = class Ban extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
 			description: 'Ban a user.',
 			usage: 'ban <user> [reason] [time]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class Kick extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
 			description: 'Kick a user.',
 			usage: 'kick <user> [reason]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

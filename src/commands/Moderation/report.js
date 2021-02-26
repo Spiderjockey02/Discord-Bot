@@ -18,9 +18,11 @@ module.exports = class Report extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
+		// Delete command for privacy
+		if (message.deletable) message.delete();
+
 		// Make sure that REPORT is in the mod logs
 		if (settings.ModLogEvents.includes('REPORT')) {
-			if (message.deletable) message.delete();
 
 			// Find user
 			const member = message.guild.getMember(message, args);
@@ -43,6 +45,8 @@ module.exports = class Report extends Command {
 				repChannel.send(embed);
 				message.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => m.delete({ timeout: 3000 }));
 			}
+		} else {
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

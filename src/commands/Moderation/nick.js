@@ -8,7 +8,7 @@ module.exports = class Nick extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['nickname'],
-			userPermissions: ['CHANGE_NICKNAME'],
+			userPermissions: ['CHANGE_NICKNAME', 'MANAGE_NICKNAMES'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_NICKNAMES'],
 			description: 'Change the nickname of a user.',
 			usage: 'nick <user> <name>',

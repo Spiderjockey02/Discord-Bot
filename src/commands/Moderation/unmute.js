@@ -12,7 +12,7 @@ module.exports = class Unmute extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
 			description: 'Unmute a user.',
 			usage: 'unmute <user> ',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

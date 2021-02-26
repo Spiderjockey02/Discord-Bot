@@ -12,7 +12,7 @@ module.exports = class Warn extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
 			description: 'Warn a user.',
 			usage: 'warn <user> [time] [reason]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

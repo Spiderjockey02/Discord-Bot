@@ -12,7 +12,7 @@ module.exports = class Undeafen extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'DEAFEN_MEMBERS'],
 			description: 'Undeafen a user.',
 			usage: 'undeafen <user>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

@@ -11,7 +11,7 @@ module.exports = class Mute extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
 			description: 'Mute a user.',
 			usage: 'mute <user> [time]',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
