@@ -10,7 +10,7 @@ module.exports = class Privacy extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends a link to the privacy policy.',
 			usage: 'privacy',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

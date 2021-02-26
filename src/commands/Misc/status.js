@@ -11,7 +11,7 @@ module.exports = class Status extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Gets the status of the bot.',
 			usage: 'status',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

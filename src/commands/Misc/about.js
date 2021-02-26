@@ -12,7 +12,7 @@ module.exports = class About extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Information about me.',
 			usage: 'about',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

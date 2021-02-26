@@ -10,7 +10,7 @@ module.exports = class Invite extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Send an invite link so people can add me to their server.',
 			usage: 'invite',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

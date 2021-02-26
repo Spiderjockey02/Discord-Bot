@@ -23,7 +23,7 @@ module.exports = class Help extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends information about all the commands that I can do.',
 			usage: 'help [command | plugin]',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
@@ -95,7 +95,7 @@ module.exports = class Help extends Command {
 				}
 			}
 		} else {
-			message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('help').help.usage.replace('${PREFIX}', settings.prefix));
+			message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage));
 		}
 	}
 };

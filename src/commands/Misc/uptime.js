@@ -11,7 +11,7 @@ module.exports = class Uptime extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Gets the uptime of the bot.',
 			usage: 'uptime',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
