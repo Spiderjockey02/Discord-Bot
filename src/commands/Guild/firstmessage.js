@@ -11,7 +11,7 @@ module.exports = class Firstmessage extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Gets the first message from the channel.',
 			usage: 'firstmessage',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

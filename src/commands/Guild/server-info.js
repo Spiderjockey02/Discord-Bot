@@ -13,17 +13,19 @@ module.exports = class ServerInfo extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get information on the server.',
 			usage: 'server-info',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
 	// Run command
 	async run(bot, message, args, settings) {
-		// Send server information
+		// Sort roles by position
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).array();
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
+
+		// Send server information
 		const member = message.guild.members.cache;
 		const embed = new MessageEmbed()
 			.setAuthor(`${message.guild.name}'s server info`, message.guild.iconURL())

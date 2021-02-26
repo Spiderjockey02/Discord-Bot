@@ -12,7 +12,7 @@ module.exports = class Guildicon extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get the server\'s icon.',
 			usage: 'guildicon',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

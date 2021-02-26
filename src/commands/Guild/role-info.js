@@ -13,7 +13,7 @@ module.exports = class RoleInfo extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get information on a role.',
 			usage: 'role-info <role>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
@@ -28,6 +28,7 @@ module.exports = class RoleInfo extends Command {
 			message.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			return;
 		}
+
 		// Send information to channel
 		const embed = new MessageEmbed()
 			.setColor(role.color)

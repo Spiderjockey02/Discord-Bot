@@ -11,7 +11,7 @@ module.exports = class Dashboard extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends a link to your Server\'s dashboard.',
 			usage: 'dashboard',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

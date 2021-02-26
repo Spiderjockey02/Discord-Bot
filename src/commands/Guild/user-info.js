@@ -21,7 +21,7 @@ module.exports = class ServerInfo extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get information on the server.',
 			usage: 'user-info [user]',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

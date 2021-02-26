@@ -11,7 +11,7 @@ module.exports = class Poll extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
 			description: 'Create a poll for users to answer.',
 			usage: 'poll <question>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
