@@ -12,7 +12,7 @@ module.exports = class Screenshot extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
 			description: 'Get a screenshot of a website.',
 			usage: 'screenshot <url>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

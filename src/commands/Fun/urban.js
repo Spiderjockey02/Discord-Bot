@@ -11,7 +11,7 @@ module.exports = class Urban extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get the urban dictionary of a word.',
 			usage: 'urban <word>',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

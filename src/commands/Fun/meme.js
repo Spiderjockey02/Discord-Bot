@@ -10,7 +10,7 @@ module.exports = class Meme extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends a random meme.',
 			usage: 'meme',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

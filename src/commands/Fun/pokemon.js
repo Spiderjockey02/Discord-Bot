@@ -11,7 +11,7 @@ module.exports = class Pokemon extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get information on a pokemon.',
 			usage: 'pokemon <pokemon>',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

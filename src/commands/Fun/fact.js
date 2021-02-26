@@ -12,7 +12,7 @@ module.exports = class Fact extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Receive a random fact.',
 			usage: 'fact',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

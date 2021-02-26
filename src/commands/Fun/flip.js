@@ -9,7 +9,7 @@ module.exports = class Flip extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Flip a coin.',
 			usage: 'flip',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

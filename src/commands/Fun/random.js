@@ -9,7 +9,7 @@ module.exports = class Random extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Replies with a random number.',
 			usage: 'random <LowNum> <HighNum>',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

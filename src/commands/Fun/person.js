@@ -9,18 +9,17 @@ module.exports = class Person extends Command {
 			name: 'person',
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Get someone random over internet.',
+			description: 'Get information on a random person.',
 			usage: 'person',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 
 	// Run command
 	async run(bot, message, args, settings) {
-		const url = 'https://person-generator.com/api/person';
 		let response, data;
 		try {
-			response = await axios.get(url);
+			response = await axios.get('https://person-generator.com/api/person');
 			data = response.data;
 			const embed = new MessageEmbed()
 				.setDescription(`**- Name :** ${data.name}
@@ -32,18 +31,14 @@ module.exports = class Person extends Command {
 				**- Company :** ${data.company}`)
 				.setColor(3447003)
 				.setThumbnail(bot.user.displayAvatarURL())
-				.setFooter(`${message.translate(settings.Language, 'FUN/PERSON_FOOTER')}`, message.author.displayAvatarURL({
-					dynamic: true,
-				}))
+				.setFooter(`${message.translate(settings.Language, 'FUN/PERSON_FOOTER')}`, message.author.displayAvatarURL({ dynamic: true	}))
 				.setAuthor(`${message.translate(settings.Language, 'FUN/PERSON_AUTHOR')}${data.name}`)
 				.setTimestamp();
 			message.channel.send(embed);
 		} catch (err) {
 			if (bot.config.debug) bot.logger.error(`${err.message} - command: person.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({
-				timeout: 5000,
-			}));
 			if (message.deletable) message.delete();
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

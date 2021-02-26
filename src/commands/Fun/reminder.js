@@ -12,7 +12,7 @@ module.exports = class Random extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Set a reminder.',
 			usage: 'reminder <time> <information>',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 

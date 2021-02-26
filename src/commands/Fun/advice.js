@@ -10,7 +10,7 @@ module.exports = class Advice extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get some random advice',
 			usage: 'advice',
-			cooldown: 3000,
+			cooldown: 1000,
 		});
 	}
 
