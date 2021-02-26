@@ -58,11 +58,12 @@ module.exports = class Help extends Command {
 						.setThumbnail(message.guild.iconURL())
 						.setAuthor(`${bot.user.username} HELP`, message.guild.iconURL)
 						.setDescription(`The bot's prefix for this server is: \`${settings.prefix}\`.\n\n**Command name:** \`${cmd.help.name}\`
-							**Aliases:** \`${(cmd.config.aliases) ? cmd.config.aliases.join(', ') : 'None'}\`
-							**Description:** \`${cmd.help.description}\`
-							**Usage:** \`${cmd.help.usage.replace('${PREFIX}', settings.prefix)}\`
+						**Aliases:** \`${(cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None'}\`
+						**Description:** \`${cmd.help.description}\`
+						**Usage:** \`${settings.prefix.concat(cmd.help.usage)}\`
+						**Cooldown:** \`${cmd.conf.cooldown / 1000} seconds\`
 
-							**Layout**: \`<> = required, [] = optional\``);
+						**Layout**: \`<> = required, [] = optional\``);
 					message.channel.send(embed);
 				} else {
 					message.error(settings.Language, 'MISC/NO_COMMAND');
