@@ -12,7 +12,7 @@ module.exports = class Ass extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Look at NSFW images.',
 			usage: 'ass',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 
@@ -26,10 +26,9 @@ module.exports = class Ass extends Command {
 					message.channel.send(embed);
 				});
 		} catch (err) {
-			console.log(err);
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: 4k.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };
