@@ -11,7 +11,7 @@ module.exports = class Clyde extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a fake Clyde message.',
 			usage: 'clyde <text>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

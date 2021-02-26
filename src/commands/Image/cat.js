@@ -12,7 +12,7 @@ module.exports = class Cat extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Have a nice picture of a cat.',
 			usage: 'cat',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

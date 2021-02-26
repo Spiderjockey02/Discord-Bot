@@ -11,7 +11,7 @@ module.exports = class QRcode extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a QR code.',
 			usage: 'qrcode <text | file>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

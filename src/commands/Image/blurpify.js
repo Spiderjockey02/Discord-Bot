@@ -12,7 +12,7 @@ module.exports = class Blurpify extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Blurpify an image.',
 			usage: 'blurpify [file]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class Deepfry extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Deepfry an image.',
 			usage: 'deepfry [file]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

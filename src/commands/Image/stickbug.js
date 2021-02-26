@@ -9,10 +9,10 @@ module.exports = class Stickbug extends Command {
 			name: 'stickbug',
 			dirname: __dirname,
 			aliases: ['stick-bug'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
 			description: 'Create a stickbug meme.',
 			usage: 'stickbug [file]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

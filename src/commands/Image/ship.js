@@ -11,7 +11,7 @@ module.exports = class Ship extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a ship image.',
 			usage: 'ship <user1> [user2]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class PHcomment extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a fake Pornhub comment.',
 			usage: 'phcomment [user] <text>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

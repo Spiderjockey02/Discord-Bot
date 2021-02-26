@@ -11,7 +11,7 @@ module.exports = class Threats extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Creates a threat meme.',
 			usage: 'threats [image]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

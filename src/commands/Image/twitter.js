@@ -12,7 +12,7 @@ module.exports = class Twitter extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a fake Twitter tweet.',
 			usage: 'twitter [user] <text>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

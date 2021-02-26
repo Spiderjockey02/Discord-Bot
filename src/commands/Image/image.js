@@ -12,7 +12,7 @@ module.exports = class Image extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Finds an image based on the topic.',
 			usage: 'image <topic>',
-			cooldown: 3000,
+			cooldown: 2000,
 		});
 	}
 

@@ -12,7 +12,7 @@ module.exports = class WhoWouldWin extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a whowouldwin image.',
 			usage: 'whowouldwin <user1> [user2]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

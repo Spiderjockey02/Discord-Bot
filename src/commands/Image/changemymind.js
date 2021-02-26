@@ -12,7 +12,7 @@ module.exports = class ChangeMyMind extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a change my mind image.',
 			usage: 'changemymind <text>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 

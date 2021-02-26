@@ -18,7 +18,7 @@ module.exports = class Generate extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 
