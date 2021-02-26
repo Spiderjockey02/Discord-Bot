@@ -11,7 +11,7 @@ module.exports = class Rank extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lvl', 'level'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
 			description: 'Shows your rank/Level.',
 			usage: 'level [username]',
 			cooldown: 3000,
@@ -20,9 +20,6 @@ module.exports = class Rank extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		// check to make sure Level plugin is enabled
-		if (settings.LevelPlugin == false) return;
-
 		// Get user
 		const member = message.guild.getMember(message, args);
 

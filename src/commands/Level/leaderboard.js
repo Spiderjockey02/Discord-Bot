@@ -23,9 +23,6 @@ module.exports = class Leaderboard extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		// Make sure the level plugin is enabled
-		if (settings.LevelPlugin == false) return;
-
 		// Retrieve Ranks from database
 		Ranks.find({
 			guildID: message.guild.id,
@@ -34,7 +31,8 @@ module.exports = class Leaderboard extends Command {
 		]).exec((err, res) => {
 			if (err) console.log(err);
 			const embed = new MessageEmbed()
-				.setTitle(message.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'));
+				.setTitle(message.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
+				.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 			if (res.length === 0) {
 				// If there no results
 				embed.addField(message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
@@ -53,9 +51,9 @@ module.exports = class Leaderboard extends Command {
 				for (let i = 0; i < 10; i++) {
 					const name = message.guild.members.cache.get(res[i].userID) || 'User left';
 					if (name == 'User left') {
-						embed.addField(`${i + 1}. ${name}`, `**XP:** ${res[i].Xp}`);
+						embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
 					} else {
-						embed.addField(`${i + 1}. ${name.user.username}`, `**XP:** ${res[i].Xp}`);
+						embed.addField(`${ordinal(i + 1)}. ${name.user.username}`, `**XP:** ${res[i].Xp}`);
 					}
 				}
 			}
