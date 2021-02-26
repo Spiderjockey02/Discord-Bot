@@ -11,7 +11,7 @@ module.exports = class SetSearch extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the search plugin.',
 			usage: 'set-search <true | false>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 
@@ -34,9 +34,10 @@ module.exports = class SetSearch extends Command {
 			} else {
 				return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
-		} catch (e) {
-			console.log(e);
-			return message.error(settings.Language, 'ERROR_MESSAGE');
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

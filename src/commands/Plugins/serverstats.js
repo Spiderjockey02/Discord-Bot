@@ -11,7 +11,7 @@ module.exports = class Serverstats extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Turn on or off the serverstats.',
 			usage: 'serverstats <on | off>',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 
@@ -26,30 +26,36 @@ module.exports = class Serverstats extends Command {
 		// Check to see if user dosesn't know how to use command or not
 		if (!args[0] | args[0] == '?') return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
+		try {
+			if (args[0] == 'on') {
+				await message.guild.channels.create('📊 Server Stats 📊', { type: 'category', reason: 'Server stats set-up' }).then(async channel => {
+					// add bot channel
+					const botChannel = await message.guild.channels.create(`Bot count: ${message.guild.members.cache.filter(m => m.user.bot).size}`, { type: 'voice', parent: channel.id });
 
-		if (args[0] == 'on') {
-			await message.guild.channels.create('📊 Server Stats 📊', { type: 'category', reason: 'Server stats set-up' }).then(async channel => {
-				// add bot channel
-				const botChannel = await message.guild.channels.create(`Bot count: ${message.guild.members.cache.filter(m => m.user.bot).size}`, { type: 'voice' });
-				botChannel.setParent(channel.id);
-				// add user channel
-				const userChannel = await message.guild.channels.create(`User count: ${message.guild.members.cache.size}`, { type: 'voice' });
-				userChannel.setParent(channel.id);
-				// add human channel
-				const humanChannel = await message.guild.channels.create(`Human count: ${message.guild.members.cache.filter(m => !m.user.bot).size}`, { type: 'voice' });
-				humanChannel.setParent(channel.id);
-				await message.guild.updateGuild({ ServerStats: true, ServerStatsCate: channel.id, ServerStatsBot: true, ServerStatsBotChannel: botChannel.id, ServerStatsUser: true, ServerStatsUserChannel: userChannel.id, ServerStatsHuman: true, ServerStatsHumanChannel: humanChannel.id });
-			});
-		} else {
-			const botChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsBotChannel);
-			if (botChannel) botChannel.delete();
-			const userChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsUserChannel);
-			if (userChannel) userChannel.delete();
-			const humanChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsHumanChannel);
-			if (humanChannel) humanChannel.delete();
-			const cateChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsCate);
-			if (cateChannel) cateChannel.delete();
-			await message.guild.updateGuild({ ServerStats: false, ServerStatsCate: '00', ServerStatsBot: false, ServerStatsBotChannel: '00', ServerStatsUser: false, ServerStatsUserChannel: '00', ServerStatsHuman: false, ServerStatsHumanChannel: '00' });
+					// add user channel
+					const userChannel = await message.guild.channels.create(`User count: ${message.guild.members.cache.size}`, { type: 'voice', parent: channel.id });
+
+					// add human channel
+					const humanChannel = await message.guild.channels.create(`Human count: ${message.guild.members.cache.filter(m => !m.user.bot).size}`, { type: 'voice', parent: channel.id });
+
+					// update database
+					await message.guild.updateGuild({ ServerStats: true, ServerStatsCate: channel.id, ServerStatsBot: true, ServerStatsBotChannel: botChannel.id, ServerStatsUser: true, ServerStatsUserChannel: userChannel.id, ServerStatsHuman: true, ServerStatsHumanChannel: humanChannel.id });
+				});
+			} else {
+				const botChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsBotChannel);
+				if (botChannel) botChannel.delete();
+				const userChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsUserChannel);
+				if (userChannel) userChannel.delete();
+				const humanChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsHumanChannel);
+				if (humanChannel) humanChannel.delete();
+				const cateChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsCate);
+				if (cateChannel) cateChannel.delete();
+				await message.guild.updateGuild({ ServerStats: false, ServerStatsCate: '00', ServerStatsBot: false, ServerStatsBotChannel: '00', ServerStatsUser: false, ServerStatsUserChannel: '00', ServerStatsHuman: false, ServerStatsHumanChannel: '00' });
+			}
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

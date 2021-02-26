@@ -15,7 +15,7 @@ module.exports = class SetLog extends Command {
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Update the log plugin.',
 			usage: 'set-logs <add | removed> [log]',
-			cooldown: 3000,
+			cooldown: 5000,
 		});
 	}
 
