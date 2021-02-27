@@ -8,10 +8,14 @@ module.exports = async (bot, guild) => {
 	await bot.DeleteGuild(guild);
 
 	// Send message to channel that bot has left a server
-	const embed = new MessageEmbed()
-		.setTitle(`[GUILD LEAVE] ${guild.name}`)
-		.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
-		.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
-	const channel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
-	if (channel) channel.send(embed);
+	try {
+		const embed = new MessageEmbed()
+			.setTitle(`[GUILD LEAVE] ${guild.name}`)
+			.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
+			.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
+		const channel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
+		if (channel) channel.send(embed);
+	} catch (err) {
+		bot.logger.error('Unable to fetch guild information.');
+	}
 };
