@@ -40,11 +40,12 @@ module.exports = async (bot, message) => {
 	// Check if message was a command
 	const args = message.content.split(' ');
 	if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
-		let command = (args.length >= 1) ? args.shift().slice(settings.prefix.length).toLowerCase() : message.content.slice(settings.prefix.length).toLowerCase();
+		const command = args.shift().slice(settings.prefix.length).toLowerCase();
 		let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
 		if (!cmd) {
-			command = (args.length >= 1) ? args.shift().slice(`<@!${bot.user.id}>`).toLowerCase() : message.content.slice(`<@!${bot.user.id}>`).toLowerCase();
-			cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+			// check to see if user is using mention as prefix
+			cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
+			args.shift();
 			if (!cmd) return;
 		}
 
