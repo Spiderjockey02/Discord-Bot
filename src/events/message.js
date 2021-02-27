@@ -49,7 +49,7 @@ module.exports = async (bot, message) => {
 		}
 
 		// Make sure guild only commands are done in the guild only
-		if (message.channel.type == 'dm' && cmd.guildOnly)	return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
+		if (message.guild && cmd.guildOnly)	return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
 
 		// Check to see if the command is being run in a blacklisted channel
 		if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
@@ -68,8 +68,8 @@ module.exports = async (bot, message) => {
 		if (cmd.help.category == 'Moderation' && !settings.ModerationPlugin) return;
 		if (cmd.help.category == 'Level' && !settings.LevelPlugin) return;
 		if (cmd.help.category == 'Trivia' && !settings.MusicTriviaPlugin) return;
-		if (cmd.help.category == 'Search' && !settings.SearchPlugin) return;
-		if (cmd.help.category == 'Nsfw' && !settings.NSFWPlugin) return;
+		if (cmd.help.category == 'Searcher' && !settings.SearchPlugin) return;
+		if (cmd.help.category == 'NSFW' && !settings.NSFWPlugin) return;
 		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
 		// make sure user doesn't access HOST commands
