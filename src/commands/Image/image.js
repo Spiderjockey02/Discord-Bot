@@ -24,15 +24,8 @@ module.exports = class Image extends Command {
 			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
-		let results;
-		if (message.channel.nsfw || message.channel.type == 'dm') {
-			// NSFW content can be shown
-			results = await image_search({ query: args.join(' '), moderate: false, iterations: 2, retries: 2 });
-		} else {
-			// NSFW can't be shown
-			results = await image_search({ query: args.join(' '), moderate: true, iterations: 2, retries: 2 });
-		}
-		console.log(results);
+		const results = await image_search({ query: args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+
 		// send image
 		const embed = new MessageEmbed()
 			.setImage(results[Math.floor(Math.random() * 101)].image);
