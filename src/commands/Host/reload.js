@@ -33,12 +33,11 @@ module.exports = class Reload extends Command {
 				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
 				await bot.loadCommand(cmd.conf.location, cmd.help.name);
 			} catch(err) {
-				console.log(err);
-				if (bot.config.debug) bot.logger.error(`${err.message} - command: reload.`);
-				return message.error(settings.Language, 'HOST/RELOAD_ERROR', commandName).then(m => m.delete({ timeout: 10000 }));
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
 			message.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
-			bot.logger.log(`Reloaded Command: ${commandName}.js`);
 		} else {
 			return message.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));
 		}

@@ -32,7 +32,7 @@ module.exports = class Image extends Command {
 			// NSFW can't be shown
 			results = await image_search({ query: args.join(' '), moderate: true, iterations: 2, retries: 2 });
 		}
-
+		console.log(results);
 		// send image
 		const embed = new MessageEmbed()
 			.setImage(results[Math.floor(Math.random() * 101)].image);

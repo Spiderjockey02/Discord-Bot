@@ -34,8 +34,9 @@ module.exports = class Weather extends Command {
 					.setThumbnail(result[0].current.imageUrl);
 				message.channel.send(embed);
 			} catch(err) {
-				if (bot.config.debug) bot.logger.error(`${err.message} - command: weather.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
 		});
 	}

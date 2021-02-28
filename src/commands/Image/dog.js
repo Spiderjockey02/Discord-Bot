@@ -18,13 +18,14 @@ module.exports = class Dog extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		const res = await fetch('https://nekos.life/api/v2/img/woof').then(info => info.json()).catch(err => {
-			// An error occured when looking for image
-			bot.logger.error(`${err.message}`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
-			message.delete();
-			return;
-		});
+		const res = await fetch('https://nekos.life/api/v2/img/woof')
+			.then(info => info.json())
+			.catch(err => {
+				// An error occured when looking for image
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			});
 
 		// send image
 		const embed = new MessageEmbed()

@@ -42,11 +42,10 @@ module.exports = class Fortnite extends Command {
 			r.delete();
 			message.channel.send(embed);
 		}).catch(err => {
-			// If data wasn't found
-			if (message.deletable) message.delete();
 			r.delete();
-			message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: fortnite.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

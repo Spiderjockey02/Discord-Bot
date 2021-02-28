@@ -48,7 +48,7 @@ module.exports = class Clear extends Command {
 
 		// Delete messages
 		await message.channel.messages.fetch({ limit: amount }).then(async messages => {
-			await message.channel.bulkDelete(messages, true);
+			await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 			message.success(settings.Language, 'MODERATION/MESSAGES_DELETED', messages.size).then(m => m.delete({ timeout: 3000 }));
 		});
 	}

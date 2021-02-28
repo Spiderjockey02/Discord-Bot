@@ -25,12 +25,14 @@ module.exports = class Pokemon extends Command {
 		}
 
 		// Search for pokemon
-		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${args.join(' ')}`).then(info => info.json()).catch(err => {
-			// An error occured when looking for account
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: pokemon.`);
-			if (message.deletable) message.delete();
-			return message.error(settings.Language, 'FUN/MISSING_POKEMON').then(m => m.delete({ timeout:5000 }));
-		});
+		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${args.join(' ')}`)
+			.then((info) => info.json())
+			.catch((err) => {
+				// An error occured when looking for account
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			});
 
 		// Send response to channel
 		const embed = new MessageEmbed()

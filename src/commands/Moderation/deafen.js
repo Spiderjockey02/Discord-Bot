@@ -39,9 +39,8 @@ module.exports = class Deafen extends Command {
 			try {
 				await member[0].voice.setDeaf(true);
 				message.success(settings.Language, 'MODERATION/SUCCESSFULL_DEAFEN', member[0].user).then(m => m.delete({ timeout: 3000 }));
-			} catch(err) {
-				// do nothing
-			}
+				// eslint-disable-next-line no-empty
+			} catch(e) {}
 		} else {
 			message.error(settings.Language, 'MODERATION/NOT_INVOICE', member[0].user).then(m => m.delete({ timeout: 3000 }));
 		}

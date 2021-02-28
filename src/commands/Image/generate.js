@@ -15,7 +15,7 @@ module.exports = class Generate extends Command {
 			name: 'generate',
 			dirname: __dirname,
 			aliases: ['gen'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
 			cooldown: 5000,
@@ -43,8 +43,9 @@ module.exports = class Generate extends Command {
 					},
 				}).catch(err => {
 					// if an error occured
-					if (bot.config.debug) bot.logger.error(`${err.message} - command: generate.`);
 					msg.delete();
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 				});
 			} else if (image_2.includes(args[0])) {
@@ -54,10 +55,11 @@ module.exports = class Generate extends Command {
 					headers: {
 						'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
 					},
-				}).catch(e => {
+				}).catch(err => {
 					// if an error occured
-					bot.logger.error(e.message);
 					msg.delete();
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 				});
 			}

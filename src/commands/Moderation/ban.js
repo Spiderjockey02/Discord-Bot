@@ -20,6 +20,7 @@ module.exports = class Ban extends Command {
 	async run(bot, message, args, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Make sure user can ban users
 		if (!message.member.hasPermission('BAN_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
@@ -71,7 +72,8 @@ module.exports = class Ban extends Command {
 				}, time);
 			}
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: ban.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

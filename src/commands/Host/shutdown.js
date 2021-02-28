@@ -22,8 +22,9 @@ module.exports = class Shutdown extends Command {
 			await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
 			process.exit();
 		} catch(err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: shutdown.`);
-			message.error(settings.Language, 'HOST/SHUTDOWN_ERROR', err.message);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

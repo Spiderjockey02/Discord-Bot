@@ -3,7 +3,7 @@ const ms = require('ms'),
 	{ MessageEmbed, MessageAttachment } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
-module.exports = class Random extends Command {
+module.exports = class Reminder extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'reminder',

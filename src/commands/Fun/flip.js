@@ -4,7 +4,7 @@ const Command = require('../../structures/Command.js');
 module.exports = class Flip extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'fact',
+			name: 'flip',
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Flip a coin.',

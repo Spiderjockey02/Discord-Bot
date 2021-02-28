@@ -30,28 +30,31 @@ module.exports = class Screenshot extends Command {
 		// try and create screenshot
 		screenshotWebsite(args[0]).then(async data => {
 			if (!data) {
-				if (message.deletable) message.delete();
-				msg.delete();
-				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			} else {
 				const attachment = new MessageAttachment(data, 'website.png');
 				await message.channel.send(attachment);
-				msg.delete();
 			}
+			msg.delete();
 		});
 
 		// screenshot function
 		async function screenshotWebsite(url) {
-			const browser = await Puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/Chrome.exe' });
-			const page = await browser.newPage();
-			await page.setViewport({
-				width: 1280,
-				height: 720,
-			});
-			await page.goto(url);
-			const r = await page.screenshot();
-			await browser.close();
-			return r;
+			try {
+				const browser = await Puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/Chrome.exe' });
+				const page = await browser.newPage();
+				await page.setViewport({
+					width: 1280,
+					height: 720,
+				});
+				await page.goto(url);
+				const r = await page.screenshot();
+				await browser.close();
+				return r;
+			} catch (err) {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: 'screenshot' has error: ${err.message}.`);
+			}
 		}
 	}
 };

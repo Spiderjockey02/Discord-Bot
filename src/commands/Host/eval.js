@@ -30,8 +30,9 @@ module.exports = class Eval extends Command {
 				return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 		} catch(err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: eval.`);
-			message.sendT(settings.Language, 'HOST/EVAL_ERROR', err.message);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

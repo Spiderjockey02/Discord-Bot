@@ -42,8 +42,8 @@ module.exports = class Warn extends Command {
 		try {
 			await require('../../helpers/warning-system').run(bot, message, member[0], wReason, settings);
 		} catch (err) {
-			console.log(err);
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: warn.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

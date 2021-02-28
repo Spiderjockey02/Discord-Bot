@@ -35,6 +35,7 @@ module.exports = class ClearWarning extends Command {
 				userID: member[0].id,
 				guildID: message.guild.id,
 			});
+
 			// Delete the data
 			if (data) {
 				await Warning.deleteOne(data, function(err) {
@@ -45,7 +46,8 @@ module.exports = class ClearWarning extends Command {
 				message.sendT(settings.Language, 'MODERATION/NO_WARNINGS').then(m => m.delete({ timeout: 3500 }));
 			}
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: clear-warnings.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

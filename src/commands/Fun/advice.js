@@ -20,9 +20,9 @@ module.exports = class Advice extends Command {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			message.channel.send({ embed: { color: 'RANDOM', description: data.slip.advice } });
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: advice.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

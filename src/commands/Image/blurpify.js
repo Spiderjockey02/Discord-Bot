@@ -34,8 +34,8 @@ module.exports = class Blurpify extends Command {
 				.setImage(json.message);
 			message.channel.send(embed);
 		} catch(err) {
-			// if an error occured
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: blurpify.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 		msg.delete();

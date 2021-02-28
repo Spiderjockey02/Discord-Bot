@@ -54,9 +54,11 @@ module.exports = class Mute extends Command {
 					},
 				});
 				// update server with no muted role
-				bot.updateGuild(message.channel.guild, { MutedRole: muteRole.id }, bot);
-			} catch (e) {
-				bot.logger.error(e.message);
+				message.guild.updateGuild({ MutedRole: muteRole.id });
+			} catch (err) {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 
@@ -79,14 +81,16 @@ module.exports = class Mute extends Command {
 				if (args[1]) {
 					const time = require('../../helpers/time-converter.js').getTotalTime(args[1], message, settings.Language);
 					if (!time) return;
-					setTimeout(() => {
+					setTimeout(async () => {
 						member[0].roles.remove(muteRole, 'Temporary mute expired.');
+						await member[0].voice.setMute(false).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 					}, time);
 				}
 			});
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {2}.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
-		// add timed unmute
 	}
 };

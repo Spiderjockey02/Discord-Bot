@@ -59,7 +59,8 @@ module.exports = class Kick extends Command {
 			await member[0].kick({ reason: reason });
 			message.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', member[0].user).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: kick.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

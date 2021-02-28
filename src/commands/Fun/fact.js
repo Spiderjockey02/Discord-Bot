@@ -21,13 +21,13 @@ module.exports = class Fact extends Command {
 		// Get the random facts file
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
-				if (bot.config.debug) bot.logger.error(`${err.message} - command: fact.`);
-				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 				if (message.deletable) message.delete();
-				return;
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
-			const facts = JSON.parse(data);
+
 			// Retrieve a random fact
+			const facts = JSON.parse(data);
 			const num = (Math.floor((Math.random() * facts.facts.length) + 0));
 			const embed = new MessageEmbed()
 				.setTitle(message.translate(settings.Language, 'FUN/FACT_TITLE'))

@@ -27,7 +27,7 @@ module.exports = class Urban extends Command {
 		// Search up phrase in urban dictionary
 		define(`${phrase}`, (err, entries) => {
 			if (err) {
-				if (bot.config.debug) bot.logger.error(`${err.message} - command: urban.`);
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.error(settings.Language, 'FUN/INCORRECT_URBAN', phrase).then(m => m.delete({ timeout: 5000 }));
 			} else {
 				// send message

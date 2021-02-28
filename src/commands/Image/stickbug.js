@@ -33,10 +33,8 @@ module.exports = class Stickbug extends Command {
 			message.channel.send(attachment);
 			msg.delete();
 		} catch(err) {
-			console.log(err);
-			// if an error occured
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: stickbug.`);
-			msg.delete();
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

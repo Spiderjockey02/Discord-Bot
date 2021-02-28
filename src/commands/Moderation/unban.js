@@ -42,7 +42,9 @@ module.exports = class Unban extends Command {
 				message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => m.delete({ timeout: 3000 }));
 			});
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: unban.`);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

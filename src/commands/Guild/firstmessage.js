@@ -16,7 +16,7 @@ module.exports = class Firstmessage extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, args, settings) {
 		try {
 			const messages = await message.channel.messages.fetch({ after: 1, limit: 1 });
 			const fMessage = messages.first();
@@ -29,8 +29,10 @@ module.exports = class Firstmessage extends Command {
 				.setFooter(`ID: ${fMessage.id}`)
 				.addField('❯ Jump', fMessage.url);
 			message.channel.send(embed);
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

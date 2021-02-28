@@ -38,9 +38,8 @@ module.exports = class Reddit extends Command {
 				.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | ${message.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
 			message.channel.send(embed);
 		} catch (err) {
-			console.log(err);
 			if (message.deletable) message.delete();
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: reddit.`);
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

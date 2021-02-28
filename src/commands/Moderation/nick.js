@@ -18,13 +18,11 @@ module.exports = class Nick extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		// Send link to privacy policy
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Get user for nickname change
 		const member = message.guild.getMember(message, args);
-		console.log(member);
 
 		// Check if they are changing their own name or not (and check permission)
 		if (member[0] == message.author) {
@@ -55,8 +53,9 @@ module.exports = class Nick extends Command {
 			await member[0].setNickname(nickname);
 			message.success(settings.Language, 'MODERATION/SUCCESSFULL_NICK', member[0].user).then(m => m.delete({ timeout: 5000 }));
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: nick.`);
-			message.error(settings.Language, 'MODERATION/UNSUCCESSFULL_NICK', member[0].user).then(m => m.delete({ timeout: 10000 }));
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

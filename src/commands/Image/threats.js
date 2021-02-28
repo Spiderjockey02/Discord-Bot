@@ -33,9 +33,8 @@ module.exports = class Threats extends Command {
 			msg.delete();
 			message.channel.send(embed);
 		} catch(err) {
-			// if an error occured
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: threats.`);
-			msg.delete();
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

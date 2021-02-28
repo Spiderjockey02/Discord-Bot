@@ -32,9 +32,8 @@ module.exports = class QRcode extends Command {
 			msg.delete();
 			message.channel.send(embed);
 		} catch(err) {
-			// if error has occured
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: qrcode.`);
-			msg.delete();
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}

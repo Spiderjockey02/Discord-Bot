@@ -26,9 +26,7 @@ module.exports = class Poll extends Command {
 		}
 
 		// Make sure a poll was provided
-		if (!args[0]) {
-			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		}
+		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Send poll to channel
 		const embed = new MessageEmbed()

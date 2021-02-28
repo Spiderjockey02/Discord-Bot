@@ -21,10 +21,9 @@ module.exports = class Meme extends Command {
 
 		// An error has occured
 		if (meme.url == undefined) {
-			if (bot.config.debug) bot.logger.error('An error occured when running command: meme.');
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			if (message.deletable) message.delete();
-			return;
+			bot.logger.error(`Command: '${this.help.name}' has error: Missing meme URL.`);
+			return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Send the meme to channel

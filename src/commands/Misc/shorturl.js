@@ -23,8 +23,9 @@ module.exports = class ShortURL extends Command {
 				message.channel.send(res);
 			});
 		} catch (err) {
-			if (bot.config.debug) bot.logger.error(`${err.message} - command: shorturl.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 })).then(m => m.delete({ timeout: 10000 }));
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };
