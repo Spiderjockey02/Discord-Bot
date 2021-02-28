@@ -6,6 +6,7 @@ const languages = {
 	'english': 'en-US',
 	'arabic': 'ar-EG',
 	'portuguese': 'pt-BR',
+	'Persian': 'fa-IR',
 };
 
 module.exports = class Setlang extends Command {
