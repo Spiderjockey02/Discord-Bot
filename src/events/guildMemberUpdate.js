@@ -8,6 +8,8 @@ function sendMessage(newMember, settings, embed) {
 }
 
 module.exports = async (bot, oldMember, newMember) => {
+	if (oldMember.user.id == bot.user.id) return;
+
 	// get server settings
 	const settings = newMember.guild.settings;
 
