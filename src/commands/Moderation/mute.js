@@ -70,7 +70,6 @@ module.exports = class Mute extends Command {
 				if (member[0].voice.channelID) {
 					try {
 						await member[0].voice.setMute(true);
-						message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
 					} catch (err) {
 						if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
 					}
