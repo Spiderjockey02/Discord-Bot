@@ -1,7 +1,8 @@
 // Dependencies
-const { Structures } = require('discord.js');
-const { Guild: guild } = require('../modules/database/models');
-const logger = require('../modules/logging');
+const { Structures } = require('discord.js'),
+	{ Guild: guild } = require('../modules/database/models'),
+	logger = require('../modules/logging'),
+	sm = require('string-similarity');
 
 module.exports = Structures.extend('Guild', Guild => {
 	class CustomGuild extends Guild {
@@ -43,6 +44,17 @@ module.exports = Structures.extend('Guild', Guild => {
 					users.push(this.member(message.mentions.users.array()[i] || this.members.cache.get(args[i])));
 				}
 			}
+			// find user
+			const members = [];
+			const indexes = [];
+			message.guild.members.cache.forEach(member => {
+				members.push(member.user.username);
+				indexes.push(member.id);
+			});
+			const match = sm.findBestMatch(args.join(' '), members);
+			const username = match.bestMatch.target;
+			const member = message.guild.members.cache.get(indexes[members.indexOf(username)]);
+			users.push(member);
 			// add author at the end
 			users.push(message.member);
 			return users;
