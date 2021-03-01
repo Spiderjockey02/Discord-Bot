@@ -45,16 +45,19 @@ module.exports = Structures.extend('Guild', Guild => {
 				}
 			}
 			// find user
-			const members = [];
-			const indexes = [];
-			message.guild.members.cache.forEach(member => {
-				members.push(member.user.username);
-				indexes.push(member.id);
-			});
-			const match = sm.findBestMatch(args.join(' '), members);
-			const username = match.bestMatch.target;
-			const member = message.guild.members.cache.get(indexes[members.indexOf(username)]);
-			users.push(member);
+			if (args[0]) {
+				const members = [];
+				const indexes = [];
+				message.guild.members.cache.forEach(member => {
+					members.push(member.user.username);
+					indexes.push(member.id);
+				});
+				const match = sm.findBestMatch(args.join(' '), members);
+				const username = match.bestMatch.target;
+				const member = message.guild.members.cache.get(indexes[members.indexOf(username)]);
+				users.push(member);
+			}
+
 			// add author at the end
 			users.push(message.member);
 			return users;
