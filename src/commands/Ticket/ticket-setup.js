@@ -27,7 +27,7 @@ module.exports = class TicketSetup extends Command {
 			message.channel.send(embed);
 		} else if (args[0] == 'category') {
 			try {
-				const channel = message.guild.channels.fetch(args[1]);
+				const channel = message.guild.channels.cache.get(args[1]);
 				if (!channel || channel.type != 'category') return message.channel.send('That is not a category.');
 				// update database
 				await message.guild.updateGuild({ TicketCategory: args[1] });
