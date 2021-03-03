@@ -11,8 +11,10 @@ const readdir = promisify(require('fs').readdir);
 	const cmdFolders = await readdir('./src/commands/');
 	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
+		if (bot.config.disabledPlugins.includes(dir)) return;
 		const commands = await readdir('./src/commands/' + dir + '/');
 		commands.forEach((cmd) => {
+			if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
 			const resp = bot.loadCommand('./commands/' + dir, cmd);
 			if (resp) bot.logger.error(resp);
 		});
