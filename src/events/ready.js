@@ -22,6 +22,13 @@ module.exports = async bot => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);
 
+	// set up webserver
+	try {
+		require('../http/statistics')(bot);
+	} catch (err) {
+		bot.logger.error(err.message);
+	}
+
 	// Updates the bot's status
 	setTimeout(() => {
 		bot.SetStatus('Online');
