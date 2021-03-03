@@ -1,6 +1,7 @@
 // Dependencies
 const Puppeteer = require('puppeteer'),
 	{ MessageAttachment } = require('discord.js'),
+	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Screenshot extends Command {
@@ -48,6 +49,7 @@ module.exports = class Screenshot extends Command {
 					height: 720,
 				});
 				await page.goto(url);
+				await delay(1500);
 				const r = await page.screenshot();
 				await browser.close();
 				return r;
