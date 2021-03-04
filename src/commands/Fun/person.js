@@ -17,10 +17,9 @@ module.exports = class Person extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		let response, data;
 		try {
-			response = await axios.get('https://person-generator.com/api/person');
-			data = response.data;
+			const response = await axios.get('https://person-generator.com/api/person');
+			const data = response.data;
 			const embed = new MessageEmbed()
 				.setDescription(`**- Name :** ${data.name}
 				**- Gender :** ${data.gender}
