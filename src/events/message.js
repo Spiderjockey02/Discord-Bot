@@ -78,6 +78,15 @@ module.exports = async (bot, message) => {
 		// make sure user doesn't access HOST commands
 		if (!bot.config.ownerID.includes(message.author.id) && cmd.conf.ownerID) return;
 
+		// Check bot has permissions
+		if (cmd.conf.botPermissions[0]) {
+			// If the bot doesn't have SEND_MESSAGES permissions just return
+			if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
+			if (!message.channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
+				return message.sendT(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS');
+			}
+		}
+
 		// Check to see if user is in 'cooldown'
 		if (!cooldowns.has(command.name)) {
 			cooldowns.set(command.name, new Collection());

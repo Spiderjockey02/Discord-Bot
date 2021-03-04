@@ -21,6 +21,12 @@ module.exports = class G_start extends Command {
 		// Make sure the user has the right permissions to use giveaway
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
+		// Check if bot has permission to add reactions
+		if (!message.guild.me.hasPermission('ADD_REACTIONS')) {
+			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+		}
+
 		// Make sure a time, winner count & prize is entered
 		if (args.length <= 2) {
 			if (message.deletable) message.delete();

@@ -18,7 +18,14 @@ module.exports = class Ticket extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		if (message.member.hasPermission('BAN_MEMBERS')) {
+		// Check if bot has permission to add reactions
+		if (!message.guild.me.hasPermission('ADD_REACTIONS')) {
+			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+		}
+
+		// Add ticket reaction embed
+		if (message.member.hasPermission('MANAGE_GUILD')) {
 			if (args[0] == 'reaction') {
 				const embed = new MessageEmbed()
 					.setTitle('React for Ticket channel')

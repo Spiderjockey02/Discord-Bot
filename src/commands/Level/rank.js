@@ -23,6 +23,12 @@ module.exports = class Rank extends Command {
 		// Get user
 		const member = message.guild.getMember(message, args);
 
+		// Check if bot has permission to attach files
+		if (!message.guild.me.hasPermission('ATTACH_FILES')) {
+			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
+		}
+
 		// Retrieve Rank from databse
 		try {
 			await Ranks.findOne({
