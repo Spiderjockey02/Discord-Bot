@@ -6,9 +6,9 @@ module.exports = class DM extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'dm',
-			ownerOnly: true,
 			dirname: __dirname,
 			aliases: ['direct-message', 'dmsg'],
+			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'DM a user',
 			usage: 'dm <user> <reason>',
@@ -20,6 +20,10 @@ module.exports = class DM extends Command {
 	async run(bot, message, args, settings) {
 		// Get user
 		const member = message.guild.getMember(message, args);
+
+		// Check if user has manage server permissions
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+
 		// send message
 		try {
 			const embed = new MessageEmbed()
