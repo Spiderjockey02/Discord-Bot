@@ -27,7 +27,7 @@ const config = {
 		// https://amethyste.moe/en
 		amethyste: 'amethysteAPI-Key',
 	},
-	// IF you want any commands/plugins disabled
+	// add plugins/commands here if you don't want them loaded in the bot.
 	disabledCommands: [],
 	disabledPlugins: [],
 	// This is a list of websites that the bot is on. API to interect with server/shard count
