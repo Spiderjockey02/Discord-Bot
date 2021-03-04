@@ -11,8 +11,9 @@ module.exports = async (bot, message) => {
 	// Make sure its not the bot
 	if (message.author.id == bot.user.id) return;
 
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = message.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false || message.content.startsWith(settings.prefix)) return;

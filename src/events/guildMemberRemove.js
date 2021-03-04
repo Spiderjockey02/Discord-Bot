@@ -5,8 +5,9 @@ const dateFormat = require('dateformat');
 module.exports = async (bot, member) => {
 	if (member.user.id == bot.user.id) return;
 
-	// get server settings
+	// Get server settings / if no settings then return
 	const settings = member.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// serverstats
 	if (settings.ServerStats) {

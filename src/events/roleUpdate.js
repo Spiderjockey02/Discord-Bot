@@ -7,8 +7,9 @@ function sendMessage(newRole, settings, embed) {
 }
 
 module.exports = async (bot, oldRole, newRole) => {
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = newRole.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if event roleUpdate is for logging
 	if (settings.ModLogEvents.includes('ROLEUPDATE') && settings.ModLog) {

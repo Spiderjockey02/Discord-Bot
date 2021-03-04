@@ -2,14 +2,18 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, reaction, user) => {
-	// make sure it dosen't happen in a DM
-	if (reaction.message.channel.type == 'dm') return;
-
-	// Make sure it's not a BOT
+	// Make sure it's not a BOT and in a guild
 	if (user.bot) return;
+	if (!reaction.message.guild) return;
 
-	// Get server settings
+	// If reaction needs to be fetched
+	if (reaction.message.partial) await reaction.message.fetch();
+	if (reaction.partial) await reaction.fetch();
+
+	// Get server settings / if no settings then return
 	const settings = reaction.message.channel.guild.settings;
+	if (Object.keys(settings).length == 0) return;
+
 
 	// Check if anti-raid plugin is active
 	if (settings.AntiRaidPlugin == true && settings.AntiRaidCompletion == 1) {

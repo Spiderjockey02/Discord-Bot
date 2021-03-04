@@ -10,10 +10,10 @@ module.exports = async (bot, oldMessage, newMessage) => {
 
 	// only check for message content is different
 	if (oldMessage.content == newMessage.content) return;
-	// Get server settings
 
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = newMessage.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if ModLog plugin is active
 	if (settings.ModLog == false) return;

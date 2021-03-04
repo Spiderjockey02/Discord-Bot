@@ -5,8 +5,9 @@ module.exports = async (bot, channel) => {
 	// Make sure the channel isn't a DM
 	if (channel.type == 'dm') return;
 
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = channel.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if event channelCreate is for logging
 	if (settings.ModLogEvents.includes('CHANNELCREATE') && settings.ModLog) {

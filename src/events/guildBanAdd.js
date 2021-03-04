@@ -2,8 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, guild, user) => {
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if event guildBanAdd is for logging
 	if (settings.ModLogEvents.includes('GUILDBANADD') && settings.ModLog) {

@@ -8,8 +8,9 @@ module.exports = async (bot, reaction, user) => {
 	// Make sure it's not a BOT
 	if (user.bot) return;
 
-	// Get server settings
+	// Get server settings / if no settings then return
 	const settings = reaction.message.channel.guild.settings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if event messageReactionRemove is for logging
 	if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {
