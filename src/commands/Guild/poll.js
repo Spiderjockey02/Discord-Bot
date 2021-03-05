@@ -20,8 +20,8 @@ module.exports = class Poll extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check bot for add reaction permission
-		if (!message.guild.me.hasPermission('ADD_REACTIONS')) {
-			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}]`);
+		if (!message.channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
+			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 		}
 

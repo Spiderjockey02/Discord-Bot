@@ -25,7 +25,10 @@ module.exports = class Undeafen extends Command {
 		if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Check if bot has permission to ban user
-		if (!message.guild.me.hasPermission('DEAFEN_MEMBERS')) {
+		const channel = message.guild.channels.cache.get(member.voice.channelID);
+		if (!channel) return message.channel.send('I can\'t deafen someone not in a voice channel');
+
+		if (!channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
 			bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 		}

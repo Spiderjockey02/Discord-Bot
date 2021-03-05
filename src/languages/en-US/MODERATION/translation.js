@@ -34,10 +34,6 @@ const languageData = {
 	REPORT_BY: 'Reported by:',
 	REPORT_IN: 'Reported in:',
 	REPORT_REASON: 'Reason:',
-	// ticket command
-	TICKET_EXISTS: 'You already have a ticket channel',
-	NO_SUPPORT_ROLE: 'No support role has been created on this server yet.',
-	NOT_SUPPORT: 'You do not have the correct permissions to close this channel.',
 };
 
 const translate = (key, args) => {

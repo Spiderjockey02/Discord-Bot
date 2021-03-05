@@ -23,13 +23,19 @@ module.exports = class Deafen extends Command {
 		// Check if user has deafen permission
 		if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-		// Make sure bot can delete other peoples messages
-		if (!message.guild.me.hasPermission('DEAFEN_MEMBERS')) {
+
+		// Checks to make sure user is in the server
+		const member = message.guild.getMember(message, args);
+
+		// Get the channel the member is in
+		const channel = message.guild.channels.cache.get(member[0].voice.channelID);
+		if (!channel) return message.channel.send('I can\'t deafen someone not in a voice channel.');
+
+		// Make sure bot can deafen members
+		if (!channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
 			bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 		}
-		// Checks to make sure user is in the server
-		const member = message.guild.getMember(message, args);
 
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

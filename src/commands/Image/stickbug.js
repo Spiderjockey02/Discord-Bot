@@ -22,7 +22,7 @@ module.exports = class Stickbug extends Command {
 		const file = message.guild.GetImage(message, args, settings.Language);
 
 		// Check if bot has permission to attach files
-		if (!message.guild.me.hasPermission('ATTACH_FILES')) {
+		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
 		}

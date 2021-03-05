@@ -22,9 +22,16 @@ module.exports = class TicketClose extends Command {
 		if (patt.test(message.channel.name)) {
 			try {
 				if (message.member.roles.cache.has(r => r.id == settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) {
+					// Make sure bot has permission to delete channel
+					if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
+						bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
+						return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
+					}
+
+					// delete channel
 					await message.channel.delete();
 				} else {
-					return message.error(settings.Language, 'MODERATION/NOT_SUPPORT');
+					return message.error(settings.Language, 'TICKET/NOT_SUPPORT');
 				}
 			} catch (err) {
 				if (message.deletable) message.delete();
