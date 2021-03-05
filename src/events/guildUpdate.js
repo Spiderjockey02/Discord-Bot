@@ -9,7 +9,7 @@ function sendMessage(newGuild, settings, embed) {
 
 module.exports = async (bot, oldGuild, newGuild) => {
 	// Get server settings / if no settings then return
-	const settings = newGuild.settings;
+	const settings = newGuild.guild.settings;
 	if (Object.keys(settings).length == 0) return;
 
 	let embed;
