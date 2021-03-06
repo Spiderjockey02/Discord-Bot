@@ -1,6 +1,7 @@
 // Dependencies
-const { MessageEmbed, Collection } = require('discord.js');
-const moment = require('moment');
+const { Globalban } = require('../modules/database/models'),
+	{ MessageEmbed, Collection } = require('discord.js'),
+	moment = require('moment');
 
 // List of users in command cooldown
 const cooldowns = new Collection();
@@ -50,6 +51,22 @@ module.exports = async (bot, message) => {
 		} else if (!cmd) {
 			return;
 		}
+
+		// make sure user is not on banned list
+		const banned = await Globalban.findOne({
+			userID: message.author.id,
+		}, async (err, res) => {
+			if (err) bot.logger.error(err.message);
+
+			// This is their first warning
+			if (res) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		if (banned) return message.channel.send('You are banned from using command');
+
 
 		// Make sure guild only commands are done in the guild only
 		if (message.guild && cmd.guildOnly)	return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));

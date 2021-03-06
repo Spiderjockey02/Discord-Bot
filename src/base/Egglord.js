@@ -71,17 +71,23 @@ module.exports = class Egglord extends Client {
 	// Fetch user ID from discord API
 	async getUser(ID) {
 		try {
-			const user = (this.users.cache.get(ID)) ? this.users.cache.get(ID) : await this.users.fetch(ID);
+			const user = await this.users.fetch(ID);
 			return user;
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			console.log(err.message);
+			return false;
 		}
 	}
 
 	// Get a channel in cache
 	async getChannel(id) {
-		const channel = await this.channels.cache.get(id);
-		return channel;
+		try {
+			const channel = await this.channels.cache.get(id);
+			return channel;
+		} catch (e) {
+			console.log(e);
+			return false;
+		}
 	}
 
 	// Set this's status
