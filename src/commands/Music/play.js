@@ -17,14 +17,9 @@ module.exports = class Play extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Check if the member has role to interact with music plugin
-		console.log(message.member._roles);
-		if (settings.MusicDJRole != '00') {
-			console.log('1');
-			if (message.member._roles) {
-				console.log('2');
-				if (!message.member._roles.has(settings.MusicDJRole)) {
-					return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
-				}
+		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
+				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 

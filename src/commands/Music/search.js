@@ -16,6 +16,13 @@ module.exports = class Search extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
+		// Check if the member has role to interact with music plugin
+		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
+				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+			}
+		}
+
 		// make sure user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.send('You\'re not in a voice channel that I can connect to.');
 
