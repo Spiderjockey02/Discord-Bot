@@ -5,7 +5,10 @@ const config = {
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
 		// https://dev.twitch.tv/console/apps
-		twitch: 'twitchAPI-Key',
+		twitch: {
+			clientID: '',
+			clientSecret: '',
+		},
 		// https://fortnitetracker.com/site-api
 		fortnite: 'fortniteAPI-Key',
 		// https://api.ksoft.si/
