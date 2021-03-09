@@ -1,6 +1,12 @@
 const logger = require('./modules/logging');
 
 (async function load() {
+	try {
+		await require('./scripts/update-database-v1.1')();
+	} catch (e) {
+		console.log(e);
+	}
+
 	// This is to verify config file
 	const configCorrect = await require('./scripts/verify-config.js').run(require('./config.js'));
 	if (!configCorrect) {

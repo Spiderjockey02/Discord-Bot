@@ -18,8 +18,6 @@ const guildScheme = mongoose.Schema({
 	welcomeRoleGive: { type: Array, default: ['562297641879470082'] },
 	welcomeGoodbyeToggle: { type: Boolean, default: false },
 	welcomeGoodbyeText: { type: String, default: '**{user}** just left the server.' },
-	// Level plugin
-	LevelPlugin: { type: Boolean, default: false },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
 	LevelOption: { type: Number, default: 1 },
 	LevelChannel: { type: String, default: '00' },
@@ -29,7 +27,6 @@ const guildScheme = mongoose.Schema({
 	LevelMultiplier: { type: Number, default: 1 },
 	LevelRoleRewards: { type: Array, default: ['gf'] },
 	// Music plugin
-	MusicPlugin: { type: Boolean, default: true },
 	MusicDJ: { type: Boolean, default: false },
 	MusicDJRole: { type: String, default: '00' },
 	// Music trivia plugin
@@ -46,7 +43,6 @@ const guildScheme = mongoose.Schema({
 	CommandCooldown: { type: Boolean, default: false },
 	CommandCooldownSec: { type: Number, default: 2 },
 	// Moderation plugin
-	ModerationPlugin: { type: Boolean, default: false },
 	ModeratorRoles: { type: Array, default: ['owner'] },
 	MutedRole: { type: String, default: '00' },
 	// 0 = disabled, 1 = delete message, 2 = warn member, 3 = delete message and warn member
@@ -103,8 +99,6 @@ const guildScheme = mongoose.Schema({
 	AntiRaidCompletion: { type: Number, default: 0 },
 	AntiRaidChannelID: { type: String, default: '00' },
 	// Search PLugin
-	SearchPlugin: { type: Boolean, default: true },
-	NSFWPlugin: { type: Boolean, default: false },
 	// Misc
 	DisabledCommands: { type: Array, default: ['IWannaHackYou'] },
 	// Server stats plugin
@@ -120,5 +114,8 @@ const guildScheme = mongoose.Schema({
 	ServerStatsHuman: { type: Boolean, default: false },
 	ServerStatsHumanChannel: { type: String, default: '00' },
 	Language: { type: String, default: 'en-US' },
+	plugins: { type: Array, default: [] },
+	version: { type: Number, default: '1' },
 });
+
 module.exports = mongoose.model('Guild', guildScheme);
