@@ -2,6 +2,7 @@
 const Puppeteer = require('puppeteer'),
 	{ MessageAttachment } = require('discord.js'),
 	delay = ms => new Promise(res => setTimeout(res, ms)),
+	validUrl = require('valid-url'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Screenshot extends Command {
@@ -29,6 +30,12 @@ module.exports = class Screenshot extends Command {
 		if (!args[0]) {
 			if (message.deletable) message.delete();
 			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		}
+
+		// make sure URl is valid
+		if (!validUrl.isUri(args[0])) {
+			if (message.deletable) message.delete();
+			return message.error(settings.Language, 'FUN/INVALID_URL').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message

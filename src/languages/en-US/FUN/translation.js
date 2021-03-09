@@ -19,6 +19,7 @@ const languageData = {
 	URBAN_DESCRIPTION: (r) => `${r[0]}\n**Example:**\n${r[1]}`,
 	PERSON_AUTHOR: 'I found a person over internet whose name is ',
 	PERSON_FOOTER: 'NOTE : These all are randomly generated through an API.',
+	INVALID_URL: 'That is an incorrect URL.',
 };
 
 const translate = (key, args) => {

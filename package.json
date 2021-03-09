@@ -28,6 +28,7 @@
     "canvacord": "^5.0.8",
     "chalk": "^4.1.0",
     "dateformat": "^4.5.1",
+    "dblapi.js": "^2.4.1",
     "deepmerge": "^4.2.2",
     "discord.js": "^12.5.1",
     "duckduckgo-images-api": "^1.0.5",
@@ -50,6 +51,7 @@
     "string-similarity": "^4.0.4",
     "tinyurl": "^1.1.7",
     "urban-dictionary": "^3.0.0",
+    "valid-url": "^1.0.9",
     "weather-js": "^2.0.0"
   }
 }
