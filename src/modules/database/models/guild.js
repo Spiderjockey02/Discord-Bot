@@ -114,8 +114,8 @@ const guildScheme = mongoose.Schema({
 	ServerStatsHuman: { type: Boolean, default: false },
 	ServerStatsHumanChannel: { type: String, default: '00' },
 	Language: { type: String, default: 'en-US' },
-	plugins: { type: Array, default: [] },
-	version: { type: Number, default: '1' },
+	plugins: { type: Array, default: ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Recording', 'Searcher', 'Ticket'] },
+	version: { type: Number, default: '1.1' },
 });
 
 module.exports = mongoose.model('Guild', guildScheme);
