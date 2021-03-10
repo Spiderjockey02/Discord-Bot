@@ -38,6 +38,11 @@ module.exports = class Screenshot extends Command {
 			return message.error(settings.Language, 'FUN/INVALID_URL').then(m => m.delete({ timeout: 5000 }));
 		}
 
+		// Make sure website is not NSFW in a non-NSFW channel
+		if (bot.adultSiteList.includes(args[0]) && !message.channel.nsfw) {
+			return message.channel.send('You can not view NSFW websites in a non-NSFW channel.').then(m => m.delete({ timeout: 5000 }));
+		}
+
 		// send 'waiting' message
 		const msg = await message.channel.send('Creating screenshot of website.');
 

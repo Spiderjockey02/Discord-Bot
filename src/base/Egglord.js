@@ -51,6 +51,10 @@ module.exports = class Egglord extends Client {
 		// Basic statistics for the bot
 		this.messagesSent = 0;
 		this.commandsUsed = 0;
+
+		// for Screenshot command
+		this.adultSiteList = null;
+
 	}
 
 	// when the this joins add guild settings to server
@@ -84,8 +88,8 @@ module.exports = class Egglord extends Client {
 		try {
 			const channel = await this.channels.cache.get(id);
 			return channel;
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			console.log(err.message);
 			return false;
 		}
 	}
@@ -95,9 +99,9 @@ module.exports = class Egglord extends Client {
 		try {
 			await this.user.setStatus(status);
 			return;
-		} catch (e) {
-			console.log(e);
-			return e;
+		} catch (err) {
+			console.log(err.message);
+			return false;
 		}
 	}
 
@@ -145,5 +149,10 @@ module.exports = class Egglord extends Client {
 		return false;
 	}
 
-
+	// Fetches adult sites for screenshot NSFW blocking
+	async fetchAdultSiteList() {
+		const blockedWebsites = require('../assets/json/NSFW_websites.json');
+		this.adultSiteList = blockedWebsites.websites;
+		return this.adultSiteList;
+	}
 };
