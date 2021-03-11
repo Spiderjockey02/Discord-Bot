@@ -18,17 +18,16 @@ module.exports = class Ship extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get image, defaults to author's avatar
-		const user1 = message.guild.GetImage(message, args, settings.Language);
-		if (!user1) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		const user2 = (args[1]) ? message.mentions.users.array()[1] : message.author;
-		// send 'waitng' message
+		const users = message.guild.GetImage(message, args, settings.Language);
 
+		// send 'waitng' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 
 		// Try and convert image
 		try {
-			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=ship&user1=${user1[0]}&user2=${user2.displayAvatarURL({ format: 'png', size: 512 })}`));
+			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=ship&user1=${users[0].user.displayAvatarURL({ format: 'png', size: 512 })}&user2=${users[1].user.displayAvatarURL({ format: 'png', size: 512 })}`));
 			const json = await res.json();
+
 			// send image
 			const embed = new MessageEmbed()
 				.setImage(json.message);
