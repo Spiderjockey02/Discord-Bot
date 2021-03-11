@@ -11,7 +11,7 @@ module.exports = class Clear extends Command {
 			userPermissions: ['MANAGE_MESSAGES'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES'],
 			description: 'Clear a certain amount of messages.',
-			usage: 'clear <Number>',
+			usage: 'clear <Number> [member]',
 			cooldown: 5000,
 		});
 	}
@@ -37,7 +37,8 @@ module.exports = class Clear extends Command {
 		}
 
 		// Get number of messages to removed
-		const amount = args.join(' ');
+		const amount = args[0];
+
 		// Make something was entered after `!clear`
 
 		if (!amount) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
@@ -48,6 +49,12 @@ module.exports = class Clear extends Command {
 
 		// Delete messages
 		await message.channel.messages.fetch({ limit: amount }).then(async messages => {
+			// Delete user messages
+			if (message.guild.members.cache.get(args[1])) {
+				messages = messages.filter((m) => m.author.id === message.guild.members.get(args[1]).user.id);
+			}
+
+			// delete the message
 			await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 			message.success(settings.Language, 'MODERATION/MESSAGES_DELETED', messages.size).then(m => m.delete({ timeout: 3000 }));
 		});
