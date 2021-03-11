@@ -12,6 +12,7 @@ module.exports = class Captcha extends Command {
 			description: 'Create a captcha image.',
 			usage: 'captcha',
 			cooldown: 5000,
+			examples: ['captcha userID', 'captcha @mention', 'captcha username'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class Urban extends Command {
 			description: 'Get the urban dictionary of a word.',
 			usage: 'urban <word>',
 			cooldown: 1000,
+			examples: ['urban watermelon sugar', 'urban nice drip'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class Clyde extends Command {
 			description: 'Create a fake Clyde message.',
 			usage: 'clyde <text>',
 			cooldown: 5000,
+			examples: ['clyde Hello I\'m a bot'],
 		});
 	}
 

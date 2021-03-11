@@ -12,6 +12,7 @@ module.exports = class Ship extends Command {
 			description: 'Create a ship image.',
 			usage: 'ship <user1> [user2]',
 			cooldown: 5000,
+			examples: ['ship username username', 'ship username <attachment>'],
 		});
 	}
 

@@ -11,6 +11,7 @@ module.exports = class Reload extends Command {
 			description: 'Reloads a command.',
 			usage: 'reload <command>',
 			cooldown: 3000,
+			examples: ['reload help'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class Update extends Command {
 			description: 'Sends an update to bot\'s guild.',
 			usage: 'update',
 			cooldown: 3000,
+			examples: ['update New features out now'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class ShortURL extends Command {
 			description: 'Creates a shorturl on the URL you sent.',
 			usage: 'shorturl',
 			cooldown: 3000,
+			examples: ['shorturl https://www.google.com', 'shorturl https://www.youtube.com'],
 		});
 	}
 

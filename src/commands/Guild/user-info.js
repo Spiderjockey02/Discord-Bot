@@ -22,6 +22,7 @@ module.exports = class ServerInfo extends Command {
 			description: 'Get information on the server.',
 			usage: 'user-info [user]',
 			cooldown: 2000,
+			examples: ['user-info userID', 'user-info @mention', 'user-info username'],
 		});
 	}
 

@@ -13,6 +13,7 @@ module.exports = class G_delete extends Command {
 			description: 'Delete a giveaway',
 			usage: 'g-delete <messageID>',
 			cooldown: 2000,
+			examples: ['g-delete 818821436255895612'],
 		});
 	}
 

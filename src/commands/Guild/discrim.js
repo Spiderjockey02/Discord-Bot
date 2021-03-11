@@ -12,6 +12,7 @@ module.exports = class Discrim extends Command {
 			description: 'Discrim',
 			usage: 'discrim <discriminator>',
 			cooldown: 2000,
+			examples: ['discrim 6686'],
 		});
 	}
 

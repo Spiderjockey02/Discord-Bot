@@ -12,6 +12,7 @@ module.exports = class Docs extends Command {
 			description: 'Displays Discord.js documentation.',
 			usage: 'docs <query>',
 			cooldown: 3000,
+			examples: ['docs channel#create'],
 		});
 	}
 

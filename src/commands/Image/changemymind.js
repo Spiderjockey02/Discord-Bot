@@ -13,6 +13,7 @@ module.exports = class ChangeMyMind extends Command {
 			description: 'Create a change my mind image.',
 			usage: 'changemymind <text>',
 			cooldown: 5000,
+			examples: ['changemymind Egglord is the greatest'],
 		});
 	}
 

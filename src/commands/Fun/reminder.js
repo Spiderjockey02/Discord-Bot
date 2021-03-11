@@ -13,6 +13,7 @@ module.exports = class Reminder extends Command {
 			description: 'Set a reminder.',
 			usage: 'reminder <time> <information>',
 			cooldown: 1000,
+			examples: ['reminder 1h feed cat', 'reminder 1d ban trolls'],
 		});
 	}
 

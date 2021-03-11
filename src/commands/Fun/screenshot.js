@@ -15,6 +15,7 @@ module.exports = class Screenshot extends Command {
 			description: 'Get a screenshot of a website.',
 			usage: 'screenshot <url>',
 			cooldown: 5000,
+			examples: ['screenshot https://www.google.com/'],
 		});
 	}
 

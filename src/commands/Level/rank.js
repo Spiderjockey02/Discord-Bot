@@ -15,6 +15,7 @@ module.exports = class Rank extends Command {
 			description: 'Shows your rank/Level.',
 			usage: 'level [username]',
 			cooldown: 3000,
+			examples: ['level userID', 'level @mention', 'level username'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class Suggestion extends Command {
 			description: 'Add a suggestion to bot',
 			usage: 'suggestion <title> - <description> - <plugin>',
 			cooldown: 3000,
+			examples: ['suggestion Level reset - Should member levels reset when they leave the server - Economy plugin'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class Threats extends Command {
 			description: 'Creates a threat meme.',
 			usage: 'threats [image]',
 			cooldown: 5000,
+			examples: ['threats username', 'threats <attachment>'],
 		});
 	}
 

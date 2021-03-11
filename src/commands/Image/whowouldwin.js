@@ -13,6 +13,7 @@ module.exports = class WhoWouldWin extends Command {
 			description: 'Create a whowouldwin image.',
 			usage: 'whowouldwin <user1> [user2]',
 			cooldown: 5000,
+			examples: ['whowouldwin username username', 'whowouldwin username <attachment>'],
 		});
 	}
 

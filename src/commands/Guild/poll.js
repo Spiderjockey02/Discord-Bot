@@ -12,6 +12,7 @@ module.exports = class Poll extends Command {
 			description: 'Create a poll for users to answer.',
 			usage: 'poll <question>',
 			cooldown: 2000,
+			examples: ['poll Is this a good bot?'],
 		});
 	}
 

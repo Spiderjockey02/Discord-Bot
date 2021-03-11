@@ -12,6 +12,7 @@ module.exports = class Pokemon extends Command {
 			description: 'Get information on a pokemon.',
 			usage: 'pokemon <pokemon>',
 			cooldown: 1000,
+			examples: ['pokemon charizard', 'pokemon pikachu'],
 		});
 	}
 

@@ -13,6 +13,7 @@ module.exports = class Image extends Command {
 			description: 'Finds an image based on the topic.',
 			usage: 'image <topic>',
 			cooldown: 2000,
+			examples: ['image food'],
 		});
 	}
 

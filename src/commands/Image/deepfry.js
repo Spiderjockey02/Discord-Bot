@@ -13,6 +13,7 @@ module.exports = class Deepfry extends Command {
 			description: 'Deepfry an image.',
 			usage: 'deepfry [file]',
 			cooldown: 5000,
+			examples: ['deepfry <attachment>', 'deepfry username'],
 		});
 	}
 

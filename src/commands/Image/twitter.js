@@ -13,6 +13,7 @@ module.exports = class Twitter extends Command {
 			description: 'Create a fake Twitter tweet.',
 			usage: 'twitter [user] <text>',
 			cooldown: 5000,
+			examples: ['twitter username I don\'t like twitter.'],
 		});
 	}
 

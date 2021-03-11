@@ -12,6 +12,7 @@ module.exports = class RPS extends Command {
 			description: 'Play Rock Paper Scissors.',
 			usage: 'rps <rock | paper | scissors>',
 			cooldown: 1000,
+			examples: ['rps rock', 'rps scissors'],
 		});
 	}
 

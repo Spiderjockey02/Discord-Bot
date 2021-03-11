@@ -15,6 +15,7 @@ module.exports = class RoleInfo extends Command {
 			description: 'Get information on a role.',
 			usage: 'role-info <role>',
 			cooldown: 2000,
+			examples: ['role-info roleID', 'role-info @mention', 'role-info name'],
 		});
 	}
 

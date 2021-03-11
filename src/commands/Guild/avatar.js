@@ -12,6 +12,7 @@ module.exports = class Avatar extends Command {
 			description: 'Displays user\'s avatar.',
 			usage: 'avatar [user]',
 			cooldown: 2000,
+			examples: ['avatar userID', 'avatar @mention', 'avatar username'],
 		});
 	}
 

@@ -13,6 +13,7 @@ module.exports = class Stickbug extends Command {
 			description: 'Create a stickbug meme.',
 			usage: 'stickbug [file]',
 			cooldown: 5000,
+			examples: ['stickbug username', 'stickbug <attachment>'],
 		});
 	}
 

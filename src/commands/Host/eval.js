@@ -12,6 +12,7 @@ module.exports = class Eval extends Command {
 			description: 'Evaluates JS code.',
 			usage: 'eval <code>',
 			cooldown: 3000,
+			examples: ['eval bot.users.cache.get(\'184376969016639488\')'],
 		});
 	}
 

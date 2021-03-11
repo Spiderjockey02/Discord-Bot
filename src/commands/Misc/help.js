@@ -44,17 +44,17 @@ module.exports = class Help extends Command {
 				// arg was a command
 				const cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
 				// Check if the command is allowed on the server
-				if (settings.plugins.includes(cmd.help.category) || message.author.id == bot.config.ownerID) {
+				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(message.author.id)) {
 					const embed = new MessageEmbed()
-						.setThumbnail(message.guild.iconURL())
-						.setAuthor(`${bot.user.username} HELP`, message.guild.iconURL)
-						.setDescription(`The bot's prefix for this server is: \`${settings.prefix}\`.\n\n**Command name:** \`${cmd.help.name}\`
-						**Aliases:** \`${(cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None'}\`
-						**Description:** \`${cmd.help.description}\`
-						**Usage:** \`${settings.prefix.concat(cmd.help.usage)}\`
-						**Cooldown:** \`${cmd.conf.cooldown / 1000} seconds\`
-
-						**Layout**: \`<> = required, [] = optional\``);
+						.setTitle(`Command: ${settings.prefix}${cmd.help.name}`)
+						.setDescription([
+							`**Description:** ${cmd.help.description}`,
+							`**Aliases:** ${(cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None'}`,
+							`**Cooldown:** ${cmd.conf.cooldown / 1000} seconds`,
+							`**Usage:** ${settings.prefix.concat(cmd.help.usage)}`,
+							`**Example:** ${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}`,
+							'\n**Layout**: `<> = required, [] = optional`',
+						].join('\n'));
 					message.channel.send(embed);
 				} else {
 					message.error(settings.Language, 'MISC/NO_COMMAND');

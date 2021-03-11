@@ -11,8 +11,9 @@ module.exports = class G_edit extends Command {
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Edit a giveaway.',
-			usage: 'g-edit <messageID> <AddedTime> <NewPrize> <newWinnerCount>',
+			usage: 'g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>',
 			cooldown: 2000,
+			examples: ['g-edit 818821436255895612 2m 2 nitro', 'g-edit 818821436255895612 3h40m 5 nitro classic'],
 		});
 	}
 
@@ -33,15 +34,15 @@ module.exports = class G_edit extends Command {
 		if (!time) return;
 
 		// Get new winner count
-		if (isNaN(args[3])) {
+		if (isNaN(args[2])) {
 			if (message.deletable) message.delete();
 			return message.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Update giveaway
 		bot.giveawaysManager.edit(args[0], {
-			newWinnerCount: args[3],
-			newPrize: args[2],
+			newWinnerCount: args[2],
+			newPrize: args.slice(3).join(' '),
 			addTime: time,
 		}).then(() => {
 			message.sendT(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`);

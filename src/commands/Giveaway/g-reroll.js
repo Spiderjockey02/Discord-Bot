@@ -13,6 +13,7 @@ module.exports = class G_reroll extends Command {
 			description: 'reroll a giveaway.',
 			usage: 'g-reroll <messageID>',
 			cooldown: 2000,
+			examples: ['g-reroll 818821436255895612'],
 		});
 	}
 

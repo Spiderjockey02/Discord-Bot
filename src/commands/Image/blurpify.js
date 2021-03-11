@@ -13,6 +13,7 @@ module.exports = class Blurpify extends Command {
 			description: 'Blurpify an image.',
 			usage: 'blurpify [file]',
 			cooldown: 5000,
+			examples: ['blurpify <attachment>', 'blurpify username'],
 		});
 	}
 

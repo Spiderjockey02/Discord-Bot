@@ -8,7 +8,7 @@ module.exports = class About extends Command {
 		super(bot, {
 			name: 'about',
 			dirname: __dirname,
-			aliases: ['bio'],
+			aliases: ['bio', 'botinfo'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Information about me.',
 			usage: 'about',

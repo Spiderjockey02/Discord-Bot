@@ -13,6 +13,7 @@ module.exports = class PHcomment extends Command {
 			description: 'Create a fake Pornhub comment.',
 			usage: 'phcomment [user] <text>',
 			cooldown: 5000,
+			examples: ['phcomment username Wow nice'],
 		});
 	}
 

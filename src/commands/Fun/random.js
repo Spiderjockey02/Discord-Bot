@@ -10,6 +10,7 @@ module.exports = class Random extends Command {
 			description: 'Replies with a random number.',
 			usage: 'random <LowNum> <HighNum>',
 			cooldown: 1000,
+			examples: ['random 1 10', 'random 5 99'],
 		});
 	}
 

@@ -13,6 +13,7 @@ module.exports = class G_start extends Command {
 			description: 'Start a giveaway',
 			usage: 'g-start <time> <Number of winners> <prize>',
 			cooldown: 30000,
+			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
 		});
 	}
 

@@ -19,6 +19,7 @@ module.exports = class Generate extends Command {
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
 			cooldown: 5000,
+			examples: ['generate 3000years username', 'generate beautiful <attachment>'],
 		});
 	}
 
