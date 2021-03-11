@@ -1,9 +1,10 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+// Dependecies
+const express = require('express'),
+	router = express.Router();
 
-module.exports = bot => {
-	app.get('/', (req, res) => {
+module.exports = function(bot) {
+	// statistics page
+	router.get('/', async function(req, res) {
 		res.status(200).json({
 			guildCount: bot.guilds.cache.size,
 			userCount: bot.users.cache.size,
@@ -15,7 +16,5 @@ module.exports = bot => {
 		});
 	});
 
-	app.listen(port, () => {
-		bot.logger.ready(`Statistics API has loaded on port:${port}`);
-	});
+	return router;
 };

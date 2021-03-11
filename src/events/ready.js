@@ -24,9 +24,10 @@ module.exports = async bot => {
 
 	// set up webserver
 	try {
-		require('../http/statistics')(bot);
+		require('../http/api')(bot);
+		require('../http/webhook/dbl')(bot);
 	} catch (err) {
-		bot.logger.error(err.message);
+		console.log(err);
 	}
 
 	// Updates the bot's status
