@@ -19,16 +19,17 @@ module.exports = async (bot, message) => {
 	// Check if bot was mentioned
 	if (message.content == `<@!${bot.user.id}>`) {
 		const embed = new MessageEmbed()
-			.setTitle(`${bot.user.username}'s Information`)
-			.setURL(bot.config.websiteURL)
-			.setThumbnail(bot.user.displayAvatarURL())
-			.setDescription(`I help moderate [${bot.guilds.cache.size}] servers\n Your server prefix: ${settings.prefix}help\n Got a bug? Report it here ${settings.prefix}bug\n[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`)
-			.addField('Server Count:', `${bot.guilds.cache.size} (${bot.users.cache.size} users)`)
-			.addField('Uptime:', moment.duration(bot.uptime).format('D [days], H [hrs], m [mins], s [secs]'))
-			.addField('Total Commands:', `${bot.commands.size} (!help)`)
-			.addField('Ping:', `${Math.round(bot.ws.ping)}ms`)
-			.setTimestamp()
-			.setFooter(`Requested by @${message.author.username}`);
+			.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
+			.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
+			.setDescription([
+				`Hello, my name is ${bot.user.username}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.`,
+				`I've been online for ${moment.duration(bot.uptime).format('d[d] h[h] m[m] s[s]')}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
+			].join('\n\n'))
+			.addField('Useful Links:', [
+				`[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`,
+				`[Join support server](${bot.config.SupportServer.link})`,
+				`[Website](${bot.config.websiteURL})`,
+			].join('\n'));
 		return message.channel.send(embed);
 	}
 
