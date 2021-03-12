@@ -125,15 +125,17 @@ module.exports = async (bot, message) => {
 		cmd.run(bot, message, args, settings);
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	} else if (settings.plugins.includes('Moderation')) {
-		try {
-			const check = require('../helpers/auto-moderation').run(bot, message, settings);
-			// This makes sure that if the auto-mod punished member, level plugin would not give XP
-			if (settings.plugins.includes('Level') && check) return require('../helpers/level-system').run(bot, message, settings);
-		} catch (e) {
-			console.log(e);
+	} else if (!message.guild) {
+		if (settings.plugins.includes('Moderation')) {
+			try {
+				const check = require('../helpers/auto-moderation').run(bot, message, settings);
+				// This makes sure that if the auto-mod punished member, level plugin would not give XP
+				if (settings.plugins.includes('Level') && check) return require('../helpers/level-system').run(bot, message, settings);
+			} catch (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			}
+		} else if (settings.plugins.includes('Level')) {
+			require('../helpers/level-system').run(bot, message, settings);
 		}
-	} else if (settings.plugins.includes('Level')) {
-		require('../helpers/level-system').run(bot, message, settings);
 	}
 };
