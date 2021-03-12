@@ -12,6 +12,7 @@ module.exports = class Deafen extends Command {
 			description: 'Deafen a user.',
 			usage: 'deafen <user> [time]',
 			cooldown: 2000,
+			examples: ['deafen username', 'deafen username 5m'],
 		});
 	}
 

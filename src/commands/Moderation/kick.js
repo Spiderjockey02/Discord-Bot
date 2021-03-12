@@ -13,6 +13,7 @@ module.exports = class Kick extends Command {
 			description: 'Kick a user.',
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,
+			examples: ['kick username spamming chat'],
 		});
 	}
 

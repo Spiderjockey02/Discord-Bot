@@ -13,6 +13,7 @@ module.exports = class Warn extends Command {
 			description: 'Warn a user.',
 			usage: 'warn <user> [time] [reason]',
 			cooldown: 5000,
+			examples: ['warn username', 'warn username 3m bad'],
 		});
 	}
 

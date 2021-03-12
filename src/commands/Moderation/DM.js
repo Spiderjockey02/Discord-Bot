@@ -11,8 +11,9 @@ module.exports = class DM extends Command {
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'DM a user',
-			usage: 'dm <user> <reason>',
+			usage: 'dm <user> <message>',
 			cooldown: 3000,
+			examples: ['dm username Hello'],
 		});
 	}
 

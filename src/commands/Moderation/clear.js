@@ -13,6 +13,7 @@ module.exports = class Clear extends Command {
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,
+			examples: ['clear 50 username', 'clear 10'],
 		});
 	}
 

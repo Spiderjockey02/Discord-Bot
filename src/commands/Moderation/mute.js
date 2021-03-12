@@ -12,6 +12,7 @@ module.exports = class Mute extends Command {
 			description: 'Mute a user.',
 			usage: 'mute <user> [time]',
 			cooldown: 2000,
+			examples: ['mute username', 'mute username 5m'],
 		});
 	}
 

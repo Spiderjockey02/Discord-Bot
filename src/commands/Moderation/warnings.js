@@ -14,6 +14,7 @@ module.exports = class Warnings extends Command {
 			description: 'Display number of warnings a user has.',
 			usage: 'warnings [user]',
 			cooldown: 2000,
+			examples: ['warnings username'],
 		});
 	}
 

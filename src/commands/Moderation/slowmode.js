@@ -12,6 +12,7 @@ module.exports = class SlowMode extends Command {
 			description: 'Activate slowmode on a channel.',
 			usage: 'slowmode <time | off>',
 			cooldown: 5000,
+			examples: ['slowmode off', 'slowmode 1m'],
 		});
 	}
 
