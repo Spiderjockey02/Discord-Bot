@@ -10,8 +10,9 @@ module.exports = class TicketCreate extends Command {
 			aliases: ['t-create', 't-open'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
 			description: 'Creates a ticket',
-			usage: 'ticket-create',
+			usage: 'ticket-create [reason]',
 			cooldown: 3000,
+			examples: ['t-create Something isn\'t working'],
 		});
 	}
 
