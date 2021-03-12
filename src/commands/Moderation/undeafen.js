@@ -13,6 +13,7 @@ module.exports = class Undeafen extends Command {
 			description: 'Undeafen a user.',
 			usage: 'undeafen <user>',
 			cooldown: 2000,
+			examples: ['undeafen username'],
 		});
 	}
 

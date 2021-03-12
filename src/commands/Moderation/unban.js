@@ -13,6 +13,7 @@ module.exports = class Unban extends Command {
 			description: 'Unban a user.',
 			usage: 'unban <user> [reason]',
 			cooldown: 5000,
+			examples: ['unban username'],
 		});
 	}
 

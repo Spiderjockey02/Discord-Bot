@@ -13,6 +13,7 @@ module.exports = class Ban extends Command {
 			description: 'Ban a user.',
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,
+			examples: ['ban username spamming chat 4d', 'ban username raiding'],
 		});
 	}
 

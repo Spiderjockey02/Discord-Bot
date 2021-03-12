@@ -11,8 +11,9 @@ module.exports = class Unmute extends Command {
 			userPermissions: ['MUTE_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
 			description: 'Unmute a user.',
-			usage: 'unmute <user> ',
+			usage: 'unmute <user>',
 			cooldown: 2000,
+			examples: ['unmute username'],
 		});
 	}
 

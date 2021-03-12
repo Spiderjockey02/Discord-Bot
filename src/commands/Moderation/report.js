@@ -13,6 +13,7 @@ module.exports = class Report extends Command {
 			description: 'Report a user.',
 			usage: 'report <user> [reason]',
 			cooldown: 3000,
+			examples: ['report username', 'report username swearing'],
 		});
 	}
 

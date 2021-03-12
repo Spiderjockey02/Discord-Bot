@@ -14,6 +14,7 @@ module.exports = class ClearWarning extends Command {
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user>',
 			cooldown: 5000,
+			examples: ['clear-warning username'],
 		});
 	}
 
