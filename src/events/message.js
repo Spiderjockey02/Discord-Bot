@@ -85,16 +85,13 @@ module.exports = async (bot, message) => {
 		}
 
 		// Check if the command is from a disabled plugin
-		if (cmd.help.category == 'Music' && !settings.MusicPlugin) return;
-		if (cmd.help.category == 'Moderation' && !settings.ModerationPlugin) return;
-		if (cmd.help.category == 'Level' && !settings.LevelPlugin) return;
-		if (cmd.help.category == 'Trivia' && !settings.MusicTriviaPlugin) return;
-		if (cmd.help.category == 'Searcher' && !settings.SearchPlugin) return;
-		if (cmd.help.category == 'NSFW' && !settings.NSFWPlugin) return;
+		if (!settings.plugins.includes(cmd.help.category)) {
+			if (!bot.config.ownerID.includes(message.author.id) && cmd.conf.ownerID) return;
+		}
+
 		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
 		// make sure user doesn't access HOST commands
-		if (!bot.config.ownerID.includes(message.author.id) && cmd.conf.ownerID) return;
 
 		// Check bot has permissions
 		if (cmd.conf.botPermissions[0]) {
@@ -128,15 +125,15 @@ module.exports = async (bot, message) => {
 		cmd.run(bot, message, args, settings);
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	} else if (settings.ModerationPlugin) {
+	} else if (settings.plugins.includes('Moderation')) {
 		try {
 			const check = require('../helpers/auto-moderation').run(bot, message, settings);
 			// This makes sure that if the auto-mod punished member, level plugin would not give XP
-			if (settings.LevelPlugin == true && check) return require('../helpers/level-system').run(bot, message, settings);
+			if (settings.plugins.includes('Level') && check) return require('../helpers/level-system').run(bot, message, settings);
 		} catch (e) {
 			console.log(e);
 		}
-	} else if (settings.LevelPlugin) {
+	} else if (settings.plugins.includes('Level')) {
 		require('../helpers/level-system').run(bot, message, settings);
 	}
 };
