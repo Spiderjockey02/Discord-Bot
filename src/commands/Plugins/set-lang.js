@@ -20,6 +20,7 @@ module.exports = class Setlang extends Command {
 			description: 'Choose the language for the bot.',
 			usage: 'setlang <language>',
 			cooldown: 5000,
+			examples: ['setlang english'],
 		});
 	}
 

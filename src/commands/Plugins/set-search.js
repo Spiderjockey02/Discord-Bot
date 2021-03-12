@@ -12,6 +12,7 @@ module.exports = class SetSearch extends Command {
 			description: 'Turn on or off the search plugin.',
 			usage: 'set-search <true | false>',
 			cooldown: 5000,
+			examples: ['set-search true'],
 		});
 	}
 

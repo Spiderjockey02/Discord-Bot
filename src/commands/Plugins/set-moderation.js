@@ -12,6 +12,7 @@ module.exports = class SetModeration extends Command {
 			description: 'Turn on or off the moderation plugin.',
 			usage: 'set-moderation <true | false>',
 			cooldown: 5000,
+			examples: ['set-moderation true'],
 		});
 	}
 

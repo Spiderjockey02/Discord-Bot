@@ -12,6 +12,7 @@ module.exports = class SetLevel extends Command {
 			description: 'Turn on or off the level plugin.',
 			usage: 'set-level <true | false>',
 			cooldown: 5000,
+			examples: ['set-level true'],
 		});
 	}
 

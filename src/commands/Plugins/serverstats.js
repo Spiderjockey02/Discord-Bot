@@ -12,6 +12,7 @@ module.exports = class Serverstats extends Command {
 			description: 'Turn on or off the serverstats.',
 			usage: 'serverstats <on | off>',
 			cooldown: 5000,
+			examples: ['serverstats on'],
 		});
 	}
 

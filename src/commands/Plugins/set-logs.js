@@ -16,6 +16,7 @@ module.exports = class SetLog extends Command {
 			description: 'Update the log plugin.',
 			usage: 'set-logs <add | removed> [log]',
 			cooldown: 5000,
+			examples: ['set-logs channel 761612724370931722', 'set-logs add CHANNELCREATE'],
 		});
 	}
 

@@ -12,6 +12,7 @@ module.exports = class SetMusic extends Command {
 			description: 'Turn on or off the music plugin.',
 			usage: 'set-music <true | false>',
 			cooldown: 5000,
+			examples: ['set-music true'],
 		});
 	}
 

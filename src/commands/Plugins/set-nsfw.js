@@ -12,6 +12,7 @@ module.exports = class SetNSFW extends Command {
 			description: 'Turn on or off the NSFW plugin.',
 			usage: 'set-nsfw <true | false>',
 			cooldown: 5000,
+			examples: ['set-nsfw true'],
 		});
 	}
 
