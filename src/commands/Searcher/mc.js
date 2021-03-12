@@ -13,6 +13,7 @@ module.exports = class MC extends Command {
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',
 			cooldown: 3000,
+			examples: ['mc eu.hypixel.net'],
 		});
 	}
 

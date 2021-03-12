@@ -14,6 +14,7 @@ module.exports = class R6 extends Command {
 			description: 'Gets statistics on a Rainbow 6 Account.',
 			usage: 'r6 <user> [pc | xbox | ps4] [eu | na | as]',
 			cooldown: 3000,
+			examples: ['r6 ThatGingerGuy02', 'r6 ThatGingerGuy02 pc eu'],
 		});
 	}
 
@@ -27,8 +28,7 @@ module.exports = class R6 extends Command {
 		// Checks to make sure a username was entered
 		if (!args[0]) {
 			message.delete();
-			message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
-			return;
+			return	message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
 		} else {
 			player = args[0];
 		}
@@ -56,9 +56,10 @@ module.exports = class R6 extends Command {
 		if(platform === 'xbl') player = player.replace('_', '');
 		try {
 			player = await getId(platform, player);
-		} catch (e) {
-			console.log(e);
-			return message.channel.send('Error getting ID');
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Makes sure that user actually exist

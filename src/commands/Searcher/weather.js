@@ -13,6 +13,7 @@ module.exports = class Weather extends Command {
 			description: 'Look up the weather in a certain area.',
 			usage: 'weather <location>',
 			cooldown: 3000,
+			examples: ['weather england', 'weather new york'],
 		});
 	}
 

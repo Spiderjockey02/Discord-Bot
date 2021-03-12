@@ -11,6 +11,7 @@ module.exports = class Reddit extends Command {
 			description: 'Send a random image from a chosen subreddit.',
 			usage: 'reddit <subreddit>',
 			cooldown: 3000,
+			examples: ['reddit meme'],
 		});
 	}
 

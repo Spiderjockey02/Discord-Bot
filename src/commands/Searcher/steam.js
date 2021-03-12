@@ -13,6 +13,7 @@ module.exports = class Steam extends Command {
 			description: 'Get information on a Steam account.',
 			usage: 'steam <user>',
 			cooldown: 3000,
+			examples: [],
 		});
 	}
 

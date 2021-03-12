@@ -12,6 +12,7 @@ module.exports = class Fortnite extends Command {
 			description: 'Get information on a Fortnite account.',
 			usage: 'fortnite <kbm | gamepad | touch> <user>',
 			cooldown: 3000,
+			examples: ['fortnite kbm ninja'],
 		});
 	}
 

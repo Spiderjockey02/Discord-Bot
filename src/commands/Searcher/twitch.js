@@ -15,6 +15,7 @@ module.exports = class Twitch extends Command {
 			description: 'Get information on a twitch account.',
 			usage: 'twitch <user>',
 			cooldown: 3000,
+			examples: ['twitch ninja'],
 		});
 	}
 
