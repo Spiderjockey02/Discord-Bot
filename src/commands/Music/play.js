@@ -11,6 +11,7 @@ module.exports = class Play extends Command {
 			description: 'Play a song.',
 			usage: 'play <link | song name>',
 			cooldown: 3000,
+			example: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
 		});
 	}
 
@@ -51,10 +52,27 @@ module.exports = class Play extends Command {
 			selfDeafen: true,
 		});
 
-		if (args.length == 0) return message.channel.send('No');
+		// Make sure something was entered
+		if (args.length == 0) {
+			// Check if a file was uploaded to play instead
+			const fileTypes = ['mp3', 'mp4'];
+			if (message.attachments.size > 0) {
+				const url = message.attachments.first().url;
+				for (let i = 0; i < fileTypes.length; i++) {
+					if (url.endsWith(fileTypes[i])) {
+						args.push(url);
+					}
+				}
+				if (!args[0]) return message.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+			} else {
+				return message.error(settings.Language, 'MUSIC/NO_ARGS').then(m => m.delete({ timeout: 10000 }));
+			}
+		}
 
+		// Get search query
 		let res;
 		const search = args.join(' ');
+
 		// Search for track
 		try {
 			res = await player.search(search, message.author);
@@ -86,8 +104,6 @@ module.exports = class Play extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				console.log(res.tracks[0].track);
-				console.log(res.tracks[0].title);
 				message.channel.send({ embed: { color: message.member.displayHexColor, description:`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})` } });
 			}
 		}
