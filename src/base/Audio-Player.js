@@ -1,21 +1,22 @@
-// Dependecies
-const { Manager } = require('erela.js');
-const Deezer = require('erela.js-deezer');
-const Spotify = require('erela.js-spotify');
-const { MessageEmbed } = require('discord.js');
+const { Manager } = require('erela.js'),
+	Deezer = require('erela.js-deezer'),
+	Spotify = require('erela.js-spotify'),
+	Facebook = require('erela.js-facebook'),
+	{ MessageEmbed } = require('discord.js');
 require('./Music/BetterPlayer');
 
 module.exports = async (bot) => {
 	const clientID = bot.config.api_keys.spotify.iD;
 	const clientSecret = bot.config.api_keys.spotify.secret;
+
 	bot.manager = new Manager({
 		nodes: [
-			{ host: 'localhost', port: 2333, password: 'youshallnotpass' },
+			{ host: 'localhost', port: 5000, password: 'youshallnotpass' },
 		],
 		plugins: [
-			// Allow spotify songs/playlists to be played
 			new Spotify({ clientID, clientSecret }),
 			new Deezer({ playlistLimit: 1, albumLimit:1 }),
+			new Facebook(),
 		],
 		autoPlay: true,
 		send(id, payload) {
@@ -23,24 +24,45 @@ module.exports = async (bot) => {
 			if (guild) guild.shard.send(payload);
 		},
 	})
-		.on('nodeConnect', node => bot.logger.ready(`Node ${node.options.identifier} has connected.`))
-		.on('nodeError', (node, error) => bot.logger.error(`Node: '${node.options.identifier}', has error: '${error.message}'.`))
+		.on('nodeConnect', node => bot.logger.ready(`Lavalink node: ${node.options.identifier} has connected.`))
+		.on('nodeDisconnect', (node, reason) => bot.logger.error(`Lavalink node: ${node.options.identifier} has disconnect, reason: ${(reason.reason) ? reason.reason : 'unspecified'}.`))
+		.on('nodeError', (node, error) => bot.logger.error(`Lavalink node: '${node.options.identifier}', has error: '${error.message}'.`))
+		.on('playerCreate', player => bot.logger.log(`Lavalink player created in guild: [${player.guild}].`))
+		.on('playerDestroy', player => bot.logger.log(`Lavalink player destroyed in guild: [${player.guild}].`))
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new MessageEmbed()
+				.setColor(bot.guilds.cache.get(player.guild).member(track.requester).displayHexColor)
 				.setTitle('» Now playing:')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
-			bot.channels.cache.get(player.textChannel).send(embed).then(m => m.delete({ timeout: track.duration }));
+			const channel = bot.channels.cache.get(player.textChannel);
+			if (channel) channel.send(embed).then(m => m.delete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+		})
+		.on('trackError', (player, track, payload) => {
+			// when a track causes an error
+			const embed = new MessageEmbed()
+				.setColor(15158332)
+				.setDescription(`An error has occured on playback: \`${payload.error}\``);
+			const channel = bot.channels.cache.get(player.textChannel);
+			if (channel) channel.send(embed).then(m => m.delete({ timeout: 15000 }));
 		})
 		.on('queueEnd', (player) => {
 			// When the queue has finished
 			const embed = new MessageEmbed()
 				.setDescription('Queue has ended.');
-			bot.channels.cache.get(player.textChannel).send(embed);
+			const channel = bot.channels.cache.get(player.textChannel);
+			if (channel) channel.send(embed);
 			player.destroy();
 		})
 		.on('playerMove', (player, currentChannel, newChannel) => {
-			player.voiceChannel = bot.channels.cache.get(newChannel);
+			// Voice channel updated
+			if (!newChannel) {
+				const channel = bot.channels.cache.get(player.textChannel);
+				if (channel) channel.send('The queue has ended as I was kicked from the voice channel');
+				player.destroy();
+			} else {
+				player.voiceChannel = bot.channels.cache.get(newChannel);
+			}
 		});
 
 	// update voice states

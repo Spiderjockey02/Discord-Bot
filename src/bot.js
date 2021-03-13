@@ -30,7 +30,7 @@ const readdir = promisify(require('fs').readdir);
 		bot.on(eventName, event.bind(null, bot));
 	});
 
-	// music
+	// Audio player
 	try {
 		require('./base/Audio-Player')(bot);
 	} catch (e) {
