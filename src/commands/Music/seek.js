@@ -1,18 +1,8 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	Command = require('../../structures/Command.js');
-
-// function to convert 1:00 to 60 * 1000 milliseconds
-function hmsToSecondsOnly(str) {
-	const p = str.split(':');
-	let s = 0, m = 1;
-
-	while (p.length > 0) {
-		s = +m * parseInt(p.pop(), 10);
-		m = m * 60;
-	}
-	return s;
-}
+	ms = require('../../utils/timeFormatter'),
+	Command = require('../../structures/Command.js'),
+	MS = new ms;
 
 module.exports = class Seek extends Command {
 	constructor(bot) {
@@ -51,7 +41,8 @@ module.exports = class Seek extends Command {
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('seek').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 		// update the time
-		const time = hmsToSecondsOnly(args[0]) * 1000;
+		const time = MS.read24hrFormat((args[0]) ? args[0] : '10');
+
 		if (time > player.queue.current.duration) {
 			message.channel.send(`Less than ${player.queue.current.duration}`);
 		} else {
