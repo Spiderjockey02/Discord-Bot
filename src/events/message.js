@@ -85,10 +85,12 @@ module.exports = async (bot, message) => {
 		}
 
 		// Check if the command is from a disabled plugin
-		if (!settings.plugins.includes(cmd.help.category)) {
-			if (!bot.config.ownerID.includes(message.author.id) && cmd.conf.ownerID) return;
-		}
+		if (!settings.plugins.includes(cmd.help.category) && cmd.help.category != 'Host') return;
 
+		// Make sure user does not have access to ownerOnly commands
+		if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) return message.channel.send('Nice try').then(m => m.delete({ timeout:5000 }));
+
+		// Check if command is disabled
 		if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
 		// make sure user doesn't access HOST commands
