@@ -46,7 +46,7 @@ module.exports = class Rewind extends Command {
 			player.seek(player.position - time);
 			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate(settings.Language, 'MUSIC/TIME_MOVED', new Date(player.position).toISOString().slice(14, 19)));
+				.setDescription(`**Rewinded \`${MS.getReadableTime(time)}\` to: \`${new Date(player.position).toISOString().slice(14, 19)}\`.**`);
 			message.channel.send(embed);
 		}
 	}
