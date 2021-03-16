@@ -1,7 +1,7 @@
 // Dependencies
 const Client = require('./base/Egglord.js');
 require('./structures');
-const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES'] } });
+const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES'] } });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 
@@ -39,6 +39,9 @@ const readdir = promisify(require('fs').readdir);
 
 	// Connect bot to database
 	bot.mongoose.init(bot);
+
+	// load up adult site block list
+	bot.fetchAdultSiteList();
 
 	// Connect bot to discord API
 	const token = bot.config.token;
