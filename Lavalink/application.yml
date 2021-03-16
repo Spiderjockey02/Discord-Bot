@@ -5,7 +5,7 @@ server: # REST and WS server
 lavalink:
   server:
     password: "youshallnotpass"
-    playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
+    playerUpdateInterval: 1 # How frequently to send player updates to clients, in seconds
     koe:
       useEpoll: true
       highPacketPriority: true
@@ -19,7 +19,7 @@ lavalink:
       vimeo: true
       mixer: true
       http: true
-      local: false
+      local: true
     lavaplayer:
       nonAllocating: false # Whether to use the non-allocating frame buffer.
       frameBufferDuration: 5000 # The frame buffer duration, in milliseconds
@@ -27,12 +27,6 @@ lavalink:
       gc-warnings: true
       youtubeSearchEnabled: true
       soundcloudSearchEnabled: true
-      #ratelimit:
-        #ipBlocks: ["1.0.0.0/8", "..."] # list of ip blocks
-        #excludedIps: ["...", "..."] # ips which should be explicit excluded from usage by lavalink
-        #strategy: "RotateOnBan" # RotateOnBan | LoadBalance | NanoSwitch | RotatingNanoSwitch
-        #searchTriggersFail: true # Whether a search 429 should trigger marking the ip as failing
-        #retryLimit: -1 # -1 = use default lavaplayer value | 0 = infinity | >0 = retry will happen this numbers times
 
 metrics:
   prometheus:
@@ -42,9 +36,6 @@ metrics:
 sentry:
   dsn: ""
   environment: ""
-#  tags:
-#    some_key: some_value
-#    another_key: another_value
 
 logging:
   file:
