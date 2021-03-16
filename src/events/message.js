@@ -96,7 +96,7 @@ module.exports = async (bot, message) => {
 		// make sure user doesn't access HOST commands
 
 		// Check bot has permissions
-		if (cmd.conf.botPermissions[0]) {
+		if (cmd.conf.botPermissions[0] && message.guild) {
 			// If the bot doesn't have SEND_MESSAGES permissions just return
 			if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 			if (!message.channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
@@ -127,7 +127,7 @@ module.exports = async (bot, message) => {
 		cmd.run(bot, message, args, settings);
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	} else if (!message.guild) {
+	} else if (message.guild) {
 		if (settings.plugins.includes('Moderation')) {
 			try {
 				const check = require('../helpers/auto-moderation').run(bot, message, settings);

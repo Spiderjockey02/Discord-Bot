@@ -61,6 +61,7 @@ const config = {
 		// default settings
 		prefix: 'e!',
 		Language: 'en-US',
+		plugins: ['Fun', 'Image', 'Misc', 'NSFW', 'Recording', 'Searcher'],
 	},
 	// Custom emojis, just for cosmetic (change these if you wish)
 	emojis: {
