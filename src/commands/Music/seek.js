@@ -13,6 +13,7 @@ module.exports = class Seek extends Command {
 			description: 'Sets the playing track\'s position to the specified position.',
 			usage: 'seek <time>',
 			cooldown: 3000,
+			examples: ['seek 1:00'],
 		});
 	}
 

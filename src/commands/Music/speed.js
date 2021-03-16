@@ -10,6 +10,7 @@ module.exports = class Speed extends Command {
 			description: 'Sets the player\'s playback speed.',
 			usage: 'speed <Number>',
 			cooldown: 3000,
+			examples: ['speed 4'],
 		});
 	}
 

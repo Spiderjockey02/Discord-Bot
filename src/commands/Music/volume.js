@@ -12,6 +12,7 @@ module.exports = class Back extends Command {
 			description: 'Changes the volume of the song',
 			usage: 'volume <Number>',
 			cooldown: 3000,
+			examples: ['volume 50'],
 		});
 	}
 

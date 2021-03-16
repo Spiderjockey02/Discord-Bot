@@ -12,6 +12,7 @@ module.exports = class Pitch extends Command {
 			description: 'Sets the player\'s pitch. If you input "reset", it will set the pitch back to default.',
 			usage: 'pitch',
 			cooldown: 3000,
+			examples: ['pitch off', 'pitch 6'],
 		});
 	}
 

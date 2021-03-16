@@ -10,6 +10,7 @@ module.exports = class Remove extends Command {
 			description: 'Removes a song from the queue',
 			usage: 'remove <position> [position]',
 			cooldown: 3000,
+			examples: ['remove 3', 'remove 3 7'],
 		});
 	}
 

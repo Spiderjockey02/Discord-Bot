@@ -11,6 +11,7 @@ module.exports = class Loop extends Command {
 			description: 'Loops the song or queue.',
 			usage: 'loop [queue | song | off]',
 			cooldown: 3000,
+			examples: ['loop queue', 'loop off'],
 		});
 	}
 

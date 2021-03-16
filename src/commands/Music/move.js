@@ -10,6 +10,7 @@ module.exports = class Move extends Command {
 			description: 'Moves the specified song to the specified position.',
 			usage: 'move <position> <new position>',
 			cooldown: 3000,
+			examples: ['move 4 8'],
 		});
 	}
 
