@@ -27,6 +27,17 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
+
+		// Change playback speed
+		setSpeed(value) {
+			this.speed = value;
+			this.node.send({
+				op: 'filters',
+				guildId: this.guild.id || this.guild,
+				timescale: { speed: value },
+			});
+			return this;
+		}
 	}
 	return boneeplayer;
 });
