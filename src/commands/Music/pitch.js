@@ -3,16 +3,15 @@ const { MessageEmbed } = require('discord.js'),
 	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
-module.exports = class Nightcore extends Command {
+module.exports = class Pitch extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'nightcore',
+			name: 'pitch',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Toggles nightcore mode.',
-			usage: 'nightcore',
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			description: 'Sets the player\'s pitch. If you input "reset", it will set the pitch back to default.',
+			usage: 'pitch',
 			cooldown: 3000,
-			examples: ['nightcore off'],
 		});
 	}
 
@@ -27,25 +26,24 @@ module.exports = class Nightcore extends Command {
 
 		if (args[0] && (args[0].toLowerCase() == 'reset' || args[0].toLowerCase() == 'off')) {
 			player.resetFilter();
-			const msg = await message.channel.send('Turning off **nightcore**. This may take a few seconds...');
+			const msg = await message.channel.send('Reseting **pitch**. This may take a few seconds...');
 			const embed = new MessageEmbed()
-				.setDescription('Turned off **nightcore**');
-			await delay(5000);
-			return msg.edit('', embed);
-		} else {
-			player.setFilter({
-				equalizer: [
-					{ band: 1, gain: 0.3 },
-					{ band: 0, gain: 0.3 },
-				],
-				timescale: { pitch: 1.2 },
-				tremolo: { depth: 0.3, frequency: 14 },
-			});
-			const msg = await message.channel.send('Enabling **Nightcore**. This may take a few seconds...');
-			const embed = new MessageEmbed()
-				.setDescription('Turned on **Nightcore**');
+				.setDescription('Reset **pitch**');
 			await delay(5000);
 			return msg.edit('', embed);
 		}
+
+		if (isNaN(args[0])) return message.channel.send('Amount must be a real number.');
+		if (args[0] < 0) return message.channel.send('Pitch must be greater than 0.');
+		if (args[0] > 10) return message.channel.send('Pitch must be less than 10.');
+
+		player.setFilter({
+			timescale: { pitch: args[0] },
+		});
+		const msg = await message.channel.send(`Setting pitch to **${args[0]}**. This may take a few seconds...`);
+		const embed = new MessageEmbed()
+			.setDescription(`Pitch set to: **${args[0]}**`);
+		await delay(5000);
+		return msg.edit('', embed);
 	}
 };
