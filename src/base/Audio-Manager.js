@@ -3,7 +3,7 @@ const { Manager } = require('erela.js'),
 	Spotify = require('erela.js-spotify'),
 	Facebook = require('erela.js-facebook'),
 	{ MessageEmbed } = require('discord.js');
-require('./Music/BetterPlayer');
+require('../structures/Player');
 
 module.exports = async (bot) => {
 	const clientID = bot.config.api_keys.spotify.iD;
@@ -52,7 +52,6 @@ module.exports = async (bot) => {
 				.setDescription('Queue has ended.');
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed);
-			player.destroy();
 		})
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
