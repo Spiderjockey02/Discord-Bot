@@ -32,7 +32,7 @@ const readdir = promisify(require('fs').readdir);
 
 	// Audio player
 	try {
-		require('./base/Audio-Player')(bot);
+		require('./base/Audio-Manager')(bot);
 	} catch (e) {
 		bot.logger.error(e);
 	}

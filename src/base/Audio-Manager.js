@@ -52,7 +52,6 @@ module.exports = async (bot) => {
 				.setDescription('Queue has ended.');
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed);
-			player.destroy();
 		})
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
