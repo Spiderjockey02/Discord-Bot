@@ -55,7 +55,7 @@ module.exports = class Play extends Command {
 		// Make sure something was entered
 		if (args.length == 0) {
 			// Check if a file was uploaded to play instead
-			const fileTypes = ['mp3', 'mp4'];
+			const fileTypes = ['mp3', 'mp4', 'wav', 'm4a', 'webm', 'aac', 'ogg'];
 			if (message.attachments.size > 0) {
 				const url = message.attachments.first().url;
 				for (let i = 0; i < fileTypes.length; i++) {
