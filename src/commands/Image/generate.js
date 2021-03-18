@@ -31,8 +31,7 @@ module.exports = class Generate extends Command {
 			message.channel.send(embed);
 		} else {
 			// Get image, defaults to author's avatar
-			const file = message.guild.GetImage(message, args, settings.Language);
-
+			const file = message.guild.GetImage(message, args[1] ? [args[1]] : [], settings.Language);
 			// Check if bot has permission to attach files
 			if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 				bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
@@ -76,10 +75,16 @@ module.exports = class Generate extends Command {
 					message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 				});
 			}
+
 			// send embed
-			msg.delete();
-			const attachment = new MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
-			message.channel.send(attachment);
+			try {
+				const attachment = new MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
+				message.channel.send(attachment);
+			} catch (err) {
+				console.log(err);
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			}
 		}
 	}
 };
