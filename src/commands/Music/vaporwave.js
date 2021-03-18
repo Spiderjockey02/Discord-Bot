@@ -12,6 +12,7 @@ module.exports = class Vaporwave extends Command {
 			description: 'Toggles vaporwave mode.',
 			usage: 'vaporwave',
 			cooldown: 3000,
+			examples: ['vaporwave off'],
 		});
 	}
 

@@ -11,6 +11,7 @@ module.exports = class Search extends Command {
 			description: 'Searches for a song.',
 			usage: 'search <link | song name>',
 			cooldown: 3000,
+			examples: ['search palaye royale'],
 		});
 	}
 

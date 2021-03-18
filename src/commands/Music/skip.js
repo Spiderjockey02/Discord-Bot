@@ -6,7 +6,7 @@ module.exports = class Skip extends Command {
 		super(bot, {
 			name:  'skip',
 			dirname: __dirname,
-			aliases: ['next'],
+			aliases: ['next', 'skipto'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Skips the current song.',
 			usage: 'skip',
