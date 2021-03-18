@@ -27,7 +27,7 @@ module.exports = class NowPlaying extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
+		if (!player.queue.current) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// Get current song information
 		const { title, requester, thumbnail, uri, duration } = player.queue.current;
