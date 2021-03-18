@@ -28,6 +28,10 @@ module.exports = class Skip extends Command {
 		if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// skip song
-		player.stop();
+		if (!isNaN(args[0]) && args[0] < player.queue.length) {
+			player.stop(parseInt(args[0]));
+		} else {
+			player.stop();
+		}
 	}
 };
