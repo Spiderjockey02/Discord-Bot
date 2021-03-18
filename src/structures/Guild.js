@@ -79,7 +79,7 @@ module.exports = Structures.extend('Guild', Guild => {
 				// no file with the correct format was found
 				if (file.length == 0) return message.error(Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
 			} else {
-				file.push(...this.getMember(message, args));
+				file.push(...this.getMember(message, args).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			}
 			return file;
 		}
