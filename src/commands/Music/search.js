@@ -48,12 +48,19 @@ module.exports = class Search extends Command {
 		if (!args) return message.error(settings.Language, 'MUSIC/NO_ARGS');
 
 		// Create player
-		const player = bot.manager.create({
-			guild: message.guild.id,
-			voiceChannel: message.member.voice.channel.id,
-			textChannel: message.channel.id,
-			selfDeafen: true,
-		});
+		let player;
+		try {
+			player = bot.manager.create({
+				guild: message.guild.id,
+				voiceChannel: message.member.voice.channel.id,
+				textChannel: message.channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+		}
 
 		const search = args.join(' ');
 		let res;

@@ -45,12 +45,19 @@ module.exports = class Play extends Command {
 		}
 
 		// Create player
-		const player = bot.manager.create({
-			guild: message.guild.id,
-			voiceChannel: message.member.voice.channel.id,
-			textChannel: message.channel.id,
-			selfDeafen: true,
-		});
+		let player;
+		try {
+			player = bot.manager.create({
+				guild: message.guild.id,
+				voiceChannel: message.member.voice.channel.id,
+				textChannel: message.channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+		}
 
 		// Make sure something was entered
 		if (args.length == 0) {
@@ -81,7 +88,7 @@ module.exports = class Play extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.error(settings.Language, 'MUSIC/ERROR', err.message);
+			return message.error(settings.Language, 'MUSIC/ERROR', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
