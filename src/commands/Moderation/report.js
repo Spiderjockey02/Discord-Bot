@@ -47,7 +47,7 @@ module.exports = class Report extends Command {
 				message.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => m.delete({ timeout: 3000 }));
 			}
 		} else {
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			message.error(settings.Language, 'ERROR_MESSAGE', 'Logging: `REPORTS` has not been setup').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

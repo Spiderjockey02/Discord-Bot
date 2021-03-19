@@ -23,7 +23,7 @@ module.exports = class Meme extends Command {
 		if (meme.url == undefined) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: Missing meme URL.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			return message.error(settings.Language, 'ERROR_MESSAGE', 'Missing URL meme').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Send the meme to channel

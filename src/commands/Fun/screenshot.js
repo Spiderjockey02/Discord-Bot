@@ -50,7 +50,7 @@ module.exports = class Screenshot extends Command {
 		// try and create screenshot
 		screenshotWebsite(args[0]).then(async data => {
 			if (!data) {
-				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.error(settings.Language, 'ERROR_MESSAGE', 'Missing data').then(m => m.delete({ timeout: 5000 }));
 			} else {
 				const attachment = new MessageAttachment(data, 'website.png');
 				await message.channel.send(attachment);
@@ -74,7 +74,7 @@ module.exports = class Screenshot extends Command {
 				return r;
 			} catch (err) {
 				if (message.deletable) message.delete();
-				bot.logger.error(`Command: 'screenshot' has error: ${err.message}.`);
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			}
 		}
 	}

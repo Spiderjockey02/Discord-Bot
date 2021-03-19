@@ -53,7 +53,7 @@ module.exports = class Generate extends Command {
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				});
 			} else if (image_2.includes(args[0])) {
 				if (!file[1]) {
@@ -72,7 +72,7 @@ module.exports = class Generate extends Command {
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				});
 			}
 
@@ -81,9 +81,8 @@ module.exports = class Generate extends Command {
 				const attachment = new MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
 				message.channel.send(attachment);
 			} catch (err) {
-				console.log(err);
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 	}

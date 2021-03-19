@@ -115,7 +115,7 @@ module.exports = class Lyrics extends Command {
 			wait.delete();
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

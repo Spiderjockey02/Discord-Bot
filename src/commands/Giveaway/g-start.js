@@ -62,7 +62,7 @@ module.exports = class G_start extends Command {
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 		}).catch(err => {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

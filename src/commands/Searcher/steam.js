@@ -40,7 +40,7 @@ module.exports = class Steam extends Command {
 			fetch(summaries).then(res => res.json()).then(body2 => {
 				if (!body2.response) {
 					r.delete();
-					return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+					message.error(settings.Language, 'ERROR_MESSAGE', 'Missing user data').then(m => m.delete({ timeout: 5000 }));
 				}
 				const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body2.response.players[0];
 
@@ -48,7 +48,7 @@ module.exports = class Steam extends Command {
 				fetch(bans).then(res => res.json()).then(body3 => {
 					if (!body3.players) {
 						r.delete();
-						return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+						message.error(settings.Language, 'ERROR_MESSAGE', 'Missing user ban data').then(m => m.delete({ timeout: 5000 }));
 					}
 					const { NumberOfGameBans } = body3.players[0];
 					// Display results

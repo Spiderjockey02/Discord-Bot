@@ -1,5 +1,5 @@
 const languageData = {
-	ERROR_MESSAGE: 'An error occured when running this command, please try again or contact support.',
+	ERROR_MESSAGE: (error) => `The following error has occurred: \`${error}\`.\nIf this error keeps occurring, please contact support.`,
 	INCORRECT_FORMAT: (commandExample) => `Please use the format: \`${commandExample}\`.`,
 	MISSING_PERMISSION: (permission) => `I am missing the permission: \`${permission}\`.`,
 	USER_PERMISSION: (permission) => `You are missing the permission: \`${permission}\`.`,
