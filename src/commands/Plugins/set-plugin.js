@@ -10,8 +10,8 @@ module.exports = class SetPlugin extends Command {
 			aliases: ['setplugin'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Turn on or off the level plugin.',
-			usage: 'set-plugin <option> <true | false>',
+			description: 'Toggle plugins on and off',
+			usage: 'set-plugin <option>',
 			cooldown: 5000,
 			examples: ['set-plugin <option>'],
 		});
