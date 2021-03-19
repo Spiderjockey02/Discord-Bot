@@ -9,7 +9,7 @@ module.exports = bot => {
 			res.type('text/plain');
 			res.send(`API server for ${bot.user.username}
 				\n/statistics - For basic statistics of the bot
-				\n/commands - Get full list of commands & categories 
+				\n/commands - Get full list of commands & categories
 				\n/commands/:commandName - Get information on a specific command`);
 		})
 		// Statistics of the bot
