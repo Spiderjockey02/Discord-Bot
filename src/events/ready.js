@@ -71,4 +71,12 @@ module.exports = async bot => {
 
 	await DeleteGuildCheck();
 	bot.logger.ready('All guilds have been initialized.');
+
+
+	// Every 5 minutes fetch new guild data
+	setInterval(async () => {
+		bot.guilds.cache.forEach(async guild => {
+			guild.fetchGuildConfig();
+		});
+	}, 300000);
 };
