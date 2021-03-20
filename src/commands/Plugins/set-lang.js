@@ -38,7 +38,9 @@ module.exports = class Setlang extends Command {
 		// Check what language
 		if (languages[args[0].toLowerCase()]) {
 			try {
+				// update database
 				await message.guild.updateGuild({ Language: languages[args[0].toLowerCase()] });
+				settings.Language = languages[args[0].toLowerCase()];
 				message.success(settings.Language, 'PLUGINS/LANGUAGE_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 			} catch (err) {
 				if (message.deletable) message.delete();

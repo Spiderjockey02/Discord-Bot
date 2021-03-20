@@ -41,6 +41,7 @@ module.exports = class Serverstats extends Command {
 
 					// update database
 					await message.guild.updateGuild({ ServerStats: true, ServerStatsCate: channel.id, ServerStatsBot: true, ServerStatsBotChannel: botChannel.id, ServerStatsUser: true, ServerStatsUserChannel: userChannel.id, ServerStatsHuman: true, ServerStatsHumanChannel: humanChannel.id });
+					message.guild.fetchGuildConfig();
 				});
 			} else {
 				const botChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsBotChannel);
@@ -52,6 +53,7 @@ module.exports = class Serverstats extends Command {
 				const cateChannel = message.guild.channels.cache.find(c => c.id == settings.ServerStatsCate);
 				if (cateChannel) cateChannel.delete();
 				await message.guild.updateGuild({ ServerStats: false, ServerStatsCate: '00', ServerStatsBot: false, ServerStatsBotChannel: '00', ServerStatsUser: false, ServerStatsUserChannel: '00', ServerStatsHuman: false, ServerStatsHumanChannel: '00' });
+				message.guild.fetchGuildConfig();
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();

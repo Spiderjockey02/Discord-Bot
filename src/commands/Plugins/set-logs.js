@@ -35,8 +35,16 @@ module.exports = class SetLog extends Command {
 				.setDescription(`\`${settings.prefix}set-logs <true | false>\`\n\`${settings.prefix}set-logs channel <ChannelID>\`\n\`${settings.prefix}set-logs <add | remove> LOG\``);
 			message.channel.send(embed);
 		} else if (args[0] == 'true' || args[0] == 'false') {
-			await message.guild.updateGuild({ ModLog: args[0] });
-			message.success(settings.Language, 'PLUGINS/LOGS_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+
+			// Enabled/Disable ModLogs
+			try {
+				await message.guild.updateGuild({ ModLog: args[0] });
+				settings.ModLog = args[0];
+				message.success(settings.Language, 'PLUGINS/LOGS_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+			} catch (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			}
 		} else if (args[0] == 'add' || args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents;
 			if (!args[1]) {
@@ -47,28 +55,49 @@ module.exports = class SetLog extends Command {
 					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
 				message.channel.send(embed);
 			} else if (args[0] == 'add') {
-				currentFeatures.push(args[1].toUpperCase());
-				await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-				message.channel.send(`Added: ${args[1].toUpperCase()} to logging.`);
-			} else if (args[0] == 'remove') {
-				// remove features
-				if (currentFeatures.indexOf(args[1].toUpperCase()) > -1) {
-					currentFeatures.splice(currentFeatures.indexOf(args[1].toUpperCase()), 1);
+
+				// add new Logging
+				try {
+					currentFeatures.push(args[1].toUpperCase());
+					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
+					settings.ModLogEvents = currentFeatures;
+					message.channel.send(`Added: ${args[1].toUpperCase()} to logging.`);
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
-				await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-				message.channel.send(`Removed: ${args[1].toUpperCase()} from logging.`);
+			} else if (args[0] == 'remove') {
+
+				// remove features
+				try {
+					if (currentFeatures.indexOf(args[1].toUpperCase()) > -1) {
+						currentFeatures.splice(currentFeatures.indexOf(args[1].toUpperCase()), 1);
+					}
+					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
+					settings.ModLogEvents = currentFeatures;
+					message.channel.send(`Removed: ${args[1].toUpperCase()} from logging.`);
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				}
 			} else {
-				// incorrect entry
+				const embed = new MessageEmbed()
+					.setTitle('Logging plugin')
+					.setColor(message.member.displayHexColor)
+					.setDescription(`\`${settings.prefix}set-logs <true | false>\`\n\`${settings.prefix}set-logs channel <ChannelID>\`\n\`${settings.prefix}set-logs <add | remove> LOG\``);
+				message.channel.send(embed);
 			}
 		} else if (args[0] == 'channel') {
 			try {
 				const channelID = (message.guild.channels.cache.find(channel => channel.id == args[1])) ? message.guild.channels.cache.find(channel => channel.id == args[1]).id : message.channel.id;
 				if (channelID) {
 					await message.guild.updateGuild({ ModLogChannel: channelID });
+					settings.ModLogChannel = channelID;
 					message.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
 				}
 			} catch (err) {
-				bot.logger.error(err);
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
 			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));

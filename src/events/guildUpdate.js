@@ -25,6 +25,7 @@ module.exports = async (bot, oldGuild, newGuild) => {
 				.addField('After:', newGuild.name)
 				.setTimestamp();
 			bot.updateGuild(newGuild, { guildName: newGuild.name });
+			settings.guildName = newGuild.name;
 			sendMessage(newGuild, settings, embed);
 		}
 
