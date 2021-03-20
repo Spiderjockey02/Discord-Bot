@@ -1,8 +1,12 @@
+// For better permissions
+const permissions = require('../../utils/permissions.json');
+
+// languageData
 const languageData = {
 	ERROR_MESSAGE: (error) => `The following error has occurred: \`${error}\`.\nIf this error keeps occurring, please contact support.`,
 	INCORRECT_FORMAT: (commandExample) => `Please use the format: \`${commandExample}\`.`,
-	MISSING_PERMISSION: (permission) => `I am missing the permission: \`${permission}\`.`,
-	USER_PERMISSION: (permission) => `You are missing the permission: \`${permission}\`.`,
+	MISSING_PERMISSION: (permission) => `I am missing the permission: \`${permissions[permission]}\`.`,
+	USER_PERMISSION: (permission) => `You are missing the permission: \`${permissions[permission]}\`.`,
 	MISSING_ROLE: 'I was unable to find this role.',
 	NO_REASON: 'No reason given.',
 	// external files/plugins

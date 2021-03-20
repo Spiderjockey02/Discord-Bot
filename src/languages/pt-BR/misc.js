@@ -1,8 +1,11 @@
+// For better permissions
+const permissions = require('../../utils/permissions.json');
+
 const languageData = {
 	ERROR_MESSAGE: 'Ocorreu um erro ao executar este comando, tente novamente ou entre em contato com o suporte.',
 	INCORRECT_FORMAT: (commandExample) => `Use o formato: \`${commandExample}\`.`,
-	MISSING_PERMISSION: (permission) => `Estou sem a permissão: \`${permission}\`.`,
-	USER_PERMISSION: (permission) => `Você está faltando a permissão de: \`${permission}\`.`,
+	MISSING_PERMISSION: (permission) => `Estou sem a permissão: \`${permissions[permission]}\`.`,
+	USER_PERMISSION: (permission) => `Você está faltando a permissão de: \`${permissions[permission]}\`.`,
 	MISSING_ROLE: 'Não consegui encontrar esse cargo.',
 	NO_REASON: 'Nenhuma razão dada.',
 	// external files/plugins
