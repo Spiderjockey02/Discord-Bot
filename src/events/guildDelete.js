@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { giveawayDB, Ranks, Warning } = require('../modules/database/models'),
+	{ MessageEmbed } = require('discord.js');
 
 // When the bot leaves a guild
 module.exports = async (bot, guild) => {
@@ -17,5 +18,30 @@ module.exports = async (bot, guild) => {
 		if (channel) channel.send(embed);
 	} catch (err) {
 		bot.logger.error('Unable to fetch guild information.');
+	}
+
+	// Clean up database (delete all guild data)
+	try {
+		await Ranks.deleteMany({
+			guildID: guild.id,
+		});
+	} catch (err) {
+		bot.logger.error(`Failed to delete Ranked data, error: ${err.message}`);
+	}
+
+	try {
+		await giveawayDB.deleteMany({
+			guildID: guild.id,
+		});
+	} catch (err) {
+		bot.logger.error(`Failed to delete Giveaway data, error: ${err.message}`);
+	}
+
+	try {
+		await Warning.deleteMany({
+			guildID: guild.id,
+		});
+	} catch (err) {
+		bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
 	}
 };
