@@ -1,6 +1,7 @@
 // Dependecies
 const chalk = require('chalk');
 const moment = require('moment');
+
 exports.log = (content, type = 'log') => {
 	if (content == 'error') return;
 	const timestamp = `[${moment().format('HH:mm:ss')}]:`;

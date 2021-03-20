@@ -1,5 +1,5 @@
 // Dependecies
-const logger = require('../modules/logging');
+const logger = require('../utils/logger');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
 const Discord = require('discord.js');

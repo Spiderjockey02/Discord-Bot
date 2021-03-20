@@ -1,7 +1,7 @@
 // Dependencies
 const { Structures } = require('discord.js'),
 	{ Guild: guild } = require('../modules/database/models'),
-	logger = require('../modules/logging'),
+	logger = require('../utils/logger'),
 	sm = require('string-similarity');
 
 module.exports = Structures.extend('Guild', Guild => {

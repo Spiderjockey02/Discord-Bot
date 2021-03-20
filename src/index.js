@@ -1,4 +1,4 @@
-const logger = require('./modules/logging');
+const logger = require('./utils/logger');
 
 (async function load() {
 	try {
