@@ -11,13 +11,6 @@ module.exports = async bot => {
 	// Load up audio player
 	bot.manager.init(bot.user.id);
 
-	// Load up discord bot
-	try {
-		await require('../helpers/DiscordBotListUpdate')(bot);
-	} catch (err) {
-		bot.logger.error(err.message);
-	}
-
 	setInterval(async () => {
 		bot.appInfo = await bot.fetchApplication();
 	}, 60000);
