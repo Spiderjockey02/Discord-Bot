@@ -41,7 +41,7 @@ module.exports = class G_start extends Command {
 		if (!time) return;
 
 		// Make sure that number of winners is a number
-		if (isNaN(args[1])) {
+		if (isNaN(args[1]) || args[1] > 10) {
 			return message.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 

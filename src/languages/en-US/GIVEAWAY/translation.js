@@ -3,7 +3,7 @@ const languageData = {
 	SUCCESS_GIVEAWAY: (action) => `Success! Giveaway ${action}!`,
 	UNKNOWN_GIVEAWAY: (message) => `No giveaway found with Message ID: \`${message}\`, please check and try again.`,
 	EDIT_GIVEAWAY: (time) => `Success! Giveaway will updated in less than ${time} seconds.`,
-	INCORRECT_WINNER_COUNT: 'Winner count must be a number.',
+	INCORRECT_WINNER_COUNT: 'Winner count must be less than 10.',
 	//
 	GIVEAWAY_DATA: {
 		giveaway: '🎉\t**GIVEAWAY**\t🎉',
