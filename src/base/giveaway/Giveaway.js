@@ -288,7 +288,7 @@ class Giveaway extends EventEmitter {
 			const winners = await this.roll();
 			this.manager.emit('giveawayEnded', this, winners);
 			this.manager.editGiveaway(this.messageID, this.data);
-			if (winners.length > 0) {
+			if (winners.length > 0 && winners.length >= this.winnerCount) {
 				this.winnerIDs = winners.map((w) => w.id);
 				this.manager.editGiveaway(this.messageID, this.data);
 				const embed = this.manager.generateEndEmbed(this, winners);

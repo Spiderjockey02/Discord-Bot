@@ -11,7 +11,7 @@ const languageData = {
 		timeRemaining: 'Time remaining: **{duration}**!',
 		inviteToParticipate: 'React with 🎉 to participate!',
 		winMessage: 'Congratulations, {winners}! You won **{prize}**!\n{messageURL}',
-		noWinner: 'Giveaway cancelled, no valid participations.',
+		noWinner: 'Giveaway cancelled, no valid participations or not enough winners.',
 		hostedBy: 'Hosted by: {user}',
 		winners: 'winner(s)',
 		endedAt: 'Ended at',
