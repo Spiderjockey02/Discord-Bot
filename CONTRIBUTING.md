@@ -1,6 +1,6 @@
 Contributing would be great as i'm a sole developer for this bot.
 
 You can help contribute by:
-* Language translations
-* optimization on files.
-* front-end web development. (I'm not very good at designing websites)
+* Translation language files (help with previous translations or make support for another language)
+* Optimization on files. (Know a better way on a function, make a pull request and I'll have a look)
+* Donating (Donating helps me stay motivated to providing open source code, that anyone can use)
