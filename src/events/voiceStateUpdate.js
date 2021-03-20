@@ -60,10 +60,10 @@ module.exports = async (bot, oldState, newState) => {
 
 	// Make sure the bot is in the voice channel that 'activated' the event
 	if (oldState.guild.members.cache.get(bot.user.id).voice.channel.id === oldState.channelID) {
-		if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.size === 1) {
+		if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 			const vcName = oldState.guild.me.voice.channel.name;
 			const embed = new MessageEmbed()
-				.setDescription(`Leaving **${vcName}** in ${180000 / 1000} seconds because I was left alone.`);
+				.setDescription(`Leaving 🔉 **${vcName}** in ${180000 / 1000} seconds because I was left alone.`);
 			const c = bot.channels.cache.get(player.textChannel);
 			let msg;
 			if (c) {
@@ -82,9 +82,9 @@ module.exports = async (bot, oldState, newState) => {
 				(newPlayer) ? player.destroy() : oldState.guild.voice.channel.leave();
 
 				const embed2 = new MessageEmbed()
-					.setDescription(`I left **${vcName}** because I was left alone.`);
+					.setDescription(`I left 🔉 **${vcName}** because I was left alone.`);
 				try {
-					return msg.edit(embed2, '');
+					return msg.edit(embed2, '').then(m => m.delete({ timeout: 15000 }));
 				} catch (err) {
 					bot.logger.error(err.message);
 				}
