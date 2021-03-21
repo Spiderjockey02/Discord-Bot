@@ -15,6 +15,7 @@ module.exports = async (bot, message) => {
 
 	// Get server settings
 	const settings = (message.guild) ? message.guild.settings : bot.config.defaultSettings;
+	if (Object.keys(settings).length == 0) return;
 
 	// Check if bot was mentioned
 	if (message.content == `<@!${bot.user.id}>`) {
