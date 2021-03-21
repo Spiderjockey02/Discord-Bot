@@ -4,4 +4,5 @@ module.exports = {
 	Warning: require('./warnings'),
 	Globalban: require('./globalban'),
 	giveawayDB: require('./Giveaway'),
+	Playlist: require('./playlists'),
 };
