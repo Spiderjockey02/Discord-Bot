@@ -25,7 +25,7 @@ module.exports = class Nick extends Command {
 		const member = message.guild.getMember(message, args);
 
 		// Check if they are changing their own name or not (and check permission)
-		if (member[0] == message.author) {
+		if (member[0] == message.member) {
 			if (!message.member.hasPermission('CHANGE_NICKNAMES')) {
 				return message.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
 			}
@@ -37,6 +37,11 @@ module.exports = class Nick extends Command {
 		if (!message.guild.me.hasPermission('MANAGE_NICKNAMES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_NICKNAMES\` in [${message.guild.id}].`);
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
+		}
+
+		// Make sure user user does not have ADMINISTRATOR permissions
+		if (member[0].hasPermission('ADMINISTRATOR') || (member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0)) {
+			return message.error(settings.Language, 'MODERATION/UNABLE_NICKNAME').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure a nickname was provided in the command
@@ -53,7 +58,6 @@ module.exports = class Nick extends Command {
 			await member[0].setNickname(nickname);
 			message.success(settings.Language, 'MODERATION/SUCCESSFULL_NICK', member[0].user).then(m => m.delete({ timeout: 5000 }));
 		} catch (err) {
-			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
