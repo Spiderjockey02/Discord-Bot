@@ -44,6 +44,6 @@
 *   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **9** more! 
 *   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **25** more!
 *   🔞  **NSFW**: Total of **8** commands!
-*       **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
+* **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
 *   ❓  **Ticket**: `t-(close | create |setup )`!
