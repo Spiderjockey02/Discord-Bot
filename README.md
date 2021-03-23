@@ -21,7 +21,7 @@
   •
   <a href="#features">Features</a>
   •
-  <a href="#installation">Installation</a>
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
   •
   <a href="#setting-up">Setting Up</a>
   •
