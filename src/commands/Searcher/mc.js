@@ -34,7 +34,7 @@ module.exports = class MC extends Command {
 				.setURL(`https://mcsrvstat.us/server/${args[0]}:${args[1]}`)
 				.addField('Server IP:', response.host)
 				.addField('Server Version:', response.version)
-				.addField('Description:', response.description.descriptionText)
+				.addField('Description:', response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
 				.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`);
 			r.delete();
 			message.channel.send(embed);
