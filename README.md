@@ -30,6 +30,12 @@
   <a href="#credits">Credits</a>
 </p>
 
+## About
+
+Egglord is an open source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs. It's codebase also serves as a base framework to easily create Discord bots of all kinds.
+
+If you liked this repository, feel free to leave a star ⭐ to help promote Egglord!
+
 ## Features
 
 **120+** commands and counting across **13** different categories!
