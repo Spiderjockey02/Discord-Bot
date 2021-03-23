@@ -23,8 +23,6 @@
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
   •
-  <a href="#setting-up">Setting Up</a>
-  •
   <a href="#license">License</a>
   •
   <a href="#credits">Credits</a>
@@ -32,7 +30,7 @@
 
 ## About
 
-Egglord is an open source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs. It's codebase also serves as a base framework to easily create Discord bots of all kinds.
+Egglord is an open source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs.
 
 If you liked this repository, feel free to leave a star ⭐ to help promote Egglord!
 
@@ -46,10 +44,39 @@ If you liked this repository, feel free to leave a star ⭐ to help promote Eggl
 *   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **5** more! 
 *   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
 *   💰  **Level**: `leaderboard`, `rank`!
-*   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **34** more!
+*   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **4** more!
 *   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **9** more! 
 *   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **25** more!
 *   🔞  **NSFW**: Total of **8** commands!
 * **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
 *   ❓  **Ticket**: `t-(close | create |setup )`!
+
+Egglord also comes packed with a variety of features, such as:
+
+  * **Welcome messages** and **farewell messages**.
+  * **Extensive Logging** for 37 events.
+  * **Moderator only** channels.
+  * **Audio filters** for music plugin.
+  * **Multi-language support**.
+  * **Giveaways**
+  * And much more! There are over **40+** settings to tweak!
+
+
+## To-Do
+
+Egglord is in a continuous state of development. New features/updates may come at any time. Some pending ideas are:
+
+  * Custom playlist support.
+  * Stream announcements.
+  * Reaction roles.
+  * Advanced statistics of a server.
+
+## License
+
+Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
+
+## Credits
+
+* **𝐀𝐦𝐢𝐫#1267** - *Translations*
+* **HelpMe#9564** - *Translations*
