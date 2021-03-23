@@ -19,7 +19,7 @@
 <p align="center">
   <a href="#about">About</a>
   •
-  <a href="#features">Features</a>
+  <a href="#Features">Features</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
   •
@@ -30,7 +30,7 @@
   <a href="#credits">Credits</a>
 </p>
 
-
+## Features
 
 **120+** commands and counting across **13** different categories!
 
