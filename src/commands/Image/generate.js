@@ -58,6 +58,9 @@ module.exports = class Generate extends Command {
 					return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				});
 			} else if (image_2.includes(choice)) {
+				// Check that 2 files have been uploaded
+				if (!file[1]) return message.error(settings.Language, 'IMAGE/NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
+
 				msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 				// get image
 				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'avatar': file[1], 'url' : file[0] }, {
@@ -67,7 +70,6 @@ module.exports = class Generate extends Command {
 					},
 				}).catch(err => {
 					// if an error occured
-					console.log(err);
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
