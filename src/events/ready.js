@@ -1,4 +1,4 @@
-const { Guild } = require('../modules/database/models');
+const { Guild, Premium } = require('../modules/database/models');
 
 module.exports = async bot => {
 	// LOG ready event
@@ -65,11 +65,19 @@ module.exports = async bot => {
 	await DeleteGuildCheck();
 	bot.logger.ready('All guilds have been initialized.');
 
-
 	// Every 5 minutes fetch new guild data
 	setInterval(async () => {
 		bot.guilds.cache.forEach(async guild => {
 			guild.fetchGuildConfig();
 		});
 	}, 300000);
+
+	// check for premium users
+	const users = await Premium.find({});
+	for (let i = 0; i < users.length; i++) {
+		if (users[i].premium) {
+			const user = await bot.getUser(users[i].userID);
+			user.premium = users[i].premium;
+		}
+	}
 };

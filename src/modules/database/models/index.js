@@ -5,4 +5,5 @@ module.exports = {
 	Globalban: require('./globalban'),
 	giveawayDB: require('./Giveaway'),
 	Playlist: require('./playlists'),
+	Premium: require('./premium'),
 };
