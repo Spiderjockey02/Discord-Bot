@@ -31,7 +31,9 @@ module.exports = class Generate extends Command {
 			message.channel.send(embed);
 		} else {
 			// Get image, defaults to author's avatar
-			const file = message.guild.GetImage(message, args[1] ? [args[1]] : [], settings.Language);
+			const choice = args[0];
+			args.shift();
+			const file = message.guild.GetImage(message, args, settings.Language);
 			// Check if bot has permission to attach files
 			if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 				bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
@@ -40,10 +42,10 @@ module.exports = class Generate extends Command {
 
 			// send 'waiting' message
 			let image, msg;
-			if (image_1.includes(args[0])) {
+			if (image_1.includes(choice)) {
 				msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 				// get image
-				image = await post(`https://v1.api.amethyste.moe/generate/${args[0]}`, { 'url' : file[0] }, {
+				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'url' : file[0] }, {
 					responseType: 'arraybuffer',
 					headers: {
 						'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
@@ -53,32 +55,29 @@ module.exports = class Generate extends Command {
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				});
-			} else if (image_2.includes(args[0])) {
-				if (!file[1]) {
-					msg.delete();
-					return message.error(settings.Language, 'IMAGE/MISSING_ARGS').then(m => m.delete({ timeout: 5000 }));
-				}
+			} else if (image_2.includes(choice)) {
 				msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
 				// get image
-				image = await post(`https://v1.api.amethyste.moe/generate/${args[0]}`, { 'avatar': file[1], 'url' : file[0] }, {
+				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'avatar': file[1], 'url' : file[0] }, {
 					responseType: 'arraybuffer',
 					headers: {
 						'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
 					},
 				}).catch(err => {
 					// if an error occured
+					console.log(err);
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				});
 			}
 
 			// send embed
 			try {
-				const attachment = new MessageAttachment(image.data, `${args[0]}.${args[0] == 'triggered' ? 'gif' : 'png'}`);
+				const attachment = new MessageAttachment(image.data, `${choice}.${choice == 'triggered' ? 'gif' : 'png'}`);
 				message.channel.send(attachment);
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
