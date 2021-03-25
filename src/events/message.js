@@ -3,9 +3,6 @@ const { Globalban } = require('../modules/database/models'),
 	{ MessageEmbed, Collection } = require('discord.js'),
 	moment = require('moment');
 
-// List of users in command cooldown
-const cooldowns = new Collection();
-
 module.exports = async (bot, message) => {
 	// record how many messages the bot see
 	bot.messagesSent++;
@@ -106,13 +103,13 @@ module.exports = async (bot, message) => {
 		}
 
 		// Check to see if user is in 'cooldown'
-		if (!cooldowns.has(command.name)) {
-			cooldowns.set(command.name, new Collection());
+		if (!bot.cooldowns.has(cmd.help.name)) {
+			bot.cooldowns.set(cmd.help.name, new Collection());
 		}
 
 		const now = Date.now();
-		const timestamps = cooldowns.get(command.name);
-		const cooldownAmount = (command.cooldown || 3000);
+		const timestamps = bot.cooldowns.get(cmd.help.name);
+		const cooldownAmount = (cmd.conf.cooldown || 3000);
 
 		if (timestamps.has(message.author.id)) {
 			const expirationTime = timestamps.get(message.author.id) + cooldownAmount;

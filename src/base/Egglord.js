@@ -31,6 +31,7 @@ module.exports = class Egglord extends Client {
 		// For command handler
 		this.aliases = new Collection();
 		this.commands = new Collection();
+		this.cooldowns = new Collection();
 
 		// connect to database
 		this.mongoose = require('../modules/database/mongoose');
