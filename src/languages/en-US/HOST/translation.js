@@ -5,6 +5,7 @@ const languageData = {
 	RELOAD_ERROR: (name) => `Could not reload: \`${name}\`.`,
 	RELOAD_NO_COMMAND: (name) => `${name} isn't a command.`,
 	RELOAD_SUCCESS: (name) => `Command: \`${name}\` has been reloaded.`,
+	RELOAD_SUCCESS_EVENT: (name) => `Event: \`${name}\` has been reloaded.`,
 	SHUTDOWN: 'Oh.. ok goodbye :disappointed_relieved:',
 	SHUTDOWN_ERROR: (error) => `ERROR: ${error}`,
 };
