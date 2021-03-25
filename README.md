@@ -56,7 +56,7 @@ Egglord also comes packed with a variety of features, such as:
 
   * **Welcome messages** and **farewell messages**.
   * **Extensive Logging** for 37 events.
-  * **Moderator only** channels.
+  * **Advanced** auto-moderation.
   * **Audio filters** for music plugin.
   * **Multi-language support**.
   * **Giveaways**
