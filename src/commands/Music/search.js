@@ -93,7 +93,6 @@ module.exports = class Search extends Command {
 				.setColor(message.member.displayHexColor)
 				.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
 			message.channel.send(embed);
-			// message.channel.send(`${results}\n\tPick a number from 1-10 or cancel.\n`);
 
 			try {
 				collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
