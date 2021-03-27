@@ -35,8 +35,7 @@ module.exports = class Pitch extends Command {
 		}
 
 		if (isNaN(args[0])) return message.channel.send('Amount must be a real number.');
-		if (args[0] < 0) return message.channel.send('Pitch must be greater than 0.');
-		if (args[0] > 10) return message.channel.send('Pitch must be less than 10.');
+		if (args[0] < 0 || args[0] > 10) return message.channel.send('Pitch must be inbetween 0 and 10.');
 
 		player.setFilter({
 			timescale: { pitch: args[0] },
