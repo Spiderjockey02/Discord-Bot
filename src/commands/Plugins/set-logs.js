@@ -47,13 +47,13 @@ module.exports = class SetLog extends Command {
 			}
 		} else if (args[0] == 'add' || args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents;
-			if (!args[1]) {
+			if (!args[1] || !features.includes(args[1].toUpperCase())) {
 				// show logs
 				const embed = new MessageEmbed()
 					.setTitle('Logging features:')
 					.setColor(message.member.displayHexColor)
 					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
-				message.channel.send(embed);
+				message.channel.send(embed).then(m => m.delete({ timeout: 15000 }));
 			} else if (args[0] == 'add') {
 
 				// add new Logging
