@@ -19,7 +19,11 @@ module.exports = class PView extends Command {
 		});
 	}
 
-	async run(bot, message, args) {
+	async run(bot, message, args, settings) {
+		// make sure a playlist name was entered
+		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+
+		// interact with database
 		Playlist.findOne({
 			name: args[0],
 			creator: message.author.id,
@@ -46,14 +50,14 @@ module.exports = class PView extends Command {
 					const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** [${song.title}](https://www.youtube.com/watch?v=${song.identifier}) \`[${MS.getReadableTime(song.duration)}]\``).join('\n')}`;
 					const embed = new MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
-						.setThumbnail(message.author.displayAvatarURL())
+						.setThumbnail(p.thumbnail)
 						.setTitle(p.name)
 						.setDescription(str)
 						.setFooter(`ID: ${p._id}`)
 						.setTimestamp()
 						.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${MS.getReadableTime(totalQueueDuration)} total duration`);
 					pages.push(embed);
-					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages, ['◀️', '▶️'], 120000, p.songs.length, MS.getReadableTime(totalQueueDuration));
+					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
 					else if(pagesNum == 1) message.channel.send(embed);
 				}
 			}
