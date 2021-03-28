@@ -1,42 +1,9 @@
-// paginator
-function paginator(page, msg, queue, Currentposition, prefix) {
-	if (page == 1) {
-		// display queue
-		let resp = '```ml\n';
-		resp += '\t⬐ current track   \n';
-		resp += `0) ${queue.current.title} ${new Date(queue.current.duration - Currentposition).toISOString().slice(14, 19)} left\n`;
-		resp += '\t⬑ current track \n';
-		for (let i = 0; i < 10; i++) {
-			if (queue[i] != undefined) {
-				resp += `${i + 1}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
-			}
-		}
-		if (queue.length < 10) {
-			resp += `\n\tThis is the end of the queue!\n\tUse ${prefix}play to add more :^)\n`;
-		}
-		resp += '```';
-		msg.edit(resp);
-	} else {
-		const songs = page * 10;
-		let resp = '```ml\n',
-			end = false;
-		for (let i = (songs - 10); i < songs; i++) {
-			// make song has been found
-			if (queue[i] != undefined) {
-				resp += `${i}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
-			} else if (!end) {
-				// show end of queue message
-				resp += `\n\tThis is the end of the queue!\n\tUse ${prefix}play to add more :^)\n`;
-				end = true;
-			}
-		}
-		resp += '```';
-		msg.edit(resp);
-	}
-}
-
 // Dependencies
-const Command = require('../../structures/Command.js');
+const paginate = require('../../utils/pagenator'),
+	{ MessageEmbed } = require('discord.js'),
+	ms = require('../../utils/timeFormatter'),
+	MS = new ms,
+	Command = require('../../structures/Command.js');
 
 module.exports = class Queue extends Command {
 	constructor(bot) {
@@ -46,8 +13,9 @@ module.exports = class Queue extends Command {
 			aliases: ['que'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Displays the queue.',
-			usage: 'queue',
+			usage: 'queue [pageNumber]',
 			cooldown: 3000,
+			examples: ['queue', 'queue 2'],
 		});
 	}
 
@@ -76,68 +44,51 @@ module.exports = class Queue extends Command {
 			return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
 		}
 
-		// get queue
+		// Make sure queue is not empty
 		const queue = player.queue;
 		if (queue.size == 0) {
-			// eslint-disable-next-line quotes
-			message.channel.send('```ml\n The queue is empty ;-;```');
-			return;
+			const embed = new MessageEmbed()
+				.setTitle('Queue is empty');
+			return message.channel.send(embed);
 		}
-		// display queue
-		let resp = '```ml\n';
-		resp += '\t⬐ current track   \n';
-		resp += `0) ${queue.current.title} ${new Date(queue.current.duration - player.position).toISOString().slice(14, 19)} left\n`;
-		resp += '\t⬑ current track \n';
-		for (let i = 0; i < 10; i++) {
-			if (queue[i] != undefined) {
-				resp += `${i + 1}) ${queue[i].title} ${new Date(queue[i].duration).toISOString().slice(14, 19)}\n`;
-			}
-		}
-		if (queue.length < 10) {
-			resp += `\n\tThis is the end of the queue!\n\tUse ${settings.prefix}play to add more :^)\n`;
-		}
-		resp += '```';
 
-		// Displays message
-		message.channel.send(resp).then(async (msg) => {
-			// react to queue message
-			await msg.react('⏬');
-			await msg.react('🔽');
-			await msg.react('🔼');
-			await msg.react('⏫');
+		// get total page number
+		let pagesNum = Math.ceil(player.queue.length / 10);
+		if (pagesNum === 0) pagesNum = 1;
 
-			// set up filter and page number
-			const filter = (reaction, user) => {
-				return ['⏬', '🔽', '🔼', '⏫'].includes(reaction.emoji.name) && !user.bot;
-			};
-			let page = 1;
-			// create collector
-			const collector = msg.createReactionCollector(filter, { time: queue.current.duration - player.position });
-			collector.on('collect', (reaction) => {
-				// find what reaction was done
-				const totalPage = (queue.length >= 1) ? Math.round(queue.length / 10) : 1;
-				if (reaction.emoji.name === '⏬') {
-					// last page
-					page = totalPage;
-					paginator(page, msg, queue, player.position, settings.prefix);
-				} else if (reaction.emoji.name === '🔽') {
-					// Show next 10 songs
-					page = page + 1;
-					if (page <= 1) page = 1;
-					if (page >= totalPage) page = totalPage;
-					paginator(page, msg, queue, player.position, settings.prefix);
-				} else if (reaction.emoji.name === '🔼') {
-					// show the last 10 previous songs
-					page = page - 1;
-					if (page == 0) page = 1;
-					if (page >= totalPage) page = totalPage;
-					paginator(page, msg, queue, player.position, settings.prefix);
-				} else {
-					// This will show the first 10 songs (in queue)
-					page = 1;
-					paginator(page, msg, queue, player.position, settings.prefix);
-				}
-			});
-		});
+		// fetch data to show on pages
+		const { title, requester, duration, uri } = player.queue.current;
+		const parsedDuration = MS.getReadableTime(duration);
+		const parsedQueueDuration = MS.getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const songStrings = [];
+		for (let i = 0; i < player.queue.length; i++) {
+			const song = player.queue[i];
+			songStrings.push(
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${MS.getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`);
+		}
+
+		// create pages for pageinator
+		const user = `<@${!requester.id ? requester : requester.id}>`;
+		const pages = [];
+		for (let i = 0; i < pagesNum; i++) {
+			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
+			const embed = new MessageEmbed()
+				.setAuthor(`Queue - ${message.guild.name}`, message.guild.iconURL())
+				.setDescription(`**Now Playing**: [${title}](${uri}) \`[${parsedDuration}]\` • ${user}.\n\n**Up Next**:${str == '' ? '  Nothing' : '\n' + str }`)
+				.setFooter(`Page ${i + 1}/${pagesNum} | ${player.queue.length} song(s) | ${parsedQueueDuration} total duration`);
+			pages.push(embed);
+		}
+
+		// If a user specified a page number then show page if not show pagintor.
+		if (!args[0]) {
+			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message, pages);
+			else return message.channel.send(pages[0]);
+		} else {
+			if (isNaN(args[0])) return message.channel.send('Page must be a number.');
+			if (args[0] > pagesNum) return message.channel.send(`There are only ${pagesNum} pages available.`);
+			const pageNum = args[0] == 0 ? 1 : args[0] - 1;
+			return message.channel.send(pages[pageNum]);
+		}
 	}
 };
