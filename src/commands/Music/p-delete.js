@@ -1,9 +1,6 @@
 // Dependecies
-const ms = require('../../utils/timeFormatter'),
-	{ MessageEmbed } = require('discord.js'),
-	{ Playlist } = require('../../modules/database/models'),
-	Command = require('../../structures/Command.js'),
-	MS = new ms;
+const { Playlist } = require('../../modules/database/models'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class PDelete extends Command {
 	constructor(bot) {
@@ -29,16 +26,11 @@ module.exports = class PDelete extends Command {
 		}, async (err, p) => {
 			if (err) bot.logger.error(err.message);
 			if (!p) {
-				const embed = new MessageEmbed()
-					.setDescription(`Couldn't find a playlist by the name: ${args[0]}.`)
-					.setTimestamp();
-				return message.channel.send(embed);
+				message.channel.send(`Couldn't find a playlist by the name: ${args[0]}.`);
 			} else {
 				try {
-					await Playlist.findOneAndRemove({ name: args[0],
-						creator: message.author.id }, (err) => {
-						if (err) console.log(err);
-					}).then(message.channel.send(`Successfully deleted ${args[0]}`));
+					await Playlist.findOneAndRemove({ name: args[0],	creator: message.author.id });
+					message.channel.send(`Successfully deleted ${args[0]}`);
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
