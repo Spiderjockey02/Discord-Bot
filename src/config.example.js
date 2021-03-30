@@ -27,7 +27,7 @@ const config = {
 		},
 		// https://genius.com/developers
 		genuis: 'genuisAPI-KEY',
-		// https://amethyste.moe/en
+		// https://api.amethyste.moe/
 		amethyste: 'amethysteAPI-Key',
 	},
 	// add plugins/commands here if you don't want them loaded in the bot.
