@@ -31,7 +31,7 @@ Find the file `src/config.example.js`, this is where all your information will g
 * `websiteURL` will match your bot's dashboard, If you want don't have one use `https://localhost`.
 * `defaultSettings` are the settings the bot will use when in DM's.
 * `emojis` are for custom emojis.
-* `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work)
+* `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work, **please also remember to replace <password> with your actual password**)
 
 
 ## Extra information
