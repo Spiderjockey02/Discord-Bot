@@ -72,7 +72,7 @@ module.exports = Structures.extend('Guild', Guild => {
 			if (message.attachments.size > 0) {
 				const url = message.attachments.first().url;
 				for (let i = 0; i < fileTypes.length; i++) {
-					if (url.indexOf(fileTypes[i]) !== -1) {
+					if (url.toLowerCase().indexOf(fileTypes[i]) !== -1) {
 						file.push(url);
 					}
 				}
