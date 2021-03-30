@@ -33,14 +33,18 @@ Find the file `src/config.example.js`, this is where all your information will g
 * `emojis` are for custom emojis.
 * `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work, **please also remember to replace <password> with your actual password**)
 
-
-## Extra information
+### Running the bot
 Once the config file has been filled out, you will need to run the Lavalink.jar file in /Lavalink. This will allow the bot to play music.
 
 If you are running the Lavalink.jar on a different server you will need the IP of that server, this IP will need to be entered in `src/base/Audio-Manager.js` in the Nodes array.
 
 More information on lavalink can be [found here.](https://github.com/Frederikam/Lavalink)
+After you have filled out your config file and ran the lavalink server; you can run the following command:
+```
+$ node .
+```
 
+## Extra information
 
 **NOTE**: Running the bot with a process manager (like [PM2](https://discordjs.guide/improving-dev-environment/pm2.html)) is recommended.
 
