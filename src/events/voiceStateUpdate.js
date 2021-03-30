@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js'),
+	delay = ms => new Promise(res => setTimeout(res, ms));
 
 module.exports = async (bot, oldState, newState) => {
 	// variables for easier coding
@@ -62,34 +63,22 @@ module.exports = async (bot, oldState, newState) => {
 	if (oldState.guild.members.cache.get(bot.user.id).voice.channel.id === oldState.channelID) {
 		if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 			const vcName = oldState.guild.me.voice.channel.name;
-			const embed = new MessageEmbed()
-				.setDescription(`Leaving 🔉 **${vcName}** in ${180000 / 1000} seconds because I was left alone.`);
-			const c = bot.channels.cache.get(player.textChannel);
-			let msg;
-			if (c) {
-				try {
-					msg = await c.send(embed);
-				} catch (err) {
-					bot.logger.error(err.message);
-				}
-			}
-			const delay = ms => new Promise(res => setTimeout(res, ms));
-			await delay(180000);
+			await delay(30000);
 
+			// times up check if bot is still by themselves in VC (exluding bots)
 			const vcMembers = oldState.guild.voice.channel.members.size;
 			if (!vcMembers || vcMembers === 1) {
 				const newPlayer = bot.manager.players.get(newState.guild.id);
 				(newPlayer) ? player.destroy() : oldState.guild.voice.channel.leave();
-
-				const embed2 = new MessageEmbed()
-					.setDescription(`I left 🔉 **${vcName}** because I was left alone.`);
+				const embed = new MessageEmbed()
+				// eslint-disable-next-line no-inline-comments
+					.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);
 				try {
-					return msg.edit(embed2, '').then(m => m.delete({ timeout: 15000 }));
+					const c = bot.channels.cache.get(player.textChannel);
+					if (c) c.send(embed).then(m => m.delete({ timeout: 60000 }));
 				} catch (err) {
 					bot.logger.error(err.message);
 				}
-			} else {
-				return msg.delete();
 			}
 		}
 	}
