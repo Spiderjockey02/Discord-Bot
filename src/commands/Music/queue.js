@@ -1,8 +1,6 @@
 // Dependencies
 const paginate = require('../../utils/pagenator'),
 	{ MessageEmbed } = require('discord.js'),
-	ms = require('../../utils/timeFormatter'),
-	MS = new ms,
 	Command = require('../../structures/Command.js');
 
 module.exports = class Queue extends Command {
@@ -58,13 +56,13 @@ module.exports = class Queue extends Command {
 
 		// fetch data to show on pages
 		const { title, requester, duration, uri } = player.queue.current;
-		const parsedDuration = MS.getReadableTime(duration);
-		const parsedQueueDuration = MS.getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const parsedDuration = bot.timeFormatter.getReadableTime(duration);
+		const parsedQueueDuration = bot.timeFormatter.getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${MS.getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${bot.timeFormatter.getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
 				`);
 		}
 

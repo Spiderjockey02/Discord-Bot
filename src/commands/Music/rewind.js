@@ -1,8 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	ms = require('../../utils/timeFormatter'),
-	Command = require('../../structures/Command.js'),
-	MS = new ms;
+	Command = require('../../structures/Command.js');
 
 module.exports = class Rewind extends Command {
 	constructor(bot) {
@@ -38,7 +36,7 @@ module.exports = class Rewind extends Command {
 		if (!player.queue.current.isSeekable) return message.error(settings.Language, 'MUSIC/LIVESTREAM');
 
 		// update the time
-		const time = MS.read24hrFormat((args[0]) ? args[0] : '10');
+		const time = bot.timeFormatter.read24hrFormat((args[0]) ? args[0] : '10');
 
 		if (time + player.position <= 0) {
 			message.channel.send('A song can not be less than 0 seconds long');
@@ -46,7 +44,7 @@ module.exports = class Rewind extends Command {
 			player.seek(player.position - time);
 			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
-				.setDescription(`**Rewinded \`${MS.getReadableTime(time)}\` to: \`${new Date(player.position).toISOString().slice(14, 19)}\`.**`);
+				.setDescription(`**Rewinded \`${bot.timeFormatter.getReadableTime(time)}\` to: \`${new Date(player.position).toISOString().slice(14, 19)}\`.**`);
 			message.channel.send(embed);
 		}
 	}

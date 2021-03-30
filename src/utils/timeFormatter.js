@@ -30,7 +30,6 @@ module.exports = class CustomMS {
 		if (typeof ms !== 'number') {throw new TypeError(`You need to pass a number! Instead receinved: ${typeof ms}`);}
 		const t = this.getTimeObject(ms);
 		const reply = [];
-		// if (!options.showMS && ms <= 1000) throw new TypeError(`Final value is smaller than 1 second (Exactly: ${ms}ms). To show milliseconds use the showMS option.`);
 		if (t.years) {
 			reply.push(`${t.years} yrs`);
 		}
@@ -117,4 +116,64 @@ module.exports = class CustomMS {
 		}
 		return result;
 	}
+
+
+	// comvert time format (1m) to ms - for timed commands
+	getTotalTime(timeFormat, message, language) {
+		// Make sure it ends with the correct time delimiter
+		if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
+			message.error(language, 'INCORRECT_DELIMITERS').then(m => m.delete({ timeout:5000 }));
+			return false;
+		}
+		// make sure its a number infront of the time delimiter
+		if (isNaN(timeFormat.slice(0, -1))) {
+			message.error(language, 'NOT_NUMBER').then(m => m.delete({ timeout:5000 }));
+			return false;
+		}
+		// convert timeFormat to milliseconds
+		const time = require('ms')(timeFormat);
+		// Make sure time isn't over 10 days
+		if (time >= 864000000) {
+			message.error(language, 'MAX_TIME').then(m => m.delete({ timeout: 5000 }));
+			return false;
+		}
+		// return time to requested command
+		return time;
+	}
+
+	// convert seconds to hh:mm:ss ot mm:ss
+	timestamp(time) {
+		try {
+			const p = time.split(':');
+			let s = 0, m = 1;
+
+			while (p.length > 0) {
+				s = +m * parseInt(p.pop(), 10);
+				m = m * 60;
+			}
+			return s * 1000;
+		} catch (e) {
+			return time;
+		}
+	}
+
+	// turn numbers to use order of magnitude
+	abbrNum(number, decPlaces) {
+		decPlaces = Math.pow(10, decPlaces);
+		const abbrev = ['k', 'm', 'b', 't' ];
+		for (let i = abbrev.length - 1; i >= 0; i--) {
+			const size = Math.pow(10, (i + 1) * 3);
+			if (size <= number) {
+				number = Math.round(number * decPlaces / size) / decPlaces;
+				if ((number == 1000) && (i < abbrev.length - 1)) {
+					number = 1;
+					i++;
+				}
+				number += abbrev[i];
+				break;
+			}
+		}
+		return number;
+	}
+
 };

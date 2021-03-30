@@ -1,8 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	ms = require('../../utils/timeFormatter'),
-	Command = require('../../structures/Command.js'),
-	MS = new ms;
+	Command = require('../../structures/Command.js');
 
 module.exports = class Seek extends Command {
 	constructor(bot) {
@@ -42,7 +40,7 @@ module.exports = class Seek extends Command {
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('seek').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 		// update the time
-		const time = MS.read24hrFormat((args[0]) ? args[0] : '10');
+		const time = bot.timeFormatter.read24hrFormat((args[0]) ? args[0] : '10');
 
 		if (time > player.queue.current.duration) {
 			message.channel.send(`Less than ${player.queue.current.duration}`);

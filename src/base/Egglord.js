@@ -56,6 +56,8 @@ module.exports = class Egglord extends Client {
 		// for Screenshot command
 		this.adultSiteList = null;
 
+		// for time converting and stuff
+		this.timeFormatter = new (require('../utils/timeFormatter'));
 	}
 
 	// when the this joins add guild settings to server

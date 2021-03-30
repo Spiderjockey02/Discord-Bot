@@ -1,9 +1,7 @@
 // Dependecies
-const ms = require('../../utils/timeFormatter'),
-	{ MessageEmbed } = require('discord.js'),
+const	{ MessageEmbed } = require('discord.js'),
 	{ Playlist } = require('../../modules/database/models'),
-	Command = require('../../structures/Command.js'),
-	MS = new ms;
+	Command = require('../../structures/Command.js');
 
 module.exports = class PCreate extends Command {
 	constructor(bot) {
@@ -60,7 +58,7 @@ module.exports = class PCreate extends Command {
 					const embed = new MessageEmbed()
 						.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
 						.setDescription([	`Created a playlist with name: **${args[0]}**.`,
-							`Playlist duration: ${MS.getReadableTime(res.playlist.duration)}.`,
+							`Playlist duration: ${bot.timeFormatter.getReadableTime(res.playlist.duration)}.`,
 							`Added **${res.playlist.name}** (${res.tracks.length} tracks) to **${args[0]}**.`].join('\n'))
 						.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/100`)
 						.setTimestamp();
@@ -70,7 +68,7 @@ module.exports = class PCreate extends Command {
 					return message.channel.send(`\`${args[1]}\` is not a plylist / or a playlist could not be found`);
 				}
 			} else {
-				message.channel.send('A playlist already exists with that name in this guild.');
+				message.channel.send('A playlist already exists with that name.');
 			}
 		});
 	}
