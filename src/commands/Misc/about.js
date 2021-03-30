@@ -1,6 +1,5 @@
 // Dependencies
 const { MessageEmbed, version } = require('discord.js'),
-	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class About extends Command {
@@ -31,7 +30,7 @@ module.exports = class About extends Command {
 			.addField(message.translate(settings.Language, 'MISC/ABOUT_PROCESS'), `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\nNode.js: ${process.version.slice(1).split('.')[0]}v\nDiscord.js: ${version}v`, true)
 			.addField(message.translate(settings.Language, 'MISC/ABOUT_SERVERS'), `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
 			.addField(message.translate(settings.Language, 'MISC/ABOUT_MESSAGES'), `${bot.messagesSent} messages\n ${(bot.messagesSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
-			.addField(message.translate(settings.Language, 'MISC/ABOUT_UPTIME'), moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]'), true);
+			.addField(message.translate(settings.Language, 'MISC/ABOUT_UPTIME'), bot.timeFormatter.getReadableTime(bot.uptime), true);
 		message.channel.send(embed);
 	}
 };

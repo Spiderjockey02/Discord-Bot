@@ -1,6 +1,5 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Uptime extends Command {
@@ -18,7 +17,7 @@ module.exports = class Uptime extends Command {
 	// Run command
 	async run(bot, message) {
 		const embed = new MessageEmbed()
-			.setDescription(`I have been online for: ${moment.duration(bot.uptime).format(' D [days], H [hrs], m [mins], s [secs]')}.`);
+			.setDescription(`I have been online for: ${bot.timeFormatter.getReadableTime(bot.uptime)}.`);
 		message.channel.send(embed);
 	}
 };
