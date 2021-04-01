@@ -1,11 +1,12 @@
 const { Structure } = require('erela.js');
 
 module.exports = Structure.extend('Player', Player => {
-	class boneeplayer extends Player {
+	class player extends Player {
 		constructor(...args) {
 			super(...args);
 			this.musicTrivia = false;
 			this.speed = 1;
+			this.timeout = null;
 		}
 
 		// add filters
@@ -39,5 +40,5 @@ module.exports = Structure.extend('Player', Player => {
 			return this;
 		}
 	}
-	return boneeplayer;
+	return player;
 });

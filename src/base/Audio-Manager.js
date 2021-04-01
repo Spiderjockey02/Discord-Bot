@@ -37,6 +37,9 @@ module.exports = async (bot) => {
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed).then(m => m.delete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+
+			// clear timeout (for queueEnd event)
+			if (player.timeout != null) return clearTimeout(player.timeout);
 		})
 		.on('trackError', (player, track, payload) => {
 			// when a track causes an error
@@ -48,10 +51,13 @@ module.exports = async (bot) => {
 		})
 		.on('queueEnd', (player) => {
 			// When the queue has finished
-			const embed = new MessageEmbed()
-				.setDescription('Queue has ended.');
-			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send(embed);
+			setTimeout(() => {
+				const embed = new MessageEmbed()
+					.setDescription(`I left 🔉 **${bot.channels.cache.get(player.voiceChannel).name}** because I was inactive for too long.`);
+				const channel = bot.channels.cache.get(player.textChannel);
+				if (channel) channel.send(embed);
+				player.destroy();
+			}, 180000);
 		})
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
