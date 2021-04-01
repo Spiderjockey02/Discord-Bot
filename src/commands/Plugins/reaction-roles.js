@@ -1,5 +1,6 @@
 const Command = require("../../structures/Command.js");
 const ReactionsModel = require("../../modules/database/models/reactionrole");
+const { MessageEmbed } = require("discord.js");
 module.exports = class ReactionRoles extends Command {
   constructor(bot) {
     super(bot, {
