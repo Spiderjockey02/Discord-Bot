@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, oldEmoji, newEmoji) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Emoji: ${newEmoji.name} has been deleted in guild: ${newEmoji.guild.id}.`);
+
 	// Get server settings / if no settings then return
 	const settings = newEmoji.guild.settings;
 	if (Object.keys(settings).length == 0) return;

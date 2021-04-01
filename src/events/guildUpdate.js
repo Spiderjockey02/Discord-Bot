@@ -8,6 +8,9 @@ function sendMessage(newGuild, settings, embed) {
 }
 
 module.exports = async (bot, oldGuild, newGuild) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Guild: ${newGuild.name} has been updated.`);
+
 	// Get server settings / if no settings then return
 	const settings = newGuild.settings;
 	if (Object.keys(settings).length == 0) return;

@@ -8,6 +8,9 @@ function sendMessage(newMember, settings, embed) {
 }
 
 module.exports = async (bot, oldMember, newMember) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Member: ${newMember.user.tag} has been updated in guild: ${newMember.guild.id}.`);
+
 	if (oldMember.user.id == bot.user.id) return;
 
 	// get server settings

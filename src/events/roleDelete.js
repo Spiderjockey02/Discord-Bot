@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, role) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Role: ${role.name} has been deleted in guild: ${role.guild.id}.`);
+
 	// Get server settings / if no settings then return
 	const settings = role.guild.settings;
 	if (Object.keys(settings).length == 0) return;

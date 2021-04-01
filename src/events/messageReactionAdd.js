@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, reaction, user) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Message reaction added${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
+
 	// Make sure it's not a BOT and in a guild
 	if (user.bot) return;
 	if (!reaction.message.guild) return;

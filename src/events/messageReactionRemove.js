@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, reaction, user) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Message reaction removed${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
+
 	// make sure it dosen't happen in a DM
 	if (reaction.message.channel.type == 'dm') return;
 

@@ -3,6 +3,9 @@ const { MessageEmbed } = require('discord.js');
 const dateFormat = require('dateformat');
 
 module.exports = async (bot, member) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
+
 	if (member.user.id == bot.user.id) return;
 
 	// Get server settings / if no settings then return

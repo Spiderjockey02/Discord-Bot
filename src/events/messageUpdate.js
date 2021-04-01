@@ -2,8 +2,11 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, oldMessage, newMessage) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Message updated${!newMessage.guild ? '' : ` in guild: ${newMessage.guild.id}`}`);
+
 	// make sure its not a DM
-	if (newMessage.channel.type == 'dm') return;
+	if (newMessage.guild) return;
 
 	// Check if message is a partial
 	if (oldMessage.partial || newMessage.partial) return;

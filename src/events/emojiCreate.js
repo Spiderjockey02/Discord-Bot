@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, emoji) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Emoji: ${emoji.name} has been created in guild: ${emoji.guild.id}.`);
+
 	// Get server settings / if no settings then return
 	const settings = emoji.guild.settings;
 	if (Object.keys(settings).length == 0) return;

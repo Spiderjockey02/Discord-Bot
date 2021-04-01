@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, channel) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == 'dm' ? channel.recipient.tag : channel.name} has been created${channel.type == 'dm' ? '' : ` in guild: ${channel.guild.id}`}. (${channel.type})`);
+
 	// Make sure the channel isn't a DM
 	if (channel.type == 'dm') return;
 
