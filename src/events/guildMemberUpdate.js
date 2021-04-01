@@ -33,7 +33,7 @@ module.exports = async (bot, oldMember, newMember) => {
 
 		// Look to see if user has boosted the server
 		if (!oldMember.premiumSince && newMember.premiumSince) {
-			const embed = MessageEmbed()
+			const embed = new MessageEmbed()
 				.seDescripition(`**${newMember.toString()} has boosted the server**`)
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
@@ -43,7 +43,7 @@ module.exports = async (bot, oldMember, newMember) => {
 
 		// Look to see if user has stopped boosted the server
 		if (oldMember.premiumSince && !newMember.premiumSince) {
-			const embed = MessageEmbed()
+			const embed = new MessageEmbed()
 				.seDescripition(`**${newMember.toString()} has unboosted the server**`)
 				.setFooter(`ID: ${newMember.id}`)
 				.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
