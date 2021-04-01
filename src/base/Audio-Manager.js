@@ -52,8 +52,9 @@ module.exports = async (bot) => {
 		.on('queueEnd', (player) => {
 			// When the queue has finished
 			setTimeout(() => {
+				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
 				const embed = new MessageEmbed()
-					.setDescription(`I left 🔉 **${bot.channels.cache.get(player.voiceChannel).name}** because I was inactive for too long.`);
+					.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`);
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
 				player.destroy();
@@ -62,8 +63,10 @@ module.exports = async (bot) => {
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
 			if (!newChannel) {
+				const embed = new MessageEmbed()
+					.setDescription('The queue has ended as I was kicked from the voice channel');
 				const channel = bot.channels.cache.get(player.textChannel);
-				if (channel) channel.send('The queue has ended as I was kicked from the voice channel');
+				if (channel) channel.send(embed);
 				player.destroy();
 			} else {
 				player.voiceChannel = bot.channels.cache.get(newChannel);
