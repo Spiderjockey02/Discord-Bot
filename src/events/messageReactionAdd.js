@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require("discord.js");
-const reactionModel = require("../modules/database/models/reactionrole");
+const ReactionsModel = require("../modules/database/models/reactionrole");
 module.exports = async (bot, reaction, user) => {
   // Make sure it's not a BOT and in a guild
   if (user.bot) return;
@@ -107,18 +107,18 @@ module.exports = async (bot, reaction, user) => {
 
   const dbReaction = await ReactionsModel.findOne({
     guild_id: guild.id,
-    message_id: react.message.id,
+    message_id: reaction.message.id,
   });
   if (!dbReaction) return;
-  const reaction = dbReaction.reactions.find(
+  const rreaction = dbReaction.reactions.find(
     (r) => r.emoji === react.emoji.toString()
   );
-  if (!reaction) return;
+  if (!rreaction) return;
 
-  if (!member.roles.cache.has(reaction.role_id)) {
-    member.roles.add(reaction.role_id);
+  if (!member.roles.cache.has(rreaction.role_id)) {
+    member.roles.add(rreaction.role_id);
   } else {
-    member.roles.remove(reaction.role_id);
+    member.roles.remove(rreaction.role_id);
   }
 
   let channel = guild.channels.cache.get(dbReaction.channel_id);
