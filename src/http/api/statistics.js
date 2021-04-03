@@ -5,6 +5,8 @@ const express = require('express'),
 module.exports = function(bot) {
 	// statistics page
 	router.get('/', async function(req, res) {
+		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/statistics\`.`);
+
 		res.status(200).json({
 			guildCount: bot.guilds.cache.size,
 			userCount: bot.users.cache.size,

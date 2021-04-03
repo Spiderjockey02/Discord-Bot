@@ -10,7 +10,9 @@ module.exports = bot => {
 			res.send(`API server for ${bot.user.username}
 				\n/statistics - For basic statistics of the bot
 				\n/commands - Get full list of commands & categories
-				\n/commands/:commandName - Get information on a specific command`);
+				\n/commands/:commandName - Get information on a specific command
+				\n/guilds/:guilID - Get basic information of that guild
+				\n/guilds/:guildID/members - Get full list of members in guild`);
 		})
 		// Statistics of the bot
 		.use('/statistics', require('./statistics.js')(bot))
