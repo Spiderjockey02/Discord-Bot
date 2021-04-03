@@ -19,8 +19,7 @@ module.exports = class QRcode extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get text for QR encoding (including file URl)
-		let text = args.join(' ');
-		if (!text) text = message.guild.GetImage(message, args, settings.Language);
+		const text = (!args[0]) ? message.guild.GetImage(message, args, settings.Language)[0] : args.join(' ');
 
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
