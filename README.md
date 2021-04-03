@@ -60,6 +60,7 @@ Egglord also comes packed with a variety of features, such as:
   * **Audio filters** for music plugin.
   * **Multi-language support**.
   * **Giveaways**
+  * **Reaction roles**
   * And much more! There are over **40+** settings to tweak!
 
 
@@ -69,7 +70,6 @@ Egglord is in a continuous state of development. New features/updates may come a
 
   * Custom playlist support.
   * Stream announcements.
-  * Reaction roles.
   * Advanced statistics of a server.
 
 ## License
@@ -77,6 +77,6 @@ Egglord is in a continuous state of development. New features/updates may come a
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
 ## Credits
-
+* **[Tovade#6617](https://github.com/tovade)** - *Reaction role system*
 * **𝐀𝐦𝐢𝐫#1267** - *Translations*
 * **HelpMe#9564** - *Translations*
