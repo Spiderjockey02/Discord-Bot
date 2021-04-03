@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const giveawaySchema = mongoose.Schema({
+const giveawaySchema = Schema({
 	messageID: String,
 	channelID: String,
 	guildID: String,
@@ -11,7 +11,7 @@ const giveawaySchema = mongoose.Schema({
 	winners: Array,
 	prize: String,
 	hostedBy: String,
-	messages: mongoose.Schema.Types.Mixed,
+	messages: Schema.Types.Mixed,
 });
 
-module.exports = mongoose.model('Giveaway', giveawaySchema);
+module.exports = model('Giveaway', giveawaySchema);
