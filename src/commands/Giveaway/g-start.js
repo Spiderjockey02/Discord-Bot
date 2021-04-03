@@ -37,7 +37,7 @@ module.exports = class G_start extends Command {
 		}
 
 		// Get time
-		const time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
+		const time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
 		if (!time) return;
 
 		// Make sure that number of winners is a number
