@@ -6,13 +6,13 @@ module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
 	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
 
-	// Check if this was triggered by a user with an ignored role
-	if (message.channel.guild.members.cache.get(message.author.id)._roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
+	if (message.guild.members.cache.get(message.author.id)._roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
 
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {
 		// calculate xp added
 		const xpAdd = Math.round((Math.floor(Math.random() * 7) + 8) * settings.LevelMultiplier);
+
 		// find user
 		Ranks.findOne({
 			userID: message.author.id,
@@ -27,11 +27,12 @@ module.exports.run = (bot, message, settings) => {
 					Xp: xpAdd,
 					Level: 1,
 				});
-				newXp.save().catch(e => bot.logger.log(e.message));
+				newXp.save().catch(err => bot.logger.error(err.message));
 			} else {
 				// user was found
 				Xp.Xp = Xp.Xp + xpAdd;
 				const xpNeed = (5 * (Xp.Level ** 2) + 50 * Xp.Level + 100);
+
 				// User has leveled up
 				if (Xp.Xp >= xpNeed) {
 					Xp.Level = Xp.Level + 1;
@@ -39,15 +40,16 @@ module.exports.run = (bot, message, settings) => {
 					if (settings.LevelOption == 1) {
 						message.channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 					} else if (settings.LevelOption == 2) {
-						const lvlChannel = message.guild.channels.cache.find(channel => channel.id == settings.LevelChannel);
+						const lvlChannel = message.guild.channels.cache.get(settings.LevelChannel);
 						if (lvlChannel) lvlChannel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 					}
-					bot.logger.log(`${message.author.tag} has leveled up to ${Xp.Level} in server: [${message.channel.guild.id}]`);
+					if (bot.config.debug) bot.logger.debug(`${message.author.tag} has leveled up to ${Xp.Level} in guild: ${message.guild.id}.`);
 				}
 				// update database
-				Xp.save().catch(e => bot.logger.error(e.message));
+				Xp.save().catch(err => bot.logger.error(err.message));
 			}
 		});
+
 		// add user to cooldown (1 minute cooldown)
 		levelcd.add(message.author.id);
 		setTimeout(() => {

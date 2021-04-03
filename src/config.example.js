@@ -70,7 +70,7 @@ const config = {
 	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
-	// if you want debugging turned on or not
+	// This will spam your console if you enable this but will help with bug fixing
 	debug: false,
 };
 

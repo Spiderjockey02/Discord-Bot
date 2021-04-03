@@ -3,6 +3,9 @@ const dateFormat = require('dateformat');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, messages) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in guild: ${messages.first().channel.guild.id}`);
+
 	// Get server settings / if no settings then return
 	const settings = messages.first().channel.guild.settings;
 	if (Object.keys(settings).length == 0) return;

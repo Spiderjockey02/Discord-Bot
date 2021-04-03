@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, guild, user) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Member: ${user.tag} has been unbanned in guild: ${guild.id}.`);
+
 	// Get server settings / if no settings then return
 	const settings = guild.settings;
 	if (Object.keys(settings).length == 0) return;

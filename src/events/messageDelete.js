@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, message) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
+
 	// Make sure the message wasn't deleted in a Dm channel
 	if (message.channel.type == 'dm') return;
 

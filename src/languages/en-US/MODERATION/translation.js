@@ -28,6 +28,7 @@ const languageData = {
 	ENTER_NICKNAME: 'Please enter a nickname.',
 	LONG_NICKNAME: 'Nickname must be shorter than 32 characters.',
 	UNSUCCESSFULL_NICK: (user) => ` I am unable to change ${user} nickname.`,
+	UNABLE_NICKNAME: 'I am unable to change that user\'s nickname due to their power.',
 	// REPORT COMMAND
 	REPORT_AUTHOR: '~Member Reported~',
 	REPORT_MEMBER: 'Member:',

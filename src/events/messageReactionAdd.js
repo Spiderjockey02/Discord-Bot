@@ -2,6 +2,14 @@
 const { MessageEmbed } = require("discord.js");
 const ReactionsModel = require("../modules/database/models/reactionrole");
 module.exports = async (bot, reaction, user) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Message reaction added${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
+
+	// Make sure it's not a BOT and in a guild
+	if (user.bot) return;
+	if (!reaction.message.guild) return;
+  
+  <<<<<<< master
   // Make sure it's not a BOT and in a guild
   if (user.bot) return;
   if (!reaction.message.guild) return;
@@ -81,7 +89,7 @@ module.exports = async (bot, reaction, user) => {
       }
     }
   }
-
+  
   // Check if event messageReactionAdd is for logging
   if (settings.ModLogEvents.includes("MESSAGEREACTIONADD") && settings.ModLog) {
     const embed = new MessageEmbed()

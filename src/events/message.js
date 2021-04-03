@@ -122,6 +122,7 @@ module.exports = async (bot, message) => {
 
 		// run the command
 		bot.commandsUsed++;
+		if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
 		cmd.run(bot, message, args, settings);
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);

@@ -2,6 +2,9 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, channel) => {
+	// For debugging
+	if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == 'dm' ? channel.recipient.tag : channel.name} has been deleted${channel.type == 'dm' ? '' : ` in guild: ${channel.guild.id}`}. (${channel.type})`);
+
 	// Don't really know but a check for DM must be made
 	if (channel.type == 'dm') return;
 

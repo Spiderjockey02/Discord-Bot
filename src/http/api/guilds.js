@@ -6,6 +6,9 @@ const express = require('express'),
 module.exports = function(bot) {
 	// Get basic information on guild
 	router.get('/:guildId', async (req, res) => {
+		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/guilds/${req.params.guildId}\`.`);
+
+		// fetch guild's basic information
 		const guild = bot.guilds.cache.get(req.params.guildId);
 		if (guild) {
 			const { id, name, icon, members: { size } } = guild;
@@ -18,6 +21,9 @@ module.exports = function(bot) {
 
 	// Get list of members in guild
 	router.get('/:guildId/members', async (req, res) => {
+		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/guilds/${req.params.guildId}/members\`.`);
+
+		// fetch member list of guild
 		const guild = bot.guilds.cache.get(req.params.guildId);
 		if (guild) {
 			const members = guild.members.cache.map(member => ({

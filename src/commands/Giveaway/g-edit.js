@@ -30,7 +30,7 @@ module.exports = class G_edit extends Command {
 
 
 		// Get new Time
-		const time = require('../../helpers/time-converter.js').getTotalTime(args[1], message, settings.Language);
+		const time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
 		if (!time) return;
 
 		// Get new winner count
