@@ -1,6 +1,6 @@
 // Dependecies
 const { Client, Collection } = require('discord.js'),
-	{ Guild } = require('../modules/database/models'),
+	{ GuildSchema } = require('../database/models'),
 	mongoose = require('mongoose'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
@@ -34,7 +34,7 @@ module.exports = class Egglord extends Client {
 		this.cooldowns = new Collection();
 
 		// connect to database
-		this.mongoose = require('../modules/database/mongoose');
+		this.mongoose = require('../database/mongoose');
 
 		// config file
 		this.config = require('../config.js');
@@ -63,13 +63,13 @@ module.exports = class Egglord extends Client {
 	// when the this joins add guild settings to server
 	async CreateGuild(settings) {
 		const merged = Object.assign({ _id: mongoose.Types.ObjectId() }, settings);
-		const newGuild = await new Guild(merged);
+		const newGuild = await new GuildSchema(merged);
 		return newGuild.save();
 	}
 
 	// Delete guild from server when this leaves server
 	async DeleteGuild(guild) {
-		await Guild.findOneAndRemove({ guildID: guild.id }, (err) => {
+		await GuildSchema.findOneAndRemove({ guildID: guild.id }, (err) => {
 			if (err) console.log(err);
 		});
 		return;

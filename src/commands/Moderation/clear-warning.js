@@ -1,5 +1,5 @@
 // Dependencies
-const { Warning } = require('../../modules/database/models/index'),
+const { WarningSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class ClearWarning extends Command {
@@ -32,14 +32,14 @@ module.exports = class ClearWarning extends Command {
 		// get warnings of user
 		try {
 			// find data
-			const data = await Warning.findOne({
+			const data = await WarningSchema.findOne({
 				userID: member[0].id,
 				guildID: message.guild.id,
 			});
 
 			// Delete the data
 			if (data) {
-				await Warning.deleteOne(data, function(err) {
+				await WarningSchema.deleteOne(data, function(err) {
 					if (err) throw err;
 				});
 				message.success(settings.Language, 'MODERATION/CLEARED_WARNINGS', member[0]).then(m => m.delete({ timeout: 10000 }));

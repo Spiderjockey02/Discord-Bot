@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ Warning } = require('../../modules/database/models/index'),
+	{ WarningSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Warnings extends Command {
@@ -25,7 +25,7 @@ module.exports = class Warnings extends Command {
 
 		// get warnings of user
 		try {
-			await Warning.findOne({
+			await WarningSchema.findOne({
 				userID: member[0].id,
 				guildID: message.guild.id,
 			}, (err, warn) => {

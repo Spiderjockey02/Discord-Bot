@@ -1,5 +1,5 @@
 // Dependencies
-const { Ranks } = require('../modules/database/models');
+const { RankSchema } = require('../database/models');
 const levelcd = new Set();
 
 module.exports.run = (bot, message, settings) => {
@@ -14,14 +14,14 @@ module.exports.run = (bot, message, settings) => {
 		const xpAdd = Math.round((Math.floor(Math.random() * 7) + 8) * settings.LevelMultiplier);
 
 		// find user
-		Ranks.findOne({
+		RankSchema.findOne({
 			userID: message.author.id,
 			guildID: message.guild.id,
 		}, (err, Xp) => {
 			if (err) bot.logger.error(err);
 			// no account was found (this is user's first message with level plugin on)
 			if (!Xp) {
-				const newXp = new Ranks({
+				const newXp = new RankSchema({
 					userID: message.author.id,
 					guildID: message.guild.id,
 					Xp: xpAdd,

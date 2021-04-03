@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageAttachment } = require('discord.js'),
-	{ Ranks } = require('../../modules/database/models/index'),
+	{ RankSchema } = require('../../database/models'),
 	{ Rank: rank } = require('canvacord'),
 	Command = require('../../structures/Command.js');
 
@@ -32,7 +32,7 @@ module.exports = class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			await Ranks.findOne({
+			await RankSchema.findOne({
 				userID: member[0].id,
 				guildID: message.guild.id,
 			}, (err, Xp) => {
@@ -45,7 +45,7 @@ module.exports = class Rank extends Command {
 					message.error(settings.Language, 'LEVEL/NO_MESSAGES');
 				} else {
 					// Get rank
-					Ranks.find({
+					RankSchema.find({
 						guildID: message.guild.id,
 					}).sort([
 						['Xp', 'descending'],

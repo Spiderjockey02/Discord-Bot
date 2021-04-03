@@ -1,6 +1,6 @@
 // Dependecies
 const	{ MessageEmbed } = require('discord.js'),
-	{ Playlist } = require('../../modules/database/models'),
+	{ PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PCreate extends Command {
@@ -23,7 +23,7 @@ module.exports = class PCreate extends Command {
 
 		const msg = await message.channel.send('Adding song(s) to your playlist (This might take a few seconds.)...');
 
-		Playlist.findOne({
+		PlaylistSchema.findOne({
 			name: args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
@@ -44,7 +44,7 @@ module.exports = class PCreate extends Command {
 					return message.error(settings.Language, 'MUSIC/NO_SONG');
 				} else if (res.loadType == 'PLAYLIST_LOADED') {
 					// Save playlist to database
-					const newPlaylist = new Playlist({
+					const newPlaylist = new PlaylistSchema({
 						name: args[0],
 						songs: res.tracks,
 						timeCreated: Date.now(),

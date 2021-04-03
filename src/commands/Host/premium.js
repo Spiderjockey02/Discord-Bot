@@ -1,5 +1,5 @@
 // Dependencies
-const { Premium: premiumDB } = require('../../modules/database/models'),
+const { PremiumSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Premium extends Command {
@@ -31,14 +31,14 @@ module.exports = class Premium extends Command {
 		const choice = args[0].toLowerCase() == 'add' ? true : false;
 
 		// interact with DB
-		premiumDB.findOne({
+		PremiumSchema.findOne({
 			userID: user.id,
 		}, async (err, res) => {
 			if (err) bot.logger.error(err.message);
 
 			// new user gettting premium
 			if (!res && choice) {
-				const newPremium = new premiumDB({
+				const newPremium = new PremiumSchema({
 					userID: user.id,
 					premium: choice,
 					premiumSince: Date.now(),
@@ -57,7 +57,7 @@ module.exports = class Premium extends Command {
 				message.channel.send('That user already has premium');
 			} else {
 				try {
-					await premiumDB.collection.deleteOne({ userID: user.id });
+					await PremiumSchema.collection.deleteOne({ userID: user.id });
 					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${user.tag} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

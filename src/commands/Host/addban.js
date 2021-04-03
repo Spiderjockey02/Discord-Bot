@@ -1,5 +1,5 @@
 // Dependencies
-const { Globalban } = require('../../modules/database/models'),
+const { GlobalBanSchema } = require('../../database/models'),
 	{ MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -29,14 +29,14 @@ module.exports = class Addban extends Command {
 		const reason = (args[0]) ? args.join(' ') : message.translate(settings.Language, 'NO_REASON');
 
 		// update database
-		Globalban.findOne({
+		GlobalBanSchema.findOne({
 			userID: user.id,
 		}, async (err, res) => {
 			if (err) bot.logger.error(err.message);
 
 			// This is their first warning
 			if (!res) {
-				const newBan = new Globalban({
+				const newBan = new GlobalBanSchema({
 					userID: user.id,
 					reason: reason,
 					restriction: restriction,

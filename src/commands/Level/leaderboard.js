@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ Ranks } = require('../../modules/database/models/index'),
+	{ RankSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
@@ -24,7 +24,7 @@ module.exports = class Leaderboard extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Retrieve Ranks from database
-		Ranks.find({
+		RankSchema.find({
 			guildID: message.guild.id,
 		}).sort([
 			['Xp', 'descending'],

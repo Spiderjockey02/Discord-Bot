@@ -1,6 +1,6 @@
 // Dependecies
 const	{ MessageEmbed } = require('discord.js'),
-	{ Playlist } = require('../../modules/database/models'),
+	{ PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js'),
 	paginate = require('../../utils/pagenator');
 
@@ -22,7 +22,7 @@ module.exports = class PView extends Command {
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// interact with database
-		Playlist.findOne({
+		PlaylistSchema.findOne({
 			name: args[0],
 			creator: message.author.id,
 		}, async (err, p) => {

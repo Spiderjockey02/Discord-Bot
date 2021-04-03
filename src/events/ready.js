@@ -1,4 +1,4 @@
-const { Guild, Premium } = require('../modules/database/models');
+const { GuildSchema, PremiumSchema } = require('../database/models');
 
 module.exports = async bot => {
 	// LOG ready event
@@ -41,7 +41,7 @@ module.exports = async bot => {
 
 	// Delete server settings on servers that removed the bot while it was offline
 	async function DeleteGuildCheck() {
-		const data = await Guild.find({});
+		const data = await GuildSchema.find({});
 		if (data.length > bot.guilds.cache.size) {
 			// A server kicked the bot when it was offline
 			const guildCount = [];
@@ -67,13 +67,14 @@ module.exports = async bot => {
 
 	// Every 5 minutes fetch new guild data
 	setInterval(async () => {
+		if (bot.config.debug) bot.logger.debug('Fetching guild settings (Interval: 5 minutes)');
 		bot.guilds.cache.forEach(async guild => {
 			guild.fetchGuildConfig();
 		});
 	}, 300000);
 
 	// check for premium users
-	const users = await Premium.find({});
+	const users = await PremiumSchema.find({});
 	for (let i = 0; i < users.length; i++) {
 		if (users[i].premium) {
 			const user = await bot.getUser(users[i].userID);

@@ -1,10 +1,10 @@
 // Dependencies
-const { Warning } = require('../modules/database/models');
+const { WarningSchema } = require('../database/models');
 const { MessageEmbed } = require('discord.js');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
 	// retrieve user data in warning database
-	Warning.findOne({
+	WarningSchema.findOne({
 		userID: member.user.id,
 		guildID: message.guild.id,
 	}, async (err, res) => {
@@ -15,7 +15,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 			try {
 
 				// create a new warning file
-				const newWarn = new Warning({
+				const newWarn = new WarningSchema({
 					userID: member.user.id,
 					guildID: message.guild.id,
 					Warnings: 1,
@@ -101,7 +101,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					await message.guild.member(member).kick(wReason);
 					message.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database
-					Warning.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
+					WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
 				} catch (e) {
 					bot.logger.error(`${err.message} when kicking user.`);
 					message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));

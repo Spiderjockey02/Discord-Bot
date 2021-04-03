@@ -1,6 +1,6 @@
 // Dependecies
 const	{ MessageEmbed } = require('discord.js'),
-	{ Playlist } = require('../../modules/database/models'),
+	{ PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PLoad extends Command {
@@ -17,12 +17,13 @@ module.exports = class PLoad extends Command {
 	}
 
 	async run(bot, message, args, settings) {
+		// make sure a playlist name was entered
+		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
-		if (!args[0]) return message.channel.send('Please enter a playlist name');
-
-		Playlist.findOne({
+		// interact with database
+		PlaylistSchema.findOne({
 			name: args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
@@ -37,19 +38,33 @@ module.exports = class PLoad extends Command {
 						textChannel: message.channel.id,
 						selfDeafen: true,
 					});
+					player.connect();
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
 
-				player.queue.add(p.songs);
-				if (!player.playing && !player.paused && !player.queue.length) player.play();
-				const embed = new MessageEmbed()
-					.setDescription(`Queued **${p.songs.length} songs** from **${p.name}**.`);
-				msg.edit('', embed);
+				// add songs to queue
+				// eslint-disable-next-line no-async-promise-executor
+				const content = new Promise(async function(resolve) {
+					for (let i = 0; i < p.songs.length; i++) {
+						const info = await bot.manager.decodeTrack(p.songs[i].track);
+						const data = await bot.manager.build(info, message.author);
+						console.log(data);
+						player.queue.add(data);
+						if (!player.playing && !player.paused && !player.queue.length) player.play();
+						if (i == p.songs.length - 1) resolve();
+					}
+				});
+
+				content.then(async function() {
+					const embed = new MessageEmbed()
+						.setDescription(`Queued **${p.songs.length} songs** from **${args[0]}**.`);
+					msg.edit('', embed);
+				});
 			} else {
-				message.channel.send('No playlist found');
+				msg.edit('No playlist found');
 			}
 		});
 	}

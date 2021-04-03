@@ -1,5 +1,5 @@
 // Dependencies
-const { Globalban } = require('../modules/database/models'),
+const { GlobalBanSchema } = require('../database/models'),
 	{ MessageEmbed, Collection } = require('discord.js'),
 	moment = require('moment');
 
@@ -52,7 +52,7 @@ module.exports = async (bot, message) => {
 		}
 
 		// make sure user is not on banned list
-		const banned = await Globalban.findOne({
+		const banned = await GlobalBanSchema.findOne({
 			userID: message.author.id,
 		}, async (err, res) => {
 			if (err) bot.logger.error(err.message);

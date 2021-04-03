@@ -1,5 +1,5 @@
 // Dependecies
-const { Playlist } = require('../../modules/database/models'),
+const { PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PDelete extends Command {
@@ -20,7 +20,7 @@ module.exports = class PDelete extends Command {
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Find and then delete playlist if it exists
-		Playlist.findOne({
+		PlaylistSchema.findOne({
 			name: args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
@@ -29,7 +29,7 @@ module.exports = class PDelete extends Command {
 				message.channel.send(`Couldn't find a playlist by the name: ${args[0]}.`);
 			} else {
 				try {
-					await Playlist.findOneAndRemove({ name: args[0],	creator: message.author.id });
+					await PlaylistSchema.findOneAndRemove({ name: args[0],	creator: message.author.id });
 					message.channel.send(`Successfully deleted ${args[0]}`);
 				} catch (err) {
 					if (message.deletable) message.delete();

@@ -1,5 +1,5 @@
 // Dependencies
-const { giveawayDB, Ranks, Warning } = require('../modules/database/models'),
+const { GiveawaySchema, RankSchema, WarningSchema } = require('../database/models'),
 	{ MessageEmbed } = require('discord.js');
 
 // When the bot leaves a guild
@@ -22,7 +22,7 @@ module.exports = async (bot, guild) => {
 
 	// Clean up database (delete all guild data)
 	try {
-		await Ranks.deleteMany({
+		await RankSchema.deleteMany({
 			guildID: guild.id,
 		});
 	} catch (err) {
@@ -30,7 +30,7 @@ module.exports = async (bot, guild) => {
 	}
 
 	try {
-		await giveawayDB.deleteMany({
+		await GiveawaySchema.deleteMany({
 			guildID: guild.id,
 		});
 	} catch (err) {
@@ -38,7 +38,7 @@ module.exports = async (bot, guild) => {
 	}
 
 	try {
-		await Warning.deleteMany({
+		await WarningSchema.deleteMany({
 			guildID: guild.id,
 		});
 	} catch (err) {

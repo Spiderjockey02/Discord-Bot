@@ -4,7 +4,7 @@ const { EventEmitter } = require('events'),
 	Discord = require('discord.js'),
 	{ defaultGiveawayMessages, defaultManagerOptions, defaultRerollOptions } = require('./Constants.js'),
 	Giveaway = require('./Giveaway.js'),
-	{ giveawayDB } = require('../../modules/database/models');
+	{ GiveawaySchema } = require('../../database/models');
 
 // Giveaway manager
 class GiveawaysManager extends EventEmitter {
@@ -195,7 +195,7 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async deleteGiveaway(messageID) {
-		await giveawayDB.findOneAndDelete({ messageID: messageID }).exec();
+		await GiveawaySchema.findOneAndDelete({ messageID: messageID }).exec();
 		return;
 	}
 
@@ -204,11 +204,11 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async getAllGiveaways() {
-		return await giveawayDB.find({});
+		return await GiveawaySchema.find({});
 	}
 
 	async editGiveaway(_messageID, _giveawayData) {
-		let data = await giveawayDB.findOne({ messageID: _messageID });
+		let data = await GiveawaySchema.findOne({ messageID: _messageID });
 		if (typeof data !== 'object') data = {};
 		for (const key in _giveawayData) {
 			if (_giveawayData.key) {
@@ -221,7 +221,7 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async saveGiveaway(messageID, giveawayData) {
-		const newGuild = await new giveawayDB(giveawayData);
+		const newGuild = await new GiveawaySchema(giveawayData);
 		await newGuild.save();
 		return;
 	}
@@ -234,7 +234,7 @@ class GiveawaysManager extends EventEmitter {
 			if (giveaway.remainingTime <= 0) {
 				return this.end(giveaway.messageID);
 			}
-			await giveaway.fetchMessage();
+			await giveaway.fetchMessage().catch(() => {});
 			if (!giveaway.message) {
 				giveaway.ended = true;
 				await this.editGiveaway(giveaway.messageID, giveaway.data);

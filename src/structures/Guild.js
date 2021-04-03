@@ -1,6 +1,6 @@
 // Dependencies
 const { Structures } = require('discord.js'),
-	{ Guild: guild } = require('../modules/database/models'),
+	{ GuildSchema } = require('../database/models'),
 	logger = require('../utils/logger'),
 	sm = require('string-similarity');
 
@@ -17,7 +17,7 @@ module.exports = Structures.extend('Guild', Guild => {
 
 		// Fetch guild settings (only on ready event)
 		async fetchGuildConfig() {
-			const data = await guild.findOne({ guildID: this.id });
+			const data = await GuildSchema.findOne({ guildID: this.id });
 			this.settings = data;
 		}
 
