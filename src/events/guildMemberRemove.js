@@ -45,7 +45,7 @@ module.exports = async (bot, member) => {
 			.setFooter(`ID: ${member.id}`)
 			.setThumbnail(member.user.displayAvatarURL())
 			.setAuthor('User left:', member.user.displayAvatarURL())
-			.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member[0].joinedAt) / 86400000)} day(s) ago)`)
+			.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
 			.setTimestamp();
 
 		// Find channel and send message
