@@ -26,7 +26,7 @@ module.exports = class Reminder extends Command {
 		}
 
 		// Get time
-		const time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
+		const time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
 		if (!time) return;
 		args.shift();
 
