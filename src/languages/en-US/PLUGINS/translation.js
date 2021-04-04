@@ -12,8 +12,8 @@ const languageData = {
 	MISSING_LANGUAGE: 'No language selected.',
 	NO_LANGUAGE: 'That is not a language I support, yet. Why not help me learn that language by joining here: https://discord.gg/8g6zUQu',
 	// Reaction role messages
-	SEND_ROLES: 'Please send your roles by id below, separate by space. E.G.: 389730847098379087 9876096987980987 7867869876689766',
-	SEND_EMOJIS: 'Please send your emojis below. The order will match with the order of the roles. Separate with a space',
+	SEND_ROLES: 'Please send a list of roles below (ID\'s or mentions), separate with a space. Type **cancel** to end this.',
+	SEND_EMOJIS: 'Please send your emojis below. The order will match with the order of the roles, separate with a space. Type **cancel** to end this',
 	EGGLORD_REACTIONS: 'Reaction Roles:',
 	REACT_BELOW: (description) => `React below to get a role!\n${description}`,
 };
