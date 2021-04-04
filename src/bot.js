@@ -46,4 +46,11 @@ const readdir = promisify(require('fs').readdir);
 	// Connect bot to discord API
 	const token = bot.config.token;
 	bot.login(token).catch(e => bot.logger.error(e.message));
+
+	process.on('unhandledRejection', err => {
+		bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
+
+		// show full error if debug mode is on
+		if(bot.config.debug) console.log(err);
+	});
 })();
