@@ -44,13 +44,19 @@ module.exports = async (bot, reaction, user) => {
 
 	// Get role to add/remove to user
 	if (!dbReaction) return;
-	const rreaction = dbReaction.reactions.find(r => r.emoji === (reaction.emoji.id) ? reaction.emoji.id : reaction.emoji.name);
+	const rreaction = dbReaction.reactions.find(r => r.emoji === reaction.emoji.toString());
 	if (!rreaction) return;
 
 	// Add or remove role depending if they have it or not
-	if (!member.roles.cache.has(rreaction.roleID)) {
-		member.roles.add(rreaction.roleID);
-	} else {
-		member.roles.remove(rreaction.roleID);
+	try {
+		if (!member.roles.cache.has(rreaction.roleID)) {
+			await member.roles.add(rreaction.roleID);
+		} else {
+			await member.roles.remove(rreaction.roleID);
+		}
+	} catch (err) {
+		const channel = guild.channels.cache.get(dbReaction.channelID);
+		console.log(guild.roles.cache.get(rreaction.roleID));
+		if (channel) channel.send(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`).then(m => m.delete({ timeout: 5000 }));
 	}
 };
