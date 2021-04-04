@@ -23,49 +23,88 @@ module.exports = class ReactionRoles extends Command {
 		// Make sure user can edit server plugins
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
+		// Make sure bot has permission to give/remove roles
+		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
+			bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
+		}
+
 		// Make sure data was entered
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
-		// Make sure channel is a text channel
+		// Make sure channel is a text channel and permission
 		const channel = message.guild.channels.cache.get(args[0]);
-		if (!channel || channel.type !== 'text') {
-			return message.error(settings.Language, 'MISSING_CHANNEL', settings.prefix.concat(this.help.usage));
-		} else if (!channel.permissionsFor(bot.user).has(['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'])) {
-			console.log('gfjhkgfdhjk');
-			return message.channel.send('Missing permissions');
+		if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
+			return message.error(settings.Language, 'MISSING_CHANNEL');
+		} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'SEND_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+		} else if (!channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS').then(m => m.delete({ timeout: 10000 }));
+		} else if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
+			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Get all roles mentioned
 		message.channel.send(message.translate(settings.Language, 'PLUGINS/SEND_ROLES'));
 
-		const filter = (m) => message.author.id === m.author.id;
-		const roleMsgs = await message.channel.awaitMessages(filter, {
-			time: 600000,
-			max: 1,
-			errors: ['time'],
-		});
+		const filter = (m) => message.author.id === m.author.id || (m.content == 'cancel' && m.author.id == message.author.id);
+
+		let roleMsgs;
+		try {
+			roleMsgs = await message.channel.awaitMessages(filter, {
+				time: 600000,
+				max: 1,
+				errors: ['time'],
+			});
+		} catch (e) {
+			return message.reply('You didn\'t send any roles in time.');
+		}
+
+		if (roleMsgs.first().content.toLowerCase() === 'cancel') {
+			return message.channel.send('Cancelled selection.');
+		}
 
 		const roleMsg = roleMsgs.first(),
 			roles = this.parseRoles(roleMsg, message.guild);
 
-		// Get all emojis mentioned
-		message.channel.send(message.translate(settings.Language, 'PLUGINS/SEND_EMOJIS'));
+		if (!roles[0]) return message.channel.send('No roles entered');
 
-		const emojiMsgs = await message.channel.awaitMessages(filter, {
-			time: 600000,
-			max: 1,
-			errors: ['time'],
-		});
+		// Get all emojis mentioned
+		const embed = new MessageEmbed()
+			.setDescription([
+				`Roles selected: ${roles.join(', ')}`,
+				'',
+				message.translate(settings.Language, 'PLUGINS/SEND_EMOJIS'),
+			].join('\n'));
+		message.channel.send(embed);
+
+		let emojiMsgs;
+		try {
+			emojiMsgs = await message.channel.awaitMessages(filter, {
+				time: 600000,
+				max: 1,
+				errors: ['time'],
+			});
+		} catch (e) {
+			return message.reply('You didn\'t send any emojis in time.');
+		}
+
+
+		if (emojiMsgs.first().content.toLowerCase() === 'cancel') {
+			return message.channel.send('Cancelled selection.');
+		}
 
 		const emojiMsg = emojiMsgs.first(),
 			emojis = this.parseEmojis(emojiMsg);
 
+		if (!emojis[0]) return message.channel.send('No emojis entered');
+
 		// Now display message to chosen channel
-		const embed = new MessageEmbed()
+		const embed2 = new MessageEmbed()
 			.setTitle(message.translate(settings.Language, 'PLUGINS/EGGLORD_REACTIONS'))
 			.setDescription(message.translate(settings.Language, 'PLUGINS/REACT_BELOW', createDescription()));
 
-		channel.send(embed).then(async (msg) => {
+		channel.send(embed2).then(async (msg) => {
 			emojis.forEach(async (em) => {
 				await msg.react(em);
 
@@ -73,7 +112,7 @@ module.exports = class ReactionRoles extends Command {
 
 			const reactions = [];
 			for (let i = 0; i < roles.length; i++) {
-				reactions.push({ role_id: roles[i].id, emoji: emojis[i].toString() });
+				reactions.push({ roleID: roles[i].id, emoji: emojis[i] });
 			}
 
 			const newRR = new ReactionRoleSchema({
@@ -93,14 +132,14 @@ module.exports = class ReactionRoles extends Command {
 		function createDescription() {
 			const strings = [];
 			for (let i = 0; i < roles.length; i++) {
-				strings.push(`${message.guild.emojis.cache.get(emojis[i]).toString()}: ${roles[i]}`);
+				strings.push(`${emojis[i]}: ${roles[i]}`);
 			}
 
 			return strings.join('\n');
 		}
 	}
 
-
+	// Get all the roles
 	parseRoles(msg, guild) {
 		const content = msg.content.trim().split(/ +/g);
 
@@ -118,6 +157,7 @@ module.exports = class ReactionRoles extends Command {
 		return roles;
 	}
 
+	// Get all the emojis
 	parseEmojis(msg) {
 		let content = msg.content.trim().split(/ +/g);
 
@@ -128,6 +168,7 @@ module.exports = class ReactionRoles extends Command {
 			}
 			return true;
 		});
+
 		return [...new Set(content)];
 	}
 };
