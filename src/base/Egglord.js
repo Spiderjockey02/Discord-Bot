@@ -109,12 +109,12 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Set this's activity
-	SetActivity(array = [], type = 'PLAYING') {
+	SetActivity(array = [], type) {
 		this.Activity = array;
 		this.PresenceType = type;
 		try {
 			let j = 0;
-			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type }), 10000);
+			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/yassuo' }), 10000);
 			return;
 		} catch (e) {
 			console.log(e);
