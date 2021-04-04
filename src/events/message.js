@@ -28,7 +28,7 @@ module.exports = async (bot, message) => {
 				`[Join support server](${bot.config.SupportServer.link})`,
 				`[Website](${bot.config.websiteURL})`,
 			].join('\n'));
-		return message.channel.send(embed);
+		return message.channel.send(embed).catch(err => bot.logger.error(`Event: 'message' has error: ${err.message}.`));
 	}
 
 	// Check if the message was @someone
@@ -133,7 +133,7 @@ module.exports = async (bot, message) => {
 				// This makes sure that if the auto-mod punished member, level plugin would not give XP
 				if (settings.plugins.includes('Level') && check) return require('../helpers/level-system').run(bot, message, settings);
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				bot.logger.error(`Event: 'message' has error: ${err.message}.`);
 			}
 		} else if (settings.plugins.includes('Level')) {
 			require('../helpers/level-system').run(bot, message, settings);
