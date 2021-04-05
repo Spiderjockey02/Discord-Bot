@@ -4,9 +4,9 @@ const { Collection } = require('discord.js'),
 module.exports = async (bot, channelID, embed) => {
 	// collect embeds
 	if (!embedCollection.has(channelID)) {
-		embedCollection.set(channelID, embed);
+		embedCollection.set(channelID, [embed]);
 	} else {
-		embedCollection.set(channelID, [embedCollection.get(channelID), embed]);
+		embedCollection.set(channelID, [...embedCollection.get(channelID), embed]);
 	}
 
 	// send embeds to correct channel
@@ -28,11 +28,16 @@ module.exports = async (bot, channelID, embed) => {
 				}
 
 				// send embed
-				webhook.send('', {
-					username: bot.user.name,
-					avatarURL: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
-					embeds: embedCollection.get(channelIDs[i]),
-				});
+				const repeats = Math.ceil(channelIDs.length / 10);
+				for (let j = 0; j < repeats; j++) {
+					await webhook.send('', {
+						username: bot.user.name,
+						avatarURL: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
+						// make sure only 10 embeds are sent
+						embeds: embedCollection.get(channelIDs[i]).slice(j * 10, (j * 10) + 10),
+					});
+				}
+
 
 				// delete from collection once sent
 				embedCollection.delete(channelIDs[i]);
