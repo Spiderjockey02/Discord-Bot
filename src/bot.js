@@ -4,6 +4,7 @@ require('./structures');
 const bot = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES'] } });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
+const path = require('path');
 
 // Load commands
 (async () => {
@@ -24,10 +25,15 @@ const readdir = promisify(require('fs').readdir);
 	const evtFiles = await readdir('./src/events/');
 	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFiles.length} -=-=-=-=-=-=-=`);
 	evtFiles.forEach(file => {
-		const eventName = file.split('.')[0];
-		bot.logger.log(`Loading Event: ${eventName}`);
-		const event = require(`./events/${file}`);
-		bot.on(eventName, event.bind(null, bot));
+		delete require.cache[file];
+		const { name } = path.parse(file);
+		try {
+			const event = new (require(`./events/${file}`))(bot, name);
+			bot.logger.log(`Loading Event: ${name}`);
+			bot.on(name, (...args) => event.run(bot, ...args));
+		} catch (err) {
+			bot.logger.error(`Failed to load Event: ${name} error: ${err.message}`);
+		}
 	});
 
 	// Audio player
