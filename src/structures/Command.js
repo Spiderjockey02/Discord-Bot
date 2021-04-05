@@ -21,4 +21,9 @@ module.exports = class Command {
 		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
+
+	// eslint-disable-next-line no-unused-vars
+	async run(...args) {
+		throw new Error(`Command: ${this.help.name} does not have a run method`);
+	}
 };
