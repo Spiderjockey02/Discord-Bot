@@ -1,6 +1,6 @@
 // Dependencies
-const { WarningSchema } = require('../database/models');
-const { MessageEmbed } = require('discord.js');
+const { WarningSchema } = require('../database/models'),
+	{ MessageEmbed } = require('discord.js');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
 	// retrieve user data in warning database
@@ -8,12 +8,17 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 		userID: member.user.id,
 		guildID: message.guild.id,
 	}, async (err, res) => {
-		if (err) bot.logger.error(err.message);
+		if (err) {
+			bot.logger.error(`Command: 'warn' has error: ${err.message}.`);
+			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+		}
 
 		// This is their first warning
 		if (!res) {
-			try {
+			// debugging mode
+			if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the first time in guild: ${message.guild.id}`);
 
+			try {
 				// create a new warning file
 				const newWarn = new WarningSchema({
 					userID: member.user.id,
@@ -25,7 +30,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				});
 
 				// save and send response to moderator
-				await newWarn.save().catch(e => bot.logger.error(e.message));
+				await newWarn.save();
 				const embed = new MessageEmbed()
 					.setColor(15158332)
 					.setAuthor(message.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
@@ -48,7 +53,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
-				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
 			// This is NOT their warning
@@ -60,20 +65,19 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 			// mute user
 			if (res.Warnings == 2) {
 				// Mutes user
-				let muteTime;
 				const muteRole = message.guild.roles.cache.get(settings.MutedRole);
-				if (muteRole) {
-					// 5 minutes
-					muteTime = 300000;
-					await (member.roles.add(muteRole));
-				}
+				if (muteRole) await member.roles.add(muteRole).catch(err => bot.logger.error(err.message));
+
+				// send embed
 				const embed = new MessageEmbed()
 					.setColor(15158332)
 					.setAuthor(message.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(message.translate(settings.Language, 'MODERATION/REASON', wReason));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 				// update database
-				res.save().catch(e => console.log(e));
+				await res.save();
+				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
+
 				// try and send warning embed to culprit
 				try {
 					const embed2 = new MessageEmbed()
@@ -91,32 +95,32 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				// remove role after time
 				if (muteRole) {
 					setTimeout(() => {
-						member.roles.remove(muteRole).catch(e => console.log(e));
-					}, muteTime);
+						member.roles.remove(muteRole).catch(err => bot.logger.error(err.message));
+					}, 5 * 60000);
 				}
 			} else {
-
+				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the third time in guild: ${message.guild.id}`);
 				// try and kick user from guild
 				try {
 					await message.guild.member(member).kick(wReason);
+					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
 					message.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database
-					WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
 				} catch (e) {
 					bot.logger.error(`${err.message} when kicking user.`);
-					message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+					message.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => m.delete({ timeout: 10000 }));
 				}
 			}
 		}
 
 		// If lodding is enabled send warning/kick embed to lodding channel
-		if (settings.ModLog == true) {
+		if (settings.ModLog) {
 			const embed = new MessageEmbed()
 				.setColor(15158332);
 			if (res) {
-				if (res.Warnings == 3) embed.setAuthor(`[KICK] ${member.user.username}#${member.user.discriminator}`, member.user.displayAvatarURL());
+				if (res.Warnings == 3) embed.setAuthor(`[KICK] ${member.user.tag}`, member.user.displayAvatarURL());
 			} else {
-				embed.setAuthor(`[WARN] ${member.user.username}#${member.user.discriminator}`, member.user.displayAvatarURL());
+				embed.setAuthor(`[WARN] ${member.user.tag}`, member.user.displayAvatarURL());
 			}
 			embed.addField('User:', `${member}`, true);
 			embed.addField('Moderator:', `<@${message.author.id}>`, true);
@@ -125,15 +129,15 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					embed.addField('Warnings:', `${res.Warnings}`, true);
 				}
 			} else {
-				bot.logger.log(`${member.user.tag} was warned from server: [${message.channel.guild.id}].`);
+				bot.logger.log(`${member.user.tag} was warned from server: [${message.guild.id}].`);
 				embed.addField('Warnings:', '1', true);
 			}
 			embed.addField('Reason:', wReason);
 			embed.setTimestamp();
 
 			// find channel and send message
-			const modChannel = message.guild.channels.cache.find(channel => channel.id == settings.ModLogChannel);
-			if (modChannel) modChannel.send(embed);
+			const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
+			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 		}
 	});
 };
