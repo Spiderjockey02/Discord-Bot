@@ -58,7 +58,7 @@ module.exports = async (bot) => {
 		})
 		.on('queueEnd', (player) => {
 			// When the queue has finished
-			setTimeout(() => {
+			player.timeout = setTimeout(() => {
 				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
 				const embed = new MessageEmbed()
 					.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`);
