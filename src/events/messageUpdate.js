@@ -8,7 +8,7 @@ module.exports = class messageUpdate extends Event {
 		if (bot.config.debug) bot.logger.debug(`Message updated${!newMessage.guild ? '' : ` in guild: ${newMessage.guild.id}`}`);
 
 		// make sure its not a DM
-		if (newMessage.guild) return;
+		if (!newMessage.guild) return;
 
 		// Check if message is a partial
 		if (oldMessage.partial) await oldMessage.fetch();
