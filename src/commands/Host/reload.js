@@ -42,9 +42,10 @@ module.exports = class Reload extends Command {
 			try {
 				delete require.cache[require.resolve(`../../events/${args[0]}`)];
 				bot.removeAllListeners(args[0]);
-				const event = require(`../../events/${args[0]}`);
+				const event = new (require(`../../events/${args[0]}`))(bot, args[0]);
 				bot.logger.log(`Loading Event: ${args[0]}`);
-				bot.on(args[0], event.bind(null, bot));
+				// eslint-disable-next-line no-shadow
+				bot.on(args[0], (...args) => event.run(bot, ...args));
 				return message.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', args[0]).then(m => m.delete({ timeout: 8000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
