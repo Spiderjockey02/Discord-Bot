@@ -23,9 +23,9 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.name)
 					.addField('After:', newGuild.name)
 					.setTimestamp();
-				bot.updateGuild(newGuild, { guildName: newGuild.name });
+				newGuild.updateGuild({ guildName: newGuild.name });
 				settings.guildName = newGuild.name;
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 
@@ -37,7 +37,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.region)
 					.addField('After:', newGuild.region)
 					.setTimestamp();
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 
@@ -49,7 +49,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.premiumTier)
 					.addField('After:', newGuild.premiumTier)
 					.setTimestamp();
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 
@@ -61,7 +61,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.banner)
 					.addField('After:', newGuild.banner)
 					.setTimestamp();
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 
@@ -73,7 +73,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.afkChannel)
 					.addField('After:', newGuild.afkChannel)
 					.setTimestamp();
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 
@@ -85,7 +85,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.vanityURLCode)
 					.addField('After:', newGuild.vanityURLCode)
 					.setTimestamp();
-				const modChannel = newGuild.guild.channels.cache.get(settings.ModLogChannel);
+				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
 				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 			}
 		}
