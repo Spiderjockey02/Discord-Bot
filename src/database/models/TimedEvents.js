@@ -1,9 +1,13 @@
 const { Schema, model } = require('mongoose');
 
-const playlistSchema = Schema({
-	command: String,
+const timeEventSchema = Schema({
 	userID: String,
-	IssueDate: String,
+	guildID: String,
+	type: String,
+	time: String,
+	// optional data
+	channelID: String,
+	message: String,
 });
 
-module.exports = model('timedEvents', playlistSchema);
+module.exports = model('timedEvents', timeEventSchema);

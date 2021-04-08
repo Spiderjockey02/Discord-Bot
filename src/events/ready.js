@@ -7,6 +7,7 @@ module.exports = class Ready extends Event {
 			once: true,
 		});
 	}
+
 	async run(bot) {
 		// LOG ready event
 		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
@@ -84,6 +85,13 @@ module.exports = class Ready extends Event {
 				const user = await bot.getUser(users[i].userID);
 				user.premium = users[i].premium;
 			}
+		}
+
+		// enable time event handler (in case of bot restart)
+		try {
+			await require('../helpers/TimedEvents-manager')(bot);
+		} catch (err) {
+			console.log(err);
 		}
 	}
 };

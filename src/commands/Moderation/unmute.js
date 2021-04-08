@@ -46,11 +46,11 @@ module.exports = class Unmute extends Command {
 
 		// Remove mutedRole from user
 		try {
-			const muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
+			const muteRole = message.guild.roles.cache.get(settings.MutedRole);
 			member[0].roles.remove(muteRole);
-			if (member[0].voice.channelID) {
-				member[0].voice.setMute(false);
-			}
+			// if in a VC unmute them
+			if (member[0].voice.channelID) member[0].voice.setMute(false);
+
 			message.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();

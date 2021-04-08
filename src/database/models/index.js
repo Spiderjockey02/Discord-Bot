@@ -7,4 +7,5 @@ module.exports = {
 	PlaylistSchema: require('./Playlist'),
 	PremiumSchema: require('./Premium'),
 	ReactionRoleSchema: require('./ReactionRole'),
+	timeEventSchema: require('./TimedEvents'),
 };

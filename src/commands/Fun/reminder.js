@@ -1,6 +1,7 @@
 // Dependencies
 const ms = require('ms'),
 	{ MessageEmbed, MessageAttachment } = require('discord.js'),
+	{ timeEventSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Reminder extends Command {
@@ -31,9 +32,21 @@ module.exports = class Reminder extends Command {
 		args.shift();
 
 		// send reminder
-		await message.sendT(settings.Language, 'FUN/REMINDER_MESSAGE', [`${args.join(' ')}`, `${ms(time, { long: true })}`]).then(() => {
+		await message.sendT(settings.Language, 'FUN/REMINDER_MESSAGE', [`${args.join(' ')}`, `${ms(time, { long: true })}`]).then(async () => {
+			// save to DB
+			const newEvent = await new timeEventSchema({
+				userID: message.author.id,
+				guildID: message.guild.id,
+				channelID: message.channel.id,
+				time: new Date(new Date().getTime() + time),
+				message: args.join(' '),
+				type: 'reminder',
+			});
+			await newEvent.save();
+
+
 			// Once time is up send reply
-			setTimeout(() => {
+			setTimeout(async () => {
 				// send embed to author's DM
 				const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
 				const embed = new MessageEmbed()
@@ -46,6 +59,12 @@ module.exports = class Reminder extends Command {
 				message.author.send(embed).catch(() => {
 					message.sendT(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${message.author}`, `${args.join(' ')}`]);
 				});
+
+				// Delete from database as bot didn't crash
+				await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
+					if (err) console.log(err);
+				});
+
 			}, time);
 		});
 	}

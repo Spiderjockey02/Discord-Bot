@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ timeEventSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Ban extends Command {
@@ -66,10 +67,27 @@ module.exports = class Ban extends Command {
 			// Check to see if this ban is a tempban
 			const possibleTime = args[args.length - 1];
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-				const time = require('../../helpers/time-converter.js').getTotalTime(possibleTime, message, settings.Language);
+				const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
 				if (!time) return;
-				setTimeout(() => {
-					bot.commands.get('unban').run(bot, message, [`${member[0].user.id}`], settings);
+
+				// connect to database
+				const newEvent = await new timeEventSchema({
+					userID: member[0].user.id,
+					guildID: message.guild.id,
+					time: new Date(new Date().getTime() + time),
+					channelID: message.channel.id,
+					type: 'ban',
+				});
+				await newEvent.save();
+
+				// unban user
+				setTimeout(async () => {
+					await bot.commands.get('unban').run(bot, message, [`${member[0].user.id}`], settings);
+
+					// Delete item from database as bot didn't crash
+					await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
+						if (err) console.log(err);
+					});
 				}, time);
 			}
 		} catch (err) {

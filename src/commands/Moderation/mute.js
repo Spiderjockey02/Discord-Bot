@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { timeEventSchema } = require('../../database/models'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Mute extends Command {
 	constructor(bot) {
@@ -48,7 +49,7 @@ module.exports = class Mute extends Command {
 		if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 		// get mute role
-		let muteRole = message.guild.roles.cache.find(role => role.id == settings.MutedRole);
+		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
 		// If role not found then make role
 		if (!muteRole) {
 			try {
@@ -78,18 +79,36 @@ module.exports = class Mute extends Command {
 					try {
 						await member[0].voice.setMute(true);
 					} catch (err) {
-						if (bot.config.debug) bot.logger.error(`${err.message} - command: mute {1}.`);
+						if (bot.config.debug) bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					}
 				}
+
 				// reply to user
 				message.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
 				// see if it was a tempmute
 				if (args[1]) {
-					const time = require('../../helpers/time-converter.js').getTotalTime(args[1], message, settings.Language);
+					const time = bot.timeFormatter.getTotalTime(args[1], message, settings.Language);
 					if (!time) return;
+
+					// connect to database
+					const newEvent = await new timeEventSchema({
+						userID: member[0].user.id,
+						guildID: message.guild.id,
+						time: new Date(new Date().getTime() + time),
+						channelID: message.channel.id,
+						roleID: muteRole.id,
+						type: 'mute',
+					});
+					await newEvent.save();
+
+					// remove mute role from user
 					setTimeout(async () => {
-						member[0].roles.remove(muteRole, 'Temporary mute expired.');
-						await member[0].voice.setMute(false).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+						bot.commands.get('unmute').run(bot, message, args, settings);
+
+						// Delete item from database as bot didn't crash
+						await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
+							if (err) console.log(err);
+						});
 					}, time);
 				}
 			});

@@ -11,9 +11,9 @@ module.exports = class Unban extends Command {
 			userPermissions: ['BAN_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
 			description: 'Unban a user.',
-			usage: 'unban <user> [reason]',
+			usage: 'unban <userID> [reason]',
 			cooldown: 5000,
-			examples: ['unban username'],
+			examples: ['unban 184376969016639488'],
 		});
 	}
 
