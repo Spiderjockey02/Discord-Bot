@@ -25,5 +25,16 @@ module.exports = class guildMemberAdd extends Event {
 			const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
 			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
 		}
+
+		// Welcome plugin (give roles and message)
+		if (settings.welcomePlugin) {
+			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
+			if (channel) channel.send(settings.welcomeMessageText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+			// Send private message to user
+			if (settings.welcomePrivateToggle) member.send(settings.welcomePrivateText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+
+			// Add role to user
+			if (settings.welcomeRoleToggle) member.roles.add(settings.welcomeRoleGive);
+		}
 	}
 };
