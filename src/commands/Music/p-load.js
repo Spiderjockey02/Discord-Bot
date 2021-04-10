@@ -13,6 +13,7 @@ module.exports = class PLoad extends Command {
 			description: 'Load a playlist',
 			usage: 'p-load <playlist name>',
 			cooldown: 3000,
+			examples: ['p-load Songs'],
 		});
 	}
 

@@ -11,7 +11,7 @@ module.exports = class Play extends Command {
 			description: 'Play a song.',
 			usage: 'play <link | song name>',
 			cooldown: 3000,
-			example: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
+			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
 		});
 	}
 

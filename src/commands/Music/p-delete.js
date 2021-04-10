@@ -12,6 +12,7 @@ module.exports = class PDelete extends Command {
 			description: 'Delete a playlist',
 			usage: 'p-delete <playlist name>',
 			cooldown: 3000,
+			examples: ['p-delete Songs'],
 		});
 	}
 

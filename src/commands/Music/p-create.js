@@ -13,6 +13,7 @@ module.exports = class PCreate extends Command {
 			description: 'Create a playlist',
 			usage: 'p-create <playlist name> <search query/link>',
 			cooldown: 3000,
+			examples: ['p-create Songs https://www.youtube.com/watch?v=N3vY6yvHLdc&list=PLUhFQlEQDZOfDqu5eZUvwUs7EEcPpeVbB'],
 		});
 	}
 

@@ -9,8 +9,9 @@ module.exports = class Help extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends information about all the commands that I can do.',
-			usage: 'help [command | plugin]',
+			usage: 'help [command]',
 			cooldown: 2000,
+			examples: ['help play'],
 		});
 	}
 
@@ -24,7 +25,7 @@ module.exports = class Help extends Command {
 					`**Prefix:** \`${settings.prefix}\` (You can also use <@!${bot.user.id}> as a prefix)`,
 					`**Type \`${settings.prefix}help [command name]\` for command specific information.**`,
 				].join('\n'));
-			const categories = bot.commands.map(c => c.help.category).filter((c) => settings.plugins.includes(c)).filter((v, i, a) => a.indexOf(v) === i);
+			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {

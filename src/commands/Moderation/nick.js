@@ -13,6 +13,7 @@ module.exports = class Nick extends Command {
 			description: 'Change the nickname of a user.',
 			usage: 'nick <user> <name>',
 			cooldown: 3000,
+			examples: ['nick username Not a nice name'],
 		});
 	}
 

@@ -14,6 +14,7 @@ module.exports = class PView extends Command {
 			description: 'View a playlist',
 			usage: 'p-view <playlist name>',
 			cooldown: 3000,
+			examples: ['p-view Songs'],
 		});
 	}
 
