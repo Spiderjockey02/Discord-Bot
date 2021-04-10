@@ -45,6 +45,12 @@ module.exports = class Lyrics extends Command {
 		try {
 			const info = await getSong(options);
 
+			// make sure lyrics were found
+			if (!info || !info.lyrics) {
+				wait.delete();
+				return message.channel.send('No lyrics found');
+			}
+
 			// create pages
 			let pagesNum = Math.ceil(info.lyrics.length / 2048);
 			if (pagesNum === 0) pagesNum = 1;
