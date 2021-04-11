@@ -35,7 +35,7 @@ module.exports = class SlowMode extends Command {
 		if (args[0] == 'off') {
 			time = 0;
 		} else if (args[0]) {
-			time = require('../../helpers/time-converter.js').getTotalTime(args[0], message, settings.Language);
+			time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
 			if (!time) return;
 		} else {
 			return message.error(settings.Language, 'NOT_NUMBER').then(m => m.delete({ timeout: 10000 }));
