@@ -24,53 +24,76 @@ module.exports = class PCreate extends Command {
 
 		const msg = await message.channel.send('Adding song(s) to your playlist (This might take a few seconds.)...');
 
-		PlaylistSchema.findOne({
-			name: args[0],
+		PlaylistSchema.find({
 			creator: message.author.id,
 		}, async (err, p) => {
-			if (err) bot.logger.error(err.message);
-			if (!p) {
-				// Get songs to add to playlist
-				let res;
-				try {
-					res = await bot.manager.search(args[1], message.author);
-				} catch (err) {
-					return message.error(settings.Language, 'MUSIC/ERROR', err.message);
-				}
+			// if an error occured
+			if (err) {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			}
 
-				// Workout what to do with the results
-				if (res.loadType == 'NO_MATCHES') {
-					// An error occured or couldn't find the track
-					msg.delete();
-					return message.error(settings.Language, 'MUSIC/NO_SONG');
-				} else if (res.loadType == 'PLAYLIST_LOADED') {
-					// Save playlist to database
-					const newPlaylist = new PlaylistSchema({
-						name: args[0],
-						songs: res.tracks,
-						timeCreated: Date.now(),
-						thumbnail: res.playlist.selectedTrack.thumbnail,
-						creator: message.author.id,
-						duration: res.playlist.duration,
-					});
-					newPlaylist.save().catch(err => bot.logger.error(err.message));
-
-					// Show that playlist has been saved
-					const embed = new MessageEmbed()
-						.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
-						.setDescription([	`Created a playlist with name: **${args[0]}**.`,
-							`Playlist duration: ${bot.timeFormatter.getReadableTime(res.playlist.duration)}.`,
-							`Added **${res.playlist.name}** (${res.tracks.length} tracks) to **${args[0]}**.`].join('\n'))
-						.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/100`)
-						.setTimestamp();
-					msg.edit('', embed);
+			// response from database
+			if (!p[0]) {
+				await this.savePlaylist(bot, message, args, settings, msg);
+			} else if (p[0] && !message.author.premium) {
+				// User needs premium to save more playlists
+				return msg.edit('Premium allows you to save up to 3 playlists instead of 1.');
+			} else if (p.length >= 3 && message.author.premium) {
+				// there is a max of 3 playlists per a user even with premium
+				return msg.edit('You are unable to save anymore playlists. Max: 3');
+			} else if (p && message.author.premium) {
+				// user can have save another playlist as they have premium
+				const exist = p.find(obj => obj.name == args[0]);
+				if (!exist) {
+					await this.savePlaylist(bot, message, args, settings, msg);
 				} else {
-					msg.delete();
-					return message.channel.send(`\`${args[1]}\` is not a plylist / or a playlist could not be found`);
+					msg.edit('A playlist already exists with that name.');
 				}
-			} else {
-				message.channel.send('A playlist already exists with that name.');
 			}
 		});
+	}
+
+	// Check and save playlist to database
+	async savePlaylist(bot, message, args, settings, msg) {
+		// Get songs to add to playlist
+		let res;
+		try {
+			res = await bot.manager.search(args[1], message.author);
+		} catch (err) {
+			return message.error(settings.Language, 'MUSIC/ERROR', err.message);
+		}
+
+		// Workout what to do with the results
+		if (res.loadType == 'NO_MATCHES') {
+			// An error occured or couldn't find the track
+			msg.delete();
+			return message.error(settings.Language, 'MUSIC/NO_SONG');
+		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
+			// Save playlist to database
+			const newPlaylist = new PlaylistSchema({
+				name: args[0],
+				songs: res.tracks.slice(0, message.author.premium ? 100 : 200),
+				timeCreated: Date.now(),
+				thumbnail: res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail,
+				creator: message.author.id,
+				duration: res.playlist?.duration ?? res.tracks[0].duration,
+			});
+			newPlaylist.save().catch(err => bot.logger.error(err.message));
+
+			// Show that playlist has been saved
+			const embed = new MessageEmbed()
+				.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
+				.setDescription([	`Created a playlist with name: **${args[0]}**.`,
+					`Playlist duration: ${bot.timeFormatter.getReadableTime(parseInt(newPlaylist.duration))}.`,
+					`Added **${(res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : res.tracks[0].title}** (${res.tracks.length} tracks) to **${args[0]}**.`].join('\n'))
+				.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/${(message.author.premium) ? '100' : '200'}`)
+				.setTimestamp();
+			msg.edit('', embed);
+		} else {
+			msg.delete();
+			return message.channel.send(`\`${args[1]}\` is not a playlist`);
+		}
 	}
 };

@@ -1,6 +1,7 @@
 // Dependecies
 const	{ MessageEmbed } = require('discord.js'),
 	{ PlaylistSchema } = require('../../database/models'),
+	{ TrackUtils } = require('erela.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PLoad extends Command {
@@ -50,10 +51,11 @@ module.exports = class PLoad extends Command {
 				// eslint-disable-next-line no-async-promise-executor
 				const content = new Promise(async function(resolve) {
 					for (let i = 0; i < p.songs.length; i++) {
-						const info = await bot.manager.decodeTrack(p.songs[i].track);
-						const data = await bot.manager.build(info, message.author);
-						console.log(data);
-						player.queue.add(data);
+						player.queue.add(TrackUtils.buildUnresolved({
+							title: p.songs[i].title,
+							author: p.songs[i].author,
+							duration: p.songs[i].duration,
+						}, message.author));
 						if (!player.playing && !player.paused && !player.queue.length) player.play();
 						if (i == p.songs.length - 1) resolve();
 					}
