@@ -59,6 +59,7 @@ module.exports = class Premium extends Command {
 				try {
 					await PremiumSchema.collection.deleteOne({ userID: user.id });
 					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${user.tag} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
+					user.premium = false;
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
