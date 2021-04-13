@@ -57,6 +57,9 @@ module.exports = async (bot) => {
 			if (channel) channel.send(embed).then(m => m.delete({ timeout: 15000 }));
 		})
 		.on('queueEnd', (player) => {
+			// Don't leave channel if 24/7 mode is active
+			if (player.twentyFourSeven) return;
+
 			// When the queue has finished
 			player.timeout = setTimeout(() => {
 				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';

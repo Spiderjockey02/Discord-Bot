@@ -7,6 +7,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.musicTrivia = false;
 			this.speed = 1;
 			this.timeout = null;
+			this.twentyFourSeven = false;
 		}
 
 		// add filters

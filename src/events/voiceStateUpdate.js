@@ -60,8 +60,11 @@ module.exports = class voiceStateUpdate extends Event {
 		if (oldState.id === bot.user.id) return;
 		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelID) return;
 
+		// Don't leave channel if 24/7 mode is active
+		if (player.twentyFourSeven) return;
+
 		// Make sure the bot is in the voice channel that 'activated' the event
-		if (oldState.guild.members.cache.get(bot.user.id).voice.channel.id === oldState.channelID) {
+		if (oldState.guild.members.cache.get(bot.user.id).voice.channelID === oldState.channelID) {
 			if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 				const vcName = oldState.guild.me.voice.channel.name;
 				await delay(180000);
