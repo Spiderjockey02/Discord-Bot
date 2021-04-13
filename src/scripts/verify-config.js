@@ -13,8 +13,8 @@ module.exports.run = async (config) => {
 	let error;
 
 	// Make sure Node.js V12 or higher is being ran.
-	if (process.version.slice(1).split('.')[0] < 12) {
-		logger.error('Node 12 or higher is required.');
+	if (process.version.slice(1).split('.')[0] < 14) {
+		logger.error('Node 14 or higher is required.');
 		error = true;
 	}
 
@@ -40,20 +40,20 @@ module.exports.run = async (config) => {
 
 	// Check twitch API
 	if (!config.api_keys.twitch) {
-		logger.error(`${chalk.red('✗')} Twitch API key is missing.`);
+		logger.log(`${chalk.red('✗')} Twitch API key is missing.`);
 		error = false;
 	}
 
 	// Check fortnite API
 	if (!config.api_keys.fortnite) {
-		logger.error(`${chalk.red('✗')} Fortnite API key is missing.`);
+		logger.log(`${chalk.red('✗')} Fortnite API key is missing.`);
 		error = false;
 	} else {
 		const stats = new Fortnite(config.api_keys.fortnite);
-		await stats.user('Ninja', 'pc').catch(e => {
-			console.log(e);
-			if (e.message == 'Invalid authentication credentials') {
-				logger.error(`${chalk.red('✗')} Fortnite API key is incorrect.`);
+		await stats.user('Ninja', 'pc').catch(err => {
+			console.log(err);
+			if (err.message == 'Invalid authentication credentials') {
+				logger.log(`${chalk.red('✗')} Fortnite API key is incorrect.`);
 				error = false;
 			}
 		});
@@ -61,27 +61,27 @@ module.exports.run = async (config) => {
 
 	// Check Ksoft API
 	if (!config.api_keys.ksoft) {
-		logger.error(`${chalk.red('✗')} Ksoft API key is missing.`);
+		logger.log(`${chalk.red('✗')} Ksoft API key is missing.`);
 		error = false;
 	} else {
 		const ksoft = new KSoftClient(config.api_keys.ksoft);
 		const resp = await ksoft.images.meme();
 		if (!resp.url) {
-			logger.error(`${chalk.red('✗')} Ksoft API key is incorrect.`);
+			logger.log(`${chalk.red('✗')} Ksoft API key is incorrect.`);
 			error = false;
 		}
 	}
 
 	// Check Steam API
 	if (!config.api_keys.steam) {
-		logger.error(`${chalk.red('✗')} Steam API key is missing.`);
+		logger.log(`${chalk.red('✗')} Steam API key is missing.`);
 		error = false;
 	} else {
 		try {
 			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.api_keys.steam}&vanityurl=eroticgaben`).then(res => res.json());
 		} catch (e) {
 			if (e.type == 'invalid-json') {
-				logger.error(`${chalk.red('✗')} Steam API key is incorrect.`);
+				logger.log(`${chalk.red('✗')} Steam API key is incorrect.`);
 				error = false;
 			}
 		}
@@ -106,7 +106,7 @@ module.exports.run = async (config) => {
 
 	// Check Amethyste API
 	if (!config.api_keys.amethyste) {
-		logger.error(`${chalk.red('✗')} Amethyste API key is missing.`);
+		logger.log(`${chalk.red('✗')} Amethyste API key is missing.`);
 		error = false;
 	} else {
 		const res = await fetch('https://v1.api.amethyste.moe/generate/blurple', {
@@ -117,7 +117,7 @@ module.exports.run = async (config) => {
 		});
 		const result = await res.json();
 		if (result.status === 401) {
-			logger.error(`${chalk.red('✗')} Invalid Amethyste API key.`);
+			logger.log(`${chalk.red('✗')} Invalid Amethyste API key.`);
 			error = false;
 		}
 	}
@@ -145,8 +145,9 @@ module.exports.run = async (config) => {
 		error = true;
 	} else {
 		const mongoose = require('mongoose');
-		await mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).catch(() => {
-			logger.log(`${chalk.red('✗')} Unable to connect to database.`);
+		await mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).catch((err) => {
+			console.log(err);
+			logger.error(`${chalk.red('✗')} Unable to connect to database.`);
 			error = true;
 		});
 	}
