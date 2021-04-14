@@ -27,10 +27,10 @@ module.exports = class PView extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 
-			if (!p) {
+			if (!p[0]) {
 				message.channel.send('You have no playlists saved.');
 			} else {
 				// Get all playlists name

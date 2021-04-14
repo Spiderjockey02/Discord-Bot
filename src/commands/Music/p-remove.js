@@ -2,25 +2,24 @@
 const { PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
-module.exports = class PDelete extends Command {
+module.exports = class PRemove extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'p-delete',
+			name: 'p-remove',
 			dirname: __dirname,
-			aliases: ['playlist-delete'],
+			aliases: ['playlist-remove'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Delete a playlist',
-			usage: 'p-delete <playlist name>',
+			description: 'remove a song from the playlist',
+			usage: 'p-remove <playlist name> <position> [position]',
 			cooldown: 3000,
-			examples: ['p-delete Songs'],
+			examples: ['p-remove Songs 3', 'p-remove Songs 3 5'],
 		});
 	}
 
 	async run(bot, message, args, settings) {
-		// Make sure a playlist name was entered
+		// make sure something was entered
 		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
-		// Find and then delete playlist if it exists
 		PlaylistSchema.findOne({
 			name: args[0],
 			creator: message.author.id,
@@ -32,17 +31,25 @@ module.exports = class PDelete extends Command {
 				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 
-			if (!p) {
-				message.channel.send(`Couldn't find a playlist by the name: ${args[0]}.`);
-			} else {
+			// playlist found
+			if (p) {
 				try {
-					await PlaylistSchema.findOneAndRemove({ name: args[0],	creator: message.author.id });
-					message.channel.send(`Successfully deleted ${args[0]}`);
+					if (!isNaN(args[1]) && !isNaN(args[2])) {
+						p.songs.splice(args[1] - 1, parseInt(args[2] - args[1] + 1));
+					} else if (!isNaN(args[1])) {
+						p.songs.splice(args[1] - 1, 1);
+					} else {
+						return message.channel.send('Not an option');
+					}
+					message.channel.send('Successfully updated playlist.');
+					await p.save();
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
+			} else {
+				message.channel.send('No playlist found.');
 			}
 		});
 	}
