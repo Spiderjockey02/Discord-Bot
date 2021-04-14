@@ -4,9 +4,9 @@ const Command = require('../../structures/Command.js');
 module.exports = class TwentyFourSeven extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: '24/7',
+			name: '247',
 			dirname: __dirname,
-			aliases: ['stay'],
+			aliases: ['stay', '24/7'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Stays in the voice channel even if no one is in it.',
 			usage: '24/7',
