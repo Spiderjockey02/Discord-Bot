@@ -18,7 +18,7 @@ module.exports = class Clear extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -38,7 +38,7 @@ module.exports = class Clear extends Command {
 		}
 
 		// Get number of messages to removed
-		const amount = args[0];
+		const amount = message.args[0];
 
 		// Make something was entered after `!clear`
 
@@ -51,8 +51,8 @@ module.exports = class Clear extends Command {
 		// Delete messages
 		await message.channel.messages.fetch({ limit: amount }).then(async messages => {
 			// Delete user messages
-			if (message.guild.members.cache.get(args[1])) {
-				messages = messages.filter((m) => m.author.id === message.guild.members.get(args[1]).user.id);
+			if (message.guild.members.cache.get(message.args[1])) {
+				messages = messages.filter((m) => m.author.id === message.guild.members.get(message.args[1]).user.id);
 			}
 
 			// delete the message

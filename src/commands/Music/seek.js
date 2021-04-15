@@ -16,7 +16,7 @@ module.exports = class Seek extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -37,10 +37,10 @@ module.exports = class Seek extends Command {
 		}
 
 		// Make sure a time was inputted
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('seek').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', bot.commands.get('seek').help.usage.replace('${PREFIX}', settings.prefix)).then(m => m.delete({ timeout: 5000 }));
 
 		// update the time
-		const time = bot.timeFormatter.read24hrFormat((args[0]) ? args[0] : '10');
+		const time = bot.timeFormatter.read24hrFormat((message.args[0]) ? message.args[0] : '10');
 
 		if (time > player.queue.current.duration) {
 			message.channel.send(`Less than ${player.queue.current.duration}`);
@@ -48,7 +48,7 @@ module.exports = class Seek extends Command {
 			player.seek(time);
 			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
-				.setDescription(bot.translate(settings.Language, 'MUSIC/TIME_MOVED', args[0]));
+				.setDescription(bot.translate(settings.Language, 'MUSIC/TIME_MOVED', message.args[0]));
 			message.channel.send(embed);
 		}
 	}

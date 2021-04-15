@@ -15,7 +15,7 @@ module.exports = class Skip extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -28,8 +28,8 @@ module.exports = class Skip extends Command {
 		if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// skip song
-		if (!isNaN(args[0]) && args[0] < player.queue.length) {
-			player.stop(parseInt(args[0]));
+		if (!isNaN(message.args[0]) && message.args[0] < player.queue.length) {
+			player.stop(parseInt(message.args[0]));
 		} else {
 			player.stop();
 		}

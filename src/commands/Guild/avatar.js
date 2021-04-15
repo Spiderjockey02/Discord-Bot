@@ -17,7 +17,7 @@ module.exports = class Avatar extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get user
 		const member = message.getMember();
 

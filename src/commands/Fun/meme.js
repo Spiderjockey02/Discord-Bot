@@ -15,7 +15,7 @@ module.exports = class Meme extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Retrieve a random meme
 		const meme = await bot.Ksoft.images.meme();
 

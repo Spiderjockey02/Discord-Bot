@@ -15,7 +15,7 @@ module.exports = class Speed extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -36,18 +36,18 @@ module.exports = class Speed extends Command {
 		}
 
 		// Make sure Number is a number
-		if (isNaN(args[0])) {
+		if (isNaN(message.args[0])) {
 			return message.channel.error(settings.Language, 'NOT_NUMBER');
 		}
 
 		// Make sure number is between 1 and 10
-		if (args[0] < 0 || args[0] > 10) {
+		if (message.args[0] < 0 || message.args[0] > 10) {
 			return message.channel.error(settings.Language, 'MUSIC/INCORRECT_NUMBER');
 		}
 
 		// Change speed value
 		try {
-			player.setSpeed(args[0]);
+			player.setSpeed(message.args[0]);
 			message.channel.send(`Speed is ${player.speed}`);
 		} catch (err) {
 			if (message.deletable) message.delete();

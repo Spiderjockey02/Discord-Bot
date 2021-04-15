@@ -18,7 +18,7 @@ module.exports = class Kick extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -33,7 +33,7 @@ module.exports = class Kick extends Command {
 
 		// Get user and reason
 		const member = message.getMember();
-		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
+		const reason = (message.args.join(' ').slice(22)) ? message.args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

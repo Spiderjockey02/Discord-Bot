@@ -16,8 +16,8 @@ module.exports = class Help extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
-		if (!args[0]) {
+	async run(bot, message, settings) {
+		if (!message.args[0]) {
 			// Show default help page
 			const embed = new MessageEmbed()
 				.setAuthor('Available commands', bot.user.displayAvatarURL({ format: 'png' }))
@@ -39,11 +39,11 @@ module.exports = class Help extends Command {
 					embed.addField(`${category} [**${length}**]`, commands, false);
 				});
 			message.channel.send(embed);
-		} else if (args.length == 1) {
+		} else if (message.args.length == 1) {
 			// Check if arg is command
-			if (bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]))) {
+			if (bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]))) {
 				// arg was a command
-				const cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
+				const cmd = bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]));
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(message.author.id)) {
 					const embed = new MessageEmbed()

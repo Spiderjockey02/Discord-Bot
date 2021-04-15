@@ -17,7 +17,7 @@ module.exports = class Suggestion extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure a support server has been entered
 		if (bot.config.SupportServer) {
 			// get suggestion channel
@@ -30,7 +30,7 @@ module.exports = class Suggestion extends Command {
 				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 			}
 
-			const words = args.join(' ').split('-');
+			const words = message.args.join(' ').split('-');
 			if (words.length != 3) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			// send message
 			const title = words[0],

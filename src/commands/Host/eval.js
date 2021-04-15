@@ -17,9 +17,9 @@ module.exports = class Eval extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Evaluated the code
-		const toEval = args.join(' ');
+		const toEval = message.args.join(' ');
 		try {
 			if (toEval) {
 				// Auto-complete commands

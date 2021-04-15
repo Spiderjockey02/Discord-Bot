@@ -17,9 +17,9 @@ module.exports = class Clyde extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get text
-		const text = args.join(' ');
+		const text = message.args.join(' ');
 
 		// make sure text was entered
 		if (!text) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));

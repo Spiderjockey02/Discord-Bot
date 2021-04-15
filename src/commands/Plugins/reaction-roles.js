@@ -19,7 +19,7 @@ module.exports = class ReactionRoles extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure user can edit server plugins
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
@@ -30,10 +30,10 @@ module.exports = class ReactionRoles extends Command {
 		}
 
 		// Make sure data was entered
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure channel is a text channel and permission
-		const channel = message.guild.channels.cache.get(args[0]);
+		const channel = message.guild.channels.cache.get(message.args[0]);
 		if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
 			return message.channel.error(settings.Language, 'MISSING_CHANNEL');
 		} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {

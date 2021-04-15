@@ -16,7 +16,7 @@ module.exports = class TicketClose extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// will close the current ticket channel
 		const patt = /ticket-\d{18}/g;
 		if (patt.test(message.channel.name)) {

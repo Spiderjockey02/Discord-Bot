@@ -17,18 +17,18 @@ module.exports = class Premium extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		if (message.deletable) message.delete();
 
 		// Make sure args was entered
-		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user
-		const user = await bot.getUser(args[1]);
+		const user = await bot.getUser(message.args[1]);
 		if (!user) return message.channel.send('No user found with that ID');
 
 		// get choice
-		const choice = args[0].toLowerCase() == 'add' ? true : false;
+		const choice = message.args[0].toLowerCase() == 'add' ? true : false;
 
 		// interact with DB
 		PremiumSchema.findOne({

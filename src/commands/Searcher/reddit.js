@@ -16,9 +16,9 @@ module.exports = class Reddit extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get subreddit
-		if (!args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// try and retrieve image from reddit
 		try {
@@ -26,9 +26,9 @@ module.exports = class Reddit extends Command {
 			// Check if its a NSFW channel or not
 			if (message.channel.nsfw) {
 				// NSFW content can be shown
-				reddit = await bot.Ksoft.images.reddit(args[0], { removeNSFW: false });
+				reddit = await bot.Ksoft.images.reddit(message.message.args[0], { removeNSFW: false });
 			} else {
-				reddit = await bot.Ksoft.images.reddit(args[0], { removeNSFW: true });
+				reddit = await bot.Ksoft.images.reddit(message.message.args[0], { removeNSFW: true });
 			}
 
 			// Send message to channel

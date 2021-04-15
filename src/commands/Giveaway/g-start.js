@@ -18,7 +18,7 @@ module.exports = class G_start extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// delete command
 		if (message.deletable) message.delete();
 
@@ -32,29 +32,29 @@ module.exports = class G_start extends Command {
 		}
 
 		// Make sure a time, winner count & prize is entered
-		if (args.length <= 2) {
+		if (message.args.length <= 2) {
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Get time
-		const time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
+		const time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
 		if (!time) return;
 
 		// Make sure that number of winners is a number
-		if (isNaN(args[1]) || args[1] > 10) {
+		if (isNaN(message.args[1]) || message.args[1] > 10) {
 			return message.channel.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Make sure prize is less than 256 characters
-		if (args.slice(2).join(' ').length >= 256) {
+		if (message.args.slice(2).join(' ').length >= 256) {
 			return message.channel.send('Prize must be less than 256 characters long.').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Start the giveaway
 		bot.giveawaysManager.start(message.channel, {
 			time: time,
-			prize: args.slice(2).join(' '),
-			winnerCount: parseInt(args[1]),
+			prize: message.args.slice(2).join(' '),
+			winnerCount: parseInt(message.args[1]),
 			hostedBy: message.member,
 			messages: bot.translate(settings.Language, 'GIVEAWAY/GIVEAWAY_DATA'),
 			// language settings

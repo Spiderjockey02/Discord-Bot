@@ -16,7 +16,7 @@ module.exports = class About extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		const embed = new MessageEmbed()
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 			.setTitle('About')

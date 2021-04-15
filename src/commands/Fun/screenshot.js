@@ -20,7 +20,7 @@ module.exports = class Screenshot extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure bot has permissions to send attachments
 		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
@@ -28,19 +28,19 @@ module.exports = class Screenshot extends Command {
 		}
 
 		// make sure a website was entered
-		if (!args[0]) {
+		if (!message.args[0]) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// make sure URl is valid
-		if (!validUrl.isUri(args[0])) {
+		if (!validUrl.isUri(message.args[0])) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'FUN/INVALID_URL').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (bot.adultSiteList.includes(args[0]) && !message.channel.nsfw) {
+		if (bot.adultSiteList.includes(message.args[0]) && !message.channel.nsfw) {
 			return message.channel.send('You can not view NSFW websites in a non-NSFW channel.').then(m => m.delete({ timeout: 5000 }));
 		}
 
@@ -48,7 +48,7 @@ module.exports = class Screenshot extends Command {
 		const msg = await message.channel.send('Creating screenshot of website.');
 
 		// try and create screenshot
-		screenshotWebsite(args[0]).then(async data => {
+		screenshotWebsite(message.args[0]).then(async data => {
 			if (!data) {
 				message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing data').then(m => m.delete({ timeout: 5000 }));
 			} else {

@@ -15,13 +15,13 @@ module.exports = class Random extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Random number and facts command
 		const max = 100000,
-			num1 = parseInt(args[0]),
-			num2 = parseInt(args[1]);
+			num1 = parseInt(message.args[0]),
+			num2 = parseInt(message.args[1]);
 		// Make sure both entries are there
-		if (!num1 || !args[1]) {
+		if (!num1 || !message.args[1]) {
 			if (message.deletable) message.delete();
 			message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			return;

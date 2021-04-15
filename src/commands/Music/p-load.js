@@ -18,15 +18,15 @@ module.exports = class PLoad extends Command {
 		});
 	}
 
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// make sure a playlist name was entered
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
 		// interact with database
 		PlaylistSchema.findOne({
-			name: args[0],
+			name: message.args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
 			// if an error occured
@@ -69,7 +69,7 @@ module.exports = class PLoad extends Command {
 
 				content.then(async function() {
 					const embed = new MessageEmbed()
-						.setDescription(`Queued **${p.songs.length} songs** from **${args[0]}**.`);
+						.setDescription(`Queued **${p.songs.length} songs** from **${message.args[0]}**.`);
 					msg.edit('', embed);
 				});
 			} else {

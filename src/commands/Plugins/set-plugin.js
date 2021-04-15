@@ -18,7 +18,7 @@ module.exports = class SetPlugin extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -26,16 +26,16 @@ module.exports = class SetPlugin extends Command {
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure something was entered
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure it's a real plugin
-		if (defaultPlugins.includes(args[0])) {
-			if (!settings.plugins.includes(args[0])) {
-				settings.plugins.push(args[0]);
-				message.channel.send(`Added ${args[0]} to Guild's plugins.`);
+		if (defaultPlugins.includes(message.args[0])) {
+			if (!settings.plugins.includes(message.args[0])) {
+				settings.plugins.push(message.args[0]);
+				message.channel.send(`Added ${message.args[0]} to Guild's plugins.`);
 			} else {
-				settings.plugins.splice(settings.plugins.indexOf(args[0]), 1);
-				message.channel.send(`Removed ${args[0]} to Guild's plugins.`);
+				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
+				message.channel.send(`Removed ${message.args[0]} to Guild's plugins.`);
 			}
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });

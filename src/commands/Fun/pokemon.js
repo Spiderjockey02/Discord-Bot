@@ -17,16 +17,16 @@ module.exports = class Pokemon extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get pokemon
-		const pokemon = args.join(' ');
+		const pokemon = message.args.join(' ');
 		if (!pokemon) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Search for pokemon
-		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${args.join(' ')}`)
+		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${message.args.join(' ')}`)
 			.then((info) => info.json())
 			.catch((err) => {
 				// An error occured when looking for account

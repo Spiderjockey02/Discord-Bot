@@ -22,7 +22,7 @@ module.exports = class Leaderboard extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Retrieve Ranks from database
 		RankSchema.find({
 			guildID: message.guild.id,

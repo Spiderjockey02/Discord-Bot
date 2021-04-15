@@ -19,40 +19,40 @@ module.exports = class R6 extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get platforms and regions (just make it easier for users to use this command)
 		const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4:'PSN' };
 		const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
 		let player, platform, region;
 
 		// Checks to make sure a username was entered
-		if (!args[0]) {
+		if (!message.args[0]) {
 			message.delete();
 			return	message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
 		} else {
-			player = args[0];
+			player = message.args[0];
 		}
 
 		// Get platform
 		platform = platforms['pc'];
 		region = regions['eu'];
-		for (let i = 0; i < args.length; i++) {
+		for (let i = 0; i < message.args.length; i++) {
 			// Get Console
-			if (['pc', 'xbox', 'ps4'].includes(args[i].toLowerCase())) {
+			if (['pc', 'xbox', 'ps4'].includes(message.args[i].toLowerCase())) {
 				// console has been found
-				platform = platforms[args[i].toLowerCase()];
-				args.splice(i);
+				platform = platforms[message.args[i].toLowerCase()];
+				message.args.splice(i);
 			}
 		}
-		for (let i = 0; i < args.length; i++) {
+		for (let i = 0; i < message.args.length; i++) {
 			// get region
-			if (['eu', 'na', 'as'].includes(args[i].toLowerCase())) {
-				region = regions[args[i].toLowerCase()];
-				args.splice(i);
+			if (['eu', 'na', 'as'].includes(message.args[i].toLowerCase())) {
+				region = regions[message.args[i].toLowerCase()];
+				message.args.splice(i);
 			}
 		}
 
-		player = args.join(' ');
+		player = message.args.join(' ');
 		if(platform === 'xbl') player = player.replace('_', '');
 		try {
 			player = await getId(platform, player);

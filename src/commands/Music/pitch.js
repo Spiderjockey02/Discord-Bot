@@ -17,7 +17,7 @@ module.exports = class Pitch extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -32,7 +32,7 @@ module.exports = class Pitch extends Command {
 		// Check that user is in the same voice channel
 		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
-		if (args[0] && (args[0].toLowerCase() == 'reset' || args[0].toLowerCase() == 'off')) {
+		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
 			player.resetFilter();
 			const msg = await message.channel.send('Reseting **pitch**. This may take a few seconds...');
 			const embed = new MessageEmbed()
@@ -41,15 +41,15 @@ module.exports = class Pitch extends Command {
 			return msg.edit('', embed);
 		}
 
-		if (isNaN(args[0])) return message.channel.send('Amount must be a real number.');
-		if (args[0] < 0 || args[0] > 10) return message.channel.send('Pitch must be inbetween 0 and 10.');
+		if (isNaN(message.args[0])) return message.channel.send('Amount must be a real number.');
+		if (message.args[0] < 0 || message.args[0] > 10) return message.channel.send('Pitch must be inbetween 0 and 10.');
 
 		player.setFilter({
-			timescale: { pitch: args[0] },
+			timescale: { pitch: message.args[0] },
 		});
-		const msg = await message.channel.send(`Setting pitch to **${args[0]}**. This may take a few seconds...`);
+		const msg = await message.channel.send(`Setting pitch to **${message.args[0]}**. This may take a few seconds...`);
 		const embed = new MessageEmbed()
-			.setDescription(`Pitch set to: **${args[0]}**`);
+			.setDescription(`Pitch set to: **${message.args[0]}**`);
 		await delay(5000);
 		return msg.edit('', embed);
 	}

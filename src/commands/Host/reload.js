@@ -16,15 +16,15 @@ module.exports = class Reload extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// delete message
 		if (message.deletable) message.delete();
 
 		// Checks to see if a command was specified
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// checks to make sure command exists
-		const commandName = args[0].toLowerCase();
+		const commandName = message.args[0].toLowerCase();
 		if (bot.commands.has(commandName) || bot.commands.get(bot.aliases.get(commandName))) {
 			// Finds command
 			const cmd = bot.commands.get(commandName) || bot.commands.get(bot.aliases.get(commandName));
@@ -36,17 +36,17 @@ module.exports = class Reload extends Command {
 				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
 			} catch(err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE');// .then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
-		} else if (Object.keys(bot._events).includes(args[0])) {
+		} else if (Object.keys(bot._events).includes(message.args[0])) {
 			try {
-				delete require.cache[require.resolve(`../../events/${args[0]}`)];
-				bot.removeAllListeners(args[0]);
-				const event = new (require(`../../events/${args[0]}`))(bot, args[0]);
-				bot.logger.log(`Loading Event: ${args[0]}`);
+				delete require.cache[require.resolve(`../../events/${message.args[0]}`)];
+				bot.removeAllListeners(message.args[0]);
+				const event = new (require(`../../events/${message.args[0]}`))(bot, message.args[0]);
+				bot.logger.log(`Loading Event: ${message.args[0]}`);
 				// eslint-disable-next-line no-shadow
-				bot.on(args[0], (...args) => event.run(bot, ...args));
-				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', args[0]).then(m => m.delete({ timeout: 8000 }));
+				bot.on(message.args[0], (...args) => event.run(bot, ...args));
+				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', message.args[0]).then(m => m.delete({ timeout: 8000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));

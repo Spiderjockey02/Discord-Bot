@@ -18,14 +18,14 @@ module.exports = class Image extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure a topic was included
-		if (!args[0]) {
+		if (!message.args[0]) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
-		const results = await image_search({ query: args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+		const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
 
 		// send image
 		const embed = new MessageEmbed()

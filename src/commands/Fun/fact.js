@@ -17,7 +17,7 @@ module.exports = class Fact extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get the random facts file
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {

@@ -18,9 +18,9 @@ module.exports = class DM extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure a member was mentioned
-		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user
 		const member = message.getMember();
@@ -31,7 +31,7 @@ module.exports = class DM extends Command {
 		// send message
 		const embed = new MessageEmbed()
 			.setTitle('DM recieved')
-			.setDescription(args.join(' ').slice(args[0].length))
+			.setDescription(message.args.join(' ').slice(message.args[0].length))
 			.setTimestamp()
 			.setFooter(message.author.tag, message.author.displayAvatarURL({ format: 'png', size: 1024 }));
 		member[0].user.send(embed).catch(err => {

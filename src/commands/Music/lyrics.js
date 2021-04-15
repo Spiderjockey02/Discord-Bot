@@ -17,10 +17,10 @@ module.exports = class Lyrics extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check that a song is being played
 		let options;
-		if (args.length == 0) {
+		if (message.args.length == 0) {
 			// Check if a song is playing and use that song
 			const player = bot.manager.players.get(message.guild.id);
 			if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
@@ -31,10 +31,10 @@ module.exports = class Lyrics extends Command {
 				optimizeQuery: true,
 			};
 		} else {
-			// Use the args for song search
+			// Use the message.args for song search
 			options = {
 				apiKey: bot.config.api_keys.genuis,
-				title: args.join(' '),
+				title: message.args.join(' '),
 				artist: '',
 				optimizeQuery: true,
 			};

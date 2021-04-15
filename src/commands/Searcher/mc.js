@@ -18,20 +18,20 @@ module.exports = class MC extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Ping a minecraft server
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const r = await message.channel.send('Pinging server..');
 
 		// If no ping use 25565
-		if(!args[1]) args[1] = '25565';
+		if(!message.args[1]) message.args[1] = '25565';
 
 		// Ping server
-		status(args[0], { port: parseInt(args[1]) }).then((response) => {
+		status(message.args[0], { port: parseInt(message.args[1]) }).then((response) => {
 			const embed = new MessageEmbed()
 				.setColor(0x0099ff)
 				.setTitle('Server Status')
-				.setURL(`https://mcsrvstat.us/server/${args[0]}:${args[1]}`)
+				.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`)
 				.addField('Server IP:', response.host)
 				.addField('Server Version:', response.version)
 				.addField('Description:', response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))

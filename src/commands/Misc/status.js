@@ -16,7 +16,7 @@ module.exports = class Status extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get information on the services the bot provide
 		const m = await message.channel.send('Pong');
 		const embed = new MessageEmbed()

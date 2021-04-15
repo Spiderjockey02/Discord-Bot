@@ -18,7 +18,7 @@ module.exports = class Bassboost extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -34,7 +34,7 @@ module.exports = class Bassboost extends Command {
 		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 		// Default to turning on bassboost
-		if (!args[0]) {
+		if (!message.args[0]) {
 			player.setFilter({
 				equalizer: [
 					...Array(6).fill(0).map((n, i) => ({ band: i, gain: 0.65 })),
@@ -49,7 +49,7 @@ module.exports = class Bassboost extends Command {
 		}
 
 		// Turn off bassboost
-		if (args[0].toLowerCase() == 'reset' || args[0].toLowerCase() == 'off') {
+		if (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off') {
 			player.resetFilter();
 			const msg = await message.channel.send('Turning off **bassboost**. This may take a few seconds...');
 			const embed = new MessageEmbed()
@@ -59,18 +59,18 @@ module.exports = class Bassboost extends Command {
 		}
 
 		// Make sure value is a number
-		if (isNaN(args[0])) return message.channel.send('Amount must be a real number.');
+		if (isNaN(message.args[0])) return message.channel.send('Amount must be a real number.');
 
 		// Turn on bassboost with custom value
 		player.setFilter({
 			equalizer: [
-				...Array(6).fill(0).map((n, i) => ({ band: i, gain: args[0] / 10 })),
+				...Array(6).fill(0).map((n, i) => ({ band: i, gain: message.args[0] / 10 })),
 				...Array(9).fill(0).map((n, i) => ({ band: i + 6, gain: 0 })),
 			],
 		});
-		const msg = await message.channel.send(` Setting bassboost to **${args[0]}dB**. This may take a few seconds...`);
+		const msg = await message.channel.send(` Setting bassboost to **${message.args[0]}dB**. This may take a few seconds...`);
 		const embed = new MessageEmbed()
-			.setDescription(`Bassboost set to: **${args[0]}**`);
+			.setDescription(`Bassboost set to: **${message.args[0]}**`);
 		await delay(5000);
 		return msg.edit('', embed);
 	}

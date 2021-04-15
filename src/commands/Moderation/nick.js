@@ -18,7 +18,7 @@ module.exports = class Nick extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -46,7 +46,7 @@ module.exports = class Nick extends Command {
 		}
 
 		// Make sure a nickname was provided in the command
-		if (args.length == 0) return message.channel.error(settings.Language, 'MODERATION/ENTER_NICKNAME').then(m => m.delete({ timeout: 10000 }));
+		if (message.message.args.length == 0) return message.channel.error(settings.Language, 'MODERATION/ENTER_NICKNAME').then(m => m.delete({ timeout: 10000 }));
 
 		// Get the nickanme
 		const nickname = message.content.slice(6).replace(/<[^}]*>/, '').slice(1);

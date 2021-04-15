@@ -18,7 +18,7 @@ module.exports = class Mute extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -86,8 +86,8 @@ module.exports = class Mute extends Command {
 				// reply to user
 				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
 				// see if it was a tempmute
-				if (args[1]) {
-					const time = bot.timeFormatter.getTotalTime(args[1], message, settings.Language);
+				if (message.args[1]) {
+					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
 					if (!time) return;
 
 					// connect to database
@@ -103,7 +103,7 @@ module.exports = class Mute extends Command {
 
 					// remove mute role from user
 					setTimeout(async () => {
-						bot.commands.get('unmute').run(bot, message, args, settings);
+						bot.commands.get('unmute').run(bot, message, message.args, settings);
 
 						// Delete item from database as bot didn't crash
 						await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {

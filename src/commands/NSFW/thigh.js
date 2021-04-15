@@ -17,7 +17,7 @@ module.exports = class Thigh extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			get('https://nekobot.xyz/api/image?type=thigh')
 				.then(res => {

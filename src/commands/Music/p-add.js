@@ -16,12 +16,12 @@ module.exports = class PAdd extends Command {
 		});
 	}
 
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		PlaylistSchema.findOne({
-			name: args[0],
+			name: message.args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
 			// if an error occured
@@ -36,7 +36,7 @@ module.exports = class PAdd extends Command {
 				// Get songs to add to playlist
 				let res;
 				try {
-					res = await bot.manager.search(args[1], message.author);
+					res = await bot.manager.search(message.args[1], message.author);
 				} catch (err) {
 					return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
 				}

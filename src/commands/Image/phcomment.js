@@ -18,11 +18,11 @@ module.exports = class PHcomment extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get user
 		const member = message.getMember();
 		// Get text
-		let text = args.join(' ');
+		let text = message.args.join(' ');
 		text = text.replace(/<@.?[0-9]*?>/g, '');
 
 		// Make sure text was entered

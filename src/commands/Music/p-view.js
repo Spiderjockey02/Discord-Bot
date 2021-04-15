@@ -18,7 +18,7 @@ module.exports = class PView extends Command {
 		});
 	}
 
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({
 			creator: message.author.id,
@@ -40,11 +40,11 @@ module.exports = class PView extends Command {
 				}
 
 				// no playlist name was entered
-				if (!args[0]) return message.channel.send(`Available playlists are \`${playlistNames.join('`, `')}\`.`);
+				if (!message.args[0]) return message.channel.send(`Available playlists are \`${playlistNames.join('`, `')}\`.`);
 
 				// A valid playlist name was entered
-				if (playlistNames.includes(args[0])) {
-					p = p.find(obj => obj.name == args[0]);
+				if (playlistNames.includes(message.args[0])) {
+					p = p.find(obj => obj.name == message.args[0]);
 
 					// Show information on that playlist
 					let pagesNum = Math.ceil(p.songs.length / 10);

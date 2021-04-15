@@ -17,7 +17,7 @@ module.exports = class Ass extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			get('https://nekobot.xyz/api/image?type=ass')
 				.then(res => {

@@ -17,7 +17,7 @@ module.exports = class Guildicon extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
 			const embed = new MessageEmbed()

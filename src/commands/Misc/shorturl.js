@@ -17,7 +17,7 @@ module.exports = class ShortURL extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		const mes = message.content.split(' ').slice(1).join(' ');
 		try {
 			shorten(mes, function(res) {

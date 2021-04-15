@@ -16,7 +16,7 @@ module.exports = class Loop extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -32,12 +32,12 @@ module.exports = class Loop extends Command {
 		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 		// Check what to loop (queue or song) - default to song
-		if (!args[0] || args[0].toLowerCase() == 'song') {
+		if (!message.args[0] || message.args[0].toLowerCase() == 'song') {
 			// (un)loop the song
 			player.setTrackRepeat(!player.trackRepeat);
 			const trackRepeat = player.trackRepeat ? 'enabled' : 'disabled';
 			return message.channel.send(`${trackRepeat} track repeat.`);
-		} else if (args[0].toLowerCase() == 'queue') {
+		} else if (message.args[0].toLowerCase() == 'queue') {
 			// (un)loop the queue
 			player.setQueueRepeat(!player.queueRepeat);
 			const queueRepeat = player.queueRepeat ? 'enabled' : 'disabled';

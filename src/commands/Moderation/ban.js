@@ -19,7 +19,7 @@ module.exports = class Ban extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -34,7 +34,7 @@ module.exports = class Ban extends Command {
 		}
 
 		// Get user and reason
-		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
+		const reason = (message.args.join(' ').slice(22)) ? message.args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user is real
 		const member = message.getMember();
@@ -65,7 +65,7 @@ module.exports = class Ban extends Command {
 			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
-			const possibleTime = args[args.length - 1];
+			const possibleTime = message.args[message.args.length - 1];
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
 				const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
 				if (!time) return;

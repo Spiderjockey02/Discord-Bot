@@ -17,7 +17,7 @@ module.exports = class Cat extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		const res = await fetch('https://nekos.life/api/v2/img/meow')
 			.then(info => info.json())
 			.catch(err => {

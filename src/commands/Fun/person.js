@@ -16,7 +16,7 @@ module.exports = class Person extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			const response = await axios.get('https://person-generator.com/api/person');
 			const data = response.data;

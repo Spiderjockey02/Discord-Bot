@@ -15,7 +15,7 @@ module.exports = class Shutdown extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// try and shutdown the server
 		try {
 			await message.sendT(settings.Language, 'HOST/SHUTDOWN');

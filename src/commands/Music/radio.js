@@ -16,7 +16,7 @@ module.exports = class Radio extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -28,14 +28,14 @@ module.exports = class Radio extends Command {
 		getStations({
 			limit: 5,
 			by: 'tag',
-			searchterm: args.join(' '),
+			searchterm: message.args.join(' '),
 		})
 			.then(async data => {
 				if (!data[0]) return message.channel.send('No radio found with that name');
 
 				const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
 				const embed = new MessageEmbed()
-					.setTitle(`Results for ${args.join(' ')}`)
+					.setTitle(`Results for ${message.args.join(' ')}`)
 					.setColor(message.member.displayHexColor)
 					.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
 				message.channel.send(embed);

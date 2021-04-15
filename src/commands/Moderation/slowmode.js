@@ -17,7 +17,7 @@ module.exports = class SlowMode extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -32,10 +32,10 @@ module.exports = class SlowMode extends Command {
 
 		// get time
 		let time;
-		if (args[0] == 'off') {
+		if (message.args[0] == 'off') {
 			time = 0;
-		} else if (args[0]) {
-			time = bot.timeFormatter.getTotalTime(args[0], message, settings.Language);
+		} else if (message.args[0]) {
+			time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
 			if (!time) return;
 		} else {
 			return message.channel.error(settings.Language, 'NOT_NUMBER').then(m => m.delete({ timeout: 10000 }));
@@ -44,7 +44,7 @@ module.exports = class SlowMode extends Command {
 		// Activate slowmode
 		try {
 			await message.channel.setRateLimitPerUser(time / 1000);
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', args[0]).then(m => m.delete({ timeout:15000 }));
+			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', message.args[0]).then(m => m.delete({ timeout:15000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));

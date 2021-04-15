@@ -18,18 +18,18 @@ module.exports = class G_reroll extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure the user has the right permissions to use giveaway
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (!args[0]) {
+		if (!message.args[0]) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// re-roll the giveaway
-		const messageID = args[0];
+		const messageID = message.args[0];
 		bot.giveawaysManager.reroll(messageID).then(() => {
 			message.sendT(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'rerolled');
 		}).catch((err) => {

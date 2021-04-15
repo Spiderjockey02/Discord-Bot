@@ -17,7 +17,7 @@ module.exports = class K4 extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			get('https://nekobot.xyz/api/image?type=4k')
 				.then(res => {

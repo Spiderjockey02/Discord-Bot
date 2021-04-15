@@ -17,31 +17,31 @@ module.exports = class MusicNode extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// delete message
 		if (message.deletable) message.delete();
 
-		if (!args[0]) return message.channel.send('No');
+		if (!message.args[0]) return message.channel.send('No');
 
-		if (args[0].toLowerCase() == 'add') {
+		if (message.args[0].toLowerCase() == 'add') {
 			try {
 				// Connect to new node
 				new Node({
-					host: (args[1]) ? args[1] : 'localhost',
-					password: (args[2]) ? args[2] : 'youshallnotpass',
-					port: (args[3]) ? args[3] : 5000,
+					host: (message.args[1]) ? message.args[1] : 'localhost',
+					password: (message.args[2]) ? message.args[2] : 'youshallnotpass',
+					port: (message.args[3]) ? message.args[3] : 5000,
 				}).connect();
 				message.channel.send('Successfully added new node');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
-		} else if (args[0].toLowerCase() == 'remove') {
+		} else if (message.args[0].toLowerCase() == 'remove') {
 			try {
 				new Node({
-					host: (args[1]) ? args[1] : 'localhost',
-					password: (args[2]) ? args[2] : 'youshallnotpass',
-					port: (args[3]) ? args[3] : 5000,
+					host: (message.args[1]) ? message.args[1] : 'localhost',
+					password: (message.args[2]) ? message.args[2] : 'youshallnotpass',
+					port: (message.args[3]) ? message.args[3] : 5000,
 				}).destroy();
 				message.channel.send('Successfully removed node');
 			} catch (err) {

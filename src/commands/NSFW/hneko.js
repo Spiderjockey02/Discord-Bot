@@ -17,7 +17,7 @@ module.exports = class Hneko extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			get('https://nekobot.xyz/api/image?type=hneko')
 				.then(res => {

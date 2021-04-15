@@ -24,15 +24,15 @@ module.exports = class Generate extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
-		if (args[0] == 'list' || args[0] == '?' || !args[0]) {
+	async run(bot, message, settings) {
+		if (message.args[0] == 'list' || message.args[0] == '?' || !message.args[0]) {
 			const embed = new MessageEmbed()
 				.setDescription(bot.translate(settings.Language, 'IMAGE/GENERATE_DESC', [`${image_1.join('`, `')}`, `${image_2.join('`, `')}`]));
 			message.channel.send(embed);
 		} else {
 			// Get image, defaults to author's avatar
-			const choice = args[0];
-			args.shift();
+			const choice = message.args[0];
+			message.args.shift();
 			const file = message.getImage();
 			// Check if bot has permission to attach files
 			if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {

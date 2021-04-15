@@ -17,7 +17,7 @@ module.exports = class Poll extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check bot for add reaction permission
@@ -27,13 +27,13 @@ module.exports = class Poll extends Command {
 		}
 
 		// Make sure a poll was provided
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Send poll to channel
 		const embed = new MessageEmbed()
 			.setColor(0xffffff)
 			.setTitle(bot.translate(settings.Language, 'GUILD/POLL_TITLE', message.author.username))
-			.setDescription(args.join(' '))
+			.setDescription(message.args.join(' '))
 			.setFooter(bot.translate(settings.Language, 'GUILD/POLL_FOOTER'))
 			.setTimestamp();
 		const msg = await message.channel.send(embed);

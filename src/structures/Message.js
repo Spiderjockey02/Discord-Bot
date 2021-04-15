@@ -10,6 +10,17 @@ module.exports = Structures.extend('Message', Message => {
 			this.args = [];
 		}
 
+		// mainly be used for fetch messages and then getting the args from it
+		getArgs() {
+			const args = this.content.split(' ');
+			args.shift();
+			if (this.content.startsWith(`<@!${this.client.user.id}>`)) args.shift();
+
+			// append it to message structure
+			this.args = args;
+			return args;
+		}
+
 		// Get User from @ or ID
 		getMember() {
 			const users = [];

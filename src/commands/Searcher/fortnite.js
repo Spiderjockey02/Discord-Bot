@@ -17,14 +17,14 @@ module.exports = class Fortnite extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if platform and user was entered
-		if (!['kbm', 'gamepad', 'touch'].includes(args[0])) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!['kbm', 'gamepad', 'touch'].includes(message.args[0])) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get platform and user
-		const platform = args.shift();
-		const username = args.join(' ');
+		const platform = message.args.shift();
+		const username = message.args.join(' ');
 		const r = await message.channel.send(`Retrieving Fortnite information on **${username}**.`);
 
 		bot.Fortnite.user(username, platform).then(data => {

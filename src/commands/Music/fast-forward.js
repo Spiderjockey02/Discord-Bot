@@ -17,7 +17,7 @@ module.exports = class FastForward extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -36,7 +36,7 @@ module.exports = class FastForward extends Command {
 		if (!player.queue.current.isSeekable) return message.channel.error(settings.Language, 'MUSIC/LIVESTREAM');
 
 		// update the time
-		const time = bot.timeFormatter.read24hrFormat((args[0]) ? args[0] : '10');
+		const time = bot.timeFormatter.read24hrFormat((message.args[0]) ? message.args[0] : '10');
 
 		if (time + player.position >= player.queue.current.duration) {
 			message.channel.send(`The song is only ${new Date(player.queue.current.duration).toISOString().slice(14, 19)}.`);

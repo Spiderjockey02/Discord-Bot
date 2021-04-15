@@ -18,7 +18,7 @@ module.exports = class Unban extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
@@ -33,7 +33,7 @@ module.exports = class Unban extends Command {
 		}
 
 		// Unban user
-		const user = args[0];
+		const user = message.args[0];
 		try {
 			message.guild.fetchBans().then(bans => {
 				if (bans.size == 0) return;

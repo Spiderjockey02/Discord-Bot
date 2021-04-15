@@ -15,7 +15,7 @@ module.exports = class Advice extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			message.channel.send({ embed: { color: 'RANDOM', description: data.slip.advice } });

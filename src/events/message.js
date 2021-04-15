@@ -52,6 +52,7 @@ module.exports = class Message extends Event {
 			} else if (!cmd) {
 				return;
 			}
+			message.args = args;
 
 			// make sure user is not on banned list
 			const banned = await GlobalBanSchema.findOne({
@@ -125,7 +126,7 @@ module.exports = class Message extends Event {
 			// run the command
 			bot.commandsUsed++;
 			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
-			cmd.run(bot, message, args, settings);
+			cmd.run(bot, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		} else if (message.guild) {

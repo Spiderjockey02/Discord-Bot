@@ -18,8 +18,8 @@ module.exports = class Fortnite extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
-		const username = args.join(' ');
+	async run(bot, message, settings) {
+		const username = message.args.join(' ');
 
 		// Checks to see if a username was provided
 		if (!username) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));

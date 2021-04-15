@@ -16,7 +16,7 @@ module.exports = class Search extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -45,7 +45,7 @@ module.exports = class Search extends Command {
 		}
 
 		// Make sure that a song/url has been entered
-		if (!args) return message.channel.error(settings.Language, 'MUSIC/NO_ARGS');
+		if (!message.args) return message.channel.error(settings.Language, 'MUSIC/NO_message.args');
 
 		// Create player
 		let player;
@@ -62,7 +62,7 @@ module.exports = class Search extends Command {
 			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 
-		const search = args.join(' ');
+		const search = message.args.join(' ');
 		let res;
 
 		// Search for track
@@ -89,7 +89,7 @@ module.exports = class Search extends Command {
 
 			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
 			const embed = new MessageEmbed()
-				.setTitle(`Results for ${args.join(' ')}`)
+				.setTitle(`Results for ${message.args.join(' ')}`)
 				.setColor(message.member.displayHexColor)
 				.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
 			message.channel.send(embed);

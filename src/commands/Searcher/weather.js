@@ -18,10 +18,10 @@ module.exports = class Weather extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+	async run(bot, message, settings) {
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		// search up weather stats
-		find({ search: args.join(' '), degreeType: 'C' }, function(err, result) {
+		find({ search: message.args.join(' '), degreeType: 'C' }, function(err, result) {
 			try {
 				const embed = new MessageEmbed()
 					.setTitle(bot.translate(settings.Language, 'SEARCHER/WEATHER_TITLE', result[0].location.name))

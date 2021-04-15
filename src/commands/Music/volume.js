@@ -17,7 +17,7 @@ module.exports = class Back extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -33,7 +33,7 @@ module.exports = class Back extends Command {
 		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure a number was entered
-		if (!args[0]) {
+		if (!message.args[0]) {
 			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
 				.setDescription(bot.translate(settings.Language, 'MUSIC/SOUND_CURRENT', player.volume));
@@ -41,12 +41,12 @@ module.exports = class Back extends Command {
 		}
 
 		// make sure the number was between 0 and 1000
-		if (Number(args[0]) <= 0 || Number(args[0]) > 1000) {
+		if (Number(message.args[0]) <= 0 || Number(message.args[0]) > 1000) {
 			return message.channel.error(settings.Language, 'MUSIC/TOO_HIGH');
 		}
 
 		// Update volume
-		player.setVolume(Number(args));
+		player.setVolume(Number(message.args));
 		const embed = new MessageEmbed()
 			.setColor(message.member.displayHexColor)
 			.setDescription(bot.translate(settings.Language, 'MUSIC/SOUND_SET', player.volume));

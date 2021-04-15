@@ -17,7 +17,7 @@ module.exports = class TicketCreate extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Make sure bot has permission to create channel
 		if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
 			bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
@@ -36,7 +36,7 @@ module.exports = class TicketCreate extends Command {
 		if (!category) return message.channel.error(settings.Language, 'TICKET/NO_CATEGORY').then(m => m.delete({ timeout:10000 }));
 
 		// get reason
-		const reason = (args[0]) ? args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
+		const reason = (message.args[0]) ? message.args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
 
 		// create channel
 		message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',

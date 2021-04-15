@@ -17,11 +17,11 @@ module.exports = class Update extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args) {
+	async run(bot, message) {
 		// Embed for update
 		const embed = new MessageEmbed()
 			.setTitle(`${bot.user.tag} update logs`)
-			.setDescription((args[0]) ? args.join(' ') : 'unspecified');
+			.setDescription((message.args[0]) ? message.args.join(' ') : 'unspecified');
 
 		// find a channel of each guild
 		bot.guilds.cache.forEach(guild => {

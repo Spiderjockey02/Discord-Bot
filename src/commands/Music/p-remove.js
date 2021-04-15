@@ -16,12 +16,12 @@ module.exports = class PRemove extends Command {
 		});
 	}
 
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		PlaylistSchema.findOne({
-			name: args[0],
+			name: message.args[0],
 			creator: message.author.id,
 		}, async (err, p) => {
 			// if an error occured
@@ -34,10 +34,10 @@ module.exports = class PRemove extends Command {
 			// playlist found
 			if (p) {
 				try {
-					if (!isNaN(args[1]) && !isNaN(args[2])) {
-						p.songs.splice(args[1] - 1, parseInt(args[2] - args[1] + 1));
-					} else if (!isNaN(args[1])) {
-						p.songs.splice(args[1] - 1, 1);
+					if (!isNaN(message.args[1]) && !isNaN(message.args[2])) {
+						p.songs.splice(message.args[1] - 1, parseInt(message.args[2] - message.args[1] + 1));
+					} else if (!isNaN(message.args[1])) {
+						p.songs.splice(message.args[1] - 1, 1);
 					} else {
 						return message.channel.send('Not an option');
 					}

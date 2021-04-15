@@ -17,9 +17,9 @@ module.exports = class Urban extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get phrase
-		const phrase = args.join(' ');
+		const phrase = message.args.join(' ');
 		if (!phrase) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));

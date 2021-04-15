@@ -16,7 +16,7 @@ module.exports = class Play extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -60,25 +60,25 @@ module.exports = class Play extends Command {
 		}
 
 		// Make sure something was entered
-		if (args.length == 0) {
+		if (message.args.length == 0) {
 			// Check if a file was uploaded to play instead
 			const fileTypes = ['mp3', 'mp4', 'wav', 'm4a', 'webm', 'aac', 'ogg'];
 			if (message.attachments.size > 0) {
 				const url = message.attachments.first().url;
 				for (let i = 0; i < fileTypes.length; i++) {
 					if (url.endsWith(fileTypes[i])) {
-						args.push(url);
+						message.args.push(url);
 					}
 				}
-				if (!args[0]) return message.channel.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (!message.args[0]) return message.channel.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
 			} else {
-				return message.channel.error(settings.Language, 'MUSIC/NO_ARGS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/NO_message.args').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Get search query
 		let res;
-		const search = args.join(' ');
+		const search = message.args.join(' ');
 
 		// Search for track
 		try {

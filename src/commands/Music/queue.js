@@ -18,7 +18,7 @@ module.exports = class Queue extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -79,13 +79,13 @@ module.exports = class Queue extends Command {
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
-		if (!args[0]) {
+		if (!message.args[0]) {
 			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message, pages);
 			else return message.channel.send(pages[0]);
 		} else {
-			if (isNaN(args[0])) return message.channel.send('Page must be a number.');
-			if (args[0] > pagesNum) return message.channel.send(`There are only ${pagesNum} pages available.`);
-			const pageNum = args[0] == 0 ? 1 : args[0] - 1;
+			if (isNaN(message.args[0])) return message.channel.send('Page must be a number.');
+			if (message.args[0] > pagesNum) return message.channel.send(`There are only ${pagesNum} pages available.`);
+			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
 			return message.channel.send(pages[pageNum]);
 		}
 	}

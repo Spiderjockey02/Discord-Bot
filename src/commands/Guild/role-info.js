@@ -20,20 +20,20 @@ module.exports = class RoleInfo extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Check to see if a role was mentioned
-		let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
+		let role = message.mentions.roles.first() || message.guild.roles.cache.get(message.args[0]);
 
 		// Make sure it's a role on the server
 		if (!role) {
-			if (args[0]) {
+			if (message.args[0]) {
 				const roles = [];
 				const indexes = [];
 				message.guild.roles.cache.forEach(r => {
 					roles.push(r.name);
 					indexes.push(r.id);
 				});
-				const match = sm.findBestMatch(args.join(' '), roles);
+				const match = sm.findBestMatch(message.args.join(' '), roles);
 				const username = match.bestMatch.target;
 				role = message.guild.roles.cache.get(indexes[roles.indexOf(username)]);
 			} else {

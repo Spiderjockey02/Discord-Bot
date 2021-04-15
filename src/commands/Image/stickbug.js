@@ -18,7 +18,7 @@ module.exports = class Stickbug extends Command {
 	}
 
 	// Run command
-	async run(bot, message, args, settings) {
+	async run(bot, message, settings) {
 		// Get image, defaults to author's avatar
 		const file = message.getImage();
 
