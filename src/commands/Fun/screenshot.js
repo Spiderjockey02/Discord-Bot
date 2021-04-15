@@ -40,8 +40,8 @@ module.exports = class Screenshot extends Command {
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (bot.adultSiteList.includes(message.args[0]) && !message.channel.nsfw) {
-			return message.channel.send('You can not view NSFW websites in a non-NSFW channel.').then(m => m.delete({ timeout: 5000 }));
+		if (!bot.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw) {
+			return message.channel.error(settings.Language, 'FUN/BLACKLIST_WEBSITE').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message

@@ -20,6 +20,7 @@ const languageData = {
 	PERSON_AUTHOR: 'I found a person over internet whose name is ',
 	PERSON_FOOTER: 'NOTE : These all are randomly generated through an API.',
 	INVALID_URL: 'That is an incorrect URL.',
+	BLACKLIST_WEBSITE: 'You can not view this websites in a non-NSFW channel.',
 };
 
 const translate = (key, args) => {
