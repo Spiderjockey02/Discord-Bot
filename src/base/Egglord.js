@@ -154,7 +154,7 @@ module.exports = class Egglord extends Client {
 
 	// Fetches adult sites for screenshot NSFW blocking
 	async fetchAdultSiteList() {
-		const blockedWebsites = require('../assets/json/NSFW_websites.json');
+		const blockedWebsites = require('../assets/json/whitelistWebsiteList.json');
 		this.adultSiteList = blockedWebsites.websites;
 		return this.adultSiteList;
 	}
