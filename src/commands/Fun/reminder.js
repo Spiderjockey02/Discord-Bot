@@ -32,7 +32,7 @@ module.exports = class Reminder extends Command {
 		message.args.shift();
 
 		// send reminder
-		await message.sendT(settings.Language, 'FUN/REMINDER_MESSAGE', [`${message.args.join(' ')}`, `${ms(time, { long: true })}`]).then(async () => {
+		await message.channel.send(bot.translate(settings.Language, 'FUN/REMINDER_MESSAGE', [`${message.args.join(' ')}`, `${ms(time, { long: true })}`])).then(async () => {
 			// save to DB
 			const newEvent = await new timeEventSchema({
 				userID: message.author.id,
@@ -57,7 +57,7 @@ module.exports = class Reminder extends Command {
 					.setDescription(`${message.args.join(' ')}\n[${bot.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
 					.setFooter(bot.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(time, { long: true })));
 				message.author.send(embed).catch(() => {
-					message.sendT(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${message.author}`, `${message.args.join(' ')}`]);
+					message.channel.send(bot.translate(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${message.author}`, `${message.args.join(' ')}`]));
 				});
 
 				// Delete from database as bot didn't crash

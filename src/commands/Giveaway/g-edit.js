@@ -45,10 +45,10 @@ module.exports = class G_edit extends Command {
 			newPrize: message.args.slice(3).join(' '),
 			addTime: time,
 		}).then(() => {
-			message.sendT(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`);
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`));
 		}).catch((err) => {
 			bot.logger.error(err);
-			message.sendT(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', message.args[0]);
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', message.args[0]));
 		});
 	}
 };

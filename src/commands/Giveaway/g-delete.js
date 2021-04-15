@@ -31,10 +31,10 @@ module.exports = class G_delete extends Command {
 		// Delete the giveaway
 		const messageID = message.args[0];
 		bot.giveawaysManager.delete(messageID).then(() => {
-			message.sendT(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'deleted');
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'deleted'));
 		}).catch((err) => {
 			bot.logger.error(err);
-			message.sendT(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID);
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID));
 		});
 	}
 };

@@ -23,7 +23,7 @@ module.exports = class WhoWouldWin extends Command {
 		const member = message.getMember();
 
 		// send 'waitng' message
-		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
 
 		// Try and convert image
 		try {

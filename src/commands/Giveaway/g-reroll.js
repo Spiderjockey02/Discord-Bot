@@ -31,10 +31,10 @@ module.exports = class G_reroll extends Command {
 		// re-roll the giveaway
 		const messageID = message.args[0];
 		bot.giveawaysManager.reroll(messageID).then(() => {
-			message.sendT(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'rerolled');
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'rerolled'));
 		}).catch((err) => {
 			bot.logger.error(err);
-			message.sendT(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID);
+			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID));
 		});
 	}
 };

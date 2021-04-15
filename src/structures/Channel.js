@@ -3,9 +3,16 @@ const { Structures } = require('discord.js');
 module.exports = Structures.extend('TextChannel', Channel => {
 	class CustomChannel extends Channel {
 		// This will send the translated message
-		sendT(language, key, args) {
+		send(...args) {
+			// check permissions
+			if (!this.permissionsFor(this.client.user).has('SEND_MESSAGES')) return;
+			if (!this.permissionsFor(this.client.user).has('EMBED_LINKS')) {
+				return super.send(this.client.translate(this.guild.settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS'));
+			}
+
+			// send message
 			try {
-				return this.send(this.client.translate(language, key, args));
+				return super.send(...args);
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}

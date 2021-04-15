@@ -32,7 +32,7 @@ module.exports = class Warnings extends Command {
 				if(err) console.log(err);
 				if (warn == null) {
 					// There are no warnings with this user
-					message.sendT(settings.Language, 'MODERATION/NO_WARNINGS').then(m => m.delete({ timeout: 3500 }));
+					message.channel.send(bot.translate(settings.Language, 'MODERATION/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
 				} else {
 					// Warnings have been found
 					let list = `Warnings (${warn.Reason.length}):\n`;

@@ -44,7 +44,7 @@ module.exports = class ClearWarning extends Command {
 				});
 				message.channel.success(settings.Language, 'MODERATION/CLEARED_WARNINGS', member[0]).then(m => m.delete({ timeout: 10000 }));
 			} else {
-				message.sendT(settings.Language, 'MODERATION/NO_WARNINGS').then(m => m.delete({ timeout: 3500 }));
+				message.channel.send(bot.translate(settings.Language, 'MODERATION/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();

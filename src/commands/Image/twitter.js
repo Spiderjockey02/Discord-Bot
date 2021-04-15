@@ -34,7 +34,7 @@ module.exports = class Twitter extends Command {
 		if (text.length >= 61) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message
-		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
 
 		// Try and convert image
 		try {

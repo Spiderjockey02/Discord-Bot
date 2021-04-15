@@ -23,7 +23,7 @@ module.exports = class Blurpify extends Command {
 		const file = await message.getImage();
 
 		// send 'waiting' message
-		// const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
 
 		// Try and convert image
 		try {
@@ -39,6 +39,6 @@ module.exports = class Blurpify extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
-		// msg.delete();
+		msg.delete();
 	}
 };

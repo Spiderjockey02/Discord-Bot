@@ -15,6 +15,6 @@ module.exports = class Flip extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		message.sendT(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random()));
+		message.channel.send(bot.translate(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random())));
 	}
 };

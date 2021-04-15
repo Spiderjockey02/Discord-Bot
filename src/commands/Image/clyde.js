@@ -28,7 +28,7 @@ module.exports = class Clyde extends Command {
 		if (text.length >= 71) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 70).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message
-		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
+		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
 		try {
 			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=clyde&text=${text}`));
 			const json = await res.json();

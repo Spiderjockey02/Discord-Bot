@@ -94,17 +94,6 @@ module.exports = class Message extends Event {
 			// Check if command is disabled
 			if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
-			// make sure user doesn't access HOST commands
-
-			// Check bot has permissions
-			if (cmd.conf.botPermissions[0] && message.guild) {
-				// If the bot doesn't have SEND_MESSAGES permissions just return
-				if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
-				if (!message.channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
-					return message.sendT(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS');
-				}
-			}
-
 			// Check to see if user is in 'cooldown'
 			if (!bot.cooldowns.has(cmd.help.name)) {
 				bot.cooldowns.set(cmd.help.name, new Collection());
