@@ -74,7 +74,7 @@ module.exports = class PCreate extends Command {
 			// Save playlist to database
 			const newPlaylist = new PlaylistSchema({
 				name: message.args[0],
-				songs: res.tracks.slice(0, message.author.premium ? 100 : 200),
+				songs: res.tracks.slice(0, message.author.premium ? 200 : 100),
 				timeCreated: Date.now(),
 				thumbnail: res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail,
 				creator: message.author.id,
@@ -88,7 +88,7 @@ module.exports = class PCreate extends Command {
 				.setDescription([	`Created a playlist with name: **${message.args[0]}**.`,
 					`Playlist duration: ${bot.timeFormatter.getReadableTime(parseInt(newPlaylist.duration))}.`,
 					`Added **${(res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : res.tracks[0].title}** (${res.tracks.length} tracks) to **${message.args[0]}**.`].join('\n'))
-				.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/${(message.author.premium) ? '100' : '200'}`)
+				.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/${(message.author.premium) ? '200' : '100'}`)
 				.setTimestamp();
 			msg.edit('', embed);
 		} else {

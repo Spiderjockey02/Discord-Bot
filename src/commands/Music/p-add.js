@@ -47,7 +47,7 @@ module.exports = class PAdd extends Command {
 					return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
 				} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
 					try {
-						const newTracks = res.tracks.slice(0, (message.author.premium ? 100 : 200) - p.songs.length);
+						const newTracks = res.tracks.slice(0, (message.author.premium ? 200 : 100) - p.songs.length);
 						p.songs.push(...newTracks);
 						p.duration = parseInt(p.duration) + parseInt(res.tracks.reduce((prev, curr) => prev + curr.duration, 0));
 						await p.save();
