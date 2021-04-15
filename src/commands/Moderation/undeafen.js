@@ -26,7 +26,7 @@ module.exports = class Undeafen extends Command {
 		if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Checks to make sure user is in the server
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Check if bot has permission to ban user
 		const channel = message.guild.channels.cache.get(member[0].voice.channelID);

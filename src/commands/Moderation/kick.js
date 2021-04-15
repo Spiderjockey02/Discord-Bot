@@ -32,7 +32,7 @@ module.exports = class Kick extends Command {
 		}
 
 		// Get user and reason
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user isn't trying to punish themselves

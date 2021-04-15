@@ -26,7 +26,7 @@ module.exports = class Deafen extends Command {
 
 
 		// Checks to make sure user is in the server
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Get the channel the member is in
 		const channel = message.guild.channels.cache.get(member[0].voice.channelID);

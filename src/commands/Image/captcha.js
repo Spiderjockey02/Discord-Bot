@@ -19,7 +19,7 @@ module.exports = class Captcha extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// send 'waitng' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');

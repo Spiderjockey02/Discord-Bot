@@ -22,7 +22,7 @@ module.exports = class Rank extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Check if bot has permission to attach files
 		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
