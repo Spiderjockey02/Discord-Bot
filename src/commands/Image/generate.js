@@ -33,7 +33,7 @@ module.exports = class Generate extends Command {
 			// Get image, defaults to author's avatar
 			const choice = message.args[0];
 			message.args.shift();
-			const file = message.getImage();
+			const file = await message.getImage();
 			// Check if bot has permission to attach files
 			if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 				bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);

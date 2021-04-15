@@ -20,7 +20,7 @@ module.exports = class Stickbug extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get image, defaults to author's avatar
-		const file = message.getImage();
+		const file = await message.getImage();
 
 		// Check if bot has permission to attach files
 		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {

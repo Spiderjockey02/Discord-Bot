@@ -19,7 +19,7 @@ module.exports = class Ship extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get image, defaults to author's avatar
-		const users = message.getImage();
+		const users = await message.getImage();
 		if (!users[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waitng' message

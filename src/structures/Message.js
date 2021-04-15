@@ -50,7 +50,7 @@ module.exports = Structures.extend('Message', Message => {
 		}
 
 		// Get image, from file download or avatar
-		getImage() {
+		async getImage() {
 			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];
 			// get image if there is one
 			const file = [];
@@ -62,11 +62,31 @@ module.exports = Structures.extend('Message', Message => {
 						file.push(url);
 					}
 				}
+
 				// no file with the correct format was found
 				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
-			} else {
-				file.push(...this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			}
+
+			// check for message link
+			for (let i = 0; i < this.args.length; i++) {
+				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
+				if (patt.test(this.args[i])) {
+					const stuff = this.args[i].split('/');
+					const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+					if (message) {
+						if (message.attachments.size > 0) {
+							const url = message.attachments.first().url;
+							for (let z = 0; z < fileTypes.length; z++) {
+								if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
+									file.push(url);
+								}
+							}
+						}
+					}
+				}
+			}
+			// add avatar URL's to file
+			file.push(...this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;
 		}
 	}
