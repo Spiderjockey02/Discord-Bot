@@ -37,7 +37,7 @@ module.exports = class Ban extends Command {
 		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user is real
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

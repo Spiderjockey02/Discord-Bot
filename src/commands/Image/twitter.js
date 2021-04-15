@@ -20,7 +20,7 @@ module.exports = class Twitter extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 		if (args.join(' ').replace(/<@.?[0-9]*?>/g, '').length == args.length) args.shift();
 
 		// Get text

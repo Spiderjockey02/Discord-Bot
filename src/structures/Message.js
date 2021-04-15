@@ -1,26 +1,33 @@
+// Dependecies
 const { Structures } = require('discord.js'),
 	sm = require('string-similarity');
 
 module.exports = Structures.extend('Message', Message => {
 	class CustomMessage extends Message {
+		constructor(bot, data, channel) {
+			super(bot, data, channel);
+			// This for caching server settings
+			this.args = [];
+		}
+
 		// Get User from @ or ID
-		getMember(args) {
+		getMember() {
 			const users = [];
 			// add all mentioned users
-			for (let i = 0; i < args.length; i++) {
-				if (this.member(this.mentions.users.array()[i] || this.members.cache.get(args[i]))) {
-					users.push(this.member(this.mentions.users.array()[i] || this.members.cache.get(args[i])));
+			for (let i = 0; i < this.args.length; i++) {
+				if (this.guild.member(this.mentions.users.array()[i] || this.guild.members.cache.get(this.args[i]))) {
+					users.push(this.guild.member(this.mentions.users.array()[i] || this.guild.members.cache.get(this.args[i])));
 				}
 			}
 			// find user
-			if (args[0]) {
+			if (this.args[0]) {
 				const members = [];
 				const indexes = [];
 				this.guild.members.cache.forEach(member => {
 					members.push(member.user.username);
 					indexes.push(member.id);
 				});
-				const match = sm.findBestMatch(args.join(' '), members);
+				const match = sm.findBestMatch(this.args.join(' '), members);
 				const username = match.bestMatch.target;
 				const member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
 				users.push(member);
@@ -32,7 +39,7 @@ module.exports = Structures.extend('Message', Message => {
 		}
 
 		// Get image, from file download or avatar
-		GetImage(args, Language) {
+		getImage() {
 			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];
 			// get image if there is one
 			const file = [];
@@ -45,9 +52,9 @@ module.exports = Structures.extend('Message', Message => {
 					}
 				}
 				// no file with the correct format was found
-				if (file.length == 0) return this.channel.error(Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
 			} else {
-				file.push(...this.getMember(this, args).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
+				file.push(...this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			}
 			return file;
 		}

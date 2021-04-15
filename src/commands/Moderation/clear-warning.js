@@ -27,7 +27,7 @@ module.exports = class ClearWarning extends Command {
 		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// get warnings of user
 		try {

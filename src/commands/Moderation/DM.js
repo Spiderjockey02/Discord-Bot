@@ -23,7 +23,7 @@ module.exports = class DM extends Command {
 		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Check if user has manage server permissions
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));

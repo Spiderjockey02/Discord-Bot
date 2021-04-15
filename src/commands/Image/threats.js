@@ -19,7 +19,7 @@ module.exports = class Threats extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get image, defaults to author's avatar
-		const file = message.GetImage(message, args, settings.Language);
+		const file = message.getImage();
 
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');

@@ -32,7 +32,7 @@ module.exports = class Mute extends Command {
 		}
 
 		// add user to role (if no role, make role)
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// Get the channel the member is in
 		const channel = message.guild.channels.cache.get(member[0].voice.channelID);

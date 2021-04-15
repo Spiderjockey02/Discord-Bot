@@ -29,7 +29,7 @@ module.exports = class ServerInfo extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.getMember(message, args);
+		const member = message.getMember();
 
 		// send user info
 		const embed = new MessageEmbed()
