@@ -21,7 +21,7 @@ module.exports = class Reload extends Command {
 		if (message.deletable) message.delete();
 
 		// Checks to see if a command was specified
-		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// checks to make sure command exists
 		const commandName = args[0].toLowerCase();
@@ -33,10 +33,10 @@ module.exports = class Reload extends Command {
 			try {
 				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
 				await bot.loadCommand(cmd.conf.location, cmd.help.name);
-				return message.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
+				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
 			} catch(err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE');// .then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (Object.keys(bot._events).includes(args[0])) {
 			try {
@@ -46,13 +46,13 @@ module.exports = class Reload extends Command {
 				bot.logger.log(`Loading Event: ${args[0]}`);
 				// eslint-disable-next-line no-shadow
 				bot.on(args[0], (...args) => event.run(bot, ...args));
-				return message.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', args[0]).then(m => m.delete({ timeout: 8000 }));
+				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', args[0]).then(m => m.delete({ timeout: 8000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			return message.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 };

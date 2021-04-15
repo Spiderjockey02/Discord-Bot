@@ -21,19 +21,19 @@ module.exports = class FastForward extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
+		if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure song isn't a stream
-		if (!player.queue.current.isSeekable) return message.error(settings.Language, 'MUSIC/LIVESTREAM');
+		if (!player.queue.current.isSeekable) return message.channel.error(settings.Language, 'MUSIC/LIVESTREAM');
 
 		// update the time
 		const time = bot.timeFormatter.read24hrFormat((args[0]) ? args[0] : '10');

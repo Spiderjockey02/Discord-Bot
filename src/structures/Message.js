@@ -1,61 +1,55 @@
-const { Structures } = require('discord.js');
+const { Structures } = require('discord.js'),
+	sm = require('string-similarity');
 
 module.exports = Structures.extend('Message', Message => {
 	class CustomMessage extends Message {
-		constructor(bot, data, channel) {
-			super(bot, data, channel);
+		// Get User from @ or ID
+		getMember(args) {
+			const users = [];
+			// add all mentioned users
+			for (let i = 0; i < args.length; i++) {
+				if (this.member(this.mentions.users.array()[i] || this.members.cache.get(args[i]))) {
+					users.push(this.member(this.mentions.users.array()[i] || this.members.cache.get(args[i])));
+				}
+			}
+			// find user
+			if (args[0]) {
+				const members = [];
+				const indexes = [];
+				this.guild.members.cache.forEach(member => {
+					members.push(member.user.username);
+					indexes.push(member.id);
+				});
+				const match = sm.findBestMatch(args.join(' '), members);
+				const username = match.bestMatch.target;
+				const member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
+				users.push(member);
+			}
+
+			// add author at the end
+			users.push(this.member);
+			return users;
 		}
 
-		// This will get the translation for the provided text
-		translate(language, key, args) {
-			let languageFile;
-			if (key.includes('/')) {
-				const word = key.split('/');
-				languageFile = require(`../languages/${language}/${word[0]}/translation`);
-				return languageFile(word[1], args);
+		// Get image, from file download or avatar
+		GetImage(args, Language) {
+			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];
+			// get image if there is one
+			const file = [];
+			// Check attachments
+			if (this.attachments.size > 0) {
+				const url = this.attachments.first().url;
+				for (let i = 0; i < fileTypes.length; i++) {
+					if (url.toLowerCase().indexOf(fileTypes[i]) !== -1) {
+						file.push(url);
+					}
+				}
+				// no file with the correct format was found
+				if (file.length == 0) return this.channel.error(Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
 			} else {
-				languageFile = require(`../languages/${language}/misc`);
-				return languageFile(key, args);
+				file.push(...this.getMember(this, args).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			}
-		}
-
-		// This will send the translated message
-		sendT(language, key, args) {
-			try {
-				return this.channel.send(this.translate(language, key, args));
-			} catch (err) {
-				this.client.logger.error(err.message);
-			}
-		}
-
-		// This will add the error emoji as the prefix and then translate the message
-		error(language, key, args) {
-			try {
-				let emoji;
-				if (this.channel.type == 'dm') {
-					emoji = this.client.config.emojis.cross;
-				} else {
-					emoji = this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.config.emojis.cross : ':negative_squared_cross_mark:';
-				}
-				return this.channel.send({ embed:{ color:15158332, description:`${emoji} ${this.translate(language, key, args)}` } });
-			} catch (err) {
-				this.client.logger.error(err.message);
-			}
-		}
-
-		// This will add the success emoji as the prefix and then translate the message
-		success(language, key, args) {
-			try {
-				let emoji;
-				if (this.channel.type == 'dm') {
-					emoji = this.client.config.emojis.tick;
-				} else {
-					emoji = this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.config.emojis.tick : ':white_check_mark:';
-				}
-				return this.channel.send({ embed:{ color:3066993, description:`${emoji} ${this.translate(language, key, args)}` } });
-			} catch (err) {
-				this.client.logger.error(err.message);
-			}
+			return file;
 		}
 	}
 	return CustomMessage;

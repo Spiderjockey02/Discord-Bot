@@ -58,13 +58,13 @@ module.exports = class Help extends Command {
 						].join('\n'));
 					message.channel.send(embed);
 				} else {
-					message.error(settings.Language, 'MISC/NO_COMMAND');
+					message.channel.error(settings.Language, 'MISC/NO_COMMAND');
 				}
 			} else {
-				message.error(settings.Language, 'MISC/NO_COMMAND');
+				message.channel.error(settings.Language, 'MISC/NO_COMMAND');
 			}
 		} else {
-			message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage));
+			message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage));
 		}
 	}
 };

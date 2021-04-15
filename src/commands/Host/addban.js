@@ -19,14 +19,14 @@ module.exports = class Addban extends Command {
 
 	// Run command
 	async run(bot, message, args, settings) {
-		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// get information
 		const user = await bot.getUser(args[0]);
 		const restriction = args[1];
-		if (!['servers', 'commands'].includes(restriction)) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!['servers', 'commands'].includes(restriction)) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		args.splice(0, 2);
-		const reason = (args[0]) ? args.join(' ') : message.translate(settings.Language, 'NO_REASON');
+		const reason = (args[0]) ? args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
 
 		// update database
 		GlobalBanSchema.findOne({

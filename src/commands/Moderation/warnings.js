@@ -21,7 +21,7 @@ module.exports = class Warnings extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.guild.getMember(message, args);
+		const member = message.getMember(message, args);
 
 		// get warnings of user
 		try {
@@ -42,7 +42,7 @@ module.exports = class Warnings extends Command {
 						i++;
 					}
 					const embed = new MessageEmbed()
-						.setTitle(message.translate(settings.Language, 'MODERATION/WARNS_TITLE', member[0].user.username))
+						.setTitle(bot.translate(settings.Language, 'MODERATION/WARNS_TITLE', member[0].user.username))
 						.setDescription(list)
 						.setTimestamp();
 					message.channel.send(embed);
@@ -51,7 +51,7 @@ module.exports = class Warnings extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

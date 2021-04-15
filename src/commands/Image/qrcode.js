@@ -19,7 +19,7 @@ module.exports = class QRcode extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get text for QR encoding (including file URl)
-		const text = (!args[0]) ? message.guild.GetImage(message, args, settings.Language)[0] : args.join(' ');
+		const text = (!args[0]) ? message.GetImage(message, args, settings.Language)[0] : args.join(' ');
 
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
@@ -34,7 +34,7 @@ module.exports = class QRcode extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

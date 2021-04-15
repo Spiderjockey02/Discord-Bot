@@ -26,14 +26,14 @@ module.exports = class Eval extends Command {
 				const hrStart = process.hrtime();
 				const evaluated = inspect(await eval(toEval, { depth: 0 }));
 				const hrDiff = process.hrtime(hrStart);
-				return await message.channel.send(message.translate(settings.Language, 'HOST/EVAL_RESPONSE', [hrDiff, evaluated]), { maxLength: 1900 });
+				return await message.channel.send(bot.translate(settings.Language, 'HOST/EVAL_RESPONSE', [hrDiff, evaluated]), { maxLength: 1900 });
 			} else {
-				return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

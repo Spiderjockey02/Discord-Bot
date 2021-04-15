@@ -23,7 +23,7 @@ module.exports = class Reminder extends Command {
 		// Make something that time and information is entered
 		if (!args[1]) {
 			if (message.deletable) message.delete();
-			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Get time
@@ -50,12 +50,12 @@ module.exports = class Reminder extends Command {
 				// send embed to author's DM
 				const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
 				const embed = new MessageEmbed()
-					.setTitle(message.translate(settings.Language, 'FUN/REMINDER_TITLE'))
+					.setTitle(bot.translate(settings.Language, 'FUN/REMINDER_TITLE'))
 					.setColor('RANDOM')
 					.attachFiles(attachment)
 					.setThumbnail('attachment://Timer.png')
-					.setDescription(`${args.join(' ')}\n[${message.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
-					.setFooter(message.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(time, { long: true })));
+					.setDescription(`${args.join(' ')}\n[${bot.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
+					.setFooter(bot.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(time, { long: true })));
 				message.author.send(embed).catch(() => {
 					message.sendT(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${message.author}`, `${args.join(' ')}`]);
 				});

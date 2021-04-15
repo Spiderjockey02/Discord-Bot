@@ -25,21 +25,21 @@ module.exports = class TicketClose extends Command {
 					// Make sure bot has permission to delete channel
 					if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
 						bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-						return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
+						return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
 					}
 
 					// delete channel
 					await message.channel.delete();
 				} else {
-					return message.error(settings.Language, 'TICKET/NOT_SUPPORT');
+					return message.channel.error(settings.Language, 'TICKET/NOT_SUPPORT');
 				}
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			message.error(settings.Language, 'TICKET/NOT_TICKET').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'TICKET/NOT_TICKET').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

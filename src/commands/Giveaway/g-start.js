@@ -23,17 +23,17 @@ module.exports = class G_start extends Command {
 		if (message.deletable) message.delete();
 
 		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Check if bot has permission to add reactions
 		if (!message.channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
 			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure a time, winner count & prize is entered
 		if (args.length <= 2) {
-			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Get time
@@ -42,7 +42,7 @@ module.exports = class G_start extends Command {
 
 		// Make sure that number of winners is a number
 		if (isNaN(args[1]) || args[1] > 10) {
-			return message.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Make sure prize is less than 256 characters
@@ -56,13 +56,13 @@ module.exports = class G_start extends Command {
 			prize: args.slice(2).join(' '),
 			winnerCount: parseInt(args[1]),
 			hostedBy: message.member,
-			messages: message.translate(settings.Language, 'GIVEAWAY/GIVEAWAY_DATA'),
+			messages: bot.translate(settings.Language, 'GIVEAWAY/GIVEAWAY_DATA'),
 			// language settings
 		}).then(() => {
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 		}).catch(err => {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

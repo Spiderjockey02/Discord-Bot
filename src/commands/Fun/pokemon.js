@@ -22,7 +22,7 @@ module.exports = class Pokemon extends Command {
 		const pokemon = args.join(' ');
 		if (!pokemon) {
 			if (message.deletable) message.delete();
-			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Search for pokemon
@@ -32,7 +32,7 @@ module.exports = class Pokemon extends Command {
 				// An error occured when looking for account
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			});
 
 		// Send response to channel

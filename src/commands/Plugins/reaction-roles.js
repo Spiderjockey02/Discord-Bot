@@ -21,31 +21,31 @@ module.exports = class ReactionRoles extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure bot has permission to give/remove roles
 		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure data was entered
-		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure channel is a text channel and permission
 		const channel = message.guild.channels.cache.get(args[0]);
 		if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
-			return message.error(settings.Language, 'MISSING_CHANNEL');
+			return message.channel.error(settings.Language, 'MISSING_CHANNEL');
 		} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'SEND_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SEND_MESSAGES').then(m => m.delete({ timeout: 10000 }));
 		} else if (!channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS').then(m => m.delete({ timeout: 10000 }));
 		} else if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Get all roles mentioned
-		message.channel.send(message.translate(settings.Language, 'PLUGINS/SEND_ROLES'));
+		message.channel.send(bot.translate(settings.Language, 'PLUGINS/SEND_ROLES'));
 
 		const filter = (m) => message.author.id === m.author.id || (m.content == 'cancel' && m.author.id == message.author.id);
 
@@ -74,7 +74,7 @@ module.exports = class ReactionRoles extends Command {
 			.setDescription([
 				`Roles selected: ${roles.join(', ')}`,
 				'',
-				message.translate(settings.Language, 'PLUGINS/SEND_EMOJIS'),
+				bot.translate(settings.Language, 'PLUGINS/SEND_EMOJIS'),
 			].join('\n'));
 		message.channel.send(embed);
 
@@ -101,8 +101,8 @@ module.exports = class ReactionRoles extends Command {
 
 		// Now display message to chosen channel
 		const embed2 = new MessageEmbed()
-			.setTitle(message.translate(settings.Language, 'PLUGINS/EGGLORD_REACTIONS'))
-			.setDescription(message.translate(settings.Language, 'PLUGINS/REACT_BELOW', createDescription()));
+			.setTitle(bot.translate(settings.Language, 'PLUGINS/EGGLORD_REACTIONS'))
+			.setDescription(bot.translate(settings.Language, 'PLUGINS/REACT_BELOW', createDescription()));
 
 		channel.send(embed2).then(async (msg) => {
 			emojis.forEach(async (em) => {

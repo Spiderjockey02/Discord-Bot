@@ -19,30 +19,30 @@ module.exports = class Speed extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
+		if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure song isn't a stream
 		if (!player.queue.current.isSeekable) {
-			return message.error(settings.Language, 'MUSIC/LIVESTREAM');
+			return message.channel.error(settings.Language, 'MUSIC/LIVESTREAM');
 		}
 
 		// Make sure Number is a number
 		if (isNaN(args[0])) {
-			return message.error(settings.Language, 'NOT_NUMBER');
+			return message.channel.error(settings.Language, 'NOT_NUMBER');
 		}
 
 		// Make sure number is between 1 and 10
 		if (args[0] < 0 || args[0] > 10) {
-			return message.error(settings.Language, 'MUSIC/INCORRECT_NUMBER');
+			return message.channel.error(settings.Language, 'MUSIC/INCORRECT_NUMBER');
 		}
 
 		// Change speed value
@@ -52,7 +52,7 @@ module.exports = class Speed extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

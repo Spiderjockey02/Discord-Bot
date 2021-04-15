@@ -31,11 +31,11 @@ module.exports = class Leaderboard extends Command {
 		]).exec((err, res) => {
 			if (err) console.log(err);
 			const embed = new MessageEmbed()
-				.setTitle(message.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
+				.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
 				.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 			if (res.length === 0) {
 				// If there no results
-				embed.addField(message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), message.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
+				embed.addField(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
 			} else if (res.length < 10) {
 				// If there are less than 10 results and then show this
 				for (let i = 0; i < res.length; i++) {

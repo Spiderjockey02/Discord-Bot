@@ -26,7 +26,7 @@ module.exports = class SetLog extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		if (!args[0]) {
 			const embed = new MessageEmbed()
@@ -40,10 +40,10 @@ module.exports = class SetLog extends Command {
 			try {
 				await message.guild.updateGuild({ ModLog: args[0] });
 				settings.ModLog = args[0];
-				message.success(settings.Language, 'PLUGINS/LOGS_SET', args[0]).then(m => m.delete({ timeout:10000 }));
+				message.channel.success(settings.Language, 'PLUGINS/LOGS_SET', args[0]).then(m => m.delete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (args[0] == 'add' || args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents;
@@ -64,7 +64,7 @@ module.exports = class SetLog extends Command {
 					message.channel.send(`Added: ${args[1].toUpperCase()} to logging.`);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else if (args[0] == 'remove') {
 
@@ -78,7 +78,7 @@ module.exports = class SetLog extends Command {
 					message.channel.send(`Removed: ${args[1].toUpperCase()} from logging.`);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else {
 				const embed = new MessageEmbed()
@@ -93,14 +93,14 @@ module.exports = class SetLog extends Command {
 				if (channelID) {
 					await message.guild.updateGuild({ ModLogChannel: channelID });
 					settings.ModLogChannel = channelID;
-					message.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
+					message.channel.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
 				}
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

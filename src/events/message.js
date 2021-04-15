@@ -35,7 +35,7 @@ module.exports = class Message extends Event {
 
 		// Check if the message was @someone
 		if (['@someone', '@person'].includes(message.content)) {
-			if (message.channel.type == 'dm') return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR');
+			if (message.channel.type == 'dm') return message.channel.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR');
 			return message.channel.send({ embed:{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` } });
 		}
 
@@ -70,18 +70,18 @@ module.exports = class Message extends Event {
 
 
 			// Make sure guild only commands are done in the guild only
-			if (message.guild && cmd.guildOnly)	return message.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
+			if (message.guild && cmd.guildOnly)	return message.channel.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
 
 			// Check to see if the command is being run in a blacklisted channel
 			if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
 				if (message.deletable) message.delete();
-				return message.error(settings.Language, 'EVENTS/BLACKLISTED_CHANNEL', message.author.tag).then(m => m.delete({ timeout:5000 }));
+				return message.channel.error(settings.Language, 'EVENTS/BLACKLISTED_CHANNEL', message.author.tag).then(m => m.delete({ timeout:5000 }));
 			}
 
 			// Make sure NSFW commands are only being run in a NSFW channel
 			if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.conf.nsfw))) {
 				if (message.deletable) message.delete();
-				return message.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
+				return message.channel.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
 			}
 
 			// Check if the command is from a disabled plugin
@@ -118,7 +118,7 @@ module.exports = class Message extends Event {
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
-					return message.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => m.delete({ timeout:5000 }));
+					return message.channel.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => m.delete({ timeout:5000 }));
 				}
 			}
 

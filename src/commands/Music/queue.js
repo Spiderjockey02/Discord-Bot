@@ -22,24 +22,24 @@ module.exports = class Queue extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
+		if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
 
 		// Check if bot has permission to connect to voice channel
 		if (!message.channel.permissionsFor(message.guild.me).has('ADD_REACTIONS')) {
 			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Check if bot has permission to delete emojis
 		if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure queue is not empty

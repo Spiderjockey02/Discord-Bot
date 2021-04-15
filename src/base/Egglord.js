@@ -158,4 +158,17 @@ module.exports = class Egglord extends Client {
 		this.adultSiteList = blockedWebsites.websites;
 		return this.adultSiteList;
 	}
+
+	// This will get the translation for the provided text
+	translate(language, key, args) {
+		let languageFile;
+		if (key.includes('/')) {
+			const word = key.split('/');
+			languageFile = require(`../languages/${language}/${word[0]}/translation`);
+			return languageFile(word[1], args);
+		} else {
+			languageFile = require(`../languages/${language}/misc`);
+			return languageFile(key, args);
+		}
+	}
 };

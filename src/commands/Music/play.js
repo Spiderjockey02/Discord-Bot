@@ -20,28 +20,28 @@ module.exports = class Play extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!message.member.voice.channel) return message.error(settings.Language, 'MUSIC/MISSING_VOICE');
+		if (!message.member.voice.channel) return message.channel.error(settings.Language, 'MUSIC/MISSING_VOICE');
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Check if bot has permission to connect to voice channel
 		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
 			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Check if bot has permission to speak in the voice channel
 		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
 			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Create player
@@ -56,7 +56,7 @@ module.exports = class Play extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Make sure something was entered
@@ -70,9 +70,9 @@ module.exports = class Play extends Command {
 						args.push(url);
 					}
 				}
-				if (!args[0]) return message.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (!args[0]) return message.channel.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
 			} else {
-				return message.error(settings.Language, 'MUSIC/NO_ARGS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/NO_ARGS').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
@@ -88,13 +88,13 @@ module.exports = class Play extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.error(settings.Language, 'MUSIC/ERROR', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return message.error(settings.Language, 'MUSIC/NO_SONG');
+			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
 		} else if (res.loadType == 'PLAYLIST_LOADED') {
 			// Connect to voice channel if not already
 			if (player.state !== 'CONNECTED') player.connect();

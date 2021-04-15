@@ -21,7 +21,7 @@ module.exports = class Premium extends Command {
 		if (message.deletable) message.delete();
 
 		// Make sure args was entered
-		if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user
 		const user = await bot.getUser(args[1]);
@@ -43,13 +43,15 @@ module.exports = class Premium extends Command {
 					premium: choice,
 					premiumSince: Date.now(),
 				});
+
+				// save user to DB
 				try {
 					await newPremium.save();
 					user.premium = true;
 					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${user.tag} has been given premium.` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else if (!res) {
 				message.channel.send('That user already doesn\'t have premium');
@@ -62,7 +64,7 @@ module.exports = class Premium extends Command {
 					user.premium = false;
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 				}
 
 			}

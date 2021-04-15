@@ -20,7 +20,7 @@ module.exports = class MC extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Ping a minecraft server
-		if (!args[0]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const r = await message.channel.send('Pinging server..');
 
 		// If no ping use 25565
@@ -43,7 +43,7 @@ module.exports = class MC extends Command {
 			r.delete();
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

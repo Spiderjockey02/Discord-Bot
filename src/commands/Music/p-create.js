@@ -19,7 +19,7 @@ module.exports = class PCreate extends Command {
 
 	async run(bot, message, args, settings) {
 
-		if (!args[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		if (args[0].length > 32) return msg.edit('Playlist title must be less than 32 characters!');
 
 		const msg = await message.channel.send('Adding song(s) to your playlist (This might take a few seconds.)...');
@@ -31,7 +31,7 @@ module.exports = class PCreate extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// response from database
@@ -62,14 +62,14 @@ module.exports = class PCreate extends Command {
 		try {
 			res = await bot.manager.search(args[1], message.author);
 		} catch (err) {
-			return message.error(settings.Language, 'MUSIC/ERROR', err.message);
+			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
 		}
 
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			msg.delete();
-			return message.error(settings.Language, 'MUSIC/NO_SONG');
+			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
 		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
 			// Save playlist to database
 			const newPlaylist = new PlaylistSchema({

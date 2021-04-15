@@ -18,7 +18,7 @@ module.exports = class Reddit extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get subreddit
-		if (!args[0])	return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// try and retrieve image from reddit
 		try {
@@ -36,12 +36,12 @@ module.exports = class Reddit extends Command {
 				.setTitle(`From /${reddit.post.subreddit}`)
 				.setURL(reddit.post.link)
 				.setImage(reddit.url)
-				.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | ${message.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
+				.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | ${bot.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
 			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

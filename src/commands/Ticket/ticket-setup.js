@@ -20,7 +20,7 @@ module.exports = class TicketSetup extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// make sure user has permission to edit ticket plugin
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
 
 		// will setup the ticket command
 		if (!args[0]) {
@@ -41,7 +41,7 @@ module.exports = class TicketSetup extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (args[0] == 'role') {
 
@@ -56,7 +56,7 @@ module.exports = class TicketSetup extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 	}

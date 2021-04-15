@@ -24,26 +24,26 @@ module.exports = class Ban extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 
 		// Check if bot has permission to ban user
 		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
 			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Get user and reason
-		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : message.translate(settings.Language, 'NO_REASON');
+		const reason = (args.join(' ').slice(22)) ? args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user is real
-		const member = message.guild.getMember(message, args);
+		const member = message.getMember(message, args);
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (member[0].hasPermission('ADMINISTRATOR')) return message.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].hasPermission('ADMINISTRATOR')) return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 
 		// Ban user with reason and check if timed ban
 		try {
@@ -62,7 +62,7 @@ module.exports = class Ban extends Command {
 
 			// Ban user from guild
 			await member[0].ban({ reason: reason });
-			message.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
+			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = args[args.length - 1];
@@ -93,7 +93,7 @@ module.exports = class Ban extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

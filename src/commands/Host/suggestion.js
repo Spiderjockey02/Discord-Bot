@@ -27,11 +27,11 @@ module.exports = class Suggestion extends Command {
 			// make sure bot has permissions to add reactions
 			if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
 				bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
-				return message.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
 			}
 
 			const words = args.join(' ').split('-');
-			if (words.length != 3) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			if (words.length != 3) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			// send message
 			const title = words[0],
 				description = words[1],

@@ -22,7 +22,7 @@ module.exports = class Fortnite extends Command {
 		const username = args.join(' ');
 
 		// Checks to see if a username was provided
-		if (!username) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!username) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		const r = await message.channel.send('Gathering account details...');
 
 		// Gather data from database
@@ -32,7 +32,7 @@ module.exports = class Fortnite extends Command {
 			if (message.deletable) message.delete();
 			r.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
 
 		// Delete wait message
@@ -42,7 +42,7 @@ module.exports = class Fortnite extends Command {
 		if (res.size == 0) return;
 
 		// Checks to see if a username in instagram database
-		if (!res.graphql.user.username) return message.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+		if (!res.graphql.user.username) return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 
 		// Displays Data
 		const account = res.graphql.user;

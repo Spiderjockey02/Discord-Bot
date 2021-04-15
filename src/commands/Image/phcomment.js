@@ -20,16 +20,16 @@ module.exports = class PHcomment extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.guild.getMember(message, args);
+		const member = message.getMember(message, args);
 		// Get text
 		let text = args.join(' ');
 		text = text.replace(/<@.?[0-9]*?>/g, '');
 
 		// Make sure text was entered
-		if (!text) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!text) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 70 characters
-		if (text.length >= 71) return message.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 70).then(m => m.delete({ timeout: 5000 }));
+		if (text.length >= 71) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 70).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
@@ -46,7 +46,7 @@ module.exports = class PHcomment extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

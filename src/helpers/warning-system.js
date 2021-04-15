@@ -10,7 +10,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 	}, async (err, res) => {
 		if (err) {
 			bot.logger.error(`Command: 'warn' has error: ${err.message}.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// This is their first warning
@@ -33,8 +33,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				await newWarn.save();
 				const embed = new MessageEmbed()
 					.setColor(15158332)
-					.setAuthor(message.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
-					.setDescription(message.translate(settings.Language, 'MODERATION/REASON', wReason));
+					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
+					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
@@ -53,7 +53,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
-				message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
 			// This is NOT their warning
@@ -71,8 +71,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				// send embed
 				const embed = new MessageEmbed()
 					.setColor(15158332)
-					.setAuthor(message.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
-					.setDescription(message.translate(settings.Language, 'MODERATION/REASON', wReason));
+					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
+					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 				// update database
 				await res.save();
@@ -104,11 +104,11 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				try {
 					await message.guild.member(member).kick(wReason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
-					message.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
+					message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database
 				} catch (e) {
 					bot.logger.error(`${err.message} when kicking user.`);
-					message.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => m.delete({ timeout: 10000 }));
+					message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => m.delete({ timeout: 10000 }));
 				}
 			}
 		}

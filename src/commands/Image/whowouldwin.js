@@ -20,7 +20,7 @@ module.exports = class WhoWouldWin extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.guild.getMember(message, args);
+		const member = message.getMember(message, args);
 
 		// send 'waitng' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
@@ -37,7 +37,7 @@ module.exports = class WhoWouldWin extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

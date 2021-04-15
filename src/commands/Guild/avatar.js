@@ -19,12 +19,12 @@ module.exports = class Avatar extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get user
-		const member = message.guild.getMember(message, args);
+		const member = message.getMember(message, args);
 
 		// send embed
 		const embed = new MessageEmbed()
-			.setTitle(message.translate(settings.Language, 'GUILD/AVATAR_TITLE', member[0].user.tag))
-			.setDescription(`${message.translate(settings.Language, 'GUILD/AVATAR_DESCRIPTION')}\n[png](${member[0].user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member[0].user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member[0].user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member[0].user.displayAvatarURL({ format: 'webp', size: 1024 })})`)
+			.setTitle(bot.translate(settings.Language, 'GUILD/AVATAR_TITLE', member[0].user.tag))
+			.setDescription(`${bot.translate(settings.Language, 'GUILD/AVATAR_DESCRIPTION')}\n[png](${member[0].user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member[0].user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member[0].user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member[0].user.displayAvatarURL({ format: 'webp', size: 1024 })})`)
 			.setImage(`${member[0].user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
 		message.channel.send(embed);
 	}

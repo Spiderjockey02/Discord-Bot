@@ -30,14 +30,14 @@ module.exports = class Person extends Command {
 				**- Company :** ${data.company}`)
 				.setColor(3447003)
 				.setThumbnail(bot.user.displayAvatarURL())
-				.setFooter(`${message.translate(settings.Language, 'FUN/PERSON_FOOTER')}`, message.author.displayAvatarURL({ dynamic: true	}))
-				.setAuthor(`${message.translate(settings.Language, 'FUN/PERSON_AUTHOR')}${data.name}`)
+				.setFooter(`${bot.translate(settings.Language, 'FUN/PERSON_FOOTER')}`, message.author.displayAvatarURL({ dynamic: true	}))
+				.setAuthor(`${bot.translate(settings.Language, 'FUN/PERSON_AUTHOR')}${data.name}`)
 				.setTimestamp();
 			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

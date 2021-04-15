@@ -19,8 +19,8 @@ module.exports = class Ship extends Command {
 	// Run command
 	async run(bot, message, args, settings) {
 		// Get image, defaults to author's avatar
-		const users = message.guild.GetImage(message, args, settings.Language);
-		if (!users[1]) return message.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		const users = message.GetImage(message, args, settings.Language);
+		if (!users[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waitng' message
 		const msg = await message.sendT(settings.Language, 'IMAGE/GENERATING_IMAGE');
@@ -38,7 +38,7 @@ module.exports = class Ship extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };
