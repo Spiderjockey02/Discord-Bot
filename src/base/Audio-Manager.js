@@ -49,6 +49,9 @@ module.exports = async (bot) => {
 			// when a track causes an error
 			if (bot.config.debug) bot.logger.log(`Track error: ${payload.error} in guild: ${player.guild}.`);
 
+			// reset player filter (might be the cause)
+			player.resetFilter();
+
 			// send embed
 			const embed = new MessageEmbed()
 				.setColor(15158332)
