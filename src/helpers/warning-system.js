@@ -1,10 +1,10 @@
 // Dependencies
-const { WarningSchema } = require('../database/models'),
+const { WarningSchema, timeEventSchema } = require('../database/models'),
 	{ MessageEmbed } = require('discord.js');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
 	// retrieve user data in warning database
-	WarningSchema.findOne({
+	WarningSchema.find({
 		userID: member.user.id,
 		guildID: message.guild.id,
 	}, async (err, res) => {
@@ -14,19 +14,19 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 		}
 
 		// This is their first warning
-		if (!res) {
+		let newWarn;
+		if (!res[0]) {
 			// debugging mode
 			if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the first time in guild: ${message.guild.id}`);
 
 			try {
 				// create a new warning file
-				const newWarn = new WarningSchema({
+				newWarn = new WarningSchema({
 					userID: member.user.id,
 					guildID: message.guild.id,
-					Warnings: 1,
-					Reason: [`${wReason}`],
-					Moderater: [`${(message.author.id == member.user.id) ? bot.user.id : message.author.id}`],
-					IssueDates: [`${new Date().toUTCString()}`],
+					Reason: wReason,
+					Moderater: (message.author.id == member.user.id) ? bot.user.id : message.author.id,
+					IssueDate: new Date().toUTCString(),
 				});
 
 				// save and send response to moderator
@@ -38,35 +38,41 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
-				try {
-					const embed2 = new MessageEmbed()
-						.setTitle('WARNING')
-						.setColor(15158332)
-						.setThumbnail(message.guild.iconURL())
-						.setDescription(`You have been warned in ${message.guild.name}.`)
-						.addField('Warned by:', message.author.tag, true)
-						.addField('Reason:', wReason, true)
-						.addField('Warnings:', '1/3');
-					member.send(embed2);
-					// eslint-disable-next-line no-empty
-				} catch (e) {}
+				const embed2 = new MessageEmbed()
+					.setTitle('WARNING')
+					.setColor(15158332)
+					.setThumbnail(message.guild.iconURL())
+					.setDescription(`You have been warned in ${message.guild.name}.`)
+					.addField('Warned by:', message.author.tag, true)
+					.addField('Reason:', wReason, true)
+					.addField('Warnings:', '1/3');
+				// eslint-disable-next-line no-empty-function
+				member.send(embed2).catch(() => {});
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
 				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			// This is NOT their warning
-			res.Warnings++;
-			res.Reason.push(wReason);
-			res.IssueDates.push(new Date().toUTCString());
-			res.Moderater.push(message.author.id);
+			// This is NOT their first warning
+			newWarn = new WarningSchema({
+				userID: member.user.id,
+				guildID: message.guild.id,
+				Reason: wReason,
+				Moderater: (message.author.id == member.user.id) ? bot.user.id : message.author.id,
+				IssueDate: new Date().toUTCString(),
+			});
+
+			// save and send response to moderator
+			await newWarn.save();
 
 			// mute user
-			if (res.Warnings == 2) {
+			if (res.length + 1 == 2) {
 				// Mutes user
-				const muteRole = message.guild.roles.cache.get(settings.MutedRole);
-				if (muteRole) await member.roles.add(muteRole).catch(err => bot.logger.error(err.message));
+				message.args = [member.user.id, '5m'];
+				bot.commands.get('mute').run(bot, message, settings);
+				// const muteRole = message.guild.roles.cache.get(settings.MutedRole);
+				// if (muteRole) await member.roles.add(muteRole).catch(err => bot.logger.error(err.message));
 
 				// send embed
 				const embed = new MessageEmbed()
@@ -74,30 +80,19 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
-				// update database
-				await res.save();
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
-				try {
-					const embed2 = new MessageEmbed()
-						.setTitle('WARNING')
-						.setColor(15158332)
-						.setThumbnail(message.guild.iconURL())
-						.setDescription(`You have been warned in ${message.guild.name}.`)
-						.addField('Warned by:', message.author.tag, true)
-						.addField('Reason:', wReason, true)
-						.addField('Warnings:', '2/3');
-					member.send(embed2);
-					// eslint-disable-next-line no-empty
-				} catch (e) {}
-
-				// remove role after time
-				if (muteRole) {
-					setTimeout(() => {
-						member.roles.remove(muteRole).catch(err => bot.logger.error(err.message));
-					}, 5 * 60000);
-				}
+				const embed2 = new MessageEmbed()
+					.setTitle('WARNING')
+					.setColor(15158332)
+					.setThumbnail(message.guild.iconURL())
+					.setDescription(`You have been warned in ${message.guild.name}.`)
+					.addField('Warned by:', message.author.tag, true)
+					.addField('Reason:', wReason, true)
+					.addField('Warnings:', '2/3');
+					// eslint-disable-next-line no-empty-function
+				member.send(embed2).catch(() => {});
 			} else {
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the third time in guild: ${message.guild.id}`);
 				// try and kick user from guild
@@ -113,8 +108,31 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 			}
 		}
 
-		// If lodding is enabled send warning/kick embed to lodding channel
-		if (settings.ModLog) {
+		// check if warning is timed
+		const possibleTime = wReason.split(' ')[0];
+		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
+			const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
+			if (!time) return;
+			// connect to database
+			const newEvent = new timeEventSchema({
+				userID: member.user.id,
+				guildID: message.guild.id,
+				time: new Date(new Date().getTime() + time),
+				channelID: message.channel.id,
+				type: 'warn',
+			});
+			await newEvent.save();
+
+			// delete warning from user
+			setTimeout(async () => {
+				// Delete item from database as bot didn't crash
+				await WarningSchema.findByIdAndRemove(newWarn._id);
+				await timeEventSchema.findByIdAndRemove(newEvent._id);
+			}, time);
+		}
+
+		// If logging is enabled send warning/kick embed to lodding channel
+		if (settings.ModLogEvents.includes('WARNING') && settings.ModLog) {
 			const embed = new MessageEmbed()
 				.setColor(15158332);
 			if (res) {

@@ -3,10 +3,9 @@ const { Schema, model } = require('mongoose');
 const warningSchema = Schema({
 	userID: String,
 	guildID: String,
-	Warnings: Number,
-	Reason: Array,
-	Moderater: Array,
-	IssueDates: Array,
+	Reason: String,
+	Moderater: String,
+	IssueDate: String,
 });
 
 module.exports = model('Warnings', warningSchema);

@@ -1,5 +1,5 @@
 // Dependencies
-const { timeEventSchema } = require('../database/models'),
+const { timeEventSchema, WarningSchema } = require('../database/models'),
 	ms = require('ms'),
 	{ MessageEmbed, MessageAttachment } = require('discord.js');
 
@@ -22,17 +22,17 @@ module.exports = async (bot) => {
 					// Message user about reminder
 					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
 					const embed = new MessageEmbed()
-						.setTitle(translate(settings.Language, 'FUN/REMINDER_TITLE'))
+						.setTitle(bot.translate(settings.Language, 'FUN/REMINDER_TITLE'))
 						.setColor('RANDOM')
 						.attachFiles(attachment)
 						.setThumbnail('attachment://Timer.png')
-						.setDescription(`${events[i].message}\n[${translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID})`)
-						.setFooter(translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(events[i].time, { long: true })));
+						.setDescription(`${events[i].message}\n[${bot.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID})`)
+						.setFooter(bot.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(events[i].time, { long: true })));
 					try {
 						await bot.users.cache.get(events[i].userID).send(embed);
 					} catch (e) {
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.send(translate(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${bot.users.cache.get(events[i].userID)}`, `${events[i].message}`]));
+						if (channel) channel.send(bot.translate(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${bot.users.cache.get(events[i].userID)}`, `${events[i].message}`]));
 					}
 				} else if (events[i].type == 'ban') {
 					// if event type was mute
@@ -46,7 +46,7 @@ module.exports = async (bot) => {
 					const channel = bot.channels.cache.get(events[i].channelID);
 					if (channel) {
 						const emoji = channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') ? bot.config.emojis.tick : ':white_check_mark:';
-						await channel.send({ embed:{ color:3066993, description:`${emoji} ${translate(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.getUser(events[i].userID))}` } }).then(m => m.delete({ timeout: 3000 }));
+						await channel.send({ embed:{ color:3066993, description:`${emoji} ${bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.getUser(events[i].userID))}` } }).then(m => m.delete({ timeout: 3000 }));
 					}
 				} else if (events[i].type == 'mute') {
 					// if event type was mute
@@ -69,13 +69,37 @@ module.exports = async (bot) => {
 						const channel = bot.channels.cache.get(events[i].channelID);
 						if (channel) {
 							const emoji = channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') ? bot.config.emojis.tick : ':white_check_mark:';
-							await channel.send({ embed:{ color:3066993, description:`${emoji} ${translate(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user)}` } }).then(m => m.delete({ timeout: 3000 }));
+							await channel.send({ embed:{ color:3066993, description:`${emoji} ${bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user)}` } }).then(m => m.delete({ timeout: 3000 }));
 						}
 					} catch (err) {
 						bot.logger.error(err.message);
 					}
-				} else if (events[i].type == 'warning') {
+				} else if (events[i].type == 'warn') {
 					// remove warning
+					WarningSchema.find({ userID: events[i].userID, guildID: events[i].guildID,
+					}, async (err, res) => {
+						if (err) {
+							bot.logger.error(`Command: 'warn' has error: ${err.message}.`);
+							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						}
+
+						// find the timed warning
+						for (let j = 0; j < res.length; j++) {
+							const possibleTime = res[j].Reason.split(' ')[0];
+							if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
+								const time = bot.timeFormatter.getTotalTime(possibleTime, this, settings.Language);
+								// make sure time is correct
+								if (time) {
+									const a = new Date(res[j].IssueDate).getTime() + parseInt(time);
+									const b = new Date(events[i].time).getTime();
+									if (((a > b) ? (a - b) : (b - a)) <= 4000) {
+										// warning found, time to delete
+										await WarningSchema.findByIdAndRemove(res[j]._id);
+									}
+								}
+							}
+						}
+					});
 				}
 
 				// Delete from database as bot didn't crash
@@ -89,16 +113,3 @@ module.exports = async (bot) => {
 		}
 	}, 3000);
 };
-
-// for translating files as don't have access to message structure
-function translate(language, key, args) {
-	let languageFile;
-	if (key.includes('/')) {
-		const word = key.split('/');
-		languageFile = require(`../languages/${language}/${word[0]}/translation`);
-		return languageFile(word[1], args);
-	} else {
-		languageFile = require(`../languages/${language}/misc`);
-		return languageFile(key, args);
-	}
-}

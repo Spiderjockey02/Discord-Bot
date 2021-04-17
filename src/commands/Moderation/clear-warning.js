@@ -12,7 +12,7 @@ module.exports = class ClearWarning extends Command {
 			userPermissions: ['KICK_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Remove warnings from a user.',
-			usage: 'clear-warning <user>',
+			usage: 'clear-warning <user> [warning number]',
 			cooldown: 5000,
 			examples: ['clear-warning username'],
 		});
@@ -32,20 +32,19 @@ module.exports = class ClearWarning extends Command {
 		// get warnings of user
 		try {
 			// find data
-			const data = await WarningSchema.findOne({
-				userID: member[0].id,
+			const warns = await WarningSchema.find({
+				userID: member[0].user.id,
 				guildID: message.guild.id,
 			});
 
-			// Delete the data
-			if (data) {
-				await WarningSchema.deleteOne(data, function(err) {
-					if (err) throw err;
-				});
-				message.channel.success(settings.Language, 'MODERATION/CLEARED_WARNINGS', member[0]).then(m => m.delete({ timeout: 10000 }));
+			// check if a warning number was entered
+			if (message.args[1] - 1 <= warns.length) {
+				// Delete item from database as bot didn't crash
+				await WarningSchema.findByIdAndRemove(warns[message.args[1] - 1]._id);
 			} else {
-				message.channel.send(bot.translate(settings.Language, 'MODERATION/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
+				await WarningSchema.deleteMany({ userID: member[0].user.id, guildID: message.guild.id });
 			}
+			message.channel.send(`warnings updated for ${member[0]}`);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
