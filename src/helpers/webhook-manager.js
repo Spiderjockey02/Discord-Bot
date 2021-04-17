@@ -30,11 +30,15 @@ module.exports = async (bot, channelID, embed) => {
 				// send embed
 				const repeats = Math.ceil(channelIDs.length / 10);
 				for (let j = 0; j < repeats; j++) {
+					// Get the embeds
+					const embeds = embedCollection.get(channelIDs[i])?.slice(j * 10, (j * 10) + 10);
+					if (!embeds) return;
+
 					await webhook.send('', {
 						username: bot.user.name,
 						avatarURL: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
 						// make sure only 10 embeds are sent
-						embeds: embedCollection.get(channelIDs[i]).slice(j * 10, (j * 10) + 10),
+						embeds: embeds,
 					});
 				}
 
