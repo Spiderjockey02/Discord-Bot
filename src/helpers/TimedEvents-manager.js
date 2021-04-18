@@ -8,7 +8,9 @@ module.exports = async (bot) => {
 
 	// loop every 3 seconds checking each item
 	setInterval(async () => {
+		// make sure there are events
 		if (events.length == 0) return;
+
 		// check each event
 		for (let i = 0; i < events.length; i++) {
 			// get settings for the guild
@@ -38,15 +40,20 @@ module.exports = async (bot) => {
 					// if event type was mute
 					bot.logger.debug(`Unbanning ${bot.users.cache.get(events[i].userID).tag} in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
 
-					const bans = await bot.guilds.cache.get(events[i].guildID).fetchBans();
-					if (bans.size == 0) return;
-					const bUser = bans.find(ban => ban.user.id == events[i].userID);
-					if (!bUser) return;
-					bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
-					const channel = bot.channels.cache.get(events[i].channelID);
-					if (channel) {
-						const emoji = channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') ? bot.config.emojis.tick : ':white_check_mark:';
-						await channel.send({ embed:{ color:3066993, description:`${emoji} ${bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.getUser(events[i].userID))}` } }).then(m => m.delete({ timeout: 3000 }));
+					// unban user
+					try {
+						const bans = await bot.guilds.cache.get(events[i].guildID).fetchBans();
+						if (bans.size == 0) return;
+						const bUser = bans.find(ban => ban.user.id == events[i].userID);
+						if (!bUser) return;
+
+						bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
+						const channel = bot.channels.cache.get(events[i].channelID);
+						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.getUser(events[i].userID)).then(m => m.delete({ timeout: 3000 }));
+					} catch (err) {
+						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
+						const channel = bot.channels.cache.get(events[i].channelID);
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 					}
 				} else if (events[i].type == 'mute') {
 					// if event type was mute
@@ -67,12 +74,11 @@ module.exports = async (bot) => {
 						if (member.voice.channelID) member.voice.setMute(false);
 
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) {
-							const emoji = channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') ? bot.config.emojis.tick : ':white_check_mark:';
-							await channel.send({ embed:{ color:3066993, description:`${emoji} ${bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user)}` } }).then(m => m.delete({ timeout: 3000 }));
-						}
+						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.delete({ timeout: 3000 }));
 					} catch (err) {
-						bot.logger.error(err.message);
+						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
+						const channel = bot.channels.cache.get(events[i].channelID);
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 					}
 				} else if (events[i].type == 'warn') {
 					// remove warning
