@@ -30,5 +30,8 @@ module.exports = bot => {
 		// Run the server
 		.listen(port, () => {
 			bot.logger.ready(`Statistics API has loaded on port:${port}`);
+		})
+		.on('error', (err) => {
+			bot.logger.error(`Error with starting HTTP API: ${err.message}`);
 		});
 };
