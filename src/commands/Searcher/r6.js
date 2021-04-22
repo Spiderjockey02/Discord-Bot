@@ -21,21 +21,20 @@ module.exports = class R6 extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get platforms and regions (just make it easier for users to use this command)
-		const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4:'PSN' };
+		const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4: 'PSN' };
 		const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
 		let player, platform, region;
 
 		// Checks to make sure a username was entered
 		if (!message.args[0]) {
-			message.delete();
-			return	message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
+			if (message.deletable) message.delete();
+			return message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
 		} else {
 			player = message.args[0];
 		}
 
 		// Get platform
 		platform = platforms['pc'];
-		region = regions['eu'];
 		for (let i = 0; i < message.args.length; i++) {
 			// Get Console
 			if (['pc', 'xbox', 'ps4'].includes(message.args[i].toLowerCase())) {
@@ -44,6 +43,9 @@ module.exports = class R6 extends Command {
 				message.args.splice(i);
 			}
 		}
+
+		// Get region
+		region = regions['eu'];
 		for (let i = 0; i < message.args.length; i++) {
 			// get region
 			if (['eu', 'na', 'as'].includes(message.args[i].toLowerCase())) {
@@ -53,7 +55,7 @@ module.exports = class R6 extends Command {
 		}
 
 		player = message.args.join(' ');
-		if(platform === 'xbl') player = player.replace('_', '');
+		if (platform === 'xbl') player = player.replace('_', '');
 		try {
 			player = await getId(platform, player);
 		} catch (err) {
@@ -63,11 +65,12 @@ module.exports = class R6 extends Command {
 		}
 
 		// Makes sure that user actually exist
-		if(!player.length) {
+		if (!player.length) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 		}
 
+		// get statistics of player
 		const r = await message.channel.send('Gathering results...');
 		player = player[0];
 		const playerRank = await getRank(platform, player.id);

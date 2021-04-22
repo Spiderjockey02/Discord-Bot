@@ -40,13 +40,12 @@ module.exports = class Fortnite extends Command {
 				.addField('Win percentage:', `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
 				.addField('Kills:', data.stats.lifetime.kills, true)
 				.addField('K/D Ratio:', data.stats.lifetime.kd, true);
-			r.delete();
 			message.channel.send(embed);
 		}).catch(err => {
-			r.delete();
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
+		r.delete();
 	}
 };

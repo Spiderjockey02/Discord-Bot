@@ -47,12 +47,11 @@ module.exports = class Twitch extends Command {
 						.addField('\u200B', `**${stream.title}** for ${stream.viewer_count} viewers`)
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
-				msg.delete();
 				message.channel.send(embed);
 			} else {
-				msg.delete();
 				message.channel.send('Twitch user not found.');
 			}
+			msg.delete();
 		} catch (err) {
 			if (message.deletable) message.delete();
 			msg.delete();

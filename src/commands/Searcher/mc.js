@@ -1,6 +1,6 @@
 // Dependencies
 const { status } = require('minecraft-server-util'),
-	{ MessageEmbed } = require('discord.js'),
+	{ MessageEmbed, MessageAttachment } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class MC extends Command {
@@ -28,9 +28,15 @@ module.exports = class MC extends Command {
 
 		// Ping server
 		status(message.args[0], { port: parseInt(message.args[1]) }).then((response) => {
+			// turn favicon to thumbnail
+			const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
+			const attachment = new MessageAttachment(imageStream, 'favicon.png');
+
 			const embed = new MessageEmbed()
 				.setColor(0x0099ff)
 				.setTitle('Server Status')
+				.attachFiles([attachment])
+				.setThumbnail('attachment://favicon.png')
 				.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`)
 				.addField('Server IP:', response.host)
 				.addField('Server Version:', response.version)

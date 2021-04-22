@@ -26,14 +26,15 @@ module.exports = class Fortnite extends Command {
 		const r = await message.channel.send('Gathering account details...');
 
 		// Gather data from database
-		const url = `https://instagram.com/${username}/?__a=1`;
-		const res = await fetch(url).then(info => info.json()).catch(err => {
+		const res = await fetch(`https://instagram.com/${username}/?__a=1`)
+			.then(info => info.json())
+			.catch(err => {
 			// An error occured when looking for account
-			if (message.deletable) message.delete();
-			r.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
-		});
+				if (message.deletable) message.delete();
+				r.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			});
 
 		// Delete wait message
 		r.delete();
@@ -57,8 +58,8 @@ module.exports = class Fortnite extends Command {
 			.addField('Posts:', account.edge_owner_to_timeline_media.count, true)
 			.addField('Followers:', account.edge_followed_by.count, true)
 			.addField('Following:', account.edge_follow.count, true)
-			.addField('Private Account:', account.is_private ? 'Yes :x:' : 'No :white_check_mark:', true)
-			.addField('Verified account:', account.is_verified ? 'Yes' : 'No', true);
+			.addField('Private Account:', account.is_private ? 'Yes 🔒' : 'No 🔓', true)
+			.addField('Verified account:', account.is_verified ? 'Yes ✅' : 'No ❌', true);
 		message.channel.send(embed);
 	}
 };
