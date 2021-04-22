@@ -31,6 +31,11 @@ module.exports = class Ready extends Event {
 			console.log(err);
 		}
 
+		// webhook manager
+		setInterval(async () => {
+			await require('../helpers/webhook-manager')(bot);
+		}, 10000);
+
 		// Updates the bot's status
 		setTimeout(() => {
 			bot.SetStatus('Online');

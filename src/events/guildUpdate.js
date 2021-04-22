@@ -26,7 +26,7 @@ module.exports = class guildUpdate extends Event {
 				newGuild.updateGuild({ guildName: newGuild.name });
 				settings.guildName = newGuild.name;
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel)	bot.addEmbed(modChannel.id, embed);
 			}
 
 			// region change
@@ -38,7 +38,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('After:', newGuild.region)
 					.setTimestamp();
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Server's boost level has changed
@@ -50,7 +50,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('After:', newGuild.premiumTier)
 					.setTimestamp();
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Server has got a new banner
@@ -62,7 +62,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('After:', newGuild.banner)
 					.setTimestamp();
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel)	bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Server has made a AFK channel
@@ -74,7 +74,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('After:', newGuild.afkChannel)
 					.setTimestamp();
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel)	bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Server now has a vanity URL
@@ -86,7 +86,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('After:', newGuild.vanityURLCode)
 					.setTimestamp();
 				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel)	bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

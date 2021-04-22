@@ -24,7 +24,7 @@ module.exports = class emojiUpdate extends Event {
 
 			// Find channel and send message
 			const modChannel = newEmoji.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

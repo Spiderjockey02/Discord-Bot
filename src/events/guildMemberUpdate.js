@@ -28,7 +28,7 @@ module.exports = class guildMemberRemove extends Event {
 					.setTimestamp();
 				// Send message
 				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has boosted the server
@@ -39,7 +39,7 @@ module.exports = class guildMemberRemove extends Event {
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
 				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has stopped boosted the server
@@ -50,7 +50,7 @@ module.exports = class guildMemberRemove extends Event {
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
 				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has changed their surname
@@ -67,7 +67,7 @@ module.exports = class guildMemberRemove extends Event {
 					.setTimestamp();
 				// send message
 				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// look for role change
@@ -92,7 +92,7 @@ module.exports = class guildMemberRemove extends Event {
 					.setTimestamp();
 				// Send message
 				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

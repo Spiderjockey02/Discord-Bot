@@ -23,7 +23,7 @@ module.exports = class guildMemberAdd extends Event {
 				.setAuthor('User joined:', member.user.displayAvatarURL())
 				.setTimestamp();
 			const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 
 		// Welcome plugin (give roles and message)

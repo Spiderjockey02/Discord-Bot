@@ -29,7 +29,7 @@ module.exports = class channelUpdate extends Event {
 					.setTimestamp();
 				// send message
 				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// channel topic (description) change
@@ -46,7 +46,7 @@ module.exports = class channelUpdate extends Event {
 					.setTimestamp();
 				// send message
 				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Check for permission change
@@ -106,7 +106,7 @@ module.exports = class channelUpdate extends Event {
 					});
 				}
 				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

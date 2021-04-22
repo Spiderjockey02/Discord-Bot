@@ -25,7 +25,7 @@ module.exports = class channelCreate extends Event {
 
 			// Find channel and send message
 			const modChannel = channel.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

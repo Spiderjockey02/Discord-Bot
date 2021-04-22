@@ -34,7 +34,7 @@ module.exports = class messageDeleteBulk extends Event {
 				.setTimestamp();
 
 			const modChannel = messages.first().channel.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

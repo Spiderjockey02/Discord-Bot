@@ -27,7 +27,7 @@ module.exports = class guildMemberRemove extends Event {
 
 			// Find channel and send message
 			const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

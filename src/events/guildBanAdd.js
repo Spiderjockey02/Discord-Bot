@@ -22,7 +22,7 @@ module.exports = class guildBanAdd extends Event {
 
 			// Find channel and send message
 			const modChannel = guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

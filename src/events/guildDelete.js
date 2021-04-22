@@ -16,7 +16,7 @@ module.exports = class guildDelete extends Event {
 				.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
 			const modChannel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		} catch (err) {
 			bot.logger.error('Unable to fetch guild information.');
 		}

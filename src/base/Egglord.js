@@ -58,6 +58,9 @@ module.exports = class Egglord extends Client {
 
 		// for time converting and stuff
 		this.timeFormatter = new (require('../utils/timeFormatter'));
+
+		// for webhook
+		this.embedCollection = new Collection();
 	}
 
 	// when the this joins add guild settings to server
@@ -169,6 +172,16 @@ module.exports = class Egglord extends Client {
 		} else {
 			languageFile = require(`../languages/${language}/misc`);
 			return languageFile(key, args);
+		}
+	}
+
+	// for adding embeds to the webhook manager
+	addEmbed(channelID, embed) {
+		// collect embeds
+		if (!this.embedCollection.has(channelID)) {
+			this.embedCollection.set(channelID, [embed]);
+		} else {
+			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
 		}
 	}
 };
