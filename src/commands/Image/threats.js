@@ -26,17 +26,17 @@ module.exports = class Threats extends Command {
 
 		// Try and convert image
 		try {
-			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`));
-			const json = await res.json();
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`)).then(res => res.json());
+
 			// send image in embed
 			const embed = new MessageEmbed()
 				.setImage(json.message);
-			msg.delete();
 			message.channel.send(embed);
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
+		msg.delete();
 	}
 };

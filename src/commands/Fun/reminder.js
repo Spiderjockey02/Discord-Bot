@@ -44,7 +44,6 @@ module.exports = class Reminder extends Command {
 			});
 			await newEvent.save();
 
-
 			// Once time is up send reply
 			setTimeout(async () => {
 				// send embed to author's DM
@@ -64,7 +63,6 @@ module.exports = class Reminder extends Command {
 				await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
 					if (err) console.log(err);
 				});
-
 			}, time);
 		});
 	}

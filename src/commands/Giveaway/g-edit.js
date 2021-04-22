@@ -47,7 +47,7 @@ module.exports = class G_edit extends Command {
 		}).then(() => {
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`));
 		}).catch((err) => {
-			bot.logger.error(err);
+			bot.logger.error(`Command: 'g-edit' has error: ${err.message}.`);
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', message.args[0]));
 		});
 	}

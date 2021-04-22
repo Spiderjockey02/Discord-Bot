@@ -36,9 +36,10 @@ module.exports = class Poll extends Command {
 			.setDescription(message.args.join(' '))
 			.setFooter(bot.translate(settings.Language, 'GUILD/POLL_FOOTER'))
 			.setTimestamp();
-		const msg = await message.channel.send(embed);
-		// Add reactions to message
-		await msg.react('✅');
-		await msg.react('❌');
+		message.channel.send(embed).then(async (msg) => {
+			// Add reactions to message
+			await msg.react('✅');
+			await msg.react('❌');
+		});
 	}
 };

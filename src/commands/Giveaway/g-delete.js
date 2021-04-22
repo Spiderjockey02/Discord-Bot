@@ -33,7 +33,8 @@ module.exports = class G_delete extends Command {
 		bot.giveawaysManager.delete(messageID).then(() => {
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'deleted'));
 		}).catch((err) => {
-			bot.logger.error(err);
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: 'g-delete' has error: ${err.message}.`);
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID));
 		});
 	}

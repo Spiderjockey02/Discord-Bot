@@ -33,7 +33,7 @@ module.exports = class G_reroll extends Command {
 		bot.giveawaysManager.reroll(messageID).then(() => {
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'rerolled'));
 		}).catch((err) => {
-			bot.logger.error(err);
+			bot.logger.error(`Command: 'g-reroll' has error: ${err.message}.`);
 			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID));
 		});
 	}

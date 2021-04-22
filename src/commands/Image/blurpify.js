@@ -27,8 +27,8 @@ module.exports = class Blurpify extends Command {
 
 		// Try and convert image
 		try {
-			const res = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=blurpify&image=${file[0]}`));
-			const json = await res.json();
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=blurpify&image=${file[0]}`)).then(res => res.json());
+
 			// send image
 			const embed = new MessageEmbed()
 				.setColor(3447003)

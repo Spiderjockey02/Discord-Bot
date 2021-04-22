@@ -155,7 +155,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 			// find channel and send message
 			const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	});
 };

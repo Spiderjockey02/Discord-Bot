@@ -19,7 +19,7 @@ module.exports = class QRcode extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get text for QR encoding (including file URl)
-		const text = (!message.args[0]) ? message.GetImage(message, message.args, settings.Language)[0] : message.args.join(' ');
+		const text = (!message.args[0]) ? message.GetImage()[0] : message.args.join(' ');
 
 		// send 'waiting' message
 		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
@@ -29,12 +29,12 @@ module.exports = class QRcode extends Command {
 			// send image in embed
 			const embed = new MessageEmbed()
 				.setImage(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`);
-			msg.delete();
 			message.channel.send(embed);
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
+		msg.delete();
 	}
 };

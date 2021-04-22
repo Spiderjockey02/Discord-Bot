@@ -25,6 +25,7 @@ module.exports = class Image extends Command {
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
+		// get results (image links etc)
 		const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
 
 		// send image

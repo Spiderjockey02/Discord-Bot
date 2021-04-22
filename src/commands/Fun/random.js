@@ -23,21 +23,18 @@ module.exports = class Random extends Command {
 		// Make sure both entries are there
 		if (!num1 || !message.args[1]) {
 			if (message.deletable) message.delete();
-			message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-			return;
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			// Make sure both entries are numbers
 			if (isNaN(num1) || isNaN(num2)) {
 				if (message.deletable) message.delete();
-				message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-				return;
+				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// Make sure they follow correct rules
 			if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
 				if (message.deletable) message.delete();
-				message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-				return;
+				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
 			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
 			message.channel.send(bot.translate(settings.Language, 'FUN/RANDOM_RESPONSE', r));

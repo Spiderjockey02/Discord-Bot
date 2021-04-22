@@ -57,6 +57,6 @@ const path = require('path');
 		bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
 
 		// show full error if debug mode is on
-		if(bot.config.debug) console.log(err);
+		if (bot.config.debug) console.log(err);
 	});
 })();

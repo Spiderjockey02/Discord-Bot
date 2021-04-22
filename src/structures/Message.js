@@ -49,6 +49,19 @@ module.exports = Structures.extend('Message', Message => {
 			return users;
 		}
 
+		// get channel from # or ID
+		getChannel() {
+			const channels = [];
+			// get all channels mentioned
+			for (let i = 0; i < this.args.length; i++) {
+				if (this.mentions.channels.array()[i] || this.guild.channels.cache.get(this.args[i])) {
+					channels.push(this.mentions.channels.array()[i] || this.guild.channels.cache.get(this.args[i]));
+				}
+			}
+			channels.push(this.channel);
+			return channels;
+		}
+
 		// Get image, from file download or avatar
 		async getImage() {
 			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];

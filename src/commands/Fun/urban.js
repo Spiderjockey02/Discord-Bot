@@ -28,19 +28,20 @@ module.exports = class Urban extends Command {
 		// Search up phrase in urban dictionary
 		define(`${phrase}`, (err, entries) => {
 			if (err) {
+				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'FUN/INCORRECT_URBAN', phrase).then(m => m.delete({ timeout: 5000 }));
-			} else {
-				// send message
-				const embed = new MessageEmbed()
-					.setTitle(bot.translate(settings.Language, 'FUN/URBAN_TITLE', phrase))
-					.setURL(entries[0].permalink)
-					.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-					.setDescription(bot.translate(settings.Language, 'FUN/URBAN_DESCRIPTION', [`${entries[0].definition}`, `${entries[0].example}`]))
-					.addField('👍', entries[0].thumbs_up, true)
-					.addField('👎', entries[0].thumbs_down, true);
-				message.channel.send(embed);
+				return message.channel.error(settings.Language, 'FUN/INCORRECT_URBAN', phrase).then(m => m.delete({ timeout: 5000 }));
 			}
+
+			// send definition of word
+			const embed = new MessageEmbed()
+				.setTitle(bot.translate(settings.Language, 'FUN/URBAN_TITLE', phrase))
+				.setURL(entries[0].permalink)
+				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
+				.setDescription(bot.translate(settings.Language, 'FUN/URBAN_DESCRIPTION', [`${entries[0].definition}`, `${entries[0].example}`]))
+				.addField('👍', entries[0].thumbs_up, true)
+				.addField('👎', entries[0].thumbs_down, true);
+			message.channel.send(embed);
 		});
 	}
 };
