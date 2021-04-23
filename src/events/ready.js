@@ -84,11 +84,14 @@ module.exports = class Ready extends Event {
 		}, 300000);
 
 		// check for premium users
-		const users = await PremiumSchema.find({});
-		for (let i = 0; i < users.length; i++) {
-			if (users[i].premium) {
-				const user = await bot.getUser(users[i].userID);
-				user.premium = users[i].premium;
+		const premium = await PremiumSchema.find({});
+		for (let i = 0; i < premium.length; i++) {
+			if (premium[i].Type == 'user') {
+				const user = await bot.getUser(premium[i].ID);
+				if (user) user.premium = true;
+			} else {
+				const guild = bot.guilds.cache.get(premium[i].ID);
+				if (guild) guild.premium = true;
 			}
 		}
 

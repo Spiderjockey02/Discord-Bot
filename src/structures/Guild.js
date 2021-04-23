@@ -9,6 +9,9 @@ module.exports = Structures.extend('Guild', Guild => {
 			super(bot, data);
 			// This for caching server settings
 			this.settings = {};
+
+			// premium guild or not
+			this.premium = false;
 		}
 
 		// Fetch guild settings (only on ready event)
