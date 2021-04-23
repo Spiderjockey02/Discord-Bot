@@ -41,13 +41,13 @@ module.exports = class TicketSetup extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'role') {
 
 			// update support role
 			try {
-				const supportRole = message.guild.roles.cache.find(role => role.id == message.args[1]);
+				const supportRole = message.guild.roles.cache.get(message.args[1]);
 				if (!supportRole) return message.channel.send('That is not a role.');
 				// update database
 				await message.guild.updateGuild({ TicketSupportRole: message.args[1] });

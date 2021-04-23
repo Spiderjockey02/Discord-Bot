@@ -18,10 +18,10 @@ module.exports = class TicketClose extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// will close the current ticket channel
-		const patt = /ticket-\d{18}/g;
-		if (patt.test(message.channel.name)) {
+		const regEx = /ticket-\d{18}/g;
+		if (regEx.test(message.channel.name)) {
 			try {
-				if (message.member.roles.cache.has(r => r.id == settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) {
+				if (message.member.roles.cache.get(settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) {
 					// Make sure bot has permission to delete channel
 					if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
 						bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
