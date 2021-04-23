@@ -60,19 +60,18 @@ module.exports = class TicketCreate extends Command {
 					.addField(`Hey ${message.author.username}!`, 'Our support team will contact you as soon as possible.')
 					.addField('Reason', reason)
 					.setTimestamp();
-				channel.send(embed);
-				channel.send(`${message.author}`).then(m => m.delete({ timeout:1000 }));
+				channel.send(`${message.author}, ${supportRole}`, embed);
 
 				// send ticket log (goes in ModLog channel)
 				if (settings.ModLogEvents.includes('TICKET') && settings.ModLog) {
-					const ticketLog = new MessageEmbed()
+					const embed2 = new MessageEmbed()
 						.setTitle('Ticket Opened!')
 						.addField('Ticket', channel)
 						.addField('User', message.author)
 						.addField('Reason', reason)
 						.setTimestamp();
-					const modChannel = message.guild.channels.cache.find(c => c.id == settings.ModLogChannel);
-					if (modChannel) modChannel.send(ticketLog);
+					const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
+					if (modChannel) bot.addEmbed(modChannel.id, embed2);
 				}
 			}).catch(err => {
 				if (message.deletable) message.delete();

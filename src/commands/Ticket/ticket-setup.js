@@ -47,7 +47,7 @@ module.exports = class TicketSetup extends Command {
 
 			// update support role
 			try {
-				const supportRole = message.guild.roles.cache.find(role => role.id == message.args[1]);
+				const supportRole = message.guild.roles.cache.get(message.args[1]);
 				if (!supportRole) return message.channel.send('That is not a role.');
 				// update database
 				await message.guild.updateGuild({ TicketSupportRole: message.args[1] });
