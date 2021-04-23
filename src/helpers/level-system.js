@@ -36,6 +36,7 @@ module.exports.run = (bot, message, settings) => {
 				// User has leveled up
 				if (Xp.Xp >= xpNeed) {
 					// now check how to send message
+					Xp.Level = Xp.Level + 1;
 					if (settings.LevelOption == 1) {
 						message.channel.send(settings.LevelMessage.replace('{user}', message.author).replace('{level}', Xp.Level));
 					} else if (settings.LevelOption == 2) {
