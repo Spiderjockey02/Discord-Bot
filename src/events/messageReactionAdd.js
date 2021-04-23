@@ -31,7 +31,7 @@ module.exports = class messageReactionAdd extends Event {
 
 			// Find channel and send message
 			const modChannel = reaction.message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 
 		const { guild } = reaction.message;

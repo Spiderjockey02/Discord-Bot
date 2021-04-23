@@ -22,7 +22,7 @@ module.exports = class roleCreate extends Event {
 
 			// Find channel and send message
 			const modChannel = role.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

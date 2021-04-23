@@ -25,7 +25,7 @@ module.exports = class roleUpdate extends Event {
 					.addField('After:', newRole.name)
 					.setTimestamp();
 				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// role colour change
@@ -39,7 +39,7 @@ module.exports = class roleUpdate extends Event {
 					.addField('After:', `${newRole.color} ([${newRole.hexColor}](https://www.color-hex.com/color/${newRole.hexColor.slice(1)}))`)
 					.setTimestamp();
 				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// role permission change
@@ -53,7 +53,7 @@ module.exports = class roleUpdate extends Event {
 					.addField('After:', newRole.permissions.bitfield)
 					.setTimestamp();
 				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

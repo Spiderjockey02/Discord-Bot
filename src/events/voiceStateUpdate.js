@@ -24,7 +24,7 @@ module.exports = class voiceStateUpdate extends Event {
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
 				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// member has been server (un)muted
@@ -36,7 +36,7 @@ module.exports = class voiceStateUpdate extends Event {
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
 				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// member has (stopped/started) streaming
@@ -48,7 +48,7 @@ module.exports = class voiceStateUpdate extends Event {
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
 				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+				if (modChannel) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 

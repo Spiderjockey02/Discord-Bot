@@ -30,7 +30,7 @@ module.exports = class messageReactionRemove extends Event {
 
 			// Find channel and send message
 			const modChannel = reaction.message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

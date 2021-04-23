@@ -46,7 +46,7 @@ module.exports = class messageUpdate extends Event {
 				.setTimestamp();
 			// send message
 			const modChannel = newMessage.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };
