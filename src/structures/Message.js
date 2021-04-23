@@ -76,17 +76,9 @@ module.exports = Structures.extend('Message', Message => {
 				this.guild.roles.cache.forEach(r => {
 					roleList.push(r.name);
 				});
-<<<<<<< HEAD
 				const match = sm.findBestMatch(this.args.join(' '), roleList),
 					username = match.bestMatch.target,
 					role = this.guild.roles.cache.find(r => r.name == username);
-=======
-				console.log(roleList);
-				const match = sm.findBestMatch(this.args.join(' '), roleList),
-					username = match.bestMatch.target,
-					role = this.guild.roles.cache.find(r => r.name == username);
-				console.log(match);
->>>>>>> 9b04fbe73141b89552e636dda22397839b7843b2
 				roles.push(role);
 			}
 			// return the array of roles
