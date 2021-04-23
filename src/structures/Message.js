@@ -62,6 +62,29 @@ module.exports = Structures.extend('Message', Message => {
 			return channels;
 		}
 
+		// get role from # or ID
+		getRole() {
+			const roles = [];
+			// get all channels mentioned
+			for (let i = 0; i < this.args.length; i++) {
+				if (this.mentions.roles.array()[i] || this.guild.roles.cache.get(this.args[i])) {
+					roles.push(this.mentions.roles.array()[i] || this.guild.roles.cache.get(this.args[i]));
+				}
+			}
+			if (this.args[0]) {
+				const roleList = [];
+				this.guild.roles.cache.forEach(r => {
+					roleList.push(r.name);
+				});
+				const match = sm.findBestMatch(this.args.join(' '), roleList),
+					username = match.bestMatch.target,
+					role = this.guild.roles.cache.find(r => r.name == username);
+				roles.push(role);
+			}
+			// return the array of roles
+			return roles;
+		}
+
 		// Get image, from file download or avatar
 		async getImage() {
 			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];
