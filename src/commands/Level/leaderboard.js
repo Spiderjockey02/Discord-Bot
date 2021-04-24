@@ -28,7 +28,7 @@ module.exports = class Leaderboard extends Command {
 			guildID: message.guild.id,
 		}).sort([
 			['Xp', 'descending'],
-		]).exec((err, res) => {
+		]).exec(async (err, res) => {
 			if (err) console.log(err);
 			const embed = new MessageEmbed()
 				.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
@@ -39,7 +39,7 @@ module.exports = class Leaderboard extends Command {
 			} else if (res.length < 10) {
 				// If there are less than 10 results and then show this
 				for (let i = 0; i < res.length; i++) {
-					const name = message.guild.members.cache.get(res[i].userID) || 'User left';
+					const name = await message.guild.members.fetch(res[i].userID) || 'User left';
 					if (name == 'User left') {
 						embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
 					} else {
@@ -49,7 +49,7 @@ module.exports = class Leaderboard extends Command {
 			} else {
 				// more than 10 results
 				for (let i = 0; i < 10; i++) {
-					const name = message.guild.members.cache.get(res[i].userID) || 'User left';
+					const name = await message.guild.members.fetch(res[i].userID) || 'User left';
 					if (name == 'User left') {
 						embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
 					} else {
