@@ -15,7 +15,9 @@ module.exports = class guildDelete extends Event {
 				.setTitle(`[GUILD LEAVE] ${guild.name}`)
 				.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
-			const modChannel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
+
+			// Find channel and send message
+			const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel);
 			if (modChannel) bot.addEmbed(modChannel.id, embed);
 		} catch (err) {
 			bot.logger.error('Unable to fetch guild information.');
@@ -23,9 +25,10 @@ module.exports = class guildDelete extends Event {
 
 		// Clean up database (delete all guild data)
 		try {
-			await RankSchema.deleteMany({
+			const r = await RankSchema.deleteMany({
 				guildID: guild.id,
 			});
+			console.log(r);
 		} catch (err) {
 			bot.logger.error(`Failed to delete Ranked data, error: ${err.message}`);
 		}

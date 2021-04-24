@@ -4,10 +4,8 @@ const { MessageEmbed } = require('discord.js'),
 
 module.exports = class guildMemberAdd extends Event {
 	async run(bot, member) {
-	// For debugging
+		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been joined guild: ${member.guild.id}.`);
-
-		if (member.user.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return
 		const settings = member.guild.settings;
@@ -22,14 +20,16 @@ module.exports = class guildMemberAdd extends Event {
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor('User joined:', member.user.displayAvatarURL())
 				.setTimestamp();
-			const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+			// Find channel and send message
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 
 		// Welcome plugin (give roles and message)
 		if (settings.welcomePlugin) {
-			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
-			if (channel) channel.send(settings.welcomeMessageText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+			const channel = bot.channels.fetch(settings.welcomeMessageChannel);
+			if (channel && channel.guild.id == member.guild.id) channel.send(settings.welcomeMessageText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 			// Send private message to user
 			if (settings.welcomePrivateToggle) member.send(settings.welcomePrivateText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 

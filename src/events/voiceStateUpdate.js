@@ -23,8 +23,10 @@ module.exports = class voiceStateUpdate extends Event {
 					.setTimestamp()
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
-				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newState.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// member has been server (un)muted
@@ -35,8 +37,10 @@ module.exports = class voiceStateUpdate extends Event {
 					.setTimestamp()
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
-				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newState.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// member has (stopped/started) streaming
@@ -47,8 +51,10 @@ module.exports = class voiceStateUpdate extends Event {
 					.setTimestamp()
 					.setFooter(`User: ${newMember.id}`)
 					.setAuthor(newMember.user.username, newMember.user.displayAvatarURL);
-				const modChannel = newState.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newState.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 

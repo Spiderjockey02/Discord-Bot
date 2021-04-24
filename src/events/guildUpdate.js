@@ -11,7 +11,7 @@ module.exports = class guildUpdate extends Event {
 		const settings = newGuild.settings;
 		if (Object.keys(settings).length == 0) return;
 
-		let embed;
+		let embed, updated = false;
 		// Check if event guildUpdate is for logging
 		if (settings.ModLog & settings.ModLogEvents.includes('GUILDUPDATE')) {
 
@@ -23,10 +23,9 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.name)
 					.addField('After:', newGuild.name)
 					.setTimestamp();
-				newGuild.updateGuild({ guildName: newGuild.name });
+				await newGuild.updateGuild({ guildName: newGuild.name });
 				settings.guildName = newGuild.name;
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	bot.addEmbed(modChannel.id, embed);
+				updated = true;
 			}
 
 			// region change
@@ -37,8 +36,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.region)
 					.addField('After:', newGuild.region)
 					.setTimestamp();
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+				updated = true;
 			}
 
 			// Server's boost level has changed
@@ -49,8 +47,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.premiumTier)
 					.addField('After:', newGuild.premiumTier)
 					.setTimestamp();
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+				updated = true;
 			}
 
 			// Server has got a new banner
@@ -61,8 +58,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.banner)
 					.addField('After:', newGuild.banner)
 					.setTimestamp();
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	bot.addEmbed(modChannel.id, embed);
+				updated = true;
 			}
 
 			// Server has made a AFK channel
@@ -73,8 +69,7 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.afkChannel)
 					.addField('After:', newGuild.afkChannel)
 					.setTimestamp();
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	bot.addEmbed(modChannel.id, embed);
+				updated = true;
 			}
 
 			// Server now has a vanity URL
@@ -85,8 +80,14 @@ module.exports = class guildUpdate extends Event {
 					.addField('Before:', oldGuild.vanityURLCode)
 					.addField('After:', newGuild.vanityURLCode)
 					.setTimestamp();
-				const modChannel = newGuild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel)	bot.addEmbed(modChannel.id, embed);
+				updated = true;
+			}
+
+			// Check if guildUpdate was a valid thing the bot checks
+			if (updated) {
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newGuild.id) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

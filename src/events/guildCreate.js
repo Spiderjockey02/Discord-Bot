@@ -24,7 +24,9 @@ module.exports = class guildCreate extends Event {
 			.setTitle(`[GUILD JOIN] ${guild.name}`)
 			.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
 			.setDescription(`Guild ID: ${guild.id}\nOwner: ${guild.owner.user.tag}\nMemberCount: ${guild.memberCount}`);
-		const modChannel = bot.channels.cache.get(bot.config.SupportServer.GuildChannel);
+
+		// Find channel and send message
+		const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel);
 		if (modChannel) bot.addEmbed(modChannel.id, embed);
 	}
 };

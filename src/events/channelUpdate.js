@@ -12,7 +12,7 @@ module.exports = class channelUpdate extends Event {
 		const settings = newChannel.guild.settings;
 		if (Object.keys(settings).length == 0) return;
 
-		// Check if event channelDelete is for logging
+		// Check if event channelUpdate is for logging
 		if (settings.ModLogEvents.includes('CHANNELUPDATE') && settings.ModLog) {
 
 			// Channel name change
@@ -27,9 +27,10 @@ module.exports = class channelUpdate extends Event {
 						{ name: 'New:', value: `${newChannel.name}`, inline: true },
 					)
 					.setTimestamp();
-				// send message
-				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newChannel.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// channel topic (description) change
@@ -44,9 +45,10 @@ module.exports = class channelUpdate extends Event {
 						{ name: 'New:', value: `${newChannel.topic ? newChannel.topic : '*empty topic*'}`, inline: true },
 					)
 					.setTimestamp();
-				// send message
-				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newChannel.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Check for permission change
@@ -85,10 +87,10 @@ module.exports = class channelUpdate extends Event {
 					let role;
 					let member;
 					if (oldPerm.type == 'role' || newPerm.type == 'role') {
-						role = newChannel.guild.roles.cache.get(newPerm.id || oldPerm.id);
+						role = await newChannel.guild.roles.fetch(newPerm.id || oldPerm.id);
 					}
 					if (oldPerm.type == 'member' || newPerm.type == 'member') {
-						member = await newChannel.guild.fetchMember(newPerm.id || oldPerm.id);
+						member = await newChannel.guild.members.fetch(newPerm.id || oldPerm.id);
 					}
 					// make text about what changed
 					let value = '';
@@ -105,8 +107,10 @@ module.exports = class channelUpdate extends Event {
 						'value': value,
 					});
 				}
-				const modChannel = newChannel.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newChannel.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

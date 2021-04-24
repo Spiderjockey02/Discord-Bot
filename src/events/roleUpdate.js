@@ -24,8 +24,10 @@ module.exports = class roleUpdate extends Event {
 					.addField('Before:', oldRole.name)
 					.addField('After:', newRole.name)
 					.setTimestamp();
-				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newRole.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// role colour change
@@ -38,8 +40,10 @@ module.exports = class roleUpdate extends Event {
 					.addField('Before:', `${oldRole.color} ([${oldRole.hexColor}](https://www.color-hex.com/color/${oldRole.hexColor.slice(1)}))`)
 					.addField('After:', `${newRole.color} ([${newRole.hexColor}](https://www.color-hex.com/color/${newRole.hexColor.slice(1)}))`)
 					.setTimestamp();
-				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newRole.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// role permission change
@@ -52,8 +56,10 @@ module.exports = class roleUpdate extends Event {
 					.addField('Before:', oldRole.permissions.bitfield)
 					.addField('After:', newRole.permissions.bitfield)
 					.setTimestamp();
-				const modChannel = newRole.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newRole.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}

@@ -44,9 +44,10 @@ module.exports = class messageUpdate extends Event {
 					{ name: `Before ${(oldShortened ? ' (shortened)' : '')}:`, value: `${oldMessage.content.length > 0 ? oldContent : '*empty message*'}`, inline: true },
 					{ name: `After ${(newShortened ? ' (shortened)' : '')}:`, value: `${newMessage.content.length > 0 ? newContent : '*empty message*'}`, inline: true })
 				.setTimestamp();
-			// send message
-			const modChannel = newMessage.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+			// Find channel and send message
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == newMessage.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

@@ -8,8 +8,6 @@ module.exports = class guildMemberRemove extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
 
-		if (member.user.id == bot.user.id) return;
-
 		// Get server settings / if no settings then return
 		const settings = member.guild.settings;
 		if (Object.keys(settings).length == 0) return;
@@ -26,8 +24,8 @@ module.exports = class guildMemberRemove extends Event {
 				.setTimestamp();
 
 			// Find channel and send message
-			const modChannel = member.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

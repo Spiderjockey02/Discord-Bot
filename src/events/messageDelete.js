@@ -64,8 +64,8 @@ module.exports = class messageDelete extends Event {
 			}
 
 			// Find channel and send message
-			const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == message.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

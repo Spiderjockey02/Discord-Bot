@@ -24,8 +24,8 @@ module.exports = class channelCreate extends Event {
 				.setTimestamp();
 
 			// Find channel and send message
-			const modChannel = channel.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == channel.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

@@ -21,8 +21,8 @@ module.exports = class roleDelete extends Event {
 				.setTimestamp();
 
 			// Find channel and send message
-			const modChannel = role.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == role.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

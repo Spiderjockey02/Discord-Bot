@@ -29,8 +29,8 @@ module.exports = class messageReactionRemove extends Event {
 				.setTimestamp();
 
 			// Find channel and send message
-			const modChannel = reaction.message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+			if (modChannel && modChannel.guild.id == reaction.message.guild.id) bot.addEmbed(modChannel.id, embed);
 		}
 	}
 };

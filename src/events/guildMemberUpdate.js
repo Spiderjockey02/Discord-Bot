@@ -2,18 +2,20 @@
 const { MessageEmbed } = require('discord.js'),
 	Event = require('../structures/Event');
 
-module.exports = class guildMemberRemove extends Event {
+module.exports = class guildMemberUpdate extends Event {
 	async run(bot, oldMember, newMember) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${newMember.user.tag} has been updated in guild: ${newMember.guild.id}.`);
 
-		if (oldMember.user.id == bot.user.id) return;
+		// Check if guildMember is a partial
+		if (oldMember.partial) await oldMember.fetch();
+		if (newMember.partial) await newMember.fetch();
 
 		// get server settings
 		const settings = newMember.guild.settings;
 		if (Object.keys(settings).length == 0) return;
 
-		// Check if event channelCreate is for logging
+		// Check if event guildMemberUpdate is for logging
 		if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
 
 			// nickname change
@@ -26,9 +28,10 @@ module.exports = class guildMemberRemove extends Event {
 						{ name: 'Before:', value: `${oldMember.nickname ? oldMember.nickname : '*None*'}`, inline: true },
 						{ name: 'After:', value: `${newMember.nickname ? newMember.nickname : '*None*'}`, inline: true })
 					.setTimestamp();
-				// Send message
-				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has boosted the server
@@ -38,8 +41,10 @@ module.exports = class guildMemberRemove extends Event {
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
-				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has stopped boosted the server
@@ -49,8 +54,10 @@ module.exports = class guildMemberRemove extends Event {
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
-				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// Look to see if user has changed their surname
@@ -65,9 +72,10 @@ module.exports = class guildMemberRemove extends Event {
 						{ name: 'New:', value: `${newMember.name}`, inline: true },
 					)
 					.setTimestamp();
-				// send message
-				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 
 			// look for role change
@@ -90,9 +98,10 @@ module.exports = class guildMemberRemove extends Event {
 						{ name: `Added role [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString}`, inline: true },
 						{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString}`, inline: true })
 					.setTimestamp();
-				// Send message
-				const modChannel = newMember.guild.channels.cache.get(settings.ModLogChannel);
-				if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+				// Find channel and send message
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel);
+				if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
 			}
 		}
 	}
