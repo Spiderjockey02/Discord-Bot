@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ ReactionRoleSchema } = require('../database/models'),
 	Event = require('../structures/Event');
 
 module.exports = class messageDelete extends Event {
@@ -7,17 +8,23 @@ module.exports = class messageDelete extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
 
+		// fetch the message if it's a partial
+		if (message.partial) await message.fetch();
+
 		// Make sure the message wasn't deleted in a Dm channel
 		if (message.channel.type == 'dm') return;
+
+		// Check if message that was deleted was a reaction role embed
+		await ReactionRoleSchema.findOneAndRemove({
+			guildID: message.guild.id,
+			messageID: message.id,
+		});
 
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
 		if (!message.content) return;
 
 		// Make sure its not the bot
 		if (message.author.id == bot.user.id) return;
-
-		// fetch the message if it's a partial
-		if (message.partial) await message.fetch();
 
 		// Get server settings / if no settings then return
 		const settings = message.guild.settings;
