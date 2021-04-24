@@ -21,7 +21,7 @@ module.exports = class messageDelete extends Event {
 		});
 
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
-		if (!message.content) return;
+		if (!message.content && !message.attachments) return;
 
 		// Make sure its not the bot
 		if (message.author.id == bot.user.id) return;
