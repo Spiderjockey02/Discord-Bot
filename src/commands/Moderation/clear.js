@@ -41,7 +41,6 @@ module.exports = class Clear extends Command {
 		const amount = message.args[0];
 
 		// Make something was entered after `!clear`
-
 		if (!amount) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure x is a number
@@ -51,8 +50,9 @@ module.exports = class Clear extends Command {
 		// Delete messages
 		await message.channel.messages.fetch({ limit: amount }).then(async messages => {
 			// Delete user messages
-			if (message.guild.members.cache.get(message.args[1])) {
-				messages = messages.filter((m) => m.author.id === message.guild.members.get(message.args[1]).user.id);
+			if (message.args[1]) {
+				const member = message.getMember();
+				messages = messages.filter((m) => m.author.id == member[0].user.id);
 			}
 
 			// delete the message
