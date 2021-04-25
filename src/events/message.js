@@ -1,7 +1,6 @@
 // Dependencies
 const { GlobalBanSchema } = require('../database/models'),
 	{ MessageEmbed, Collection } = require('discord.js'),
-	moment = require('moment'),
 	Event = require('../structures/Event');
 
 module.exports = class Message extends Event {
@@ -23,7 +22,7 @@ module.exports = class Message extends Event {
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
 					`Hello, my name is ${bot.user.username}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.`,
-					`I've been online for ${moment.duration(bot.uptime).format('d[d] h[h] m[m] s[s]')}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
+					`I've been online for ${bot.timeFormatter.getReadableTime(bot.uptime)}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
 				].join('\n\n'))
 				.addField('Useful Links:', [
 					`[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`,
