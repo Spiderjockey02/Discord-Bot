@@ -1,5 +1,5 @@
 // Dependencies
-const { GiveawaySchema, RankSchema, WarningSchema } = require('../database/models'),
+const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = require('../database/models'),
 	{ MessageEmbed } = require('discord.js'),
 	Event = require('../structures/Event');
 
@@ -24,27 +24,42 @@ module.exports = class guildDelete extends Event {
 		}
 
 		// Clean up database (delete all guild data)
+		// Delete ranks from database
 		try {
 			const r = await RankSchema.deleteMany({
 				guildID: guild.id,
 			});
-			console.log(r);
+			bot.logger.log(`Deleted ${r.deletedCount} ranks.`);
 		} catch (err) {
 			bot.logger.error(`Failed to delete Ranked data, error: ${err.message}`);
 		}
 
+		// Delete giveaways from database
 		try {
-			await GiveawaySchema.deleteMany({
+			const g = await GiveawaySchema.deleteMany({
 				guildID: guild.id,
 			});
+			bot.logger.log(`Deleted ${g.deletedCount} giveaways.`);
 		} catch (err) {
 			bot.logger.error(`Failed to delete Giveaway data, error: ${err.message}`);
 		}
 
+		// Delete warnings from database
 		try {
-			await WarningSchema.deleteMany({
+			const w = await WarningSchema.deleteMany({
 				guildID: guild.id,
 			});
+			bot.logger.log(`Deleted ${w.deletedCount} warnings.`);
+		} catch (err) {
+			bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
+		}
+
+		// Delete reaction roles from database
+		try {
+			const rr = await ReactionRoleSchema.deleteMany({
+				guildID: guild.id,
+			});
+			bot.logger.log(`Deleted ${rr.deletedCount} reaction roles.`);
 		} catch (err) {
 			bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
 		}
