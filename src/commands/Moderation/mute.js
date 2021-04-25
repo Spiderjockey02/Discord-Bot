@@ -103,7 +103,7 @@ module.exports = class Mute extends Command {
 
 					// remove mute role from user
 					setTimeout(async () => {
-						bot.commands.get('unmute').run(bot, message, message.args, settings);
+						bot.commands.get('unmute').run(bot, message, settings);
 
 						// Delete item from database as bot didn't crash
 						await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {

@@ -8,9 +8,6 @@ module.exports = class messageDelete extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
 
-		// fetch the message if it's a partial
-		if (message.partial) await message.fetch();
-
 		// Make sure the message wasn't deleted in a Dm channel
 		if (message.channel.type == 'dm') return;
 
