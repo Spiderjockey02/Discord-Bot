@@ -68,7 +68,7 @@ module.exports = class Leaderboard extends Command {
 					// interact with paginator
 					pages.push(embed2);
 					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
-					else if(pagesNum == 1) message.channel.send(embed);
+					else if(pagesNum == 1) message.channel.send(embed2);
 				}
 			}
 		});
