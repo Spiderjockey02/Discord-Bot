@@ -16,6 +16,6 @@ module.exports = class Invite extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		message.channel.send({ embed:{ description:`[${bot.translate(settings.Language, 'MISC/INVITE_TEXT')}](https://discord.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=485846102&scope=bot)` } });
+		message.channel.send({ embed:{ description:`[${bot.translate(settings.Language, 'MISC/INVITE_TEXT')}](${bot.config.inviteLink})` } });
 	}
 };

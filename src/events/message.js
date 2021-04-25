@@ -25,7 +25,7 @@ module.exports = class Message extends Event {
 					`I've been online for ${bot.timeFormatter.getReadableTime(bot.uptime)}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
 				].join('\n\n'))
 				.addField('Useful Links:', [
-					`[Add to server](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`,
+					`[Add to server](${bot.config.inviteLink})`,
 					`[Join support server](${bot.config.SupportServer.link})`,
 					`[Website](${bot.config.websiteURL})`,
 				].join('\n'));
