@@ -58,10 +58,10 @@ module.exports = class Rank extends Command {
 						// create rank card
 						const rankcard = new rank()
 							.setAvatar(member[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-							.setCurrentXP(Xp.Xp)
+							.setCurrentXP(Xp.Xp - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100))
 							.setLevel(Xp.Level)
 							.setRank(rankScore + 1)
-							.setRequiredXP((5 * (Xp.Level ** 2) + 50 * Xp.Level + 100))
+							.setRequiredXP((5 * (Xp.Level ** 2) + 50 * Xp.Level + 100) - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100))
 							.setStatus(member[0].presence.status)
 							.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
 							.setUsername(member[0].user.username)
