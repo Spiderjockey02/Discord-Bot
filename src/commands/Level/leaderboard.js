@@ -1,6 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
 	{ RankSchema } = require('../../database/models'),
+	paginate = require('../../utils/pagenator'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
@@ -29,35 +30,47 @@ module.exports = class Leaderboard extends Command {
 		}).sort([
 			['Xp', 'descending'],
 		]).exec(async (err, res) => {
-			if (err) console.log(err);
+			// if an error occured
+			if (err) {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			}
+
 			const embed = new MessageEmbed()
 				.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
 				.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
-			if (res.length === 0) {
+			if (!res[0]) {
 				// If there no results
 				embed.addField(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
-			} else if (res.length < 10) {
-				// If there are less than 10 results and then show this
-				for (let i = 0; i < res.length; i++) {
-					const name = await message.guild.members.fetch(res[i].userID) || 'User left';
-					if (name == 'User left') {
-						embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
-					} else {
-						embed.addField(`${ordinal(i + 1)}. ${name.user.username}`, `**XP:** ${res[i].Xp} | **Level:** ${res[i].Level}`);
-					}
-				}
+				message.channel.send(embed);
 			} else {
-				// more than 10 results
-				for (let i = 0; i < 10; i++) {
-					const name = await message.guild.members.fetch(res[i].userID) || 'User left';
-					if (name == 'User left') {
-						embed.addField(`${ordinal(i + 1)}. ${name}`, `**XP:** ${res[i].Xp}`);
-					} else {
-						embed.addField(`${ordinal(i + 1)}. ${name.user.username}`, `**XP:** ${res[i].Xp}`);
+				// Get number of pages to generate
+				let pagesNum = Math.ceil(res.length / 10);
+				if (pagesNum === 0) pagesNum = 1;
+
+				// generate pages
+				const pages = [];
+				for (let i = 0; i < pagesNum; i++) {
+					const embed2 = new MessageEmbed()
+						.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
+						.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
+					for (let j = 0; j < 10; j++) {
+						if (res[(i * 10) + j]) {
+							const name = await message.guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
+							if (name == 'User left') {
+								embed2.addField(`${ordinal((i * 10) + j + 1)}. ${name}`, `**XP:** ${res[(i * 10) + j].Xp} | **Level:** ${res[(i * 10) + j].Level}`);
+							} else {
+								embed2.addField(`${ordinal((i * 10) + j + 1)}. ${name.user.username}`, `**XP:** ${res[(i * 10) + j].Xp} | **Level:** ${res[(i * 10) + j].Level}`);
+							}
+						}
 					}
+					// interact with paginator
+					pages.push(embed2);
+					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
+					else if(pagesNum == 1) message.channel.send(embed);
 				}
 			}
-			message.channel.send(embed);
 		});
 	}
 };
