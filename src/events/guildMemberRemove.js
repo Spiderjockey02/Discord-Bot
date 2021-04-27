@@ -1,6 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
 	dateFormat = require('dateformat'),
+	{ RankSchema } = require('../database/models'),
 	Event = require('../structures/Event');
 
 module.exports = class guildMemberRemove extends Event {
@@ -26,6 +27,14 @@ module.exports = class guildMemberRemove extends Event {
 			// Find channel and send message
 			const modChannel = await bot.channels.fetch(settings.ModLogChannel);
 			if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, embed);
+		}
+
+		// delete user's rank from database
+		try {
+			await RankSchema.findOneAndRemove({ guildID: member.guild.id, userID: member.user.id });
+			if (bot.config.debug) bot.logger.debug(`Deleted ${member.user.tag} rank from guild: ${member.guild.id}.`);
+		} catch (err) {
+			bot.logger.error(`Event: '${this.name}' has error: ${err.message}.`);
 		}
 	}
 };
