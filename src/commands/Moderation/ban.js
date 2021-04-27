@@ -82,6 +82,7 @@ module.exports = class Ban extends Command {
 
 				// unban user
 				setTimeout(async () => {
+					message.args[0] = member[0].user.id;
 					await bot.commands.get('unban').run(bot, message, settings);
 
 					// Delete item from database as bot didn't crash
