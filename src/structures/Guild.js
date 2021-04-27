@@ -22,16 +22,8 @@ module.exports = Structures.extend('Guild', Guild => {
 
 		// update guild settings
 		async updateGuild(settings) {
-			let data = this.settings;
-			if (typeof data !== 'object') data = {};
-			for (const key in settings) {
-				if (settings.key) {
-					if (data[key] !== settings[key]) data[key] = settings[key];
-					else return;
-				}
-			}
-			logger.log(`Guild: [${data.guildID}] updated settings: ${Object.keys(settings)}`);
-			return await data.updateOne(settings).then(async () => await this.fetchGuildConfig());
+			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
+			return await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings).then(async () => await this.fetchGuildConfig());
 		}
 	}
 	return CustomGuild;
