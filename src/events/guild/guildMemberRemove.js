@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ RankSchema } = require('../../database/models'),
 	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
 
@@ -39,6 +40,13 @@ module.exports = class guildMemberRemove extends Event {
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
+		}
+
+		// Remove member's rank
+		try {
+			await RankSchema.findOneAndRemove({ userID: member.user.id,	guildID: member.guild.id });
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 	}
 };
