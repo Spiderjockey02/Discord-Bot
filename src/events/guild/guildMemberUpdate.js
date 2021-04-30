@@ -2,7 +2,7 @@
 const { MessageEmbed } = require('discord.js'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildMemberRemove extends Event {
+module.exports = class guildMemberUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,

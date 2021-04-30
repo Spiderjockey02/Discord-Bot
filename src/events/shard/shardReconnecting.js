@@ -1,7 +1,7 @@
 // Dependencies
 const Event = require('../../structures/Event');
 
-module.exports = class shardError extends Event {
+module.exports = class shardReconnecting extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,

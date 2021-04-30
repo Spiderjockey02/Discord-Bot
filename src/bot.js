@@ -31,7 +31,6 @@ const path = require('path');
 			const { name } = path.parse(file);
 			try {
 				const event = new (require(`./events/${folder}/${file}`))(bot, name);
-				console.log(event);
 				bot.logger.log(`Loading Event: ${name}`);
 				bot.on(name, (...args) => event.run(bot, ...args));
 			} catch (err) {
