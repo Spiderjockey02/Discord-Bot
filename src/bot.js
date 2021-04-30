@@ -22,18 +22,22 @@ const path = require('path');
 	});
 
 	// load events
-	const evtFiles = await readdir('./src/events/');
-	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFiles.length} -=-=-=-=-=-=-=`);
-	evtFiles.forEach(file => {
-		delete require.cache[file];
-		const { name } = path.parse(file);
-		try {
-			const event = new (require(`./events/${file}`))(bot, name);
-			bot.logger.log(`Loading Event: ${name}`);
-			bot.on(name, (...args) => event.run(bot, ...args));
-		} catch (err) {
-			bot.logger.error(`Failed to load Event: ${name} error: ${err.message}`);
-		}
+	const evtFolder = await readdir('./src/events/');
+	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFolder.length} -=-=-=-=-=-=-=`);
+	evtFolder.forEach(async folder => {
+		const folders = await readdir('./src/events/' + folder + '/');
+		folders.forEach(async file => {
+			delete require.cache[file];
+			const { name } = path.parse(file);
+			try {
+				const event = new (require(`./events/${folder}/${file}`))(bot, name);
+				console.log(event);
+				bot.logger.log(`Loading Event: ${name}`);
+				bot.on(name, (...args) => event.run(bot, ...args));
+			} catch (err) {
+				bot.logger.error(`Failed to load Event: ${name} error: ${err.message}`);
+			}
+		});
 	});
 
 	// Audio player

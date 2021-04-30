@@ -5,8 +5,8 @@ const { MessageEmbed } = require('discord.js'),
 // Lis of events
 const features = ['CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREATE', 'EMOJIDELETE', 'EMOJIUPDATE',
 	'GUILDBANADD', 'GUILDBANREMOVE', 'GUILDMEMBERADD', 'GUILDMEMBERREMOVE', 'GUILDMEMBERUPDATE', 'GUILDUPDATE', 'MESSAGEDELETE',
-	'MESSAGEDELETEBULK', 'MESSAGEREACTIONADD', 'MESSAGEREACTIONREMOVE', 'MESSAGEUPDATE', 'ROLECREATE', 'ROLEDELETE', 'ROLEUPDATE',
-	'VOICESTATEUPDATE', 'REPORT', 'WARNING'];
+	'MESSAGEDELETEBULK', 'MESSAGEREACTIONADD', 'MESSAGEREACTIONREMOVE', 'MESSAGEREACTIONREMOVEALL', 'MESSAGEUPDATE', 'ROLECREATE', 'ROLEDELETE', 'ROLEUPDATE',
+	'VOICESTATEUPDATE', 'REPORT', 'WARNING', 'TICKET'];
 
 module.exports = class SetLog extends Command {
 	constructor(bot) {
@@ -93,6 +93,7 @@ module.exports = class SetLog extends Command {
 				.setTitle('Logging information')
 				.setDescription([
 					`**Channel:** ${message.guild.channels.cache.get(settings.ModLogChannel)}.`,
+					`**Enabled:** ${settings.ModLog}`,
 					'',
 					`**Feature logging:** \`${settings.ModLogEvents.join('`, `')}\`.`,
 				].join('\n'));

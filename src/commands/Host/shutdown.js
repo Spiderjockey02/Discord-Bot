@@ -20,6 +20,7 @@ module.exports = class Shutdown extends Command {
 		try {
 			await message.channel.send(bot.translate(settings.Language, 'HOST/SHUTDOWN'));
 			await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
+			await bot.destroy();
 			process.exit();
 		} catch(err) {
 			if (message.deletable) message.delete();

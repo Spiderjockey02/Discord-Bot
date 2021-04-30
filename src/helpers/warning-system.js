@@ -71,8 +71,6 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				// Mutes user
 				message.args = [member.user.id, '5m'];
 				bot.commands.get('mute').run(bot, message, settings);
-				// const muteRole = message.guild.roles.cache.get(settings.MutedRole);
-				// if (muteRole) await member.roles.add(muteRole).catch(err => bot.logger.error(err.message));
 
 				// send embed
 				const embed = new MessageEmbed()
@@ -132,30 +130,6 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 		}
 
 		// If logging is enabled send warning/kick embed to lodding channel
-		if (settings.ModLogEvents.includes('WARNING') && settings.ModLog) {
-			const embed = new MessageEmbed()
-				.setColor(15158332);
-			if (res) {
-				if (res.Warnings == 3) embed.setAuthor(`[KICK] ${member.user.tag}`, member.user.displayAvatarURL());
-			} else {
-				embed.setAuthor(`[WARN] ${member.user.tag}`, member.user.displayAvatarURL());
-			}
-			embed.addField('User:', `${member}`, true);
-			embed.addField('Moderator:', `<@${message.author.id}>`, true);
-			if (res) {
-				if (res.Warnings != 3) {
-					embed.addField('Warnings:', `${res.Warnings}`, true);
-				}
-			} else {
-				bot.logger.log(`${member.user.tag} was warned from server: [${message.guild.id}].`);
-				embed.addField('Warnings:', '1', true);
-			}
-			embed.addField('Reason:', wReason);
-			embed.setTimestamp();
-
-			// find channel and send message
-			const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
-		}
+		await bot.emit('warning', member, newWarn);
 	});
 };

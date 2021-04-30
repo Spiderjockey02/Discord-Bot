@@ -1,7 +1,6 @@
 // Dependecies
 const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	mongoose = require('mongoose'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
 	{ KSoftClient } = require('@ksoft/api'),
@@ -54,7 +53,7 @@ module.exports = class Egglord extends Client {
 		this.commandsUsed = 0;
 
 		// for Screenshot command
-		this.adultSiteList = null;
+		this.adultSiteList = [];
 
 		// for time converting and stuff
 		this.timeFormatter = new (require('../utils/timeFormatter'));
@@ -65,17 +64,24 @@ module.exports = class Egglord extends Client {
 
 	// when the this joins add guild settings to server
 	async CreateGuild(settings) {
-		const merged = Object.assign({ _id: mongoose.Types.ObjectId() }, settings);
-		const newGuild = await new GuildSchema(merged);
-		return newGuild.save();
+		try {
+			const newGuild = new GuildSchema(settings);
+			return await newGuild.save();
+		} catch (err) {
+			if (this.config.debug) this.logger.debug(err.message);
+			return false;
+		}
 	}
 
 	// Delete guild from server when this leaves server
 	async DeleteGuild(guild) {
-		await GuildSchema.findOneAndRemove({ guildID: guild.id }, (err) => {
-			if (err) console.log(err);
-		});
-		return;
+		try {
+			await GuildSchema.findOneAndRemove({ guildID: guild.id });
+			return true;
+		} catch (err) {
+			if (this.config.debug) this.logger.debug(err.message);
+			return false;
+		}
 	}
 
 	// Fetch user ID from discord API

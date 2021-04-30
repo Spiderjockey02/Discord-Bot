@@ -85,7 +85,4 @@ module.exports = async (bot) => {
 				player.voiceChannel = bot.channels.cache.get(newChannel);
 			}
 		});
-
-	// update voice states
-	bot.on('raw', d => bot.manager.updateVoiceState(d));
 };

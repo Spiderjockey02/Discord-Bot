@@ -47,7 +47,7 @@ module.exports = class TicketCreate extends Command {
 				{ id:supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
 				{ id:message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
 				{ id:bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] }] })
-			.then(channel => {
+			.then(async channel => {
 			// reply to user saying that channel has been created
 				const successEmbed = new MessageEmbed()
 					.setTitle('✅ Success!')
@@ -62,17 +62,8 @@ module.exports = class TicketCreate extends Command {
 					.setTimestamp();
 				channel.send(`${message.author}, ${supportRole}`, embed);
 
-				// send ticket log (goes in ModLog channel)
-				if (settings.ModLogEvents.includes('TICKET') && settings.ModLog) {
-					const embed2 = new MessageEmbed()
-						.setTitle('Ticket Opened!')
-						.addField('Ticket', channel)
-						.addField('User', message.author)
-						.addField('Reason', reason)
-						.setTimestamp();
-					const modChannel = message.guild.channels.cache.get(settings.ModLogChannel);
-					if (modChannel) bot.addEmbed(modChannel.id, embed2);
-				}
+				// run ticketcreate event
+				await bot.emit('ticketCreate', channel, embed);
 			}).catch(err => {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

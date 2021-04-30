@@ -32,23 +32,17 @@ module.exports = class G_start extends Command {
 		}
 
 		// Make sure a time, winner count & prize is entered
-		if (message.args.length <= 2) {
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		}
+		if (message.args.length <= 2) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get time
 		const time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
 		if (!time) return;
 
 		// Make sure that number of winners is a number
-		if (isNaN(message.args[1]) || message.args[1] > 10) {
-			return message.channel.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
-		}
+		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure prize is less than 256 characters
-		if (message.args.slice(2).join(' ').length >= 256) {
-			return message.channel.send('Prize must be less than 256 characters long.').then(m => m.delete({ timeout: 5000 }));
-		}
+		if (message.args.slice(2).join(' ').length >= 256) return message.channel.send('Prize must be less than 256 characters long.').then(m => m.delete({ timeout: 5000 }));
 
 		// Start the giveaway
 		bot.giveawaysManager.start(message.channel, {

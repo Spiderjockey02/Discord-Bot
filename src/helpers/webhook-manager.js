@@ -5,11 +5,11 @@ module.exports = async (bot) => {
 	// loop through each channel ID sending their embeds
 	for (let i = 0; i < channelIDs.length; i++) {
 		try {
-			const webhooks = await bot.channels.cache.get(channelIDs[i]).fetchWebhooks();
+			const webhooks = await bot.channels.fetch(channelIDs[i]).then(c => c.fetchWebhooks());
 			let webhook = webhooks.find(wh => wh.name == bot.user.username);
 
 			// create webhook if it doesn't exist
-			if (!webhook) webhook = await bot.channels.cache.get(channelIDs[i]).createWebhook(bot.user.username);
+			if (!webhook) webhook = await bot.channels.fetch(channelIDs[i]).then(c => c.createWebhook(bot.user.username));
 
 			// send the embeds
 			const repeats = Math.ceil(bot.embedCollection.get(channelIDs[i]).length / 10);

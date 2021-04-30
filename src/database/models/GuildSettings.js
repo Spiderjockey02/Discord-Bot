@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 const guildScheme = Schema({
-	_id: Schema.Types.ObjectId,
 	guildID: String,
 	guildName: String,
 	prefix: { type: String, default: 'e!' },
