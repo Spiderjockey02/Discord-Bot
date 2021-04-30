@@ -3,18 +3,18 @@ const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
 	{ MessageEmbed } = require('discord.js');
 
-module.exports = class ReactionRoles extends Command {
+module.exports = class ReactionRoleAdd extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'reactionroles',
+			name: 'reactionroles-add',
 			dirname: __dirname,
-			aliases: ['reaction-roles', 'rr'],
+			aliases: ['rr-add'],
 			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Make reaction roles',
-			usage: 'reactionroles <channelID>',
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_ROLES'],
+			description: 'Create a reaction role',
+			usage: 'rr-add [channelID]',
 			cooldown: 5000,
-			examples: ['reactionroles 37844848481818441'],
+			examples: ['rr-add 37844848481818441'],
 		});
 	}
 
@@ -49,11 +49,8 @@ module.exports = class ReactionRoles extends Command {
 					return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
 				}
 
-				// Make sure data was entered
-				if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-
 				// Make sure channel is a text channel and permission
-				const channel = message.guild.channels.cache.get(message.args[0]);
+				const channel = message.guild.channels.cache.get(message.args[0]) ? message.guild.channels.cache.get(message.args[1]) : message.channel;
 				if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
 					return message.channel.error(settings.Language, 'MISSING_CHANNEL');
 				} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
@@ -89,9 +86,9 @@ module.exports = class ReactionRoles extends Command {
 				// Validate the list of emoji for reaction roles
 				roleMsgs.first().args = roleMsgs.first().content.split(' ');
 				let roles =	roleMsgs.first().getRole();
-				// Check role hierarchy to make sure bot can give user those roles
+				// Check role hierarchy to make sure bot can give user those roles or if the role is managed by integration (a bot role etc)
 				roles = roles.filter(r => {
-					if (r.comparePositionTo(message.guild.me.roles.highest) > 0) {
+					if (r.comparePositionTo(message.guild.me.roles.highest) >= 0 || r.managed) {
 						return false;
 					} else {
 						return true;
