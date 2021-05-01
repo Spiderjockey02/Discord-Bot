@@ -12,7 +12,7 @@ module.exports = class emojiUpdate extends Event {
 	// run event
 	async run(bot, oldEmoji, newEmoji) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Emoji: ${newEmoji.name} has been deleted in guild: ${newEmoji.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Emoji: ${newEmoji.name} has been updated in guild: ${newEmoji.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = newEmoji.guild.settings;
@@ -38,9 +38,29 @@ module.exports = class emojiUpdate extends Event {
 			}
 
 			// emoji role update
-			if (oldEmoji.roles != newEmoji.roles) {
-				console.log(oldEmoji.roles);
-				console.log(newEmoji.roles);
+			if (oldEmoji.roles.cache.size != newEmoji.roles.cache.size) {
+				const rolesAdded = newEmoji.roles.cache.filter(x => !oldEmoji.roles.cache.get(x.id));
+				const rolesRemoved = oldEmoji.roles.cache.filter(x => !newEmoji.roles.cache.get(x.id));
+				if (rolesAdded.size != 0 || rolesRemoved.size != 0) {
+					const roleAddedString = [];
+					for (const role of rolesAdded.array()) {
+						roleAddedString.push(role.toString());
+					}
+					const roleRemovedString = [];
+					for (const role of rolesRemoved.array()) {
+						roleRemovedString.push(role.toString());
+					}
+					embed = new MessageEmbed()
+						.setDescription('**Emoji roles updated**')
+						.setColor(15105570)
+						.setFooter(`ID: ${newEmoji.id}`)
+						.setAuthor(newEmoji.guild.name, newEmoji.guild.iconURL())
+						.addFields(
+							{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },
+							{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString.join('\n ')}`, inline: true })
+						.setTimestamp();
+					updated = true;
+				}
 			}
 
 			if (updated) {

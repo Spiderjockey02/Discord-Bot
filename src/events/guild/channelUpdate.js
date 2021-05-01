@@ -14,7 +14,6 @@ module.exports = class channelUpdate extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${newChannel.type})`);
 
-
 		// Get server settings / if no settings then return
 		const settings = newChannel.guild.settings;
 		if (Object.keys(settings).length == 0) return;
