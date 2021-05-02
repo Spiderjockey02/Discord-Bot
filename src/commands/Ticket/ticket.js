@@ -40,7 +40,7 @@ module.exports = class Ticket extends Command {
 					// create collector
 					const collector = msg.createReactionCollector(filter, { time: 604800000 });
 					collector.on('collect', () => {
-						bot.commands.get('ticket-create').run(bot, message, [], settings);
+						bot.commands.get('ticket-create').run(bot, message, settings);
 					});
 				});
 			} else {

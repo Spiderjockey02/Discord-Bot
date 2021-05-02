@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
-module.exports = class Fortnite extends Command {
+module.exports = class Instagram extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'instagram',

@@ -34,10 +34,10 @@ module.exports = class messageDelete extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if ModLog plugin is active
-		if (settings.ModLog == false || message.content.startsWith(settings.prefix)) return;
+		if (message.content.startsWith(settings.prefix)) return;
 
 		// Check if event messageDelete is for logging
-		if (settings.ModLogEvents.includes('MESSAGEDELETE')) {
+		if (settings.ModLogEvents.includes('MESSAGEDELETE') && settings.ModLog) {
 			// shorten message if it's longer then 1024
 			let shortened = false;
 			let content = message.content;
@@ -51,9 +51,9 @@ module.exports = class messageDelete extends Event {
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter(`Author: ${message.author.id} | Message: ${message.id}`)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${message.content.length > 0 ? content : '*no content*'}`)
-				.setTimestamp();
+				.setAuthor(message.author.tag, message.author.displayAvatarURL());
+			if (message.content.length > 0) embed.addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${content}`);
+			embed.setTimestamp();
 			// check for attachment deletion
 			if (message.attachments.size > 0) {
 				let attachments = '';
