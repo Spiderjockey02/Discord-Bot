@@ -48,34 +48,30 @@ module.exports = class Screenshot extends Command {
 		const msg = await message.channel.send('Creating screenshot of website.');
 
 		// try and create screenshot
-		screenshotWebsite(message.args[0]).then(async data => {
-			if (!data) {
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing data').then(m => m.delete({ timeout: 5000 }));
-			} else {
-				const attachment = new MessageAttachment(data, 'website.png');
-				await message.channel.send(attachment);
-			}
-			msg.delete();
-		});
-
-		// screenshot function
-		async function screenshotWebsite(url) {
-			try {
-				const browser = await Puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/Chrome.exe' });
-				const page = await browser.newPage();
-				await page.setViewport({
-					width: 1280,
-					height: 720,
-				});
-				await page.goto(url);
-				await delay(1500);
-				const r = await page.screenshot();
-				await browser.close();
-				return r;
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			}
+		let data;
+		try {
+			const browser = await Puppeteer.launch();
+			const page = await browser.newPage();
+			await page.setViewport({
+				width: 1280,
+				height: 720,
+			});
+			await page.goto(message.args[0]);
+			await delay(1500);
+			data = await page.screenshot();
+			await browser.close();
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 		}
+
+		// make screenshot
+		if (!data) {
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Failed to fetch screenshot').then(m => m.delete({ timeout: 5000 }));
+		} else {
+			const attachment = new MessageAttachment(data, 'website.png');
+			await message.channel.send(attachment);
+		}
+		msg.delete();
 	}
 };
