@@ -30,7 +30,7 @@ module.exports = class Image extends Command {
 
 		// send image
 		const embed = new MessageEmbed()
-			.setImage(results[Math.floor(Math.random() * 101)].image);
+			.setImage(results[Math.floor(Math.random() * results.length)].image);
 		message.channel.send(embed);
 	}
 };
