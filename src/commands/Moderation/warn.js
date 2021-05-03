@@ -37,7 +37,7 @@ module.exports = class Warn extends Command {
 		if (member[0].hasPermission('ADMINISTRATOR')) return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 
 		// Get reason for warning
-		const wReason = (message.args.join(' ').slice(23)) ? message.args.join(' ').slice(23) : bot.translate(settings.Language, 'NO_REASON');
+		const wReason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
 
 		// Warning is sent to warning manager
 		try {

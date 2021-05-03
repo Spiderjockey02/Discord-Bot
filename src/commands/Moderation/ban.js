@@ -34,7 +34,7 @@ module.exports = class Ban extends Command {
 		}
 
 		// Get user and reason
-		const reason = (message.args.join(' ').slice(22)) ? message.args.join(' ').slice(22) : bot.translate(settings.Language, 'NO_REASON');
+		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
 
 		// Make sure user is real
 		const member = message.getMember();
