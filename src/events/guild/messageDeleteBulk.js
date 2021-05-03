@@ -28,20 +28,23 @@ module.exports = class messageDeleteBulk extends Event {
 				humanLog += ' : ' + message.content;
 			}
 			const attachment = new MessageAttachment(Buffer.from(humanLog, 'utf-8'), 'DeletedMessages.txt');
-			const msg = await modChannel.send(attachment);
-
-			// embed
-			const embed = new MessageEmbed()
-				.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
-				.setColor(15158332)
-				.setFooter(`Channel: ${messages.first().channel.id}`)
-				.setAuthor(messages.first().channel.name, messages.first().guild.iconURL)
-				.addField('Message count:', messages.size, true)
-				.addField('Deleted Messages:', `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, true)
-				.setTimestamp();
-
+			// Get modlog channel
 			const modChannel = messages.first().channel.guild.channels.cache.get(settings.ModLogChannel);
-			if (modChannel) require('../helpers/webhook-manager')(bot, modChannel.id, embed);
+			if (modChannel) {
+				const msg = await modChannel.send(attachment);
+
+				// embed
+				const embed = new MessageEmbed()
+					.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
+					.setColor(15158332)
+					.setFooter(`Channel: ${messages.first().channel.id}`)
+					.setAuthor(messages.first().channel.name, messages.first().guild.iconURL)
+					.addField('Message count:', messages.size, true)
+					.addField('Deleted Messages:', `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, true)
+					.setTimestamp();
+
+				bot.addEmbed(modChannel.id, embed);
+			}
 		}
 	}
 };

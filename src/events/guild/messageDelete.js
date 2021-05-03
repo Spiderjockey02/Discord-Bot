@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ ReactionRoleSchema, GiveawaySchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageDelete extends Event {
@@ -25,6 +26,21 @@ module.exports = class messageDelete extends Event {
 
 		// make sure it wasn't a webhook message
 		if (message.webhookID) return;
+
+		// Check if the message was a giveaway/reaction role embed
+		try {
+			// check reaction roles
+			const rr = await ReactionRoleSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
+			if (rr) bot.logger.log('A reaction role embed was deleted.');
+			// check giveaways
+			const g = await GiveawaySchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
+			if (g) {
+				await bot.giveawaysManager.delete(message.id);
+				bot.logger.log('A giveaway embed was deleted.');
+			}
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
 
 		// Make sure its not the bot
 		if (message.author.id == bot.user.id) return;

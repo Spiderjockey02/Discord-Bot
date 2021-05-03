@@ -18,8 +18,12 @@ module.exports = class messageUpdate extends Event {
 		if (!newMessage.guild) return;
 
 		// Check if message is a partial
-		if (oldMessage.partial) await oldMessage.fetch();
-		if (newMessage.partial) await newMessage.fetch();
+		try {
+			if (oldMessage.partial) await oldMessage.fetch();
+			if (newMessage.partial) await newMessage.fetch();
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
 
 		// only check for message content is different
 		if (oldMessage.content == newMessage.content) return;
