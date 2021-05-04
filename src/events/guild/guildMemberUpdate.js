@@ -40,7 +40,7 @@ module.exports = class guildMemberUpdate extends Event {
 			// Look to see if user has boosted the server
 			if (!oldMember.premiumSince && newMember.premiumSince) {
 				embed = new MessageEmbed()
-					.seDescripition(`**${newMember.toString()} has boosted the server**`)
+					.setDescription(`**${newMember.toString()} has boosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
@@ -50,7 +50,7 @@ module.exports = class guildMemberUpdate extends Event {
 			// Look to see if user has stopped boosted the server
 			if (oldMember.premiumSince && !newMember.premiumSince) {
 				embed = new MessageEmbed()
-					.seDescripition(`**${newMember.toString()} has unboosted the server**`)
+					.setDescription(`**${newMember.toString()} has unboosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
 					.setTimestamp();
