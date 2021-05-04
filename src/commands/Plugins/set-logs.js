@@ -55,8 +55,10 @@ module.exports = class SetLog extends Command {
 
 				// add new Logging
 				try {
-					currentFeatures.push(message.args[1].toUpperCase());
-					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
+					if (currentFeatures.indexOf(message.args[1].toUpperCase()) == -1) {
+						currentFeatures.push(message.args[1].toUpperCase());
+						await message.guild.updateGuild({ ModLogEvents: currentFeatures });
+					}
 					settings.ModLogEvents = currentFeatures;
 					message.channel.send(`Added: ${message.args[1].toUpperCase()} to logging.`);
 				} catch (err) {
