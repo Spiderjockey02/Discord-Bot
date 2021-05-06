@@ -14,6 +14,13 @@ module.exports = class messageReactionRemoveAll extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message all reactions removed ${!message.message.guild ? '' : ` in guild: ${message.message.guild.id}`}`);
 
+		// If message needs to be fetched
+		try {
+			if (message.partial) await message.fetch();
+		} catch (err) {
+			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
+
 		// Get server settings / if no settings then return
 		const settings = message.guild.settings;
 		if (Object.keys(settings).length == 0) return;

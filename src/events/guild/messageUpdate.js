@@ -22,11 +22,11 @@ module.exports = class messageUpdate extends Event {
 			if (oldMessage.partial) await oldMessage.fetch();
 			if (newMessage.partial) await newMessage.fetch();
 		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
 		// only check for message content is different
-		if (oldMessage.content == newMessage.content) return;
+		if (oldMessage.content == newMessage.content || !newMessage.content) return;
 
 		// Get server settings / if no settings then return
 		const settings = newMessage.guild.settings;

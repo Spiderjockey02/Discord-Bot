@@ -20,8 +20,15 @@ module.exports = class messageReactionAdd extends Event {
 		if (!reaction.message.guild) return;
 
 		// If reaction needs to be fetched
-		if (reaction.message.partial) await reaction.message.fetch();
-		if (reaction.partial) await reaction.fetch();
+		try {
+			if (reaction.message.partial) await reaction.message.fetch();
+			if (reaction.partial) await reaction.fetch();
+		} catch (err) {
+			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
+
+		// make sure the message author isn't the bot
+		if (reaction.message.author.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return
 		const settings = reaction.message.guild.settings;
