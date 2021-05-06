@@ -33,7 +33,7 @@ module.exports = class ServerInfo extends Command {
 
 		// send user info
 		const embed = new MessageEmbed()
-			.setAuthor(`${emojiList[member[0].presence.status]} ${member[0].user.tag} (${member[0].user.id})`, member[0].user.displayAvatarURL())
+			.setAuthor(`${bot.customEmojis[member[0].presence.status]} ${member[0].user.tag} (${member[0].user.id})`, member[0].user.displayAvatarURL())
 			.setColor(3447003)
 			.setThumbnail(member[0].user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addField(bot.translate(settings.Language, 'GUILD/USER_NICKNAME'), `\`${member[0].nickname != null ? member[0].nickname : 'None'}\``, true)

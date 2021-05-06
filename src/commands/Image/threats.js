@@ -22,7 +22,7 @@ module.exports = class Threats extends Command {
 		const file = await message.getImage();
 
 		// send 'waiting' message
-		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
 
 		// Try and convert image
 		try {

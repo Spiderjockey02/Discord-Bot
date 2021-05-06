@@ -6,9 +6,9 @@ const { status } = require('minecraft-server-util'),
 module.exports = class MC extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'mc',
+			name: 'minecraft',
 			dirname: __dirname,
-			aliases: ['minecraft'],
+			aliases: ['mc'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',
@@ -21,7 +21,9 @@ module.exports = class MC extends Command {
 	async run(bot, message, settings) {
 		// Ping a minecraft server
 		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		const r = await message.channel.send('Pinging server..');
+
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} server info...`);
 
 		// If no ping use 25565
 		if(!message.args[1]) message.args[1] = '25565';
@@ -42,11 +44,11 @@ module.exports = class MC extends Command {
 				.addField('Server Version:', response.version)
 				.addField('Description:', response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
 				.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`);
-			r.delete();
+			msg.delete();
 			message.channel.send(embed);
 		}).catch(err => {
 			// An error occured (either no IP, Open port or timed out)
-			r.delete();
+			msg.delete();
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));

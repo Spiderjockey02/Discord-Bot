@@ -18,15 +18,20 @@ module.exports = class Thigh extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} image...`);
+
 		try {
 			get('https://nekobot.xyz/api/image?type=thigh')
 				.then(res => {
+					msg.delete();
 					const embed = new MessageEmbed()
 						.setImage(res.data.message);
 					message.channel.send(embed);
 				});
 		} catch (err) {
 			if (message.deletable) message.delete();
+			msg.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}

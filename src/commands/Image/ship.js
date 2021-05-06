@@ -22,8 +22,8 @@ module.exports = class Ship extends Command {
 		const users = await message.getImage();
 		if (!users[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
-		// send 'waitng' message
-		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
+		// send 'waiting' message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
 
 		// Try and convert image
 		try {

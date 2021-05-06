@@ -25,12 +25,22 @@ module.exports = class Image extends Command {
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 
-		// get results (image links etc)
-		const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+		// send 'waiting' message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching image...`);
 
-		// send image
-		const embed = new MessageEmbed()
-			.setImage(results[Math.floor(Math.random() * results.length)].image);
-		message.channel.send(embed);
+		// get results (image links etc)
+		try {
+			const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+
+			// send image
+			msg.delete();
+			const embed = new MessageEmbed()
+				.setImage(results[Math.floor(Math.random() * results.length)].image);
+			message.channel.send(embed);
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+		}
 	}
 };

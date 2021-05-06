@@ -21,8 +21,8 @@ module.exports = class Captcha extends Command {
 		// Get user
 		const member = message.getMember();
 
-		// send 'waitng' message
-		const msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
+		// send 'waiting' message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
 
 		// Try and convert image
 		try {

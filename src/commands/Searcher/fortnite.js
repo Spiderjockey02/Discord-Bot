@@ -23,11 +23,14 @@ module.exports = class Fortnite extends Command {
 		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// Get platform and user
-		const platform = message.args.shift();
-		const username = message.args.join(' ');
-		const r = await message.channel.send(`Retrieving Fortnite information on **${username}**.`);
+		const platform = message.args.shift(),
+			username = message.args.join(' ');
 
-		bot.Fortnite.user(username, platform).then(data => {
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+
+		// Fetch fornite account information
+		bot.Fortnite.user(username, platform).then(async data => {
 			const embed = new MessageEmbed()
 				.setColor(0xffffff)
 				.setTitle(`Stats for ${data.username}`)
@@ -40,12 +43,12 @@ module.exports = class Fortnite extends Command {
 				.addField('Win percentage:', `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
 				.addField('Kills:', data.stats.lifetime.kills, true)
 				.addField('K/D Ratio:', data.stats.lifetime.kd, true);
-			message.channel.send(embed);
+			await message.channel.send(embed);
 		}).catch(err => {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			bot.logger.error(`Command: 'fortnite' has error: ${err.message}.`);
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		});
-		r.delete();
+		msg.delete();
 	}
 };

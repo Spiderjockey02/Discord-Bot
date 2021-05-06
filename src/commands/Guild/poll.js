@@ -32,7 +32,7 @@ module.exports = class Poll extends Command {
 		// Send poll to channel
 		const embed = new MessageEmbed()
 			.setColor(0xffffff)
-			.setTitle(bot.translate(settings.Language, 'GUILD/POLL_TITLE', message.author.username))
+			.setTitle(`${bot.customEmojis['poll']} ${bot.translate(settings.Language, 'GUILD/POLL_TITLE', message.author.username)}`)
 			.setDescription(message.args.join(' '))
 			.setFooter(bot.translate(settings.Language, 'GUILD/POLL_FOOTER'))
 			.setTimestamp();

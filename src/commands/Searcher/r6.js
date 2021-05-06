@@ -70,15 +70,17 @@ module.exports = class R6 extends Command {
 			return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 		}
 
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+
 		// get statistics of player
-		const r = await message.channel.send('Gathering results...');
 		player = player[0];
 		const playerRank = await getRank(platform, player.id);
 		const playerStats = await getStats(platform, player.id);
 		const playerGame = await getLevel(platform, player.id);
 
 		if (!playerRank.length || !playerStats.length || !playerGame.length) {
-			r.delete();
+			msg.delete();
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Mising player data').then(m => m.delete({ timeout: 5000 }));
 		}
@@ -98,7 +100,7 @@ module.exports = class R6 extends Command {
 			.addField('Terrorist Hunt:', `**Wins:** ${pve.general.wins} \n**Losses:** ${pve.general.losses} \n**Win/Loss ratio:** ${(pve.general.wins / pve.general.matches * 100).toFixed(2)} \n**Kills** ${pve.general.kills} \n**Deaths:** ${pve.general.deaths} \n**K/D Ratio** ${(pve.general.kills / pve.general.deaths).toFixed(2)} \n**Playtime:** ${Math.round(pve.general.playtime / 3600)} hours`)
 			.setTimestamp()
 			.setFooter(message.author.username);
-		r.delete();
+		msg.delete();
 		message.channel.send(embed);
 	}
 };

@@ -24,12 +24,15 @@ module.exports = class Urban extends Command {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} defintion...`);
 
 		// Search up phrase in urban dictionary
 		define(`${phrase}`, (err, entries) => {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				msg.delete();
 				return message.channel.error(settings.Language, 'FUN/INCORRECT_URBAN', phrase).then(m => m.delete({ timeout: 5000 }));
 			}
 
@@ -42,6 +45,7 @@ module.exports = class Urban extends Command {
 				.addField('👍', entries[0].thumbs_up, true)
 				.addField('👎', entries[0].thumbs_down, true);
 			message.channel.send(embed);
+			msg.delete();
 		});
 	}
 };

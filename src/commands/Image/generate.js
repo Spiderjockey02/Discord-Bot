@@ -43,7 +43,9 @@ module.exports = class Generate extends Command {
 			// send 'waiting' message
 			let image, msg;
 			if (image_1.includes(choice)) {
-				msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
+				// send 'waiting' message
+				msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+
 				// get image
 				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'url' : file[0] }, {
 					responseType: 'arraybuffer',
@@ -61,7 +63,9 @@ module.exports = class Generate extends Command {
 				// Check that 2 files have been uploaded
 				if (!file[1]) return message.channel.error(settings.Language, 'IMAGE/NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
 
-				msg = await message.channel.send(bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE'));
+				// send 'waiting' message
+				msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+
 				// get image
 				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'avatar': file[1], 'url' : file[0] }, {
 					responseType: 'arraybuffer',

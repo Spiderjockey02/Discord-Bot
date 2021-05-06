@@ -25,8 +25,8 @@ module.exports = class Twitch extends Command {
 		if (!message.args[0]) return message.channel.send('Please enter a Twitch username');
 		const user = message.args[0];
 
-		// send waiting message
-		const msg = await message.channel.send('Fetching twitch user.');
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
 
 		// fetch data
 		try {

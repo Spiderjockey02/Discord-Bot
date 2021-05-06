@@ -23,9 +23,9 @@ module.exports = Structures.extend('TextChannel', Channel => {
 			try {
 				let emoji;
 				if (this.type == 'dm') {
-					emoji = this.client.config.emojis.cross;
+					emoji = this.client.customEmojis['cross'];
 				} else {
-					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.config.emojis.cross : ':negative_squared_cross_mark:';
+					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				}
 				return this.send({ embed:{ color:15158332, description:`${emoji} ${this.client.translate(language, key, args)}` } });
 			} catch (err) {
@@ -38,9 +38,9 @@ module.exports = Structures.extend('TextChannel', Channel => {
 			try {
 				let emoji;
 				if (this.type == 'dm') {
-					emoji = this.client.config.emojis.tick;
+					emoji = this.client.customEmojis['checkmark'];
 				} else {
-					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.config.emojis.tick : ':white_check_mark:';
+					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
 				}
 				return this.send({ embed:{ color:3066993, description:`${emoji} ${this.client.translate(language, key, args)}` } });
 			} catch (err) {

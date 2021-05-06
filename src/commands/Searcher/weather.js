@@ -8,7 +8,6 @@ module.exports = class Weather extends Command {
 		super(bot, {
 			name: 'weather',
 			dirname: __dirname,
-			aliases: ['fort', 'fortnight'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Look up the weather in a certain area.',
 			usage: 'weather <location>',

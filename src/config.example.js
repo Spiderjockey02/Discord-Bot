@@ -65,11 +65,6 @@ const config = {
 		Language: 'en-US',
 		plugins: ['Fun', 'Image', 'Misc', 'NSFW', 'Recording', 'Searcher'],
 	},
-	// Custom emojis, just for cosmetic (change these if you wish)
-	emojis: {
-		cross: ':negative_squared_cross_mark:',
-		tick: ':white_check_mark:',
-	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
 	// This will spam your console if you enable this but will help with bug fixing

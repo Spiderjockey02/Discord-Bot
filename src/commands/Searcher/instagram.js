@@ -23,7 +23,9 @@ module.exports = class Instagram extends Command {
 
 		// Checks to see if a username was provided
 		if (!username) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		const r = await message.channel.send('Gathering account details...');
+
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
 
 		// Gather data from database
 		const res = await fetch(`https://instagram.com/${username}/?__a=1`)
@@ -31,13 +33,13 @@ module.exports = class Instagram extends Command {
 			.catch(err => {
 			// An error occured when looking for account
 				if (message.deletable) message.delete();
-				r.delete();
+				msg.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			});
 
 		// Delete wait message
-		r.delete();
+		msg.delete();
 
 		// make sure there is data
 		if (res.size == 0) return;

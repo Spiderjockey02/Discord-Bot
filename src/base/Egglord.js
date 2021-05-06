@@ -60,6 +60,9 @@ module.exports = class Egglord extends Client {
 
 		// for webhook
 		this.embedCollection = new Collection();
+
+		// for emojis
+		this.customEmojis = require('../assets/json/emojis.json');
 	}
 
 	// when the this joins add guild settings to server

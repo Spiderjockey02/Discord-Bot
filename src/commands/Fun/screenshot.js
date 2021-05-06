@@ -45,7 +45,7 @@ module.exports = class Screenshot extends Command {
 		}
 
 		// send 'waiting' message
-		const msg = await message.channel.send('Creating screenshot of website.');
+		const msg = await message.channel.send(`${bot.customEmojis['loading']} Creating screenshot of website.`);
 
 		// try and create screenshot
 		let data;
