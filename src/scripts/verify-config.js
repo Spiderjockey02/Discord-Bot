@@ -134,11 +134,6 @@ module.exports.run = async (config) => {
 		error = true;
 	}
 
-	// Check custom emojis
-	if (!config.emojis) {
-		logger.error(`${chalk.red('✗')} Custom emoji list is missing.`);
-		error = true;
-	}
 	// Check mongodb connection
 	if (!config.MongoDBURl) {
 		logger.error(`${chalk.red('✗')} MongoDB URl is missing.`);

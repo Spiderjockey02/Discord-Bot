@@ -6,23 +6,17 @@ exports.log = (content, type = 'log') => {
 	if (content == 'error') return;
 	const timestamp = `[${moment().format('HH:mm:ss')}]:`;
 	if (type == 'log') {
-		console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
-		return;
+		return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
 	} else if (type == 'warn') {
-		console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `);
-		return;
+		return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `);
 	} else if (type == 'error') {
-		console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
-		return;
+		return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
 	} else if (type == 'debug') {
-		console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `);
-		return;
+		return console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `);
 	} else if (type == 'cmd') {
-		console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
-		return;
+		return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
 	} else if (type == 'ready') {
-		console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
-		return;
+		return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
 	}
 };
 
