@@ -139,7 +139,6 @@ module.exports = class Egglord extends Client {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
 			this.logger.log(`Loading Command: ${cmd.help.name}.`);
 			cmd.conf.location = commandPath;
-			if (cmd.init) cmd.init(this);
 			this.commands.set(cmd.help.name, cmd);
 			cmd.help.aliases.forEach((alias) => {
 				this.aliases.set(alias, cmd.help.name);
@@ -159,7 +158,6 @@ module.exports = class Egglord extends Client {
 			command = this.commands.get(this.aliases.get(commandName));
 		}
 		if(!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
-		if(command.shutdown) await command.shutdown(this);
 		delete require.cache[require.resolve(`.${commandPath}${path.sep}${commandName}.js`)];
 		return false;
 	}

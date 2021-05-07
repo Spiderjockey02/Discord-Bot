@@ -36,7 +36,7 @@ module.exports = class Message extends Event {
 					`[Join support server](${bot.config.SupportServer.link})`,
 					`[Website](${bot.config.websiteURL})`,
 				].join('\n'));
-			return message.channel.send(embed).catch(err => bot.logger.error(`Event: 'message' has error: ${err.message}.`));
+			return message.channel.send(embed);
 		}
 
 		// Check if the message was @someone

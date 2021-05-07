@@ -8,6 +8,7 @@ module.exports = class Avatar extends Command {
 			name: 'avatar',
 			guildOnly: true,
 			dirname: __dirname,
+			aliases: ['av'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays user\'s avatar.',
 			usage: 'avatar [user]',

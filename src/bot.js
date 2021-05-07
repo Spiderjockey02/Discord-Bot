@@ -32,7 +32,11 @@ const path = require('path');
 			try {
 				const event = new (require(`./events/${folder}/${file}`))(bot, name);
 				bot.logger.log(`Loading Event: ${name}`);
-				bot.on(name, (...args) => event.run(bot, ...args));
+				if (folder == 'giveaway') {
+					bot.giveawaysManager.on(name, (...args) => event.run(bot, ...args));
+				} else {
+					bot.on(name, (...args) => event.run(bot, ...args));
+				}
 			} catch (err) {
 				bot.logger.error(`Failed to load Event: ${name} error: ${err.message}`);
 			}
