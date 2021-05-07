@@ -6,9 +6,9 @@ const Command = require('../../structures/Command.js'),
 module.exports = class ReactionRoleAdd extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'reactionroles-add',
+			name: 'rr-add',
 			dirname: __dirname,
-			aliases: ['rr-add'],
+			aliases: ['reactionroles-add'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_ROLES'],
 			description: 'Create a reaction role',

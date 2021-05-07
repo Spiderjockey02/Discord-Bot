@@ -9,6 +9,7 @@ module.exports = class Boobs extends Command {
 			name: 'boobs',
 			nsfw: true,
 			dirname: __dirname,
+			aliases: ['boob'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Look at NSFW images.',
 			usage: 'boobs',

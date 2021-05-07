@@ -6,9 +6,9 @@ const { status } = require('minecraft-server-util'),
 module.exports = class MC extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'minecraft',
+			name: 'mc',
 			dirname: __dirname,
-			aliases: ['mc'],
+			aliases: ['minecraft'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',

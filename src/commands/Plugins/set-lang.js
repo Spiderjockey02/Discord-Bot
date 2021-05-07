@@ -12,9 +12,9 @@ const languages = {
 module.exports = class Setlang extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'setlang',
+			name: 'set-lang',
 			dirname: __dirname,
-			aliases: ['setlanguage'],
+			aliases: ['setlanguage', 'setlang'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Choose the language for the bot.',

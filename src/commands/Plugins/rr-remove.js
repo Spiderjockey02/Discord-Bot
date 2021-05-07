@@ -5,9 +5,9 @@ const Command = require('../../structures/Command.js'),
 module.exports = class ReactionRoleRemove extends Command {
 	constructor(bot) {
 		super(bot, {
-			name: 'reactionroles-remove',
+			name: 'rr-remove',
 			dirname: __dirname,
-			aliases: ['rr-remove', 'rr-delete'],
+			aliases: ['reactionroles-remove', 'rr-delete'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Make reaction roles',

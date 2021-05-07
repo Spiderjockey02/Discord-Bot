@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js'),
 module.exports = class ServerInfo extends Command {
 	constructor(bot) {
 		super(bot, {
-			name:  'serverinfo',
+			name:  'server-info',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['serverinfo', 'guildinfo'],

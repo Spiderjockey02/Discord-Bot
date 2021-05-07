@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js'),
 module.exports = class RoleInfo extends Command {
 	constructor(bot) {
 		super(bot, {
-			name:  'roleinfo',
+			name:  'role-info',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['roleinfo'],
