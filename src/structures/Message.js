@@ -39,9 +39,11 @@ module.exports = Structures.extend('Message', Message => {
 					indexes.push(member.id);
 				});
 				const match = sm.findBestMatch(this.args.join(' '), members);
-				const username = match.bestMatch.target;
-				const member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
-				users.push(member);
+				if (match.bestMatch.rating != 0) {
+					const username = match.bestMatch.target,
+						member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
+					users.push(member);
+				}
 			}
 
 			// add author at the end
@@ -76,10 +78,12 @@ module.exports = Structures.extend('Message', Message => {
 				this.guild.roles.cache.forEach(r => {
 					roleList.push(r.name);
 				});
-				const match = sm.findBestMatch(this.args.join(' '), roleList),
-					username = match.bestMatch.target,
-					role = this.guild.roles.cache.find(r => r.name == username);
-				roles.push(role);
+				const match = sm.findBestMatch(this.args.join(' '), roleList);
+				if (match.bestMatch.rating != 0) {
+					const username = match.bestMatch.target,
+						role = this.guild.roles.cache.find(r => r.name == username);
+					roles.push(role);
+				}
 			}
 			// return the array of roles
 			return roles;
