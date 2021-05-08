@@ -72,6 +72,10 @@ Egglord is in a continuous state of development. New features/updates may come a
   * Auto-moderation.
   * Advanced statistics of a server.
 
+## My other projects
+ * [Auto poster](https://github.com/Spiderjockey02/auto-poster-and-notifications) - Allows your users to get notified when you post on another social media. (Youtube, twitch, twitter, reddit etc)
+ * [erela.js-facebook](https://github.com/Spiderjockey02/erela.js-facebook) - Allows facebook videos to played with [erela.js](https://github.com/MenuDocs/erela.js) (A [lavalink](https://github.com/Freyacodes/Lavalink) client).
+
 ## License
 
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
