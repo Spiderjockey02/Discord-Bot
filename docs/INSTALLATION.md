@@ -1,53 +1,55 @@
-## Self hosting the bot
+<h1 align="center">
+  <br>
+  Self hosting the bot
+  <br>
+</h1>
+
 Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/authorize?response_type=code&client_id=647203942903840779&permissions=8&scope=bot)?
 
 >Support will only be given on errors done by the base source code. (No edits to the code.)
-### Installation
 
-First of all, make sure you have downloaded:
- * [Node.js](https://nodejs.org/en/). (Version 12 or higher)
- * NPM (Normally comes with Node.js)
- * [MongoDB](https://www.mongodb.com/) (This can be a local server or one hosted by them)
- * [git](https://git-scm.com/) (optional).
+### Setting up server
+* The system you are using to host on must have a minimum version [Node.js](https://nodejs.org/en/) 14. (It will not run at all if less).
+* If you are hosting the lavalink aswell on the same system, it will need [Java](https://adoptopenjdk.net/) v11+ (v13 is preferred) and if not on the same system you will need to get the IP and port of the server. (This may require editing of application.yml)
+* (Optional) You can also host the [mongo](https://www.mongodb.com/) database on your system but this is optional.
 
-Now, clone this repository by
-downloading or running the command `git clone https://github.com/Spiderjockey02/Discord-Bot.git`.
+### Setting up the database
+The database natively used is [MongoDB](https://www.mongodb.com/). So you will need to [create an account](https://www.mongodb.com/try) for this step.
 
-Next run the following commands:
-```
-$ cd Discord-Bot
-$ npm install
-```
-This will install all the correct dependencies needed to run the bot. (This might take some time depending on your host's speed)
-
+* Once you have created an account navigate to the cluster page and create a free cluster.
+* Next wait for the changes to be deployed (this could take upto 5 minutes) and click the `connect` button.
+* Select the `Allow Access from Anywhere` button and then `Add Ip Address`.
+* Create a `dbUser` and `dbUserPassword` and hold onto this for later.
+* Navigate to `Choose a connection method` click `Connect your application` and copy the provided link.
+* Navigate to `src/config.js` in your bot and replace the `mongodb://link`at the bottom with the link you have copied. **Make sure to replace `<password>` with the password you created** .
 
 ### Configuring the config file
-
-Find the file `src/config.example.js`, this is where all your information will go.
-* The API's are highly recommended to fill in but are optionally (If you have a missing API, the command it  to will not work.)
-* `disabledCommands` & `disabledPlugins` is if you want to notload any commands or command categories.
-* `DiscordBotLists` does not mean anything right now, fill them in if you want.
+Find the file `src/config.example.js`, this is where all your information will go. The links to each API is above each line, commented out.
+* The API's are **highly recommended** to fill in but are optionally (If you have a missing API, the command it  to will not work.)
+* `disabledCommands` & `disabledPlugins` An array of commands or categories you don't want loaded on the bot.
 * `SupportServer` will match the support server for your bot.
-* `websiteURL` will match your bot's dashboard, If you want don't have one use `https://localhost`.
-* `defaultSettings` are the settings the bot will use when in DM's.
-* `emojis` are for custom emojis.
-* `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work, **please also remember to replace <password> with your actual password**)
+* `websiteURL` will match your bot's dashboard, If you don't have one use `https://localhost`.
+* `defaultSettings` are the settings the bot will use when in **DM's**.
+* `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work)
 
-### Running the bot
-Once the config file has been filled out, you will need to run the Lavalink.jar file in /Lavalink. This will allow the bot to play music.
+> Once the config is filled out rename **config.example.js** to **config.js**
 
-If you are running the Lavalink.jar on a different server you will need the IP of that server, this IP will need to be entered in `src/base/Audio-Manager.js` in the Nodes array.
 
-More information on lavalink can be [found here.](https://github.com/Frederikam/Lavalink)
-After you have filled out your config file and ran the lavalink server; you can run the following command:
+### Editing bot settings
+* For editing guild settings: `src/database/models/GuildSettings.js`.
+* For entering Lavalink server information (host, port, password): `src/base/Audio-Manager#14`. As nodes is an array you can multiply lavalink servers connected to the same bot, this helps with ratelimiting.
+
+### Editing the files
+* Want to create your own commands?
+    * There is an example of an empty command you can use to make your own command in the commands folder. (`src/commands`). **Once you have created your command make sure to place it in one of the predefined categories.**
+* Added a new category, but the commands are not working?
+    * You will need to add the category name to the guild's setting's plugins array. (You will need to update all guilds with this new change)
+
+
+### Finally running the bot & lavalink.
+> Run the lavalink first as lavalink can take longer to load than the bot.
+* For running the lavalink, use the command: `java -jar Lavalink.jar`
+* For running the bot, go to the main directory (same directory as package.json) and run command:
+```sh
+node .    
 ```
-$ node .
-```
-
-## Extra information
-
-**NOTE**: Running the bot with a process manager (like [PM2](https://discordjs.guide/improving-dev-environment/pm2.html)) is recommended.
-
->This bot must be run on a Discord bot account. Do NOT try to run this on a normal user account. This is against the Discord [Terms of Service](https://discord.com/terms).
-
->Also, do NOT play with the `eval` command, unless you know what you are doing.

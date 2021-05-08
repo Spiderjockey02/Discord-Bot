@@ -35,15 +35,6 @@ const config = {
 	// add plugins/commands here if you don't want them loaded in the bot.
 	disabledCommands: [],
 	disabledPlugins: [],
-	// This is a list of websites that the bot is on. API to interect with server/shard count
-	DiscordBotLists: {
-		// https://discord.boats/
-		DiscordBoatAPI_Key: '',
-		// https://arcane-center.xyz/
-		ArcaneBotAPI_KEY: '',
-		// https://botlist.space/
-		botlist_spaceAPI_KEY: '',
-	},
 	websiteURL: 'Bot\'s dashboard',
 	// your support server
 	SupportServer: {
@@ -58,7 +49,7 @@ const config = {
 		// Where the bot will send Guild join/leave messages to
 		GuildChannel: '761619652009787392',
 	},
-	// This is just so some commands can be ran in DM channels
+	// THESE SETTINGS ARE FOR DMS ONLY
 	defaultSettings: {
 		// default settings
 		prefix: 'e!',
