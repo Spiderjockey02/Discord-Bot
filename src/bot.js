@@ -13,12 +13,16 @@ const path = require('path');
 	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
 		if (bot.config.disabledPlugins.includes(dir)) return;
-		const commands = await readdir('./src/commands/' + dir + '/');
-		commands.forEach((cmd) => {
-			if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
-			const resp = bot.loadCommand('./commands/' + dir, cmd);
-			if (resp) bot.logger.error(resp);
-		});
+		try {
+			const commands = await readdir('./src/commands/' + dir + '/');
+			commands.forEach((cmd) => {
+				if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
+				const resp = bot.loadCommand('./commands/' + dir, cmd);
+				if (resp) bot.logger.error(resp);
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	});
 
 	// load events
@@ -60,6 +64,7 @@ const path = require('path');
 	const token = bot.config.token;
 	bot.login(token).catch(e => bot.logger.error(e.message));
 
+	// handle unhandledRejection errors
 	process.on('unhandledRejection', err => {
 		bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
 
