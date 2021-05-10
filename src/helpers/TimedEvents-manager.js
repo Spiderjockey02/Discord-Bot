@@ -1,5 +1,5 @@
 // Dependencies
-const { timeEventSchema, WarningSchema, PremiumSchema } = require('../database/models'),
+const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
 	{ MessageEmbed, MessageAttachment } = require('discord.js');
 
@@ -65,6 +65,10 @@ module.exports = async (bot) => {
 
 					// get member to unmute
 					const member = bot.guilds.cache.get(events[i].guildID).members.cache.get(events[i].userID);
+
+					// delete muted member from database (even if they not in guild anymore)
+					await MutedMemberSchema.findOneAndRemove({ userID: member.user.id,	guildID: events[i].guildID });
+
 					if (!member) return bot.logger.error(`Member is no longer in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
 
 					// update member

@@ -8,4 +8,5 @@ module.exports = {
 	PremiumSchema: require('./Premium'),
 	ReactionRoleSchema: require('./ReactionRole'),
 	timeEventSchema: require('./TimedEvents'),
+	MutedMemberSchema: require('./MutedMembers'),
 };

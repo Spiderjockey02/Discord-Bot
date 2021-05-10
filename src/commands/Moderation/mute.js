@@ -1,5 +1,5 @@
 // Dependencies
-const { timeEventSchema } = require('../../database/models'),
+const { MutedMemberSchema, timeEventSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Mute extends Command {
@@ -82,6 +82,13 @@ module.exports = class Mute extends Command {
 						if (bot.config.debug) bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					}
 				}
+
+				// update database (in case user leaves to try and remove the muted role)
+				const newMute = await new MutedMemberSchema({
+					userID: member[0].user.id,
+					guildID: message.guild.id,
+				});
+				await newMute.save();
 
 				// reply to user
 				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
