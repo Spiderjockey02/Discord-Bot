@@ -52,6 +52,7 @@ module.exports = class Nightcore extends Command {
 			const embed = new MessageEmbed()
 				.setDescription('Turned on **Nightcore**');
 			await delay(5000);
+			player.speed = 1.2;
 			return msg.edit('', embed);
 		}
 	}

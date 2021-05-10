@@ -1,6 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
-	Event = require('../../structures/Event');
+const Event = require('../../structures/Event');
 
 module.exports = class ticketClose extends Event {
 	constructor(...args) {
@@ -10,6 +9,6 @@ module.exports = class ticketClose extends Event {
 	}
 
 	async run(bot, giveaway, member, reaction) {
-		if (bot.config.debug) bot.logger.log(`${reaction.toString()} added eventhough giveaway has finished`);
+		if (bot.config.debug) bot.logger.log(`${reaction.toString()} added even though giveaway has finished`);
 	}
 };

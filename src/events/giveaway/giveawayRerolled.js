@@ -11,5 +11,21 @@ module.exports = class ticketClose extends Event {
 
 	async run(bot, giveaway, winners) {
 		if (bot.config.debug) bot.logger.log('giveaway has rerolled');
+
+		// DM members that they have won
+		winners.forEach(async (member) => {
+			try {
+				const embed = new MessageEmbed()
+					.setAuthor('Giveaway winner', member.user.displayAvatarURL())
+					.setThumbnail(bot.guilds.cache.get(giveaway.guildID).iconURL())
+					.setDescription([
+						`Prize: \`${giveaway.prize}\`.`,
+						`Message link: [link](https://discord.com/channels/${giveaway.guildID}/${giveaway.channelID}/${giveaway.messageID}).`,
+					].join('\n'));
+				await member.send(embed);
+			} catch (err) {
+				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			}
+		});
 	}
 };
