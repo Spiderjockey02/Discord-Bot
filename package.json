@@ -48,7 +48,7 @@
     "puppeteer": "^7.1.0",
     "r6api.js": "^1.6.0",
     "radio-browser": "^2.1.6",
-    "string-progressbar": "^1.0.3",
+    "string-progressbar": "^1.0.4",
     "string-similarity": "^4.0.4",
     "tinyurl": "^1.1.7",
     "urban-dictionary": "^3.0.0",
