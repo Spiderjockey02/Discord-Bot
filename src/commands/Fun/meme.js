@@ -17,7 +17,7 @@ module.exports = class Meme extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
 
 		// Retrieve a random meme
 		const meme = await bot.Ksoft.images.meme();

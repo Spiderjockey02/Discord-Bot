@@ -20,6 +20,7 @@ module.exports = class Random extends Command {
 		const max = 100000,
 			num1 = parseInt(message.args[0]),
 			num2 = parseInt(message.args[1]);
+
 		// Make sure both entries are there
 		if (!num1 || !message.args[1]) {
 			if (message.deletable) message.delete();

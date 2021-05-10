@@ -15,6 +15,7 @@ module.exports = class Flip extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		message.channel.send(bot.translate(settings.Language, 'FUN/FLIP_CHOICE', Math.round(Math.random())));
+		const r = Math.round(Math.random());
+		message.channel.send(`${message.checkEmoji() ? bot.customEmojis[['head', 'tail'][r]] : ''} ${bot.translate(settings.Language, 'FUN/FLIP_CHOICE', r)}`);
 	}
 };

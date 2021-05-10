@@ -28,9 +28,9 @@ module.exports = class Fact extends Command {
 
 			// Retrieve a random fact
 			const facts = JSON.parse(data);
-			const num = (Math.floor((Math.random() * facts.facts.length) + 0));
+			const num = Math.floor((Math.random() * facts.facts.length));
 			const embed = new MessageEmbed()
-				.setTitle(bot.translate(settings.Language, 'FUN/FACT_TITLE'))
+				.setTitle(`💡 ${bot.translate(settings.Language, 'FUN/FACT_TITLE')}`)
 				.setColor('RANDOM')
 				.setDescription(facts.facts[num]);
 			message.channel.send(embed);

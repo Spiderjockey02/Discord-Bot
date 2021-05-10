@@ -26,7 +26,7 @@ module.exports = class Twitch extends Command {
 		const user = message.args[0];
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
 
 		// fetch data
 		try {

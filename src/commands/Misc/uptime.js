@@ -17,7 +17,7 @@ module.exports = class Uptime extends Command {
 	// Run command
 	async run(bot, message) {
 		const embed = new MessageEmbed()
-			.setDescription(`I have been online for: ${bot.timeFormatter.getReadableTime(bot.uptime)}.`);
+			.setDescription(`📶 I have been online for: ${bot.timeFormatter.getReadableTime(bot.uptime)}.`);
 		message.channel.send(embed);
 	}
 };

@@ -23,7 +23,7 @@ module.exports = class Steam extends Command {
 		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
 
 		// data
 		const token = bot.config.api_keys.steam;

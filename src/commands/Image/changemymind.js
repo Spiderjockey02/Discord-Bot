@@ -29,7 +29,7 @@ module.exports = class ChangeMyMind extends Command {
 		if (text.length >= 81) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 80).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
 
 		// Try and convert image
 		try {

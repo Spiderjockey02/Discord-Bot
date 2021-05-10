@@ -19,7 +19,7 @@ module.exports = class Gonewild extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} image...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} image...`);
 
 		try {
 			get('https://nekobot.xyz/api/image?type=gonewild')

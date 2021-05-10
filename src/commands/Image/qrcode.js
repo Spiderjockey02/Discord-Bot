@@ -1,5 +1,5 @@
 // Dependencies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ MessageEmbed, MessageAttachment } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class QRcode extends Command {
@@ -22,13 +22,15 @@ module.exports = class QRcode extends Command {
 		const text = (!message.args[0]) ? await message.getImage().then(r => r[0]) : message.args.join(' ');
 
 		// send 'waiting' message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
 
 		// Try and convert image
 		try {
+			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
 			// send image in embed
 			const embed = new MessageEmbed()
-				.setImage(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`);
+				.attachFiles(attachment)
+				.setImage('attachment://QRCODE.png');
 			message.channel.send(embed);
 		} catch(err) {
 			if (message.deletable) message.delete();

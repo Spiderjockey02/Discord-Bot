@@ -71,7 +71,7 @@ module.exports = class R6 extends Command {
 		}
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
 
 		// get statistics of player
 		player = player[0];

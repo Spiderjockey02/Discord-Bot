@@ -44,8 +44,8 @@ module.exports = class Screenshot extends Command {
 			return message.channel.error(settings.Language, 'FUN/BLACKLIST_WEBSITE').then(m => m.delete({ timeout: 5000 }));
 		}
 
-		// send 'waiting' message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Creating screenshot of website.`);
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
 
 		// try and create screenshot
 		let data;

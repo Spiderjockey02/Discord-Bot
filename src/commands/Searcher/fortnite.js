@@ -27,7 +27,7 @@ module.exports = class Fortnite extends Command {
 			username = message.args.join(' ');
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${bot.customEmojis['loading']} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
 
 		// Fetch fornite account information
 		bot.Fortnite.user(username, platform).then(async data => {

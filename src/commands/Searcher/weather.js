@@ -19,6 +19,10 @@ module.exports = class Weather extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
+
 		// search up weather stats
 		find({ search: message.args.join(' '), degreeType: 'C' }, function(err, result) {
 			try {
@@ -32,10 +36,12 @@ module.exports = class Weather extends Command {
 					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_TIME'), result[0].current.observationtime, true)
 					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_DISPLAY'), result[0].current.winddisplay, true)
 					.setThumbnail(result[0].current.imageUrl);
+				msg.delete();
 				message.channel.send(embed);
 			} catch(err) {
 				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				msg.delete();
+				bot.logger.error(`Command: 'weather' has error: ${err.message}.`);
 				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		});

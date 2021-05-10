@@ -30,6 +30,9 @@ module.exports = class Rank extends Command {
 			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
 		}
 
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+
 		// Retrieve Rank from databse
 		try {
 			await RankSchema.findOne({
@@ -69,6 +72,7 @@ module.exports = class Rank extends Command {
 						// send rank card
 						rankcard.build().then(buffer => {
 							const attachment = new MessageAttachment(buffer, 'RankCard.png');
+							msg.delete();
 							message.channel.send(attachment);
 						});
 					});
@@ -76,6 +80,7 @@ module.exports = class Rank extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`${err.message} when running command: rank.`);
+			msg.delete();
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
