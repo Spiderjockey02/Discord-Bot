@@ -9,7 +9,7 @@ const languageData = {
 	// incorrect enteries
 	LEFT_VOICE: 'I have successfully left the voice channel.',
 	NO_ARGS: 'Please enter a song name/url',
-	TOO_HIGH: 'Please input a number between 0 and 100.',
+	TOO_HIGH: 'Please input a number between 0 and 1000.',
 	NO_SONG: 'I can\'t find that song.',
 	INCORRECT_NUMBER: 'Speed can only be 1 to 10.',
 	// pause/resume

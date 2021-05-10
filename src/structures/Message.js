@@ -129,6 +129,15 @@ module.exports = Structures.extend('Message', Message => {
 			file.push(...this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;
 		}
+
+		// check external emoji
+		checkEmoji() {
+			if (this.channel.type == 'dm') {
+				return true;
+			} else {
+				return this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? true : false;
+			}
+		}
 	}
 	return CustomMessage;
 });

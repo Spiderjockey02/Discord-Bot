@@ -22,6 +22,7 @@ module.exports = Structure.extend('Player', Player => {
 
 		// reset filters
 		resetFilter() {
+			this.speed = 1;
 			this.node.send({
 				op: 'filters',
 				guildId: this.guild.id || this.guild,
