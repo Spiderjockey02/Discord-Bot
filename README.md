@@ -51,6 +51,7 @@ If you liked this repository, feel free to leave a star ⭐ to help promote Eggl
 * **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
 *   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
 *   ❓  **Ticket**: `t-(close | create |setup )`!
+*   **Full list** of commands: [here](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md).
 
 Egglord also comes packed with a variety of features, such as:
 
