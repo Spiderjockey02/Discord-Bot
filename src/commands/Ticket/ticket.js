@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ ticketEmbedSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Ticket extends Command {
@@ -42,11 +43,24 @@ module.exports = class Ticket extends Command {
 					collector.on('collect', () => {
 						bot.commands.get('ticket-create').run(bot, message, settings);
 					});
+
+					// update database (in case bot restarts and reactionCollector will stop working)
+					const newEmbed = await new ticketEmbedSchema({
+						messageID: msg.id,
+						channelID: msg.channel.id,
+						guildID: msg.guild.id,
+					});
+					await newEmbed.save();
 				});
 			} else {
 				const embed = new MessageEmbed()
 					.setTitle('Ticket help')
-					.setDescription(`\`${settings.prefix}t-<open|create> [reason]\` - Will open a ticket for support.\n\`${settings.prefix}t-close\` - Will close the current ticket channel (Support only).\n\`${settings.prefix}t-setup\` - Sets up the ticket plugin (Admin only).\n\`${settings.prefix}ticket reaction\` - Add reaction ticket embed (Admin only).`);
+					.setDescription([
+						`\`${settings.prefix}t-<open|create> [reason]\` - Will open a ticket for support.`,
+						`\`${settings.prefix}t-close\` - Will close the current ticket channel (Support only).`,
+						`\`${settings.prefix}t-setup\` - Sets up the ticket plugin (Admin only).`,
+						`\`${settings.prefix}ticket reaction\` - Add reaction ticket embed (Admin only).`,
+					].join('\n'));
 				message.channel.send(embed);
 			}
 		}

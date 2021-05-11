@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ ReactionRoleSchema, GiveawaySchema } = require('../../database/models'),
+	{ ReactionRoleSchema, GiveawaySchema, ticketEmbedSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageDelete extends Event {
@@ -32,12 +32,17 @@ module.exports = class messageDelete extends Event {
 			// check reaction roles
 			const rr = await ReactionRoleSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
 			if (rr) bot.logger.log('A reaction role embed was deleted.');
+
 			// check giveaways
 			const g = await GiveawaySchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
 			if (g) {
 				await bot.giveawaysManager.delete(message.id);
 				bot.logger.log('A giveaway embed was deleted.');
 			}
+
+			// check ticket embed
+			const te = await ticketEmbedSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
+			if (te) bot.logger.log('A ticket reaction embed was deleted.');
 		} catch (err) {
 			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}

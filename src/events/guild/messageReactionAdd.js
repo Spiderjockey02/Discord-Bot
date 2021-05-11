@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ ReactionRoleSchema } = require('../../database/models'),
+	{ ReactionRoleSchema, ticketEmbedSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageReactionAdd extends Event {
@@ -27,6 +27,49 @@ module.exports = class messageReactionAdd extends Event {
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
+		// Check for ticket embed
+		if (reaction.emoji.name == '🎟') {
+			const ticketReaction = await ticketEmbedSchema.findOne({
+				messageID: reaction.message.id,
+				channelID: reaction.message.channel.id,
+				guildID: reaction.message.guild.id,
+			});
+
+			// ticket found
+			if (ticketReaction) {
+				return bot.commands.get('ticket-create').run(bot, reaction.message, settings);
+			}
+		}
+
+		// Check for reaction
+		const { guild } = reaction.message;
+		const member = guild.members.cache.get(user.id);
+		if (!member) return;
+
+		// fetch database
+		const dbReaction = await ReactionRoleSchema.findOne({
+			guildID: guild.id,
+			messageID: reaction.message.id,
+		});
+
+		if (dbReaction) {
+			const rreaction = dbReaction.reactions.find(r => r.emoji === reaction.emoji.toString());
+			if (rreaction) {
+				// Add or remove role depending if they have it or not
+				try {
+					if (!member.roles.cache.has(rreaction.roleID)) {
+						return await member.roles.add(rreaction.roleID);
+					} else {
+						return await member.roles.remove(rreaction.roleID);
+					}
+				} catch (err) {
+					const channel = await bot.channels.fetch(dbReaction.channelID).catch(() => bot.logger.error(`Missing channel for reaction role in guild: ${guild.id}`));
+					if (channel) channel.send(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`).then(m => m.delete({ timeout: 5000 }));
+				}
+			}
+		}
+
+
 		// make sure the message author isn't the bot
 		if (reaction.message.author.id == bot.user.id) return;
 
@@ -50,33 +93,6 @@ module.exports = class messageReactionAdd extends Event {
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
-		}
-
-		const { guild } = reaction.message;
-		const member = guild.members.cache.get(user.id);
-		if (!member) return;
-
-		// fetch database
-		const dbReaction = await ReactionRoleSchema.findOne({
-			guildID: guild.id,
-			messageID: reaction.message.id,
-		});
-
-		// Get role to add/remove to user
-		if (!dbReaction) return;
-		const rreaction = dbReaction.reactions.find(r => r.emoji === reaction.emoji.toString());
-		if (!rreaction) return;
-
-		// Add or remove role depending if they have it or not
-		try {
-			if (!member.roles.cache.has(rreaction.roleID)) {
-				await member.roles.add(rreaction.roleID);
-			} else {
-				await member.roles.remove(rreaction.roleID);
-			}
-		} catch (err) {
-			const channel = await bot.channels.fetch(dbReaction.channelID).catch(() => bot.logger.error(`Missing channel for reaction role in guild: ${guild.id}`));
-			if (channel) channel.send(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };
