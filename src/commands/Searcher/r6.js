@@ -12,7 +12,7 @@ module.exports = class R6 extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Gets statistics on a Rainbow 6 Account.',
-			usage: 'r6 <user> [pc | xbox | ps4] [eu | na | as]',
+			usage: 'r6 <user> [pc / xbox / ps4] [eu / na / as]',
 			cooldown: 3000,
 			examples: ['r6 ThatGingerGuy02', 'r6 ThatGingerGuy02 pc eu'],
 		});

@@ -11,7 +11,7 @@ module.exports = class Addban extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add a ban to the global ban list.',
-			usage: 'addban <userID> <servers | commands> <reason>',
+			usage: 'addban <userID> <servers / commands> <reason>',
 			cooldown: 3000,
 			examples: ['addban 304990401373143040 commands abusing command'],
 		});

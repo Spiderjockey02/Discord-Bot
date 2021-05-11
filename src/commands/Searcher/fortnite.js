@@ -10,7 +10,7 @@ module.exports = class Fortnite extends Command {
 			aliases: ['fort', 'fortnight'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get information on a Fortnite account.',
-			usage: 'fortnite <kbm | gamepad | touch> <user>',
+			usage: 'fortnite <kbm / gamepad / touch> <user>',
 			cooldown: 3000,
 			examples: ['fortnite kbm ninja'],
 		});

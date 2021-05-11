@@ -10,7 +10,7 @@ module.exports = class MusicNode extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add/remove a Node for lavalink.',
-			usage: 'node <add | remove> [host] [password] [port]',
+			usage: 'node <add / remove> [host] [password] [port]',
 			cooldown: 3000,
 			examples: ['node add localhost youshallnotpass 5000'],
 		});

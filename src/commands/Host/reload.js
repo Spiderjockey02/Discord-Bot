@@ -12,7 +12,7 @@ module.exports = class Reload extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Reloads a command.',
-			usage: 'reload <command | event>',
+			usage: 'reload <command / event>',
 			cooldown: 3000,
 			examples: ['reload help', 'reload channelCreate'],
 		});

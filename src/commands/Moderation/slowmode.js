@@ -10,7 +10,7 @@ module.exports = class SlowMode extends Command {
 			userPermissions: ['MANAGE_CHANNELS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
 			description: 'Activate slowmode on a channel.',
-			usage: 'slowmode <time | off>',
+			usage: 'slowmode <time / off>',
 			cooldown: 5000,
 			examples: ['slowmode off', 'slowmode 1m'],
 		});

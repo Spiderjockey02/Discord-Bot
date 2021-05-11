@@ -10,7 +10,7 @@ module.exports = class Premium extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add or remove user\'s premium',
-			usage: 'premium <add | remove> <user | guild> <ID> [time]',
+			usage: 'premium <add / remove> <user / guild> <ID> [time]',
 			cooldown: 3000,
 			examples: ['premium add 184376969016639488'],
 		});

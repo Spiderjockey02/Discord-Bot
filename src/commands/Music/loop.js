@@ -9,7 +9,7 @@ module.exports = class Loop extends Command {
 			aliases: ['repeat'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Loops the song or queue.',
-			usage: 'loop [queue | song | off]',
+			usage: 'loop [queue / song / off]',
 			cooldown: 3000,
 			examples: ['loop queue', 'loop off'],
 		});

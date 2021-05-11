@@ -9,7 +9,7 @@ module.exports = class Search extends Command {
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Searches for a song.',
-			usage: 'search <link | song name>',
+			usage: 'search <link / song name>',
 			cooldown: 3000,
 			examples: ['search palaye royale'],
 		});

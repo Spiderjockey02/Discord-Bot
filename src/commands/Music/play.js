@@ -9,7 +9,7 @@ module.exports = class Play extends Command {
 			aliases: ['p'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Play a song.',
-			usage: 'play <link | song name>',
+			usage: 'play <link / song name>',
 			cooldown: 3000,
 			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
 		});

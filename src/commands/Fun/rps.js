@@ -10,7 +10,7 @@ module.exports = class RPS extends Command {
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Play Rock Paper Scissors.',
-			usage: 'rps <rock | paper | scissors>',
+			usage: 'rps <rock / paper / scissors>',
 			cooldown: 1000,
 			examples: ['rps rock', 'rps scissors'],
 		});

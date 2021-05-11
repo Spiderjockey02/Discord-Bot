@@ -10,7 +10,7 @@ module.exports = class QRcode extends Command {
 			aliases: ['qr-code'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Create a QR code.',
-			usage: 'qrcode <text | file>',
+			usage: 'qrcode <text / file>',
 			cooldown: 5000,
 			examples: ['qrcode https://www.google.com/', 'qrcode <attachment>'],
 		});

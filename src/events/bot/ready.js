@@ -44,7 +44,7 @@ module.exports = class Ready extends Event {
 			bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 		}, 3000);
 
-
+		await require('../../scripts/update-commands.md.js')(bot);
 		// Check if any servers added the bot while offline
 		bot.guilds.cache.forEach(async item => {
 			await item.fetchGuildConfig();

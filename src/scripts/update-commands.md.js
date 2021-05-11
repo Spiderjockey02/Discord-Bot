@@ -15,7 +15,7 @@ module.exports = async (bot) => {
 			const co = bot.commands
 				.filter(c => c.help.category === category.slice(3))
 				.sort((a, b) => a.help.name - b.help.name)
-				.map(c => `| ${c.help.name}	|	${c.help.description}	|	${c.help.usage}	|`).join('\n');
+				.map(c => `| ${c.help.name}	|	${c.help.description}	|	\`${c.help.usage}\`	|`).join('\n');
 			content.push(category, '|	Command	| description	| Usage', '|---------------|--------------------|--------------|', co, '\n');
 		});
 	// read to file
