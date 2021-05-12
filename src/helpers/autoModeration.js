@@ -1,12 +1,11 @@
 // if option is 2, then just warn member
 async function warnMember(bot, message, wReason, settings) {
-	const emojis = [(message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.cross : ':negative_squared_cross_mark:', (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) ? bot.config.emojis.tick : ':white_check_mark:'];
 	const wUser = message.guild.member(message.author);
 	try {
-		await require('./warning-system').run(bot, message, emojis, wUser, wReason, settings);
+		await require('./warning-system').run(bot, message, wUser, wReason, settings);
 	} catch (err) {
 		bot.logger.error(`${err.message} when trying to warn user`);
-		message.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 10000 }));
+		message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 10000 }));
 	}
 }
 
@@ -23,7 +22,7 @@ function deleteMessage(message) {
 
 module.exports.run = (bot, message, settings) => {
 	// Make sure it's not a bot
-	if (settings.ModerationIgnoreBotToggle == true & message.author.bot) return;
+	if (settings.ModerationIgnoreBotToggle & message.author.bot) return;
 	// Get the words
 	const words = message.content.split(' ');
 	// get roles
@@ -48,10 +47,12 @@ module.exports.run = (bot, message, settings) => {
 		}
 	}
 	// Check for Repeated Text
+
 	// Duplicated text
+
 	// check for server invites
 	if (settings.ModerationServerInvites >= 1) {
-		const found = message.content.includes('https://discord.gg/');
+		const found = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|club)|discordapp\.com\/invite|discord\.com\/invite)\/.+[a-z]/gi.test(message.content);
 		if (found) {
 			console.log('found');
 			if (!settings.ModerationServerInvitesChannel.includes(message.channel.id)) {
@@ -67,6 +68,7 @@ module.exports.run = (bot, message, settings) => {
 			return false;
 		}
 	}
+
 	// check for external links
 	if (settings.ModerationExternalLinks >= 1) {
 		const expression = /^((?:https?:)?\/\/)?((?:www|m)\.)/g;
@@ -86,6 +88,7 @@ module.exports.run = (bot, message, settings) => {
 			return false;
 		}
 	}
+
 	// check for spammed caps
 	if (settings.ModerationSpammedCaps >= 1) {
 		const caps = message.content.replace(/[^A-Z]/g, '').length;
@@ -105,6 +108,7 @@ module.exports.run = (bot, message, settings) => {
 			return false;
 		}
 	}
+
 	// check for excessive emojis
 	if (settings.ModerationExcessiveEmojis >= 1) {
 		const found = false;
@@ -114,6 +118,7 @@ module.exports.run = (bot, message, settings) => {
 			// Mass emoji
 		}
 	}
+
 	// check for mass spoilers
 	if (settings.ModerationMassSpoilers >= 1) {
 		const found = false;
@@ -122,6 +127,7 @@ module.exports.run = (bot, message, settings) => {
 			return false;
 		}
 	}
+
 	// check for mass mentions
 	if (settings.ModerationMassMention >= 1) {
 		const mentionNumber = ((message.mentions.users) ? message.mentions.users.size : 0) + ((message.mentions.roles) ? message.mentions.roles.size : 0);
@@ -140,6 +146,7 @@ module.exports.run = (bot, message, settings) => {
 			return false;
 		}
 	}
+
 	// check for zalgo
 	if (settings.ModerationZalgo >= 1) {
 		const found = false;

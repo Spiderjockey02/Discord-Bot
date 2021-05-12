@@ -127,14 +127,14 @@ module.exports = class Message extends Event {
 		} else if (message.guild) {
 			if (settings.plugins.includes('Moderation')) {
 				try {
-					const check = require('../../helpers/auto-moderation').run(bot, message, settings);
+					const check = require('../../helpers/autoModeration').run(bot, message, settings);
 					// This makes sure that if the auto-mod punished member, level plugin would not give XP
-					if (settings.plugins.includes('Level') && check) return require('../../helpers/level-system').run(bot, message, settings);
+					if (settings.plugins.includes('Level') && check) return require('../../helpers/levelSystem').run(bot, message, settings);
 				} catch (err) {
 					bot.logger.error(`Event: 'message' has error: ${err.message}.`);
 				}
 			} else if (settings.plugins.includes('Level')) {
-				require('../../helpers/level-system').run(bot, message, settings);
+				require('../../helpers/levelSystem').run(bot, message, settings);
 			}
 		}
 	}

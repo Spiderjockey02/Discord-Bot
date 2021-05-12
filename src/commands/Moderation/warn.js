@@ -41,7 +41,7 @@ module.exports = class Warn extends Command {
 
 		// Warning is sent to warning manager
 		try {
-			await require('../../helpers/warning-system').run(bot, message, member[0], wReason, settings);
+			await require('../../helpers/warningSystem').run(bot, message, member[0], wReason, settings);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

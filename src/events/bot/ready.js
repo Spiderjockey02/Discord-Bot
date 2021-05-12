@@ -34,7 +34,7 @@ module.exports = class Ready extends Event {
 
 		// webhook manager
 		setInterval(async () => {
-			await require('../../helpers/webhook-manager')(bot);
+			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
 		// Updates the bot's status
@@ -98,7 +98,7 @@ module.exports = class Ready extends Event {
 
 		// enable time event handler (in case of bot restart)
 		try {
-			await require('../../helpers/TimedEvents-manager')(bot);
+			await require('../../helpers/TimedEventsManager')(bot);
 		} catch (err) {
 			console.log(err);
 		}
