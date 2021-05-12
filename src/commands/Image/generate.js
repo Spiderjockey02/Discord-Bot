@@ -84,9 +84,11 @@ module.exports = class Generate extends Command {
 			try {
 				if (!image || !image.data) return;
 				const attachment = new MessageAttachment(image.data, `${choice}.${choice == 'triggered' ? 'gif' : 'png'}`);
+				msg.delete();
 				message.channel.send(attachment);
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				msg.delete();
 				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
 			}
 		}

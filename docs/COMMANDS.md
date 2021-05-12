@@ -1,6 +1,15 @@
 # Command list
 ><> = required, [] = optional
 
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -31,15 +40,6 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
 ## Host
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -55,26 +55,6 @@
 | system	|	Displays the bots statistics	|	`status`	|
 | test	|	For testing new commands and features	|	`test`	|
 | update	|	Sends an update to bot's guild.	|	`update`	|
-
-
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -98,6 +78,26 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
+
+
 ## Moderation
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -116,20 +116,6 @@
 | unmute	|	Unmute a user.	|	`unmute <user>`	|
 | warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
 | warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
-
-
-## NSFW
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Music
@@ -169,6 +155,20 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
+## NSFW
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
+
+
 ## Plugins
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -177,6 +177,7 @@
 | set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
 | set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
 | set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
+| tags	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher
