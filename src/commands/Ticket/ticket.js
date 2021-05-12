@@ -32,17 +32,8 @@ module.exports = class Ticket extends Command {
 					.setTitle('React for Ticket channel')
 					.setDescription(`You can react here or use the following command:\n \`${settings.prefix}t-open [reason]\`.`);
 				message.channel.send(embed).then(async msg => {
+					// add reaction
 					await msg.react('🎟');
-
-					// set up filter and page number
-					const filter = (reaction, user) => {
-						return reaction.emoji.name == '🎟' && !user.bot;
-					};
-					// create collector
-					const collector = msg.createReactionCollector(filter, { time: 604800000 });
-					collector.on('collect', () => {
-						bot.commands.get('ticket-create').run(bot, message, settings);
-					});
 
 					// update database (in case bot restarts and reactionCollector will stop working)
 					const newEmbed = await new ticketEmbedSchema({

@@ -91,7 +91,7 @@ module.exports = class channelUpdate extends Event {
 						role = newChannel.guild.roles.cache.get(newPerm.id || oldPerm.id);
 					}
 					if (oldPerm.type == 'member' || newPerm.type == 'member') {
-						member = await newChannel.guild.fetchMember(newPerm.id || oldPerm.id);
+						member = await newChannel.guild.members.fetch(newPerm.id || oldPerm.id);
 					}
 					// make text about what changed
 					let value = '';

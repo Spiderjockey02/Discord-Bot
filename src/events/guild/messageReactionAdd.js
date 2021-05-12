@@ -27,6 +27,10 @@ module.exports = class messageReactionAdd extends Event {
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
+		// Get server settings / if no settings then return
+		const settings = reaction.message.guild.settings;
+		if (Object.keys(settings).length == 0) return;
+
 		// Check for ticket embed
 		if (reaction.emoji.name == '🎟') {
 			const ticketReaction = await ticketEmbedSchema.findOne({
@@ -37,6 +41,7 @@ module.exports = class messageReactionAdd extends Event {
 
 			// ticket found
 			if (ticketReaction) {
+				reaction.message.author = user;
 				return bot.commands.get('ticket-create').run(bot, reaction.message, settings);
 			}
 		}
@@ -72,10 +77,6 @@ module.exports = class messageReactionAdd extends Event {
 
 		// make sure the message author isn't the bot
 		if (reaction.message.author.id == bot.user.id) return;
-
-		// Get server settings / if no settings then return
-		const settings = reaction.message.guild.settings;
-		if (Object.keys(settings).length == 0) return;
 
 		// Check if event messageReactionAdd is for logging
 		if (settings.ModLogEvents.includes('MESSAGEREACTIONADD') && settings.ModLog) {
