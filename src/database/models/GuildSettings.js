@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const guildScheme = Schema({
+const guildSchema = Schema({
 	guildID: String,
 	guildName: String,
 	prefix: { type: String, default: 'e!' },
@@ -117,4 +117,4 @@ const guildScheme = Schema({
 	version: { type: Number, default: '1.1' },
 });
 
-module.exports = model('Guild', guildScheme);
+module.exports = model('Guild', guildSchema);
