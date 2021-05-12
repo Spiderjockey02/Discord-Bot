@@ -1,13 +1,19 @@
 # Command list
 ><> = required, [] = optional
 
-## Giveaway
+## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
+| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
+| discrim	|	Discrim	|	`discrim <discriminator>`	|
+| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
+| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
+| guildicon	|	Get the server's icon.	|	`guildicon`	|
+| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
+| role-info	|	Get information on a role.	|	`role-info <role>`	|
+| server-info	|	Get information on the server.	|	`server-info`	|
+| user-info	|	Get information on the server.	|	`user-info [user]`	|
 
 
 ## Fun
@@ -23,6 +29,52 @@
 | rps	|	Play Rock Paper Scissors.	|	`rps <rock / paper / scissors>`	|
 | screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
+
+
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+| system	|	Displays the bots statistics	|	`status`	|
+| test	|	For testing new commands and features	|	`test`	|
+| update	|	Sends an update to bot's guild.	|	`update`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -46,26 +98,6 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
-
-
 ## Moderation
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -84,6 +116,20 @@
 | unmute	|	Unmute a user.	|	`unmute <user>`	|
 | warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
 | warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+
+
+## NSFW
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Music
@@ -123,20 +169,6 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
-## NSFW
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
-
-
 ## Plugins
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -168,34 +200,3 @@
 | ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
 | ticket	|	Information on ticket plugin.	|	`ticket`	|
 
-
-## Guild
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
-| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
-| discrim	|	Discrim	|	`discrim <discriminator>`	|
-| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
-| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
-| guildicon	|	Get the server's icon.	|	`guildicon`	|
-| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
-| role-info	|	Get information on a role.	|	`role-info <role>`	|
-| server-info	|	Get information on the server.	|	`server-info`	|
-| user-info	|	Get information on the server.	|	`user-info [user]`	|
-
-
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-| system	|	Displays the bots statistics	|	`status`	|
-| test	|	For testing new commands and features	|	`test`	|
-| update	|	Sends an update to bot's guild.	|	`update`	|

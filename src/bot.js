@@ -9,19 +9,19 @@ const path = require('path');
 // Load commands
 (async () => {
 	// load commands
-	const cmdFolders = await readdir('./src/commands/');
+	const cmdFolders = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
 	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
 		if (bot.config.disabledPlugins.includes(dir)) return;
 		try {
-			const commands = await readdir('./src/commands/' + dir + '/');
+			const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
 			commands.forEach((cmd) => {
 				if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
 				const resp = bot.loadCommand('./commands/' + dir, cmd);
 				if (resp) bot.logger.error(resp);
 			});
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			console.log(err.message);
 		}
 	});
 
