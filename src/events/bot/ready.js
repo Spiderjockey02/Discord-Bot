@@ -28,7 +28,6 @@ module.exports = class Ready extends Event {
 		// set up webserver
 		try {
 			require('../../http/api')(bot);
-			// require('../../http/webhook/dbl')(bot);
 		} catch (err) {
 			console.log(err);
 		}
