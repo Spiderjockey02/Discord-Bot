@@ -11,10 +11,10 @@ module.exports = class Tags extends Command {
 			aliases: ['modifytags', 'tag'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Toggle plugins on and off',
-			usage: 'set-plugin <option>',
+			description: 'Edit server\'s tags',
+			usage: 'tag <add/del/edit/rename/view/viewall> <required paramters>',
 			cooldown: 5000,
-			examples: ['tag <add/del/edit/rename/view/viewall> <required paramters>'],
+			examples: ['tag add java Download Java here: <https://adoptopenjdk.net/>', 'tag rename java Java'],
 		});
 	}
 
