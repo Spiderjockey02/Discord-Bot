@@ -45,6 +45,10 @@ module.exports = async (bot) => {
 			// clear timeout (for queueEnd event)
 			if (player.timeout != null) return clearTimeout(player.timeout);
 		})
+		.on('trackEnd', (player, track) => {
+			// when track finishes add to previous songs array
+			player.addPreviousSong(track, player.guild);
+		})
 		.on('trackError', (player, track, payload) => {
 			// when a track causes an error
 			if (bot.config.debug) bot.logger.log(`Track error: ${payload.error} in guild: ${player.guild}.`);
