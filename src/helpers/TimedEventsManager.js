@@ -49,7 +49,7 @@ module.exports = async (bot) => {
 
 						bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.getUser(events[i].userID)).then(m => m.delete({ timeout: 3000 }));
+						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => m.delete({ timeout: 3000 }));
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
@@ -116,7 +116,7 @@ module.exports = async (bot) => {
 						ID: events[i].userID == 0 ? events[i].guildID : events[i].userID,
 						Type: events[i].userID == 0 ? 'guild' : 'user' });
 
-					events[i].userID == 0 ? bot.guilds.cache.get(events[i].guildID).premium = false : await bot.getUser(events[i].userID).then(user => user.premium = false);
+					events[i].userID == 0 ? bot.guilds.cache.get(events[i].guildID).premium = false : await bot.users.fetch(events[i].userID).then(user => user.premium = false);
 				}
 
 				// Delete from database as bot didn't crash

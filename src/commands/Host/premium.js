@@ -26,7 +26,7 @@ module.exports = class Premium extends Command {
 		// Validate ID
 		let id;
 		if (message.args[1] == 'user') {
-			id = await bot.getUser(message.args[2])?.then(u => u.id);
+			id = await bot.users.fetch(message.args[2]).then(u => u.id);
 			if (!id) return message.channel.send('Incorrect ID');
 		} else if (message.args[1] == 'guild') {
 			id = await bot.guilds.fetch(message.args[2])?.then(g => g.id);

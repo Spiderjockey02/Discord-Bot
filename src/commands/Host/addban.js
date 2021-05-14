@@ -22,7 +22,7 @@ module.exports = class Addban extends Command {
 		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 
 		// get information
-		const user = await bot.getUser(message.args[0]);
+		const user = await bot.users.fetch(message.args[0]);
 		const restriction = message.args[1];
 		if (!['servers', 'commands'].includes(restriction)) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		message.args.splice(0, 2);

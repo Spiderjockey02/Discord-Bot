@@ -65,7 +65,7 @@ module.exports = class Egglord extends Client {
 		this.customEmojis = require('../assets/json/emojis.json');
 	}
 
-	// when the this joins add guild settings to server
+	// when the bot joins create guild settings
 	async CreateGuild(settings) {
 		try {
 			const newGuild = new GuildSchema(settings);
@@ -76,46 +76,13 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Delete guild from server when this leaves server
+	// Delete guild from server when bot leaves server
 	async DeleteGuild(guild) {
 		try {
 			await GuildSchema.findOneAndRemove({ guildID: guild.id });
 			return true;
 		} catch (err) {
 			if (this.config.debug) this.logger.debug(err.message);
-			return false;
-		}
-	}
-
-	// Fetch user ID from discord API
-	async getUser(ID) {
-		try {
-			const user = await this.users.fetch(ID);
-			return user;
-		} catch (err) {
-			console.log(err.message);
-			return false;
-		}
-	}
-
-	// Get a channel in cache
-	async getChannel(id) {
-		try {
-			const channel = await this.channels.cache.get(id);
-			return channel;
-		} catch (err) {
-			console.log(err.message);
-			return false;
-		}
-	}
-
-	// Set this's status
-	async SetStatus(status = 'online') {
-		try {
-			await this.user.setStatus(status);
-			return;
-		} catch (err) {
-			console.log(err.message);
 			return false;
 		}
 	}

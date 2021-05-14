@@ -39,7 +39,7 @@ module.exports = class Ready extends Event {
 
 		// Updates the bot's status
 		setTimeout(() => {
-			bot.SetStatus('Online');
+			bot.user.setStatus('Online');
 			bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 		}, 3000);
 
@@ -88,7 +88,7 @@ module.exports = class Ready extends Event {
 		const premium = await PremiumSchema.find({});
 		for (let i = 0; i < premium.length; i++) {
 			if (premium[i].Type == 'user') {
-				const user = await bot.getUser(premium[i].ID);
+				const user = await bot.users.fetch(premium[i].ID);
 				if (user) user.premium = true;
 			} else {
 				const guild = bot.guilds.cache.get(premium[i].ID);
