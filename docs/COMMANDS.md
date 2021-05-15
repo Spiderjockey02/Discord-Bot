@@ -1,19 +1,13 @@
 # Command list
 ><> = required, [] = optional
 
-## Guild
+## Giveaway
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
-| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
-| discrim	|	Discrim	|	`discrim <discriminator>`	|
-| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
-| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
-| guildicon	|	Get the server's icon.	|	`guildicon`	|
-| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
-| role-info	|	Get information on a role.	|	`role-info <role>`	|
-| server-info	|	Get information on the server.	|	`server-info`	|
-| user-info	|	Get information on the server.	|	`user-info [user]`	|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
 
 ## Fun
@@ -31,6 +25,21 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
+## Guild
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
+| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
+| discrim	|	Discrim	|	`discrim <discriminator>`	|
+| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
+| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
+| guildicon	|	Get the server's icon.	|	`guildicon`	|
+| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
+| role-info	|	Get information on a role.	|	`role-info <role>`	|
+| server-info	|	Get information on the server.	|	`server-info`	|
+| user-info	|	Get information on the server.	|	`user-info [user]`	|
+
+
 ## Host
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -46,6 +55,13 @@
 | system	|	Displays the bots statistics	|	`status`	|
 | test	|	For testing new commands and features	|	`test`	|
 | update	|	Sends an update to bot's guild.	|	`update`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
 
 
 ## Image
@@ -67,13 +83,6 @@
 | threats	|	Creates a threat meme.	|	`threats [image]`	|
 | twitter	|	Create a fake Twitter tweet.	|	`twitter [user] <text>`	|
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
-
-
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
 
 
 ## Misc
@@ -147,6 +156,16 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
+## Plugins
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
+| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
+| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
+| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
+| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
+
+
 ## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -159,16 +178,6 @@
 | pgif	|	Look at NSFW images.	|	`pgif`	|
 | pussy	|	Look at NSFW images.	|	`pussy`	|
 | thigh	|	Look at NSFW images.	|	`thigh`	|
-
-
-## Plugins
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
-| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
-| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
-| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
-| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher
@@ -191,7 +200,7 @@
 | tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
 | tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
 | tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
-| tags	|	Edit server's tags	|	`tag <add/del/edit/rename/view/viewall> <required paramters>`	|
+| tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
 
 
 ## Ticket
@@ -201,13 +210,4 @@
 | ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
 | ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
 | ticket	|	Information on ticket plugin.	|	`ticket`	|
-
-
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 

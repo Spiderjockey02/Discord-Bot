@@ -7,7 +7,7 @@ module.exports = class TagDelete extends Command {
 		super(bot, {
 			name: 'tag-delete',
 			dirname: __dirname,
-			aliases: ['t-delete', 't-remove'],
+			aliases: ['t-delete', 't-remove', 'tag-del'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Remove a tag from the server',
