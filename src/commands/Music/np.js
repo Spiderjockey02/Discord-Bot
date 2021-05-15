@@ -1,6 +1,6 @@
 // Dependecies
 const { MessageEmbed } = require('discord.js'),
-	createBar = require('string-progressbar'),
+	{ splitBar } = require('string-progressbar'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class NowPlaying extends Command {
@@ -39,7 +39,7 @@ module.exports = class NowPlaying extends Command {
 				.setColor(message.member.displayHexColor)
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${message.guild.member(requester)}]`)
-				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + createBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
+				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
 			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
