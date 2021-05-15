@@ -1,7 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
-	{ TagsSchema } = require('../../database/models/index.js'),
-	Command = require('../../structures/Command.js');
+const Command = require('../../structures/Command.js');
 
 module.exports = class Tags extends Command {
 	constructor(bot) {
@@ -20,8 +18,6 @@ module.exports = class Tags extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// make sure member has MANAGE_GUILD permissions
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
@@ -47,6 +43,8 @@ module.exports = class Tags extends Command {
 			await bot.commands.get('tag-view').run(bot, message, settings);
 			break;
 		default:
+			// delete message
+			if (settings.ModerationClearToggle & message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
