@@ -72,5 +72,8 @@ module.exports = class guildDelete extends Event {
 		} catch (err) {
 			bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
 		}
+
+		// update bot's activity
+		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 	}
 };

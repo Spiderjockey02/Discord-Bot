@@ -37,8 +37,10 @@ module.exports = class Random extends Command {
 				if (message.deletable) message.delete();
 				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
 			}
+
+			// send result
 			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-			message.channel.send(bot.translate(settings.Language, 'FUN/RANDOM_RESPONSE', r));
+			message.channel.send({ embed: { color: 'RANDOM', description: `🎲 ${bot.translate(settings.Language, 'FUN/RANDOM_RESPONSE', r)}` } });
 		}
 	}
 };

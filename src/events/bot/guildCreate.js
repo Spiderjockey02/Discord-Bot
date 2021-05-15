@@ -29,17 +29,21 @@ module.exports = class GuildCreate extends Event {
 		}
 
 		// Send message to channel that bot has joined a server
+		const owner = await guild.members.fetch(guild.ownerID);
 		const embed = new MessageEmbed()
 			.setTitle(`[GUILD JOIN] ${guild.name}`)
 			.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
 			.setDescription([
 				`Guild ID: ${guild.id}`,
-				`Owner: ${guild.owner.user.tag}`,
+				`Owner: ${owner.user.tag}`,
 				`MemberCount: ${guild.memberCount}`,
 			].join('\n'));
 
 		// Find channel and send message
 		const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 		if (modChannel) bot.addEmbed(modChannel.id, embed);
+
+		// update bot's activity
+		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 	}
 };
