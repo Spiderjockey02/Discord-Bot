@@ -43,10 +43,14 @@ module.exports = class Egglord extends Client {
 		this.PresenceType = 'PLAYING';
 
 		// for KSOFT API
-		this.Ksoft = new KSoftClient(this.config.api_keys.ksoft);
+		if (this.config.api_keys.ksoft) {
+			this.Ksoft = new KSoftClient(this.config.api_keys.ksoft);
+		}
 
 		// for Fortnite API
-		this.Fortnite = new Fortnite(this.config.api_keys.fortnite);
+		if (this.config.api_keys.fortnite) {
+			this.Fortnite = new Fortnite(this.config.api_keys.fortnite);
+		}
 
 		// Basic statistics for the bot
 		this.messagesSent = 0;
@@ -87,7 +91,7 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Set this's activity
+	// Set bot's activity
 	SetActivity(array = [], type) {
 		this.Activity = array;
 		this.PresenceType = type;
@@ -124,7 +128,7 @@ module.exports = class Egglord extends Client {
 		} else if (this.aliases.has(commandName)) {
 			command = this.commands.get(this.aliases.get(commandName));
 		}
-		if(!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
+		if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
 		delete require.cache[require.resolve(`.${commandPath}${path.sep}${commandName}.js`)];
 		return false;
 	}

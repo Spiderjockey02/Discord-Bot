@@ -47,7 +47,7 @@ module.exports = async (bot) => {
 		})
 		.on('trackEnd', (player, track) => {
 			// when track finishes add to previous songs array
-			player.addPreviousSong(track, player.guild);
+			player.addPreviousSong(track);
 		})
 		.on('trackError', (player, track, payload) => {
 			// when a track causes an error
