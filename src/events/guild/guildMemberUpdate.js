@@ -16,6 +16,9 @@ module.exports = class guildMemberUpdate extends Event {
 
 		if (oldMember.user.id == bot.user.id) return;
 
+		// if the oldMember is not cached ignore.
+		if (oldMember.partial) return;
+
 		// get server settings
 		const settings = newMember.guild.settings;
 		if (Object.keys(settings).length == 0) return;

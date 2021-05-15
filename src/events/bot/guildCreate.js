@@ -39,6 +39,13 @@ module.exports = class GuildCreate extends Event {
 				`MemberCount: ${guild.memberCount}`,
 			].join('\n'));
 
+		// Fetch all members in guild
+		try {
+			await guild.members.fetch();
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
+
 		// Find channel and send message
 		const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 		if (modChannel) bot.addEmbed(modChannel.id, embed);
