@@ -31,7 +31,7 @@ module.exports = class Tags extends Command {
 
 		// run subcommands
 		let responseString;
-		switch(message.args[0].toLowerCase()) {
+		switch (message.args[0].toLowerCase()) {
 		case 'add':
 			try {
 				// make sure the correct data was entered
