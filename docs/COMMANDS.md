@@ -1,15 +1,6 @@
 # Command list
 ><> = required, [] = optional
 
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -141,6 +132,7 @@
 | pause	|	Pauses the music.	|	`pause`	|
 | pitch	|	Sets the player's pitch. If you input "reset", it will set the pitch back to default.	|	`pitch`	|
 | play	|	Play a song.	|	`play <link / song name>`	|
+| previous	|	Displays the previous tracks that have been played.	|	`previous [pageNumber]`	|
 | queue	|	Displays the queue.	|	`queue [pageNumber]`	|
 | radio	|	Listen to the radio	|	`radio`	|
 | remove	|	Removes a song from the queue	|	`remove <position> [position]`	|
@@ -177,7 +169,6 @@
 | set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
 | set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
 | set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
-| tags	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher
@@ -193,6 +184,16 @@
 | weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
 
 
+## Tags
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| tag-add	|	Add a new tag to the server	|	`tag-add <name> <response>`	|
+| tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
+| tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
+| tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
+| tags	|	Edit server's tags	|	`tag <add/del/edit/rename/view/viewall> <required paramters>`	|
+
+
 ## Ticket
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -200,4 +201,13 @@
 | ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
 | ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
 | ticket	|	Information on ticket plugin.	|	`ticket`	|
+
+
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
