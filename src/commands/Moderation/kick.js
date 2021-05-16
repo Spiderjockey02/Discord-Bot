@@ -38,8 +38,10 @@ module.exports = class Kick extends Command {
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
-		// Make sure user user does not have ADMINISTRATOR permissions
-		if (member[0].hasPermission('ADMINISTRATOR')) return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
+		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		}
 
 		// Kick user with reason
 		try {

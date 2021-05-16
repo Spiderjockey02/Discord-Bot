@@ -33,8 +33,10 @@ module.exports = class Warn extends Command {
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
 
-		// Make sure that the user that is getting warned has administrator permissions
-		if (member[0].hasPermission('ADMINISTRATOR')) return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
+		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		}
 
 		// Get reason for warning
 		const wReason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
