@@ -24,6 +24,9 @@ module.exports = class Radio extends Command {
 			}
 		}
 
+		// make sure a radio station was entered
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+
 		// Search for radio station
 		getStations({
 			limit: 5,
