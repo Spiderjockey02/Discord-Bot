@@ -31,7 +31,8 @@ module.exports = class DM extends Command {
 		// send message
 		try {
 			const embed = new MessageEmbed()
-				.setTitle('DM received')
+				.setTitle(`DM received from guild: ${message.guild.name}`)
+				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(message.args.join(' ').slice(message.args[0].length))
 				.setTimestamp()
 				.setFooter(message.author.tag, message.author.displayAvatarURL({ format: 'png', size: 1024 }));
