@@ -25,6 +25,10 @@ module.exports = class Weather extends Command {
 
 		// search up weather stats
 		find({ search: message.args.join(' '), degreeType: 'C' }, function(err, result) {
+			// make sure location was valid
+			if (!result[0]) return message.channel.send('Invalid location');
+
+			// Display weather at location
 			try {
 				const embed = new MessageEmbed()
 					.setTitle(bot.translate(settings.Language, 'SEARCHER/WEATHER_TITLE', result[0].location.name))
