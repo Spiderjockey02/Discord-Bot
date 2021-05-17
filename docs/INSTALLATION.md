@@ -31,7 +31,7 @@ Find the file `src/config.example.js`, this is where all your information will g
 * `websiteURL` will match your bot's dashboard, If you don't have one use `https://localhost`.
 * `defaultSettings` are the settings the bot will use when in **DM's**.
 * `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work)
-
+* Make sure to add your bot to **the emoji [server](https://discord.gg/juFcfkVDGx)** to get access to the custom emoijis.
 > Once the config is filled out rename **config.example.js** to **config.js**
 
 
@@ -46,7 +46,7 @@ Find the file `src/config.example.js`, this is where all your information will g
     * You will need to add the category name to the guild's setting's plugins array. (You will need to update all guilds with this new change)
 
 
-### Finally running the bot & lavalink.
+### Running the bot + Lavalink
 > Run the lavalink first as lavalink can take longer to load than the bot.
 * For running the lavalink, use the command: `java -jar Lavalink.jar`
 * For running the bot, go to the main directory (same directory as package.json) and run command:
