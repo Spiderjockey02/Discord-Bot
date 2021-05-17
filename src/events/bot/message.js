@@ -23,7 +23,7 @@ module.exports = class Message extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned
-		if (message.content == `<@!${bot.user.id}>`) {
+		if (message.mentions.users.get(bot.user.id)) {
 			const embed = new MessageEmbed()
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
@@ -120,7 +120,7 @@ module.exports = class Message extends Event {
 
 			// run the command
 			bot.commandsUsed++;
-			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
+			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? 'in DM\'s' : ` in guild: ${message.guild.id}`}.`);
 			cmd.run(bot, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
