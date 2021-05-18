@@ -17,7 +17,7 @@ module.exports = class MusicNode extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// delete message
 		if (message.deletable) message.delete();
 

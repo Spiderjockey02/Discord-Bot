@@ -33,7 +33,7 @@ module.exports = class Kick extends Command {
 
 		// Get user and reason
 		const member = message.getMember();
-		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') :  message.translate('misc:NO_REASON');
+		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));

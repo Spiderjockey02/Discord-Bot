@@ -39,7 +39,7 @@ module.exports = class Warn extends Command {
 		}
 
 		// Get reason for warning
-		const wReason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') :  message.translate('misc:NO_REASON');
+		const wReason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Warning is sent to warning manager
 		try {

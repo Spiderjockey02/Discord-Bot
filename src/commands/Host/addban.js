@@ -26,7 +26,7 @@ module.exports = class Addban extends Command {
 		const restriction = message.args[1];
 		if (!['servers', 'commands'].includes(restriction)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/addban:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		message.args.splice(0, 2);
-		const reason = (message.args[0]) ? message.args.join(' ') :  message.translate('misc:NO_REASON');
+		const reason = (message.args[0]) ? message.args.join(' ') : message.translate('misc:NO_REASON');
 
 		// update database
 		GlobalBanSchema.findOne({
