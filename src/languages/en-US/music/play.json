@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Play a song.","USAGE":"play <link / song name>"}
+{
+  "DESCRIPTION": "Play a song.",
+  "USAGE": "play <link / song name>"
+}

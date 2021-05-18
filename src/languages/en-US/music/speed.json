@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Sets the player's playback speed.","USAGE":"speed <Number>"}
+{
+  "DESCRIPTION": "Sets the player's playback speed.",
+  "USAGE": "speed <Number>"
+}

@@ -1,7 +1,7 @@
 // Dependecies
 const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
-	{ MessageEmbed } = require('discord.js');
+	{ Embed } = require('../../structures');
 
 module.exports = class ReactionRoleAdd extends Command {
 	constructor(bot) {
@@ -15,7 +15,7 @@ module.exports = class ReactionRoleAdd extends Command {
 			description: 'Create a reaction role',
 			usage: 'rr-add [channelID]',
 			cooldown: 5000,
-			examples: ['rr-add 37844848481818441'],
+			examples: ['rr-add 3784484	8481818441'],
 		});
 	}
 
@@ -38,10 +38,10 @@ module.exports = class ReactionRoleAdd extends Command {
 			// check for number of reaction roles in current server
 			if (reacts.length >= 3 && !message.guild.premium) {
 				// You need to premium to create more reaction roles
-				return message.channel.send('You need premium to create more reaction roles. Premium servers get up to `10` reaction role');
+				return message.channel.send(message.translate('plugins/rr-add:NEED_PREMIUM'));
 			} else if (reacts.length >= 10) {
 				// You have reached max amout of reaction roles in this server
-				return message.channel.send('There is a max of 10 reactions roles per a server even with premium.');
+				return message.channel.send(message.translate('plugins/rr-add:MAX_RR'));
 			} else {
 				// They can create more reaction roles
 				// Make sure bot has permission to give/remove roles
@@ -76,7 +76,7 @@ module.exports = class ReactionRoleAdd extends Command {
 						errors: ['time'],
 					});
 				} catch (e) {
-					return message.reply('You didn\'t send any roles in time.');
+					return message.reply(message.translate('misc:WAITED_TOO_LONG'));
 				}
 
 				// if message was 'cancel' then stop reaction role creation
@@ -99,11 +99,11 @@ module.exports = class ReactionRoleAdd extends Command {
 				if (!roles[0]) return message.channel.send('No roles entered');
 
 				// Show what roles are being added
-				const embed = new MessageEmbed()
+				const embed = new Embed(message)
 					.setDescription([
 						`Roles selected: ${roles.join(', ')}`,
 						'',
-						bot.translate(settings.Language, 'PLUGINS/SEND_EMOJIS'),
+						message.translate('plugins/rr-add:SEND_EMOJIS'),
 					].join('\n'));
 				message.channel.send(embed);
 
@@ -116,7 +116,7 @@ module.exports = class ReactionRoleAdd extends Command {
 						errors: ['time'],
 					});
 				} catch (e) {
-					return message.reply('You didn\'t send any emojis in time.');
+					return message.reply(message.translate('misc:WAITED_TOO_LONG'));
 				}
 
 				// if message was 'cancel' then stop reaction role creation
@@ -130,12 +130,15 @@ module.exports = class ReactionRoleAdd extends Command {
 				emojis.splice(emojis.length, roles.length);
 
 				// Make sure the correct number of emojis were entered
-				if (!emojis[0] || emojis.length < roles.length) return message.channel.send('An incorrect number of emojis were entered');
+				if (!emojis[0] || emojis.length < roles.length) return message.channel.send(message.translate('plugins/rr-add:INCORRECT_EMOJIS'));
 
 				// Now display message to chosen channel
-				const embed2 = new MessageEmbed()
-					.setTitle(bot.translate(settings.Language, 'PLUGINS/EGGLORD_REACTIONS'))
-					.setDescription(bot.translate(settings.Language, 'PLUGINS/REACT_BELOW', createDescription(roles, emojis)));
+				const embed2 = new Embed(message)
+					.setTitle('plugins/rr-add:TITLE')
+					.setDescription([
+						message.translate('plugins/rr-add:REACT_BELOW'),
+						createDescription(roles, emojis),
+					].join('\n'));
 
 				channel.send(embed2).then(async (msg) => {
 					// add reactions to message embed
@@ -158,10 +161,9 @@ module.exports = class ReactionRoleAdd extends Command {
 							reactions: reactions,
 						});
 						await newRR.save();
-						// Tell user that reaction role creation was successfully
-						message.channel.send('Success!');
 					} catch (err) {
 						if (message.deletable) message.delete();
+						msg.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 					}

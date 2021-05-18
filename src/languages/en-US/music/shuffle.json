@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Shuffles the playlist.","USAGE":"shuffle"}
+{
+  "DESCRIPTION": "Shuffles the playlist.",
+  "USAGE": "shuffle"
+}

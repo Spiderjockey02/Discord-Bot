@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Toggle plugins on and off","USAGE":"set-plugin <option>"}
+{
+  "DESCRIPTION": "Toggle plugins on and off",
+  "USAGE": "set-plugin <option>"
+}

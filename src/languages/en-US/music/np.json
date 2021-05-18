@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Shows the current song playing.","USAGE":"np"}
+{
+  "DESCRIPTION": "Shows the current song playing.",
+  "USAGE": "np"
+}

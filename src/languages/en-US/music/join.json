@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Makes the bot join your voice channel.","USAGE":"join"}
+{
+  "DESCRIPTION": "Makes the bot join your voice channel.",
+  "USAGE": "join"
+}

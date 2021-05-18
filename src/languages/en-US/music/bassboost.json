@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Bassboost the song","USAGE":"bassboost [value]"}
+{
+  "DESCRIPTION": "Bassboost the song",
+  "USAGE": "bassboost [value]"
+}

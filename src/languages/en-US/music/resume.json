@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Resumes the music.","USAGE":"resume"}
+{
+  "DESCRIPTION": "Resumes the music.",
+  "USAGE": "resume"
+}

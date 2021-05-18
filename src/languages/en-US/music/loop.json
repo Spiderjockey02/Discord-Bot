@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Loops the song or queue.","USAGE":"loop [queue / song / off]"}
+{
+  "DESCRIPTION": "Loops the song or queue.",
+  "USAGE": "loop [queue / song / off]"
+}

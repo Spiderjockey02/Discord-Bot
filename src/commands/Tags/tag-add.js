@@ -7,7 +7,7 @@ module.exports = class TagAdd extends Command {
 		super(bot, {
 			name: 'tag-add',
 			dirname: __dirname,
-			aliases: ['t-add', 't-create'],
+			aliases: ['t-add'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add a new tag to the server',

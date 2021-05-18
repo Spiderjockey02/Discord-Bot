@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Fast forwards the player by your specified amount.","USAGE":"fast-forward <time>"}
+{
+  "DESCRIPTION": "Fast forwards the player by your specified amount.",
+  "USAGE": "fast-forward <time>"
+}

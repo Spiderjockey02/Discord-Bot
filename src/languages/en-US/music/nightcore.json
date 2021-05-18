@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Toggles nightcore mode.","USAGE":"nightcore"}
+{
+  "DESCRIPTION": "Toggles nightcore mode.",
+  "USAGE": "nightcore"
+}

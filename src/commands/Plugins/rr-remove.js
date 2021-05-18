@@ -39,14 +39,14 @@ module.exports = class ReactionRoleRemove extends Command {
 				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			return message.channel.send('Invalid message link');
+			return message.channel.send(message.translate('plugins/rr-add:INVALID'));
 		}
 
 		// delete message and then remove database
 		try {
 			await msg.delete();
 			await ReactionRoleSchema.findOneAndRemove({ messageID: msg.id,	channelID: msg.channel.id });
-			message.channel.send('Successfully deleted reaction role');
+			message.channel.send(message.translate('plugins/rr-remove:SUCCESS'));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

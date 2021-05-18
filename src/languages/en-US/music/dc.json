@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Disconnects the bot from the voice channel.","USAGE":"dc"}
+{
+  "DESCRIPTION": "Disconnects the bot from the voice channel.",
+  "USAGE": "dc"
+}

@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Get lyrics on a song.","USAGE":"lyrics [song]"}
+{
+  "DESCRIPTION": "Get lyrics on a song.",
+  "USAGE": "lyrics [song]"
+}

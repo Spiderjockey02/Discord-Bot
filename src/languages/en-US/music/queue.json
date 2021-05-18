@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Displays the queue.","USAGE":"queue [pageNumber]"}
+{
+  "DESCRIPTION": "Displays the queue.",
+  "USAGE": "queue [pageNumber]"
+}

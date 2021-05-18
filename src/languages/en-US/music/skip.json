@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Skips the current song.","USAGE":"skip"}
+{
+  "DESCRIPTION": "Skips the current song.",
+  "USAGE": "skip"
+}

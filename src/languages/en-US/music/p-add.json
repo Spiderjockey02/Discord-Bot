@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Add a song to the playlist","USAGE":"p-add <playlist name> <song>"}
+{
+  "DESCRIPTION": "Add a song to the playlist",
+  "USAGE": "p-add <playlist name> <song>"
+}

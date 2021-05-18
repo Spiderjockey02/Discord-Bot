@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Moves the specified song to the specified position.","USAGE":"move <position> <new position>"}
+{
+  "DESCRIPTION": "Moves the specified song to the specified position.",
+  "USAGE": "move <position> <new position>"
+}

@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Searches for a song.","USAGE":"search <link / song name>"}
+{
+  "DESCRIPTION": "Searches for a song.",
+  "USAGE": "search <link / song name>"
+}

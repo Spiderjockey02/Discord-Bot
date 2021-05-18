@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Toggles vaporwave mode.","USAGE":"vaporwave"}
+{
+  "DESCRIPTION": "Toggles vaporwave mode.",
+  "USAGE": "vaporwave"
+}

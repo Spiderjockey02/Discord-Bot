@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Stays in the voice channel even if no one is in it.","USAGE":"24/7"}
+{
+  "DESCRIPTION": "Stays in the voice channel even if no one is in it.",
+  "USAGE": "24/7"
+}

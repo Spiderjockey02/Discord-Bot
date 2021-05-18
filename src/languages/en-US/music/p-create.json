@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Create a playlist","USAGE":"p-create <playlist name> <search query/link>"}
+{
+  "DESCRIPTION": "Create a playlist",
+  "USAGE": "p-create <playlist name> <search query/link>"
+}

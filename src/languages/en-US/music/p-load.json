@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Load a playlist","USAGE":"p-load <playlist name>"}
+{
+  "DESCRIPTION": "Load a playlist",
+  "USAGE": "p-load <playlist name>"
+}

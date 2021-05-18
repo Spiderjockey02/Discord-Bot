@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Update the log plugin.","USAGE":"set-logs <option> [data]"}
+{
+  "DESCRIPTION": "Update the log plugin.",
+  "USAGE": "set-logs <option> [data]"
+}

@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Changes the volume of the song","USAGE":"volume <Number>"}
+{
+  "DESCRIPTION": "Changes the volume of the song",
+  "USAGE": "volume <Number>"
+}

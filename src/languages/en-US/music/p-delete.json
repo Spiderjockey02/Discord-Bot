@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Delete a playlist","USAGE":"p-delete <playlist name>"}
+{
+  "DESCRIPTION": "Delete a playlist",
+  "USAGE": "p-delete <playlist name>"
+}

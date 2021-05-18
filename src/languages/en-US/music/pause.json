@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Pauses the music.","USAGE":"pause"}
+{
+  "DESCRIPTION": "Pauses the music.",
+  "USAGE": "pause"
+}

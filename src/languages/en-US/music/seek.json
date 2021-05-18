@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Sets the playing track's position to the specified position.","USAGE":"seek <time>"}
+{
+  "DESCRIPTION": "Sets the playing track's position to the specified position.",
+  "USAGE": "seek <time>"
+}
