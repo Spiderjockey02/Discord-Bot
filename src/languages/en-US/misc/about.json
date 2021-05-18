@@ -8,7 +8,10 @@
 	"CHANNELS": "Channels:",
   "CHANNELS_DESC": "{{CHANNELS}} total\n{{TEXT}} text, {{VOICE}} voice\n{{DM}} DM",
 	"PROCESS": "Process:",
+  "PROCESS_DESC": "{{RAM}} MB\nNode.js: {{NODE}}v\nDiscord.js: {{DISCORD}}v",
 	"SERVERS": "Servers:",
+  "SERVERS_DESC": "{{SERVERS}}\n{{SHARDS}} shards",
 	"MESSAGES": "Messages seen:",
+  "MESSAGES_DESC": "{{MESSAGES}} messages\n {{MSGSEC}} msg/sec",
 	"UPTIME": "Uptime:"
 }

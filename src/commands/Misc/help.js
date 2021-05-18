@@ -9,7 +9,7 @@ module.exports = class Help extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Sends information about all the commands that I can do.',
-			usage: 'help [command]',
+			usage: 'help [command | category]',
 			cooldown: 2000,
 			examples: ['help play'],
 		});
@@ -24,20 +24,23 @@ module.exports = class Help extends Command {
 				.setDescription([
 					`**Prefix:** \`${settings.prefix}\` (You can also use <@!${bot.user.id}> as a prefix)`,
 					`**Type \`${settings.prefix}help [command name]\` for command specific information.**`,
+					'',
+					`Active categories: \`${bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i).sort((a, b) => a.category - b.category).join('`, `')}\``,
+					'Hidden categories: ',
 				].join('\n'));
-			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
-			categories
-				.sort((a, b) => a.category - b.category)
-				.forEach(category => {
-					const commands = bot.commands
-						.filter(c => c.help.category === category)
-						.sort((a, b) => a.help.name - b.help.name)
-						.map(c => `\`${c.help.name}\``).join('**, **');
+			// const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+			// categories
+			// .sort((a, b) => a.category - b.category)
+			// .forEach(category => {
+			// const commands = bot.commands
+			// .filter(c => c.help.category === category)
+			// .sort((a, b) => a.help.name - b.help.name)
+			// .map(c => `\`${c.help.name}\``).join('**, **');
 
-					const length = bot.commands
-						.filter(c => c.help.category === category).size;
-					embed.addField(`${category} [**${length}**]`, commands, false);
-				});
+			// const length = bot.commands
+			// .filter(c => c.help.category === category).size;
+			// embed.addField(`${category} [**${length}**]`, '', false);
+			// });
 			message.channel.send(embed);
 		} else if (message.args.length == 1) {
 			// Check if arg is command
