@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../structures'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class TicketCreate extends Command {
@@ -41,7 +41,7 @@ module.exports = class TicketCreate extends Command {
 
 		// create channel
 		message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
-			reason: 'User has created a ticket',
+			reason: reason,
 			parent: category.id,
 			permissionOverwrites:[
 				{ id:message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
@@ -50,16 +50,16 @@ module.exports = class TicketCreate extends Command {
 				{ id:bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] }] })
 			.then(async channel => {
 			// reply to user saying that channel has been created
-				const successEmbed = new MessageEmbed()
-					.setTitle('✅ Success!')
-					.setDescription(`Your ticket has been created: ${channel}`);
+				const successEmbed = new Embed(message)
+					.setTitle('ticket/ticket-create:TITLE')
+					.setDescription(message.translate('ticket/ticket-create:DESC').replace('{channel}', channel));
 				message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));
 
 				// Add message to ticket channel
-				const embed = new MessageEmbed()
+				const embed = new Embed()
 					.setColor(0xFF5555)
-					.addField(`Hey ${message.author.username}!`, 'Our support team will contact you as soon as possible.')
-					.addField('Reason', reason)
+					.addField(message.translate('ticket/ticket-create:FIELD1').replace('{username}', message.author.username), message.translate('ticket/ticket-create:FIELDT'))
+					.addField(message.translate('ticket/ticket-create:FIELD2'), reason)
 					.setTimestamp();
 				channel.send(`${message.author}, ${supportRole}`, embed);
 

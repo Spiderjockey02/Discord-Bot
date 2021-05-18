@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../structures'),
 	{ ticketEmbedSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
@@ -29,9 +29,9 @@ module.exports = class Ticket extends Command {
 		// Add ticket reaction embed
 		if (message.member.hasPermission('MANAGE_GUILD')) {
 			if (message.args[0] == 'reaction') {
-				const embed = new MessageEmbed()
-					.setTitle('React for Ticket channel')
-					.setDescription(`You can react here or use the following command:\n \`${settings.prefix}t-open [reason]\`.`);
+				const embed = new Embed(message)
+					.setTitle('ticket/ticket:TITLE_REACT')
+					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
 				message.channel.send(embed).then(async msg => {
 					// add reaction
 					await msg.react('🎟');
@@ -45,8 +45,8 @@ module.exports = class Ticket extends Command {
 					await newEmbed.save();
 				});
 			} else {
-				const embed = new MessageEmbed()
-					.setTitle('Ticket help')
+				const embed = new Embed(message)
+					.setTitle('ticket/ticket:TITLE')
 					.setDescription([
 						`\`${settings.prefix}t-<open|create> [reason]\` - Will open a ticket for support.`,
 						`\`${settings.prefix}t-close\` - Will close the current ticket channel (Support only).`,

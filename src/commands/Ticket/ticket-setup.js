@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../structures'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class TicketSetup extends Command {
@@ -25,8 +25,8 @@ module.exports = class TicketSetup extends Command {
 
 		// will setup the ticket command
 		if (!message.args[0]) {
-			const embed = new MessageEmbed()
-				.setTitle('Ticket setup Help')
+			const embed = new Embed(message)
+				.setTitle('ticket/ticket-setup:TITLE')
 				.setDescription(`\`${settings.prefix}ticket-setup category <channelID>\` - The parent of the channels \n\`${settings.prefix}ticket-setup role <roleID>\` - The support role for accessing channels`);
 			message.channel.send(embed);
 		} else if (message.args[0] == 'category') {
@@ -34,11 +34,11 @@ module.exports = class TicketSetup extends Command {
 			// update category channel
 			try {
 				const channel = message.guild.channels.cache.get(message.args[1]);
-				if (!channel || channel.type != 'category') return message.channel.send('That is not a category.');
+				if (!channel || channel.type != 'category') return message.channel.send(message.translate('ticket/ticket-setup:NOT_CATEGORY'));
 				// update database
 				await message.guild.updateGuild({ TicketCategory: message.args[1] });
 				settings.TicketCategory = message.args[1];
-				message.channel.send(`Updated Ticket category to: \`${channel.name}\`.`);
+				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_CATEGORY', { NAME: channel.name }));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -49,11 +49,11 @@ module.exports = class TicketSetup extends Command {
 			// update support role
 			try {
 				const supportRole = message.guild.roles.cache.get(message.args[1]);
-				if (!supportRole) return message.channel.send('That is not a role.');
+				if (!supportRole) return message.channel.send(message.translate('ticket/ticket-setup:NOT_ROLE'));
 				// update database
 				await message.guild.updateGuild({ TicketSupportRole: message.args[1] });
 				settings.TicketSupportRole = message.args[1];
-				message.channel.send(`Updated support role to: ${supportRole}.`);
+				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_ROLE').replace('{ROLE}', supportRole));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
