@@ -20,7 +20,7 @@ module.exports = class Twitch extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get information on twitch accounts
 		if (!message.args[0]) return message.channel.send('Please enter a Twitch username');
 		const user = message.args[0];

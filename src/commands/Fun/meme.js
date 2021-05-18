@@ -21,7 +21,7 @@ module.exports = class Meme extends Command {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Retrieve a random meme
-		const meme = await this.fetchMeme();
+		const meme = await this.fetchMeme(bot);
 
 		// Send the meme to channel
 		msg.delete();
@@ -35,8 +35,8 @@ module.exports = class Meme extends Command {
 	}
 
 	// fetch meme
-	async fetchMeme() {
-		const meme = await this.bot.Ksoft.images.meme();
+	async fetchMeme(bot) {
+		const meme = await bot.Ksoft.images.meme();
 		if (!meme.url) return await this.fetchMeme();
 		return meme;
 	}

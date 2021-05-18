@@ -36,7 +36,7 @@ module.exports = class Reload extends Command {
 			try {
 				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
 				await bot.loadCommand(cmd.conf.location, cmd.help.name);
-				return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS', commandName).then(m => m.delete({ timeout: 8000 }));
+				return message.channel.success('host/reload:SUCCESS', { NAME: commandName }).then(m => m.delete({ timeout: 8000 }));
 			} catch(err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				return message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
@@ -58,7 +58,7 @@ module.exports = class Reload extends Command {
 							bot.logger.log(`Loading Event: ${message.args[0]}`);
 							// eslint-disable-next-line no-shadow
 							bot.on(message.args[0], (...args) => event.run(bot, ...args));
-							return message.channel.success(settings.Language, 'HOST/RELOAD_SUCCESS_EVENT', message.args[0]).then(m => m.delete({ timeout: 8000 }));
+							return message.channel.success('host/reload:SUCCESS_EVENT', { NAME: message.args[0] }).then(m => m.delete({ timeout: 8000 }));
 						}
 					});
 				});
@@ -67,7 +67,7 @@ module.exports = class Reload extends Command {
 				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			return message.channel.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName }).then(m => m.delete({ timeout: 10000 }));
 		}
 	}
 };

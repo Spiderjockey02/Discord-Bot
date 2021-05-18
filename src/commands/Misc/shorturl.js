@@ -17,7 +17,7 @@ module.exports = class ShortURL extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		const mes = message.content.split(' ').slice(1).join(' ');
 
 		// send 'waiting' message to show bot has recieved message

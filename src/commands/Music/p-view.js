@@ -18,7 +18,7 @@ module.exports = class PView extends Command {
 		});
 	}
 
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({
 			creator: message.author.id,

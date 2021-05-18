@@ -18,7 +18,6 @@ module.exports = class Command {
 		usage = '',
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
-		this.bot = bot;
 		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
