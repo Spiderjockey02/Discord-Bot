@@ -26,12 +26,6 @@ module.exports = class Unmute extends Command {
 		// Check if user can mute users
 		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-		// check if bot can add 'mute' role to user
-		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-			bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Find user
 		const member = message.getMember();
 

@@ -24,12 +24,6 @@ module.exports = class SlowMode extends Command {
 		// Make sure user can activate slowmode
 		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
 
-		// Check if bot can activate slowmode
-		if (!message.channel.permissionsFor(bot.user).has('MANAGE_CHANNELS')) {
-			bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// get time
 		let time;
 		if (message.args[0] == 'off') {

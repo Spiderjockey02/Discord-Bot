@@ -25,13 +25,6 @@ module.exports = class Unban extends Command {
 		// Make sure user can ban users
 		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-
-		// Check if bot has permission to ban user
-		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Unban user
 		const user = message.args[0];
 		try {

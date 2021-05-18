@@ -20,15 +20,9 @@ module.exports = class Rank extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get user
 		const member = message.getMember();
-
-		// Check if bot has permission to attach files
-		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
-			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
-		}
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {

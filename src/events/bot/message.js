@@ -100,6 +100,38 @@ module.exports = class Message extends Event {
 			// Check if command is disabled
 			if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
 
+			// check permissions
+			if (message.guild) {
+				// check bot permissions
+				let neededPermissions = [];
+				cmd.conf.botPermissions.forEach((perm) => {
+					if (!message.channel.permissionsFor(message.guild.me).has(perm)) {
+						neededPermissions.push(perm);
+					}
+				});
+
+				if (neededPermissions.length > 0) {
+					bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${message.guild.id}].`);
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') });
+				}
+
+				// check user permissions
+				neededPermissions = [];
+				cmd.conf.memberPermissions.forEach((perm) => {
+					if (!message.channel.permissionsFor(message.member).has(perm)) {
+						neededPermissions.push(perm);
+					}
+				});
+
+				if (neededPermissions.length > 0) {
+					return message.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => `\`${p}\``).join(', ') });
+				}
+
+				if(!message.channel.permissionsFor(message.member).has('MENTION_EVERYONE') && (message.content.includes('@everyone') || message.content.includes('@here'))) {
+					return message.channel.error('misc:EVERYONE_MENTION');
+				}
+			}
+
 			// Check to see if user is in 'cooldown'
 			if (!bot.cooldowns.has(cmd.help.name)) {
 				bot.cooldowns.set(cmd.help.name, new Collection());

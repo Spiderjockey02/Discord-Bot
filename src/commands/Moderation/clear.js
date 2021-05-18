@@ -11,7 +11,7 @@ module.exports = class Clear extends Command {
 			dirname: __dirname,
 			aliases: ['cl', 'purge'],
 			userPermissions: ['MANAGE_MESSAGES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES'],
+			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,
@@ -26,18 +26,6 @@ module.exports = class Clear extends Command {
 
 		// Make sure user can delete messages themselves
 		if (!message.channel.permissionsFor(message.author).has('MANAGE_MESSAGES')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
-
-		// Make sure bot can delete other peoples messages
-		if (!message.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) {
-			bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Make sure the bot can see other peoples' messages
-		if (!message.channel.permissionsFor(bot.user).has('READ_MESSAGE_HISTORY')) {
-			bot.logger.error(`Missing permission: \`READ_MESSAGE_HISTORY\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'READ_MESSAGE_HISTORY').then(m => m.delete({ timeout: 10000 }));
-		}
 
 		// Get number of messages to removed
 		const amount = message.args[0];

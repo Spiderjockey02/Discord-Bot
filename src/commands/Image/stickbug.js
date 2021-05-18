@@ -18,15 +18,9 @@ module.exports = class Stickbug extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get image, defaults to author's avatar
 		const file = await message.getImage();
-
-		// Check if bot has permission to attach files
-		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
-			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
-		}
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {

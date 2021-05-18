@@ -19,12 +19,6 @@ module.exports = class TicketCreate extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// Make sure bot has permission to create channel
-		if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
-			bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Check if a ticket channel is already open
 		if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
 			return message.channel.error('ticket/ticket-create:TICKET_EXISTS').then(m => m.delete({ timeout: 10000 }));

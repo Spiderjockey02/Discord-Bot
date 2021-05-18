@@ -7,7 +7,7 @@ module.exports = Structures.extend('TextChannel', Channel => {
 			// check permissions
 			if (!this.permissionsFor(this.client.user).has('SEND_MESSAGES')) return;
 			if (!this.permissionsFor(this.client.user).has('EMBED_LINKS')) {
-				return super.send(this.client.translate(this.guild.settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS'));
+				return super.send(this.client.translate('misc:MISSING_PERMISSION', { PERMISSIONS: this.client.translate('permissions:EMBED_LINKS', {}, this.guild.settings.Language) }, this.guild.settings.Language));
 			}
 
 			// send message

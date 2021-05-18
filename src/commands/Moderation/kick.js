@@ -25,12 +25,6 @@ module.exports = class Kick extends Command {
 		// Check if user has permission to kick user
 		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-		// Check if bot has permission to kick user
-		if (!message.guild.me.hasPermission('KICK_MEMBERS')) {
-			bot.logger.error(`Missing permission: \`KICK_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Get user and reason
 		const member = message.getMember();
 		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
