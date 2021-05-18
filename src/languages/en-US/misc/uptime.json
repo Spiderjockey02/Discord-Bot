@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Gets the uptime of the bot.",
+  "USAGE": "uptime"
+}

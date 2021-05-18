@@ -15,7 +15,7 @@ module.exports = class Invite extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
-		message.channel.send({ embed:{ description:`🤖 [${bot.translate(settings.Language, 'MISC/INVITE_TEXT')}](${bot.config.inviteLink} 'You know you want to')` } });
+	async run(bot, message) {
+		message.channel.send({ embed:{ description:message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } });
 	}
 };

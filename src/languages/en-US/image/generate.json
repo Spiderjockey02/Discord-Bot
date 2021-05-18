@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Generate a custom image.",
+  "USAGE": "generate <option> [image]"
+}

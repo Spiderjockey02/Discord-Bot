@@ -20,10 +20,11 @@ module.exports = class MC extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Ping a minecraft server
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/mc:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} server info...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name} server info` }));
 
 		// If no ping use 25565
 		if(!message.args[1]) message.args[1] = '25565';
@@ -51,7 +52,7 @@ module.exports = class MC extends Command {
 			msg.delete();
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

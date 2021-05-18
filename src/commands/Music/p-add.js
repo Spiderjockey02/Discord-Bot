@@ -18,7 +18,7 @@ module.exports = class PAdd extends Command {
 
 	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		PlaylistSchema.findOne({
 			name: message.args[0],
@@ -28,7 +28,7 @@ module.exports = class PAdd extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// playlist found
@@ -54,7 +54,7 @@ module.exports = class PAdd extends Command {
 					} catch (err) {
 						if (message.deletable) message.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 					}
 				} else {
 					message.channel.send('Something strange happened');

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Closes the current ticket channel",
+  "USAGE": "ticket-close",
+  "NOT_SUPPORT": "You do not have the correct permissions to close this channel.",
+  "NOT_TICKET": "This is not a ticket channel."
+}

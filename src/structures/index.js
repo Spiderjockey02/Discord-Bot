@@ -3,4 +3,5 @@ module.exports = {
 	User: require('./User'),
 	Message: require('./Message'),
 	Channel: require('./Channel'),
+	Embed: require('./EgglordEmbed'),
 };

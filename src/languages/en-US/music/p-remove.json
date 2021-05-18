@@ -1,0 +1,1 @@
+{"DESCRIPTION":"remove a song from the playlist","USAGE":"p-remove <playlist name> <position> [position]"}

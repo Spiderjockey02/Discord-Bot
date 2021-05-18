@@ -138,6 +138,12 @@ module.exports = Structures.extend('Message', Message => {
 				return this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? true : false;
 			}
 		}
+
+		translate(key, args) {
+			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
+			if (!language) throw 'Message: Invalid language set in data.';
+			return language(key, args);
+		}
 	}
 	return CustomMessage;
 });

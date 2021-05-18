@@ -21,7 +21,10 @@ module.exports = class Guildicon extends Command {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
 			const embed = new MessageEmbed()
-				.setDescription(`[${bot.translate(settings.Language, 'GUILD/GUILD_ICON')}](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
+				.setDescription(message.translate('guild/guildicon:ICON', { URL: message.guild.iconURL({ dynamic: true, size: 1024 }) }))
+
+
+				// .setDescription(`[${message.translate(settings.Language, 'GUILD/GUILD_ICON')}](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
 				.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
 			message.channel.send(embed);
 		} else {

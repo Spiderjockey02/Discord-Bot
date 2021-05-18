@@ -1,0 +1,17 @@
+{
+	"ERROR_MESSAGE": "The following error has occurred: {{ERROR}}. If this error keeps occurring, please contact support.",
+	"FETCHING": "{{EMOJI}} Fetching {{ITEM}}...",
+	"INCORRECT_FORMAT": "Please use the format: `{{EXAMPLE}}`.",
+	"GENERATING_IMAGE": "{{EMOJI}} Generating your image..",
+	"NO_REASON": "No reason given.",
+	"ID": "ID: {{ID}}",
+
+
+	"MISSING_PERMISSION": "I am missing the permission: `{{permissions}}`.",
+	"USER_PERMISSION": "You are missing the permission: `{{permissions}}`.",
+	"MISSING_ROLE": "I was unable to find this role.",
+	"INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",
+	"NOT_NUMBER": "Must be a number.",
+	"MAX_TIME": "Can't be longer than 10 days.",
+	"MISSING_CHANNEL": "I was unable to find this channel."
+}

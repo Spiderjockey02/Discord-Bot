@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Reloads a command.",
+  "USAGE": "reload <command / event>"
+}

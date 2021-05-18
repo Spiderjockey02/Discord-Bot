@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Sends an update to bot's guild.",
+  "USAGE": "update"
+}

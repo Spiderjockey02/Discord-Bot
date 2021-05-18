@@ -21,7 +21,7 @@ module.exports = class Premium extends Command {
 		if (message.deletable) message.delete();
 
 		// Make sure args was entered
-		if (!message.args[2]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[2]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/premium:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Validate ID
 		let id;
@@ -44,7 +44,7 @@ module.exports = class Premium extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			if (!res && message.args[0] == 'add') {
@@ -95,7 +95,7 @@ module.exports = class Premium extends Command {
 					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else if (res && message.args[0] == 'add') {
 				// Type already has premium
@@ -113,7 +113,7 @@ module.exports = class Premium extends Command {
 					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else {
 				return message.channel.send('Not an option');

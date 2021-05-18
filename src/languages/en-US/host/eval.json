@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Evaluates JS code.",
+  "USAGE": "eval <code>"
+}

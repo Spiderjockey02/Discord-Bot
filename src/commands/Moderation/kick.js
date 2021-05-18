@@ -33,7 +33,7 @@ module.exports = class Kick extends Command {
 
 		// Get user and reason
 		const member = message.getMember();
-		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
+		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') :  message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
 		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
@@ -64,7 +64,7 @@ module.exports = class Kick extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

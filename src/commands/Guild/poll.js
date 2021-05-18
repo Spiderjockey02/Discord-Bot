@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../structures'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Poll extends Command {
@@ -27,15 +27,14 @@ module.exports = class Poll extends Command {
 		}
 
 		// Make sure a poll was provided
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Send poll to channel
-		const embed = new MessageEmbed()
+		const embed = new Embed(message)
 			.setColor(0xffffff)
-			.setTitle(`🗳️ ${bot.translate(settings.Language, 'GUILD/POLL_TITLE', message.author.username)}`)
+			.setTitle('guild/poll:TITLE', { USER: message.author.tag })
 			.setDescription(message.args.join(' '))
-			.setFooter(bot.translate(settings.Language, 'GUILD/POLL_FOOTER'))
-			.setTimestamp();
+			.setFooter('guild/poll:FOOTER', {});
 		message.channel.send(embed).then(async (msg) => {
 			// Add reactions to message
 			await msg.react('✅');

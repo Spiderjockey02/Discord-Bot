@@ -25,16 +25,19 @@ module.exports = class G_reroll extends Command {
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// re-roll the giveaway
 		const messageID = message.args[0];
-		bot.giveawaysManager.reroll(messageID).then(() => {
-			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/SUCCESS_GIVEAWAY', 'rerolled'));
+		bot.giveawaysManager.reroll(messageID, {
+			congrat: message.translate('giveaway/g-reroll:CONGRAT'),
+			error: message.translate('giveaway/g-reroll:ERROR'),
+		}).then(() => {
+			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
 		}).catch((err) => {
 			bot.logger.error(`Command: 'g-reroll' has error: ${err.message}.`);
-			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', messageID));
+			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { MESSAGEID: messageID }));
 		});
 	}
 };

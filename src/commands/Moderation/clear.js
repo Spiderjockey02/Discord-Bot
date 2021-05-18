@@ -43,10 +43,10 @@ module.exports = class Clear extends Command {
 		const amount = message.args[0];
 
 		// Make something was entered after `!clear`
-		if (!amount) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!amount) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Make sure x is a number
-		if (isNaN(amount) || (amount > 1000) || (amount < 1)) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (isNaN(amount) || (amount > 1000) || (amount < 1)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure guild is premium if amount > 200
 		if (amount > 200 && !message.guild.premium) return message.channel.send('The server must be premium in order to clear more than `200` messages.');

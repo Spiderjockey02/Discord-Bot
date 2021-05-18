@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Create a fake Twitter tweet.",
+  "USAGE": "twitter [user] <text>"
+}

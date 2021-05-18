@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Sends information about all the commands that I can do.",
+  "USAGE": "help [command]"
+}

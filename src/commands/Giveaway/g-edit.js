@@ -25,7 +25,7 @@ module.exports = class G_edit extends Command {
 		// Make sure the message ID of the giveaway embed is entered
 		if (message.args.length != 4) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 
@@ -36,7 +36,7 @@ module.exports = class G_edit extends Command {
 		// Get new winner count
 		if (isNaN(message.args[2])) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'GIVEAWAY/INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Update giveaway
@@ -45,10 +45,10 @@ module.exports = class G_edit extends Command {
 			newPrize: message.args.slice(3).join(' '),
 			addTime: time,
 		}).then(() => {
-			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/EDIT_GIVEAWAY', `${bot.giveawaysManager.options.updateCountdownEvery / 1000}`));
+			message.channel.send(bot.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }));
 		}).catch((err) => {
 			bot.logger.error(`Command: 'g-edit' has error: ${err.message}.`);
-			message.channel.send(bot.translate(settings.Language, 'GIVEAWAY/UNKNOWN_GIVEAWAY', message.args[0]));
+			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { MESSAGEID: message.args[0] }));
 		});
 	}
 };

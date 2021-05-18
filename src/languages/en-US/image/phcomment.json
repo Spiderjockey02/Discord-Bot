@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Create a fake Pornhub comment.",
+  "USAGE": "phcomment [user] <text>"
+}

@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Create a fake Clyde message.",
+  "USAGE": "clyde <text>"
+}

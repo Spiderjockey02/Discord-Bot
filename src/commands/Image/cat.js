@@ -19,7 +19,8 @@ module.exports = class Cat extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		const res = await fetch('https://nekos.life/api/v2/img/meow')
 			.then(info => info.json())
@@ -28,7 +29,7 @@ module.exports = class Cat extends Command {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				msg.delete();
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			});
 
 		msg.delete();

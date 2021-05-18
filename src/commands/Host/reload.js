@@ -24,7 +24,7 @@ module.exports = class Reload extends Command {
 		if (message.deletable) message.delete();
 
 		// Checks to see if a command was specified
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/reload:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// checks to make sure command exists
 		const commandName = message.args[0].toLowerCase();
@@ -64,7 +64,7 @@ module.exports = class Reload extends Command {
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
 			return message.channel.error(settings.Language, 'HOST/RELOAD_NO_COMMAND', commandName).then(m => m.delete({ timeout: 10000 }));

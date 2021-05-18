@@ -24,23 +24,23 @@ module.exports = class Random extends Command {
 		// Make sure both entries are there
 		if (!num1 || !message.args[1]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			// Make sure both entries are numbers
 			if (isNaN(num1) || isNaN(num2)) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// Make sure they follow correct rules
 			if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// send result
 			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-			message.channel.send({ embed: { color: 'RANDOM', description: `🎲 ${bot.translate(settings.Language, 'FUN/RANDOM_RESPONSE', r)}` } });
+			message.channel.send({ embed: { color: 'RANDOM', description: message.translate('fun/random:RESPONSE', { NUMBER: r }) } });
 		}
 	}
 };

@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed, version } = require('discord.js'),
+const { version } = require('discord.js'),
+	{ Embed } = require('../../structures'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class About extends Command {
@@ -16,21 +17,21 @@ module.exports = class About extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
-		const embed = new MessageEmbed()
+	async run(bot, message) {
+		const embed = new Embed(message)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
-			.setTitle('About')
-			.setDescription(`- [Dashboard](${bot.config.websiteURL})
-				- [Invite Link](${bot.config.inviteLink})
-				- [Commands](${bot.config.websiteURL}/commands)
-				- [Bot Support Server](${bot.config.SupportServer.link})
-					${bot.user.username} is a fully customizable Discord Bot. This bot comes fully packed with a wide range of commands, an advanced moderation system and an extensive logging system. These features are highly customizable and easy to setup but there's no point me just telling you so come and find out for yourself.`)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_MEMBERS'), `${bot.users.cache.size} total\n${bot.users.cache.filter(user => user.bot).size} bots, ${bot.users.cache.filter(user => !user.bot).size} humans`, true)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_CHANNELS'), `${bot.channels.cache.size} total\n${bot.channels.cache.filter(channel => channel.type === 'text').size} text, ${bot.channels.cache.filter(channel => channel.type === 'voice').size} voice\n${bot.channels.cache.filter(channel => channel.type === 'dm').size} DM`, true)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_PROCESS'), `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\nNode.js: ${process.version.slice(1).split('.')[0]}v\nDiscord.js: ${version}v`, true)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_SERVERS'), `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_MESSAGES'), `${bot.messagesSent} messages\n ${(bot.messagesSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
-			.addField(bot.translate(settings.Language, 'MISC/ABOUT_UPTIME'), bot.timeFormatter.getReadableTime(bot.uptime), true);
+			.setTitle('misc/about:TITLE')
+			.setDescription(message.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: bot.config.inviteLink, SERVER: bot.config.websiteURL, USERNAME: bot.user.username }))
+			.addField(message.translate('misc/about:MEMBERS'), message.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size, BOTS: bot.users.cache.filter(user => user.bot).size, HUMANS: bot.users.cache.filter(user => !user.bot).size }), true)
+			.addField(message.translate('misc/about:CHANNELS'), message.translate('misc/about:CHANNELS_DESC', { CHANNELS: bot.channels.cache.size, TEXT: bot.channels.cache.filter(channel => channel.type === 'text').size, VOICE: bot.channels.cache.filter(channel => channel.type === 'voice').size, DM: bot.channels.cache.filter(channel => channel.type === 'dm').size }), true)
+
+			.addField(message.translate('misc/about:PROCESS'), `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\nNode.js: ${process.version.slice(1).split('.')[0]}v\nDiscord.js: ${version}v`, true)
+
+			.addField(message.translate('misc/about:SERVERS'), `${bot.guilds.cache.size}\n${bot.ws.totalShards} shards`, true)
+
+			.addField(message.translate('misc/about:MESSAGES'), `${bot.messagesSent} messages\n ${(bot.messagesSent / (bot.uptime / 1000)).toFixed(2)} msg/sec`, true)
+
+			.addField(message.translate('misc/about:UPTIME'), bot.timeFormatter.getReadableTime(bot.uptime), true);
 		message.channel.send(embed);
 	}
 };

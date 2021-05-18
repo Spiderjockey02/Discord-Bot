@@ -30,22 +30,24 @@ module.exports = class Screenshot extends Command {
 		// make sure a website was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/screenshot:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// make sure URl is valid
 		if (!validUrl.isUri(message.args[0])) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'FUN/INVALID_URL').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('fun/screenshot:INVALID_URL').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
 		if (!bot.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw) {
-			return message.channel.error(settings.Language, 'FUN/BLACKLIST_WEBSITE').then(m => m.delete({ timeout: 5000 }));
+			if (message.deletable) message.delete();
+			return message.channel.error('fun/screenshot:BLACKLIST_WEBSITE').then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// try and create screenshot
 		let data;
@@ -67,7 +69,7 @@ module.exports = class Screenshot extends Command {
 
 		// make screenshot
 		if (!data) {
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Failed to fetch screenshot').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			const attachment = new MessageAttachment(data, 'website.png');
 			await message.channel.send(attachment);

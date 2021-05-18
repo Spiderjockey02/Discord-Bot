@@ -19,7 +19,7 @@ module.exports = class PCreate extends Command {
 
 	async run(bot, message, settings) {
 
-		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		if (message.args[0].length > 32) return msg.edit('Playlist title must be less than 32 characters!');
 
 		const msg = await message.channel.send('Adding song(s) to your playlist (This might take a few seconds.)...');
@@ -31,7 +31,7 @@ module.exports = class PCreate extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// response from database

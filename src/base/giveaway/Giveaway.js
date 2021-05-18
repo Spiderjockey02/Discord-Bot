@@ -183,7 +183,7 @@ class Giveaway extends EventEmitter {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.messageID) return;
-			const message = await this.channel.messages.fetch(this.messageID);
+			const message = await this.channel.messages.fetch(this.messageID).catch(e => {});
 			if (!message) {
 				this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageID !== this.messageID);
 				this.manager.deleteGiveaway(this.messageID);
@@ -298,7 +298,7 @@ class Giveaway extends EventEmitter {
 					this.messages.winMessage
 						.replace('{winners}', formattedWinners)
 						.replace('{prize}', this.prize)
-						.replace('{messageURL}', this.messageURL), { disableMentions: 'all' },
+						.replace('{messageURL}', this.messageURL), { disableMentions: 'everyone' },
 				);
 				resolve(winners);
 			} else {

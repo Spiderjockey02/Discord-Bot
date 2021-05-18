@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Get the server's icon.",
+  "USAGE": "guildicon",
+  "ICON": "[DOWNLOAD]({{URL}})"
+}

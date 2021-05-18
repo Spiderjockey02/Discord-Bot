@@ -7,6 +7,7 @@ module.exports = class Ticket extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'ticket',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['ticket'],
 			userPermissions: ['MANAGE_GUILD'],

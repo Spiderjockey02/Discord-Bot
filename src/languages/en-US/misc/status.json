@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Gets the status of the bot.",
+  "USAGE": "status"
+}
