@@ -4,10 +4,14 @@
 	"INCORRECT_FORMAT": "Please use the format: `{{EXAMPLE}}`.",
 	"GENERATING_IMAGE": "{{EMOJI}} Generating your image..",
 	"NO_REASON": "No reason given.",
-	"ID": "ID: {{ID}}",
 	"WAITED_TOO_LONG": "You didn't reply in time",
 	"MISSING_PERMISSION": "I am missing the permission: `{{PERMISSIONS}}`.",
 	"USER_PERMISSION": "You are missing the permission: `{{PERMISSIONS}}`.",
+	"ID": "ID: {{ID}}",
+	"YES": "Yes",
+	"NO": "No",
+	"NONE": "None",
+
 
 	"MISSING_ROLE": "I was unable to find this role.",
 	"INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",
