@@ -12,7 +12,7 @@ module.exports = class messageReactionRemoveAll extends Event {
 	// run event
 	async run(bot, message) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Message all reactions removed ${!message.message.guild ? '' : ` in guild: ${message.message.guild.id}`}`);
+		if (bot.config.debug) bot.logger.debug(`Message all reactions removed ${!message.guild ? '' : ` in guild: ${message.guild.id}`}`);
 
 		// If message needs to be fetched
 		try {

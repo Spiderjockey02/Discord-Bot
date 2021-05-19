@@ -1,7 +1,7 @@
 // Dependencies
-const { Embed } = require('../../structures'),
+const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
-	paginate = require('../../utils/pagenator'),
+	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks

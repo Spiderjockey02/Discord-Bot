@@ -11,7 +11,7 @@ module.exports = class Egglord extends Client {
 	constructor(options) {
 		super(options);
 		// for console logging
-		this.logger = require('../utils/logger');
+		this.logger = require('../utils/Logger');
 
 		// Giveaway manager
 		this.giveawaysManager = new GiveawaysManager(this, {

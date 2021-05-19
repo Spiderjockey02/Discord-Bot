@@ -2,7 +2,7 @@
 const	{ MessageEmbed } = require('discord.js'),
 	{ PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js'),
-	paginate = require('../../utils/pagenator');
+	{ paginate } = require('../../utils');
 
 module.exports = class PView extends Command {
 	constructor(bot) {

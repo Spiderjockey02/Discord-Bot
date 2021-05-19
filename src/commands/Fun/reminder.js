@@ -1,7 +1,7 @@
 // Dependencies
 const ms = require('ms'),
 	{ MessageAttachment } = require('discord.js'),
-	{ Embed } = require('../../structures'),
+	{ Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 

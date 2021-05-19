@@ -117,7 +117,7 @@ module.exports = class Message extends Event {
 
 				// check user permissions
 				neededPermissions = [];
-				cmd.conf.memberPermissions.forEach((perm) => {
+				cmd.conf.userPermissions.forEach((perm) => {
 					if (!message.channel.permissionsFor(message.member).has(perm)) {
 						neededPermissions.push(perm);
 					}

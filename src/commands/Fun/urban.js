@@ -1,6 +1,6 @@
 // Dependencies
 const { define } = require('urban-dictionary'),
-	{ Embed } = require('../../structures'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Urban extends Command {
@@ -43,7 +43,7 @@ module.exports = class Urban extends Command {
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
 				.setURL(entries[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-				.setDescription('fun/urban:DESCRIPTION', { DEFINTION: entries[0].definition, EXAMPLES: entries[0].example })
+				.setDescription(message.translate('fun/urban:DESCRIPTION', { DEFINTION: entries[0].definition, EXAMPLES: entries[0].example }))
 				.addField('👍', entries[0].thumbs_up, true)
 				.addField('👎', entries[0].thumbs_down, true);
 			message.channel.send(embed);

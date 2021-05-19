@@ -1,5 +1,5 @@
 // Dependencies
-const { Embed } = require('../../structures'),
+const { Embed } = require('../../utils'),
 	{ ticketEmbedSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 

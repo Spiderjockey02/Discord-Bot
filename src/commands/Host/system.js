@@ -18,6 +18,11 @@ module.exports = class Status extends Command {
 	}
 	// Run command
 	async run(bot, message) {
+
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }), { tts: true });
+
 		const config = { fullBar: '█', emptyBar: '░', barPrecision: 20 };
 
 		let cpuUsage,
@@ -96,6 +101,7 @@ module.exports = class Status extends Command {
 		}
 		embed.addField('Bot Stats:', `Uptime: ${bot.timeFormatter.getReadableTime(bot.uptime)}.`);
 		embed.setTimestamp();
+		msg.delete();
 		message.channel.send(embed);
 	}
 };

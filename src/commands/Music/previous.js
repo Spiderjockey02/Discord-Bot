@@ -1,5 +1,5 @@
 // Dependencies
-const paginate = require('../../utils/pagenator'),
+const { paginate } = require('../../utils'),
 	{ MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 

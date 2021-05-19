@@ -1,7 +1,7 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
 	{ getSong } = require('genius-lyrics-api'),
-	paginate = require('../../utils/pagenator'),
+	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Lyrics extends Command {

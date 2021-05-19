@@ -1,6 +1,6 @@
 // Dependencies
 const fs = require('fs'),
-	{ Embed } = require('../../structures'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Fact extends Command {

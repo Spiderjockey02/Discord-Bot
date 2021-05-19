@@ -1,7 +1,7 @@
 // Dependecies
 const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
-	{ Embed } = require('../../structures');
+	{ Embed } = require('../../utils');
 
 module.exports = class ReactionRoleAdd extends Command {
 	constructor(bot) {

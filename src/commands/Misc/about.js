@@ -1,6 +1,6 @@
 // Dependencies
 const { version } = require('discord.js'),
-	{ Embed } = require('../../structures'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class About extends Command {

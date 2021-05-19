@@ -1,5 +1,5 @@
 // Dependencies
-const { Embed } = require('../../structures'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class TicketSetup extends Command {
