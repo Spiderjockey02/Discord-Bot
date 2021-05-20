@@ -33,11 +33,11 @@ module.exports = class TagEdit extends Command {
 		if (message.args[0].toLowerCase() == 'rename') {
 			// edit the tag with the new name
 			responseString = message.args.slice(2).join(' ');
-			if (!message.args[1]) return message.channel.send('Please specify a name for the tag.');
-			if (!message.args[2]) return message.channel.send('Please specify a new name for the tag');
+			if (!message.args[1]) return message.channel.send(message.translate('tags/tag-edit:INVALID_NAME'));
+			if (!message.args[2]) return message.channel.send(message.translate('tags/tag-edit:INVALID_NEW_NAME'));
 			try {
 				await TagsSchema.findOneAndUpdate({ guildID: message.guild.id, name: message.args[1] }, { name: message.args[2] }).then(() => {
-					message.channel.send(`Updated tag with the new name: \`${message.args[2]}\`.`);
+					message.channel.send(message.translate('tags/tag-edit:UPDATED_NAME', { NAME: message.args[2] }));
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -46,18 +46,18 @@ module.exports = class TagEdit extends Command {
 		} else if (message.args[0].toLowerCase() == 'edit') {
 			// edit the tag with the new response
 			responseString = message.args.slice(2).join(' ');
-			if (!message.args[1]) return message.channel.send('Please specify a name for the tag.');
-			if (!responseString) return message.channel.send('Please specify the new response for the tag');
+			if (!message.args[1]) return message.channel.send(message.translate('tags/tag-edit:INVALID_NAME'));
+			if (!responseString) return message.channel.send(message.translate('tags/tag-edit:INVALID_NEW_RESP'));
 			try {
 				await TagsSchema.findOneAndUpdate({ guildID: message.guild.id, name: message.args[1] }, { response: responseString }).then(() => {
-					message.channel.send(`Updated tag with the new response of: \`${message.args[2]}\`.`);
+					message.channel.send(message.translate('tags/tag-edit:UPDATED_RESP', { NAME: message.args[2] }));
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			message.channel.send('Not an option');
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

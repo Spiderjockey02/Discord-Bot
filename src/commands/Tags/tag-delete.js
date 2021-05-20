@@ -32,9 +32,9 @@ module.exports = class TagDelete extends Command {
 		try {
 			const result = await TagsSchema.findOneAndRemove({ guildID: message.guild.id, name: message.args[0] });
 			if (result) {
-				message.channel.send(`Tag: ${message.args[0]} was deleted.`);
+				message.channel.send(message.translate('tags/tag-delete:TAG_DELETED', { TAG: message.args[0] }));
 			} else {
-				message.channel.send(`No tag with name: \`${message.args[0]}\` was found.`);
+				message.channel.send(message.translate('tags/tag-delete:NO_TAG', { TAG: message.args[0] }));
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

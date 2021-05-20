@@ -31,20 +31,20 @@ module.exports = class TagAdd extends Command {
 		try {
 			// Validate input
 			const responseString = message.args.slice(1).join(' ');
-			if (!message.args[0]) return message.channel.send('Please specify a name for the tag.');
-			if (!message.args[0].length > 10) return message.channel.send('Please shorten the name of the tag.');
-			if (!responseString) return message.channel.send('Please specify a response for the tag');
+			if (!message.args[0]) return message.channel.send(message.translate('tags/tag-add:INVALID_NAME'));
+			if (!message.args[0].length > 10) return message.channel.send(message.translate('tags/tag-add:NAME_TOO_LONG'));
+			if (!responseString) return message.channel.send(message.translate('tags/tag-add:INVALID_RESP'));
 
 			// Make sure the tagName doesn't exist and they haven't gone past the tag limit
 			TagsSchema.find({ guildID: message.guild.id }).then(async guildTags => {
-				if (guildTags.length >= 10 && !message.guild.premium) return message.channel.send('You need premium to create more tags. Premium servers get up to `50` tags');
-				if (guildTags.length >= 50) return message.channel.send('You have exceeded the maximium tags.');
+				if (guildTags.length >= 10 && !message.guild.premium) return message.channel.send(message.translate('tags/tag-add:NEED_PREMIUM'));
+				if (guildTags.length >= 50) return message.channel.send(message.translate('tags/tag-add:MAX_TAGS'));
 
 				// Make sure the tagName doesn't exist
 				for (let i = 0; i < guildTags.length; i++) {
 					// tagName alreaddy exists
 					if (guildTags[i].name == message.args[0]) {
-						return message.channel.send('This tag has already been created.');
+						return message.channel.send(message.translate('tags/tag-add:SAME_NAME'));
 					}
 				}
 
@@ -54,7 +54,7 @@ module.exports = class TagAdd extends Command {
 					name: message.args[0],
 					response: responseString,
 				})).save();
-				message.channel.send(`Tag has been saved with name: \`${message.args[0]}\`.`);
+				message.channel.send(message.translate('tags/tag-add:SAME_NAME', { TAG: message.args[0] }));
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

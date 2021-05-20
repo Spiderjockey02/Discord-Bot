@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Edit server's tags","USAGE":"tag <add/del/edit/view> <required paramters>"}
+{
+  "DESCRIPTION": "Edit server's tags",
+  "USAGE": "tag <add/del/edit/view> <required paramters>"
+}
