@@ -21,7 +21,8 @@ module.exports = class ShortURL extends Command {
 		const mes = message.content.split(' ').slice(1).join(' ');
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }), { tts: true });
 
 		try {
 			shorten(mes, function(res) {
