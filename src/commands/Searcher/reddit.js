@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Reddit extends Command {
@@ -36,7 +36,7 @@ module.exports = class Reddit extends Command {
 			}
 
 			// Send message to channel
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle(`From /${reddit.post.subreddit}`)
 				.setURL(reddit.post.link)
 				.setImage(reddit.url)

@@ -30,8 +30,7 @@ module.exports = class Poll extends Command {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Send poll to channel
-		const embed = new Embed(message)
-			.setColor(0xffffff)
+		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/poll:TITLE', { USER: message.author.tag })
 			.setDescription(message.args.join(' '))
 			.setFooter('guild/poll:FOOTER', {});

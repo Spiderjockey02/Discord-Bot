@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
@@ -24,7 +24,7 @@ module.exports = class ServerInfo extends Command {
 		const member = message.getMember();
 
 		// send user info
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(member[0].user.tag, member[0].user.displayAvatarURL())
 			.setColor(3447003)
 			.setThumbnail(member[0].user.displayAvatarURL({ format: 'png', size: 512 }))

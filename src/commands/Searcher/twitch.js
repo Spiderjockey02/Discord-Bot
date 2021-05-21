@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -34,7 +34,7 @@ module.exports = class Twitch extends Command {
 			const twitchUser = await getUserByUsername(user);
 			if (twitchUser) {
 				const stream = await getStreamByUsername(user);
-				const embed = new MessageEmbed();
+				const embed = new Embed(bot, message.guild);
 				embed
 					.setTitle(twitchUser.display_name)
 					.setURL(`https://twitch.tv/${twitchUser.login}`)

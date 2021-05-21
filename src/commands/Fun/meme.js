@@ -25,7 +25,7 @@ module.exports = class Meme extends Command {
 
 		// Send the meme to channel
 		msg.delete();
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
 			.setColor(16333359)
 			.setURL(meme.post.link)

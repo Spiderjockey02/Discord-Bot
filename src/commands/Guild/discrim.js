@@ -25,7 +25,7 @@ module.exports = class Discrim extends Command {
 		// Get all members with the entered discriminator
 		const user = message.guild.members.cache.filter(m => m.user.discriminator === message.args[0]);
 
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/discrim:TITLE', { DISCRIM: message.args[0] })
 			.setDescription(user.map(m => m));
 		message.channel.send(embed);

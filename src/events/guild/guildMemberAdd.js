@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ MutedMemberSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
@@ -23,7 +23,7 @@ module.exports = class guildMemberAdd extends Event {
 
 		// Check if event guildMemberAdd is for logging
 		if (settings.ModLogEvents.includes('GUILDMEMBERADD') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(3066993)
 				.setFooter(`ID: ${member.id}`)

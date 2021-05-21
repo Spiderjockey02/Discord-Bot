@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ ReactionRoleSchema, ticketEmbedSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
@@ -80,7 +80,7 @@ module.exports = class messageReactionAdd extends Event {
 
 		// Check if event messageReactionAdd is for logging
 		if (settings.ModLogEvents.includes('MESSAGEREACTIONADD') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(3066993)
 				.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)

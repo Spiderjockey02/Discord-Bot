@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed, MessageAttachment } = require('discord.js'),
+const { MessageAttachment } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	{ post } = require('axios'),
 	Command = require('../../structures/Command.js');
 
@@ -26,7 +27,7 @@ module.exports = class Generate extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		if (message.args[0] == 'list' || message.args[0] == '?' || !message.args[0]) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setDescription(bot.translate(settings.Language, 'IMAGE/GENERATE_DESC', [`${image_1.join('`, `')}`, `${image_2.join('`, `')}`]));
 			message.channel.send(embed);
 		} else {

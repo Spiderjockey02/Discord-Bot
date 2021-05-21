@@ -44,7 +44,7 @@ module.exports = class Ban extends Command {
 		try {
 			// send DM to user
 			try {
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setTitle('moderation/ban:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())

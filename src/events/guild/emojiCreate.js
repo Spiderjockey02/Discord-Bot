@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class emojiCreate extends Event {
@@ -20,7 +20,7 @@ module.exports = class emojiCreate extends Event {
 
 		// Check if event emojiCreate is for logging
 		if (settings.ModLogEvents.includes('EMOJICREATE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, emoji.guild)
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
 				.setColor(3066993)
 				.setFooter(`ID: ${emoji.id}`)

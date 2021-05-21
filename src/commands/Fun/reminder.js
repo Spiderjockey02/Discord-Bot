@@ -49,7 +49,7 @@ module.exports = class Reminder extends Command {
 			setTimeout(async () => {
 				// send embed to author's DM
 				const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setTitle('fun/reminder:TITLE')
 					.attachFiles(attachment)
 					.setThumbnail('attachment://Timer.png')

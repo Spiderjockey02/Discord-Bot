@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -34,7 +34,7 @@ module.exports = class Cat extends Command {
 
 		msg.delete();
 		// send image
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setColor(3426654)
 			.setImage(res.url);
 		message.channel.send(embed);

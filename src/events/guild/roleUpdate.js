@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class roleUpdate extends Event {
@@ -24,7 +24,7 @@ module.exports = class roleUpdate extends Event {
 
 			// role name change
 			if (oldRole.name != newRole.name) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newRole.guild)
 					.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
@@ -37,7 +37,7 @@ module.exports = class roleUpdate extends Event {
 
 			// role colour change
 			if (oldRole.color != newRole.color) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newRole.guild)
 					.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
@@ -50,7 +50,7 @@ module.exports = class roleUpdate extends Event {
 
 			// role permission change
 			if (oldRole.permissions.bitfield != newRole.permissions.bitfield) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newRole.guild)
 					.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapi.com/permissions.html#${oldRole.permissions.bitfield})`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -50,7 +50,7 @@ module.exports = class Instagram extends Command {
 
 		// Displays Data
 		const account = res.graphql.user;
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setColor(0x0099ff)
 			.setTitle(account.full_name)
 			.setURL(`https://instagram.com/${username}`)

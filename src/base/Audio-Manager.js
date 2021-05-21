@@ -2,7 +2,7 @@ const { Manager } = require('erela.js'),
 	Deezer = require('erela.js-deezer'),
 	Spotify = require('erela.js-spotify'),
 	Facebook = require('erela.js-facebook'),
-	{ MessageEmbed } = require('discord.js');
+	{ Embed } = require('../../utils');
 require('../structures/Player');
 
 module.exports = async (bot) => {
@@ -35,7 +35,7 @@ module.exports = async (bot) => {
 		})
 		.on('trackStart', (player, track) => {
 			// When a song starts
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
 				.setColor(bot.guilds.cache.get(player.guild).member(track.requester).displayHexColor)
 				.setTitle('» Now playing:')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
@@ -57,7 +57,7 @@ module.exports = async (bot) => {
 			player.resetFilter();
 
 			// send embed
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
 				.setColor(15158332)
 				.setDescription(`An error has occured on playback: \`${payload.error}\``);
 			const channel = bot.channels.cache.get(player.textChannel);
@@ -70,7 +70,7 @@ module.exports = async (bot) => {
 				if (player.twentyFourSeven) return;
 
 				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
 					.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`);
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
@@ -80,7 +80,7 @@ module.exports = async (bot) => {
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
 			if (!newChannel) {
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
 					.setDescription('The queue has ended as I was kicked from the voice channel');
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);

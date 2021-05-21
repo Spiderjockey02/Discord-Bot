@@ -27,7 +27,7 @@ module.exports = class ServerInfo extends Command {
 
 		// Send server information
 		const member = message.guild.members.cache;
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(message.translate('guild/server-info:AUTHOR', { NAME: message.guild.name }), message.guild.iconURL())
 			.setColor(3447003)
 			.setThumbnail(message.guild.iconURL())

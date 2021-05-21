@@ -1,7 +1,8 @@
 // Dependencies
 const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
-	{ MessageEmbed, MessageAttachment } = require('discord.js');
+	{ Embed } = require('../../utils'),
+	{ MessageAttachment } = require('discord.js');
 
 module.exports = async (bot) => {
 	const events = await timeEventSchema.find({});
@@ -23,7 +24,7 @@ module.exports = async (bot) => {
 					bot.logger.debug(`Reminding ${bot.users.cache.get(events[i].userID).tag}`);
 					// Message user about reminder
 					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, bot.guilds.cache.get(events[i].guildID))
 						.setTitle(bot.translate(settings.Language, 'FUN/REMINDER_TITLE'))
 						.setColor('RANDOM')
 						.attachFiles(attachment)

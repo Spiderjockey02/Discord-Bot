@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Clear extends Command {
@@ -41,7 +40,7 @@ module.exports = class Clear extends Command {
 
 		// Confirmation for message deletion over 100
 		if (amount >= 100) {
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setTitle(message.translate('moderation/clear:TITLE'))
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
@@ -59,7 +58,10 @@ module.exports = class Clear extends Command {
 				const collector = msg.createReactionCollector(filter, { time: 15000 });
 				collector.on('collect', async (reaction) => {
 					if ([bot.customEmojis['checkmark'], '✅'].includes(reaction.emoji.toString())) {
+						// send message telling users not to send messages
 						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
+						await bot.delay(5000);
+
 						let x = amount, y = 0;
 						while (x !== 0) {
 							try {
@@ -74,9 +76,9 @@ module.exports = class Clear extends Command {
 								const delMessages = await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 								y += delMessages.size;
 								x = x - messages.size;
-								await delay(5000);
+								await bot.delay(5000);
 							} catch (e) {
-								break;
+								x = 0;
 							}
 						}
 						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.delete({ timeout: 3000 }));

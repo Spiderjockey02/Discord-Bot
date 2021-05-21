@@ -37,7 +37,7 @@ module.exports = class Leaderboard extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setTitle('level/leaderboard:TITLE')
 				.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 			if (!res[0]) {
@@ -52,7 +52,7 @@ module.exports = class Leaderboard extends Command {
 				// generate pages
 				const pages = [];
 				for (let i = 0; i < pagesNum; i++) {
-					const embed2 = new Embed(message)
+					const embed2 = new Embed(bot, message.guild)
 						.setTitle('level/leaderboard:TITLE')
 						.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 					for (let j = 0; j < 10; j++) {

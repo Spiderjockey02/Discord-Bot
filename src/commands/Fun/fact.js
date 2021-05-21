@@ -29,7 +29,7 @@ module.exports = class Fact extends Command {
 			// Retrieve a random fact
 			const facts = JSON.parse(data);
 			const num = Math.floor((Math.random() * facts.facts.length));
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(facts.facts[num]);
 			message.channel.send(embed);

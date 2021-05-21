@@ -1,6 +1,7 @@
 // Dependencies
 const { GlobalBanSchema } = require('../../database/models'),
-	{ MessageEmbed, Collection } = require('discord.js'),
+	{ Collection } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class Message extends Event {
@@ -24,7 +25,7 @@ module.exports = class Message extends Event {
 
 		// Check if bot was mentioned
 		if (message.mentions.users.get(bot.user.id) && message.content.split(' ').length == 1) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([

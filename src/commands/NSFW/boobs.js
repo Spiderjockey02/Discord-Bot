@@ -1,6 +1,6 @@
 // Dependecies
 const { get } = require('axios'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Boobs extends Command {
@@ -27,7 +27,7 @@ module.exports = class Boobs extends Command {
 			get('https://nekobot.xyz/api/image?type=boobs')
 				.then(res => {
 					msg.delete();
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, message.guild)
 						.setImage(res.data.message);
 					message.channel.send(embed);
 				});

@@ -44,7 +44,7 @@ module.exports = class TicketCreate extends Command {
 				{ id:bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] }] })
 			.then(async channel => {
 			// reply to user saying that channel has been created
-				const successEmbed = new Embed(message)
+				const successEmbed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket-create:TITLE')
 					.setDescription(message.translate('ticket/ticket-create:DESC').replace('{channel}', channel));
 				message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));

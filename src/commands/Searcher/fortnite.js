@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Fortnite extends Command {
@@ -32,7 +32,7 @@ module.exports = class Fortnite extends Command {
 
 		// Fetch fornite account information
 		await bot.Fortnite.user(username, platform).then(async data => {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setColor(0xffffff)
 				.setTitle(`Stats for ${data.username}`)
 				.setURL(data.url)

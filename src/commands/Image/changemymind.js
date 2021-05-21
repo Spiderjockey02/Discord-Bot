@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -37,7 +37,7 @@ module.exports = class ChangeMyMind extends Command {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=changemymind&text=${text}`)).then(res => res.json());
 
 			// send image
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setColor(2067276)
 				.setImage(json.message);
 			message.channel.send(embed);

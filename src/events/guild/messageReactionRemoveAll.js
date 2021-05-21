@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageReactionRemoveAll extends Event {
@@ -27,7 +27,7 @@ module.exports = class messageReactionRemoveAll extends Event {
 
 		// Check if event messageReactionRemove is for logging
 		if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVEALL') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setDescription(`**All reactions removed from [this message](${message.url})** `)
 				.setColor(15158332)
 				.setTimestamp();

@@ -23,7 +23,7 @@ module.exports = class Avatar extends Command {
 		const member = message.getMember();
 
 		// send embed
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member[0].user.tag })
 			.setDescription([
 				`${message.translate('guild/avatar:AVATAR_DESCRIPTION')}`,

@@ -33,7 +33,7 @@ module.exports = class RoleInfo extends Command {
 		const permissions = role[0].permissions.toArray().map((p) => message.translate(`permissions:${p}`)).join(' » ');
 
 		// Send information to channel
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setColor(role[0].color)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(message.translate('guild/role-info:NAME', { NAME: role[0].name }))

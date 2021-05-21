@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageUpdate extends Event {
@@ -47,7 +47,7 @@ module.exports = class messageUpdate extends Event {
 				newContent = newContent.slice(0, 1020) + '...';
 				newShortened = true;
 			}
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, newMessage.guild)
 				.setDescription(`**Message of ${newMessage.author.toString()} edited in ${newMessage.channel.toString()}** [Jump to Message](${newMessage.url})`)
 				.setFooter(`Author: ${newMessage.author.id} | Message: ${newMessage.id}`)
 				.setAuthor(newMessage.author.tag, newMessage.author.displayAvatarURL())

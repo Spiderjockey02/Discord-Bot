@@ -46,7 +46,7 @@ module.exports = class Warnings extends Command {
 						list += `${i + 1}.) ${warn[i].Reason} | ${(message.guild.members.cache.get(warn[i].Moderater)) ? message.guild.members.cache.get(warn[i].Moderater) : 'User left'} (Issue date: ${warn[i].IssueDate})\n`;
 					}
 
-					const embed = new Embed(message)
+					const embed = new Embed(bot, message.guild)
 						.setTitle('moderation/warns:TITLE', { USER: member[0].user.username })
 						.setDescription(list)
 						.setTimestamp();

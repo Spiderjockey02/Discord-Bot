@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Suggestion extends Command {
@@ -37,7 +37,7 @@ module.exports = class Suggestion extends Command {
 				description = words[1],
 				plugin = words[2];
 
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle(title)
 				.setDescription(description)
 				.addField('Category', plugin)

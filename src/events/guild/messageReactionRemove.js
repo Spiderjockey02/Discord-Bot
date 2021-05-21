@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageReactionRemove extends Event {
@@ -35,7 +35,7 @@ module.exports = class messageReactionRemove extends Event {
 
 		// Check if event messageReactionRemove is for logging
 		if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(15158332)
 				.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)

@@ -14,6 +14,11 @@
 	"NONE": "None",
 	"REASON": "Reason:",
 	"SELF_PUNISH": "You can't punish yourself.",
+	"MISSING_ROLE": "You are missing the DJ role.",
+	"NOT_VOICE": "You're not in the same voice channel as me.",
+	"NO_QUEUE": "There are currently no songs playing in this server.",
+
+
 
 	"MISSING_ROLE": "I was unable to find this role.",
 	"INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",

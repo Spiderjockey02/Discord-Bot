@@ -1,5 +1,6 @@
 // Dependencies
-const	{ MessageEmbed, MessageAttachment } = require('discord.js'),
+const	{ MessageAttachment } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class QRcode extends Command {
@@ -29,7 +30,7 @@ module.exports = class QRcode extends Command {
 		try {
 			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
 			// send image in embed
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.attachFiles(attachment)
 				.setImage('attachment://QRCODE.png');
 			message.channel.send(embed);

@@ -18,7 +18,7 @@ module.exports = class About extends Command {
 
 	// Run command
 	async run(bot, message) {
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 			.setTitle('misc/about:TITLE')
 			.setDescription(message.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: bot.config.inviteLink, SERVER: bot.config.websiteURL, USERNAME: bot.user.username }))

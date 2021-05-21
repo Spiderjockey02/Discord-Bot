@@ -66,7 +66,7 @@ module.exports = class Status extends Command {
 
 		await Promise.all([p1, p2, p3, p4]);
 
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setColor('#a918ec')
 			.addField('Main Package Version:', `Discord.js Version: Discord.js: ${version}v\nNode.js Version: ${process.version.slice(1).split('.')[0]}v`)
 			.addField('Used:', [

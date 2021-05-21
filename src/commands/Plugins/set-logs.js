@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 // Lis of events
@@ -47,7 +47,7 @@ module.exports = class SetLog extends Command {
 			const currentFeatures = settings.ModLogEvents;
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setTitle('Logging features:')
 					.setColor(message.member.displayHexColor)
 					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
@@ -92,7 +92,7 @@ module.exports = class SetLog extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'list') {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle('Logging information')
 				.setDescription([
 					`**Channel:** ${message.guild.channels.cache.get(settings.ModLogChannel)}.`,
@@ -103,7 +103,7 @@ module.exports = class SetLog extends Command {
 			message.channel.send(embed);
 		} else {
 			// if nothing was entered
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle('Logging plugin')
 				.setColor(message.member.displayHexColor)
 				.setDescription([

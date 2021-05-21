@@ -1,5 +1,5 @@
 // Dependencies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -40,7 +40,7 @@ module.exports = class PHcomment extends Command {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=phcomment&username=${member[0].user.username}&image=${member[0].user.displayAvatarURL({ format: 'png', size: 512 })}&text=${text}`)).then(res => res.json());
 
 			// send image in embed
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setImage(json.message);
 			message.channel.send(embed);
 		} catch(err) {

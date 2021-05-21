@@ -26,7 +26,7 @@ module.exports = class Firstmessage extends Command {
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
 
 			// display information
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 				.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 				.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))

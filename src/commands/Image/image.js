@@ -1,6 +1,6 @@
 // Dependencies
 const { image_search } = require('duckduckgo-images-api'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Image extends Command {
@@ -35,7 +35,7 @@ module.exports = class Image extends Command {
 
 			// send image
 			msg.delete();
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
 			message.channel.send(embed);
 		} catch (err) {

@@ -99,7 +99,7 @@ module.exports = class ReactionRoleAdd extends Command {
 				if (!roles[0]) return message.channel.send('No roles entered');
 
 				// Show what roles are being added
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setDescription([
 						`Roles selected: ${roles.join(', ')}`,
 						'',
@@ -133,7 +133,7 @@ module.exports = class ReactionRoleAdd extends Command {
 				if (!emojis[0] || emojis.length < roles.length) return message.channel.send(message.translate('plugins/rr-add:INCORRECT_EMOJIS'));
 
 				// Now display message to chosen channel
-				const embed2 = new Embed(message)
+				const embed2 = new Embed(bot, message.guild)
 					.setTitle('plugins/rr-add:TITLE')
 					.setDescription([
 						message.translate('plugins/rr-add:REACT_BELOW'),

@@ -23,7 +23,7 @@ module.exports = class Ticket extends Command {
 		// Add ticket reaction embed
 		if (message.member.hasPermission('MANAGE_GUILD')) {
 			if (message.args[0] == 'reaction') {
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')
 					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
 				message.channel.send(embed).then(async msg => {
@@ -39,7 +39,7 @@ module.exports = class Ticket extends Command {
 					await newEmbed.save();
 				});
 			} else {
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE')
 					.setDescription([
 						`\`${settings.prefix}t-<open|create> [reason]\` - Will open a ticket for support.`,

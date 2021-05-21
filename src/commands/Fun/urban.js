@@ -39,7 +39,7 @@ module.exports = class Urban extends Command {
 			}
 
 			// send definition of word
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
 				.setURL(entries[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')

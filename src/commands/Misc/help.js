@@ -19,7 +19,7 @@ module.exports = class Help extends Command {
 	async run(bot, message, settings) {
 		if (!message.args[0]) {
 			// Show default help page
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setAuthor(message.translate('misc/help:AUTHOR'), bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
 					message.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
@@ -46,7 +46,7 @@ module.exports = class Help extends Command {
 				const cmd = bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]));
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(message.author.id)) {
-					const embed = new Embed(message)
+					const embed = new Embed(bot, message.guild)
 						.setTitle('misc/help:TITLE', { COMMAND: `${settings.prefix}${cmd.help.name}` })
 						.setDescription([
 							message.translate('misc/help:DESC', { DESC: cmd.help.description }),

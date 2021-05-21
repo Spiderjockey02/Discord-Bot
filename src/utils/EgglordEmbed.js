@@ -1,16 +1,17 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class EgglordEmbed extends MessageEmbed {
-	constructor(message, data = {}) {
+	constructor(bot, guild, data = {}) {
 		super(data);
-		this.message = message;
+		this.bot = bot;
+		this.guild = guild;
 		this.setColor('RANDOM')
 			.setTimestamp();
 	}
 
 	// Language translator for title
 	setTitle(key, args) {
-		this.title = this.message.translate(key, args) ? this.message.translate(key, args) : key;
+		this.title = this.bot.translate(key, args, this.guild.settings.Language) ? this.bot.translate(key, args, this.guild.settings.Language) : key;
 		return this;
 	}
 
@@ -18,7 +19,7 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 	setFooter(key, args, icon) {
 		if (typeof args === 'object') {
 			this.footer = {
-				text: this.message.translate(key, args),
+				text: this.bot.translate(key, args, this.guild.settings.Language),
 				iconURL: icon,
 			};
 		} else {

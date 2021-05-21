@@ -1,7 +1,7 @@
 // Dependencies
 const fetch = require('node-fetch'),
 	dateFormat = require('dateformat'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Steam extends Command {
@@ -57,7 +57,7 @@ module.exports = class Steam extends Command {
 					}
 					const { NumberOfGameBans } = body3.players[0];
 					// Display results
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, message.guild)
 						.setColor(0x0099ff)
 						.setAuthor(`Steam Services | ${personaname}`, avatarfull)
 						.setThumbnail(avatarfull)

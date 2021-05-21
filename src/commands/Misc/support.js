@@ -17,7 +17,7 @@ module.exports = class Support extends Command {
 
 	// Run command
 	async run(bot, message) {
-		const embed = new Embed(message)
+		const embed = new Embed(bot, message.guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
 			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
 		message.channel.send(embed);

@@ -1,6 +1,6 @@
 // Dependencies
 const { find } = require('weather-js'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Weather extends Command {
@@ -31,7 +31,7 @@ module.exports = class Weather extends Command {
 
 			// Display weather at location
 			try {
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setTitle(bot.translate(settings.Language, 'SEARCHER/WEATHER_TITLE', result[0].location.name))
 					.setDescription(bot.translate(settings.Language, 'SEARCHER/WEATHER_DESCRIPTION'))
 					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_TEMP'), `${result[0].current.temperature}°C`, true)

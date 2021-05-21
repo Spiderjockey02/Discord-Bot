@@ -1,6 +1,6 @@
 // Dependencies
 const { GlobalBanSchema } = require('../../database/models'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Addban extends Command {
@@ -43,7 +43,7 @@ module.exports = class Addban extends Command {
 						restriction: restriction,
 						IssueDate: new Date().toUTCString(),
 					})).save();
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, message.guild)
 						.setColor(15158332)
 						.setAuthor(`${user.tag} has been globally banned`)
 						.setDescription(`**Reason:** ${reason}\n**Restriction:** ${restriction}`);

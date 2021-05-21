@@ -35,7 +35,7 @@ module.exports = class MC extends Command {
 			const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
 			const attachment = new MessageAttachment(imageStream, 'favicon.png');
 
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setColor(0x0099ff)
 				.setTitle('Server Status')
 				.attachFiles([attachment])

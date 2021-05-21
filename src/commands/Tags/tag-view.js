@@ -37,7 +37,7 @@ module.exports = class TagView extends Command {
 
 			// if no input was entered or tagName didn't match
 			if (result != null) {
-				const resultEmbed = new Embed(message)
+				const resultEmbed = new Embed(bot, message.guild)
 					.setTitle('tags/tag-view:TITLE', { NAME:message.guild.name });
 				result.forEach(value => {
 					resultEmbed.addField(message.translate('tags/tag-view:TITLE', { NAME: value.name }), message.translate('tags/tag-view:RESP', { RESP: value.response }));

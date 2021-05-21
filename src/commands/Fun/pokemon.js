@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -41,7 +41,7 @@ module.exports = class Pokemon extends Command {
 			});
 
 		// Send response to channel
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	R6API = require('r6api.js'),
 	config = require('../../config.js'),
 	{ getId, getLevel, getRank, getStats } = new R6API(config.api_keys.rainbow.email, config.api_keys.rainbow.password),
@@ -92,7 +92,7 @@ module.exports = class R6 extends Command {
 		platform = Object.keys(platforms).find(key => platforms[key] === platform).toLowerCase();
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(player.username, bot.user.displayAvatarURL)
 			.setDescription(`Stats for the **${region.toUpperCase()}** region on **${platform.toUpperCase()}**`)
 			.setThumbnail(current.image)

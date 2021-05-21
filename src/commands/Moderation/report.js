@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Report extends Command {
@@ -34,7 +34,7 @@ module.exports = class Report extends Command {
 			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 			// Send messages to ModLog channel
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), member[0].user.displayAvatarURL)
 				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), member[0], true)
 				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_BY'), message.member, true)

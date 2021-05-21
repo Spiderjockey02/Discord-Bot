@@ -30,7 +30,7 @@ module.exports = class DM extends Command {
 
 		// send message
 		try {
-			const embed = new Embed(message)
+			const embed = new Embed(bot, message.guild)
 				.setTitle('moderation/dm:TITLE', { NAME: message.guild.name })
 				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(message.args.join(' ').slice(message.args[0].length))

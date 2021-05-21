@@ -31,14 +31,14 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 				// save and send response to moderator
 				await newWarn.save();
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setColor(15158332)
 					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
 					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
-				const embed2 = new Embed(message)
+				const embed2 = new Embed(bot, message.guild)
 					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
@@ -73,7 +73,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				bot.commands.get('mute').run(bot, message, settings);
 
 				// send embed
-				const embed = new Embed(message)
+				const embed = new Embed(bot, message.guild)
 					.setColor(15158332)
 					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
@@ -81,7 +81,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
-				const embed2 = new Embed(message)
+				const embed2 = new Embed(bot, message.guild)
 					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
