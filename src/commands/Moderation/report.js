@@ -27,7 +27,7 @@ module.exports = class Report extends Command {
 
 			// Find user
 			const member = message.getMember();
-			if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+			if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 			// Make sure a reason was added
 			if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
@@ -44,7 +44,8 @@ module.exports = class Report extends Command {
 			const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 			if (repChannel) {
 				repChannel.send(embed);
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => setTimeout(() => { m.delete(); }, 3000)
+);
 			}
 		} else {
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Logging: `REPORTS` has not been setup').then(m => setTimeout(() => { m.delete(); }, 5000));

@@ -23,7 +23,7 @@ module.exports = class Warn extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check to see if user can kick members
-		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 
@@ -31,11 +31,11 @@ module.exports = class Warn extends Command {
 		const member = message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Get reason for warning

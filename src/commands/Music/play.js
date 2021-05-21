@@ -20,7 +20,7 @@ module.exports = class Play extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 		}
 
@@ -35,13 +35,13 @@ module.exports = class Play extends Command {
 		// Check if bot has permission to connect to voice channel
 		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
 			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Check if bot has permission to speak in the voice channel
 		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
 			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Create player
@@ -70,9 +70,9 @@ module.exports = class Play extends Command {
 						message.args.push(url);
 					}
 				}
-				if (!message.args[0]) return message.channel.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (!message.args[0]) return message.channel.error(settings.Language, 'IMAGE/INVALID_FILE').then(m => setTimeout(() => { m.delete(); }, 10000));
 			} else {
-				return message.channel.error(settings.Language, 'MUSIC/NO_message.args').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/NO_message.args').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 		}
 

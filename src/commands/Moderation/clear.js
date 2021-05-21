@@ -25,18 +25,18 @@ module.exports = class Clear extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can delete messages themselves
-		if (!message.channel.permissionsFor(message.author).has('MANAGE_MESSAGES')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+		if (!message.channel.permissionsFor(message.author).has('MANAGE_MESSAGES')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_MESSAGES').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure bot can delete other peoples messages
 		if (!message.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Make sure the bot can see other peoples' messages
 		if (!message.channel.permissionsFor(bot.user).has('READ_MESSAGE_HISTORY')) {
 			bot.logger.error(`Missing permission: \`READ_MESSAGE_HISTORY\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'READ_MESSAGE_HISTORY').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'READ_MESSAGE_HISTORY').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Get number of messages to removed
@@ -89,7 +89,8 @@ module.exports = class Clear extends Command {
 							break;
 						}
 					}
-					message.channel.success(settings.Language, 'MODERATION/MESSAGES_DELETED', y).then(m => m.delete({ timeout: 3000 }));
+					message.channel.success(settings.Language, 'MODERATION/MESSAGES_DELETED', y).then(m => setTimeout(() => { m.delete(); }, 3000)
+);
 				});
 
 				// The user did not respond in time
@@ -110,7 +111,8 @@ module.exports = class Clear extends Command {
 
 				// delete the message
 				await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
-				message.channel.success(settings.Language, 'MODERATION/MESSAGES_DELETED', messages.size).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success(settings.Language, 'MODERATION/MESSAGES_DELETED', messages.size).then(m => setTimeout(() => { m.delete(); }, 3000)
+);
 			});
 		}
 	}

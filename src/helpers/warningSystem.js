@@ -35,7 +35,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.setColor(15158332)
 					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(embed).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 
 				// try and send warning embed to culprit
 				const embed2 = new MessageEmbed()
@@ -77,7 +78,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.setColor(15158332)
 					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(embed).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
@@ -97,11 +99,12 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				try {
 					await message.guild.member(member).kick(wReason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
-					message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
+					message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => setTimeout(() => { m.delete(); }, 3500)
+);
 					// Delete user from database
 				} catch (e) {
 					bot.logger.error(`${err.message} when kicking user.`);
-					message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => m.delete({ timeout: 10000 }));
+					message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => setTimeout(() => { m.delete(); }, 10000));
 				}
 			}
 		}

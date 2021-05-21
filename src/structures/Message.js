@@ -104,7 +104,7 @@ module.exports = Structures.extend('Message', Message => {
 				}
 
 				// no file with the correct format was found
-				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 
 			// check for message link

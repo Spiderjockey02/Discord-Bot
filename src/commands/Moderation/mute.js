@@ -23,12 +23,12 @@ module.exports = class Mute extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check if user can mute users
-		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// check if bot can add 'mute' role to user
 		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// add user to role (if no role, make role)
@@ -40,13 +40,13 @@ module.exports = class Mute extends Command {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 		}
 
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// get mute role
 		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
@@ -91,7 +91,8 @@ module.exports = class Mute extends Command {
 				await newMute.save();
 
 				// reply to user
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => setTimeout(() => { m.delete(); }, 3000)
+);
 				// see if it was a tempmute
 				if (message.args[1]) {
 					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);

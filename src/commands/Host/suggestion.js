@@ -27,7 +27,7 @@ module.exports = class Suggestion extends Command {
 			// make sure bot has permissions to add reactions
 			if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
 				bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
-				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 
 			const words = message.args.join(' ').split('-');

@@ -92,17 +92,20 @@ module.exports = class Premium extends Command {
 				try {
 					await newPremium.save();
 					message.args[1] == 'user' ? await bot.getUser(message.args[2]).then(user => user.premium = true) : bot.guilds.cache.get(message.args[2]).premium = true;
-					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => m.delete({ timeout: 30000 }));
+					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 				}
 			} else if (res && message.args[0] == 'add') {
 				// Type already has premium
-				message.channel.send(`${message.args[1]}: ${id} already has premium.`).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(`${message.args[1]}: ${id} already has premium.`).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 			} else if (!res && message.args[0] == 'remove') {
 				// Type already doesn't have premium
-				message.channel.send(`${message.args[1]}: ${id} already doesn't have premium.`).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(`${message.args[1]}: ${id} already doesn't have premium.`).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 			} else if (res && message.args[0] == 'remove') {
 
 				// Try and remove the premium 'Type'
@@ -110,7 +113,8 @@ module.exports = class Premium extends Command {
 					await PremiumSchema.collection.deleteOne({ ID: id, Type: message.args[1] });
 					message.args[1] == 'user' ? await bot.getUser(message.args[2]).then(user => user.premium = false) : bot.guilds.cache.get(message.args[2]).premium = false;
 					// send success message
-					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
+					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => setTimeout(() => { m.delete(); }, 30000)
+);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));

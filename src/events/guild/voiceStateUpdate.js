@@ -95,7 +95,8 @@ module.exports = class voiceStateUpdate extends Event {
 						.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);
 					try {
 						const c = bot.channels.cache.get(player.textChannel);
-						if (c) c.send(embed).then(m => m.delete({ timeout: 60000 }));
+						if (c) c.send(embed).then(m => setTimeout(() => { m.delete(); }, 60000)
+);
 					} catch (err) {
 						bot.logger.error(err.message);
 					}

@@ -24,7 +24,7 @@ module.exports = class ClearWarning extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check to see if user can kick members
-		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Get user
 		const member = message.getMember();

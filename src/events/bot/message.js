@@ -82,20 +82,23 @@ module.exports = class Message extends Event {
 			// Check to see if the command is being run in a blacklisted channel
 			if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'EVENTS/BLACKLISTED_CHANNEL', message.author.tag).then(m => m.delete({ timeout:5000 }));
+				return message.channel.error(settings.Language, 'EVENTS/BLACKLISTED_CHANNEL', message.author.tag).then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 			}
 
 			// Make sure NSFW commands are only being run in a NSFW channel
 			if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.conf.nsfw))) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
+				return message.channel.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 			}
 
 			// Check if the command is from a disabled plugin
 			if (!settings.plugins.includes(cmd.help.category) && cmd.help.category != 'Host') return;
 
 			// Make sure user does not have access to ownerOnly commands
-			if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) return message.channel.send('Nice try').then(m => m.delete({ timeout:5000 }));
+			if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) return message.channel.send('Nice try').then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 
 			// Check if command is disabled
 			if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
@@ -114,7 +117,8 @@ module.exports = class Message extends Event {
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
-					return message.channel.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => m.delete({ timeout:5000 }));
+					return message.channel.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 				}
 			}
 

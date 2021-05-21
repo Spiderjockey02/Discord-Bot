@@ -28,25 +28,25 @@ module.exports = class Nick extends Command {
 		// Check if they are changing their own name or not (and check permission)
 		if (member[0] == message.member) {
 			if (!message.member.hasPermission('CHANGE_NICKNAMES')) {
-				return message.channel.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 		} else if (!message.member.hasPermission('MANAGE_NICKNAMES')) {
-			return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_NICKNAMES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Make sure the bot can change other user's nicknames
 		if (!message.guild.me.hasPermission('MANAGE_NICKNAMES')) {
 			bot.logger.error(`Missing permission: \`MANAGE_NICKNAMES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_NICKNAMES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Make sure user user does not have ADMINISTRATOR permissions
 		if (member[0].hasPermission('ADMINISTRATOR') || (member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0)) {
-			return message.channel.error(settings.Language, 'MODERATION/UNABLE_NICKNAME').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MODERATION/UNABLE_NICKNAME').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Make sure a nickname was provided in the command
-		if (message.message.args.length == 0) return message.channel.error(settings.Language, 'MODERATION/ENTER_NICKNAME').then(m => m.delete({ timeout: 10000 }));
+		if (message.message.args.length == 0) return message.channel.error(settings.Language, 'MODERATION/ENTER_NICKNAME').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Get the nickanme
 		const nickname = message.content.slice(6).replace(/<[^}]*>/, '').slice(1);

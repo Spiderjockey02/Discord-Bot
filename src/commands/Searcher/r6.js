@@ -28,7 +28,8 @@ module.exports = class R6 extends Command {
 		// Checks to make sure a username was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
+			return message.channel.send('Please specify a username to search').then(m => setTimeout(() => { m.delete(); }, 2000)
+);
 		} else {
 			player = message.args[0];
 		}
@@ -67,7 +68,7 @@ module.exports = class R6 extends Command {
 		// Makes sure that user actually exist
 		if (!player.length) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// send 'waiting' message to show bot has recieved message

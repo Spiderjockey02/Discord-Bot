@@ -5,7 +5,7 @@ async function warnMember(bot, message, wReason, settings) {
 		await require('./warning-system').run(bot, message, wUser, wReason, settings);
 	} catch (err) {
 		bot.logger.error(`${err.message} when trying to warn user`);
-		message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 10000 }));
+		message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 10000));
 	}
 }
 

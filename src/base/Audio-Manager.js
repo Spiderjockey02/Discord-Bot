@@ -40,7 +40,7 @@ module.exports = async (bot) => {
 				.setTitle('» Now playing:')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send(embed).then(m => m.delete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+			if (channel) channel.send(embed).then(m => setTimeout(() => { m.delete(); }, (track.duration < 6.048e+8) ? track.duration : 60000));
 
 			// clear timeout (for queueEnd event)
 			if (player.timeout != null) return clearTimeout(player.timeout);
@@ -61,7 +61,7 @@ module.exports = async (bot) => {
 				.setColor(15158332)
 				.setDescription(`An error has occured on playback: \`${payload.error}\``);
 			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send(embed).then(m => m.delete({ timeout: 15000 }));
+			if (channel) channel.send(embed).then(m => setTimeout(() => { m.delete(); }, 15000));
 		})
 		.on('queueEnd', (player) => {
 			// Don't leave channel if 24/7 mode is active

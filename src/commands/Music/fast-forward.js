@@ -21,7 +21,7 @@ module.exports = class FastForward extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 		}
 

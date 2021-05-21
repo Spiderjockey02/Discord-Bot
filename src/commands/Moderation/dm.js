@@ -26,7 +26,7 @@ module.exports = class DM extends Command {
 		const member = message.getMember();
 
 		// Check if user has manage server permissions
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// send message
 		try {

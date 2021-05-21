@@ -24,7 +24,7 @@ module.exports = class Screenshot extends Command {
 		// Make sure bot has permissions to send attachments
 		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
 			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// make sure a website was entered

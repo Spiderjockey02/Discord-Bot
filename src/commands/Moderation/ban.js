@@ -24,13 +24,13 @@ module.exports = class Ban extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 
 		// Check if bot has permission to ban user
 		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
 			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Get user and reason
@@ -40,11 +40,11 @@ module.exports = class Ban extends Command {
 		const member = message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Ban user with reason and check if timed ban
@@ -64,7 +64,7 @@ module.exports = class Ban extends Command {
 
 			// Ban user from guild
 			await member[0].ban({ reason: reason });
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
+			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => setTimeout(() => { m.delete(); }, 8000));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];

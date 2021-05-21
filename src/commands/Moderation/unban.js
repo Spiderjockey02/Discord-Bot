@@ -23,13 +23,13 @@ module.exports = class Unban extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 
 		// Check if bot has permission to ban user
 		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
 			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Unban user
@@ -40,7 +40,8 @@ module.exports = class Unban extends Command {
 				const bUser = bans.find(ban => ban.user.id == user);
 				if (!bUser) return;
 				message.guild.members.unban(bUser.user);
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => setTimeout(() => { m.delete(); }, 3000)
+);
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();

@@ -29,7 +29,7 @@ module.exports = class SetLog extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		if (message.args[0] == 'true' || message.args[0] == 'false') {
 
@@ -37,7 +37,8 @@ module.exports = class SetLog extends Command {
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
 				settings.ModLog = message.args[0];
-				message.channel.success(settings.Language, 'PLUGINS/LOGS_SET', message.args[0]).then(m => m.delete({ timeout:10000 }));
+				message.channel.success(settings.Language, 'PLUGINS/LOGS_SET', message.args[0]).then(m => setTimeout(() => { m.delete(); }, 10000)
+);
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
@@ -50,7 +51,7 @@ module.exports = class SetLog extends Command {
 					.setTitle('Logging features:')
 					.setColor(message.member.displayHexColor)
 					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
-				message.channel.send(embed).then(m => m.delete({ timeout: 15000 }));
+				message.channel.send(embed).then(m => setTimeout(() => { m.delete(); }, 15000));
 			} else if (message.args[0] == 'add') {
 
 				// add new Logging

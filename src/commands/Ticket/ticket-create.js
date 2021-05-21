@@ -21,19 +21,20 @@ module.exports = class TicketCreate extends Command {
 		// Make sure bot has permission to create channel
 		if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
 			bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Check if a ticket channel is already open
 		if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
-			return message.channel.error(settings.Language, 'TICKET/TICKET_EXISTS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'TICKET/TICKET_EXISTS').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// make sure ticket has been set-up properly
 		const supportRole = message.guild.roles.cache.get(settings.TicketSupportRole);
-		if (!supportRole) return message.channel.error(settings.Language, 'TICKET/NO_SUPPORT_ROLE').then(m => m.delete({ timeout: 10000 }));
+		if (!supportRole) return message.channel.error(settings.Language, 'TICKET/NO_SUPPORT_ROLE').then(m => setTimeout(() => { m.delete(); }, 10000));
 		const category = message.guild.channels.cache.get(settings.TicketCategory);
-		if (!category) return message.channel.error(settings.Language, 'TICKET/NO_CATEGORY').then(m => m.delete({ timeout:10000 }));
+		if (!category) return message.channel.error(settings.Language, 'TICKET/NO_CATEGORY').then(m => setTimeout(() => { m.delete(); }, 10000)
+);
 
 		// get reason
 		const reason = (message.args[0]) ? message.args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
@@ -52,7 +53,8 @@ module.exports = class TicketCreate extends Command {
 				const successEmbed = new MessageEmbed()
 					.setTitle('✅ Success!')
 					.setDescription(`Your ticket has been created: ${channel}`);
-				message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));
+				message.channel.send(successEmbed).then(m => setTimeout(() => { m.delete(); }, 10000)
+);
 
 				// Add message to ticket channel
 				const embed = new MessageEmbed()

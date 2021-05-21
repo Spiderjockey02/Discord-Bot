@@ -26,7 +26,7 @@ module.exports = class RoleInfo extends Command {
 		// Make sure it's a role on the server
 		if (!role[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error(settings.Language, 'MISSING_ROLE').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
 		// Send information to channel

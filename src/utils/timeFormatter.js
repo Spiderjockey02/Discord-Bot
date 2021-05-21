@@ -122,12 +122,14 @@ module.exports = class CustomMS {
 	getTotalTime(timeFormat, message, language) {
 		// Make sure it ends with the correct time delimiter
 		if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
-			message.channel.error(language, 'INCORRECT_DELIMITERS').then(m => m.delete({ timeout:5000 }));
+			message.channel.error(language, 'INCORRECT_DELIMITERS').then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 			return false;
 		}
 		// make sure its a number infront of the time delimiter
 		if (isNaN(timeFormat.slice(0, -1))) {
-			message.channel.error(language, 'NOT_NUMBER').then(m => m.delete({ timeout:5000 }));
+			message.channel.error(language, 'NOT_NUMBER').then(m => setTimeout(() => { m.delete(); }, 5000)
+);
 			return false;
 		}
 		// convert timeFormat to milliseconds

@@ -33,7 +33,7 @@ module.exports = class Steam extends Command {
 		fetch(url).then(res => res.json()).then(body => {
 			if (body.response.success === 42) {
 				msg.delete();
-				return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
 			const id = body.response.steamid;
 			const summaries = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${token}&steamids=${id}`;

@@ -45,7 +45,7 @@ module.exports = class Instagram extends Command {
 		if (res.size == 0) return;
 
 		// Checks to see if a username in instagram database
-		if (!res.graphql.user.username) return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+		if (!res.graphql.user.username) return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Displays Data
 		const account = res.graphql.user;
