@@ -53,13 +53,14 @@ module.exports = class Mute extends Command {
 		// If role not found then make role
 		if (!muteRole) {
 			try {
-				muteRole = await message.guild.roles.create({
-					data: {
+				muteRole = await message.guild.roles.create(
+					{
 						name: 'Muted',
 						color: '#514f48',
 						permissions: ['READ_MESSAGE_HISTORY'],
+						reason: 'Created mute role',
 					},
-				});
+				);
 				// update server with no muted role
 				await message.guild.updateGuild({ MutedRole: muteRole.id });
 				settings.MutedRole = muteRole.id;
@@ -91,8 +92,8 @@ module.exports = class Mute extends Command {
 				await newMute.save();
 
 				// reply to user
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => setTimeout(() => { m.delete(); }, 3000)
-);
+				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => setTimeout(() => { m.delete(); }, 3000),
+				);
 				// see if it was a tempmute
 				if (message.args[1]) {
 					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
