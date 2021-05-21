@@ -36,9 +36,9 @@ module.exports = async (bot) => {
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new MessageEmbed()
-				.setColor(bot.guilds.cache.get(player.guild).member(track.requester).displayHexColor)
+				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
 				.setTitle('» Now playing:')
-				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
+				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed).then(m => setTimeout(() => { m.delete(); }, (track.duration < 6.048e+8) ? track.duration : 60000));
 
