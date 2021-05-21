@@ -30,7 +30,7 @@ module.exports = class Setlang extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure a language was entered
 		if (!message.args[0]) return message.channel.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => setTimeout(() => { m.delete(); }, 10000)

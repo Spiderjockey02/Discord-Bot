@@ -23,7 +23,7 @@ module.exports = class Kick extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check if user has permission to kick user
-		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Check if bot has permission to kick user
 		if (!message.guild.me.hasPermission('KICK_MEMBERS')) {

@@ -22,7 +22,7 @@ module.exports = class SlowMode extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can activate slowmode
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Check if bot can activate slowmode
 		if (!message.channel.permissionsFor(bot.user).has('MANAGE_CHANNELS')) {

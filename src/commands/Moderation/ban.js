@@ -24,7 +24,7 @@ module.exports = class Ban extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 
 		// Check if bot has permission to ban user

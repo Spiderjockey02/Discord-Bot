@@ -23,7 +23,7 @@ module.exports = class G_start extends Command {
 		if (message.deletable) message.delete();
 
 		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Check if bot has permission to add reactions
 		if (!message.channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {

@@ -20,7 +20,7 @@ module.exports = class G_reroll extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {

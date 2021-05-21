@@ -202,7 +202,7 @@ class Giveaway extends EventEmitter {
 		if (!member) return false;
 		const exemptMember = await this.exemptMembers(member);
 		if (exemptMember) return false;
-		const hasPermission = this.exemptPermissions.some((permission) => member.hasPermission(permission));
+		const hasPermission = this.exemptPermissions.some((permission) => member.permissions.has(permission));
 		if (hasPermission) return false;
 		return true;
 	}

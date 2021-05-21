@@ -23,7 +23,7 @@ module.exports = class Mute extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Check if user can mute users
-		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
+		if (!message.member.permissions.has('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// check if bot can add 'mute' role to user
 		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {

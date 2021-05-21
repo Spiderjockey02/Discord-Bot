@@ -26,7 +26,7 @@ module.exports = class Ticket extends Command {
 		}
 
 		// Add ticket reaction embed
-		if (message.member.hasPermission('MANAGE_GUILD')) {
+		if (message.member.permissions.has('MANAGE_GUILD')) {
 			if (message.args[0] == 'reaction') {
 				const embed = new MessageEmbed()
 					.setTitle('React for Ticket channel')

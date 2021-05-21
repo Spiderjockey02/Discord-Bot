@@ -27,10 +27,10 @@ module.exports = class Nick extends Command {
 
 		// Check if they are changing their own name or not (and check permission)
 		if (member[0] == message.member) {
-			if (!message.member.hasPermission('CHANGE_NICKNAMES')) {
+			if (!message.member.permissions.has('CHANGE_NICKNAMES')) {
 				return message.channel.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => setTimeout(() => { m.delete(); }, 10000));
 			}
-		} else if (!message.member.hasPermission('MANAGE_NICKNAMES')) {
+		} else if (!message.member.permissions.has('MANAGE_NICKNAMES')) {
 			return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_NICKNAMES').then(m => setTimeout(() => { m.delete(); }, 10000));
 		}
 
