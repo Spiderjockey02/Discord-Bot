@@ -27,7 +27,8 @@ module.exports = class Report extends Command {
 
 			// Find user
 			const member = message.getMember();
-			if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+			// Make sure user isn't trying to punish themselves
+			if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 			// Make sure a reason was added
 			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.delete({ timeout: 5000 }));

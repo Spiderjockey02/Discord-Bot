@@ -10,8 +10,10 @@
 	"ID": "ID: {{ID}}",
 	"YES": "Yes",
 	"NO": "No",
+	"OFF": "off",
 	"NONE": "None",
-
+	"REASON": "Reason:",
+	"SELF_PUNISH": "You can't punish yourself.",
 
 	"MISSING_ROLE": "I was unable to find this role.",
 	"INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",

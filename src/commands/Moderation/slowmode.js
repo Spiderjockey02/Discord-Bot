@@ -38,7 +38,7 @@ module.exports = class SlowMode extends Command {
 		// Activate slowmode
 		try {
 			await message.channel.setRateLimitPerUser(time / 1000);
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', message.args[0]).then(m => m.delete({ timeout:15000 }));
+			message.channel.success('moderation/slowmode:SUCCESS', { TIME: time == 0 ? message.translate('misc:OFF') : time / 1000 }).then(m => m.delete({ timeout:15000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));

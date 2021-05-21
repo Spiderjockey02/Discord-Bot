@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Kick extends Command {
@@ -30,7 +30,7 @@ module.exports = class Kick extends Command {
 		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
@@ -41,13 +41,13 @@ module.exports = class Kick extends Command {
 		try {
 			// send DM to user
 			try {
-				const embed = new MessageEmbed()
-					.setTitle('KICKED')
+				const embed = new Embed(message)
+					.setTitle('moderation/kick:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been kicked from ${message.guild.name}.`)
-					.addField('Kicked by:', message.author.tag, true)
-					.addField('Reason:', reason, true);
+					.setDescription(message.translate('moderation/kick:DESC', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/kick:KICKED'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), reason, true);
 				await member[0].send(embed);
 				// eslint-disable-next-line no-empty
 			} catch (e) {}

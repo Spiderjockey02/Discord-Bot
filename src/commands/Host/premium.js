@@ -91,7 +91,7 @@ module.exports = class Premium extends Command {
 				// save user to DB
 				try {
 					await newPremium.save();
-					message.args[1] == 'user' ? await bot.getUser(message.args[2]).then(user => user.premium = true) : bot.guilds.cache.get(message.args[2]).premium = true;
+					message.args[1] == 'user' ? await bot.users.fetch(message.args[2]).then(user => user.premium = true) : bot.guilds.cache.get(message.args[2]).premium = true;
 					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -108,7 +108,7 @@ module.exports = class Premium extends Command {
 				// Try and remove the premium 'Type'
 				try {
 					await PremiumSchema.collection.deleteOne({ ID: id, Type: message.args[1] });
-					message.args[1] == 'user' ? await bot.getUser(message.args[2]).then(user => user.premium = false) : bot.guilds.cache.get(message.args[2]).premium = false;
+					message.args[1] == 'user' ? await bot.users.fetch(message.args[2]).then(user => user.premium = false) : bot.guilds.cache.get(message.args[2]).premium = false;
 					// send success message
 					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
 				} catch (err) {

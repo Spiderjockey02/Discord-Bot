@@ -1,6 +1,6 @@
 // Dependencies
 const { WarningSchema, timeEventSchema } = require('../database/models'),
-	{ MessageEmbed } = require('discord.js');
+	{ Embed } = require('../../utils');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
 	// retrieve user data in warning database
@@ -31,21 +31,21 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 				// save and send response to moderator
 				await newWarn.save();
-				const embed = new MessageEmbed()
+				const embed = new Embed(message)
 					.setColor(15158332)
-					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
-					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
+					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
+					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
-				const embed2 = new MessageEmbed()
-					.setTitle('WARNING')
+				const embed2 = new Embed(message)
+					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been warned in ${message.guild.name}.`)
-					.addField('Warned by:', message.author.tag, true)
-					.addField('Reason:', wReason, true)
-					.addField('Warnings:', '1/3');
+					.setDescription(message.translate('moderation/warn:WARN_IN', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/warn:WARN_BY'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), wReason, true)
+					.addField(message.translate('moderation/warn:WARN_CNTR'), '1/3');
 				// eslint-disable-next-line no-empty-function
 				member.send(embed2).catch(() => {});
 
@@ -73,7 +73,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				bot.commands.get('mute').run(bot, message, settings);
 
 				// send embed
-				const embed = new MessageEmbed()
+				const embed = new Embed(message)
 					.setColor(15158332)
 					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
 					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
@@ -81,14 +81,14 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
-				const embed2 = new MessageEmbed()
-					.setTitle('WARNING')
+				const embed2 = new Embed(message)
+					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been warned in ${message.guild.name}.`)
-					.addField('Warned by:', message.author.tag, true)
-					.addField('Reason:', wReason, true)
-					.addField('Warnings:', '2/3');
+					.setDescription(message.translate('moderation/warn:WARN_IN', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/warn:WARN_BY'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), wReason, true)
+					.addField(message.translate('moderation/warn:WARN_CNTR'), '2/3');
 					// eslint-disable-next-line no-empty-function
 				member.send(embed2).catch(() => {});
 			} else {
@@ -97,11 +97,11 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				try {
 					await message.guild.member(member).kick(wReason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
-					message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KWARNS', member.user.tag).then(m => m.delete({ timeout: 3500 }));
+					message.channel.success('moderation/warn:KICKED', { USER: member.user.tag }).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database
-				} catch (e) {
+				} catch (err) {
 					bot.logger.error(`${err.message} when kicking user.`);
-					message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL', err.message).then(m => m.delete({ timeout: 10000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			}
 		}

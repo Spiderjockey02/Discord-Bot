@@ -25,13 +25,7 @@ module.exports = class Status extends Command {
 
 		const config = { fullBar: '█', emptyBar: '░', barPrecision: 20 };
 
-		let cpuUsage,
-			processes,
-			driveUsed,
-			driveFree,
-			networkUsage,
-			networkUsageIn,
-			networkUsageOut;
+		let cpuUsage, processes, driveUsed, driveFree, networkUsage, networkUsageIn, networkUsageOut;
 
 		const calculations = { freeRAM: os.freemem(), usedRAM: os.totalmem() - os.freemem() };
 

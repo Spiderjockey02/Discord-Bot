@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class DM extends Command {
@@ -30,14 +30,14 @@ module.exports = class DM extends Command {
 
 		// send message
 		try {
-			const embed = new MessageEmbed()
-				.setTitle(`DM received from guild: ${message.guild.name}`)
+			const embed = new Embed(message)
+				.setTitle('moderation/dm:TITLE', { NAME: message.guild.name })
 				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(message.args.join(' ').slice(message.args[0].length))
 				.setTimestamp()
 				.setFooter(message.author.tag, message.author.displayAvatarURL({ format: 'png', size: 1024 }));
 			await member[0].user.send(embed);
-			message.channel.send(`Successfully sent DM to ${member[0].user.tag}.`);
+			message.channel.send(message.translate('moderation/dm:SUCCESS', { TAG: member[0].user.tag }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

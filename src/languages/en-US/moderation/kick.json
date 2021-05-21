@@ -1,1 +1,7 @@
-{"DESCRIPTION":"Kick a user.","USAGE":"kick <user> [reason]"}
+{
+  "DESCRIPTION": "Kick a user.",
+  "USAGE": "kick <user> [reason]",
+  "TITLE": "KICKED",
+  "DESC": "You have been kicked from {{NAME}}.",
+  "KICKED": "Kicked by:"
+}

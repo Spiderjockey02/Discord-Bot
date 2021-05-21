@@ -33,10 +33,10 @@ module.exports = class SetPlugin extends Command {
 		if (defaultPlugins.includes(message.args[0])) {
 			if (!settings.plugins.includes(message.args[0])) {
 				settings.plugins.push(message.args[0]);
-				message.channel.send(`Added ${message.args[0]} to Guild's plugins.`);
+				message.channel.send(message.translate('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] }));
 			} else {
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
-				message.channel.send(`Removed ${message.args[0]} to Guild's plugins.`);
+				message.channel.send(message.translate('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] }));
 			}
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });
@@ -45,7 +45,7 @@ module.exports = class SetPlugin extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			return message.channel.send('Not a supported plugin');
+			return message.channel.send(message.translate('plugins/set-plugin:INVALID'));
 		}
 
 	}

@@ -36,18 +36,23 @@ module.exports = class Addban extends Command {
 
 			// This is their first warning
 			if (!res) {
-				const newBan = new GlobalBanSchema({
-					userID: user.id,
-					reason: reason,
-					restriction: restriction,
-					IssueDate: new Date().toUTCString(),
-				});
-				newBan.save().catch(e => bot.logger.error(e.message));
-				const embed = new MessageEmbed()
-					.setColor(15158332)
-					.setAuthor(`${user.tag} has been globally banned`)
-					.setDescription(`**Reason:** ${reason}\n**Restriction:** ${restriction}`);
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				try {
+					await (new GlobalBanSchema({
+						userID: user.id,
+						reason: reason,
+						restriction: restriction,
+						IssueDate: new Date().toUTCString(),
+					})).save();
+					const embed = new MessageEmbed()
+						.setColor(15158332)
+						.setAuthor(`${user.tag} has been globally banned`)
+						.setDescription(`**Reason:** ${reason}\n**Restriction:** ${restriction}`);
+					message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				} catch (err) {
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				}
 			} else {
 				message.channel.send('User is already banned.');
 			}

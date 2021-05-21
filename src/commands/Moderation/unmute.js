@@ -48,9 +48,9 @@ module.exports = class Unmute extends Command {
 			await MutedMemberSchema.findOneAndRemove({ userID: member[0].user.id,	guildID: message.guild.id });
 
 			// if in a VC unmute them
-			if (member[0].voice.channelID) member[0].voice.setMute(false);
+			if (member[0].voice.channelID) await member[0].voice.setMute(false);
 
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
+			message.channel.success('moderation/unmute:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

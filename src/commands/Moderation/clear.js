@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
@@ -37,54 +37,65 @@ module.exports = class Clear extends Command {
 		if (isNaN(amount) || (amount > 1000) || (amount < 1)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure guild is premium if amount > 200
-		if (amount > 200 && !message.guild.premium) return message.channel.send('The server must be premium in order to clear more than `200` messages.');
+		if (amount > 200 && !message.guild.premium) return message.channel.error('moderation/clear:NO_PREM');
 
 		// Confirmation for message deletion over 100
 		if (amount >= 100) {
-			const embed = new MessageEmbed()
-				.setTitle('Clear Message Confirmation')
-				.setDescription(`You are about to clear ${amount} messages from this channel, please react to confirm this action.`)
-				.setTimestamp();
+			const embed = new Embed(message)
+				.setTitle(message.translate('moderation/clear:TITLE'))
+				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
-			message.channel.send(embed).then(async confirmationMessage => {
+			message.channel.send(embed).then(async msg => {
 				// React to message
-				await confirmationMessage.react('✅');
+				await msg.react(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
+				await msg.react(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
 
 				// filter
 				const filter = (reaction, user) => {
-					return reaction.emoji.name === '✅' && user.id === message.author.id;
+					return [bot.customEmojis['checkmark'], '✅', bot.customEmojis['cross'], '❌'].includes(reaction.emoji.toString()) && user.id === message.author.id;
 				};
 
 				// Collect the reactions
-				const collector = confirmationMessage.createReactionCollector(filter, { time: 15000 });
-				collector.on('collect', async () => {
-					let x = amount, y = 0;
-					while (x !== 0) {
-						try {
-							let messages = await message.channel.messages.fetch({ limit: x > 100 ? 100 : x });
-							// Delete user messages
-							if (message.args[1]) {
-								const member = message.getMember();
-								messages = messages.filter((m) => m.author.id == member[0].user.id);
-							}
+				const collector = msg.createReactionCollector(filter, { time: 15000 });
+				collector.on('collect', async (reaction) => {
+					if ([bot.customEmojis['checkmark'], '✅'].includes(reaction.emoji.toString())) {
+						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
+						let x = amount, y = 0;
+						while (x !== 0) {
+							try {
+								let messages = await message.channel.messages.fetch({ limit: x > 100 ? 100 : x });
+								// Delete user messages
+								if (message.args[1]) {
+									const member = message.getMember();
+									messages = messages.filter((m) => m.author.id == member[0].user.id);
+								}
 
-							// delete the message
-							const delMessages = await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
-							y += delMessages.size;
-							x = x - messages.size;
-							await delay(5000);
-						} catch (e) {
-							break;
+								// delete the message
+								const delMessages = await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+								y += delMessages.size;
+								x = x - messages.size;
+								await delay(5000);
+							} catch (e) {
+								break;
+							}
 						}
+						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.delete({ timeout: 3000 }));
+					} else if ([bot.customEmojis['cross'], '❌'].includes(reaction.emoji.toString())) {
+						await msg.reactions.removeAll();
+						embed.setDescription(message.translate('moderation/clear:CON_CNC'));
+						msg.edit(embed);
 					}
-					message.channel.success(settings.Language, 'MODERATION/MESSAGES_DELETED', y).then(m => m.delete({ timeout: 3000 }));
 				});
 
 				// The user did not respond in time
 				collector.on('end', async () => {
-					await confirmationMessage.reactions.removeAll();
-					embed.setDescription('Confirmation timed-out.');
-					confirmationMessage.edit(embed);
+					if (embed.description == message.translate('moderation/clear:CON_CNC')) {
+						await msg.delete();
+					} else {
+						await msg.reactions.removeAll();
+						embed.setDescription(message.translate('moderation/clear:CON_TO'));
+						await msg.edit(embed);
+					}
 				});
 			});
 		} else {

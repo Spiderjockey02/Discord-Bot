@@ -44,9 +44,8 @@ module.exports = class Mute extends Command {
 			}
 		}
 
-
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// get mute role
 		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
@@ -91,7 +90,7 @@ module.exports = class Mute extends Command {
 				await newMute.save();
 
 				// reply to user
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success('moderation/mute:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 3000 }));
 				// see if it was a tempmute
 				if (message.args[1]) {
 					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);

@@ -28,12 +28,15 @@ module.exports = class Unban extends Command {
 		// Unban user
 		const user = message.args[0];
 		try {
-			message.guild.fetchBans().then(bans => {
+			await message.guild.fetchBans().then(async bans => {
 				if (bans.size == 0) return;
 				const bUser = bans.find(ban => ban.user.id == user);
-				if (!bUser) return;
-				message.guild.members.unban(bUser.user);
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => m.delete({ timeout: 3000 }));
+				if (bUser) {
+					await message.guild.members.unban(bUser.user);
+					message.channel.success('moderation/unban:SUCCESS', { USER: bUser.user }).then(m => m.delete({ timeout: 3000 }));
+				} else {
+					message.channel.error('moderation/unban:MISSING', { ID: user });
+				}
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();

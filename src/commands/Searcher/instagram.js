@@ -29,7 +29,7 @@ module.exports = class Instagram extends Command {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name} account info` }));
 
 		// Gather data from database
-		const res = await fetch(`https://instagram.com/${username}/?__a=1`)
+		const res = await fetch(`https://instagram.com/${username}/feed/?__a=1`)
 			.then(info => info.json())
 			.catch(err => {
 			// An error occured when looking for account

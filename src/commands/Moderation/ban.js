@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
@@ -33,7 +33,7 @@ module.exports = class Ban extends Command {
 		const member = message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
@@ -44,20 +44,20 @@ module.exports = class Ban extends Command {
 		try {
 			// send DM to user
 			try {
-				const embed = new MessageEmbed()
-					.setTitle('BANNED')
+				const embed = new Embed(message)
+					.setTitle('moderation/ban:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been banned from ${message.guild.name}.`)
-					.addField('Banned by:', message.author.tag, true)
-					.addField('Reason:', reason, true);
+					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/ban:BAN_BY'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), reason, true);
 				await member[0].send(embed);
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 
 			// Ban user from guild
 			await member[0].ban({ reason: reason });
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
+			message.channel.success('moderation/ban:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];

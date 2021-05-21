@@ -44,7 +44,7 @@ module.exports = class ClearWarning extends Command {
 			} else {
 				await WarningSchema.deleteMany({ userID: member[0].user.id, guildID: message.guild.id });
 			}
-			message.channel.send(`warnings updated for ${member[0]}`);
+			message.channel.send(message.translate('moderation/clear-warning:CLEARED', { MEMBER: member[0] }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

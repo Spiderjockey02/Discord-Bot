@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Report a user.","USAGE":"report <user> [reason]"}
+{
+  "DESCRIPTION": "Report a user.",
+  "USAGE": "report <user> [reason]"
+}

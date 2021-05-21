@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ WarningSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
@@ -19,7 +19,7 @@ module.exports = class Warnings extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get user
 		const member = message.getMember();
 
@@ -38,7 +38,7 @@ module.exports = class Warnings extends Command {
 
 				if (!warn[0]) {
 					// There are no warnings with this user
-					message.channel.send(bot.translate(settings.Language, 'MODERATION/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
+					message.channel.send(bot.translate('moderation:warnings/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
 				} else {
 					// Warnings have been found
 					let list = `Warnings (${warn.length}):\n`;
@@ -46,8 +46,8 @@ module.exports = class Warnings extends Command {
 						list += `${i + 1}.) ${warn[i].Reason} | ${(message.guild.members.cache.get(warn[i].Moderater)) ? message.guild.members.cache.get(warn[i].Moderater) : 'User left'} (Issue date: ${warn[i].IssueDate})\n`;
 					}
 
-					const embed = new MessageEmbed()
-						.setTitle(bot.translate(settings.Language, 'MODERATION/WARNS_TITLE', member[0].user.username))
+					const embed = new Embed(message)
+						.setTitle('moderation/warns:TITLE', { USER: member[0].user.username })
 						.setDescription(list)
 						.setTimestamp();
 					message.channel.send(embed);
