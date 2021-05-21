@@ -23,7 +23,7 @@ module.exports = class Lyrics extends Command {
 		if (message.args.length == 0) {
 			// Check if a song is playing and use that song
 			const player = bot.manager.players.get(message.guild.id);
-			if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => m.delete({ timeout: 5000 }));
+			if (!player) return message.channel.error(settings.Language, 'MUSIC/NO_QUEUE').then(m => setTimeout(() => { m.delete(); }, 5000));
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: player.queue.current.title,
@@ -73,7 +73,7 @@ module.exports = class Lyrics extends Command {
 			if (message.deletable) message.delete();
 			wait.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 	}
 };

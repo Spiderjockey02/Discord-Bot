@@ -31,7 +31,7 @@ module.exports = class Suggestion extends Command {
 			}
 
 			const words = message.args.join(' ').split('-');
-			if (words.length != 3) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			if (words.length != 3) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 			// send message
 			const title = words[0],
 				description = words[1],

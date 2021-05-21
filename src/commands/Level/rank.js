@@ -81,7 +81,7 @@ module.exports = class Rank extends Command {
 		} catch (err) {
 			bot.logger.error(`${err.message} when running command: rank.`);
 			msg.delete();
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 	}
 };

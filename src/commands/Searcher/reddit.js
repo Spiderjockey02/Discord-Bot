@@ -18,7 +18,7 @@ module.exports = class Reddit extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get subreddit
-		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching sub${this.help.name}...`);
@@ -46,7 +46,7 @@ module.exports = class Reddit extends Command {
 			if (message.deletable) message.delete();
 			msg.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 	}
 };

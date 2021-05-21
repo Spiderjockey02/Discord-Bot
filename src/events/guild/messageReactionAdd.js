@@ -69,7 +69,7 @@ module.exports = class messageReactionAdd extends Event {
 					}
 				} catch (err) {
 					const channel = await bot.channels.fetch(dbReaction.channelID).catch(() => bot.logger.error(`Missing channel for reaction role in guild: ${guild.id}`));
-					if (channel) channel.send(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`).then(m => m.delete({ timeout: 5000 }));
+					if (channel) channel.send(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`).then(m => setTimeout(() => { m.delete(); }, 5000));
 				}
 			}
 		}

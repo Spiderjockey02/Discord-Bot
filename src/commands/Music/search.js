@@ -29,7 +29,7 @@ module.exports = class Search extends Command {
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// Check if bot has permission to connect to voice channel
@@ -59,7 +59,7 @@ module.exports = class Search extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		const search = message.args.join(' ');

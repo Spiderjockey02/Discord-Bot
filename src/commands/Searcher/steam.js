@@ -20,7 +20,7 @@ module.exports = class Steam extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Steam config
-		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
@@ -44,7 +44,7 @@ module.exports = class Steam extends Command {
 			fetch(summaries).then(res => res.json()).then(body2 => {
 				if (!body2.response) {
 					msg.delete();
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing user data').then(m => m.delete({ timeout: 5000 }));
+					message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing user data').then(m => setTimeout(() => { m.delete(); }, 5000));
 				}
 				const { personaname, avatarfull, realname, personastate, loccountrycode, profileurl, timecreated } = body2.response.players[0];
 
@@ -52,7 +52,7 @@ module.exports = class Steam extends Command {
 				fetch(bans).then(res => res.json()).then(body3 => {
 					if (!body3.players) {
 						msg.delete();
-						message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing user ban data').then(m => m.delete({ timeout: 5000 }));
+						message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Missing user ban data').then(m => setTimeout(() => { m.delete(); }, 5000));
 					}
 					const { NumberOfGameBans } = body3.players[0];
 					// Display results

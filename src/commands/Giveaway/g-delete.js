@@ -25,7 +25,7 @@ module.exports = class G_delete extends Command {
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// Delete the giveaway

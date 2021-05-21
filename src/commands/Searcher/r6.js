@@ -61,7 +61,7 @@ module.exports = class R6 extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// Makes sure that user actually exist
@@ -82,7 +82,7 @@ module.exports = class R6 extends Command {
 		if (!playerRank.length || !playerStats.length || !playerGame.length) {
 			msg.delete();
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Mising player data').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Mising player data').then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 		const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
 		const { pvp, pve } = playerStats[0];

@@ -53,7 +53,7 @@ module.exports = async (bot) => {
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 					}
 				} else if (events[i].type == 'mute') {
 					// if event type was mute
@@ -82,7 +82,7 @@ module.exports = async (bot) => {
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 					}
 				} else if (events[i].type == 'warn') {
 					// remove warning
@@ -90,7 +90,7 @@ module.exports = async (bot) => {
 					}, async (err, res) => {
 						if (err) {
 							bot.logger.error(`Error: ${err.message} fetching warns. (timed events)`);
-							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 						}
 
 						// find the timed warning

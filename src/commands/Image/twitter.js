@@ -28,10 +28,10 @@ module.exports = class Twitter extends Command {
 		text = text.replace(/<@.?[0-9]*?>/g, '');
 
 		// make sure text was entered
-		if (message.args.length == 0) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (message.args.length == 0) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// make sure the text isn't longer than 60 characters
-		if (text.length >= 61) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => m.delete({ timeout: 5000 }));
+		if (text.length >= 61) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// send 'waiting' message
 		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
@@ -47,7 +47,7 @@ module.exports = class Twitter extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 		msg.delete();
 	}

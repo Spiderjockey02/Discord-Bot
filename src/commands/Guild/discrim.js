@@ -20,7 +20,7 @@ module.exports = class Discrim extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Make sure a discriminator was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// Get all members with the correct discriminator
 		const user = message.guild.members.cache.filter(m => m.user.discriminator === message.args[0]);

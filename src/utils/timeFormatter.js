@@ -134,7 +134,7 @@ module.exports = class CustomMS {
 		const time = require('ms')(timeFormat);
 		// Make sure time isn't over 10 days
 		if (time >= 864000000) {
-			message.channel.error(language, 'MAX_TIME').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(language, 'MAX_TIME').then(m => setTimeout(() => { m.delete(); }, 5000));
 			return false;
 		}
 		// return time to requested command

@@ -30,18 +30,18 @@ module.exports = class Screenshot extends Command {
 		// make sure a website was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// make sure URl is valid
 		if (!validUrl.isUri(message.args[0])) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'FUN/INVALID_URL').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'FUN/INVALID_URL').then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
 		if (!bot.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw) {
-			return message.channel.error(settings.Language, 'FUN/BLACKLIST_WEBSITE').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'FUN/BLACKLIST_WEBSITE').then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -67,7 +67,7 @@ module.exports = class Screenshot extends Command {
 
 		// make screenshot
 		if (!data) {
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Failed to fetch screenshot').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Failed to fetch screenshot').then(m => setTimeout(() => { m.delete(); }, 5000));
 		} else {
 			const attachment = new MessageAttachment(data, 'website.png');
 			await message.channel.send(attachment);

@@ -10,7 +10,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 	}, async (err, res) => {
 		if (err) {
 			bot.logger.error(`Command: 'warn' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 
 		// This is their first warning
@@ -51,7 +51,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 			}
 		} else {
 			// This is NOT their first warning

@@ -52,15 +52,15 @@ module.exports = class Nick extends Command {
 		const nickname = message.content.slice(6).replace(/<[^}]*>/, '').slice(1);
 
 		// Make sure nickname is NOT longer than 32 characters
-		if (nickname.length >= 32) return message.channel.error(settings.Language, 'MODERATION/LONG_NICKNAME').then(m => m.delete({ timeout: 5000 }));
+		if (nickname.length >= 32) return message.channel.error(settings.Language, 'MODERATION/LONG_NICKNAME').then(m => setTimeout(() => { m.delete(); }, 5000));
 
 		// Change nickname and tell user (send error message if dosen't work)
 		try {
 			await member[0].setNickname(nickname);
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_NICK', member[0].user).then(m => m.delete({ timeout: 5000 }));
+			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_NICK', member[0].user).then(m => setTimeout(() => { m.delete(); }, 5000));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => setTimeout(() => { m.delete(); }, 5000));
 		}
 	}
 };
