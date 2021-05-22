@@ -1,6 +1,5 @@
 // Dependecies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Nightcore extends Command {
@@ -37,7 +36,7 @@ module.exports = class Nightcore extends Command {
 			const msg = await message.channel.send(message.translate('music/nightcore:OFF_NC'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/nightcore:DESC_2'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		} else {
 			player.setFilter({
@@ -51,7 +50,7 @@ module.exports = class Nightcore extends Command {
 			const msg = await message.channel.send(message.translate('music/nightcore:ON_NC'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/nightcore:DESC_1'));
-			await delay(5000);
+			await bot.delay(5000);
 			player.speed = 1.2;
 			return msg.edit('', embed);
 		}

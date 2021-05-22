@@ -1,6 +1,5 @@
 // Dependecies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Bassboost extends Command {
@@ -44,7 +43,7 @@ module.exports = class Bassboost extends Command {
 			const msg = await message.channel.send(message.translate('music/bassboost:ON_BB'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/bassboost:DESC_1'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		}
 
@@ -54,7 +53,7 @@ module.exports = class Bassboost extends Command {
 			const msg = await message.channel.send(message.translate('music/bassboost:OFF_BB'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/bassboost:DESC_1'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		}
 
@@ -71,7 +70,7 @@ module.exports = class Bassboost extends Command {
 		const msg = await message.channel.send(message.translate('music/bassboost:SET_BB', { DB: message.args[0] }));
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('music/bassboost:DESC_3', { DB: message.args[0] }));
-		await delay(5000);
+		await bot.delay(5000);
 		return msg.edit('', embed);
 	}
 };

@@ -41,6 +41,7 @@ module.exports = class Pokemon extends Command {
 			});
 
 		// Send response to channel
+		console.log(res);
 		const embed = new Embed(bot, message.guild)
 			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)

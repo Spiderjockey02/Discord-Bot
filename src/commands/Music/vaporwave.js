@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Vaporwave extends Command {
@@ -37,7 +36,7 @@ module.exports = class Vaporwave extends Command {
 			const msg = await message.channel.send(message.translate('music/vaporwave:OFF_VW'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_2'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		} else {
 			player.setFilter({
@@ -51,7 +50,7 @@ module.exports = class Vaporwave extends Command {
 			const msg = await message.channel.send(message.translate('music/vaporwave:ON_VW'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_1'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		}
 	}

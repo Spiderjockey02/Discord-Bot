@@ -1,6 +1,5 @@
 // Dependecies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Pitch extends Command {
@@ -37,7 +36,7 @@ module.exports = class Pitch extends Command {
 			const msg = await message.channel.send(message.translate('music/pitch:PITCH_OFF'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/pitch:DESC_1'));
-			await delay(5000);
+			await bot.delay(5000);
 			return msg.edit('', embed);
 		}
 
@@ -50,7 +49,7 @@ module.exports = class Pitch extends Command {
 		const msg = await message.channel.send(message.translate('music/pitch:PITCH_ON', { NUM: message.args[0] }));
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('music/pitch:DESC_2', { NUM: message.args[0] }));
-		await delay(5000);
+		await bot.delay(5000);
 		return msg.edit('', embed);
 	}
 };

@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Speed extends Command {
 	constructor(bot) {
@@ -39,7 +40,11 @@ module.exports = class Speed extends Command {
 		// Change speed value
 		try {
 			player.setSpeed(message.args[0]);
-			message.channel.send(message.translate('music/speed:UPDATED', { NUM: player.speed }));
+			const msg = await message.channel.send(message.translate('music/speed:ON_SPD'));
+			const embed = new Embed(bot, message.guild)
+				.setDescription(message.translate('music/speed:UPDATED', { NUM: player.speed }));
+			await bot.delay(5000);
+			return msg.edit('', embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
