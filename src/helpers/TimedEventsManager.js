@@ -49,8 +49,10 @@ module.exports = async (bot) => {
 
 						bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => setTimeout(() => { m.delete(); }, 3000)
+						if (channel) {
+await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => setTimeout(() => { m.delete(); }, 3000)
 );
+}
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
@@ -79,8 +81,10 @@ module.exports = async (bot) => {
 						if (member.voice.channelID) member.voice.setMute(false);
 
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => setTimeout(() => { m.delete(); }, 3000)
+						if (channel) {
+await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => setTimeout(() => { m.delete(); }, 3000)
 );
+}
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);

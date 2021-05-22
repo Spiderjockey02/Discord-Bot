@@ -33,8 +33,10 @@ module.exports = class Setlang extends Command {
 		if (!message.member.permissions.has('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => setTimeout(() => { m.delete(); }, 10000));
 
 		// Make sure a language was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => setTimeout(() => { m.delete(); }, 10000)
+		if (!message.args[0]) {
+return message.channel.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => setTimeout(() => { m.delete(); }, 10000)
 );
+}
 
 		// Check what language
 		if (languages[message.args[0].toLowerCase()]) {

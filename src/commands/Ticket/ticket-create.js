@@ -33,8 +33,10 @@ module.exports = class TicketCreate extends Command {
 		const supportRole = message.guild.roles.cache.get(settings.TicketSupportRole);
 		if (!supportRole) return message.channel.error(settings.Language, 'TICKET/NO_SUPPORT_ROLE').then(m => setTimeout(() => { m.delete(); }, 10000));
 		const category = message.guild.channels.cache.get(settings.TicketCategory);
-		if (!category) return message.channel.error(settings.Language, 'TICKET/NO_CATEGORY').then(m => setTimeout(() => { m.delete(); }, 10000)
+		if (!category) {
+return message.channel.error(settings.Language, 'TICKET/NO_CATEGORY').then(m => setTimeout(() => { m.delete(); }, 10000)
 );
+}
 
 		// get reason
 		const reason = (message.args[0]) ? message.args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
