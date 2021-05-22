@@ -1,4 +1,5 @@
 {
   "DESCRIPTION": "Shuffles the playlist.",
-  "USAGE": "shuffle"
+  "USAGE": "shuffle",
+  "DESC": "Queue has been shuffled"
 }

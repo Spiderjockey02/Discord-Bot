@@ -38,7 +38,7 @@ module.exports = class PAdd extends Command {
 				try {
 					res = await bot.manager.search(message.args[1], message.author);
 				} catch (err) {
-					return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
+					return message.channel.error('music/p-add:ERROR', { ERROR: err.message });
 				}
 
 				// Workout what to do with the results
@@ -47,20 +47,22 @@ module.exports = class PAdd extends Command {
 					return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
 				} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
 					try {
+						// add songs to playlist
 						const newTracks = res.tracks.slice(0, (message.author.premium ? 200 : 100) - p.songs.length);
 						p.songs.push(...newTracks);
 						p.duration = parseInt(p.duration) + parseInt(res.tracks.reduce((prev, curr) => prev + curr.duration, 0));
 						await p.save();
+						message.channel.success('music/p-add:SUCCESS', { NUM: newTracks.length, TITLE: message.args[0] });
 					} catch (err) {
 						if (message.deletable) message.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 					}
 				} else {
-					message.channel.send('Something strange happened');
+					message.channel.error('music/p-add:NO_SONG');
 				}
 			} else {
-				message.channel.send('No playlist found');
+				message.channel.error('music/p-add:NO_PLAYLIST', { NAME: message.args[0] });
 			}
 		});
 	}

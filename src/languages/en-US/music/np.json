@@ -1,4 +1,6 @@
 {
   "DESCRIPTION": "Shows the current song playing.",
-  "USAGE": "np"
+  "USAGE": "np",
+  "LIVE": "🔴 LIVE",
+  "AUTHOR": "» Now playing:"
 }

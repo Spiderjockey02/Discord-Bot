@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ getStations } = require('radio-browser'),
 	Command = require('../../structures/Command.js');
 
@@ -20,7 +20,7 @@ module.exports = class Radio extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
@@ -37,7 +37,7 @@ module.exports = class Radio extends Command {
 				if (!data[0]) return message.channel.send('No radio found with that name');
 
 				const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setTitle(`Results for ${message.args.join(' ')}`)
 					.setColor(message.member.displayHexColor)
 					.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);

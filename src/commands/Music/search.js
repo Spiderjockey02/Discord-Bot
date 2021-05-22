@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Search extends Command {
@@ -20,16 +20,16 @@ module.exports = class Search extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.send('You\'re not in a voice channel that I can connect to.');
+		if (!message.member.voice.channel) return message.channel.send(message.translate('music/search:NOT_VC'));
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error(settings.Language, 'MUSIC/NOT_VOICE').then(m => m.delete({ timeout: 5000 }));
+			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Check if bot has permission to connect to voice channel
@@ -45,7 +45,7 @@ module.exports = class Search extends Command {
 		}
 
 		// Make sure that a song/url has been entered
-		if (!message.args) return message.channel.error(settings.Language, 'MUSIC/NO_message.args');
+		if (!message.args) return message.channel.error('music/search:NO_INPUT');
 
 		// Create player
 		let player;
@@ -73,14 +73,14 @@ module.exports = class Search extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
+			return message.channel.error('music/search:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
+			return message.channel.error('music/search:NO_SONG');
 		} else {
 			// Display the options for search
 			let max = 10, collected;
@@ -88,28 +88,27 @@ module.exports = class Search extends Command {
 			if (res.tracks.length < max) max = res.tracks.length;
 
 			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-			const embed = new MessageEmbed()
-				.setTitle(`Results for ${message.args.join(' ')}`)
+			const embed = new Embed(bot, message.guild)
+				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 				.setColor(message.member.displayHexColor)
-				.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
+				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
 			message.channel.send(embed);
 
 			try {
 				collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
 			} catch (e) {
 				if (!player.queue.current) player.destroy();
-				return message.reply('You didn\'t choose a song in time.');
+				return message.reply(message.translate('misc:WAITED_TOO_LONG'));
 			}
 
 			const first = collected.first().content;
-
 			if (first.toLowerCase() === 'cancel') {
 				if (!player.queue.current) player.destroy();
-				return message.channel.send('Cancelled selection.');
+				return message.channel.send(message.translate('misc:CANCELLED'));
 			}
 
 			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return message.reply(`The number you provided was too small or too big (1-${max}).`);
+			if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
 
 			const track = res.tracks[index];
 			if (player.state !== 'CONNECTED') player.connect();
@@ -118,7 +117,7 @@ module.exports = class Search extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				message.channel.send(`Added to queue: [${track.title}]`);
+				message.channel.send(message.translate('music/search:ADDED', { TITLE: track.title }));
 			}
 		}
 	}

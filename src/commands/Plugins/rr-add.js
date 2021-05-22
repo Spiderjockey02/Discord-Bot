@@ -81,7 +81,7 @@ module.exports = class ReactionRoleAdd extends Command {
 
 				// if message was 'cancel' then stop reaction role creation
 				if (roleMsgs.first().content.toLowerCase() === 'cancel') {
-					return message.channel.send('Cancelled selection.');
+					return message.channel.send(message.translate('misc:CANCELLED'));
 				}
 
 				// Validate the list of emoji for reaction roles
@@ -121,7 +121,7 @@ module.exports = class ReactionRoleAdd extends Command {
 
 				// if message was 'cancel' then stop reaction role creation
 				if (emojiMsgs.first().content.toLowerCase() === 'cancel') {
-					return message.channel.send('Cancelled selection.');
+					return message.channel.send(message.translate('misc:CANCELLED'));
 				}
 
 				// Validate the list of emoji for reaction roles

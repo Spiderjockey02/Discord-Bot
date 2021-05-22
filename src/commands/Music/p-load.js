@@ -1,5 +1,5 @@
 // Dependecies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ TrackUtils } = require('erela.js'),
 	Command = require('../../structures/Command.js');
@@ -68,12 +68,12 @@ module.exports = class PLoad extends Command {
 				});
 
 				content.then(async function() {
-					const embed = new MessageEmbed()
-						.setDescription(`Queued **${p.songs.length} songs** from **${message.args[0]}**.`);
+					const embed = new Embed(bot, message.guild)
+						.setDescription(message.translate('music/p-load:QUEUE', { NUM: p.songs.length, TITLE: message.args[0] }));
 					msg.edit('', embed);
 				});
 			} else {
-				msg.edit('No playlist found');
+				msg.edit(message.translate('music/p-load:NO_PLAYLIST'));
 			}
 		});
 	}

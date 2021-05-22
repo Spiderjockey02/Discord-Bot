@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Join extends Command {
@@ -20,15 +20,15 @@ module.exports = class Join extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Check that a song is being played
-		let player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager.players.get(message.guild.id);
 
 		// Make sure the user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.error(settings.Language, 'MUSIC/MISSING_VOICE');
+		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
 
 		// Check if bot has permission to connect to voice channel
 		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
@@ -45,13 +45,12 @@ module.exports = class Join extends Command {
 		// If no player (no song playing) create one and join channel
 		if (!player) {
 			try {
-				player = bot.manager.create({
+				await bot.manager.create({
 					guild: message.guild.id,
 					voiceChannel: message.member.voice.channel.id,
 					textChannel: message.channel.id,
 					selfDeafen: true,
-				});
-				await player.connect();
+				}).connect();
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -62,9 +61,9 @@ module.exports = class Join extends Command {
 			try {
 				await player.setVoiceChannel(message.member.voice.channel.id);
 				await player.setTextChannel(message.channel.id);
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
-					.setDescription(bot.translate(settings.Language, 'MUSIC/CHANNEL_MOVE'));
+					.setDescription(message.translate('music/join:MOVED'));
 				message.channel.send(embed);
 			} catch (err) {
 				if (message.deletable) message.delete();

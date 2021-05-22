@@ -5,6 +5,7 @@
 	"GENERATING_IMAGE": "{{EMOJI}} Generating your image..",
 	"NO_REASON": "No reason given.",
 	"WAITED_TOO_LONG": "You didn't reply in time",
+	"CANCELLED": "Cancelled selection",
 	"MISSING_PERMISSION": "I am missing the permission: `{{PERMISSIONS}}`.",
 	"USER_PERMISSION": "You are missing the permission: `{{PERMISSIONS}}`.",
 	"ID": "ID: {{ID}}",
@@ -17,7 +18,8 @@
 	"MISSING_ROLE": "You are missing the DJ role.",
 	"NOT_VOICE": "You're not in the same voice channel as me.",
 	"NO_QUEUE": "There are currently no songs playing in this server.",
-
+	"ENABLED": "Enabled",
+	"DISABLED": "Disabled",
 
 
 	"MISSING_ROLE": "I was unable to find this role.",

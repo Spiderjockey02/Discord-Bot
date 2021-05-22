@@ -39,17 +39,17 @@ module.exports = class PRemove extends Command {
 					} else if (!isNaN(message.args[1])) {
 						p.songs.splice(message.args[1] - 1, 1);
 					} else {
-						return message.channel.send('Not an option');
+						return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 					}
-					message.channel.send('Successfully updated playlist.');
 					await p.save();
+					message.channel.success('music/p-remove:SUCCESS');
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else {
-				message.channel.send('No playlist found.');
+				message.channel.error('music/p-remove:NO_PLAYLIST');
 			}
 		});
 	}

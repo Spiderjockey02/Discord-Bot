@@ -33,11 +33,11 @@ module.exports = class PDelete extends Command {
 			}
 
 			if (!p) {
-				message.channel.send(`Couldn't find a playlist by the name: ${message.args[0]}.`);
+				message.channel.error('music/p-delete:MISSING', { TITLE: message.args[0] });
 			} else {
 				try {
 					await PlaylistSchema.findOneAndRemove({ name: message.args[0],	creator: message.author.id });
-					message.channel.send(`Successfully deleted ${message.args[0]}`);
+					message.channel.success('music/p-delete:SUCCESS', { TITLE: message.args[0] });
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
