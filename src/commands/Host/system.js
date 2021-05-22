@@ -1,6 +1,7 @@
 // Dependencies
-const { MessageEmbed, version } = require('discord.js'),
+const { version } = require('discord.js'),
 	osu = require('node-os-utils'),
+	{ Embed } = require('../../utils'),
 	os = require('os'),
 	Command = require('../../structures/Command.js');
 
