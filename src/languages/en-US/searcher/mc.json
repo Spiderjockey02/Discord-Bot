@@ -1,1 +1,9 @@
-{"DESCRIPTION":"Pings a minecraft for information.","USAGE":"mc <IP> [Port]"}
+{
+  "DESCRIPTION": "Pings a minecraft for information.",
+  "USAGE": "mc <IP> [Port]",
+  "TITLE": "Server Status",
+  "IP": "Server IP:",
+  "VERSION": "Server Version:",
+  "DESC": "Description:",
+  "PLAYERS": "Online Players"
+}

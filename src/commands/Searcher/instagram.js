@@ -42,11 +42,8 @@ module.exports = class Instagram extends Command {
 		// Delete wait message
 		msg.delete();
 
-		// make sure there is data
-		if (res.size == 0) return;
-
 		// Checks to see if a username in instagram database
-		if (!res.graphql.user.username) return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+		if (res.size == 0 || !res.graphql.user.username) return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 
 		// Displays Data
 		const account = res.graphql.user;
@@ -55,14 +52,14 @@ module.exports = class Instagram extends Command {
 			.setTitle(account.full_name)
 			.setURL(`https://instagram.com/${username}`)
 			.setThumbnail(account.profile_pic_url)
-			.addField('Username:', account.username)
-			.addField('Full Name:', account.full_name)
-			.addField('Biography:', (account.biography.length == 0) ? 'None' : account.biography)
-			.addField('Posts:', account.edge_owner_to_timeline_media.count, true)
-			.addField('Followers:', account.edge_followed_by.count, true)
-			.addField('Following:', account.edge_follow.count, true)
-			.addField('Private Account:', account.is_private ? 'Yes 🔒' : 'No 🔓', true)
-			.addField('Verified account:', account.is_verified ? 'Yes ✅' : 'No ❌', true);
+			.addField(message.translate('searcher/instagram:USERNAME'), account.username)
+			.addField(message.translate('searcher/instagram:FULL_NAME'), account.full_name)
+			.addField(message.translate('searcher/instagram:BIOGRAPHY'), (account.biography.length == 0) ? 'None' : account.biography)
+			.addField(message.translate('searcher/instagram:POSTS'), account.edge_owner_to_timeline_media.count, true)
+			.addField(message.translate('searcher/instagram:FOLLOWERS'), account.edge_followed_by.count, true)
+			.addField(message.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count, true)
+			.addField(message.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
+			.addField(message.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
 		message.channel.send(embed);
 	}
 };

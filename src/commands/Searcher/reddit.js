@@ -37,10 +37,10 @@ module.exports = class Reddit extends Command {
 
 			// Send message to channel
 			const embed = new Embed(bot, message.guild)
-				.setTitle(`From /${reddit.post.subreddit}`)
+				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
 				.setURL(reddit.post.link)
 				.setImage(reddit.url)
-				.setFooter(`👍 ${reddit.post.upvotes}   👎 ${reddit.post.downvotes} | ${bot.translate(settings.Language, 'FUN/MEME_FOOTER')} KSOFT.API`);
+				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes, DOWNVOTES: reddit.post.downvotes });
 			msg.delete();
 			message.channel.send(embed);
 		} catch (err) {

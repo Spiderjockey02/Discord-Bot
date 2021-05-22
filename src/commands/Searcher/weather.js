@@ -32,14 +32,14 @@ module.exports = class Weather extends Command {
 			// Display weather at location
 			try {
 				const embed = new Embed(bot, message.guild)
-					.setTitle(bot.translate(settings.Language, 'SEARCHER/WEATHER_TITLE', result[0].location.name))
-					.setDescription(bot.translate(settings.Language, 'SEARCHER/WEATHER_DESCRIPTION'))
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_TEMP'), `${result[0].current.temperature}°C`, true)
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_SKY'), result[0].current.skytext, true)
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_HUMIDITY'), `${result[0].current.humidity}%`, true)
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_SPEED'), result[0].current.windspeed, true)
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_TIME'), result[0].current.observationtime, true)
-					.addField(bot.translate(settings.Language, 'SEARCHER/WEATHER_DISPLAY'), result[0].current.winddisplay, true)
+					.setTitle(message.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
+					.setDescription(message.translate('searcher/weather:DESC'))
+					.addField(message.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
+					.addField(message.translate('searcher/weather:SKY'), result[0].current.skytext, true)
+					.addField(message.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
+					.addField(message.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
+					.addField(message.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
+					.addField(message.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
 					.setThumbnail(result[0].current.imageUrl);
 				msg.delete();
 				message.channel.send(embed);

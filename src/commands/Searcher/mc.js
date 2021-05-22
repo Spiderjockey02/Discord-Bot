@@ -1,6 +1,7 @@
 // Dependencies
 const { status } = require('minecraft-server-util'),
-	{ MessageEmbed, MessageAttachment } = require('discord.js'),
+	{ MessageAttachment } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class MC extends Command {
@@ -37,14 +38,14 @@ module.exports = class MC extends Command {
 
 			const embed = new Embed(bot, message.guild)
 				.setColor(0x0099ff)
-				.setTitle('Server Status')
+				.setTitle('searcher/mc:TITLE')
 				.attachFiles([attachment])
 				.setThumbnail('attachment://favicon.png')
 				.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`)
-				.addField('Server IP:', response.host)
-				.addField('Server Version:', response.version)
-				.addField('Description:', response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
-				.addField('Online Players', `${response.onlinePlayers}/${response.maxPlayers}`);
+				.addField(message.translate('searcher/mc:IP'), response.host)
+				.addField(message.translate('searcher/mc:VERSION'), response.version)
+				.addField(message.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
+				.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers}/${response.maxPlayers}`);
 			msg.delete();
 			message.channel.send(embed);
 		}).catch(err => {

@@ -20,9 +20,9 @@ module.exports = class Twitch extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// Get information on twitch accounts
-		if (!message.args[0]) return message.channel.send('Please enter a Twitch username');
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/twitch:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		const user = message.args[0];
 
 		// send 'waiting' message to show bot has recieved message
@@ -34,23 +34,22 @@ module.exports = class Twitch extends Command {
 			const twitchUser = await getUserByUsername(user);
 			if (twitchUser) {
 				const stream = await getStreamByUsername(user);
-				const embed = new Embed(bot, message.guild);
-				embed
+				const embed = new Embed(bot, message.guild)
 					.setTitle(twitchUser.display_name)
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
 					.setThumbnail(twitchUser.profile_image_url)
 					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
-					.addField('Biography:', twitchUser.description || 'This user doesn\'t have a biography.', true)
-					.addField('Total Views', twitchUser.view_count, true)
-					.addField('Followers', await getFollowersFromId(twitchUser.id), true);
+					.addField(message.translate('searcher/twitch:BIO'), twitchUser.description || message.translate('searcher/twitch:NO_BIO'), true)
+					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count, true)
+					.addField(message.translate('searcher/twitch:FOLLOWERS'), await getFollowersFromId(twitchUser.id), true);
 				if (stream) {
 					embed
-						.addField('\u200B', `**${stream.title}** for ${stream.viewer_count} viewers`)
+						.addField('\u200B', message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
 				message.channel.send(embed);
 			} else {
-				message.channel.send('Twitch user not found.');
+				message.channel.error('searcher/twitch:NOT_FOUND');
 			}
 			msg.delete();
 		} catch (err) {

@@ -1,1 +1,4 @@
-{"DESCRIPTION":"Gets statistics on a Rainbow 6 Account.","USAGE":"r6 <user> [pc / xbox / ps4] [eu / na / as]"}
+{
+  "DESCRIPTION": "Gets statistics on a Rainbow 6 Account.",
+  "USAGE": "r6 <user> [pc / xbox / ps4] [eu / na / as]"
+}

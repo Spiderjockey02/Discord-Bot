@@ -34,16 +34,16 @@ module.exports = class Fortnite extends Command {
 		await bot.Fortnite.user(username, platform).then(async data => {
 			const embed = new Embed(bot, message.guild)
 				.setColor(0xffffff)
-				.setTitle(`Stats for ${data.username}`)
+				.setTitle('searcher/fortnite:TITLE', { USER: data.username })
 				.setURL(data.url)
-				.setDescription(`**Top placements**\n\n**Top 3's:** *${data.stats.lifetime.top_3}*\n**Top 5's:** *${data.stats.lifetime.top_5}*\n**Top 6's:** *${data.stats.lifetime.top_6}*\n**Top 12's:** *${data.stats.lifetime.top_12}*\n**Top 25's:** *${data.stats.lifetime.top_25}*`)
+				.setDescription(message.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3, TOP_5: data.stats.lifetime.top_5, TOP_6: data.stats.lifetime.top_6, TOP_12: data.stats.lifetime.top_12, TOP_25: data.stats.lifetime.top_25 }))
 				.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
-				.addField('Total Score:', data.stats.solo.score + data.stats.duo.score + data.stats.squad.score, true)
-				.addField('Matches Played:', data.stats.lifetime.matches, true)
-				.addField('Wins:', data.stats.lifetime.wins, true)
-				.addField('Win percentage:', `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
-				.addField('Kills:', data.stats.lifetime.kills, true)
-				.addField('K/D Ratio:', data.stats.lifetime.kd, true);
+				.addField(message.translate('searcher/fortnite:TOTAL'), data.stats.solo.score + data.stats.duo.score + data.stats.squad.score, true)
+				.addField(message.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches, true)
+				.addField(message.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins, true)
+				.addField(message.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
+				.addField(message.translate('searcher/fortnite:KILLS'), data.stats.lifetime.kills, true)
+				.addField(message.translate('searcher/fortnite:K/D'), data.stats.lifetime.kd, true);
 			await message.channel.send(embed);
 		}).catch(err => {
 			if (message.deletable) message.delete();
