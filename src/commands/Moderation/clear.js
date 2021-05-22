@@ -62,10 +62,11 @@ module.exports = class Clear extends Command {
 						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
 						await bot.delay(5000);
 
-						let x = amount, y = 0;
-						while (x !== 0) {
+						let x = 0, y = 0;
+						const z = amount;
+						while (x !== Math.ceil(amount / 100)) {
 							try {
-								let messages = await message.channel.messages.fetch({ limit: x > 100 ? 100 : x });
+								let messages = await message.channel.messages.fetch({ limit: z > 100 ? 100 : z });
 								// Delete user messages
 								if (message.args[1]) {
 									const member = message.getMember();
@@ -75,10 +76,10 @@ module.exports = class Clear extends Command {
 								// delete the message
 								const delMessages = await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 								y += delMessages.size;
-								x = x - messages.size;
+								x++;
 								await bot.delay(5000);
 							} catch (e) {
-								x = 0;
+								x = Math.ceil(amount / 100);
 							}
 						}
 						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.delete({ timeout: 3000 }));
