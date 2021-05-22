@@ -2,7 +2,7 @@ const { Manager } = require('erela.js'),
 	Deezer = require('erela.js-deezer'),
 	Spotify = require('erela.js-spotify'),
 	Facebook = require('erela.js-facebook'),
-	{ Embed } = require('../../utils');
+	{ Embed } = require('../utils');
 require('../structures/Player');
 
 module.exports = async (bot) => {

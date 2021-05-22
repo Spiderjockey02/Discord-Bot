@@ -1,7 +1,7 @@
 // Dependencies
 const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
-	{ Embed } = require('../../utils'),
+	{ Embed } = require('../utils'),
 	{ MessageAttachment } = require('discord.js');
 
 module.exports = async (bot) => {
