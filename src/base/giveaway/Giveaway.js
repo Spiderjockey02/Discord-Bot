@@ -298,7 +298,7 @@ class Giveaway extends EventEmitter {
 					this.messages.winMessage
 						.replace('{winners}', formattedWinners)
 						.replace('{prize}', this.prize)
-						.replace('{messageURL}', this.messageURL), { disableMentions: 'everyone' },
+						.replace('{messageURL}', this.messageURL), { allowedMentions: { users: winners.map(w => w.id) } },
 				);
 				resolve(winners);
 			} else {
