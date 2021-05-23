@@ -60,7 +60,7 @@ module.exports = class PCreate extends Command {
 		// Get songs to add to playlist
 		let res;
 		try {
-			res = await bot.manager.search(message.args[1], message.author);
+			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 		} catch (err) {
 			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
 		}
@@ -70,15 +70,53 @@ module.exports = class PCreate extends Command {
 			// An error occured or couldn't find the track
 			msg.delete();
 			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
-		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
+		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED' || res.loadType == 'SEARCH_RESULT') {
+			let tracks = [], thumbnail, duration;
+			if (res.loadType == 'SEARCH_RESULT') {
+				// Display the options for search
+				let max = 10, collected;
+				const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
+				if (res.tracks.length < max) max = res.tracks.length;
+
+				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+				const embed = new Embed(bot, message.guild)
+					.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
+					.setColor(message.member.displayHexColor)
+					.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
+				const search = await message.channel.send(embed);
+
+				try {
+					collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+				} catch (e) {
+					return message.reply(message.translate('misc:WAITED_TOO_LONG'));
+				}
+
+				const first = collected.first().content;
+				if (first.toLowerCase() === 'cancel') {
+					return message.channel.send(message.translate('misc:CANCELLED'));
+				}
+
+				const index = Number(first) - 1;
+				if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
+
+				tracks.push(res.tracks[index]);
+				thumbnail = res.tracks[index].thumbnail;
+				duration = res.tracks[index].duration;
+				search.delete();
+			} else {
+				tracks = res.tracks.slice(0, message.author.premium ? 200 : 100);
+				thumbnail = res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail;
+				duration = res.playlist?.duration ?? res.tracks[0].duration;
+			}
+
 			// Save playlist to database
 			const newPlaylist = new PlaylistSchema({
 				name: message.args[0],
-				songs: res.tracks.slice(0, message.author.premium ? 200 : 100),
+				songs: tracks,
 				timeCreated: Date.now(),
-				thumbnail: res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail,
+				thumbnail: thumbnail,
 				creator: message.author.id,
-				duration: res.playlist?.duration ?? res.tracks[0].duration,
+				duration: duration,
 			});
 			newPlaylist.save().catch(err => bot.logger.error(err.message));
 
@@ -88,43 +126,11 @@ module.exports = class PCreate extends Command {
 				.setDescription([
 					message.translate('music/p-create:DESC_1', { TITLE: message.args[0] }),
 					message.translate('music/p-create:DESC_2', { NUM: bot.timeFormatter.getReadableTime(parseInt(newPlaylist.duration)) }),
-					message.translate('music/p-create:DESC_3', { NAME: (res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : res.tracks[0].title, NUM: res.tracks.length, TITLE: message.args[0] }),
+					message.translate('music/p-create:DESC_3', { NAME: (res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : tracks[0].title, NUM: tracks.length, TITLE: message.args[0] }),
 				].join('\n'))
 				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })
 				.setTimestamp();
 			msg.edit('', embed);
-		} else if (res.loadType == 'SEARCH_RESULT') {
-			// Display the options for search
-			let max = 10, collected;
-			const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-			if (res.tracks.length < max) max = res.tracks.length;
-
-			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-			const embed = new Embed(bot, message.guild)
-				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
-				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-			message.channel.send(embed);
-
-			try {
-				collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
-			} catch (e) {
-				return message.reply(message.translate('misc:WAITED_TOO_LONG'));
-			}
-
-			const first = collected.first().content;
-			if (first.toLowerCase() === 'cancel') {
-				return message.channel.send(message.translate('misc:CANCELLED'));
-			}
-
-			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
-
-			const track = res.tracks[index];
-			p.songs.push(track);
-			p.duration = parseInt(p.duration) + parseInt(track.duration);
-			await p.save();
-			message.channel.success('music/p-add:SUCCESS', { NUM: 1, TITLE: track.title });
 		} else {
 			msg.delete();
 			return message.channel.error('music/p-create:NO_SONG');
