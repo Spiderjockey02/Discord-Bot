@@ -37,14 +37,16 @@ module.exports = class RoleInfo extends Command {
 			.setColor(role[0].color)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(message.translate('guild/role-info:NAME', { NAME: role[0].name }))
-			.addField(message.translate('guild/role-info:MEMBERS'), role[0].members.size, true)
-			.addField(message.translate('guild/role-info:COLOR'), role[0].hexColor, true)
-			.addField(message.translate('guild/role-info:POSITION'), role[0].position, true)
-			.addField(message.translate('guild/role-info:MENTION'), `<@&${role[0].id}>`, true)
-			.addField(message.translate('guild/role-info:HOISTED'), role[0].hoist, true)
-			.addField(message.translate('guild/role-info:MENTIONABLE'), role[0].mentionable, true)
-			.addField(message.translate('guild/role-info:PERMISSION'), permissions)
-			.addField(message.translate('guild/role-info:CREATED'), moment(role[0].createdAt).format('lll'))
+			.addFields(
+				{ name: message.translate('guild/role-info:MEMBERS'), value: role[0].members.size, inline: true },
+				{ name: message.translate('guild/role-info:COLOR'), value: role[0].hexColor, inline: true },
+				{ name: message.translate('guild/role-info:POSITION'), value: role[0].position, inline: true },
+				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${role[0].id}>`, inline: true },
+				{ name: message.translate('guild/role-info:HOISTED'), value: role[0].hoist, inline: true },
+				{ name: message.translate('guild/role-info:MENTIONABLE'), value: role[0].mentionable, inline: true },
+				{ name: message.translate('guild/role-info:PERMISSION'), value: permissions },
+				{ name: message.translate('guild/role-info:CREATED'), value: moment(role[0].createdAt).format('lll') },
+			)
 			.setTimestamp()
 			.setFooter('guild/role-info:FOOTER', { MEMBER: message.author.tag, ID: role[0].id });
 		message.channel.send(embed);

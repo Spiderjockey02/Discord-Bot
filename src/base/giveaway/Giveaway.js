@@ -183,7 +183,7 @@ class Giveaway extends EventEmitter {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.messageID) return;
-			const message = await this.channel.messages.fetch(this.messageID).catch(e => {});
+			const message = await this.channel.messages.fetch(this.messageID).catch(() => {});
 			if (!message) {
 				this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageID !== this.messageID);
 				this.manager.deleteGiveaway(this.messageID);

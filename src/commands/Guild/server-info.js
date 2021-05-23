@@ -31,17 +31,19 @@ module.exports = class ServerInfo extends Command {
 			.setAuthor(message.translate('guild/server-info:AUTHOR', { NAME: message.guild.name }), message.guild.iconURL())
 			.setColor(3447003)
 			.setThumbnail(message.guild.iconURL())
-			.addField(message.translate('guild/server-info:NAME'), `\`${message.guild.name}\``, true)
-			.addField(message.translate('guild/server-info:OWNER'), `\`${message.guild.owner.user.tag}\``, true)
-			.addField(message.translate('guild/server-info:ID'), `\`${message.guild.id}\``, true)
-			.addField(message.translate('guild/server-info:CREATED'), `\`${moment(message.guild.createdAt).format('MMMM Do YYYY')}\``, true)
-			.addField(message.translate('guild/server-info:REGION'), `\`${message.guild.region}\``, true)
-			.addField(message.translate('guild/server-info:VERIFICATION'), `\`${message.guild.verificationLevel}\``, true)
-			.addField(message.translate('guild/server-info:MEMBER', { NUM: message.guild.memberCount }), message.translate('guild/server-info:MEMBER_DESC', {
-				ONLINE: member.filter(m => m.presence.status === 'online').size, IDLE: member.filter(m => m.presence.status === 'idle').size, DND: member.filter(m => m.presence.status === 'dnd').size, BOTS: member.filter(m => m.user.bot).size, HUMANS: member.filter(m => !m.user.bot).size,
-			}), true)
-			.addField(message.translate('guild/server-info:FEATURES'), `\`${(message.guild.features.length == 0) ? message.translate('misc:NONE') : message.guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, true)
-			.addField(message.translate('guild/server-info:ROLES', { NUM: message.guild.roles.cache.size }), `${roles.join(', ')}${(roles.length != message.guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}`)
+			.addFields(
+				{ name: message.translate('guild/server-info:NAME'), value: `\`${message.guild.name}\``, inline: true },
+				{ name: message.translate('guild/server-info:OWNER'), value: `\`${message.guild.owner.user.tag}\``, inline: true },
+				{ name: message.translate('guild/server-info:ID'), value: `\`${message.guild.id}\``, inline: true },
+				{ name: message.translate('guild/server-info:CREATED'), value: `\`${moment(message.guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
+				{ name: message.translate('guild/server-info:REGION'), value: `\`${message.guild.region}\``, inline: true },
+				{ name: message.translate('guild/server-info:VERIFICATION'), value: `\`${message.guild.verificationLevel}\``, inline: true },
+				{ name: message.translate('guild/server-info:MEMBER', { NUM: message.guild.memberCount }), value: message.translate('guild/server-info:MEMBER_DESC', {
+					ONLINE: member.filter(m => m.presence.status === 'online').size, IDLE: member.filter(m => m.presence.status === 'idle').size, DND: member.filter(m => m.presence.status === 'dnd').size, BOTS: member.filter(m => m.user.bot).size, HUMANS: member.filter(m => !m.user.bot).size,
+				}), inline: true },
+				{ name: message.translate('guild/server-info:FEATURES'), value: `\`${(message.guild.features.length == 0) ? message.translate('misc:NONE') : message.guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
+				{ name: message.translate('guild/server-info:ROLES', { NUM: message.guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != message.guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },
+			)
 			.setTimestamp()
 			.setFooter('guild/server-info:FOOTER', { USER: message.author.tag });
 		message.channel.send(embed);

@@ -24,7 +24,7 @@ module.exports = class Stickbug extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// Try and convert image
 		try {

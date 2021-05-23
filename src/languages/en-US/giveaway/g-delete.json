@@ -2,5 +2,5 @@
   "DESCRIPTION": "Delete a giveaway",
   "USAGE": "g-delete <messageID>",
   "SUCCESS_GIVEAWAY": "Success! Giveaway deleted!",
-  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{MESSAGEID}}`, please check and try again."
+  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again."
 }

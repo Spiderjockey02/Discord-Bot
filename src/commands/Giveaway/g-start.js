@@ -9,7 +9,7 @@ module.exports = class G_start extends Command {
 			dirname: __dirname,
 			aliases: ['gstart', 'g-create'],
 			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'BAN_MEMBERS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
 			description: 'Start a giveaway',
 			usage: 'g-start <time> <Number of winners> <prize>',
 			cooldown: 30000,

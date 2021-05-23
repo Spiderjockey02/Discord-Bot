@@ -37,7 +37,7 @@ module.exports = class G_reroll extends Command {
 			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
 		}).catch((err) => {
 			bot.logger.error(`Command: 'g-reroll' has error: ${err.message}.`);
-			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { MESSAGEID: messageID }));
+			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		});
 	}
 };

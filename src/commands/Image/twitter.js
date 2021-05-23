@@ -20,7 +20,7 @@ module.exports = class Twitter extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 		if (message.args.join(' ').replace(/<@.?[0-9]*?>/g, '').length == message.args.length) message.args.shift();
 
 		// Get text
@@ -31,15 +31,15 @@ module.exports = class Twitter extends Command {
 		if (message.args.length == 0) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/twitter:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 60 characters
-		if (text.length >= 61) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 60).then(m => m.delete({ timeout: 5000 }));
+		if (text.length >= 61) return message.channel.error('image/twitter:TOO_LONG').then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${member[0].user.username}&text=${text}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${members[0].user.username}&text=${text}`)).then(res => res.json());
 
 			// send image in embed
 			const embed = new Embed(bot, message.guild)

@@ -47,7 +47,7 @@ module.exports = class Pokemon extends Command {
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
-		message.channel.send(embed);
 		msg.delete();
+		message.channel.send(embed);
 	}
 };

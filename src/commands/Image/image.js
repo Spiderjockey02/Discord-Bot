@@ -27,14 +27,13 @@ module.exports = class Image extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// get results (image links etc)
 		try {
 			const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
 
 			// send image
-			msg.delete();
 			const embed = new Embed(bot, message.guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
 			message.channel.send(embed);
@@ -43,5 +42,6 @@ module.exports = class Image extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
+		msg.delete();
 	}
 };

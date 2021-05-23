@@ -25,11 +25,11 @@ module.exports = class Clyde extends Command {
 		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/clyde:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 70 characters
-		if (text.length >= 71) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 70).then(m => m.delete({ timeout: 5000 }));
+		if (text.length >= 71) return message.channel.error('image/clyde:TOO_LONG').then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=clyde&text=${text}`)).then(res => res.json());

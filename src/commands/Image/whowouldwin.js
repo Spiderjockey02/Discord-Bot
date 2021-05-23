@@ -18,17 +18,18 @@ module.exports = class WhoWouldWin extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// Get user
-		const member = message.getMember();
+		const members = await message.getImage();
+		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/ship:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=whowouldwin&user1=${member[0].user.displayAvatarURL({ format: 'png', size: 512 })}&user2=${member[1].user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=whowouldwin&user1=${members[0]}&user2=${members[1]}`)).then(res => res.json());
 
 			// send image in embed
 			const embed = new Embed(bot, message.guild)

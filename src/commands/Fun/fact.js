@@ -27,11 +27,11 @@ module.exports = class Fact extends Command {
 			}
 
 			// Retrieve a random fact
-			const facts = JSON.parse(data);
-			const num = Math.floor((Math.random() * facts.facts.length));
+			const { facts } = JSON.parse(data);
+			const num = Math.floor((Math.random() * facts.length));
 			const embed = new Embed(bot, message.guild)
 				.setTitle('fun/fact:FACT_TITLE')
-				.setDescription(facts.facts[num]);
+				.setDescription(facts[num]);
 			message.channel.send(embed);
 		});
 	}

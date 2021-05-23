@@ -35,7 +35,7 @@ module.exports = class G_delete extends Command {
 		}).catch((err) => {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: 'g-delete' has error: ${err.message}.`);
-			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { MESSAGEID: messageID }));
+			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		});
 	}
 };

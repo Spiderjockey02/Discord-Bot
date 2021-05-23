@@ -1,8 +1,6 @@
 // Dependencies
 const { EventEmitter } = require('events'),
-	merge = require('deepmerge'),
 	Discord = require('discord.js'),
-	{ defaultGiveawayMessages, defaultManagerOptions, defaultRerollOptions } = require('./Constants.js'),
 	Giveaway = require('./Giveaway.js'),
 	{ GiveawaySchema } = require('../../database/models');
 
@@ -14,7 +12,7 @@ class GiveawaysManager extends EventEmitter {
 		this.client = client;
 		this.ready = false;
 		this.giveaways = [];
-		this.options = merge(defaultManagerOptions, options);
+		this.options = options;
 		if (init) this._init();
 	}
 
@@ -93,9 +91,6 @@ class GiveawaysManager extends EventEmitter {
 			if (!this.ready) {
 				return reject('The manager is not ready yet.');
 			}
-			options.messages = options.messages
-				? merge(defaultGiveawayMessages, options.messages)
-				: defaultGiveawayMessages;
 			if (!channel || !channel.id) {
 				return reject(`channel is not a valid guildchannel. (val=${channel})`);
 			}
@@ -141,7 +136,6 @@ class GiveawaysManager extends EventEmitter {
 	reroll(messageID, options = {}) {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
-			options = merge(defaultRerollOptions, options);
 			const giveawayData = this.giveaways.find((g) => g.messageID === messageID);
 			if (!giveawayData) {
 				return reject('No giveaway found with ID ' + messageID + '.');

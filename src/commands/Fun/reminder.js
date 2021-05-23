@@ -33,7 +33,7 @@ module.exports = class Reminder extends Command {
 		message.args.shift();
 
 		// send reminder
-		await message.channel.send(message.translate('fun/reminder:MESSAGE', { INFO: message.args.join(' '), TIME:ms(time, { long: true }) })).then(async () => {
+		await message.channel.send(message.translate('fun/reminder:MESSAGE', { INFO: message.args.join(' '), TIME: ms(time, { long: true }) })).then(async () => {
 			// save to DB
 			const newEvent = await new timeEventSchema({
 				userID: message.author.id,

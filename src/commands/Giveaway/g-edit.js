@@ -23,14 +23,13 @@ module.exports = class G_edit extends Command {
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (message.args.length != 4) {
+		if (message.args.length <= 3) {
 			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
-
 		// Get new Time
-		const time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
+		const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
 		if (!time) return;
 
 		// Get new winner count
@@ -41,14 +40,14 @@ module.exports = class G_edit extends Command {
 
 		// Update giveaway
 		bot.giveawaysManager.edit(message.args[0], {
-			newWinnerCount: message.args[2],
+			newWinnerCount: parseInt(message.args[2]),
 			newPrize: message.args.slice(3).join(' '),
 			addTime: time,
 		}).then(() => {
 			message.channel.send(bot.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }));
 		}).catch((err) => {
 			bot.logger.error(`Command: 'g-edit' has error: ${err.message}.`);
-			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { MESSAGEID: message.args[0] }));
+			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: message.args[0] }));
 		});
 	}
 };

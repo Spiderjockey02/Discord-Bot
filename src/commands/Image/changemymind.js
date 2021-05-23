@@ -26,11 +26,11 @@ module.exports = class ChangeMyMind extends Command {
 		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/changemymind:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// make sure the text isn't longer than 80 characters
-		if (text.length >= 81) return message.channel.error(settings.Language, 'IMAGE/TEXT_OVERLOAD', 80).then(m => m.delete({ timeout: 5000 }));
+		if (text.length >= 81) return message.channel.error('image/changemymind:TOO_LONG').then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// Try and convert image
 		try {

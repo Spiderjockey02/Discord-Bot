@@ -28,24 +28,20 @@ module.exports = class Generate extends Command {
 	async run(bot, message, settings) {
 		if (message.args[0] == 'list' || message.args[0] == '?' || !message.args[0]) {
 			const embed = new Embed(bot, message.guild)
-				.setDescription(bot.translate(settings.Language, 'IMAGE/GENERATE_DESC', [`${image_1.join('`, `')}`, `${image_2.join('`, `')}`]));
+				.setDescription(message.translate('image/generate:DESC', { IMG_1: `${image_1.join('`, `')}`, IMG_2: `${image_2.join('`, `')}` }));
 			message.channel.send(embed);
 		} else {
 			// Get image, defaults to author's avatar
 			const choice = message.args[0];
 			message.args.shift();
 			const file = await message.getImage();
-			// Check if bot has permission to attach files
-			if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
-				bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
-				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
-			}
 
 			// send 'waiting' message
 			let image, msg;
 			if (image_1.includes(choice)) {
-				// send 'waiting' message
-				msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+				// send 'waiting' message to show bot has recieved message
+				msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
+					EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 				// get image
 				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'url' : file[0] }, {
@@ -64,8 +60,9 @@ module.exports = class Generate extends Command {
 				// Check that 2 files have been uploaded
 				if (!file[1]) return message.channel.error(settings.Language, 'IMAGE/NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
 
-				// send 'waiting' message
-				msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+				// send 'waiting' message to show bot has recieved message
+				msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
+					EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 				// get image
 				image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, { 'avatar': file[1], 'url' : file[0] }, {

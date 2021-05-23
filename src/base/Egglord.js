@@ -70,6 +70,9 @@ module.exports = class Egglord extends Client {
 
 		// for language translation
 		this.languages = require('../languages/language-meta.json');
+
+		// for waiting for things
+		this.delay = ms => new Promise(res => setTimeout(res, ms));
 	}
 
 	// when the bot joins create guild settings
