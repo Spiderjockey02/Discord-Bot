@@ -30,13 +30,13 @@ module.exports = class Ban extends Command {
 		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user is real
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
 			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
@@ -51,13 +51,13 @@ module.exports = class Ban extends Command {
 					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
 					.addField(message.translate('moderation/ban:BAN_BY'), message.author.tag, true)
 					.addField(message.translate('misc:REASON'), reason, true);
-				await member[0].send(embed);
+				await members[0].send(embed);
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 
 			// Ban user from guild
-			await member[0].ban({ reason: reason });
-			message.channel.success('moderation/ban:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 8000 }));
+			await members[0].ban({ reason: reason });
+			message.channel.success('moderation/ban:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];
@@ -67,7 +67,7 @@ module.exports = class Ban extends Command {
 
 				// connect to database
 				const newEvent = await new timeEventSchema({
-					userID: member[0].user.id,
+					userID: members[0].user.id,
 					guildID: message.guild.id,
 					time: new Date(new Date().getTime() + time),
 					channelID: message.channel.id,
@@ -77,7 +77,7 @@ module.exports = class Ban extends Command {
 
 				// unban user
 				setTimeout(async () => {
-					message.args[0] = member[0].user.id;
+					message.args[0] = members[0].user.id;
 					await bot.commands.get('unban').run(bot, message, settings);
 
 					// Delete item from database as bot didn't crash

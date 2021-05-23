@@ -21,34 +21,34 @@ module.exports = class RoleInfo extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Check to see if a role was mentioned
-		const role = message.getRole();
+		const roles = message.getRole();
 
 		// Make sure it's a role on the server
-		if (!role[0]) {
+		if (!roles[0]) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// translate permissions
-		const permissions = role[0].permissions.toArray().map((p) => message.translate(`permissions:${p}`)).join(' » ');
+		const permissions = roles[0].permissions.toArray().map((p) => message.translate(`permissions:${p}`)).join(' » ');
 
 		// Send information to channel
 		const embed = new Embed(bot, message.guild)
-			.setColor(role[0].color)
+			.setColor(roles[0].color)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setDescription(message.translate('guild/role-info:NAME', { NAME: role[0].name }))
+			.setDescription(message.translate('guild/role-info:NAME', { NAME: roles[0].name }))
 			.addFields(
-				{ name: message.translate('guild/role-info:MEMBERS'), value: role[0].members.size, inline: true },
-				{ name: message.translate('guild/role-info:COLOR'), value: role[0].hexColor, inline: true },
-				{ name: message.translate('guild/role-info:POSITION'), value: role[0].position, inline: true },
-				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${role[0].id}>`, inline: true },
-				{ name: message.translate('guild/role-info:HOISTED'), value: role[0].hoist, inline: true },
-				{ name: message.translate('guild/role-info:MENTIONABLE'), value: role[0].mentionable, inline: true },
+				{ name: message.translate('guild/role-info:MEMBERS'), value: roles[0].members.size, inline: true },
+				{ name: message.translate('guild/role-info:COLOR'), value: roles[0].hexColor, inline: true },
+				{ name: message.translate('guild/role-info:POSITION'), value: roles[0].position, inline: true },
+				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${roles[0].id}>`, inline: true },
+				{ name: message.translate('guild/role-info:HOISTED'), value: roles[0].hoist, inline: true },
+				{ name: message.translate('guild/role-info:MENTIONABLE'), value: roles[0].mentionable, inline: true },
 				{ name: message.translate('guild/role-info:PERMISSION'), value: permissions },
-				{ name: message.translate('guild/role-info:CREATED'), value: moment(role[0].createdAt).format('lll') },
+				{ name: message.translate('guild/role-info:CREATED'), value: moment(roles[0].createdAt).format('lll') },
 			)
 			.setTimestamp()
-			.setFooter('guild/role-info:FOOTER', { MEMBER: message.author.tag, ID: role[0].id });
+			.setFooter('guild/role-info:FOOTER', { MEMBER: message.author.tag, ID: roles[0].id });
 		message.channel.send(embed);
 	}
 };

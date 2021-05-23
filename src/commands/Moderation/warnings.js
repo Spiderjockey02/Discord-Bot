@@ -21,12 +21,12 @@ module.exports = class Warnings extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// get warnings of user
 		try {
 			await WarningSchema.find({
-				userID: member[0].id,
+				userID: members[0].id,
 				guildID: message.guild.id,
 			}, (err, warn) => {
 				// if an error occured
@@ -47,7 +47,7 @@ module.exports = class Warnings extends Command {
 					}
 
 					const embed = new Embed(bot, message.guild)
-						.setTitle('moderation/warns:TITLE', { USER: member[0].user.username })
+						.setTitle('moderation/warns:TITLE', { USER: members[0].user.username })
 						.setDescription(list)
 						.setTimestamp();
 					message.channel.send(embed);

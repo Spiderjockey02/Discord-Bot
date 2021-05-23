@@ -18,7 +18,7 @@ module.exports = class Status extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get information on the services the bot provide
-		const m = await message.channel.send('Pong');
+		const m = await message.channel.send(message.translate('misc/status:PONG'));
 
 		const embed = new Embed(bot, message.guild)
 			.addField(bot.translate('misc/status:PING'), `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)

@@ -19,7 +19,7 @@ module.exports = class Threats extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get image, defaults to author's avatar
-		const file = await message.getImage();
+		const files = await message.getImage();
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -27,7 +27,7 @@ module.exports = class Threats extends Command {
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${file[0]}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${files[0]}`)).then(res => res.json());
 
 			// send image in embed
 			const embed = new Embed(bot, message.guild)

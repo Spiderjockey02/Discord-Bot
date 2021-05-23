@@ -26,22 +26,22 @@ module.exports = class Undeafen extends Command {
 		if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Checks to make sure user is in the server
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// Make sure that the user is in a voice channel
-		if (member[0]?.voice.channel) {
+		if (members[0]?.voice.channel) {
 			// Make sure bot can deafen members
-			if (!member[0].voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
+			if (!members[0].voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
 				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 			}
 
 			// Make sure user isn't trying to punish themselves
-			if (member[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 			try {
-				await member[0].voice.setDeaf(false);
-				message.channel.success('moderation/undeafen:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 3000 }));
+				await members[0].voice.setDeaf(false);
+				message.channel.success('moderation/undeafen:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
 			} catch(err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

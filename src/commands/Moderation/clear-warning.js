@@ -27,13 +27,13 @@ module.exports = class ClearWarning extends Command {
 		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// get warnings of user
 		try {
 			// find data
 			const warns = await WarningSchema.find({
-				userID: member[0].user.id,
+				userID: members[0].user.id,
 				guildID: message.guild.id,
 			});
 
@@ -42,9 +42,9 @@ module.exports = class ClearWarning extends Command {
 				// Delete item from database as bot didn't crash
 				await WarningSchema.findByIdAndRemove(warns[message.args[1] - 1]._id);
 			} else {
-				await WarningSchema.deleteMany({ userID: member[0].user.id, guildID: message.guild.id });
+				await WarningSchema.deleteMany({ userID: members[0].user.id, guildID: message.guild.id });
 			}
-			message.channel.send(message.translate('moderation/clear-warning:CLEARED', { MEMBER: member[0] }));
+			message.channel.send(message.translate('moderation/clear-warning:CLEARED', { MEMBER: members[0] }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

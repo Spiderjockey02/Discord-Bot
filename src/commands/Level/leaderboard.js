@@ -24,6 +24,10 @@ module.exports = class Leaderboard extends Command {
 
 	// Run command
 	async run(bot, message) {
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+
 		// Retrieve Ranks from database
 		RankSchema.find({
 			guildID: message.guild.id,
@@ -43,6 +47,7 @@ module.exports = class Leaderboard extends Command {
 			if (!res[0]) {
 				// If there no results
 				embed.addField(message.translate('level/leaderboard:EMPTY_TITLE'), message.translate('level/leaderboard:EMPTY_DESC'));
+				msg.delete();
 				message.channel.send(embed);
 			} else {
 				// Get number of pages to generate
@@ -73,6 +78,7 @@ module.exports = class Leaderboard extends Command {
 					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
 					else if(pagesNum == 1) message.channel.send(embed2);
 				}
+				msg.delete();
 			}
 		});
 	}

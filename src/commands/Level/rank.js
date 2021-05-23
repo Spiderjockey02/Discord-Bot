@@ -22,7 +22,7 @@ module.exports = class Rank extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -31,7 +31,7 @@ module.exports = class Rank extends Command {
 		// Retrieve Rank from databse
 		try {
 			await RankSchema.findOne({
-				userID: member[0].id,
+				userID: members[0].id,
 				guildID: message.guild.id,
 			}, (err, Xp) => {
 				if (err) {
@@ -52,19 +52,19 @@ module.exports = class Rank extends Command {
 						if (err) console.log(err);
 						let rankScore;
 						for (let i = 0; i < res.length; i++) {
-							if (res[i].userID == member[0].user.id) rankScore = i;
+							if (res[i].userID == members[0].user.id) rankScore = i;
 						}
 						// create rank card
 						const rankcard = new rank()
-							.setAvatar(member[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+							.setAvatar(members[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
 							.setCurrentXP(Xp.Level == 1 ? Xp.Xp : (Xp.Xp - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100)))
 							.setLevel(Xp.Level)
 							.setRank(rankScore + 1)
 							.setRequiredXP((5 * (Xp.Level ** 2) + 50 * Xp.Level + 100) - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100))
-							.setStatus(member[0].presence.status)
+							.setStatus(members[0].presence.status)
 							.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-							.setUsername(member[0].user.username)
-							.setDiscriminator(member[0].user.discriminator);
+							.setUsername(members[0].user.username)
+							.setDiscriminator(members[0].user.discriminator);
 						// send rank card
 						rankcard.build().then(buffer => {
 							const attachment = new MessageAttachment(buffer, 'RankCard.png');

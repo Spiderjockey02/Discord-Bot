@@ -20,16 +20,16 @@ module.exports = class Avatar extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// send embed
 		const embed = new Embed(bot, message.guild)
-			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member[0].user.tag })
+			.setTitle('guild/avatar:AVATAR_TITLE', { USER: members[0].user.tag })
 			.setDescription([
 				`${message.translate('guild/avatar:AVATAR_DESCRIPTION')}`,
-				`[png](${member[0].user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member[0].user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member[0].user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member[0].user.displayAvatarURL({ format: 'webp', size: 1024 })})`,
+				`[png](${members[0].user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${members[0].user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${members[0].user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${members[0].user.displayAvatarURL({ format: 'webp', size: 1024 })})`,
 			].join('\n'))
-			.setImage(`${member[0].user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
+			.setImage(`${members[0].user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
 		message.channel.send(embed);
 	}
 };

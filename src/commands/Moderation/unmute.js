@@ -27,10 +27,10 @@ module.exports = class Unmute extends Command {
 		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
 		// Find user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// Get the channel the member is in
-		const channel = message.guild.channels.cache.get(member[0].voice.channelID);
+		const channel = message.guild.channels.cache.get(members[0].voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
@@ -42,15 +42,15 @@ module.exports = class Unmute extends Command {
 		// Remove mutedRole from user
 		try {
 			const muteRole = message.guild.roles.cache.get(settings.MutedRole);
-			member[0].roles.remove(muteRole);
+			members[0].roles.remove(muteRole);
 
 			// delete muted member from database
-			await MutedMemberSchema.findOneAndRemove({ userID: member[0].user.id,	guildID: message.guild.id });
+			await MutedMemberSchema.findOneAndRemove({ userID: members[0].user.id,	guildID: message.guild.id });
 
 			// if in a VC unmute them
-			if (member[0].voice.channelID) await member[0].voice.setMute(false);
+			if (members[0].voice.channelID) await members[0].voice.setMute(false);
 
-			message.channel.success('moderation/unmute:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 3000 }));
+			message.channel.success('moderation/unmute:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
