@@ -30,12 +30,6 @@ module.exports = class Queue extends Command {
 		const player = bot.manager.players.get(message.guild.id);
 		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.delete({ timeout: 10000 }));
 
-		// Check if bot has permission to delete emojis
-		if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
-			bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Make sure queue is not empty
 		const queue = player.queue;
 		if (queue.size == 0) {

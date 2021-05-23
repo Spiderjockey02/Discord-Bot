@@ -8,7 +8,7 @@ module.exports = class FastForward extends Command {
 			name: 'fast-forward',
 			dirname: __dirname,
 			aliases: ['ffw', 'fastforward'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Fast forwards the player by your specified amount.',
 			usage: 'fast-forward <time>',
 			cooldown: 3000,

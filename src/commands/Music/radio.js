@@ -8,7 +8,7 @@ module.exports = class Radio extends Command {
 		super(bot, {
 			name: 'radio',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Listen to the radio',
 			usage: 'radio',
 			cooldown: 3000,

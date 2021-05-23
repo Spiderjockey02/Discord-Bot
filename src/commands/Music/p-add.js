@@ -1,5 +1,6 @@
 // Dependecies
 const { PlaylistSchema } = require('../../database/models'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PAdd extends Command {
@@ -36,7 +37,7 @@ module.exports = class PAdd extends Command {
 				// Get songs to add to playlist
 				let res;
 				try {
-					res = await bot.manager.search(message.args[1], message.author);
+					res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 				} catch (err) {
 					return message.channel.error('music/p-add:ERROR', { ERROR: err.message });
 				}
@@ -58,6 +59,38 @@ module.exports = class PAdd extends Command {
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 					}
+				}	else if (res.loadType == 'SEARCH_RESULT') {
+					// Display the options for search
+					let max = 10, collected;
+					const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
+					if (res.tracks.length < max) max = res.tracks.length;
+
+					const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+					const embed = new Embed(bot, message.guild)
+						.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
+						.setColor(message.member.displayHexColor)
+						.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
+					message.channel.send(embed);
+
+					try {
+						collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+					} catch (e) {
+						return message.reply(message.translate('misc:WAITED_TOO_LONG'));
+					}
+
+					const first = collected.first().content;
+					if (first.toLowerCase() === 'cancel') {
+						return message.channel.send(message.translate('misc:CANCELLED'));
+					}
+
+					const index = Number(first) - 1;
+					if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
+
+					const track = res.tracks[index];
+					p.songs.push(track);
+					p.duration = parseInt(p.duration) + parseInt(track.duration);
+					await p.save();
+					message.channel.success('music/p-add:SUCCESS', { NUM: 1, TITLE: track.title });
 				} else {
 					message.channel.error('music/p-add:NO_SONG');
 				}

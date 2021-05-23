@@ -7,7 +7,7 @@ module.exports = class Speed extends Command {
 		super(bot, {
 			name: 'speed',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Sets the player\'s playback speed.',
 			usage: 'speed <Number>',
 			cooldown: 3000,

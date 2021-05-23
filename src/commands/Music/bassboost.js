@@ -8,7 +8,7 @@ module.exports = class Bassboost extends Command {
 			name: 'bassboost',
 			dirname: __dirname,
 			aliases: ['bb'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Bassboost the song',
 			usage: 'bassboost [value]',
 			cooldown: 3000,

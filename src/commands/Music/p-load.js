@@ -10,7 +10,7 @@ module.exports = class PLoad extends Command {
 			name: 'p-load',
 			dirname: __dirname,
 			aliases: ['playlist-load'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Load a playlist',
 			usage: 'p-load <playlist name>',
 			cooldown: 3000,

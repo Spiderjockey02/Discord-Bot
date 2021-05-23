@@ -42,7 +42,7 @@ module.exports = class Message extends Event {
 
 		// Check if the message was @someone
 		if (['@someone', '@person'].includes(message.content)) {
-			if (message.channel.type == 'dm') return message.channel.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR');
+			if (message.channel.type == 'dm') return message.channel.error('events/message:GUILD_ONLY');
 			return message.channel.send({ embed:{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` } });
 		}
 
@@ -62,34 +62,27 @@ module.exports = class Message extends Event {
 			message.args = args;
 
 			// make sure user is not on banned list
-			const banned = await GlobalBanSchema.findOne({
-				userID: message.author.id,
-			}, async (err, res) => {
-				if (err) bot.logger.error(err.message);
-
-				// This is their first warning
-				if (res) {
-					return true;
-				} else {
-					return false;
-				}
-			});
-			if (banned) return message.channel.send('You are banned from using command');
-
+			try {
+				const banned = await GlobalBanSchema.findOne({ userID: message.author.id });
+				if (banned) return message.channel.error('events/message:BANNED_USER');
+			} catch (err) {
+				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			}
 
 			// Make sure guild only commands are done in the guild only
-			if (message.guild && cmd.guildOnly)	return message.channel.error(settings.Language, 'EVENTS/GUILD_COMMAND_ERROR').then(m => m.delete({ timeout: 5000 }));
+			if (message.guild && cmd.guildOnly)	return message.channel.error('event/message:GUILD_ONLY').then(m => m.delete({ timeout: 5000 }));
 
 			// Check to see if the command is being run in a blacklisted channel
 			if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'EVENTS/BLACKLISTED_CHANNEL', message.author.tag).then(m => m.delete({ timeout:5000 }));
+				return message.channel.error('events/message:BLACKLISTED_CHANNEL', { USER: message.author.tag }).then(m => m.delete({ timeout:5000 }));
 			}
 
 			// Make sure NSFW commands are only being run in a NSFW channel
 			if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.conf.nsfw))) {
 				if (message.deletable) message.delete();
-				return message.channel.error(settings.Language, 'EVENTS/NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
+				return message.channel.error('events/message:NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
 			}
 
 			// Check if the command is from a disabled plugin
@@ -106,9 +99,15 @@ module.exports = class Message extends Event {
 				// check bot permissions
 				let neededPermissions = [];
 				cmd.conf.botPermissions.forEach((perm) => {
-					if (!message.channel.permissionsFor(message.guild.me).has(perm)) {
+					if (['SPEAK', 'CONNECT'].includes(perm)) {
+						if (!message.member.voice.channel) return;
+						if (!message.member.voice.channel.permissionsFor(message.guild.me).has(perm)) {
+							neededPermissions.push(perm);
+						}
+					} else if (!message.channel.permissionsFor(message.guild.me).has(perm)) {
 						neededPermissions.push(perm);
 					}
+
 				});
 
 				if (neededPermissions.length > 0) {
@@ -127,10 +126,6 @@ module.exports = class Message extends Event {
 				if (neededPermissions.length > 0) {
 					return message.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => `\`${p}\``).join(', ') });
 				}
-
-				if(!message.channel.permissionsFor(message.member).has('MENTION_EVERYONE') && (message.content.includes('@everyone') || message.content.includes('@here'))) {
-					return message.channel.error('misc:EVERYONE_MENTION');
-				}
 			}
 
 			// Check to see if user is in 'cooldown'
@@ -147,7 +142,7 @@ module.exports = class Message extends Event {
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
-					return message.channel.error(settings.Language, 'EVENTS/COMMAND_COOLDOWN', timeLeft.toFixed(1)).then(m => m.delete({ timeout:5000 }));
+					return message.channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }).then(m => m.delete({ timeout:5000 }));
 				}
 			}
 

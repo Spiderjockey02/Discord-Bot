@@ -7,7 +7,7 @@ module.exports = class Vaporwave extends Command {
 		super(bot, {
 			name: 'vaporwave',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Toggles vaporwave mode.',
 			usage: 'vaporwave',
 			cooldown: 3000,

@@ -7,7 +7,7 @@ module.exports = class Loop extends Command {
 			name: 'loop',
 			dirname: __dirname,
 			aliases: ['repeat'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Loops the song or queue.',
 			usage: 'loop [queue / song]',
 			cooldown: 3000,

@@ -7,7 +7,7 @@ module.exports = class Seek extends Command {
 		super(bot, {
 			name: 'seek',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Sets the playing track\'s position to the specified position.',
 			usage: 'seek <time>',
 			cooldown: 3000,

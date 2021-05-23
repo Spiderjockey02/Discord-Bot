@@ -7,7 +7,7 @@ module.exports = class Shuffle extends Command {
 		super(bot, {
 			name: 'shuffle',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Shuffles the playlist.',
 			usage: 'shuffle',
 			cooldown: 3000,

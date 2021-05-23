@@ -30,18 +30,6 @@ module.exports = class Join extends Command {
 		// Make sure the user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
 
-		// Check if bot has permission to connect to voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
-			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Check if bot has permission to speak in the voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
-			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// If no player (no song playing) create one and join channel
 		if (!player) {
 			try {

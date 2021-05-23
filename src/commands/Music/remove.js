@@ -6,7 +6,7 @@ module.exports = class Remove extends Command {
 		super(bot, {
 			name: 'remove',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Removes a song from the queue',
 			usage: 'remove <position> [position]',
 			cooldown: 3000,

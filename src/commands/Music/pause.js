@@ -6,7 +6,7 @@ module.exports = class Pause extends Command {
 		super(bot, {
 			name: 'pause',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Pauses the music.',
 			usage: 'pause',
 			cooldown: 3000,

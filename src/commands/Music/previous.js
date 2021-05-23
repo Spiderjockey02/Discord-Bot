@@ -9,7 +9,7 @@ module.exports = class Previous extends Command {
 			name: 'previous',
 			dirname: __dirname,
 			aliases: ['played'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK', 'ADD_REACTIONS'],
 			description: 'Displays the previous tracks that have been played.',
 			usage: 'previous [pageNumber]',
 			cooldown: 3000,
@@ -29,18 +29,6 @@ module.exports = class Previous extends Command {
 		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
 		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.delete({ timeout: 10000 }));
-
-		// Check if bot has permission to connect to voice channel
-		if (!message.channel.permissionsFor(message.guild.me).has('ADD_REACTIONS')) {
-			bot.logger.error(`Missing permission: \`ADD_REACTIONS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Check if bot has permission to delete emojis
-		if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
-			bot.logger.error(`Missing permission: \`MANAGE_MESSAGES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
-		}
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;

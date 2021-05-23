@@ -1,0 +1,7 @@
+{
+  "GUILD_ONLY": "That command can only be ran in a server.",
+  "COMMAND_COOLDOWN": "You must wait {{NUM}} seconds between each command.",
+  "BANNED_USER": "You are banned from using commands.",
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, that command is disabled in this channel.",
+  "NOT_NSFW_CHANNEL": "That command can only be done in a `NSFW` channel."
+}
