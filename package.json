@@ -38,7 +38,7 @@
     "express": "^4.17.1",
     "fortnite": "^4.3.2",
     "genius-lyrics-api": "^3.0.6",
-    "marked": "^2.0.0",
+    "marked": "^2.0.5",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
     "mongoose": "^5.11.15",
