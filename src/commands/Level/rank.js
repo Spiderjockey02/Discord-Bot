@@ -30,49 +30,39 @@ module.exports = class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			await RankSchema.findOne({
-				userID: members[0].id,
+			RankSchema.find({
 				guildID: message.guild.id,
-			}, (err, Xp) => {
-				if (err) {
-					if (bot.config.debug) bot.logger.error(`${err.message} - command: rank.`);
-					return;
-				}
-				if (Xp == null) {
-					// They haven't sent any messages yet
+			}).sort([
+				['user', 'descending'],
+			]).exec((err, res) => {
+				const user = res.find(doc => doc.userID == members[0].user.id);
+				// if they haven't send any messages
+				if (!user) {
 					msg.delete();
-					message.channel.error('level/rank:NO_MESSAGES');
-				} else {
-					// Get rank
-					RankSchema.find({
-						guildID: message.guild.id,
-					}).sort([
-						['Xp', 'descending'],
-					]).exec((err, res) => {
-						if (err) console.log(err);
-						let rankScore;
-						for (let i = 0; i < res.length; i++) {
-							if (res[i].userID == members[0].user.id) rankScore = i;
-						}
-						// create rank card
-						const rankcard = new rank()
-							.setAvatar(members[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-							.setCurrentXP(Xp.Level == 1 ? Xp.Xp : (Xp.Xp - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100)))
-							.setLevel(Xp.Level)
-							.setRank(rankScore + 1)
-							.setRequiredXP((5 * (Xp.Level ** 2) + 50 * Xp.Level + 100) - (5 * ((Xp.Level - 1) ** 2) + 50 * (Xp.Level - 1) + 100))
-							.setStatus(members[0].presence.status)
-							.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-							.setUsername(members[0].user.username)
-							.setDiscriminator(members[0].user.discriminator);
-						// send rank card
-						rankcard.build().then(buffer => {
-							const attachment = new MessageAttachment(buffer, 'RankCard.png');
-							msg.delete();
-							message.channel.send(attachment);
-						});
-					});
+					return message.channel.error('level/rank:NO_MESSAGES');
 				}
+				let rankScore;
+				for (let i = 0; i < res.length; i++) {
+					if (res[i].userID == members[0].user.id) rankScore = i;
+				}
+				// create rank card
+				const rankcard = new rank()
+					.setAvatar(members[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+					.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
+					.setLevel(user.Level)
+					.setRank(rankScore + 1)
+					.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
+					.setStatus(members[0].presence.status)
+					.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
+					.setUsername(members[0].user.username)
+					.setDiscriminator(members[0].user.discriminator);
+				// send rank card
+				rankcard.build().then(buffer => {
+					const attachment = new MessageAttachment(buffer, 'RankCard.png');
+					msg.delete();
+					message.channel.send(attachment);
+				});
+
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
