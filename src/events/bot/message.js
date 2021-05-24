@@ -124,7 +124,7 @@ module.exports = class Message extends Event {
 				});
 
 				if (neededPermissions.length > 0) {
-					return message.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => `\`${p}\``).join(', ') });
+					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') });
 				}
 			}
 

@@ -19,9 +19,6 @@ module.exports = class G_delete extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();

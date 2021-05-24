@@ -23,9 +23,6 @@ module.exports = class Clear extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can delete messages themselves
-		if (!message.channel.permissionsFor(message.author).has('MANAGE_MESSAGES')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_MESSAGES').then(m => m.delete({ timeout: 10000 }));
-
 		// Get number of messages to removed
 		const amount = message.args[0];
 

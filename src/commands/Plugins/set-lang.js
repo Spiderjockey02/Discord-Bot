@@ -22,9 +22,6 @@ module.exports = class Setlang extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// get language
 		const language = bot.languages.find((l) => l.name === message.args[0] || l.aliases.includes(message.args[0]));
 		if (!message.args[0] || !language) {

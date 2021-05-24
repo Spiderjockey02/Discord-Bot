@@ -22,9 +22,6 @@ module.exports = class Undeafen extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Check if user has deafen permission
-		if (!message.member.hasPermission('DEAFEN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'DEAFEN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
 		// Checks to make sure user is in the server
 		const members = message.getMember();
 

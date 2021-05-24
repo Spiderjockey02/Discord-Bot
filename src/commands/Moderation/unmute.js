@@ -23,9 +23,6 @@ module.exports = class Unmute extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Check if user can mute users
-		if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
 		// Find user
 		const members = message.getMember();
 

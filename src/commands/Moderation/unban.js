@@ -22,9 +22,6 @@ module.exports = class Unban extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
 		// Unban user
 		const user = message.args[0];
 		try {

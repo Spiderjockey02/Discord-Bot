@@ -21,9 +21,6 @@ module.exports = class ReactionRoleAdd extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// check if the guild has reached max reaction roles
 		await ReactionRoleSchema.find({
 			guildID: message.guild.id,

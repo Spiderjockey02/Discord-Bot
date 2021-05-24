@@ -22,11 +22,6 @@ module.exports = class G_start extends Command {
 		// delete command
 		if (message.deletable) message.delete();
 
-		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) {
-			return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: this.client.translate('permissions:MANAGE_GUILD', {}, this.guild.settings.Language) }).then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Make sure a time, winner count & prize is entered
 		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 

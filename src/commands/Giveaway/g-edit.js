@@ -19,9 +19,6 @@ module.exports = class G_edit extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// Make sure the user has the right permissions to use giveaway
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// Make sure the message ID of the giveaway embed is entered
 		if (message.args.length <= 3) {
 			if (message.deletable) message.delete();

@@ -20,9 +20,6 @@ module.exports = class ReactionRoleRemove extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// make sure an arg was sent aswell
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('plugins/rr-remove:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
