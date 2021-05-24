@@ -2,7 +2,7 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
-// Lis of events
+// List of events
 const features = ['CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREATE', 'EMOJIDELETE', 'EMOJIUPDATE',
 	'GUILDBANADD', 'GUILDBANREMOVE', 'GUILDMEMBERADD', 'GUILDMEMBERREMOVE', 'GUILDMEMBERUPDATE', 'GUILDUPDATE', 'MESSAGEDELETE',
 	'MESSAGEDELETEBULK', 'MESSAGEREACTIONADD', 'MESSAGEREACTIONREMOVE', 'MESSAGEREACTIONREMOVEALL', 'MESSAGEUPDATE', 'ROLECREATE', 'ROLEDELETE', 'ROLEUPDATE',
@@ -29,16 +29,13 @@ module.exports = class SetLog extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		if (message.args[0] == 'true' || message.args[0] == 'false') {
 
 			// Enabled/Disable ModLogs
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
 				settings.ModLog = message.args[0];
-				message.channel.success(settings.Language, 'PLUGINS/LOGS_SET', message.args[0]).then(m => m.delete({ timeout:10000 }));
+				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.delete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
@@ -48,9 +45,9 @@ module.exports = class SetLog extends Command {
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
 				const embed = new Embed(bot, message.guild)
-					.setTitle('Logging features:')
+					.setTitle('plugins/set-logs:TITLE')
 					.setColor(message.member.displayHexColor)
-					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
+					.setDescription(message.translate('plugins/set-logs:DESC', { FEAT: features.join('`, `'), CUR_FEAT: currentFeatures.join('`, `') }));
 				message.channel.send(embed).then(m => m.delete({ timeout: 15000 }));
 			} else if (message.args[0] == 'add') {
 
@@ -61,7 +58,7 @@ module.exports = class SetLog extends Command {
 						await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					}
 					settings.ModLogEvents = currentFeatures;
-					message.channel.send(`Added: ${message.args[1].toUpperCase()} to logging.`);
+					message.channel.send(message.translate('plugins/set-logs:ADD_LOG', { LOG: message.args[1].toUpperCase() }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
@@ -75,7 +72,7 @@ module.exports = class SetLog extends Command {
 					}
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					settings.ModLogEvents = currentFeatures;
-					message.channel.send(`Removed: ${message.args[1].toUpperCase()} from logging.`);
+					message.channel.send(message.translate('plugins/set-logs:REM_LOG', { LOG: message.args[1].toUpperCase() }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
@@ -86,20 +83,15 @@ module.exports = class SetLog extends Command {
 				const channelID = (message.guild.channels.cache.get(message.args[1])) ? message.guild.channels.cache.get(message.args[1]).id : message.channel.id;
 				await message.guild.updateGuild({ ModLogChannel: channelID });
 				settings.ModLogChannel = channelID;
-				message.channel.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
+				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'list') {
 			const embed = new Embed(bot, message.guild)
-				.setTitle('Logging information')
-				.setDescription([
-					`**Channel:** ${message.guild.channels.cache.get(settings.ModLogChannel)}.`,
-					`**Enabled:** ${settings.ModLog}`,
-					'',
-					`**Feature logging:** \`${settings.ModLogEvents.join('`, `')}\`.`,
-				].join('\n'));
+				.setTitle('plugins/set-logs:TITLE_2')
+				.setDescription(message.translate('plugins/set-logs:DESC', { ID: settings.ModLogChannel, TOGGLE: settings.ModLog, FEAT: settings.ModLogEvents.join('`, `') }));
 			message.channel.send(embed);
 		} else {
 			// if nothing was entered
