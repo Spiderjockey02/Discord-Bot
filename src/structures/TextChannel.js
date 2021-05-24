@@ -21,12 +21,7 @@ module.exports = Structures.extend('TextChannel', Channel => {
 		// This will add the error emoji as the prefix and then translate the message
 		error(key, args) {
 			try {
-				let emoji;
-				if (this.type == 'dm') {
-					emoji = this.client.customEmojis['cross'];
-				} else {
-					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
-				}
+				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				return this.send({ embed:{ color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
 			} catch (err) {
 				this.client.logger.error(err.message);
@@ -36,12 +31,7 @@ module.exports = Structures.extend('TextChannel', Channel => {
 		// This will add the success emoji as the prefix and then translate the message
 		success(key, args) {
 			try {
-				let emoji;
-				if (this.type == 'dm') {
-					emoji = this.client.customEmojis['checkmark'];
-				} else {
-					emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
-				}
+				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
 				return this.send({ embed:{ color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
 			} catch (err) {
 				this.client.logger.error(err.message);
