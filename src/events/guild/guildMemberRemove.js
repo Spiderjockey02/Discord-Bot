@@ -16,6 +16,12 @@ module.exports = class guildMemberRemove extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
 
+		try {
+			if (member.partial) await member.fetch();
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
+
 		if (member.user.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return

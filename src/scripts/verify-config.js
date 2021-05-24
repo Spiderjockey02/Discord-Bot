@@ -1,10 +1,10 @@
 // Dependecies
-const logger = require('../utils/logger');
-const chalk = require('chalk');
-const fetch = require('node-fetch');
-const Discord = require('discord.js');
-const Fortnite = require('fortnite');
-const { KSoftClient } = require('@ksoft/api');
+const { logger } = require('../utils'),
+	chalk = require('chalk'),
+	fetch = require('node-fetch'),
+	Discord = require('discord.js'),
+	Fortnite = require('fortnite'),
+	{ KSoftClient } = require('@ksoft/api');
 
 module.exports.run = async (config) => {
 	// This will check if the config is correct

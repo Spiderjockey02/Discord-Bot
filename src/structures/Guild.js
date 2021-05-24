@@ -1,7 +1,7 @@
 // Dependencies
 const { Structures } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	logger = require('../utils/logger');
+	{ logger } = require('../utils');
 
 module.exports = Structures.extend('Guild', Guild => {
 	class CustomGuild extends Guild {
