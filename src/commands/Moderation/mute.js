@@ -32,10 +32,10 @@ module.exports = class Mute extends Command {
 		}
 
 		// add user to role (if no role, make role)
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// Get the channel the member is in
-		const channel = message.guild.channels.cache.get(member[0].voice.channelID);
+		const channel = message.guild.channels.cache.get(members[0].voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
@@ -44,9 +44,8 @@ module.exports = class Mute extends Command {
 			}
 		}
 
-
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// get mute role
 		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
@@ -66,18 +65,18 @@ module.exports = class Mute extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 
 
 		// add role to user
 		try {
-			member[0].roles.add(muteRole).then(async () => {
+			members[0].roles.add(muteRole).then(async () => {
 				// Make sure that the user is in a voice channel
-				if (member[0].voice.channelID) {
+				if (members[0].voice.channelID) {
 					try {
-						await member[0].voice.setMute(true);
+						await members[0].voice.setMute(true);
 					} catch (err) {
 						if (bot.config.debug) bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					}
@@ -85,13 +84,13 @@ module.exports = class Mute extends Command {
 
 				// update database (in case user leaves to try and remove the muted role)
 				const newMute = await new MutedMemberSchema({
-					userID: member[0].user.id,
+					userID: members[0].user.id,
 					guildID: message.guild.id,
 				});
 				await newMute.save();
 
 				// reply to user
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_MUTE', member[0].user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
 				// see if it was a tempmute
 				if (message.args[1]) {
 					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
@@ -99,7 +98,7 @@ module.exports = class Mute extends Command {
 
 					// connect to database
 					const newEvent = await new timeEventSchema({
-						userID: member[0].user.id,
+						userID: members[0].user.id,
 						guildID: message.guild.id,
 						time: new Date(new Date().getTime() + time),
 						channelID: message.channel.id,
@@ -122,7 +121,7 @@ module.exports = class Mute extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

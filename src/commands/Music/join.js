@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Join extends Command {
@@ -20,56 +20,43 @@ module.exports = class Join extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// Check that a song is being played
-		let player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager.players.get(message.guild.id);
 
 		// Make sure the user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.error(settings.Language, 'MUSIC/MISSING_VOICE');
-
-		// Check if bot has permission to connect to voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
-			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Check if bot has permission to speak in the voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
-			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
-		}
+		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
 
 		// If no player (no song playing) create one and join channel
 		if (!player) {
 			try {
-				player = bot.manager.create({
+				await bot.manager.create({
 					guild: message.guild.id,
 					voiceChannel: message.member.voice.channel.id,
 					textChannel: message.channel.id,
 					selfDeafen: true,
-				});
-				await player.connect();
+				}).connect();
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
 			// Move the bot to the new voice channel / update text channel
 			try {
 				await player.setVoiceChannel(message.member.voice.channel.id);
 				await player.setTextChannel(message.channel.id);
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
-					.setDescription(bot.translate(settings.Language, 'MUSIC/CHANNEL_MOVE'));
+					.setDescription(message.translate('music/join:MOVED'));
 				message.channel.send(embed);
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		}
 	}

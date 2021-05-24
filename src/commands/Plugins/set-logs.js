@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 // Lis of events
@@ -12,6 +12,7 @@ module.exports = class SetLog extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'set-logs',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setlogs'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -40,13 +41,13 @@ module.exports = class SetLog extends Command {
 				message.channel.success(settings.Language, 'PLUGINS/LOGS_SET', message.args[0]).then(m => m.delete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents;
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setTitle('Logging features:')
 					.setColor(message.member.displayHexColor)
 					.setDescription(`Available features: \`${features.join('`, `')}\`.\n\nCurrent features: \`${currentFeatures.join('`, `')}\`.`);
@@ -63,7 +64,7 @@ module.exports = class SetLog extends Command {
 					message.channel.send(`Added: ${message.args[1].toUpperCase()} to logging.`);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			} else if (message.args[0] == 'remove') {
 
@@ -77,7 +78,7 @@ module.exports = class SetLog extends Command {
 					message.channel.send(`Removed: ${message.args[1].toUpperCase()} from logging.`);
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			}
 		} else if (message.args[0] == 'channel') {
@@ -88,10 +89,10 @@ module.exports = class SetLog extends Command {
 				message.channel.success(settings.Language, 'PLUGINS/LOG_CHANNEL', channelID);
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'list') {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle('Logging information')
 				.setDescription([
 					`**Channel:** ${message.guild.channels.cache.get(settings.ModLogChannel)}.`,
@@ -102,7 +103,7 @@ module.exports = class SetLog extends Command {
 			message.channel.send(embed);
 		} else {
 			// if nothing was entered
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle('Logging plugin')
 				.setColor(message.member.displayHexColor)
 				.setDescription([

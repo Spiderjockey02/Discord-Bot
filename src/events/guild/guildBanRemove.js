@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildBanRemove extends Event {
@@ -20,7 +20,7 @@ module.exports = class guildBanRemove extends Event {
 
 		// Check if event guildBanRemove is for logging
 		if (settings.ModLogEvents.includes('GUILDBANREMOVE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, guild)
 				.setDescription(`${user.toString()}\n${user.tag}`)
 				.setFooter(`ID: ${user.id}`)
 				.setThumbnail(`${user.displayAvatarURL()}`)

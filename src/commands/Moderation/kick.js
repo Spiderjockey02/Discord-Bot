@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Kick extends Command {
@@ -25,21 +25,15 @@ module.exports = class Kick extends Command {
 		// Check if user has permission to kick user
 		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
 
-		// Check if bot has permission to kick user
-		if (!message.guild.me.hasPermission('KICK_MEMBERS')) {
-			bot.logger.error(`Missing permission: \`KICK_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'KICK_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Get user and reason
-		const member = message.getMember();
-		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
+		const members = message.getMember(),
+			reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
 			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
@@ -47,24 +41,24 @@ module.exports = class Kick extends Command {
 		try {
 			// send DM to user
 			try {
-				const embed = new MessageEmbed()
-					.setTitle('KICKED')
+				const embed = new Embed(bot, message.guild)
+					.setTitle('moderation/kick:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been kicked from ${message.guild.name}.`)
-					.addField('Kicked by:', message.author.tag, true)
-					.addField('Reason:', reason, true);
-				await member[0].send(embed);
+					.setDescription(message.translate('moderation/kick:DESC', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/kick:KICKED'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), reason, true);
+				await members[0].send(embed);
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 
 			// kick user from guild
-			await member[0].kick({ reason: reason });
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', member[0].user).then(m => m.delete({ timeout: 3000 }));
+			await members[0].kick({ reason: reason });
+			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', members[0].user).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

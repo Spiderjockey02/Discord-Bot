@@ -17,7 +17,7 @@ module.exports = class Docs extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get docs information
 		const url = `https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(message.args.join(' '))}`;
 		get(url).then(({ data }) => {
@@ -26,12 +26,12 @@ module.exports = class Docs extends Command {
 			if (data && !data.error) {
 				message.channel.send({ embed: data });
 			} else {
-				message.channel.send('Could not find that documentation.');
+				message.channel.send(message.translate('host/docs:MISSING'));
 			}
 		}).catch(err => {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.response.data.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		});
 	}
 };

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Report extends Command {
@@ -26,16 +26,17 @@ module.exports = class Report extends Command {
 		if (settings.ModLogEvents.includes('REPORT')) {
 
 			// Find user
-			const member = message.getMember();
-			if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+			const members = message.getMember();
+			// Make sure user isn't trying to punish themselves
+			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 			// Make sure a reason was added
-			if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 			// Send messages to ModLog channel
-			const embed = new MessageEmbed()
-				.setAuthor(bot.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), member[0].user.displayAvatarURL)
-				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), member[0], true)
+			const embed = new Embed(bot, message.guild)
+				.setAuthor(bot.translate(settings.Language, 'MODERATION/REPORT_AUTHOR'), members[0].user.displayAvatarURL)
+				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_MEMBER'), members[0], true)
 				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_BY'), message.member, true)
 				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_IN'), message.channel)
 				.addField(bot.translate(settings.Language, 'MODERATION/REPORT_REASON'), message.args.slice(1).join(' '))
@@ -44,7 +45,7 @@ module.exports = class Report extends Command {
 			const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 			if (repChannel) {
 				repChannel.send(embed);
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', member[0].user).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_REPORT', members[0].user).then(m => m.delete({ timeout: 3000 }));
 			}
 		} else {
 			message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Logging: `REPORTS` has not been setup').then(m => m.delete({ timeout: 5000 }));

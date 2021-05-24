@@ -1,6 +1,6 @@
 // Dependencies
 const fs = require('fs'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Fact extends Command {
@@ -17,22 +17,21 @@ module.exports = class Fact extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get the random facts file
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// Retrieve a random fact
-			const facts = JSON.parse(data);
-			const num = Math.floor((Math.random() * facts.facts.length));
-			const embed = new MessageEmbed()
-				.setTitle(`💡 ${bot.translate(settings.Language, 'FUN/FACT_TITLE')}`)
-				.setColor('RANDOM')
-				.setDescription(facts.facts[num]);
+			const { facts } = JSON.parse(data);
+			const num = Math.floor((Math.random() * facts.length));
+			const embed = new Embed(bot, message.guild)
+				.setTitle('fun/fact:FACT_TITLE')
+				.setDescription(facts[num]);
 			message.channel.send(embed);
 		});
 	}

@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Start a giveaway",
+  "USAGE": "g-start <time> <Number of winners> <prize>",
+  "PRIZE_TOO_LONG": "Prize must be less than 256 characters long.",
+  "TITLE": "🎉🎉 **GIVEAWAY** 🎉🎉",
+  "ENDED": "🎉🎉 **GIVEAWAY ENDED** 🎉🎉",
+  "TIME_REMAINING": "Time remaining: **{duration}**!",
+  "INVITE_PARTICIPATE": "React with 🎉 to participate!",
+  "WIN_MESSAGE": "Congratulations, {winners}! You won **{prize}**!",
+  "FOOTER": "Giveaways",
+  "NO_WINNER": "Giveaway cancelled, no valid participation.",
+  "WINNERS": "winner(s)",
+  "END_AT": "End at",
+  "HOSTED": "Hosted by: {user}"
+}

@@ -1,5 +1,5 @@
 // Dependencies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Lavalink extends Command {
@@ -31,7 +31,7 @@ module.exports = class Lavalink extends Command {
 
 		const botUptime = this.uptime(uptime);
 
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setAuthor('Lavalink Statistics')
 			.addField('Playing Players/Players', `\`\`\`${playingPlayers} playing / ${players} players\`\`\``)
 			.addField('Memory', `\`\`\`Allocated: ${allocated} MB\nUsed: ${used} MB\nFree: ${free} MB\nReservable: ${reservable} MB\`\`\``)

@@ -11,7 +11,7 @@ module.exports = class Egglord extends Client {
 	constructor(options) {
 		super(options);
 		// for console logging
-		this.logger = require('../utils/logger');
+		this.logger = require('../utils/Logger');
 
 		// Giveaway manager
 		this.giveawaysManager = new GiveawaysManager(this, {
@@ -67,6 +67,12 @@ module.exports = class Egglord extends Client {
 
 		// for emojis
 		this.customEmojis = require('../assets/json/emojis.json');
+
+		// for language translation
+		this.languages = require('../languages/language-meta.json');
+
+		// for waiting for things
+		this.delay = ms => new Promise(res => setTimeout(res, ms));
 	}
 
 	// when the bot joins create guild settings
@@ -141,16 +147,11 @@ module.exports = class Egglord extends Client {
 	}
 
 	// This will get the translation for the provided text
-	translate(language, key, args) {
-		let languageFile;
-		if (key.includes('/')) {
-			const word = key.split('/');
-			languageFile = require(`../languages/${language}/${word[0]}/translation`);
-			return languageFile(word[1], args);
-		} else {
-			languageFile = require(`../languages/${language}/misc`);
-			return languageFile(key, args);
-		}
+	translate(key, args, locale) {
+		if (!locale) locale = this.config.defaultSettings.Language;
+		const language = this.translations.get(locale);
+		if (!language) throw 'Invalid language set in data.';
+		return language(key, args);
 	}
 
 	// for adding embeds to the webhook manager

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
@@ -21,23 +21,23 @@ module.exports = class ServerInfo extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// send user info
-		const embed = new MessageEmbed()
-			.setAuthor(`${member[0].user.tag}`, member[0].user.displayAvatarURL())
+		const embed = new Embed(bot, message.guild)
+			.setAuthor(members[0].user.tag, members[0].user.displayAvatarURL())
 			.setColor(3447003)
-			.setThumbnail(member[0].user.displayAvatarURL({ format: 'png', size: 512 }))
+			.setThumbnail(members[0].user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: '✍ Username', value: member[0].user.username, inline: true },
-				{ name: '#️⃣ Discriminator', value: member[0].user.discriminator, inline: true },
-				{ name: '🤖 Robot', value: member[0].user.bot ? 'Yes' : 'No', inline: true },
-				{ name: 'Creation', value: moment(member[0].user.createdAt).format('lll'), inline: true },
-				{ name: '📶 Status', value: `\`${(member[0].presence.activities.length >= 1) ? `${member[0].presence.activities[0].name} - ${(member[0].presence.activities[0].type == 'CUSTOM_STATUS') ? member[0].presence.activities[0].state : member[0].presence.activities[0].details}` : 'None'}\``, inline: true },
-				{ name: '🔼 Highest role', value: member[0].roles.highest, inline: true },
-				{ name: 'Join', value: moment(member[0].joinedAt).format('lll'), inline: true },
-				{ name: '📝 Nickname', value: member[0].nickname != null ? member[0].nickname : 'None', inline: true },
-				{ name: 'Roles', value: member[0].roles.cache.map(roles => roles).join(', ') },
+				{ name: message.translate('guild/user-info:USERNAME'), value: members[0].user.username, inline: true },
+				{ name: message.translate('guild/user-info:DISCRIM'), value: members[0].user.discriminator, inline: true },
+				{ name: message.translate('guild/user-info:ROBOT'), value: message.translate(`misc:${members[0].user.bot ? 'YES' : 'NO'}`), inline: true },
+				{ name: message.translate('guild/user-info:CREATE'), value: moment(members[0].user.createdAt).format('lll'), inline: true },
+				{ name: message.translate('guild/user-info:STATUS'), value: `\`${(members[0].presence.activities.length >= 1) ? `${members[0].presence.activities[0].name} - ${(members[0].presence.activities[0].type == 'CUSTOM_STATUS') ? members[0].presence.activities[0].state : members[0].presence.activities[0].details}` : 'None'}\``, inline: true },
+				{ name: message.translate('guild/user-info:ROLE'), value: members[0].roles.highest, inline: true },
+				{ name: message.translate('guild/user-info:JOIN'), value: moment(members[0].joinedAt).format('lll'), inline: true },
+				{ name: message.translate('guild/user-info:NICK'), value: members[0].nickname != null ? members[0].nickname : message.translate('misc:NONE'), inline: true },
+				{ name: message.translate('guild/user-info:ROLES'), value: members[0].roles.cache.map(roles => roles).join(', ') },
 			);
 		message.channel.send(embed);
 	}

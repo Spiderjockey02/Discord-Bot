@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class emojiUpdate extends Event {
@@ -24,7 +24,7 @@ module.exports = class emojiUpdate extends Event {
 
 			// emoji name change
 			if (oldEmoji.name != newEmoji.name) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newEmoji.guild)
 					.setDescription('**Emoji name update**')
 					.setColor(15105570)
 					.setFooter(`ID: ${newEmoji.id}`)
@@ -50,7 +50,7 @@ module.exports = class emojiUpdate extends Event {
 					for (const role of rolesRemoved.array()) {
 						roleRemovedString.push(role.toString());
 					}
-					embed = new MessageEmbed()
+					embed = new Embed(bot, newEmoji.guild)
 						.setDescription('**Emoji roles updated**')
 						.setColor(15105570)
 						.setFooter(`ID: ${newEmoji.id}`)

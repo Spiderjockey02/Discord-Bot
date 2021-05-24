@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
@@ -21,29 +21,34 @@ module.exports = class RoleInfo extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Check to see if a role was mentioned
-		const role = message.getRole();
+		const roles = message.getRole();
 
 		// Make sure it's a role on the server
-		if (!role[0]) {
+		if (!roles[0]) {
 			if (message.deletable) message.delete();
 			return message.channel.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 		}
 
+		// translate permissions
+		const permissions = roles[0].permissions.toArray().map((p) => message.translate(`permissions:${p}`)).join(' » ');
+
 		// Send information to channel
-		const embed = new MessageEmbed()
-			.setColor(role[0].color)
+		const embed = new Embed(bot, message.guild)
+			.setColor(roles[0].color)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setDescription(bot.translate(settings.Language, 'GUILD/ROLE_NAME', role[0].name))
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_MEMBERS'), role[0].members.size, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_COLOR'), role[0].hexColor, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_POSITION'), role[0].position, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_MENTION'), `<@&${role[0].id}>`, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_HOISTED'), role[0].hoist, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_MENTIONABLE'), role[0].mentionable, true)
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_PERMISSION'), role[0].permissions.toArray().toString().toLowerCase().replace(/_/g, ' ').replace(/,/g, ' » '))
-			.addField(bot.translate(settings.Language, 'GUILD/ROLE_CREATED'), moment(role[0].createdAt).format('lll'))
+			.setDescription(message.translate('guild/role-info:NAME', { NAME: roles[0].name }))
+			.addFields(
+				{ name: message.translate('guild/role-info:MEMBERS'), value: roles[0].members.size, inline: true },
+				{ name: message.translate('guild/role-info:COLOR'), value: roles[0].hexColor, inline: true },
+				{ name: message.translate('guild/role-info:POSITION'), value: roles[0].position, inline: true },
+				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${roles[0].id}>`, inline: true },
+				{ name: message.translate('guild/role-info:HOISTED'), value: roles[0].hoist, inline: true },
+				{ name: message.translate('guild/role-info:MENTIONABLE'), value: roles[0].mentionable, inline: true },
+				{ name: message.translate('guild/role-info:PERMISSION'), value: permissions },
+				{ name: message.translate('guild/role-info:CREATED'), value: moment(roles[0].createdAt).format('lll') },
+			)
 			.setTimestamp()
-			.setFooter(bot.translate(settings.Language, 'GUILD/ROLE_FOOTER', [`${message.author.tag}`, `${role[0].id}`]));
+			.setFooter('guild/role-info:FOOTER', { MEMBER: message.author.tag, ID: roles[0].id });
 		message.channel.send(embed);
 	}
 };

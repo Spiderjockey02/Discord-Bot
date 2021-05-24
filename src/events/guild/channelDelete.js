@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class channelDelete extends Event {
@@ -27,7 +27,7 @@ module.exports = class channelDelete extends Event {
 
 		// Check if event channelDelete is for logging
 		if (settings.ModLogEvents.includes('CHANNELDELETE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${channel.id}`)

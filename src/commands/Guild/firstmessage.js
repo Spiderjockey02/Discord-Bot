@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Firstmessage extends Command {
@@ -17,26 +17,28 @@ module.exports = class Firstmessage extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// get channel
 		const channel = message.getChannel();
 
 		try {
-			// get first message in current channel
+			// get first message in channel
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
-			const embed = new MessageEmbed()
+
+			// display information
+			const embed = new Embed(bot, message.guild)
 				.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 				.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 				.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 				.setDescription(fMessage.content)
-				.setTimestamp(fMessage.createdAt)
-				.setFooter(`ID: ${fMessage.id}`)
-				.addField('❯ Jump', fMessage.url);
+				.addField(message.translate('guild/firstmessage:JUMP'), fMessage.url)
+				.setFooter('misc:ID', { ID: fMessage.id })
+				.setTimestamp(fMessage.createdAt);
 			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

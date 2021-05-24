@@ -1,7 +1,7 @@
 // Dependencies
 const fetch = require('node-fetch'),
 	dateFormat = require('dateformat'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Steam extends Command {
@@ -20,10 +20,11 @@ module.exports = class Steam extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Steam config
-		if (!message.args[0])	return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/steam:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// data
 		const token = bot.config.api_keys.steam;
@@ -56,7 +57,7 @@ module.exports = class Steam extends Command {
 					}
 					const { NumberOfGameBans } = body3.players[0];
 					// Display results
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, message.guild)
 						.setColor(0x0099ff)
 						.setAuthor(`Steam Services | ${personaname}`, avatarfull)
 						.setThumbnail(avatarfull)

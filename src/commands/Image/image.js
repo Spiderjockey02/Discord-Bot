@@ -1,6 +1,6 @@
 // Dependencies
 const { image_search } = require('duckduckgo-images-api'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Image extends Command {
@@ -22,25 +22,26 @@ module.exports = class Image extends Command {
 		// Make sure a topic was included
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/image:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// get results (image links etc)
 		try {
 			const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
 
 			// send image
-			msg.delete();
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
 			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
+		msg.delete();
 	}
 };

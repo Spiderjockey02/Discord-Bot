@@ -7,7 +7,7 @@ module.exports = class TagAdd extends Command {
 		super(bot, {
 			name: 'tag-add',
 			dirname: __dirname,
-			aliases: ['t-add', 't-create'],
+			aliases: ['t-add'],
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add a new tag to the server',
@@ -26,25 +26,25 @@ module.exports = class TagAdd extends Command {
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-add:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		try {
 			// Validate input
 			const responseString = message.args.slice(1).join(' ');
-			if (!message.args[0]) return message.channel.send('Please specify a name for the tag.');
-			if (!message.args[0].length > 10) return message.channel.send('Please shorten the name of the tag.');
-			if (!responseString) return message.channel.send('Please specify a response for the tag');
+			if (!message.args[0]) return message.channel.send(message.translate('tags/tag-add:INVALID_NAME'));
+			if (!message.args[0].length > 10) return message.channel.send(message.translate('tags/tag-add:NAME_TOO_LONG'));
+			if (!responseString) return message.channel.send(message.translate('tags/tag-add:INVALID_RESP'));
 
 			// Make sure the tagName doesn't exist and they haven't gone past the tag limit
 			TagsSchema.find({ guildID: message.guild.id }).then(async guildTags => {
-				if (guildTags.length >= 10 && !message.guild.premium) return message.channel.send('You need premium to create more tags. Premium servers get up to `50` tags');
-				if (guildTags.length >= 50) return message.channel.send('You have exceeded the maximium tags.');
+				if (guildTags.length >= 10 && !message.guild.premium) return message.channel.send(message.translate('tags/tag-add:NEED_PREMIUM'));
+				if (guildTags.length >= 50) return message.channel.send(message.translate('tags/tag-add:MAX_TAGS'));
 
 				// Make sure the tagName doesn't exist
 				for (let i = 0; i < guildTags.length; i++) {
 					// tagName alreaddy exists
 					if (guildTags[i].name == message.args[0]) {
-						return message.channel.send('This tag has already been created.');
+						return message.channel.send(message.translate('tags/tag-add:SAME_NAME'));
 					}
 				}
 
@@ -54,11 +54,11 @@ module.exports = class TagAdd extends Command {
 					name: message.args[0],
 					response: responseString,
 				})).save();
-				message.channel.send(`Tag has been saved with name: \`${message.args[0]}\`.`);
+				message.channel.send(message.translate('tags/tag-add:SAME_NAME', { TAG: message.args[0] }));
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

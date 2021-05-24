@@ -25,45 +25,6 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
-## Guild
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
-| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
-| discrim	|	Discrim	|	`discrim <discriminator>`	|
-| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
-| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
-| guildicon	|	Get the server's icon.	|	`guildicon`	|
-| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
-| role-info	|	Get information on a role.	|	`role-info <role>`	|
-| server-info	|	Get information on the server.	|	`server-info`	|
-| user-info	|	Get information on the server.	|	`user-info [user]`	|
-
-
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-| system	|	Displays the bots statistics	|	`status`	|
-| test	|	For testing new commands and features	|	`test`	|
-| update	|	Sends an update to bot's guild.	|	`update`	|
-
-
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
 ## Image
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -85,6 +46,38 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+| system	|	Displays the bots statistics	|	`status`	|
+| test	|	For testing new commands and features	|	`test`	|
+| update	|	Sends an update to bot's guild.	|	`update`	|
+
+
+## Guild
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
+| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
+| discrim	|	Discrim	|	`discrim <discriminator>`	|
+| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
+| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
+| guildicon	|	Get the server's icon.	|	`guildicon`	|
+| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
+| role-info	|	Get information on a role.	|	`role-info <role>`	|
+| server-info	|	Get information on the server.	|	`server-info`	|
+| user-info	|	Get information on the server.	|	`user-info [user]`	|
+
+
 ## Misc
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -96,6 +89,13 @@
 | status	|	Gets the status of the bot.	|	`status`	|
 | support	|	Get support on the bot.	|	`support`	|
 | uptime	|	Gets the uptime of the bot.	|	`uptime`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
 
 
 ## Moderation
@@ -156,16 +156,6 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
-## Plugins
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
-| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
-| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
-| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
-| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
-
-
 ## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -178,6 +168,16 @@
 | pgif	|	Look at NSFW images.	|	`pgif`	|
 | pussy	|	Look at NSFW images.	|	`pussy`	|
 | thigh	|	Look at NSFW images.	|	`thigh`	|
+
+
+## Plugins
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
+| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
+| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
+| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
+| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher

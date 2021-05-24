@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildUpdate extends Event {
@@ -24,7 +24,7 @@ module.exports = class guildUpdate extends Event {
 
 			// Guild name change
 			if (oldGuild.name != newGuild.name) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription('**Server name changed**')
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.name)
@@ -37,7 +37,7 @@ module.exports = class guildUpdate extends Event {
 
 			// region change
 			if (oldGuild.region != newGuild.region) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription('**Server region changed**')
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.region)
@@ -48,7 +48,7 @@ module.exports = class guildUpdate extends Event {
 
 			// Server's boost level has changed
 			if (oldGuild.premiumTier != newGuild.premiumTier) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription(`**Server boost ${oldGuild.premiumTier < newGuild.premiumTier ? 'increased' : 'decreased'}**`)
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.premiumTier)
@@ -59,7 +59,7 @@ module.exports = class guildUpdate extends Event {
 
 			// Server has got a new banner
 			if (!oldGuild.banner && newGuild.banner) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription('**Server banner changed**')
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.banner)
@@ -70,7 +70,7 @@ module.exports = class guildUpdate extends Event {
 
 			// Server has made a AFK channel
 			if (!oldGuild.afkChannel && newGuild.afkChannel) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription('**Server AFK channel changed**')
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.afkChannel)
@@ -81,7 +81,7 @@ module.exports = class guildUpdate extends Event {
 
 			// Server now has a vanity URL
 			if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newGuild)
 					.setDescription('**Server Vanity URL changed**')
 					.setAuthor(newGuild.name, newGuild.iconURL())
 					.addField('Before:', oldGuild.vanityURLCode)

@@ -26,19 +26,19 @@ module.exports = class TagDelete extends Command {
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
 
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-delete:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// try and delete tag
 		try {
 			const result = await TagsSchema.findOneAndRemove({ guildID: message.guild.id, name: message.args[0] });
 			if (result) {
-				message.channel.send(`Tag: ${message.args[0]} was deleted.`);
+				message.channel.send(message.translate('tags/tag-delete:TAG_DELETED', { TAG: message.args[0] }));
 			} else {
-				message.channel.send(`No tag with name: \`${message.args[0]}\` was found.`);
+				message.channel.send(message.translate('tags/tag-delete:NO_TAG', { TAG: message.args[0] }));
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

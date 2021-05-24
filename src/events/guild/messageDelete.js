@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ ReactionRoleSchema, GiveawaySchema, ticketEmbedSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
@@ -68,7 +68,7 @@ module.exports = class messageDelete extends Event {
 			}
 
 			// Basic message construct
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter(`Author: ${message.author.id} | Message: ${message.id}`)

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Guildicon extends Command {
@@ -20,8 +20,8 @@ module.exports = class Guildicon extends Command {
 	async run(bot, message, settings) {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
-			const embed = new MessageEmbed()
-				.setDescription(`[${bot.translate(settings.Language, 'GUILD/GUILD_ICON')}](${message.guild.iconURL({ dynamic: true, size: 1024 })})`)
+			const embed = new Embed(bot, message.guild)
+				.setDescription(message.translate('guild/guildicon:ICON', { URL: message.guild.iconURL({ dynamic: true, size: 1024 }) }))
 				.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
 			message.channel.send(embed);
 		} else {

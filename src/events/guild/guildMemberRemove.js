@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
 	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
@@ -24,7 +24,7 @@ module.exports = class guildMemberRemove extends Event {
 
 		// Check if event guildMemberRemove is for logging
 		if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(15158332)
 				.setFooter(`ID: ${member.id}`)

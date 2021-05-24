@@ -1,6 +1,6 @@
 // Dependencies
 const { GlobalBanSchema } = require('../../database/models'),
-	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Addban extends Command {
@@ -19,14 +19,14 @@ module.exports = class Addban extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/addban:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// get information
 		const user = await bot.users.fetch(message.args[0]);
 		const restriction = message.args[1];
-		if (!['servers', 'commands'].includes(restriction)) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!['servers', 'commands'].includes(restriction)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/addban:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		message.args.splice(0, 2);
-		const reason = (message.args[0]) ? message.args.join(' ') : bot.translate(settings.Language, 'NO_REASON');
+		const reason = (message.args[0]) ? message.args.join(' ') : message.translate('misc:NO_REASON');
 
 		// update database
 		GlobalBanSchema.findOne({
@@ -36,18 +36,23 @@ module.exports = class Addban extends Command {
 
 			// This is their first warning
 			if (!res) {
-				const newBan = new GlobalBanSchema({
-					userID: user.id,
-					reason: reason,
-					restriction: restriction,
-					IssueDate: new Date().toUTCString(),
-				});
-				newBan.save().catch(e => bot.logger.error(e.message));
-				const embed = new MessageEmbed()
-					.setColor(15158332)
-					.setAuthor(`${user.tag} has been globally banned`)
-					.setDescription(`**Reason:** ${reason}\n**Restriction:** ${restriction}`);
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				try {
+					await (new GlobalBanSchema({
+						userID: user.id,
+						reason: reason,
+						restriction: restriction,
+						IssueDate: new Date().toUTCString(),
+					})).save();
+					const embed = new Embed(bot, message.guild)
+						.setColor(15158332)
+						.setAuthor(`${user.tag} has been globally banned`)
+						.setDescription(`**Reason:** ${reason}\n**Restriction:** ${restriction}`);
+					message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				} catch (err) {
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				}
 			} else {
 				message.channel.send('User is already banned.');
 			}

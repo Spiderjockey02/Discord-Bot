@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Ban a user.",
+  "USAGE": "ban <user> [reason] [time]",
+  "TITLE": "BANNED",
+  "DESC": "You have been banned from {{NAME}}.",
+  "BAN_BY": "Banned by:",
+  "SUCCESS": "*<@{{USER}}> was successfully banned*."
+}

@@ -1,5 +1,5 @@
 // Dependencies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Update extends Command {
@@ -19,7 +19,7 @@ module.exports = class Update extends Command {
 	// Run command
 	async run(bot, message) {
 		// Embed for update
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setTitle(`${bot.user.tag} update logs`)
 			.setDescription((message.args[0]) ? message.args.join(' ') : 'unspecified');
 
