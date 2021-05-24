@@ -23,19 +23,15 @@ module.exports = class Nick extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Get user for nickname change
-		const member = message.getMember();
+		const members = message.getMember();
 
 		// Check if they are changing their own name or not (and check permission)
-		if (member[0] == message.member) {
-			if (!message.member.hasPermission('CHANGE_NICKNAMES')) {
-				return message.channel.error(settings.Language, 'USER_PERMISSION', 'CHANGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
-			}
-		} else if (!message.member.hasPermission('MANAGE_NICKNAMES')) {
+		if (members[0] !== message.member && !message.member.hasPermission('MANAGE_NICKNAMES')) {
 			return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (member[0].hasPermission('ADMINISTRATOR') || (member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0)) {
+		if (members[0].hasPermission('ADMINISTRATOR') || (members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0)) {
 			return message.channel.error('moderation/nick:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
@@ -50,8 +46,8 @@ module.exports = class Nick extends Command {
 
 		// Change nickname and tell user (send error message if dosen't work)
 		try {
-			await member[0].setNickname(nickname);
-			message.channel.success('moderation/nick:SUCCESS', { USER: member[0].user }).then(m => m.delete({ timeout: 5000 }));
+			await members[0].setNickname(nickname);
+			message.channel.success('moderation/nick:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 5000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
