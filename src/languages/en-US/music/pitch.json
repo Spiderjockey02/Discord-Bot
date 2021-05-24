@@ -6,5 +6,5 @@
   "INVALID": "Amount must be a real number.",
   "INCORRECT": "Pitch must be inbetween 0 and 10.",
   "PITCH_ON": "Setting pitch to **{{NUM}}**. This may take a few seconds...",
-  "DESC_2": "Pitch set to: **{{NUM}}**",
+  "DESC_2": "Pitch set to: **{{NUM}}**"
 }

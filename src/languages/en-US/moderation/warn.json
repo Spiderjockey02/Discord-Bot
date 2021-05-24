@@ -8,5 +8,5 @@
   "WARN_BY": "Warned by:",
   "WARN_IN": "You have been warned in {{NAME}}.",
   "WARN_CNTR": "Warnings:",
-  "KICKED": "*{{USER}} was successfully kicked for having too many warnings*.",
+  "KICKED": "*{{USER}} was successfully kicked for having too many warnings*."
 }

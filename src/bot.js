@@ -47,7 +47,7 @@ const path = require('path');
 		});
 	});
 
-	bot.translations = await require('./helpers/languageManager')();
+	bot.translations = await require('./helpers/LanguageManager')();
 
 	// Audio player
 	try {
