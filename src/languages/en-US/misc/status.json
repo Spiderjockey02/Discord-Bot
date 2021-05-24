@@ -1,6 +1,7 @@
 {
   "DESCRIPTION": "Gets the status of the bot.",
   "USAGE": "status",
+  "PONG": "Pong",
   "PING": "Ping:",
   "CLIENT": "Client API:",
   "MONGO": "MongoDB:"

@@ -25,8 +25,8 @@ module.exports = class Instagram extends Command {
 		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name} account info` }));
+		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Gather data from database
 		const res = await fetch(`https://instagram.com/${username}/feed/?__a=1`)

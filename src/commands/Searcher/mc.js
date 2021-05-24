@@ -24,8 +24,8 @@ module.exports = class MC extends Command {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/mc:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name} server info` }));
+		const msg = await message.channel.send(message.translate('searcher/mc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// If no ping use 25565
 		if(!message.args[1]) message.args[1] = '25565';

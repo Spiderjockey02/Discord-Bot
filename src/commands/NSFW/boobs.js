@@ -20,8 +20,8 @@ module.exports = class Boobs extends Command {
 	// Run command
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name} image` }));
+		const msg = await message.channel.send(message.translate('nsfw/4k:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
 			get('https://nekobot.xyz/api/image?type=boobs')
