@@ -24,7 +24,7 @@ module.exports = class Message extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned
-		if (message.mentions.users.get(bot.user.id) && message.content.split(' ').length == 1) {
+		if ([`<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content == p)) {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
@@ -48,10 +48,10 @@ module.exports = class Message extends Event {
 
 		// Check if message was a command
 		const args = message.content.split(' ');
-		if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
+		if ([settings.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
 			const command = args.shift().slice(settings.prefix.length).toLowerCase();
 			let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
-			if (!cmd && message.content.startsWith(`<@!${bot.user.id}>`)) {
+			if (!cmd && [`<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
 				// check to see if user is using mention as prefix
 				cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
 				args.shift();
