@@ -26,6 +26,7 @@ module.exports = class Help extends Command {
 					message.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: message.translate('misc/help:USAGE') }),
 				].join('\n'));
 			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+			if (bot.config.ownerID.includes(message.author.id)) categories.push('Host');
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
@@ -36,8 +37,10 @@ module.exports = class Help extends Command {
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
-					embed.addField(`${category} [**${length}**]`, commands, false);
+					if (category == 'NSFW' && !message.channel.nsfw) return;
+					embed.addField(`${category} [**${length}**]`, commands);
 				});
+			// send message
 			message.channel.send(embed);
 		} else if (message.args.length == 1) {
 			// Check if arg is command
