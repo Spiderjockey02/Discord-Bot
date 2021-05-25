@@ -34,7 +34,7 @@ module.exports = class Ban extends Command {
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('moderation/ban:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Ban user with reason and check if timed ban

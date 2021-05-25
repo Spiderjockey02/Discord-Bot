@@ -26,7 +26,8 @@ module.exports = class RoleInfo extends Command {
 		// Make sure it's a role on the server
 		if (!roles[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+			// Make sure a poll was provided
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/role-info:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// translate permissions

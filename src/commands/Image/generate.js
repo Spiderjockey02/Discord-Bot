@@ -25,7 +25,7 @@ module.exports = class Generate extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		if (message.args[0] == 'list' || message.args[0] == '?' || !message.args[0]) {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('image/generate:DESC', { IMG_1: `${image_1.join('`, `')}`, IMG_2: `${image_2.join('`, `')}` }));
@@ -58,7 +58,7 @@ module.exports = class Generate extends Command {
 				});
 			} else if (image_2.includes(choice)) {
 				// Check that 2 files have been uploaded
-				if (!file[1]) return message.channel.error(settings.Language, 'IMAGE/NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
+				if (!file[1]) return message.channel.error('image/generate:NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
 
 				// send 'waiting' message to show bot has recieved message
 				msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {

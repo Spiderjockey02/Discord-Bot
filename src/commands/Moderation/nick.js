@@ -27,7 +27,7 @@ module.exports = class Nick extends Command {
 
 		// Check if they are changing their own name or not (and check permission)
 		if (members[0] !== message.member && !message.member.hasPermission('MANAGE_NICKNAMES')) {
-			return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_NICKNAMES').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: message.translate('permissions:MANAGE_NICKNAMES') }).then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure user user does not have ADMINISTRATOR permissions

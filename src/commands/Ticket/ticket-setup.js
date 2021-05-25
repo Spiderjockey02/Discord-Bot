@@ -20,9 +20,6 @@ module.exports = class TicketSetup extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// make sure user has permission to edit ticket plugin
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
-
 		// will setup the ticket command
 		if (!message.args[0]) {
 			const embed = new Embed(bot, message.guild)

@@ -23,15 +23,16 @@ module.exports = class Kick extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Get user and reason
-		const members = message.getMember(),
+		const members = await message.getMember(),
 			reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
+
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('moderation/kick:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Kick user with reason
@@ -51,7 +52,7 @@ module.exports = class Kick extends Command {
 
 			// kick user from guild
 			await members[0].kick({ reason: reason });
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_KICK', members[0].user).then(m => m.delete({ timeout: 3000 }));
+			message.channel.success('moderation/kick:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

@@ -29,7 +29,7 @@ module.exports = class SlowMode extends Command {
 			time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
 			if (!time) return;
 		} else {
-			return message.channel.error(settings.Language, 'NOT_NUMBER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/slowmode:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Activate slowmode

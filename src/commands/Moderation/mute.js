@@ -22,12 +22,6 @@ module.exports = class Mute extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// check if bot can add 'mute' role to user
-		if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-			bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// add user to role (if no role, make role)
 		const members = await message.getMember();
 
@@ -37,7 +31,7 @@ module.exports = class Mute extends Command {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 

@@ -75,8 +75,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				// send embed
 				const embed = new Embed(bot, message.guild)
 					.setColor(15158332)
-					.setAuthor(bot.translate(settings.Language, 'MODERATION/SUCCESSFULL_WARN', member.user.tag), member.user.displayAvatarURL())
-					.setDescription(bot.translate(settings.Language, 'MODERATION/REASON', wReason));
+					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
+					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
 				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 

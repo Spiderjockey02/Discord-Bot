@@ -50,7 +50,6 @@ module.exports = Structures.extend('Message', Message => {
 					users.push(member);
 				}
 			}
-
 			// add author at the end
 			users.push(this.member);
 			return users;
@@ -131,7 +130,7 @@ module.exports = Structures.extend('Message', Message => {
 				}
 			}
 			// add avatar URL's to file
-			file.push(...await this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
+			file.push(...(await this.getMember()).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;
 		}
 

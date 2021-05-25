@@ -25,9 +25,6 @@ module.exports = class DM extends Command {
 		// Get user
 		const members = await message.getMember();
 
-		// Check if user has manage server permissions
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// send message
 		try {
 			const embed = new Embed(bot, message.guild)

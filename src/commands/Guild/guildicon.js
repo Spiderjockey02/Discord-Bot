@@ -17,7 +17,7 @@ module.exports = class Guildicon extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
 			const embed = new Embed(bot, message.guild)
@@ -26,7 +26,7 @@ module.exports = class Guildicon extends Command {
 			message.channel.send(embed);
 		} else {
 			if (message.deletable) message.delete();
-			message.channel.error(settings.Language, 'GUILD/NO_GUILD_ICON').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

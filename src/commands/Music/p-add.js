@@ -45,7 +45,7 @@ module.exports = class PAdd extends Command {
 				// Workout what to do with the results
 				if (res.loadType == 'NO_MATCHES') {
 					// An error occured or couldn't find the track
-					return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
+					return message.channel.error('music/play:NO_SONG');
 				} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
 					try {
 						// add songs to playlist

@@ -82,7 +82,7 @@ module.exports = class Radio extends Command {
 				if (res.loadType == 'NO_MATCHES') {
 					// An error occured or couldn't find the track
 					if (!player.queue.current) player.destroy();
-					return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
+					return message.channel.error('music/play:NO_SONG');
 				} else {
 					// add track to queue and play
 					if (player.state !== 'CONNECTED') player.connect();

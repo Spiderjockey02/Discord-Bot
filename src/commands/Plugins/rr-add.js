@@ -20,7 +20,7 @@ module.exports = class ReactionRoleAdd extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check if the guild has reached max reaction roles
 		await ReactionRoleSchema.find({
 			guildID: message.guild.id,
@@ -41,26 +41,21 @@ module.exports = class ReactionRoleAdd extends Command {
 				return message.channel.send(message.translate('plugins/rr-add:MAX_RR'));
 			} else {
 				// They can create more reaction roles
-				// Make sure bot has permission to give/remove roles
-				if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-					bot.logger.error(`Missing permission: \`MANAGE_ROLES\` in [${message.guild.id}].`);
-					return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_ROLES').then(m => m.delete({ timeout: 10000 }));
-				}
 
 				// Make sure channel is a text channel and permission
 				const channel = message.guild.channels.cache.get(message.args[0]) ? message.guild.channels.cache.get(message.args[1]) : message.channel;
 				if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
-					return message.channel.error(settings.Language, 'MISSING_CHANNEL');
+					return message.channel.error('misc:MISSING_CHANNEL');
 				} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-					return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SEND_MESSAGES').then(m => m.delete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:SEND_MESSAGES') }).then(m => m.delete({ timeout: 10000 }));
 				} else if (!channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
-					return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'EMBED_LINKS').then(m => m.delete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:EMBED_LINKS') }).then(m => m.delete({ timeout: 10000 }));
 				} else if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
-					return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ADD_REACTIONS').then(m => m.delete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:ADD_REACTIONS') }).then(m => m.delete({ timeout: 10000 }));
 				}
 
 				// Get all roles mentioned
-				message.channel.send(bot.translate(settings.Language, 'PLUGINS/SEND_ROLES'));
+				message.channel.send(message.translate('plugins/rr-add:SEND_ROLES'));
 
 				const filter = (m) => message.author.id === m.author.id || (m.content == 'cancel' && m.author.id == message.author.id);
 

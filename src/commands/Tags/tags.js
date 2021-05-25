@@ -18,10 +18,6 @@ module.exports = class Tags extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-
-		// make sure member has MANAGE_GUILD permissions
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
-
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 

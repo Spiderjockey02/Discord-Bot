@@ -37,9 +37,10 @@ module.exports = class Reload extends Command {
 				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
 				await bot.loadCommand(cmd.conf.location, cmd.help.name);
 				return message.channel.success('host/reload:SUCCESS', { NAME: commandName }).then(m => m.delete({ timeout: 8000 }));
-			} catch(err) {
+			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE').then(m => m.delete({ timeout: 5000 }));
+				if (message.deletable) message.delete();
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else if (Object.keys(bot._events).includes(message.args[0])) {
 			try {

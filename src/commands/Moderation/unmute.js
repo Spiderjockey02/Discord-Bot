@@ -32,7 +32,7 @@ module.exports = class Unmute extends Command {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-				return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MUTE_MEMBERS').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 

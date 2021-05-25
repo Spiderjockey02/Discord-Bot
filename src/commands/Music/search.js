@@ -7,7 +7,7 @@ module.exports = class Search extends Command {
 		super(bot, {
 			name: 'search',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Searches for a song.',
 			usage: 'search <link / song name>',
 			cooldown: 3000,
@@ -30,18 +30,6 @@ module.exports = class Search extends Command {
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
 			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Check if bot has permission to connect to voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('CONNECT')) {
-			bot.logger.error(`Missing permission: \`CONNECT\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'CONNECT').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// Check if bot has permission to speak in the voice channel
-		if (!message.member.voice.channel.permissionsFor(message.guild.me).has('SPEAK')) {
-			bot.logger.error(`Missing permission: \`SPEAK\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'SPEAK').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure that a song/url has been entered

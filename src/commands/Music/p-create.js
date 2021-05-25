@@ -62,14 +62,14 @@ module.exports = class PCreate extends Command {
 		try {
 			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 		} catch (err) {
-			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
+			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			msg.delete();
-			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
+			return message.channel.error('music/play:NO_SONG');
 		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED' || res.loadType == 'SEARCH_RESULT') {
 			let tracks = [], thumbnail, duration;
 			if (res.loadType == 'SEARCH_RESULT') {
