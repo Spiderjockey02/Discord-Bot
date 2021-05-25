@@ -16,12 +16,6 @@ module.exports = class guildMemberRemove extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
 
-		try {
-			if (member.partial) await member.fetch();
-		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-		}
-
 		if (member.user.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return
@@ -36,7 +30,7 @@ module.exports = class guildMemberRemove extends Event {
 				.setFooter(`ID: ${member.id}`)
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor('User left:', member.user.displayAvatarURL())
-				.addField('Joined at:', `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
+				.addField('Joined at:', member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
 				.setTimestamp();
 
 			// Find channel and send message
