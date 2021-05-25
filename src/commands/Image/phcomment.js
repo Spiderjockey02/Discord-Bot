@@ -20,7 +20,7 @@ module.exports = class PHcomment extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Get text
 		let text = message.args.join(' ');

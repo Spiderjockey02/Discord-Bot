@@ -24,7 +24,7 @@ module.exports = class Unmute extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Find user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Get the channel the member is in
 		const channel = message.guild.channels.cache.get(members[0].voice.channelID);

@@ -3,7 +3,7 @@ const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
-module.exports = class ServerInfo extends Command {
+module.exports = class UserInfo extends Command {
 	constructor(bot) {
 		super(bot, {
 			name:  'user-info',
@@ -21,7 +21,7 @@ module.exports = class ServerInfo extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// send user info
 		const embed = new Embed(bot, message.guild)

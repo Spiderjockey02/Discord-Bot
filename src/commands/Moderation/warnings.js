@@ -21,7 +21,7 @@ module.exports = class Warnings extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// get warnings of user
 		try {

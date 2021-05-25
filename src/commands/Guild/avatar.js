@@ -20,7 +20,7 @@ module.exports = class Avatar extends Command {
 	// Run command
 	async run(bot, message) {
 		// Get user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// send embed
 		const embed = new Embed(bot, message.guild)

@@ -228,6 +228,7 @@ class GiveawaysManager extends EventEmitter {
 			if (giveaway.remainingTime <= 0) {
 				return this.end(giveaway.messageID);
 			}
+			// eslint-disable-next-line no-empty-function
 			await giveaway.fetchMessage().catch(() => {});
 			if (!giveaway.message) {
 				giveaway.ended = true;

@@ -26,7 +26,7 @@ module.exports = class Report extends Command {
 		if (settings.ModLogEvents.includes('REPORT')) {
 
 			// Find user
-			const members = message.getMember();
+			const members = await message.getMember();
 			// Make sure user isn't trying to punish themselves
 			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 

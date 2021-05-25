@@ -23,7 +23,7 @@ module.exports = class Nick extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Get user for nickname change
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Check if they are changing their own name or not (and check permission)
 		if (members[0] !== message.member && !message.member.hasPermission('MANAGE_NICKNAMES')) {

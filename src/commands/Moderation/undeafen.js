@@ -23,7 +23,7 @@ module.exports = class Undeafen extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Checks to make sure user is in the server
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Make sure that the user is in a voice channel
 		if (members[0]?.voice.channel) {

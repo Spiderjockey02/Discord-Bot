@@ -23,7 +23,7 @@ module.exports = class DM extends Command {
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Check if user has manage server permissions
 		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));

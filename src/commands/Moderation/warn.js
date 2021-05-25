@@ -25,7 +25,7 @@ module.exports = class Warn extends Command {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/warn:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Get user to warn
-		const members = message.getMember();
+		const members = await message.getMember();
 
 		// Make sure user isn't trying to punish themselves
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
