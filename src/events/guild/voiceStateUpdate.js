@@ -14,7 +14,7 @@ module.exports = class voiceStateUpdate extends Event {
 	async run(bot, oldState, newState) {
 		// variables for easier coding
 		const newMember = newState.guild.member(newState.id);
-		const channel = newState.guild.channels.cache.get(newState.channelID);
+		const channel = newState.guild.channels.cache.get(newState.channelID.id || newState.channelID);
 
 		// Get server settings / if no settings then return
 		const settings = newState.guild.settings;
