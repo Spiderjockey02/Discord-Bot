@@ -2,6 +2,7 @@
 const { GlobalBanSchema } = require('../../database/models'),
 	{ Collection } = require('discord.js'),
 	{ Embed } = require('../../utils'),
+	{ time: { getReadableTime } } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class Message extends Event {
@@ -30,7 +31,7 @@ module.exports = class Message extends Event {
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
 					`Hello, my name is ${bot.user.username}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.`,
-					`I've been online for ${bot.timeFormatter.getReadableTime(bot.uptime)}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
+					`I've been online for ${getReadableTime(bot.uptime)}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
 				].join('\n\n'))
 				.addField('Useful Links:', [
 					`[Add to server](${bot.config.inviteLink})`,
@@ -112,7 +113,7 @@ module.exports = class Message extends Event {
 
 				if (neededPermissions.length > 0) {
 					bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${message.guild.id}].`);
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') });
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.delete({ timeout: 10000 }));
 				}
 
 				// check user permissions
@@ -124,7 +125,7 @@ module.exports = class Message extends Event {
 				});
 
 				if (neededPermissions.length > 0) {
-					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') });
+					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.delete({ timeout: 10000 }));
 				}
 			}
 

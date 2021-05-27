@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ time: { read24hrFormat, getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class FastForward extends Command {
@@ -36,7 +37,7 @@ module.exports = class FastForward extends Command {
 		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM');
 
 		// update the time
-		const time = bot.timeFormatter.read24hrFormat((message.args[0]) ? message.args[0] : '10');
+		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
 
 		if (time + player.position >= player.queue.current.duration) {
 			message.channel.send(message.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
@@ -44,7 +45,7 @@ module.exports = class FastForward extends Command {
 			player.seek(player.position + time);
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: bot.timeFormatter.getReadableTime(time) }));
+				.setDescription(message.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			message.channel.send(embed);
 		}
 	}

@@ -3,6 +3,7 @@ const { version } = require('discord.js'),
 	osu = require('node-os-utils'),
 	{ Embed } = require('../../utils'),
 	os = require('os'),
+	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Status extends Command {
@@ -22,7 +23,7 @@ module.exports = class Status extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		const config = { fullBar: '█', emptyBar: '░', barPrecision: 20 };
 
@@ -94,7 +95,7 @@ module.exports = class Status extends Command {
 				`Output Speed: ${networkUsageOut}`,
 			].join('\n'));
 		}
-		embed.addField('Bot Stats:', `Uptime: ${bot.timeFormatter.getReadableTime(bot.uptime)}.`);
+		embed.addField('Bot Stats:', `Uptime: ${getReadableTime(bot.uptime)}.`);
 		embed.setTimestamp();
 		msg.delete();
 		message.channel.send(embed);

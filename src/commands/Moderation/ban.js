@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
+	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Ban extends Command {
@@ -59,7 +60,7 @@ module.exports = class Ban extends Command {
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-				const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
+				const time = getTotalTime(possibleTime, message);
 				if (!time) return;
 
 				// connect to database

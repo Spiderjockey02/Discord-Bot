@@ -20,10 +20,5 @@
 	"NO_QUEUE": "There are currently no songs playing in this server.",
 	"ENABLED": "Enabled",
 	"DISABLED": "Disabled",
-	"NOT_NUMBER": "Must be a number.",
-	"MISSING_CHANNEL": "I was unable to find this channel.",
-
-
-	"INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",
-	"MAX_TIME": "Can't be longer than 10 days."
+	"MISSING_CHANNEL": "I was unable to find this channel."
 }

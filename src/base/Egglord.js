@@ -59,9 +59,6 @@ module.exports = class Egglord extends Client {
 		// for Screenshot command
 		this.adultSiteList = [];
 
-		// for time converting and stuff
-		this.timeFormatter = new (require('../utils/timeFormatter'));
-
 		// for webhook
 		this.embedCollection = new Collection();
 

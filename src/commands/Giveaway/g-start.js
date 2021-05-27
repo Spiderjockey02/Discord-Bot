@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { time: { getTotalTime } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class G_start extends Command {
 	constructor(bot) {
@@ -26,7 +27,7 @@ module.exports = class G_start extends Command {
 		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Get time
-		const time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
+		const time = getTotalTime(message.args[0], message);
 		if (!time) return;
 
 		// Make sure that number of winners is a number

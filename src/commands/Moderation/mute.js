@@ -1,5 +1,6 @@
 // Dependencies
 const { MutedMemberSchema, timeEventSchema } = require('../../database/models'),
+	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Mute extends Command {
@@ -84,7 +85,7 @@ module.exports = class Mute extends Command {
 				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
 				// see if it was a tempmute
 				if (message.args[1]) {
-					const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
+					const time = getTotalTime(message.args[1], message);
 					if (!time) return;
 
 					// connect to database

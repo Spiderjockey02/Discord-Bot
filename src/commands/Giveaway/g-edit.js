@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { time: { getTotalTime } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class G_edit extends Command {
 	constructor(bot) {
@@ -26,7 +27,7 @@ module.exports = class G_edit extends Command {
 		}
 
 		// Get new Time
-		const time = bot.timeFormatter.getTotalTime(message.args[1], message, settings.Language);
+		const time = getTotalTime(message.args[1], message);
 		if (!time) return;
 
 		// Get new winner count

@@ -1,7 +1,7 @@
 // Dependencies
 const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
-	{ Embed } = require('../utils'),
+	{ Embed, time: { getTotalTime } } = require('../utils'),
 	{ MessageAttachment } = require('discord.js');
 
 module.exports = async (bot) => {
@@ -98,7 +98,7 @@ module.exports = async (bot) => {
 						for (let j = 0; j < res.length; j++) {
 							const possibleTime = res[j].Reason.split(' ')[0];
 							if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-								const time = bot.timeFormatter.getTotalTime(possibleTime, this, settings.Language);
+								const time = getTotalTime(possibleTime, this);
 								// make sure time is correct
 								if (time) {
 									const a = new Date(res[j].IssueDate).getTime() + parseInt(time);

@@ -1,6 +1,7 @@
 // Dependencies
 const { paginate } = require('../../utils'),
 	{ Embed } = require('../../utils'),
+	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Previous extends Command {
@@ -47,7 +48,7 @@ module.exports = class Previous extends Command {
 		for (let i = 0; i < player.previousTracks.length; i++) {
 			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${bot.timeFormatter.getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
 				`);
 		}
 		// create pages for pageinator

@@ -1,5 +1,6 @@
 // Dependencies
 const { WarningSchema, timeEventSchema } = require('../database/models'),
+	{ time: { getTotalTime } } = require('../../utils'),
 	{ Embed } = require('../../utils');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
@@ -109,7 +110,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 		// check if warning is timed
 		const possibleTime = wReason.split(' ')[0];
 		if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-			const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
+			const time = getTotalTime(possibleTime, message);
 			if (!time) return;
 			// connect to database
 			const newEvent = new timeEventSchema({

@@ -1,8 +1,9 @@
 // Dependecies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	Command = require('../../structures/Command.js'),
-	{ paginate } = require('../../utils');
+	{ time: { getReadableTime } } = require('../../utils'),
+	{ paginate } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class PView extends Command {
 	constructor(bot) {
@@ -58,7 +59,7 @@ module.exports = class PView extends Command {
 					const pages = [];
 					let n = 1;
 					for (let i = 0; i < pagesNum; i++) {
-						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** [${song.title}](https://www.youtube.com/watch?v=${song.identifier}) \`[${bot.timeFormatter.getReadableTime(song.duration)}]\``).join('\n')}`;
+						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** [${song.title}](https://www.youtube.com/watch?v=${song.identifier}) \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 						const embed = new Embed(bot, message.guild)
 							.setAuthor(message.author.tag, message.author.displayAvatarURL())
 							.setThumbnail(p.thumbnail)
@@ -66,7 +67,7 @@ module.exports = class PView extends Command {
 							.setDescription(str)
 							.setFooter(`ID: ${p._id}`)
 							.setTimestamp()
-							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${bot.timeFormatter.getReadableTime(totalQueueDuration)} total duration`);
+							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration`);
 						pages.push(embed);
 						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
 						else if(pagesNum == 1) message.channel.send(embed);

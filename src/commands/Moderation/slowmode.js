@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { time: { getTotalTime } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class SlowMode extends Command {
 	constructor(bot) {
@@ -26,7 +27,7 @@ module.exports = class SlowMode extends Command {
 		if (message.args[0] == 'off') {
 			time = 0;
 		} else if (message.args[0]) {
-			time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
+			time = getTotalTime(message.args[0], message);
 			if (!time) return;
 		} else {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/slowmode:USAGE')) }).then(m => m.delete({ timeout: 5000 }));

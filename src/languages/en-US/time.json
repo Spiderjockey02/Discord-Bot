@@ -6,5 +6,9 @@
     "ONE_MINUTE": "1 minute",
     "MINUTES": "{{amount}} minutes",
     "ONE_SECOND": "1 second",
-    "SECONDS": "{{amount}} seconds"
+    "SECONDS": "{{amount}} seconds",
+    "NOT_NUMBER": "Must be a number.",
+    "INCORRECT_DELIMITERS": "Please use one of the following time delimiters: `d`,  `h`,  `m`, `s`.",
+    "MAX_TIME": "Can't be longer than 10 days.",
+    "INVALID_TIME": "An invalid number was entered. (Example: 1m or 16h)"
 }

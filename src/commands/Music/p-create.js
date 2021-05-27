@@ -1,6 +1,7 @@
 // Dependecies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
+	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PCreate extends Command {
@@ -125,7 +126,7 @@ module.exports = class PCreate extends Command {
 				.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
 				.setDescription([
 					message.translate('music/p-create:DESC_1', { TITLE: message.args[0] }),
-					message.translate('music/p-create:DESC_2', { NUM: bot.timeFormatter.getReadableTime(parseInt(newPlaylist.duration)) }),
+					message.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
 					message.translate('music/p-create:DESC_3', { NAME: (res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : tracks[0].title, NUM: tracks.length, TITLE: message.args[0] }),
 				].join('\n'))
 				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })

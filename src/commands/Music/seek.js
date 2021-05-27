@@ -1,5 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
+const { MessageEmbed } = require('discord.js'),
+	{ time: { read24hrFormat } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Seek extends Command {
@@ -38,15 +39,15 @@ module.exports = class Seek extends Command {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// update the time
-		const time = bot.timeFormatter.read24hrFormat((message.args[0]) ? message.args[0] : '10');
+		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
 
 		if (time > player.queue.current.duration) {
 			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
 			player.seek(time);
-			const embed = new Embed(bot, message.guild)
+			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/seek:UPDATED', { TIME: message.args[0] }));
+				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			message.channel.send(embed);
 		}
 	}

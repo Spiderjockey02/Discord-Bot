@@ -3,6 +3,7 @@ const ms = require('ms'),
 	{ MessageAttachment } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
+	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Reminder extends Command {
@@ -28,7 +29,7 @@ module.exports = class Reminder extends Command {
 		}
 
 		// Get time
-		const time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
+		const time = getTotalTime(message.args[0], message, settings.Language);
 		if (!time) return;
 		message.args.shift();
 
