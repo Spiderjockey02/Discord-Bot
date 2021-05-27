@@ -39,7 +39,7 @@ module.exports = class RoleInfo extends Command {
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(message.translate('guild/role-info:NAME', { NAME: roles[0].name }))
 			.addFields(
-				{ name: message.translate('guild/role-info:MEMBERS'), value: roles[0].members.size, inline: true },
+				{ name: message.translate('guild/role-info:MEMBERS'), value: roles[0].members.size.toLocaleString(settings.Language), inline: true },
 				{ name: message.translate('guild/role-info:COLOR'), value: roles[0].hexColor, inline: true },
 				{ name: message.translate('guild/role-info:POSITION'), value: roles[0].position, inline: true },
 				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${roles[0].id}>`, inline: true },

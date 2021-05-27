@@ -55,9 +55,9 @@ module.exports = class Instagram extends Command {
 			.addField(message.translate('searcher/instagram:USERNAME'), account.username)
 			.addField(message.translate('searcher/instagram:FULL_NAME'), account.full_name)
 			.addField(message.translate('searcher/instagram:BIOGRAPHY'), (account.biography.length == 0) ? 'None' : account.biography)
-			.addField(message.translate('searcher/instagram:POSTS'), account.edge_owner_to_timeline_media.count, true)
-			.addField(message.translate('searcher/instagram:FOLLOWERS'), account.edge_followed_by.count, true)
-			.addField(message.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count, true)
+			.addField(message.translate('searcher/instagram:POSTS'), account.edge_owner_to_timeline_media.count.toLocaleString(settings.Language), true)
+			.addField(message.translate('searcher/instagram:FOLLOWERS'), account.edge_followed_by.count.toLocaleString(settings.Language), true)
+			.addField(message.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count.toLocaleString(settings.Language), true)
 			.addField(message.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
 			.addField(message.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
 		message.channel.send(embed);

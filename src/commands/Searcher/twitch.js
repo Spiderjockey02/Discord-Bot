@@ -40,8 +40,8 @@ module.exports = class Twitch extends Command {
 					.setThumbnail(twitchUser.profile_image_url)
 					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
 					.addField(message.translate('searcher/twitch:BIO'), twitchUser.description || message.translate('searcher/twitch:NO_BIO'), true)
-					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count, true)
-					.addField(message.translate('searcher/twitch:FOLLOWERS'), await getFollowersFromId(twitchUser.id), true);
+					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(settings.Language), true)
+					.addField(message.translate('searcher/twitch:FOLLOWERS'), await getFollowersFromId(twitchUser.id).then(num => num.toLocaleString(settings.Language)), true);
 				if (stream) {
 					embed
 						.addField('\u200B', message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))

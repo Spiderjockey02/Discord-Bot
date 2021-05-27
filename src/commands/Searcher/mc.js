@@ -45,7 +45,7 @@ module.exports = class MC extends Command {
 				.addField(message.translate('searcher/mc:IP'), response.host)
 				.addField(message.translate('searcher/mc:VERSION'), response.version)
 				.addField(message.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
-				.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers}/${response.maxPlayers}`);
+				.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(settings.Language)}/${response.maxPlayers.toLocaleString(settings.Language)}`);
 			msg.delete();
 			message.channel.send(embed);
 		}).catch(err => {

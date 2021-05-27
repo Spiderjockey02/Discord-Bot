@@ -96,12 +96,12 @@ module.exports = class R6 extends Command {
 			.setAuthor(player.username, bot.user.displayAvatarURL)
 			.setDescription(message.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.image)
-			.addField(message.translate('searcher/r6:GENERAL'), message.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp, NAME: current.name, MAX_NAME: max.name, MMR: current.mmr }))
+			.addField(message.translate('searcher/r6:GENERAL'), message.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(settings.Language) }))
 			.addField(message.translate('searcher/r6:STATS'), message.translate('searcher/r6:STAT_DATA', {
-				WIN: pvp.general.wins, LOSS: pvp.general.losses, WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills, DEATH: pvp.general.deaths, KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600),
+				WIN: pvp.general.wins.toLocaleString(settings.Language), LOSS: pvp.general.losses.toLocaleString(settings.Language), WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills.toLocaleString(settings.Language), DEATH: pvp.general.deaths.toLocaleString(settings.Language), KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600).toLocaleString(settings.Language),
 			}))
 			.addField(message.translate('searcher/r6:TERRORIST'), message.translate('searcher/r6:STAT_DATA', {
-				WIN: pve.general.wins, LOSS: pve.general.losses, WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills, DEATH: pve.general.deaths, KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600),
+				WIN: pve.general.wins.toLocaleString(settings.Language), LOSS: pve.general.losses.toLocaleString(settings.Language), WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills.toLocaleString(settings.Language), DEATH: pve.general.deaths.toLocaleString(settings.Language), KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600).toLocaleString(settings.Language),
 			}))
 			.setTimestamp()
 			.setFooter(message.author.username);

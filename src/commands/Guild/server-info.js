@@ -18,7 +18,7 @@ module.exports = class ServerInfo extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// Sort roles by position
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).array();
 		while (roles.join(', ').length >= 1021) {
@@ -39,7 +39,7 @@ module.exports = class ServerInfo extends Command {
 				{ name: message.translate('guild/server-info:REGION'), value: `\`${message.guild.region}\``, inline: true },
 				{ name: message.translate('guild/server-info:VERIFICATION'), value: `\`${message.guild.verificationLevel}\``, inline: true },
 				{ name: message.translate('guild/server-info:MEMBER', { NUM: message.guild.memberCount }), value: message.translate('guild/server-info:MEMBER_DESC', {
-					ONLINE: member.filter(m => m.presence.status === 'online').size, IDLE: member.filter(m => m.presence.status === 'idle').size, DND: member.filter(m => m.presence.status === 'dnd').size, BOTS: member.filter(m => m.user.bot).size, HUMANS: member.filter(m => !m.user.bot).size,
+					ONLINE: member.filter(m => m.presence.status === 'online').size.toLocaleString(settings.Language), IDLE: member.filter(m => m.presence.status === 'idle').size.toLocaleString(settings.Language), DND: member.filter(m => m.presence.status === 'dnd').size.toLocaleString(settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(settings.Language),
 				}), inline: true },
 				{ name: message.translate('guild/server-info:FEATURES'), value: `\`${(message.guild.features.length == 0) ? message.translate('misc:NONE') : message.guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
 				{ name: message.translate('guild/server-info:ROLES', { NUM: message.guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != message.guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },

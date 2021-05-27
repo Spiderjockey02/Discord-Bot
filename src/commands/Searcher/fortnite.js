@@ -36,13 +36,13 @@ module.exports = class Fortnite extends Command {
 				.setColor(0xffffff)
 				.setTitle('searcher/fortnite:TITLE', { USER: data.username })
 				.setURL(data.url)
-				.setDescription(message.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3, TOP_5: data.stats.lifetime.top_5, TOP_6: data.stats.lifetime.top_6, TOP_12: data.stats.lifetime.top_12, TOP_25: data.stats.lifetime.top_25 }))
+				.setDescription(message.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3.toLocaleString(settings.Language), TOP_5: data.stats.lifetime.top_5.toLocaleString(settings.Language), TOP_6: data.stats.lifetime.top_6.toLocaleString(settings.Language), TOP_12: data.stats.lifetime.top_12.toLocaleString(settings.Language), TOP_25: data.stats.lifetime.top_25.toLocaleString(settings.Language) }))
 				.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
-				.addField(message.translate('searcher/fortnite:TOTAL'), data.stats.solo.score + data.stats.duo.score + data.stats.squad.score, true)
-				.addField(message.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches, true)
-				.addField(message.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins, true)
+				.addField(message.translate('searcher/fortnite:TOTAL'), (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(settings.Language), true)
+				.addField(message.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches.toLocaleString(settings.Language), true)
+				.addField(message.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins.toLocaleString(settings.Language), true)
 				.addField(message.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
-				.addField(message.translate('searcher/fortnite:KILLS'), data.stats.lifetime.kills, true)
+				.addField(message.translate('searcher/fortnite:KILLS'), data.stats.lifetime.kills.toLocaleString(settings.Language), true)
 				.addField(message.translate('searcher/fortnite:K/D'), data.stats.lifetime.kd, true);
 			await message.channel.send(embed);
 		}).catch(err => {

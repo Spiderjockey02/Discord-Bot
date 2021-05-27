@@ -15,7 +15,7 @@ module.exports = class Meme extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
@@ -30,7 +30,7 @@ module.exports = class Meme extends Command {
 			.setColor(16333359)
 			.setURL(meme.post.link)
 			.setImage(meme.url)
-			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes, DOWNVOTES: meme.post.downvotes });
+			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
 		message.channel.send(embed);
 	}
 

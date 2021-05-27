@@ -40,7 +40,7 @@ module.exports = class Reddit extends Command {
 				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
 				.setURL(reddit.post.link)
 				.setImage(reddit.url)
-				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes, DOWNVOTES: reddit.post.downvotes });
+				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(settings.Language) });
 			msg.delete();
 			message.channel.send(embed);
 		} catch (err) {

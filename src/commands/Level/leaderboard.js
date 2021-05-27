@@ -23,7 +23,7 @@ module.exports = class Leaderboard extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
@@ -66,10 +66,10 @@ module.exports = class Leaderboard extends Command {
 							const name = await message.guild.members.fetch(res[(i * 10) + j].userID).catch(() => {}) || 'User left';
 							if (name == 'User left') {
 								embed2.addField(message.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
-									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp, LEVEL: res[(i * 10) + j].Level }));
+									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(settings.Language) }));
 							} else {
 								embed2.addField(message.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
-									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp, LEVEL: res[(i * 10) + j].Level }));
+									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(settings.Language) }));
 							}
 						}
 					}
