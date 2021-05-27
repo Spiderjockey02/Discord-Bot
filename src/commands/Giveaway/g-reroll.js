@@ -19,9 +19,11 @@ module.exports = class G_reroll extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
-			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 

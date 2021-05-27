@@ -2,6 +2,7 @@ const { Manager } = require('erela.js'),
 	Deezer = require('erela.js-deezer'),
 	Spotify = require('erela.js-spotify'),
 	Facebook = require('erela.js-facebook'),
+	{ MessageEmbed } = require('discord.js'),
 	{ Embed } = require('../utils');
 require('../structures/Player');
 
@@ -36,7 +37,7 @@ module.exports = async (bot) => {
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
-				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester).displayHexColor)
+				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
 				.setTitle('music/np:AUTHOR')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
@@ -57,7 +58,7 @@ module.exports = async (bot) => {
 			player.resetFilter();
 
 			// send embed
-			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
+			const embed = new MessageEmbed()
 				.setColor(15158332)
 				.setDescription(`An error has occured on playback: \`${payload.error}\``);
 			const channel = bot.channels.cache.get(player.textChannel);
@@ -70,7 +71,7 @@ module.exports = async (bot) => {
 				if (player.twentyFourSeven) return;
 
 				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
-				const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
+				const embed = new MessageEmbed()
 					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild).settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
@@ -80,7 +81,7 @@ module.exports = async (bot) => {
 		.on('playerMove', (player, currentChannel, newChannel) => {
 			// Voice channel updated
 			if (!newChannel) {
-				const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
+				const embed = new MessageEmbed()
 					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild).settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);

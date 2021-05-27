@@ -19,9 +19,11 @@ module.exports = class G_delete extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
-			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-delete:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
@@ -30,7 +32,6 @@ module.exports = class G_delete extends Command {
 		bot.giveawaysManager.delete(messageID).then(() => {
 			message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
 		}).catch((err) => {
-			if (message.deletable) message.delete();
 			bot.logger.error(`Command: 'g-delete' has error: ${err.message}.`);
 			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		});

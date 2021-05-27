@@ -54,11 +54,11 @@ module.exports = class Reminder extends Command {
 					.setTitle('fun/reminder:TITLE')
 					.attachFiles(attachment)
 					.setThumbnail('attachment://Timer.png')
-					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:DESCRIPTION')}](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
+					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:DESC')}](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
 					.setFooter('fun/reminder:FOOTER', { TIME: ms(time, { long: true }) });
 
 				message.author.send(embed).catch(() => {
-					message.channel.send(bot.translate('fun/reminder:RESPONSE', { INFO: message.args.join(' ') }).replace('{USER}', message.member));
+					message.channel.send(message.translate('fun/reminder:RESPONSE', { INFO: message.args.join(' ') }).replace('{USER}', message.member));
 				});
 
 				// Delete from database as bot didn't crash

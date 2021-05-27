@@ -18,6 +18,9 @@ module.exports = class Tags extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
@@ -40,7 +43,6 @@ module.exports = class Tags extends Command {
 			break;
 		default:
 			// delete message
-			if (settings.ModerationClearToggle & message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}

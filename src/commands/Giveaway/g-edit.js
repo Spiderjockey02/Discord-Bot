@@ -20,9 +20,11 @@ module.exports = class G_edit extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Make sure the message ID of the giveaway embed is entered
 		if (message.args.length <= 3) {
-			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
@@ -32,7 +34,6 @@ module.exports = class G_edit extends Command {
 
 		// Get new winner count
 		if (isNaN(message.args[2])) {
-			if (message.deletable) message.delete();
 			return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
 		}
 

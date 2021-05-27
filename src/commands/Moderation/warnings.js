@@ -19,7 +19,10 @@ module.exports = class Warnings extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Get user
 		const members = await message.getMember();
 

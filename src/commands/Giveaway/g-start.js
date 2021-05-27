@@ -20,8 +20,8 @@ module.exports = class G_start extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		// delete command
-		if (message.deletable) message.delete();
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure a time, winner count & prize is entered
 		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
