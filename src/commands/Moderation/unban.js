@@ -26,7 +26,7 @@ module.exports = class Unban extends Command {
 		const user = message.args[0];
 		try {
 			await message.guild.fetchBans().then(async bans => {
-				if (bans.size == 0) return;
+				if (bans.size == 0) return message.channel.error('moderation/unban:NO_ONE');
 				const bUser = bans.find(ban => ban.user.id == user);
 				if (bUser) {
 					await message.guild.members.unban(bUser.user);
