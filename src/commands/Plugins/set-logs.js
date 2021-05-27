@@ -53,12 +53,12 @@ module.exports = class SetLog extends Command {
 
 				// add new Logging
 				try {
-					if (currentFeatures.indexOf(message.args[1].toUpperCase()) == -1) {
-						currentFeatures.push(message.args[1].toUpperCase());
-						await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					}
+					message.args.shift();
+					const events = message.args.filter(arg => currentFeatures.indexOf(arg.toUpperCase()) == -1);
+					currentFeatures.push(...events);
+					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					settings.ModLogEvents = currentFeatures;
-					message.channel.send(message.translate('plugins/set-logs:ADD_LOG', { LOG: message.args[1].toUpperCase() }));
+					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
@@ -67,12 +67,15 @@ module.exports = class SetLog extends Command {
 
 				// remove features
 				try {
-					if (currentFeatures.indexOf(message.args[1].toUpperCase()) > -1) {
-						currentFeatures.splice(currentFeatures.indexOf(message.args[1].toUpperCase()), 1);
+					for (let i = 0; i < message.args.length; i++) {
+						if (currentFeatures.indexOf(message.args[i].toUpperCase()) > -1) {
+							currentFeatures.splice(currentFeatures.indexOf(message.args[i].toUpperCase()), 1);
+						}
 					}
+
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					settings.ModLogEvents = currentFeatures;
-					message.channel.send(message.translate('plugins/set-logs:REM_LOG', { LOG: message.args[1].toUpperCase() }));
+					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase().join('`, `')}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));

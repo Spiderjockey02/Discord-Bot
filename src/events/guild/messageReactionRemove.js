@@ -20,8 +20,8 @@ module.exports = class messageReactionRemove extends Event {
 
 		// If reaction needs to be fetched
 		try {
-			if (reaction.message.partial) await reaction.message.fetch();
 			if (reaction.partial) await reaction.fetch();
+			if (reaction.message.partial) await reaction.message.fetch();
 		} catch (err) {
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
