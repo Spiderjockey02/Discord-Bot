@@ -59,7 +59,7 @@ module.exports = class PView extends Command {
 					const pages = [];
 					let n = 1;
 					for (let i = 0; i < pagesNum; i++) {
-						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** [${song.title}](https://www.youtube.com/watch?v=${song.identifier}) \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
+						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 						const embed = new Embed(bot, message.guild)
 							.setAuthor(message.author.tag, message.author.displayAvatarURL())
 							.setThumbnail(p.thumbnail)
