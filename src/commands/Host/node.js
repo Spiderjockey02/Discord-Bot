@@ -17,21 +17,22 @@ module.exports = class MusicNode extends Command {
 	}
 
 	// Run command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// delete message
 		if (message.deletable) message.delete();
 
-		if (!message.args[0]) return message.channel.send('No');
+		// make sure something was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/node:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		if (message.args[0].toLowerCase() == 'add') {
 			try {
 				// Connect to new node
 				await new Node({
-					host: (message.args[1]) ? message.args[1] : 'localhost',
-					password: (message.args[2]) ? message.args[2] : 'youshallnotpass',
-					port: (message.args[3]) ? message.args[3] : 5000,
+					host: message.args[1] ?? 'localhost',
+					password: message.args[2] ?? 'youshallnotpass',
+					port: message.args[3] ?? 5000,
 				}).connect();
-				message.channel.send(message.translate('host/node:ADDED_NODE'));
+				message.channel.success('host/node:ADDED_NODE');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
@@ -39,17 +40,17 @@ module.exports = class MusicNode extends Command {
 		} else if (message.args[0].toLowerCase() == 'remove') {
 			try {
 				await new Node({
-					host: (message.args[1]) ? message.args[1] : 'localhost',
-					password: (message.args[2]) ? message.args[2] : 'youshallnotpass',
-					port: (message.args[3]) ? message.args[3] : 5000,
+					host: message.args[1] ?? 'localhost',
+					password: message.args[2] ?? 'youshallnotpass',
+					port: message.args[3] ?? 5000,
 				}).destroy();
-				message.channel.send(message.translate('host/node:REMOVED_NODE'));
+				message.channel.success('host/node:REMOVED_NODE');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} else {
-			message.channel.send('Incorrect details');
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/node:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

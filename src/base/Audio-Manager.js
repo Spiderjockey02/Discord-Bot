@@ -36,7 +36,7 @@ module.exports = async (bot) => {
 		.on('trackStart', (player, track) => {
 			// When a song starts
 			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
-				.setColor(bot.guilds.cache.get(player.guild).member(track.requester).displayHexColor)
+				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester).displayHexColor)
 				.setTitle('music/np:AUTHOR')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);

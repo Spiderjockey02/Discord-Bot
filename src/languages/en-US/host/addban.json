@@ -1,4 +1,0 @@
-{
-  "DESCRIPTION": "Add a ban to the global ban list.",
-  "USAGE": "addban <userID> <servers / commands> <reason>"
-}

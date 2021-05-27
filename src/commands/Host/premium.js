@@ -19,10 +19,8 @@ module.exports = class Premium extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
-		if (message.deletable) message.delete();
-
-		// Make sure args was entered
-		if (!message.args[2]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/premium:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		// make sure something was entered
+		if (!message.args[0] || !['add', 'remove'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/premium:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Validate ID
 		let id;
@@ -98,12 +96,6 @@ module.exports = class Premium extends Command {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
-			} else if (res && message.args[0] == 'add') {
-				// Type already has premium
-				message.channel.send(`${message.args[1]}: ${id} already has premium.`).then(m => m.delete({ timeout: 30000 }));
-			} else if (!res && message.args[0] == 'remove') {
-				// Type already doesn't have premium
-				message.channel.send(`${message.args[1]}: ${id} already doesn't have premium.`).then(m => m.delete({ timeout: 30000 }));
 			} else if (res && message.args[0] == 'remove') {
 
 				// Try and remove the premium 'Type'

@@ -48,7 +48,8 @@ module.exports = class messageReactionAdd extends Event {
 
 		// Check for reaction
 		const { guild } = reaction.message;
-		const member = guild.members.cache.get(user.id);
+		// eslint-disable-next-line no-empty-function
+		const member = await guild.members.fetch(user.id).catch(() => {});
 		if (!member) return;
 
 		// fetch database

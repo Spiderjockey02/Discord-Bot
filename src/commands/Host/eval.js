@@ -23,12 +23,12 @@ module.exports = class Eval extends Command {
 		try {
 			if (toEval) {
 				// Auto-complete commands
-				const hrStart = process.hrtime();
-				const evaluated = inspect(await eval(toEval, { depth: 0 }));
-				const hrDiff = process.hrtime(hrStart);
-				return await message.channel.send(bot.translate('host/eval:RESPONSE', { DIFF: `${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}`, CODE: evaluated }), { maxLength: 1900 });
+				const hrStart = process.hrtime(),
+					evaluated = inspect(await eval(toEval, { depth: 0 })),
+					hrDiff = process.hrtime(hrStart);
+				message.channel.send(bot.translate('host/eval:RESPONSE', { DIFF: `${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}`, CODE: evaluated }), { split: true });
 			} else {
-				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/eval:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/eval:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();

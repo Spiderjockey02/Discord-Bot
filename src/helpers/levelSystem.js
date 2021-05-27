@@ -6,7 +6,8 @@ module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
 	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
 
-	if (message.guild.members.cache.get(message.author.id)._roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
+	const roles = message.member.roles.cache.map(r => r.id);
+	if (roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
 
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {

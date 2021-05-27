@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Update global ban list",
+  "USAGE": "blacklist <add / remove> <userID> [reason]",
+  "MISSING_USER": "Incorrect user ID.",
+  "AUTHOR": "{{TAG}} has been globally banned",
+  "DESC": "**Reason:** {{REASON}}",
+  "ALRDY_BAN": "User: {{ID}} is already banned.",
+  "SUCC_UNBAN": "Successfully unbanned user."
+}
