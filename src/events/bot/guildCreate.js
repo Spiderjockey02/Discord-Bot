@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { MessageEmbed, MessageAttachment } = require('discord.js'),
+	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
 module.exports = class GuildCreate extends Event {
@@ -31,13 +32,20 @@ module.exports = class GuildCreate extends Event {
 		// Send message to channel that bot has joined a server
 		const owner = await guild.members.fetch(guild.ownerID);
 		const embed = new MessageEmbed()
-			.setTitle(`[GUILD JOIN] ${guild.name}`)
-			.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
-			.setDescription([
-				`Guild ID: ${guild.id}`,
-				`Owner: ${owner.user.tag}`,
-				`MemberCount: ${guild.memberCount}`,
-			].join('\n'));
+			.setTitle(`[GUILD JOIN] ${guild.name}`);
+		if (guild.icon == null) {
+			const icon = await Canvas.guildIcon(guild.name, 128);
+			const attachment = new MessageAttachment(icon, 'guildicon.png');
+			embed.attachFiles([attachment]);
+			embed.setImage('attachment://guildicon.png');
+		} else {
+			embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+		}
+		embed.setDescription([
+			`Guild ID: ${guild.id ?? 'undefined'}`,
+			`Owner: ${owner.user.tag}`,
+			`MemberCount: ${guild.memberCount ?? 'undefined'}`,
+		].join('\n'));
 
 		// Fetch all members in guild
 		try {

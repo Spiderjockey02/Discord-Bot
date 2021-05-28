@@ -14,7 +14,7 @@ module.exports = class inviteDelete extends Event {
 		// Get server settings / if no settings then return
 		const settings = invite.guild.settings;
 		if (Object.keys(settings).length == 0) return;
-		console.log(invite);
+
 		// Check if event guildMemberAdd is for logging
 		if (settings.ModLogEvents.includes('INVITEDELETE') && settings.ModLog) {
 			const embed = new Embed(bot, invite.guild)

@@ -24,13 +24,13 @@ module.exports = async (bot) => {
 					bot.logger.debug(`Reminding ${bot.users.cache.get(events[i].userID).tag}`);
 					// Message user about reminder
 					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+
 					const embed = new Embed(bot, bot.guilds.cache.get(events[i].guildID))
-						.setTitle(bot.translate(settings.Language, 'FUN/REMINDER_TITLE'))
-						.setColor('RANDOM')
+						.setTitle('fun/reminder:TITLE')
 						.attachFiles(attachment)
 						.setThumbnail('attachment://Timer.png')
-						.setDescription(`${events[i].message}\n[${bot.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID})`)
-						.setFooter(bot.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(events[i].time, { long: true })));
+						.setDescription(`${events[i].message}\n[${bot.translate('fun/reminder:DESC', {}, settings.Language)}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID}})`)
+						.setFooter('fun/reminder:FOOTER', { TIME: ms(events[i].time, { long: true }) });
 					try {
 						await bot.users.cache.get(events[i].userID).send(embed);
 					} catch (e) {
