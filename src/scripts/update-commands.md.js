@@ -18,6 +18,8 @@ module.exports = async (bot) => {
 				.map(c => `| ${c.help.name}	|	${c.help.description}	|	\`${c.help.usage}\`	|`).join('\n');
 			content.push(category, '|	Command	| description	| Usage', '|---------------|--------------------|--------------|', co, '\n');
 		});
+
+	fs.writeFileSync('./test.json', JSON.stringify([...bot.commands]))
 	// read to file
 	fs.writeFileSync('./docs/COMMANDS.md', content.join('\n'));
 };

@@ -1,5 +1,6 @@
 // Dependencies
 const fetch = require('node-fetch'),
+	{ MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Advice extends Command {
@@ -24,7 +25,9 @@ module.exports = class Advice extends Command {
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			msg.delete();
-			message.channel.send({ embed: { color: 'RANDOM', description: `💡 ${data.slip.advice}` } });
+			const embed = new MessageEmbed()
+				.setDescription(`💡 ${data.slip.advice}`);
+			message.channel.send(embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

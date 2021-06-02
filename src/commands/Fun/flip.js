@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { MessageEmbed } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Flip extends Command {
 	constructor(bot) {
@@ -16,6 +17,8 @@ module.exports = class Flip extends Command {
 	// Run command
 	async run(bot, message) {
 		const r = Math.round(Math.random());
-		message.channel.send(`${message.checkEmoji() ? bot.customEmojis[['head', 'tail'][r]] : ''} ${message.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`);
+		const embed = new MessageEmbed()
+			.setDescription(`${message.checkEmoji() ? bot.customEmojis[['head', 'tail'][r]] : ''} ${message.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`);
+		message.channel.send(embed);
 	}
 };

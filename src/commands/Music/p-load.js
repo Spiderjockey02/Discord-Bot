@@ -22,6 +22,21 @@ module.exports = class PLoad extends Command {
 		// make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-load:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
+		// Check if the member has role to interact with music plugin
+		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+			}
+		}
+
+		// make sure user is in a voice channel
+		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
+
+		// Check that user is in the same voice channel
+		if (bot.manager.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+		}
+
 		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
 		// interact with database

@@ -1,7 +1,7 @@
-const i18next = require('i18next');
-const Backend = require('i18next-node-fs-backend');
-const path = require('path');
-const fs = require('fs').promises;
+const i18next = require('i18next'),
+	Backend = require('i18next-node-fs-backend'),
+	path = require('path'),
+	fs = require('fs').promises;
 
 async function walkDirectory(dir, namespaces = [], folderName = '') {
 	const files = await fs.readdir(dir);
@@ -13,11 +13,7 @@ async function walkDirectory(dir, namespaces = [], folderName = '') {
 			const isLanguage = file.includes('-');
 			if (isLanguage) languages.push(file);
 
-			const folder = await walkDirectory(
-				path.join(dir, file),
-				namespaces,
-				isLanguage ? '' : `${file}/`,
-			);
+			const folder = await walkDirectory(path.join(dir, file), namespaces,	isLanguage ? '' : `${file}/`);
 			namespaces = folder.namespaces;
 		} else {
 			namespaces.push(`${folderName}${file.substr(0, file.length - 5)}`);
@@ -31,14 +27,13 @@ module.exports = async () => {
 		jsonIndent: 2,
 		loadPath: path.resolve(__dirname, '../languages/{{lng}}/{{ns}}.json'),
 	};
-	const { namespaces, languages } = await walkDirectory(
-		path.resolve(__dirname, '../languages/'),
-	);
-	i18next.use(Backend);
 
+	const { namespaces, languages } = await walkDirectory(path.resolve(__dirname, '../languages/'));
+
+	i18next.use(Backend);
 	await i18next.init({
 		backend: options,
-		debug: false,
+		debug: true,
 		fallbackLng: 'en-US',
 		initImmediate: false,
 		interpolation: { escapeValue: false },
@@ -46,7 +41,5 @@ module.exports = async () => {
 		ns: namespaces,
 		preload: languages,
 	});
-
-	console.log(languages);
 	return new Map(languages.map(item => [item, i18next.getFixedT(item)]));
 };
