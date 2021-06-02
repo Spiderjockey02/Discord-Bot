@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Set a reminder.",
+  "USAGE": "reminder <time> <information>",
+  "MESSAGE": "I'll remind you about `{{INFO}}` in about {{TIME}}.",
+  "DESC": "Message link",
+  "TITLE": "Reminder",
+  "FOOTER": "Reminder from {{TIME}} ago.",
+  "RESPONSE": "\n**REMINDER:**\n {USER} your reminder: {{INFO}}"
+}

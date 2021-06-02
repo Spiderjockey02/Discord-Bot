@@ -4,7 +4,7 @@ const moment = require('moment');
 
 exports.log = (content, type = 'log') => {
 	if (content == 'error') return;
-	const timestamp = `[${moment().format('HH:mm:ss')}]:`;
+	const timestamp = `[${moment().format('HH:mm:ss:SSS')}]:`;
 	if (type == 'log') {
 		return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
 	} else if (type == 'warn') {

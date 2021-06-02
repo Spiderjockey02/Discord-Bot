@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Toggles vaporwave mode.",
+  "USAGE": "vaporwave",
+  "ON_VW": "Turning on **vaporwave**. This may take a few seconds...",
+  "DESC_1": "Turned on **vaporwave**",
+  "OFF_VW": "Turning off **vaporwave**. This may take a few seconds...",
+  "DESC_2": "Turned off **vaporwave**"
+}

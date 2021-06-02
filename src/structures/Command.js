@@ -16,9 +16,11 @@ module.exports = class Command {
 		cooldown = 3000,
 		description = '',
 		usage = '',
+		slash = false,
+		options = new Array(),
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
-		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown };
+		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, options };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
 

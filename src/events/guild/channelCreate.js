@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class channelCreate extends Event {
@@ -27,7 +27,7 @@ module.exports = class channelCreate extends Event {
 
 		// Check if event channelCreate is for logging
 		if (settings.ModLogEvents.includes('CHANNELCREATE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Created: ${channel.toString()}**`)
 				.setColor(3066993)
 				.setFooter(`ID: ${channel.id}`)

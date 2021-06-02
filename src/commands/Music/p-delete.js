@@ -18,7 +18,7 @@ module.exports = class PDelete extends Command {
 
 	async run(bot, message, settings) {
 		// Make sure a playlist name was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-delete:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Find and then delete playlist if it exists
 		PlaylistSchema.findOne({
@@ -29,19 +29,19 @@ module.exports = class PDelete extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			if (!p) {
-				message.channel.send(`Couldn't find a playlist by the name: ${message.args[0]}.`);
+				message.channel.error('music/p-delete:MISSING', { TITLE: message.args[0] });
 			} else {
 				try {
 					await PlaylistSchema.findOneAndRemove({ name: message.args[0],	creator: message.author.id });
-					message.channel.send(`Successfully deleted ${message.args[0]}`);
+					message.channel.success('music/p-delete:SUCCESS', { TITLE: message.args[0] });
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 			}
 		});

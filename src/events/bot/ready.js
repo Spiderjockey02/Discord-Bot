@@ -1,5 +1,6 @@
 const { GuildSchema, PremiumSchema } = require('../../database/models'),
-	Event = require('../../structures/Event');
+	Event = require('../../structures/Event'),
+	{Collection } = require('discord.js');
 
 module.exports = class Ready extends Event {
 	constructor(...args) {
@@ -44,14 +45,45 @@ module.exports = class Ready extends Event {
 		}, 3000);
 
 		await require('../../scripts/update-commands.md.js')(bot);
-		// Check if any servers added the bot while offline
+		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Intreaction(s) -=-=-=-=-=-=-=');
 		bot.guilds.cache.forEach(async item => {
 			await item.fetchGuildConfig();
 			if (item.settings == null) {
 				// new guild has been found
 				bot.emit('guildCreate', item);
 			}
+			const enabledPlugins = item.settings.plugins
+			enabledPlugins.forEach(function(category, index) { 
+				bot.loadInteractionGroup(category, item)
+			})
+			bot.logger.log(`Loaded Interactions for guild: ` + item.name)
 		});
+		
+		/*
+			// load slash commands
+			const slashFolder = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
+			bot.logger.log('=-=-=-=-=-=-=- Loading Intreaction(s) -=-=-=-=-=-=-=');
+			slashFolder.forEach(async (dir) => {
+				if(bot.config.disabledPlugins.includes(dir)) return;
+				try {
+					const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
+					commands.forEach((cmd) => {
+						const resp = bot.loadInteraction('./commands/' + dir, cmd);
+						if (resp) bot.logger.error(resp);
+					});
+				} catch (err) {
+					console.log(err.message);
+				}
+			});
+		*/
+
+		bot.ws.on("INTERACTION_CREATE", async(interaction) => {
+			const guild = bot.guilds.cache.get(interaction.guild_id);
+			const Command = guild.interactions.get(interaction.data.name);
+			
+			//No permission checking yet
+			return Command.callback(bot, interaction, guild, interaction.data.options)
+		})
 
 		// Delete server settings on servers that removed the bot while it was offline
 		const data = await GuildSchema.find({});

@@ -1,6 +1,7 @@
 // Dependencies
 const dateFormat = require('dateformat'),
-	{ MessageAttachment, MessageEmbed } = require('discord.js'),
+	{ MessageAttachment } = require('discord.js'),
+	{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageDeleteBulk extends Event {
@@ -13,7 +14,7 @@ module.exports = class messageDeleteBulk extends Event {
 	// run event
 	async run(bot, messages) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in guild: ${messages.first().channel.guild.id}`);
+		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in guild: ${messages.first().guild.id}`);
 
 		// Get server settings / if no settings then return
 		const settings = messages.first().channel.guild.settings;
@@ -29,12 +30,12 @@ module.exports = class messageDeleteBulk extends Event {
 			}
 			const attachment = new MessageAttachment(Buffer.from(humanLog, 'utf-8'), 'DeletedMessages.txt');
 			// Get modlog channel
-			const modChannel = messages.first().channel.guild.channels.cache.get(settings.ModLogChannel);
+			const modChannel = messages.first().guild.channels.cache.get(settings.ModLogChannel);
 			if (modChannel) {
 				const msg = await modChannel.send(attachment);
 
 				// embed
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, messages.first().guild.id)
 					.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
 					.setColor(15158332)
 					.setFooter(`Channel: ${messages.first().channel.id}`)

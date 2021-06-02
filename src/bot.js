@@ -1,7 +1,12 @@
 // Dependencies
-const Client = require('./base/Egglord.js');
+const Client = require('./base/Task-Manager.js');
 require('./structures');
-const bot = new Client({ partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'], fetchAllMembers: true, ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES'] } });
+const bot = new Client({
+	partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
+	ws: {
+		intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
+	},
+});
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 const path = require('path');
@@ -24,7 +29,6 @@ const path = require('path');
 			console.log(err.message);
 		}
 	});
-
 	// load events
 	const evtFolder = await readdir('./src/events/');
 	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFolder.length} -=-=-=-=-=-=-=`);
@@ -46,6 +50,8 @@ const path = require('path');
 			}
 		});
 	});
+
+	bot.translations = await require('./helpers/LanguageManager')();
 
 	// Audio player
 	try {

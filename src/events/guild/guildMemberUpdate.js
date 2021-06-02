@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildMemberUpdate extends Event {
@@ -29,7 +29,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 			// nickname change
 			if (oldMember.nickname != newMember.nickname) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} nickname changed**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
@@ -42,7 +42,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 			// Look to see if user has boosted the server
 			if (!oldMember.premiumSince && newMember.premiumSince) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has boosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
@@ -52,7 +52,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 			// Look to see if user has stopped boosted the server
 			if (oldMember.premiumSince && !newMember.premiumSince) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has unboosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
@@ -62,7 +62,7 @@ module.exports = class guildMemberUpdate extends Event {
 
 			// Look to see if user has changed their surname
 			if (oldMember.username !== newMember.username) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**username changed of ${newMember.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newMember.id}`)
@@ -87,7 +87,7 @@ module.exports = class guildMemberUpdate extends Event {
 				for (const role of rolesRemoved.array()) {
 					roleRemovedString.push(role.toString());
 				}
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} roles changed**`)
 					.setFooter(`ID: ${newMember.id}`)
 					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())

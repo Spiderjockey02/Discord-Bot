@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Send a random image from a chosen subreddit.",
+  "USAGE": "reddit <subreddit>",
+  "TITLE": "From /{{TITLE}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}} | Provided by KSOFT.API"
+}

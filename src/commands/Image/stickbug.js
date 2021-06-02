@@ -18,22 +18,17 @@ module.exports = class Stickbug extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get image, defaults to author's avatar
-		const file = await message.getImage();
+		const files = await message.getImage();
 
-		// Check if bot has permission to attach files
-		if (!message.channel.permissionsFor(bot.user).has('ATTACH_FILES')) {
-			bot.logger.error(`Missing permission: \`ATTACH_FILES\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'ATTACH_FILES').then(m => m.delete({ timeout: 10000 }));
-		}
-
-		// send 'waiting' message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} ${bot.translate(settings.Language, 'IMAGE/GENERATING_IMAGE')}`);
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${file[0]}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${files[0]}`)).then(res => res.json());
 
 			// send image in embed
 			const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
@@ -41,7 +36,7 @@ module.exports = class Stickbug extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 		msg.delete();
 	}

@@ -1,6 +1,7 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
+	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Ban extends Command {
@@ -23,58 +24,48 @@ module.exports = class Ban extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
-
-		// Check if bot has permission to ban user
-		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Get user and reason
-		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : bot.translate(settings.Language, 'NO_REASON');
+		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user is real
-		const member = message.getMember();
+		const members = await message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (member[0].user.id == message.author.id) return message.channel.error(settings.Language, 'MODERATION/SELF_PUNISHMENT').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member[0].hasPermission('ADMINISTRATOR') || member[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error(settings.Language, 'MODERATION/TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+			return message.channel.error('moderation/ban:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Ban user with reason and check if timed ban
 		try {
 			// send DM to user
 			try {
-				const embed = new MessageEmbed()
-					.setTitle('BANNED')
+				const embed = new Embed(bot, message.guild)
+					.setTitle('moderation/ban:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
-					.setDescription(`You have been banned from ${message.guild.name}.`)
-					.addField('Banned by:', message.author.tag, true)
-					.addField('Reason:', reason, true);
-				await member[0].send(embed);
+					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
+					.addField(message.translate('moderation/ban:BAN_BY'), message.author.tag, true)
+					.addField(message.translate('misc:REASON'), reason, true);
+				await members[0].send(embed);
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 
 			// Ban user from guild
-			await member[0].ban({ reason: reason });
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_BAN', member[0].user).then(m => m.delete({ timeout: 8000 }));
+			await members[0].ban({ reason: reason });
+			message.channel.success('moderation/ban:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-				const time = bot.timeFormatter.getTotalTime(possibleTime, message, settings.Language);
+				const time = getTotalTime(possibleTime, message);
 				if (!time) return;
 
 				// connect to database
 				const newEvent = await new timeEventSchema({
-					userID: member[0].user.id,
+					userID: members[0].user.id,
 					guildID: message.guild.id,
 					time: new Date(new Date().getTime() + time),
 					channelID: message.channel.id,
@@ -84,7 +75,7 @@ module.exports = class Ban extends Command {
 
 				// unban user
 				setTimeout(async () => {
-					message.args[0] = member[0].user.id;
+					message.args[0] = members[0].user.id;
 					await bot.commands.get('unban').run(bot, message, settings);
 
 					// Delete item from database as bot didn't crash
@@ -96,7 +87,7 @@ module.exports = class Ban extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

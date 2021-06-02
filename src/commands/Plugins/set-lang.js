@@ -1,18 +1,11 @@
 // Dependecies
 const Command = require('../../structures/Command.js');
 
-// Languages supported
-const languages = {
-	'english': 'en-US',
-	'arabic': 'ar-EG',
-	'portuguese': 'pt-BR',
-	'Persian': 'fa-IR',
-};
-
 module.exports = class Setlang extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'set-lang',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setlanguage', 'setlang'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -29,26 +22,20 @@ module.exports = class Setlang extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can edit server plugins
-		if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_GUILD').then(m => m.delete({ timeout: 10000 }));
+		// get language
+		const language = bot.languages.find((l) => l.name === message.args[0] || l.aliases.includes(message.args[0]));
+		if (!message.args[0] || !language) {
+			return message.channel.error('plugins/set-lang:MISSING_LANG', { list: bot.languages.map((l) => '`' + l.name + '`').join(', ') });
+		}
 
-		// Make sure a language was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'PLUGINS/MISSING_LANGUAGE').then(m => m.delete({ timeout:10000 }));
-
-		// Check what language
-		if (languages[message.args[0].toLowerCase()]) {
-			try {
-				// update database
-				await message.guild.updateGuild({ Language: languages[message.args[0].toLowerCase()] });
-				settings.Language = languages[message.args[0].toLowerCase()];
-				message.channel.success(settings.Language, 'PLUGINS/LANGUAGE_SET', message.args[0]).then(m => m.delete({ timeout:10000 }));
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
-			}
-		} else {
-			message.channel.error(settings.Language, 'PLUGINS/NO_LANGUAGE').then(m => m.delete({ timeout:10000 }));
+		// update database
+		try {
+			await message.guild.updateGuild({ Language: language.name });
+			settings.Language = language.name;
+			return message.channel.success('plugins/set-lang:SUCCESS', { NAME: language.nativeName });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

@@ -11,13 +11,15 @@ module.exports = class Advice extends Command {
 			description: 'Get some random advice',
 			usage: 'advice',
 			cooldown: 1000,
+			slash: true
 		});
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Connect to API and fetch data
 		try {
@@ -28,7 +30,17 @@ module.exports = class Advice extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channel_id)
+		try {
+			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
+			return await bot.send(interaction, { embed: { color: 'RANDOM', description: `💡 ${data.slip.advice}` } })
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

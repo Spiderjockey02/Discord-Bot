@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class roleDelete extends Event {
@@ -20,7 +20,7 @@ module.exports = class roleDelete extends Event {
 
 		// Check if event roleDelete is for logging
 		if (settings.ModLogEvents.includes('ROLEDELETE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was deleted**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${role.id}`)

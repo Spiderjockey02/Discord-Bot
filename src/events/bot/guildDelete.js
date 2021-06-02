@@ -1,6 +1,7 @@
 // Dependencies
 const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = require('../../database/models'),
-	{ MessageEmbed } = require('discord.js'),
+	{ MessageEmbed, MessageAttachment } = require('discord.js'),
+	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildDelete extends Event {
@@ -18,13 +19,20 @@ module.exports = class guildDelete extends Event {
 		// Send message to channel that bot has left a server
 		try {
 			const embed = new MessageEmbed()
-				.setTitle(`[GUILD LEAVE] ${guild.name}`)
-				.setImage(guild.iconURL({ dynamic: true, size: 1024 }))
-				.setDescription([
-					`Guild ID: ${guild.id}`,
-					`Owner: ${guild.owner.user.tag}`,
-					`MemberCount: ${guild.memberCount}`,
-				].join('\n'));
+				.setTitle(`[GUILD LEAVE] ${guild.name}`);
+			if (guild.icon == null) {
+				const icon = await Canvas.guildIcon(guild.name, 128);
+				const attachment = new MessageAttachment(icon, 'guildicon.png');
+				embed.attachFiles([attachment]);
+				embed.setImage('attachment://guildicon.png');
+			} else {
+				embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+			}
+			embed.setDescription([
+				`Guild ID: ${guild.id ?? 'undefined'}`,
+				`Owner: ${guild.owner?.user.tag}`,
+				`MemberCount: ${guild?.memberCount ?? 'undefined'}`,
+			].join('\n'));
 
 			const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 			if (modChannel) bot.addEmbed(modChannel.id, embed);

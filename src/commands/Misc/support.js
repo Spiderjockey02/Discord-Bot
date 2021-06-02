@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Support extends Command {
@@ -12,14 +12,23 @@ module.exports = class Support extends Command {
 			description: 'Get support on the bot.',
 			usage: 'support',
 			cooldown: 2000,
+			slash: true
 		});
 	}
 
 	// Run command
-	async run(bot, message, settings) {
-		const embed = new MessageEmbed()
-			.setTitle(bot.translate(settings.Language, 'MISC/SUPPORT_TITLE', bot.user.username))
-			.setDescription(bot.translate(settings.Language, 'MISC/SUPPORT_DESC', [`${bot.config.SupportServer.link}`, `${bot.config.websiteURL}`]));
+	async run(bot, message) {
+		const embed = new Embed(bot, message.guild)
+			.setTitle('misc/support:TITLE', { USER: bot.user.username })
+			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
 		message.channel.send(embed);
+	}
+
+	//Run slash command
+	async callback(bot, interaction, guild) {
+		const embed = new Embed(bot, guild)
+			.setTitle('misc/support:TITLE', { USER: bot.user.username })
+			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
+		return await bot.send(interaction, embed)
 	}
 };

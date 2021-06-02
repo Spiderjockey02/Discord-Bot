@@ -13,15 +13,23 @@ module.exports = class ShortURL extends Command {
 			usage: 'shorturl',
 			cooldown: 3000,
 			examples: ['shorturl https://www.google.com', 'shorturl https://www.youtube.com'],
+			slash: true,
+			options: [{
+                name: "url",
+                description: "The specified URL to shorten.",
+                type: 3,
+                required: true
+            }]
 		});
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		const mes = message.content.split(' ').slice(1).join(' ');
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name}...`);
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }), { tts: true });
 
 		try {
 			shorten(mes, function(res) {
@@ -32,7 +40,21 @@ module.exports = class ShortURL extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild, args) {
+		console.log(args)
+		const channel = guild.channels.cache.get(interaction.channel_id)
+		const link = args[0].value
+
+		try {
+			shorten(link, async function(res) {
+				return await bot.send(interaction, res);
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 })));
 		}
 	}
 };

@@ -15,6 +15,8 @@ module.exports = function(bot) {
 			memoryUsed: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
 			textChannels: bot.channels.cache.filter(channel => channel.type === 'text').size,
 			voiceChannels: bot.channels.cache.filter(channel => channel.type === 'voice').size,
+			MessagesSeen: bot.messagesSent,
+			CommandsRan: bot.commandsUsed,
 		});
 	});
 

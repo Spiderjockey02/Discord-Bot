@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Help extends Command {
@@ -19,13 +19,14 @@ module.exports = class Help extends Command {
 	async run(bot, message, settings) {
 		if (!message.args[0]) {
 			// Show default help page
-			const embed = new MessageEmbed()
-				.setAuthor('Available commands', bot.user.displayAvatarURL({ format: 'png' }))
+			const embed = new Embed(bot, message.guild)
+				.setAuthor(message.translate('misc/help:AUTHOR'), bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					`**Prefix:** \`${settings.prefix}\` (You can also use <@!${bot.user.id}> as a prefix)`,
-					`**Type \`${settings.prefix}help [command name]\` for command specific information.**`,
+					message.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
+					message.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: message.translate('misc/help:USAGE') }),
 				].join('\n'));
 			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+			if (bot.config.ownerID.includes(message.author.id)) categories.push('Host');
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
@@ -36,8 +37,10 @@ module.exports = class Help extends Command {
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
-					embed.addField(`${category} [**${length}**]`, commands, false);
+					if (category == 'NSFW' && !message.channel.nsfw) return;
+					embed.addField(`${category} [**${length}**]`, commands);
 				});
+			// send message
 			message.channel.send(embed);
 		} else if (message.args.length == 1) {
 			// Check if arg is command
@@ -46,25 +49,25 @@ module.exports = class Help extends Command {
 				const cmd = bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]));
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(message.author.id)) {
-					const embed = new MessageEmbed()
-						.setTitle(`Command: ${settings.prefix}${cmd.help.name}`)
+					const embed = new Embed(bot, message.guild)
+						.setTitle('misc/help:TITLE', { COMMAND: `${settings.prefix}${cmd.help.name}` })
 						.setDescription([
-							`**Description:** ${cmd.help.description}`,
-							`**Aliases:** ${(cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None'}`,
-							`**Cooldown:** ${cmd.conf.cooldown / 1000} seconds`,
-							`**Usage:** ${settings.prefix.concat(cmd.help.usage)}`,
-							`**Example:** ${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}`,
-							'\n**Layout**: `<> = required, [] = optional`',
+							message.translate('misc/help:DESC', { DESC: cmd.help.description }),
+							message.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
+							message.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
+							message.translate('misc/help:USE', { USAGE: settings.prefix.concat(message.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							message.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
+							message.translate('misc/help:LAYOUT'),
 						].join('\n'));
 					message.channel.send(embed);
 				} else {
-					message.channel.error(settings.Language, 'MISC/NO_COMMAND');
+					message.channel.error('misc/help:NO_COMMAND');
 				}
 			} else {
-				message.channel.error(settings.Language, 'MISC/NO_COMMAND');
+				message.channel.error('misc/help:NO_COMMAND');
 			}
 		} else {
-			message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

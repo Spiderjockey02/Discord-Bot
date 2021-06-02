@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ WarningSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
@@ -20,25 +20,28 @@ module.exports = class Warnings extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// Delete message
+		if (settings.ModerationClearToggle & message.deletable) message.delete();
+
 		// Get user
-		const member = message.getMember();
+		const members = await message.getMember();
 
 		// get warnings of user
 		try {
 			await WarningSchema.find({
-				userID: member[0].id,
+				userID: members[0].id,
 				guildID: message.guild.id,
 			}, (err, warn) => {
 				// if an error occured
 				if (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 
 				if (!warn[0]) {
 					// There are no warnings with this user
-					message.channel.send(bot.translate(settings.Language, 'MODERATION/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
+					message.channel.send(bot.translate('moderation:warnings/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
 				} else {
 					// Warnings have been found
 					let list = `Warnings (${warn.length}):\n`;
@@ -46,8 +49,8 @@ module.exports = class Warnings extends Command {
 						list += `${i + 1}.) ${warn[i].Reason} | ${(message.guild.members.cache.get(warn[i].Moderater)) ? message.guild.members.cache.get(warn[i].Moderater) : 'User left'} (Issue date: ${warn[i].IssueDate})\n`;
 					}
 
-					const embed = new MessageEmbed()
-						.setTitle(bot.translate(settings.Language, 'MODERATION/WARNS_TITLE', member[0].user.username))
+					const embed = new Embed(bot, message.guild)
+						.setTitle('moderation/warns:TITLE', { USER: members[0].user.username })
 						.setDescription(list)
 						.setTimestamp();
 					message.channel.send(embed);
@@ -56,7 +59,7 @@ module.exports = class Warnings extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

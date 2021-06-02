@@ -1,7 +1,7 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
-	paginate = require('../../utils/pagenator'),
+	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
@@ -24,6 +24,10 @@ module.exports = class Leaderboard extends Command {
 
 	// Run command
 	async run(bot, message, settings) {
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send(message.translate('misc:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+
 		// Retrieve Ranks from database
 		RankSchema.find({
 			guildID: message.guild.id,
@@ -34,15 +38,16 @@ module.exports = class Leaderboard extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
-			const embed = new MessageEmbed()
-				.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
+			const embed = new Embed(bot, message.guild)
+				.setTitle('level/leaderboard:TITLE')
 				.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 			if (!res[0]) {
 				// If there no results
-				embed.addField(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDT'), bot.translate(settings.Language, 'LEVEL/LEADERBOARD_FIELDDESC'));
+				embed.addField(message.translate('level/leaderboard:EMPTY_TITLE'), message.translate('level/leaderboard:EMPTY_DESC'));
+				msg.delete();
 				message.channel.send(embed);
 			} else {
 				// Get number of pages to generate
@@ -52,16 +57,19 @@ module.exports = class Leaderboard extends Command {
 				// generate pages
 				const pages = [];
 				for (let i = 0; i < pagesNum; i++) {
-					const embed2 = new MessageEmbed()
-						.setTitle(bot.translate(settings.Language, 'LEVEL/LEADERBOARD_TITLE'))
+					const embed2 = new Embed(bot, message.guild)
+						.setTitle('level/leaderboard:TITLE')
 						.setURL(`${bot.config.websiteURL}/leaderboard/${message.guild.id}`);
 					for (let j = 0; j < 10; j++) {
 						if (res[(i * 10) + j]) {
-							const name = await message.guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
+							// eslint-disable-next-line no-empty-function
+							const name = await message.guild.members.fetch(res[(i * 10) + j].userID).catch(() => {}) || 'User left';
 							if (name == 'User left') {
-								embed2.addField(`${ordinal((i * 10) + j + 1)}. ${name}`, `**XP:** ${res[(i * 10) + j].Xp} | **Level:** ${res[(i * 10) + j].Level}`);
+								embed2.addField(message.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
+									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(settings.Language) }));
 							} else {
-								embed2.addField(`${ordinal((i * 10) + j + 1)}. ${name.user.username}`, `**XP:** ${res[(i * 10) + j].Xp} | **Level:** ${res[(i * 10) + j].Level}`);
+								embed2.addField(message.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
+									message.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(settings.Language) }));
 							}
 						}
 					}
@@ -70,6 +78,7 @@ module.exports = class Leaderboard extends Command {
 					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
 					else if(pagesNum == 1) message.channel.send(embed2);
 				}
+				msg.delete();
 			}
 		});
 	}

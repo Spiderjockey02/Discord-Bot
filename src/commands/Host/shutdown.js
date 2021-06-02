@@ -15,17 +15,17 @@ module.exports = class Shutdown extends Command {
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// try and shutdown the server
 		try {
-			await message.channel.send(bot.translate(settings.Language, 'HOST/SHUTDOWN'));
+			await message.channel.send(bot.translate('host/shutdown:success'));
 			await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
 			await bot.destroy();
 			process.exit();
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

@@ -22,30 +22,23 @@ module.exports = class Unban extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can ban users
-		if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-
-
-		// Check if bot has permission to ban user
-		if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-			bot.logger.error(`Missing permission: \`BAN_MEMBERS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'BAN_MEMBERS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// Unban user
 		const user = message.args[0];
 		try {
-			message.guild.fetchBans().then(bans => {
-				if (bans.size == 0) return;
+			await message.guild.fetchBans().then(async bans => {
+				if (bans.size == 0) return message.channel.error('moderation/unban:NO_ONE');
 				const bUser = bans.find(ban => ban.user.id == user);
-				if (!bUser) return;
-				message.guild.members.unban(bUser.user);
-				message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', bUser.user).then(m => m.delete({ timeout: 3000 }));
+				if (bUser) {
+					await message.guild.members.unban(bUser.user);
+					message.channel.success('moderation/unban:SUCCESS', { USER: bUser.user }).then(m => m.delete({ timeout: 3000 }));
+				} else {
+					message.channel.error('moderation/unban:MISSING', { ID: user });
+				}
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

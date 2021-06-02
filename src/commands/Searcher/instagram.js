@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -22,46 +22,44 @@ module.exports = class Instagram extends Command {
 		const username = message.args.join(' ');
 
 		// Checks to see if a username was provided
-		if (!username) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Gather data from database
-		const res = await fetch(`https://instagram.com/${username}/?__a=1`)
+		const res = await fetch(`https://instagram.com/${username}/feed/?__a=1`)
 			.then(info => info.json())
 			.catch(err => {
 			// An error occured when looking for account
 				if (message.deletable) message.delete();
 				msg.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			});
 
 		// Delete wait message
 		msg.delete();
 
-		// make sure there is data
-		if (res.size == 0) return;
-
 		// Checks to see if a username in instagram database
-		if (!res.graphql.user.username) return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+		if (res.size == 0 || !res.graphql.user.username) return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 
 		// Displays Data
 		const account = res.graphql.user;
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setColor(0x0099ff)
 			.setTitle(account.full_name)
 			.setURL(`https://instagram.com/${username}`)
 			.setThumbnail(account.profile_pic_url)
-			.addField('Username:', account.username)
-			.addField('Full Name:', account.full_name)
-			.addField('Biography:', (account.biography.length == 0) ? 'None' : account.biography)
-			.addField('Posts:', account.edge_owner_to_timeline_media.count, true)
-			.addField('Followers:', account.edge_followed_by.count, true)
-			.addField('Following:', account.edge_follow.count, true)
-			.addField('Private Account:', account.is_private ? 'Yes 🔒' : 'No 🔓', true)
-			.addField('Verified account:', account.is_verified ? 'Yes ✅' : 'No ❌', true);
+			.addField(message.translate('searcher/instagram:USERNAME'), account.username)
+			.addField(message.translate('searcher/instagram:FULL_NAME'), account.full_name)
+			.addField(message.translate('searcher/instagram:BIOGRAPHY'), (account.biography.length == 0) ? 'None' : account.biography)
+			.addField(message.translate('searcher/instagram:POSTS'), account.edge_owner_to_timeline_media.count.toLocaleString(settings.Language), true)
+			.addField(message.translate('searcher/instagram:FOLLOWERS'), account.edge_followed_by.count.toLocaleString(settings.Language), true)
+			.addField(message.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count.toLocaleString(settings.Language), true)
+			.addField(message.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
+			.addField(message.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
 		message.channel.send(embed);
 	}
 };

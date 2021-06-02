@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class emojiDelete extends Event {
@@ -20,7 +20,7 @@ module.exports = class emojiDelete extends Event {
 
 		// Check if event emojiDelete is for logging
 		if (settings.ModLogEvents.includes('EMOJIDELETE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, emoji.guild)
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was deleted**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${emoji.id}`)

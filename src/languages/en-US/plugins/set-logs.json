@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Update the log plugin.",
+  "USAGE": "set-logs <option> [data]",
+  "TOGGLE": "Logging plugin has been set to `{{TOGGLE}}`.",
+  "TITLE": "Logging features:",
+  "DESC": "Available features: `{{FEAT}}`.\n\nCurrent features: `{{CUR_FEAT}}`.",
+  "ADD_LOG": "Added: {{LOG}} to logging.",
+  "REM_LOG": "Removed: {{LOG}} to logging.",
+  "CHANNEL": "Logging channel updated to: <#{{ID}}>",
+  "TITLE_2": "Logging information",
+  "DESC": "**Channel:** <#{{ID}}>\n**Enabled:** {{TOGGLE}}\n\n**Feature logging:** `{{FEAT}}`."
+}

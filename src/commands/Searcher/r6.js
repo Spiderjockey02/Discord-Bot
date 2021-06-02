@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	R6API = require('r6api.js'),
 	config = require('../../config.js'),
 	{ getId, getLevel, getRank, getStats } = new R6API(config.api_keys.rainbow.email, config.api_keys.rainbow.password),
@@ -28,7 +28,7 @@ module.exports = class R6 extends Command {
 		// Checks to make sure a username was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.send('Please specify a username to search').then(m => m.delete({ timeout: 2000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/r6:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		} else {
 			player = message.args[0];
 		}
@@ -61,17 +61,18 @@ module.exports = class R6 extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Makes sure that user actually exist
 		if (!player.length) {
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'SEARCHER/UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('searcher/r6:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
-		const msg = await message.channel.send(`${message.checkEmoji() ? bot.customEmojis['loading'] : ''} Fetching ${this.help.name} account info...`);
+		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// get statistics of player
 		player = player[0];
@@ -82,7 +83,7 @@ module.exports = class R6 extends Command {
 		if (!playerRank.length || !playerStats.length || !playerGame.length) {
 			msg.delete();
 			if (message.deletable) message.delete();
-			return message.channel.error(settings.Language, 'ERROR_MESSAGE', 'Mising player data').then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Mising player data' }).then(m => m.delete({ timeout: 5000 }));
 		}
 		const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
 		const { pvp, pve } = playerStats[0];
@@ -91,13 +92,17 @@ module.exports = class R6 extends Command {
 		platform = Object.keys(platforms).find(key => platforms[key] === platform).toLowerCase();
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
-		const embed = new MessageEmbed()
+		const embed = new Embed(bot, message.guild)
 			.setAuthor(player.username, bot.user.displayAvatarURL)
-			.setDescription(`Stats for the **${region.toUpperCase()}** region on **${platform.toUpperCase()}**`)
+			.setDescription(message.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.image)
-			.addField('General:', `**Level:** ${level} (${xp} xp) \n**Rank:** ${current.name} (Max: ${max.name}) \n**MMR:** ${current.mmr}`)
-			.addField('Statistics:', `**Wins:** ${pvp.general.wins} \n**Losses:** ${pvp.general.losses} \n**Win/Loss ratio:** ${(pvp.general.wins / pvp.general.matches * 100).toFixed(2)} \n**Kills** ${pvp.general.kills} \n**Deaths:** ${pvp.general.deaths} \n**K/D Ratio** ${(pvp.general.kills / pvp.general.deaths).toFixed(2)} \n**Playtime:** ${Math.round(pvp.general.playtime / 3600)} hours`)
-			.addField('Terrorist Hunt:', `**Wins:** ${pve.general.wins} \n**Losses:** ${pve.general.losses} \n**Win/Loss ratio:** ${(pve.general.wins / pve.general.matches * 100).toFixed(2)} \n**Kills** ${pve.general.kills} \n**Deaths:** ${pve.general.deaths} \n**K/D Ratio** ${(pve.general.kills / pve.general.deaths).toFixed(2)} \n**Playtime:** ${Math.round(pve.general.playtime / 3600)} hours`)
+			.addField(message.translate('searcher/r6:GENERAL'), message.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(settings.Language) }))
+			.addField(message.translate('searcher/r6:STATS'), message.translate('searcher/r6:STAT_DATA', {
+				WIN: pvp.general.wins.toLocaleString(settings.Language), LOSS: pvp.general.losses.toLocaleString(settings.Language), WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills.toLocaleString(settings.Language), DEATH: pvp.general.deaths.toLocaleString(settings.Language), KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600).toLocaleString(settings.Language),
+			}))
+			.addField(message.translate('searcher/r6:TERRORIST'), message.translate('searcher/r6:STAT_DATA', {
+				WIN: pve.general.wins.toLocaleString(settings.Language), LOSS: pve.general.losses.toLocaleString(settings.Language), WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills.toLocaleString(settings.Language), DEATH: pve.general.deaths.toLocaleString(settings.Language), KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600).toLocaleString(settings.Language),
+			}))
 			.setTimestamp()
 			.setFooter(message.author.username);
 		msg.delete();

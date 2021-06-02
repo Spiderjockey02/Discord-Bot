@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Suggestion extends Command {
@@ -31,13 +31,13 @@ module.exports = class Suggestion extends Command {
 			}
 
 			const words = message.args.join(' ').split('-');
-			if (words.length != 3) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+			if (words.length != 3) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/suggestion:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 			// send message
 			const title = words[0],
 				description = words[1],
 				plugin = words[2];
 
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setTitle(title)
 				.setDescription(description)
 				.addField('Category', plugin)

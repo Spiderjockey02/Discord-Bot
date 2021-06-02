@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Status extends Command {
@@ -12,19 +12,30 @@ module.exports = class Status extends Command {
 			description: 'Gets the status of the bot.',
 			usage: 'status',
 			cooldown: 2000,
+			slash: true
 		});
 	}
 
 	// Run command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Get information on the services the bot provide
-		const m = await message.channel.send('Pong');
-		const embed = new MessageEmbed()
-			.addField(bot.translate(settings.Language, 'MISC/STATUS_PING'), `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
-			.addField(bot.translate(settings.Language, 'MISC/STATUS_CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
-			.addField(bot.translate(settings.Language, 'MISC/STATUS_MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+		const m = await message.channel.send(message.translate('misc/status:PONG'));
+
+		const embed = new Embed(bot, message.guild)
+			.addField(bot.translate('misc/status:PING'), `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
+			.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
+			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();
 		await message.channel.send(embed);
 		m.delete();
+	}
+
+	//Run slash command
+	async callback(bot, interaction, guild) {
+		const embed = new Embed(bot, guild)
+		.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
+		.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+		.setTimestamp();
+		return await bot.send(interaction, embed);
 	}
 };

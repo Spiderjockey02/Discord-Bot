@@ -183,7 +183,8 @@ class Giveaway extends EventEmitter {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve, reject) => {
 			if (!this.messageID) return;
-			const message = await this.channel.messages.fetch(this.messageID);
+			// eslint-disable-next-line no-empty-function
+			const message = await this.channel.messages.fetch(this.messageID).catch(() => {});
 			if (!message) {
 				this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageID !== this.messageID);
 				this.manager.deleteGiveaway(this.messageID);
@@ -298,7 +299,7 @@ class Giveaway extends EventEmitter {
 					this.messages.winMessage
 						.replace('{winners}', formattedWinners)
 						.replace('{prize}', this.prize)
-						.replace('{messageURL}', this.messageURL), { disableMentions: 'all' },
+						.replace('{messageURL}', this.messageURL), { allowedMentions: { users: winners.map(w => w.id) } },
 				);
 				resolve(winners);
 			} else {
@@ -330,13 +331,13 @@ class Giveaway extends EventEmitter {
 				const embed = this.manager.generateEndEmbed(this, winners);
 				this.message.edit(this.messages.giveawayEnded, { embed });
 				const formattedWinners = winners.map((w) => '<@' + w.id + '>').join(', ');
-				this.channel.send(options.messages.congrat
+				this.channel.send(options.congrat
 					.replace('{winners}', formattedWinners)
 					.replace('{messageURL}', this.messageURL),
 				);
 				resolve(winners);
 			} else {
-				this.channel.send(options.messages.error);
+				this.channel.send(options.error);
 				resolve(new Array());
 			}
 		});

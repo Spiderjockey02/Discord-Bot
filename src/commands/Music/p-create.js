@@ -1,6 +1,7 @@
 // Dependecies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
+	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class PCreate extends Command {
@@ -19,10 +20,10 @@ module.exports = class PCreate extends Command {
 
 	async run(bot, message, settings) {
 
-		if (!message.args[1]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
-		if (message.args[0].length > 32) return msg.edit('Playlist title must be less than 32 characters!');
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
-		const msg = await message.channel.send('Adding song(s) to your playlist (This might take a few seconds.)...');
+		const msg = await message.channel.send(message.translate('music/p-create:WAITING'));
 
 		PlaylistSchema.find({
 			creator: message.author.id,
@@ -31,7 +32,7 @@ module.exports = class PCreate extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			// response from database
@@ -39,17 +40,17 @@ module.exports = class PCreate extends Command {
 				await this.savePlaylist(bot, message, settings, msg);
 			} else if (p[0] && !message.author.premium) {
 				// User needs premium to save more playlists
-				return msg.edit('Premium allows you to save up to 3 playlists instead of 1.');
+				return msg.edit(message.translate('music/p-create:NO_PREM'));
 			} else if (p.length >= 3 && message.author.premium) {
 				// there is a max of 3 playlists per a user even with premium
-				return msg.edit('You are unable to save anymore playlists. Max: 3');
+				return msg.edit(message.translate('music/p-create:MAX_PLAYLISTS'));
 			} else if (p && message.author.premium) {
 				// user can have save another playlist as they have premium
 				const exist = p.find(obj => obj.name == message.args[0]);
 				if (!exist) {
 					await this.savePlaylist(bot, message, message.args, settings, msg);
 				} else {
-					msg.edit('A playlist already exists with that name.');
+					msg.edit(message.translate('music/p-create:EXISTS'));
 				}
 			}
 		});
@@ -60,40 +61,80 @@ module.exports = class PCreate extends Command {
 		// Get songs to add to playlist
 		let res;
 		try {
-			res = await bot.manager.search(message.args[1], message.author);
+			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 		} catch (err) {
-			return message.channel.error(settings.Language, 'MUSIC/ERROR', err.message);
+			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			msg.delete();
-			return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
-		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
+			return message.channel.error('music/play:NO_SONG');
+		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED' || res.loadType == 'SEARCH_RESULT') {
+			let tracks = [], thumbnail, duration;
+			if (res.loadType == 'SEARCH_RESULT') {
+				// Display the options for search
+				let max = 10, collected;
+				const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
+				if (res.tracks.length < max) max = res.tracks.length;
+
+				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+				const embed = new Embed(bot, message.guild)
+					.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
+					.setColor(message.member.displayHexColor)
+					.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
+				const search = await message.channel.send(embed);
+
+				try {
+					collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+				} catch (e) {
+					return message.reply(message.translate('misc:WAITED_TOO_LONG'));
+				}
+
+				const first = collected.first().content;
+				if (first.toLowerCase() === 'cancel') {
+					return message.channel.send(message.translate('misc:CANCELLED'));
+				}
+
+				const index = Number(first) - 1;
+				if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
+
+				tracks.push(res.tracks[index]);
+				thumbnail = res.tracks[index].thumbnail;
+				duration = res.tracks[index].duration;
+				search.delete();
+			} else {
+				tracks = res.tracks.slice(0, message.author.premium ? 200 : 100);
+				thumbnail = res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail;
+				duration = res.playlist?.duration ?? res.tracks[0].duration;
+			}
+
 			// Save playlist to database
 			const newPlaylist = new PlaylistSchema({
 				name: message.args[0],
-				songs: res.tracks.slice(0, message.author.premium ? 200 : 100),
+				songs: tracks,
 				timeCreated: Date.now(),
-				thumbnail: res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail,
+				thumbnail: thumbnail,
 				creator: message.author.id,
-				duration: res.playlist?.duration ?? res.tracks[0].duration,
+				duration: duration,
 			});
 			newPlaylist.save().catch(err => bot.logger.error(err.message));
 
 			// Show that playlist has been saved
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
-				.setDescription([	`Created a playlist with name: **${message.args[0]}**.`,
-					`Playlist duration: ${bot.timeFormatter.getReadableTime(parseInt(newPlaylist.duration))}.`,
-					`Added **${(res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : res.tracks[0].title}** (${res.tracks.length} tracks) to **${message.args[0]}**.`].join('\n'))
-				.setFooter(`ID: ${newPlaylist._id} • Songs: ${newPlaylist.songs.length}/${(message.author.premium) ? '200' : '100'}`)
+				.setDescription([
+					message.translate('music/p-create:DESC_1', { TITLE: message.args[0] }),
+					message.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
+					message.translate('music/p-create:DESC_3', { NAME: (res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : tracks[0].title, NUM: tracks.length, TITLE: message.args[0] }),
+				].join('\n'))
+				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })
 				.setTimestamp();
 			msg.edit('', embed);
 		} else {
 			msg.delete();
-			return message.channel.send(`\`${message.args[1]}\` is not a playlist`);
+			return message.channel.error('music/p-create:NO_SONG');
 		}
 	}
 };

@@ -1,8 +1,9 @@
 // Dependecies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	Command = require('../../structures/Command.js'),
-	paginate = require('../../utils/pagenator');
+	{ time: { getReadableTime } } = require('../../utils'),
+	{ paginate } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class PView extends Command {
 	constructor(bot) {
@@ -18,7 +19,7 @@ module.exports = class PView extends Command {
 		});
 	}
 
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({
 			creator: message.author.id,
@@ -27,11 +28,11 @@ module.exports = class PView extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			if (!p[0]) {
-				message.channel.send('You have no playlists saved.');
+				message.channel.error('music/p-view:NO_PLAYLIST');
 			} else {
 				// Get all playlists name
 				const playlistNames = [];
@@ -40,7 +41,7 @@ module.exports = class PView extends Command {
 				}
 
 				// no playlist name was entered
-				if (!message.args[0]) return message.channel.send(`Available playlists are \`${playlistNames.join('`, `')}\`.`);
+				if (!message.args[0]) return message.channel.send(message.translate('music/p-view:AVAIABLE', { NAMES: playlistNames.join('`, `') }));
 
 				// A valid playlist name was entered
 				if (playlistNames.includes(message.args[0])) {
@@ -58,21 +59,21 @@ module.exports = class PView extends Command {
 					const pages = [];
 					let n = 1;
 					for (let i = 0; i < pagesNum; i++) {
-						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** [${song.title}](https://www.youtube.com/watch?v=${song.identifier}) \`[${bot.timeFormatter.getReadableTime(song.duration)}]\``).join('\n')}`;
-						const embed = new MessageEmbed()
+						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
+						const embed = new Embed(bot, message.guild)
 							.setAuthor(message.author.tag, message.author.displayAvatarURL())
 							.setThumbnail(p.thumbnail)
 							.setTitle(p.name)
 							.setDescription(str)
 							.setFooter(`ID: ${p._id}`)
 							.setTimestamp()
-							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${bot.timeFormatter.getReadableTime(totalQueueDuration)} total duration`);
+							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration`);
 						pages.push(embed);
 						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
 						else if(pagesNum == 1) message.channel.send(embed);
 					}
 				} else {
-					message.channel.send('That is not a playlist made by you.');
+					message.channel.error('music/p-view:NO_PLAYLIST');
 				}
 			}
 		});

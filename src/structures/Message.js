@@ -1,6 +1,6 @@
 // Dependecies
 const { Structures } = require('discord.js'),
-	sm = require('string-similarity');
+	{ findBestMatch } = require('string-similarity');
 
 module.exports = Structures.extend('Message', Message => {
 	class CustomMessage extends Message {
@@ -22,30 +22,34 @@ module.exports = Structures.extend('Message', Message => {
 		}
 
 		// Get User from @ or ID
-		getMember() {
+		async getMember() {
 			const users = [];
 			// add all mentioned users
 			for (let i = 0; i < this.args.length; i++) {
-				if (this.guild.member(this.mentions.users.array()[i] || this.guild.members.cache.get(this.args[i]))) {
-					users.push(this.guild.member(this.mentions.users.array()[i] || this.guild.members.cache.get(this.args[i])));
+				// eslint-disable-next-line no-empty-function
+				if (this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {})) {
+					// eslint-disable-next-line no-empty-function
+					users.push(this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {}));
 				}
 			}
 			// find user
 			if (this.args[0]) {
-				const members = [];
-				const indexes = [];
+				// fetch all members before search
+				await this.guild.members.fetch();
+
+				// search for members
+				const members = [], indexes = [];
 				this.guild.members.cache.forEach(member => {
 					members.push(member.user.username);
 					indexes.push(member.id);
 				});
-				const match = sm.findBestMatch(this.args.join(' '), members);
-				if (match.bestMatch.rating != 0) {
+				const match = findBestMatch(this.args.join(' '), members);
+				if (match.bestMatch.rating >= 0.1) {
 					const username = match.bestMatch.target,
 						member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
 					users.push(member);
 				}
 			}
-
 			// add author at the end
 			users.push(this.member);
 			return users;
@@ -78,7 +82,7 @@ module.exports = Structures.extend('Message', Message => {
 				this.guild.roles.cache.forEach(r => {
 					roleList.push(r.name);
 				});
-				const match = sm.findBestMatch(this.args.join(' '), roleList);
+				const match = findBestMatch(this.args.join(' '), roleList);
 				if (match.bestMatch.rating != 0) {
 					const username = match.bestMatch.target,
 						role = this.guild.roles.cache.find(r => r.name == username);
@@ -126,7 +130,7 @@ module.exports = Structures.extend('Message', Message => {
 				}
 			}
 			// add avatar URL's to file
-			file.push(...this.getMember().map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
+			file.push(...(await this.getMember()).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;
 		}
 
@@ -137,6 +141,12 @@ module.exports = Structures.extend('Message', Message => {
 			} else {
 				return this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? true : false;
 			}
+		}
+
+		translate(key, args) {
+			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
+			if (!language) throw 'Message: Invalid language set in data.';
+			return language(key, args);
 		}
 	}
 	return CustomMessage;

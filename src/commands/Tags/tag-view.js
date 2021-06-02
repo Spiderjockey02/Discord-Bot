@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
@@ -23,7 +23,7 @@ module.exports = class TagView extends Command {
 		// view all tags on the server
 		TagsSchema.find({ guildID: message.guild.id }).then(result => {
 			// if no tags have been saved yet
-			if (!result[0]) return message.channel.send('No tags saved');
+			if (!result[0]) return message.channel.send(message.translate('tags/tag-view:NO_TAG'));
 
 			// check if an input was entered
 			if (message.args[0]) {
@@ -37,15 +37,14 @@ module.exports = class TagView extends Command {
 
 			// if no input was entered or tagName didn't match
 			if (result != null) {
-				const resultEmbed = new MessageEmbed()
-					.setTitle('List of tags for: ' + message.guild.name);
-
-				result.forEach(function(value) {
-					resultEmbed.addField(`Name: ${value.name}`, `Respones: ${value.response}`);
+				const resultEmbed = new Embed(bot, message.guild)
+					.setTitle('tags/tag-view:TITLE', { NAME:message.guild.name });
+				result.forEach(value => {
+					resultEmbed.addField(message.translate('tags/tag-view:TITLE', { NAME: value.name }), message.translate('tags/tag-view:RESP', { RESP: value.response }));
 				});
 				return message.channel.send(resultEmbed);
 			} else {
-				return message.channel.send('There are no existing tags.');
+				return message.channel.send(message.translate('tags/tag-view:NO_EXIST'));
 			}
 		});
 	}

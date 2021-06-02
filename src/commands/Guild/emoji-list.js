@@ -17,6 +17,6 @@ module.exports = class EmojiList extends Command {
 
 	// Run command
 	async run(bot, message) {
-		message.channel.send(`**${message.guild.name}'s emoji's:**\n${message.guild.emojis.cache.map(e => e.toString()).join(' ')}`);
+		message.channel.send(message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') }));
 	}
 };

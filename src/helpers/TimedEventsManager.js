@@ -1,7 +1,8 @@
 // Dependencies
 const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
-	{ MessageEmbed, MessageAttachment } = require('discord.js');
+	{ Embed, time: { getTotalTime } } = require('../utils'),
+	{ MessageAttachment } = require('discord.js');
 
 module.exports = async (bot) => {
 	const events = await timeEventSchema.find({});
@@ -23,13 +24,13 @@ module.exports = async (bot) => {
 					bot.logger.debug(`Reminding ${bot.users.cache.get(events[i].userID).tag}`);
 					// Message user about reminder
 					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
-					const embed = new MessageEmbed()
-						.setTitle(bot.translate(settings.Language, 'FUN/REMINDER_TITLE'))
-						.setColor('RANDOM')
+
+					const embed = new Embed(bot, bot.guilds.cache.get(events[i].guildID))
+						.setTitle('fun/reminder:TITLE')
 						.attachFiles(attachment)
 						.setThumbnail('attachment://Timer.png')
-						.setDescription(`${events[i].message}\n[${bot.translate(settings.Language, 'FUN/REMINDER_DESCRIPTION')}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID})`)
-						.setFooter(bot.translate(settings.Language, 'FUN/REMINDER_FOOTER', ms(events[i].time, { long: true })));
+						.setDescription(`${events[i].message}\n[${bot.translate('fun/reminder:DESC', {}, settings.Language)}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID}})`)
+						.setFooter('fun/reminder:FOOTER', { TIME: ms(events[i].time, { long: true }) });
 					try {
 						await bot.users.cache.get(events[i].userID).send(embed);
 					} catch (e) {
@@ -97,7 +98,7 @@ module.exports = async (bot) => {
 						for (let j = 0; j < res.length; j++) {
 							const possibleTime = res[j].Reason.split(' ')[0];
 							if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-								const time = bot.timeFormatter.getTotalTime(possibleTime, this, settings.Language);
+								const time = getTotalTime(possibleTime, this);
 								// make sure time is correct
 								if (time) {
 									const a = new Date(res[j].IssueDate).getTime() + parseInt(time);

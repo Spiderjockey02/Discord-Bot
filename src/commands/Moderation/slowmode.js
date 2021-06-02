@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { time: { getTotalTime } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class SlowMode extends Command {
 	constructor(bot) {
@@ -21,33 +22,24 @@ module.exports = class SlowMode extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
-		// Make sure user can activate slowmode
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.error(settings.Language, 'USER_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
-
-		// Check if bot can activate slowmode
-		if (!message.channel.permissionsFor(bot.user).has('MANAGE_CHANNELS')) {
-			bot.logger.error(`Missing permission: \`MANAGE_CHANNELS\` in [${message.guild.id}].`);
-			return message.channel.error(settings.Language, 'MISSING_PERMISSION', 'MANAGE_CHANNELS').then(m => m.delete({ timeout: 10000 }));
-		}
-
 		// get time
 		let time;
 		if (message.args[0] == 'off') {
 			time = 0;
 		} else if (message.args[0]) {
-			time = bot.timeFormatter.getTotalTime(message.args[0], message, settings.Language);
+			time = getTotalTime(message.args[0], message);
 			if (!time) return;
 		} else {
-			return message.channel.error(settings.Language, 'NOT_NUMBER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/slowmode:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 		}
 
 		// Activate slowmode
 		try {
 			await message.channel.setRateLimitPerUser(time / 1000);
-			message.channel.success(settings.Language, 'MODERATION/SUCCESSFULL_SLOWMODE', message.args[0]).then(m => m.delete({ timeout:15000 }));
+			message.channel.success('moderation/slowmode:SUCCESS', { TIME: time == 0 ? message.translate('misc:OFF') : time / 1000 }).then(m => m.delete({ timeout:15000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 		}
 	}
 };

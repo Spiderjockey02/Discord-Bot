@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Event = require('../../structures/Event');
 
@@ -14,7 +14,8 @@ module.exports = class voiceStateUpdate extends Event {
 	async run(bot, oldState, newState) {
 		// variables for easier coding
 		const newMember = newState.guild.member(newState.id);
-		const channel = newState.guild.channels.cache.get(newState.channelID);
+		const channel = newState.channelID ? newState.guild.channels.cache.get(newState.channelID.id || newState.channelID) : null;
+
 
 		// Get server settings / if no settings then return
 		const settings = newState.guild.settings;
@@ -26,7 +27,7 @@ module.exports = class voiceStateUpdate extends Event {
 
 			// member has been server (un)deafened
 			if (oldState.serverDeaf != newState.serverDeaf) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newState.guild)
 					.setDescription(`**${newMember} was server ${newState.serverDeaf ? '' : 'un'}deafened in ${channel.toString()}**`)
 					.setColor(newState.serverDeaf ? 15158332 : 3066993)
 					.setTimestamp()
@@ -37,7 +38,7 @@ module.exports = class voiceStateUpdate extends Event {
 
 			// member has been server (un)muted
 			if (oldState.serverMute != newState.serverMute) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newState.guild)
 					.setDescription(`**${newMember} was server ${newState.serverMute ? '' : 'un'}muted in ${channel.toString()}**`)
 					.setColor(newState.serverMute ? 15158332 : 3066993)
 					.setTimestamp()
@@ -48,7 +49,7 @@ module.exports = class voiceStateUpdate extends Event {
 
 			// member has (stopped/started) streaming
 			if (oldState.streaming != newState.streaming) {
-				embed = new MessageEmbed()
+				embed = new Embed(bot, newState.guild)
 					.setDescription(`**${newMember} has ${newState.streaming ? 'started' : 'stopped'} streaming in ${channel.toString()}**`)
 					.setColor(newState.streaming ? 15158332 : 3066993)
 					.setTimestamp()
@@ -90,7 +91,7 @@ module.exports = class voiceStateUpdate extends Event {
 				if (!vcMembers || vcMembers === 1) {
 					const newPlayer = bot.manager.players.get(newState.guild.id);
 					(newPlayer) ? player.destroy() : oldState.guild.voice.channel.leave();
-					const embed = new MessageEmbed()
+					const embed = new Embed(bot, newState.guild)
 					// eslint-disable-next-line no-inline-comments
 						.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);
 					try {

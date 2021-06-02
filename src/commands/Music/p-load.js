@@ -1,5 +1,5 @@
 // Dependecies
-const	{ MessageEmbed } = require('discord.js'),
+const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ TrackUtils } = require('erela.js'),
 	Command = require('../../structures/Command.js');
@@ -10,7 +10,7 @@ module.exports = class PLoad extends Command {
 			name: 'p-load',
 			dirname: __dirname,
 			aliases: ['playlist-load'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Load a playlist',
 			usage: 'p-load <playlist name>',
 			cooldown: 3000,
@@ -20,7 +20,7 @@ module.exports = class PLoad extends Command {
 
 	async run(bot, message, settings) {
 		// make sure a playlist name was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-load:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
@@ -33,7 +33,7 @@ module.exports = class PLoad extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 			}
 
 			if (p) {
@@ -50,7 +50,7 @@ module.exports = class PLoad extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 
 				// add songs to queue
@@ -68,12 +68,12 @@ module.exports = class PLoad extends Command {
 				});
 
 				content.then(async function() {
-					const embed = new MessageEmbed()
-						.setDescription(`Queued **${p.songs.length} songs** from **${message.args[0]}**.`);
+					const embed = new Embed(bot, message.guild)
+						.setDescription(message.translate('music/p-load:QUEUE', { NUM: p.songs.length, TITLE: message.args[0] }));
 					msg.edit('', embed);
 				});
 			} else {
-				msg.edit('No playlist found');
+				msg.edit(message.translate('music/p-load:NO_PLAYLIST'));
 			}
 		});
 	}

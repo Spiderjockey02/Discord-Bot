@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class roleCreate extends Event {
@@ -20,7 +20,7 @@ module.exports = class roleCreate extends Event {
 
 		// Check if event roleCreate is for logging
 		if (settings.ModLogEvents.includes('ROLECREATE') && settings.ModLog) {
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was created**`)
 				.setColor(3066993)
 				.setFooter(`ID: ${role.id}`)

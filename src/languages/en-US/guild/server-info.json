@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Get information on the server.",
+  "USAGE": "server-info",
+  "AUTHOR": "{{NAME}}'s server info",
+  "NAME": "Server name:",
+	"OWNER": "Server owner:",
+	"ID": "Server ID:",
+	"CREATED": "Server created date:",
+	"REGION": "Server region:",
+	"VERIFICATION": "Verification level:",
+	"MEMBER":  "Member count [{{NUM}}]:",
+  "MEMBER_DESC": "`{{ONLINE}} online, {{IDLE}} idle and {{DND}} DnD \n{{BOTS}} bots, {{HUMANS}} humans`",
+	"FEATURES": "Features:",
+	"ROLES": "Roles [{{NUM}}]:",
+  "FOOTER": "Requested by: {{USER}}"
+}

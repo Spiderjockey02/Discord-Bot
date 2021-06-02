@@ -2,7 +2,8 @@ const { Manager } = require('erela.js'),
 	Deezer = require('erela.js-deezer'),
 	Spotify = require('erela.js-spotify'),
 	Facebook = require('erela.js-facebook'),
-	{ MessageEmbed } = require('discord.js');
+	{ MessageEmbed } = require('discord.js'),
+	{ Embed } = require('../utils');
 require('../structures/Player');
 
 module.exports = async (bot) => {
@@ -12,11 +13,6 @@ module.exports = async (bot) => {
 	bot.manager = new Manager({
 		nodes: [
 			{ host: 'localhost', port: 5000, password: 'youshallnotpass' },
-		],
-		plugins: [
-			new Spotify({ clientID, clientSecret }),
-			new Deezer({ playlistLimit: 1, albumLimit:1 }),
-			new Facebook(),
 		],
 		autoPlay: true,
 		send(id, payload) {
@@ -35,9 +31,9 @@ module.exports = async (bot) => {
 		})
 		.on('trackStart', (player, track) => {
 			// When a song starts
-			const embed = new MessageEmbed()
-				.setColor(bot.guilds.cache.get(player.guild).member(track.requester).displayHexColor)
-				.setTitle('» Now playing:')
+			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
+				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
+				.setTitle('music/np:AUTHOR')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).member(track.requester)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed).then(m => m.delete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
@@ -64,14 +60,14 @@ module.exports = async (bot) => {
 			if (channel) channel.send(embed).then(m => m.delete({ timeout: 15000 }));
 		})
 		.on('queueEnd', (player) => {
-			// Don't leave channel if 24/7 mode is active
-			if (player.twentyFourSeven) return;
-
 			// When the queue has finished
 			player.timeout = setTimeout(() => {
+				// Don't leave channel if 24/7 mode is active
+				if (player.twentyFourSeven) return;
+
 				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
 				const embed = new MessageEmbed()
-					.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`);
+					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild).settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
 				player.destroy();
@@ -81,7 +77,7 @@ module.exports = async (bot) => {
 			// Voice channel updated
 			if (!newChannel) {
 				const embed = new MessageEmbed()
-					.setDescription('The queue has ended as I was kicked from the voice channel');
+					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild).settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
 				player.destroy();

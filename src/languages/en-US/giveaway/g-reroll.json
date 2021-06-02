@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "reroll a giveaway.",
+  "USAGE": "g-reroll <messageID>",
+  "SUCCESS_GIVEAWAY": "Success! Giveaway re-rolled!",
+  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again.",
+  "CONGRAT": "🎉 New winner(s): {winners}! Congratulations!",
+  "ERROR": "No valid entries, no winners can be chosen!"
+}

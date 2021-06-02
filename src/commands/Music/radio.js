@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { Embed } = require('../../utils'),
 	{ getStations } = require('radio-browser'),
 	Command = require('../../structures/Command.js');
 
@@ -8,7 +8,7 @@ module.exports = class Radio extends Command {
 		super(bot, {
 			name: 'radio',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Listen to the radio',
 			usage: 'radio',
 			cooldown: 3000,
@@ -20,12 +20,12 @@ module.exports = class Radio extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error(settings.Language, 'MUSIC/MISSING_DJROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
 			}
 		}
 
 		// make sure a radio station was entered
-		if (!message.args[0]) return message.channel.error(settings.Language, 'INCORRECT_FORMAT', settings.prefix.concat(this.help.usage)).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/radio:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
 
 		// Search for radio station
 		getStations({
@@ -37,7 +37,7 @@ module.exports = class Radio extends Command {
 				if (!data[0]) return message.channel.send('No radio found with that name');
 
 				const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-				const embed = new MessageEmbed()
+				const embed = new Embed(bot, message.guild)
 					.setTitle(`Results for ${message.args.join(' ')}`)
 					.setColor(message.member.displayHexColor)
 					.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
@@ -74,7 +74,7 @@ module.exports = class Radio extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
 				}
 
 				const res = await player.search(data[index].url, message.author);
@@ -82,7 +82,7 @@ module.exports = class Radio extends Command {
 				if (res.loadType == 'NO_MATCHES') {
 					// An error occured or couldn't find the track
 					if (!player.queue.current) player.destroy();
-					return message.channel.error(settings.Language, 'MUSIC/NO_SONG');
+					return message.channel.error('music/play:NO_SONG');
 				} else {
 					// add track to queue and play
 					if (player.state !== 'CONNECTED') player.connect();
