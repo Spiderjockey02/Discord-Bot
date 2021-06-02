@@ -12,6 +12,7 @@ module.exports = class Uptime extends Command {
 			description: 'Gets the uptime of the bot.',
 			usage: 'uptime',
 			cooldown: 2000,
+			slash: true
 		});
 	}
 
@@ -20,5 +21,12 @@ module.exports = class Uptime extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('misc/uptime:DESC', { TIME: getReadableTime(bot.uptime) }));
 		message.channel.send(embed);
+	}
+
+	//Run slash command
+	async callback(bot, interaction, guild) {
+		const embed = new Embed(bot, guild)
+			.setDescription(bot.translate('misc/uptime:DESC', { TIME: getReadableTime(bot.uptime) }));
+		return bot.send(interaction, embed)
 	}
 };

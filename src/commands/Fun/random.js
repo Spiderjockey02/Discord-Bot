@@ -11,6 +11,19 @@ module.exports = class Random extends Command {
 			usage: 'random <LowNum> <HighNum>',
 			cooldown: 1000,
 			examples: ['random 1 10', 'random 5 99'],
+			slash: true,
+			options: [{
+                name: "min",
+                description: "The minimum number for the range.",
+                type: 4,
+                required: true
+            },
+			{
+				name: "max",
+				description: "The maximum number for the range.",
+				type: 4,
+				required: true
+			}]
 		});
 	}
 
@@ -42,5 +55,19 @@ module.exports = class Random extends Command {
 			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
 			message.channel.send({ embed: { color: 'RANDOM', description: message.translate('fun/random:RESPONSE', { NUMBER: r }) } });
 		}
+	}
+	async callback(bot, interaction, guild, args) {
+		const settings = guild.settings
+		const max = 100000,
+			num1 = args[0].value,
+			num2 = args[1].value;
+
+		// Make sure they follow correct rules
+		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
+			return await bot.send(interaction, channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }).then(m => m.delete({ timeout: 5000 })));
+		}
+		// send result
+		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
+		return await bot.send(interaction, { embed: { color: 'RANDOM', description: bot.translate('fun/random:RESPONSE', { NUMBER: r }) } });
 	}
 };

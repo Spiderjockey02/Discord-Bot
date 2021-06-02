@@ -11,11 +11,23 @@ module.exports = class Invite extends Command {
 			description: 'Send an invite link so people can add me to their server.',
 			usage: 'invite',
 			cooldown: 2000,
+			slash: true,
+			options: [{
+                name: "text",
+                description: "write some text.",
+                type: 3,
+                required: true
+            }]
 		});
 	}
 
 	// Run command
 	async run(bot, message) {
 		message.channel.send({ embed:{ description:message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } });
+	}
+
+	//Run slash command
+	async callback(bot, interaction, guild, member, args) {
+		return await bot.send(interaction, { embed:{ description:bot.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } })
 	}
 };

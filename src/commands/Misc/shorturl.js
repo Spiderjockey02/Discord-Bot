@@ -13,6 +13,13 @@ module.exports = class ShortURL extends Command {
 			usage: 'shorturl',
 			cooldown: 3000,
 			examples: ['shorturl https://www.google.com', 'shorturl https://www.youtube.com'],
+			slash: true,
+			options: [{
+                name: "url",
+                description: "The specified URL to shorten.",
+                type: 3,
+                required: true
+            }]
 		});
 	}
 
@@ -34,6 +41,20 @@ module.exports = class ShortURL extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild, args) {
+		console.log(args)
+		const channel = guild.channels.cache.get(interaction.channel_id)
+		const link = args[0].value
+
+		try {
+			shorten(link, async function(res) {
+				return await bot.send(interaction, res);
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 })));
 		}
 	}
 };

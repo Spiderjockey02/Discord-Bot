@@ -12,6 +12,7 @@ module.exports = class Support extends Command {
 			description: 'Get support on the bot.',
 			usage: 'support',
 			cooldown: 2000,
+			slash: true
 		});
 	}
 
@@ -21,5 +22,13 @@ module.exports = class Support extends Command {
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
 			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
 		message.channel.send(embed);
+	}
+
+	//Run slash command
+	async callback(bot, interaction, guild) {
+		const embed = new Embed(bot, guild)
+			.setTitle('misc/support:TITLE', { USER: bot.user.username })
+			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
+		return await bot.send(interaction, embed)
 	}
 };

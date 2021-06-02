@@ -11,6 +11,7 @@ module.exports = class Meme extends Command {
 			description: 'Sends a random meme.',
 			usage: 'meme',
 			cooldown: 1000,
+			slash: true
 		});
 	}
 
@@ -32,6 +33,19 @@ module.exports = class Meme extends Command {
 			.setImage(meme.url)
 			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
 		message.channel.send(embed);
+	}
+
+	async callback(bot, interaction, guild) {
+		const settings = guild.settings
+		const meme = await this.fetchMeme(bot)
+
+		const embed = new Embed(bot, guild)
+			.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
+			.setColor(16333359)
+			.setURL(meme.post.link)
+			.setImage(meme.url)
+			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
+		return await bot.send(interaction, embed)
 	}
 
 	// fetch meme

@@ -1,6 +1,7 @@
 # Command list
 ><> = required, [] = optional
 
+<<<<<<< HEAD
 ## Giveaway
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -24,6 +25,8 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
+=======
+>>>>>>> 87b5a0010e070f451bce142a51ea5d6e8bb8e81a
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -58,6 +61,52 @@
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+<<<<<<< HEAD
+=======
+
+
+## Fun
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| advice	|	Get some random advice	|	`advice`	|
+| fact	|	Receive a random fact.	|	`fact`	|
+| flip	|	Flip a coin.	|	`flip`	|
+| meme	|	Sends a random meme.	|	`meme`	|
+| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
+| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
+| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
+| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
+| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
+
+
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+>>>>>>> 87b5a0010e070f451bce142a51ea5d6e8bb8e81a
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -79,19 +128,6 @@
 | threats	|	Creates a threat meme.	|	`threats [image]`	|
 | twitter	|	Create a fake Twitter tweet.	|	`twitter [user] <text>`	|
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Moderation

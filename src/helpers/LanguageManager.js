@@ -41,5 +41,7 @@ module.exports = async () => {
 		ns: namespaces,
 		preload: languages,
 	});
+
+	console.log(languages);
 	return new Map(languages.map(item => [item, i18next.getFixedT(item)]));
 };

@@ -11,6 +11,7 @@ module.exports = class Privacy extends Command {
 			description: 'Sends a link to the privacy policy.',
 			usage: 'privacy',
 			cooldown: 2000,
+			slash: true
 		});
 	}
 
@@ -18,5 +19,10 @@ module.exports = class Privacy extends Command {
 	async run(bot, message) {
 		// Send link to privacy policy
 		message.channel.send({ embed:{ description:message.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }) } });
+	}
+
+	// Run slash command
+	async callback(bot, interaction) {
+		return await bot.send(interaction, { embed:{ description:bot.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }) } } )
 	}
 };

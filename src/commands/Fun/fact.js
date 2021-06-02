@@ -35,4 +35,21 @@ module.exports = class Fact extends Command {
 			message.channel.send(embed);
 		});
 	}
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channel_id)
+		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
+			if (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			}
+
+			// Retrieve a random fact
+			const { facts } = JSON.parse(data);
+			const num = Math.floor((Math.random() * facts.length));
+			const embed = new Embed(bot, message.guild)
+				.setTitle('fun/fact:FACT_TITLE')
+				.setDescription(facts[num]);
+			message.channel.send(embed);
+		});
+	}
 };

@@ -1,10 +1,13 @@
 // Dependecies
-const { Client, Collection } = require('discord.js'),
+const { Client, Collection, APIMessage } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
+	fetch = require("node-fetch").default,
 	{ KSoftClient } = require('@ksoft/api'),
-	path = require('path');
+	path = require('path'),
+	{ promisify } = require('util'),
+	readdir = promisify(require('fs').readdir);
 
 // Creates Egglord class
 module.exports = class Egglord extends Client {
@@ -30,6 +33,7 @@ module.exports = class Egglord extends Client {
 		// For command handler
 		this.aliases = new Collection();
 		this.commands = new Collection();
+		this.interactions = new Collection();
 		this.cooldowns = new Collection();
 
 		// connect to database
@@ -123,9 +127,80 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
+	// Load a slash-command
+	loadInteraction(commandPath, commandName, guild) {
+		try {
+			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
+			if(cmd.conf.slash == true) {
+				this.api.applications(this.user.id).guilds(guild.id).commands.post({
+					data: {
+						name: cmd.help.name,
+						description: cmd.help.description,
+						options: cmd.conf.options
+					}
+				})
+				//console.log
+				guild.interactions.set(cmd.help.name, cmd);
+			}
+			return false;
+		} catch (err) {
+			return `Unable to load interaction ${commandName}: ${err}`;
+		}
+	}
+
+	deleteInteraction(commandPath, commandName, guild) {
+		try {
+			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
+			if(cmd.conf.slash == true) {
+				fetch("https://discord.com/api/v8/applications/" + bot.user.id + "/commands/" + cmd.id, {
+					method: "DELETE",
+					headers: {
+						Authorization: `Bot ${bot.token}`,
+						"Content-Type": "application/json",
+					}
+				})
+				guild.interaction.delete(cmd.help.name, cmd)
+			}
+			return false;
+		} catch (err) {
+			return `Unable to delete interaction ${commandName}: ${err}`;
+		}
+	}
+
+	async loadInteractionGroup(category, guild) {
+		try {
+			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
+
+			commands.forEach((cmd) => {
+				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
+					const resp = this.loadInteraction('./commands/' + category, cmd, guild);
+					if (resp) this.logger.error(resp);
+				};
+			});
+		} catch (err) {
+			console.log(err)
+			return `Unable to load category ${category}: ${err}`
+		}
+	}
+
+	async deleteInteractionGroup(category, guild) {
+		try {
+			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
+
+			commands.forEach((cmd) => {
+				if(guild.get(cmd.help.name)) {
+					const resp = this.deleteInteraction('./commands/' + category, cmd, guild);
+					if (resp) this.logger.error(resp);
+				}
+			});
+		} catch (err) {
+			console.log(err)
+			return `Unable to delete category ${category}: ${err}`
+		}
+	}
 	// Unload a command (you need to load them again)
 	async unloadCommand(commandPath, commandName) {
-		let command;
+		let command
 		if (this.commands.has(commandName)) {
 			command = this.commands.get(commandName);
 		} else if (this.aliases.has(commandName)) {
@@ -134,6 +209,17 @@ module.exports = class Egglord extends Client {
 		if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
 		delete require.cache[require.resolve(`.${commandPath}${path.sep}${commandName}.js`)];
 		return false;
+	}
+
+	// Handle slash command callback
+	async send(interaction, content) {
+		const apiMessage = await APIMessage.create(this.channels.resolve(interaction.channel_id), content).resolveData().resolveFiles();
+		return this.api.interactions(interaction.id, interaction.token).callback.post({
+			data: {
+				type: 4,
+				data: { ...apiMessage.data, files: apiMessage.files }
+			}
+		})
 	}
 
 	// Fetches adult sites for screenshot NSFW blocking
