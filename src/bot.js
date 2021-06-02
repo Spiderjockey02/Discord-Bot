@@ -1,5 +1,5 @@
 // Dependencies
-const Client = require('./base/Task-Manager.js');
+const Client = require('./base/Egglord.js');
 require('./structures');
 const bot = new Client({
 	partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],

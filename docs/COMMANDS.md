@@ -1,30 +1,6 @@
 # Command list
 ><> = required, [] = optional
 
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
-## Fun
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| advice	|	Get some random advice	|	`advice`	|
-| fact	|	Receive a random fact.	|	`fact`	|
-| flip	|	Flip a coin.	|	`flip`	|
-| meme	|	Sends a random meme.	|	`meme`	|
-| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
-| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
-| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
-| rps	|	Play Rock Paper Scissors.	|	`rps <rock / paper / scissors>`	|
-| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
-| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
-
-
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -43,18 +19,38 @@
 ## Host
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
+| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
 | docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
 | eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
 | node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
 | premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-| system	|	Displays the bots statistics	|	`status`	|
-| test	|	For testing new commands and features	|	`test`	|
-| update	|	Sends an update to bot's guild.	|	`update`	|
+
+
+## Fun
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| advice	|	Get some random advice	|	`advice`	|
+| fact	|	Receive a random fact.	|	`fact`	|
+| flip	|	Flip a coin.	|	`flip`	|
+| meme	|	Sends a random meme.	|	`meme`	|
+| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
+| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
+| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
+| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
+| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
+
+
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
 
 ## Level
@@ -62,6 +58,19 @@
 |---------------|--------------------|--------------|
 | leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
 | rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -83,19 +92,6 @@
 | threats	|	Creates a threat meme.	|	`threats [image]`	|
 | twitter	|	Create a fake Twitter tweet.	|	`twitter [user] <text>`	|
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Moderation
@@ -127,7 +123,7 @@
 | dc	|	Disconnects the bot from the voice channel.	|	`dc`	|
 | fast-forward	|	Fast forwards the player by your specified amount.	|	`fast-forward <time>`	|
 | join	|	Makes the bot join your voice channel.	|	`join`	|
-| loop	|	Loops the song or queue.	|	`loop [queue / song / off]`	|
+| loop	|	Loops the song or queue.	|	`loop [queue / song]`	|
 | lyrics	|	Get lyrics on a song.	|	`lyrics [song]`	|
 | move	|	Moves the specified song to the specified position.	|	`move <position> <new position>`	|
 | nightcore	|	Toggles nightcore mode.	|	`nightcore`	|
@@ -156,16 +152,6 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
-## Plugins
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
-| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
-| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
-| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
-| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
-
-
 ## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -178,6 +164,16 @@
 | pgif	|	Look at NSFW images.	|	`pgif`	|
 | pussy	|	Look at NSFW images.	|	`pussy`	|
 | thigh	|	Look at NSFW images.	|	`thigh`	|
+
+
+## Plugins
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
+| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
+| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
+| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
+| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher
