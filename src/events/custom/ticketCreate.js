@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class ticketCreate extends Event {
@@ -16,12 +16,12 @@ module.exports = class ticketCreate extends Event {
 
 		// send ticket log (goes in ModLog channel)
 		if (settings.ModLogEvents.includes('TICKET') && settings.ModLog) {
-			const embed = new MessageEmbed()
-				.setTitle('Ticket Opened!')
+			const embed = new Embed(bot, channel.guild)
+				.setTitle('ticket/ticket-create:LOG_TITLE')
 				.setColor(3066993)
-				.addField('Ticket', channel)
-				.addField('User', bot.users.cache.get(channel.name.split('-')[1]), true)
-				.addField('Reason', ticket.fields[1].value, true)
+				.addField(bot.translate('ticket/ticket-create:TICKET', {}, settings.Language), channel)
+				.addField(bot.translate('ticket/ticket-create:USER', {}, settings.Language), bot.users.cache.get(channel.name.split('-')[1]), true)
+				.addField(bot.translate('ticket/ticket-create:FIELD2', {}, settings.Language), ticket.fields[1].value, true)
 				.setTimestamp();
 
 			// Find channel and send message

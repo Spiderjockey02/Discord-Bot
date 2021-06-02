@@ -37,7 +37,7 @@ module.exports = class UserInfo extends Command {
 				{ name: message.translate('guild/user-info:ROLE'), value: members[0].roles.highest, inline: true },
 				{ name: message.translate('guild/user-info:JOIN'), value: moment(members[0].joinedAt).format('lll'), inline: true },
 				{ name: message.translate('guild/user-info:NICK'), value: members[0].nickname != null ? members[0].nickname : message.translate('misc:NONE'), inline: true },
-				{ name: message.translate('guild/user-info:ROLES'), value: members[0].roles.cache.map(roles => roles).join(', ') },
+				{ name: message.translate('guild/user-info:ROLES'), value: members[0].roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
 			);
 		message.channel.send(embed);
 	}

@@ -251,11 +251,11 @@ class GiveawaysManager extends EventEmitter {
 		const guild = this.client.guilds.cache.get(packet.d.guild_id);
 		if (!guild) return;
 		if (packet.d.user_id === this.client.user.id) return;
-		const member = guild.members.cache.get(packet.d.user_id) || (await guild.members.fetch(packet.d.user_id));
+		const member = await guild.members.fetch(packet.d.user_id);
 		if (!member) return;
 		const channel = guild.channels.cache.get(packet.d.channel_id);
 		if (!channel) return;
-		const message = channel.messages.cache.get(packet.d.message_id) || (await channel.messages.fetch(packet.d.message_id));
+		const message = await channel.messages.fetch(packet.d.message_id);
 		if (!message) return;
 		const reaction = message.reactions.cache.get(giveaway.reaction || this.options.default.reaction);
 		if (!reaction) return;

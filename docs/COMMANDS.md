@@ -20,9 +20,44 @@
 | pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
 | random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
 | reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
-| rps	|	Play Rock Paper Scissors.	|	`rps <rock / paper / scissors>`	|
 | screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
+
+
+## Guild
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
+| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
+| discrim	|	Discrim	|	`discrim <discriminator>`	|
+| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
+| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
+| guildicon	|	Get the server's icon.	|	`guildicon`	|
+| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
+| role-info	|	Get information on a role.	|	`role-info <role>`	|
+| server-info	|	Get information on the server.	|	`server-info`	|
+| user-info	|	Get information on the server.	|	`user-info [user]`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
 
 
 ## Image
@@ -46,38 +81,6 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| addban	|	Add a ban to the global ban list.	|	`addban <userID> <servers / commands> <reason>`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-| system	|	Displays the bots statistics	|	`status`	|
-| test	|	For testing new commands and features	|	`test`	|
-| update	|	Sends an update to bot's guild.	|	`update`	|
-
-
-## Guild
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
-| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
-| discrim	|	Discrim	|	`discrim <discriminator>`	|
-| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
-| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
-| guildicon	|	Get the server's icon.	|	`guildicon`	|
-| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
-| role-info	|	Get information on a role.	|	`role-info <role>`	|
-| server-info	|	Get information on the server.	|	`server-info`	|
-| user-info	|	Get information on the server.	|	`user-info [user]`	|
-
-
 ## Misc
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -89,13 +92,6 @@
 | status	|	Gets the status of the bot.	|	`status`	|
 | support	|	Get support on the bot.	|	`support`	|
 | uptime	|	Gets the uptime of the bot.	|	`uptime`	|
-
-
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
 
 
 ## Moderation
@@ -127,7 +123,7 @@
 | dc	|	Disconnects the bot from the voice channel.	|	`dc`	|
 | fast-forward	|	Fast forwards the player by your specified amount.	|	`fast-forward <time>`	|
 | join	|	Makes the bot join your voice channel.	|	`join`	|
-| loop	|	Loops the song or queue.	|	`loop [queue / song / off]`	|
+| loop	|	Loops the song or queue.	|	`loop [queue / song]`	|
 | lyrics	|	Get lyrics on a song.	|	`lyrics [song]`	|
 | move	|	Moves the specified song to the specified position.	|	`move <position> <new position>`	|
 | nightcore	|	Toggles nightcore mode.	|	`nightcore`	|

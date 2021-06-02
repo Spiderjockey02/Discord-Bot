@@ -30,7 +30,7 @@ module.exports = class channelCreate extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Created: ${channel.toString()}**`)
 				.setColor(3066993)
-				.setFooter(`ID: ${channel.id}`)
+				.setFooter('misc:ID', { ID: channel.id })
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 				.setTimestamp();
 

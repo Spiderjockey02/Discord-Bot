@@ -8,5 +8,8 @@
   "DESC": "Your ticket has been created: {channel}",
   "FIELD1": "Hey {username}!",
   "FIELDT": "Our support team will contact you as soon as possible.",
-  "FIELD2": "Reason: "
+  "FIELD2": "Reason: ",
+  "TICKET": "Ticket: ",
+  "USER": "User: ",
+  "LOG_TITLE": "Ticket Opened!"
 }
