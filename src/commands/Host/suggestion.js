@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 

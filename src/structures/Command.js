@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const path = require('path');
 
 // Command structure

@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const fs = require('fs');
 
 module.exports = async (bot) => {
@@ -19,7 +19,6 @@ module.exports = async (bot) => {
 			content.push(category, '|	Command	| description	| Usage', '|---------------|--------------------|--------------|', co, '\n');
 		});
 
-	fs.writeFileSync('./test.json', JSON.stringify([...bot.commands]))
 	// read to file
 	fs.writeFileSync('./docs/COMMANDS.md', content.join('\n'));
 };

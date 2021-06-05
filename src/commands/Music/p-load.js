@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ TrackUtils } = require('erela.js'),

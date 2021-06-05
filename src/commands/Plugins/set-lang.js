@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const Command = require('../../structures/Command.js');
 
 module.exports = class Setlang extends Command {

@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
 	{ Embed } = require('../../utils');

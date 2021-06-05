@@ -1,5 +1,5 @@
-// Dependecies
-const defaultPlugins = ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Recording', 'Searcher', 'Ticket', 'Tags'],
+// Dependencies
+const defaultPlugins = ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket', 'Tags'],
 	Command = require('../../structures/Command.js');
 
 module.exports = class SetPlugin extends Command {
@@ -30,12 +30,12 @@ module.exports = class SetPlugin extends Command {
 		if (defaultPlugins.includes(message.args[0])) {
 			if (!settings.plugins.includes(message.args[0])) {
 				settings.plugins.push(message.args[0]);
+				bot.loadInteractionGroup(message.args[0], message.guild)
 				message.channel.send(message.translate('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] }));
-				bot.loadInteractionGroup(message.args[0], item)
 			} else {
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
+				bot.deleteInteractionGroup(message.args[0], message.guild)
 				message.channel.send(message.translate('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] }));
-				bot.deleteInteractionGroup(message.args[0], item)
 			}
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });

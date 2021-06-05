@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');

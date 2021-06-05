@@ -94,7 +94,7 @@ module.exports = class SetLog extends Command {
 		} else if (message.args[0] == 'list') {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('plugins/set-logs:TITLE_2')
-				.setDescription(message.translate('plugins/set-logs:DESC', { ID: settings.ModLogChannel, TOGGLE: settings.ModLog, FEAT: settings.ModLogEvents.join('`, `') }));
+				.setDescription(message.translate('plugins/set-logs:DESC_2', { ID: settings.ModLogChannel, TOGGLE: settings.ModLog, FEAT: settings.ModLogEvents.join('`, `') }));
 			message.channel.send(embed);
 		} else {
 			// if nothing was entered

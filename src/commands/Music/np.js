@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { Embed } = require('../../utils'),
 	{ splitBar } = require('string-progressbar'),
 	Command = require('../../structures/Command.js');

@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { logger } = require('../utils'),
 	chalk = require('chalk'),
 	fetch = require('node-fetch'),

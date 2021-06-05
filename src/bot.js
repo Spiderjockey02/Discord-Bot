@@ -29,6 +29,7 @@ const path = require('path');
 			console.log(err.message);
 		}
 	});
+	
 	// load events
 	const evtFolder = await readdir('./src/events/');
 	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFolder.length} -=-=-=-=-=-=-=`);

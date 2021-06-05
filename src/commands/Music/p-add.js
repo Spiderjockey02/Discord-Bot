@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { PlaylistSchema } = require('../../database/models'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');

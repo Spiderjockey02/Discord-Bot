@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { get } = require('axios'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
