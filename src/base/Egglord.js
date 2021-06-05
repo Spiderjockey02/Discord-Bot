@@ -1,4 +1,7 @@
-// Dependecies
+const { timeStamp } = require('console');
+const { ConsoleMessage } = require('puppeteer');
+
+// Dependencies
 const { Client, Collection, APIMessage } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
@@ -127,12 +130,12 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Load a slash-command
-	loadInteraction(commandPath, commandName, guild) {
+	// Load a slash command
+	async loadInteraction(commandPath, commandName, guild) {
 		try {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			if(cmd.conf.slash == true) {
-				this.api.applications(this.user.id).guilds(guild.id).commands.post({
+			if (cmd.conf.slash) {
+				await this.api.applications(this.user.id).guilds(guild.id).commands.post({
 					data: {
 						name: cmd.help.name,
 						description: cmd.help.description,
@@ -148,48 +151,57 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	deleteInteraction(commandPath, commandName, guild) {
+	// Deletes the slash command
+	async deleteInteraction(commandPath, commandName, guild) {
 		try {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			if(cmd.conf.slash == true) {
-				fetch("https://discord.com/api/v8/applications/" + bot.user.id + "/commands/" + cmd.id, {
-					method: "DELETE",
-					headers: {
-						Authorization: `Bot ${bot.token}`,
-						"Content-Type": "application/json",
-					}
+			if (cmd.conf.slash) {
+				await this.api.applications(this.user.id).guilds(guild.id).commands.get().then(async commandList => {
+					const interactionID = commandList.find(command => command.name === cmd.help.name).id
+					await this.api.applications(this.user.id).guilds(guild.id).commands(interactionID).delete().then(result => {
+						guild.interactions.delete(cmd.help.name, cmd)
+					})
 				})
-				guild.interaction.delete(cmd.help.name, cmd)
 			}
 			return false;
 		} catch (err) {
+			console.log(err)
 			return `Unable to delete interaction ${commandName}: ${err}`;
 		}
 	}
 
+	// Loads a slash command category
 	async loadInteractionGroup(category, guild) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
-
+			let arr = []
 			commands.forEach((cmd) => {
 				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
-					const resp = this.loadInteraction('./commands/' + category, cmd, guild);
-					if (resp) this.logger.error(resp);
-				};
+					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
+					if (command.conf.slash) {
+						arr.push({
+							name: command.help.name,
+							description: command.help.description,
+							options: command.conf.options
+						})
+						guild.interactions.set(command.help.name, command);
+					}
+				}
 			});
+			return arr
 		} catch (err) {
-			console.log(err)
 			return `Unable to load category ${category}: ${err}`
 		}
 	}
 
+	// Deletes a slash command category
 	async deleteInteractionGroup(category, guild) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
-
-			commands.forEach((cmd) => {
-				if(guild.get(cmd.help.name)) {
-					const resp = this.deleteInteraction('./commands/' + category, cmd, guild);
+			await commands.forEach(async (cmd) => {
+				console.log(cmd)
+				if (guild.interactions.get(cmd.replace('.js', ''))) {
+					const resp = await this.deleteInteraction('./commands/' + category, cmd, guild);
 					if (resp) this.logger.error(resp);
 				}
 			});

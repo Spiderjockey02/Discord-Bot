@@ -28,7 +28,7 @@ module.exports = class Ready extends Event {
 
 		// set up webserver
 		try {
-			require('../../http/api')(bot);
+			await require('../../http/api')(bot);
 		} catch (err) {
 			console.log(err);
 		}
@@ -45,42 +45,37 @@ module.exports = class Ready extends Event {
 		}, 3000);
 
 		await require('../../scripts/update-commands.md.js')(bot);
-		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Intreaction(s) -=-=-=-=-=-=-=');
-		bot.guilds.cache.forEach(async item => {
-			await item.fetchGuildConfig();
-			if (item.settings == null) {
+		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
+		bot.guilds.cache.forEach(async guild => {
+			await guild.fetchGuildConfig();
+			if (guild.settings == null) {
 				// new guild has been found
-				bot.emit('guildCreate', item);
+				bot.emit('guildCreate', guild);
 			}
-			const enabledPlugins = item.settings.plugins
-			enabledPlugins.forEach(function(category, index) { 
-				bot.loadInteractionGroup(category, item)
-			})
-			bot.logger.log(`Loaded Interactions for guild: ` + item.name)
-		});
-		
-		/*
-			// load slash commands
-			const slashFolder = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
-			bot.logger.log('=-=-=-=-=-=-=- Loading Intreaction(s) -=-=-=-=-=-=-=');
-			slashFolder.forEach(async (dir) => {
-				if(bot.config.disabledPlugins.includes(dir)) return;
-				try {
-					const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
-					commands.forEach((cmd) => {
-						const resp = bot.loadInteraction('./commands/' + dir, cmd);
-						if (resp) bot.logger.error(resp);
-					});
-				} catch (err) {
-					console.log(err.message);
-				}
-			});
-		*/
+			const enabledPlugins = guild.settings.plugins
+			let info = {
+				data: []
+			}
 
+			//get slash commands for category
+			for (var i = 0; i < enabledPlugins.length; i++) {
+				const g = await bot.loadInteractionGroup(enabledPlugins[i], guild)
+				if (Array.isArray(g)) info.data.push(...g)
+			}
+			try {
+				info.data = info.data.slice(0, 100)
+				//await bot.api.applications(bot.user.id).guilds(guild.id).commands.put(info)
+				bot.logger.log(`Loaded Interactions for guild: ` + guild.name)
+			} catch (err) {
+				console.log(err)
+			}
+		});
+
+		//when a slash command is created
 		bot.ws.on("INTERACTION_CREATE", async(interaction) => {
 			const guild = bot.guilds.cache.get(interaction.guild_id);
 			const Command = guild.interactions.get(interaction.data.name);
-			
+			console.log(Command)
 			//No permission checking yet
 			return Command.callback(bot, interaction, guild, interaction.data.options)
 		})
