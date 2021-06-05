@@ -33,7 +33,7 @@ module.exports = async () => {
 	i18next.use(Backend);
 	await i18next.init({
 		backend: options,
-		debug: true,
+		debug: false,
 		fallbackLng: 'en-US',
 		initImmediate: false,
 		interpolation: { escapeValue: false },
