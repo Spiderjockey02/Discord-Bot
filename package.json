@@ -26,6 +26,7 @@
     "axios": "^0.21.1",
     "canvacord": "^5.0.8",
     "chalk": "^4.1.0",
+    "cors": "^2.8.5",
     "dateformat": "^4.5.1",
     "deepmerge": "^4.2.2",
     "discord.js": "^12.5.1",

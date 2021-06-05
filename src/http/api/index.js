@@ -1,10 +1,12 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const express = require('express'),
+ app = express(),
+ port = 3000,
+ cors = require('cors');
 
 module.exports = bot => {
 	app
 		// Home page
+		.use(cors())
 		.get('/', (req, res) => {
 			res.type('text/plain');
 			res.send(`API server for ${bot.user.username}
