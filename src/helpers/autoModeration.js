@@ -1,6 +1,6 @@
 // if option is 2, then just warn member
 async function warnMember(bot, message, wReason, settings) {
-	const wUser = message.guild.member(message.author);
+	const wUser = message.guild.members.cache.get(message.author);
 	try {
 		await require('./warning-system').run(bot, message, wUser, wReason, settings);
 	} catch (err) {
@@ -26,7 +26,7 @@ module.exports.run = (bot, message, settings) => {
 	// Get the words
 	const words = message.content.split(' ');
 	// get roles
-	const roles = message.guild.member(message.author)._roles;
+	const roles = message.guild.members.cache.get(message.author)._roles;
 	// Check for Badwords
 	if (settings.ModerationBadwords >= 1) {
 		const found = words.some(word => settings.ModerationBadwordList.includes(word));

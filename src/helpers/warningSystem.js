@@ -96,7 +96,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the third time in guild: ${message.guild.id}`);
 				// try and kick user from guild
 				try {
-					await message.guild.member(member).kick(wReason);
+					await message.guild.members.cache.get(member).kick(wReason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
 					message.channel.success('moderation/warn:KICKED', { USER: member.user.tag }).then(m => m.delete({ timeout: 3500 }));
 					// Delete user from database

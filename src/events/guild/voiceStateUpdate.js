@@ -13,7 +13,7 @@ module.exports = class voiceStateUpdate extends Event {
 	// run event
 	async run(bot, oldState, newState) {
 		// variables for easier coding
-		const newMember = newState.guild.member(newState.id);
+		const newMember = newState.guild.members.cache.get(newState.id);
 		const channel = newState.channelID ? newState.guild.channels.cache.get(newState.channelID.id || newState.channelID) : null;
 
 
