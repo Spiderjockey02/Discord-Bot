@@ -149,7 +149,7 @@ module.exports = class Message extends Event {
 
 			// run the command
 			bot.commandsUsed++;
-			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? 'in DM\'s' : ` in guild: ${message.guild.id}`}.`);
+			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.tag}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
 			cmd.run(bot, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);

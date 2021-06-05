@@ -129,6 +129,17 @@ module.exports = Structures.extend('Message', Message => {
 					}
 				}
 			}
+
+			//Check message reply
+			if (this.type == 'REPLY') {
+				const messages = await this.channel.messages.fetch(this.reference.messageID);
+				const url = messages.attachments.first().url;
+				for (let i = 0; i < fileTypes.length; i++) {
+					if (url.indexOf(fileTypes[i]) !== -1) {
+						file.push(url);
+					}
+				}
+			}
 			// add avatar URL's to file
 			file.push(...(await this.getMember()).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;

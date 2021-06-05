@@ -10,7 +10,7 @@ module.exports = class Radio extends Command {
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Listen to the radio',
-			usage: 'radio',
+			usage: 'radio <query>',
 			cooldown: 3000,
 		});
 	}
