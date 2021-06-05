@@ -39,7 +39,7 @@ module.exports = async (bot) => {
 			const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
 				.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
 				.setTitle('music/np:AUTHOR')
-				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester)}]`);
+				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
 			if (channel) channel.send(embed).then(m => m.delete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
 

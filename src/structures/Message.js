@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { Structures } = require('discord.js'),
 	{ findBestMatch } = require('string-similarity');
 

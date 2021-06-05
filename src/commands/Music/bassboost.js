@@ -52,7 +52,7 @@ module.exports = class Bassboost extends Command {
 			player.resetFilter();
 			const msg = await message.channel.send(message.translate('music/bassboost:OFF_BB'));
 			const embed = new Embed(bot, message.guild)
-				.setDescription(message.translate('music/bassboost:DESC_1'));
+				.setDescription(message.translate('music/bassboost:DESC_2'));
 			await bot.delay(5000);
 			return msg.edit('', embed);
 		}

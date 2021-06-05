@@ -29,9 +29,13 @@ module.exports = class Radio extends Command {
 
 		// Search for radio station
 		getStations({
-			limit: 5,
-			by: 'tag',
-			searchterm: message.args.join(' '),
+			limit: 10,
+			order: 'topclick',
+			hidebroken: true,
+			countrycodeexact: settings.language,
+			language: bot.languages.find((l) =>  l.name.includes(settings.Language)).nativeName,
+			by: 'name',
+			searchterm: message.args.join(' ')
 		})
 			.then(async data => {
 				if (!data[0]) return message.channel.send('No radio found with that name');
