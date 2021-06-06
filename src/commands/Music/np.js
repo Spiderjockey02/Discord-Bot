@@ -38,7 +38,7 @@ module.exports = class NowPlaying extends Command {
 				.setAuthor(message.translate('music/np:AUTHOR'))
 				.setColor(message.member.displayHexColor)
 				.setThumbnail(thumbnail)
-				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester)}]`)
+				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester.id)}]`)
 				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
 			message.channel.send(embed);
 		} catch (err) {

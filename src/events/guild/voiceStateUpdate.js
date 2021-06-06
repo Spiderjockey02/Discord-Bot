@@ -74,6 +74,21 @@ module.exports = class voiceStateUpdate extends Event {
 
 		if (!player) return;
 		if (!newState.guild.members.cache.get(bot.user.id).voice.channelID) player.destroy();
+
+		// Check for stage channel audience change
+		if (newState.id == bot.user.id && newState.channel.type == 'stage') {
+			if (!oldState.channelID) {
+				try {
+					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));
+				} catch (err) {
+					player.pause(true);
+				}
+			} else if (oldState.suppress !== newState.suppress) {
+				player.pause(newState.suppress);
+			}
+		}
+
+
 		if (oldState.id === bot.user.id) return;
 		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelID) return;
 
@@ -82,7 +97,7 @@ module.exports = class voiceStateUpdate extends Event {
 
 		// Make sure the bot is in the voice channel that 'activated' the event
 		if (oldState.guild.members.cache.get(bot.user.id).voice.channelID === oldState.channelID) {
-			if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
+			if (oldState.guild.voice?.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 				const vcName = oldState.guild.me.voice.channel.name;
 				await delay(180000);
 
