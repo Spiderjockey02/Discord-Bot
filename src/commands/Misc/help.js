@@ -37,7 +37,7 @@ module.exports = class Help extends Command {
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
-					if (category == 'NSFW' && !message.channel.nsfw) return;
+					if (category == 'NSFW' && !message.channel.nsfw && message.guild) return;
 					embed.addField(`${category} [**${length}**]`, commands);
 				});
 			// send message

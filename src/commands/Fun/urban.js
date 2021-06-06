@@ -7,6 +7,7 @@ module.exports = class Urban extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'urban',
+			nsfw: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get the urban dictionary of a word.',

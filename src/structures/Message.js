@@ -24,33 +24,30 @@ module.exports = Structures.extend('Message', Message => {
 		// Get User from @ or ID
 		async getMember() {
 			const users = [];
-			// only if the user is in a guild look for mentions etc
-			if (this.guild) {
-				// add all mentioned users
-				for (let i = 0; i < this.args.length; i++) {
+			// add all mentioned users
+			for (let i = 0; i < this.args.length; i++) {
+				// eslint-disable-next-line no-empty-function
+				if (this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {})) {
 					// eslint-disable-next-line no-empty-function
-					if (this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {})) {
-						// eslint-disable-next-line no-empty-function
-						users.push(this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {}));
-					}
+					users.push(this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {}));
 				}
-				// find user
-				if (this.args[0]) {
-					// fetch all members before search
-					await this.guild.members.fetch();
+			}
+			// find user
+			if (this.args[0]) {
+				// fetch all members before search
+				await this.guild.members.fetch();
 
-					// search for members
-					const members = [], indexes = [];
-					this.guild.members.cache.forEach(member => {
-						members.push(member.user.username);
-						indexes.push(member.id);
-					});
-					const match = findBestMatch(this.args.join(' '), members);
-					if (match.bestMatch.rating >= 0.1) {
-						const username = match.bestMatch.target,
-							member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
-						users.push(member);
-					}
+				// search for members
+				const members = [], indexes = [];
+				this.guild.members.cache.forEach(member => {
+					members.push(member.user.username);
+					indexes.push(member.id);
+				});
+				const match = findBestMatch(this.args.join(' '), members);
+				if (match.bestMatch.rating >= 0.1) {
+					const username = match.bestMatch.target,
+						member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
+					users.push(member);
 				}
 			}
 			// add author at the end

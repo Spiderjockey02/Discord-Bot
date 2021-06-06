@@ -54,7 +54,7 @@ const config = {
 		// default settings
 		prefix: 'e!',
 		Language: 'en-US',
-		plugins: ['Fun', 'Image', 'Misc', 'NSFW', 'Recording', 'Searcher'],
+		plugins: ['Fun', 'Misc', 'NSFW', 'Searcher'],
 	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
