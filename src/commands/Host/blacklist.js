@@ -20,7 +20,7 @@ module.exports = class Blacklist extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!message.args[0] || !['add', 'remove'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/blacklist:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0] || !['add', 'remove'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/blacklist:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// get user
 		// eslint-disable-next-line no-empty-function
@@ -39,7 +39,7 @@ module.exports = class Blacklist extends Command {
 				if (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 
 				// This is their first warning
@@ -54,11 +54,11 @@ module.exports = class Blacklist extends Command {
 							.setColor(15158332)
 							.setAuthor(message.translate('host/blacklist:AUTHOR', { TAG: user.tag }))
 							.setDescription(message.translate('host/blacklist:DESC', { REASON: reason }));
-						message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+						message.channel.send(embed).then(m => m.timedDelete({ timeout: 30000 }));
 					} catch (err) {
 						if (message.deletable) message.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 				} else {
 					message.channel.send('host/blacklist:ALRDY_BAN', { ID: user.id });

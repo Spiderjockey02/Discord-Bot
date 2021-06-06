@@ -25,7 +25,7 @@ module.exports = class Reminder extends Command {
 		// Make something that time and information is entered
 		if (!message.args[1]) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/reminder:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/reminder:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// Get time

@@ -27,7 +27,7 @@ module.exports = class Status extends Command {
 			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();
 		await message.channel.send(embed);
-		m.delete();
+		m.timedDelete();
 	}
 
 	//Run slash command

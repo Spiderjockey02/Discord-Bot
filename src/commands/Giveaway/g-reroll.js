@@ -24,7 +24,7 @@ module.exports = class G_reroll extends Command {
 
 		// Make sure the message ID of the giveaway embed is entered
 		if (!message.args[0]) {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// re-roll the giveaway

@@ -24,30 +24,33 @@ module.exports = Structures.extend('Message', Message => {
 		// Get User from @ or ID
 		async getMember() {
 			const users = [];
-			// add all mentioned users
-			for (let i = 0; i < this.args.length; i++) {
-				// eslint-disable-next-line no-empty-function
-				if (this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {})) {
+			// only if the user is in a guild look for mentions etc
+			if (this.guild) {
+				// add all mentioned users
+				for (let i = 0; i < this.args.length; i++) {
 					// eslint-disable-next-line no-empty-function
-					users.push(this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {}));
+					if (this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {})) {
+						// eslint-disable-next-line no-empty-function
+						users.push(this.mentions.members.array()[i] || await this.guild.members.fetch(this.args[i]).catch(() => {}));
+					}
 				}
-			}
-			// find user
-			if (this.args[0]) {
-				// fetch all members before search
-				await this.guild.members.fetch();
+				// find user
+				if (this.args[0]) {
+					// fetch all members before search
+					await this.guild.members.fetch();
 
-				// search for members
-				const members = [], indexes = [];
-				this.guild.members.cache.forEach(member => {
-					members.push(member.user.username);
-					indexes.push(member.id);
-				});
-				const match = findBestMatch(this.args.join(' '), members);
-				if (match.bestMatch.rating >= 0.1) {
-					const username = match.bestMatch.target,
-						member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
-					users.push(member);
+					// search for members
+					const members = [], indexes = [];
+					this.guild.members.cache.forEach(member => {
+						members.push(member.user.username);
+						indexes.push(member.id);
+					});
+					const match = findBestMatch(this.args.join(' '), members);
+					if (match.bestMatch.rating >= 0.1) {
+						const username = match.bestMatch.target,
+							member = this.guild.members.cache.get(indexes[members.indexOf(username)]);
+						users.push(member);
+					}
 				}
 			}
 			// add author at the end
@@ -108,7 +111,7 @@ module.exports = Structures.extend('Message', Message => {
 				}
 
 				// no file with the correct format was found
-				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 
 			// check for message link
@@ -130,7 +133,7 @@ module.exports = Structures.extend('Message', Message => {
 				}
 			}
 
-			//Check message reply
+			// Check message reply
 			if (this.type == 'REPLY') {
 				const messages = await this.channel.messages.fetch(this.reference.messageID);
 				const url = messages.attachments.first().url;
@@ -158,6 +161,12 @@ module.exports = Structures.extend('Message', Message => {
 			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
 			if (!language) throw 'Message: Invalid language set in data.';
 			return language(key, args);
+		}
+
+		timedDelete(obj) {
+			setTimeout(() => {
+				super.delete();
+			}, obj.timeout || 3000);
 		}
 	}
 	return CustomMessage;

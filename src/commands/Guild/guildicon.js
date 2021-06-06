@@ -26,7 +26,7 @@ module.exports = class Guildicon extends Command {
 			message.channel.send(embed);
 		} else {
 			if (message.deletable) message.delete();
-			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

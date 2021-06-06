@@ -24,7 +24,7 @@ module.exports = class SetPlugin extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('plugins/set-plugin:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('plugins/set-plugin:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// make sure it's a real plugin
 		if (defaultPlugins.includes(message.args[0])) {
@@ -41,7 +41,7 @@ module.exports = class SetPlugin extends Command {
 				await message.guild.updateGuild({ plugins: settings.plugins });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else {
 			return message.channel.send(message.translate('plugins/set-plugin:INVALID'));

@@ -50,11 +50,11 @@ module.exports = async (bot) => {
 
 						bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => m.delete({ timeout: 3000 }));
+						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => m.timedDelete({ timeout: 3000 }));
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 				} else if (events[i].type == 'mute') {
 					// if event type was mute
@@ -79,11 +79,11 @@ module.exports = async (bot) => {
 						if (member.voice.channelID) member.voice.setMute(false);
 
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.delete({ timeout: 3000 }));
+						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.timedDelete({ timeout: 3000 }));
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 				} else if (events[i].type == 'warn') {
 					// remove warning
@@ -91,7 +91,7 @@ module.exports = async (bot) => {
 					}, async (err, res) => {
 						if (err) {
 							bot.logger.error(`Error: ${err.message} fetching warns. (timed events)`);
-							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.delete({ timeout: 5000 }));
+							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
 						}
 
 						// find the timed warning

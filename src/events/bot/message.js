@@ -68,29 +68,29 @@ module.exports = class Message extends Event {
 				if (banned) return message.channel.error('events/message:BANNED_USER');
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// Make sure guild only commands are done in the guild only
-			if (message.guild && cmd.guildOnly)	return message.channel.error('event/message:GUILD_ONLY').then(m => m.delete({ timeout: 5000 }));
+			if (message.guild && cmd.guildOnly)	return message.channel.error('event/message:GUILD_ONLY').then(m => m.timedDelete({ timeout: 5000 }));
 
 			// Check to see if the command is being run in a blacklisted channel
 			if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
 				if (message.deletable) message.delete();
-				return message.channel.error('events/message:BLACKLISTED_CHANNEL', { USER: message.author.tag }).then(m => m.delete({ timeout:5000 }));
+				return message.channel.error('events/message:BLACKLISTED_CHANNEL', { USER: message.author.tag }).then(m => m.timedDelete({ timeout:5000 }));
 			}
 
 			// Make sure NSFW commands are only being run in a NSFW channel
 			if ((message.channel.type != 'dm') && ((!message.channel.nsfw) && (cmd.conf.nsfw))) {
 				if (message.deletable) message.delete();
-				return message.channel.error('events/message:NOT_NSFW_CHANNEL').then(m => m.delete({ timeout:5000 }));
+				return message.channel.error('events/message:NOT_NSFW_CHANNEL').then(m => m.timedDelete({ timeout:5000 }));
 			}
 
 			// Check if the command is from a disabled plugin
 			if (!settings.plugins.includes(cmd.help.category) && cmd.help.category != 'Host') return;
 
 			// Make sure user does not have access to ownerOnly commands
-			if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) return message.channel.send('Nice try').then(m => m.delete({ timeout:5000 }));
+			if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) return message.channel.send('Nice try').then(m => m.timedDelete({ timeout:5000 }));
 
 			// Check if command is disabled
 			if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
@@ -113,7 +113,7 @@ module.exports = class Message extends Event {
 
 				if (neededPermissions.length > 0) {
 					bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${message.guild.id}].`);
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.delete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 
 				// check user permissions
@@ -125,7 +125,7 @@ module.exports = class Message extends Event {
 				});
 
 				if (neededPermissions.length > 0) {
-					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.delete({ timeout: 10000 }));
+					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 			}
 
@@ -143,7 +143,7 @@ module.exports = class Message extends Event {
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
-					return message.channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }).then(m => m.delete({ timeout:5000 }));
+					return message.channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }).then(m => m.timedDelete({ timeout:5000 }));
 				}
 			}
 

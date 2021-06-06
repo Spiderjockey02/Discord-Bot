@@ -21,14 +21,14 @@ module.exports = class TicketCreate extends Command {
 	async run(bot, message, settings) {
 		// Check if a ticket channel is already open
 		if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
-			return message.channel.error('ticket/ticket-create:TICKET_EXISTS').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('ticket/ticket-create:TICKET_EXISTS').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// make sure ticket has been set-up properly
 		const supportRole = message.guild.roles.cache.get(settings.TicketSupportRole);
-		if (!supportRole) return message.channel.error('ticket/ticket-create:NO_SUPPORT_ROLE').then(m => m.delete({ timeout: 10000 }));
+		if (!supportRole) return message.channel.error('ticket/ticket-create:NO_SUPPORT_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
 		const category = message.guild.channels.cache.get(settings.TicketCategory);
-		if (!category) return message.channel.error('ticket/ticket-create:NO_CATEGORY').then(m => m.delete({ timeout: 10000 }));
+		if (!category) return message.channel.error('ticket/ticket-create:NO_CATEGORY').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// get reason
 		const reason = (message.args[0]) ? message.args.join(' ') : message.translate('misc:NO_REASON');
@@ -47,7 +47,7 @@ module.exports = class TicketCreate extends Command {
 				const successEmbed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket-create:TITLE')
 					.setDescription(message.translate('ticket/ticket-create:DESC').replace('{channel}', channel));
-				message.channel.send(successEmbed).then(m => m.delete({ timeout:10000 }));
+				message.channel.send(successEmbed).then(m => m.timedDelete({ timeout:10000 }));
 
 				// Add message to ticket channel
 				const embed = new Embed()
@@ -62,7 +62,7 @@ module.exports = class TicketCreate extends Command {
 			}).catch(err => {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 	}
 };

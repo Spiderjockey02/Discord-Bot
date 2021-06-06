@@ -22,7 +22,7 @@ module.exports = class Instagram extends Command {
 		const username = message.args.join(' ');
 
 		// Checks to see if a username was provided
-		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
@@ -36,14 +36,14 @@ module.exports = class Instagram extends Command {
 				if (message.deletable) message.delete();
 				msg.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 
 		// Delete wait message
 		msg.delete();
 
 		// Checks to see if a username in instagram database
-		if (res.size == 0 || !res.graphql.user.username) return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+		if (res.size == 0 || !res.graphql.user.username) return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Displays Data
 		const account = res.graphql.user;

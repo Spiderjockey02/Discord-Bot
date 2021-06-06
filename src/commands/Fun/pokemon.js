@@ -29,7 +29,7 @@ module.exports = class Pokemon extends Command {
 		const pokemon = message.args.join(' ');
 		if (!pokemon) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/pokemon:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/pokemon:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -44,7 +44,7 @@ module.exports = class Pokemon extends Command {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				msg.delete();
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 
 		// Send response to channel
@@ -66,7 +66,7 @@ module.exports = class Pokemon extends Command {
 		.catch(async (err) => {
 			// An error occured when looking for account
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 })));
+			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 })));
 		});
 
 		// Send response to channel

@@ -20,7 +20,7 @@ module.exports = class Steam extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Steam config
-		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/steam:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/steam:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
@@ -36,13 +36,13 @@ module.exports = class Steam extends Command {
 				if (message.deletable) message.delete();
 				msg.delete();
 				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 
 		// make sure user was valid
 		if (!response.steamid) {
 			msg.delete();
-			return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('searcher/instagram:UNKNOWN_USER').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// fetch profile data
@@ -52,7 +52,7 @@ module.exports = class Steam extends Command {
 				if (message.deletable) message.delete();
 				msg.delete();
 				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 
 		// Check for user bans
@@ -62,7 +62,7 @@ module.exports = class Steam extends Command {
 				if (message.deletable) message.delete();
 				msg.delete();
 				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 
 		// display data

@@ -35,10 +35,10 @@ module.exports = class SetLog extends Command {
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
 				settings.ModLog = message.args[0];
-				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.delete({ timeout:10000 }));
+				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.timedDelete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents;
@@ -48,7 +48,7 @@ module.exports = class SetLog extends Command {
 					.setTitle('plugins/set-logs:TITLE')
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('plugins/set-logs:DESC', { FEAT: features.join('`, `'), CUR_FEAT: currentFeatures.join('`, `') }));
-				message.channel.send(embed).then(m => m.delete({ timeout: 15000 }));
+				message.channel.send(embed).then(m => m.timedDelete({ timeout: 15000 }));
 			} else if (message.args[0] == 'add') {
 
 				// add new Logging
@@ -61,7 +61,7 @@ module.exports = class SetLog extends Command {
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			} else if (message.args[0] == 'remove') {
 
@@ -78,7 +78,7 @@ module.exports = class SetLog extends Command {
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase().join('`, `')}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			}
 		} else if (message.args[0] == 'channel') {
@@ -89,7 +89,7 @@ module.exports = class SetLog extends Command {
 				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'list') {
 			const embed = new Embed(bot, message.guild)

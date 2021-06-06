@@ -3,9 +3,7 @@ const Client = require('./base/Egglord.js');
 require('./structures');
 const bot = new Client({
 	partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
-	ws: {
-		intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
-	},
+	intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
 });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
@@ -29,7 +27,7 @@ const path = require('path');
 			console.log(err.message);
 		}
 	});
-	
+
 	// load events
 	const evtFolder = await readdir('./src/events/');
 	bot.logger.log(`=-=-=-=-=-=-=- Loading events(s): ${evtFolder.length} -=-=-=-=-=-=-=`);
@@ -76,6 +74,6 @@ const path = require('path');
 		bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
 
 		// show full error if debug mode is on
-		if (bot.config.debug) console.log(err);
+		console.log(err);
 	});
 })();

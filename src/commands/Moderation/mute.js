@@ -32,12 +32,12 @@ module.exports = class Mute extends Command {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
 		}
 
 		// Make sure user isn't trying to punish themselves
-		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// get mute role
 		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
@@ -45,11 +45,9 @@ module.exports = class Mute extends Command {
 		if (!muteRole) {
 			try {
 				muteRole = await message.guild.roles.create({
-					data: {
-						name: 'Muted',
-						color: '#514f48',
-						permissions: ['READ_MESSAGE_HISTORY'],
-					},
+					name: 'Muted',
+					color: '#514f48',
+					permissions: ['READ_MESSAGE_HISTORY'],
 				});
 				// update server with no muted role
 				await message.guild.updateGuild({ MutedRole: muteRole.id });
@@ -57,7 +55,7 @@ module.exports = class Mute extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		}
 
@@ -82,7 +80,7 @@ module.exports = class Mute extends Command {
 				await newMute.save();
 
 				// reply to user
-				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 				// see if it was a tempmute
 				if (message.args[1]) {
 					const time = getTotalTime(message.args[1], message);
@@ -113,7 +111,7 @@ module.exports = class Mute extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

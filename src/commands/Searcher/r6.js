@@ -28,7 +28,7 @@ module.exports = class R6 extends Command {
 		// Checks to make sure a username was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/r6:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/r6:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		} else {
 			player = message.args[0];
 		}
@@ -61,13 +61,13 @@ module.exports = class R6 extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// Makes sure that user actually exist
 		if (!player.length) {
 			if (message.deletable) message.delete();
-			return message.channel.error('searcher/r6:UNKNOWN_USER').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('searcher/r6:UNKNOWN_USER').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -83,7 +83,7 @@ module.exports = class R6 extends Command {
 		if (!playerRank.length || !playerStats.length || !playerGame.length) {
 			msg.delete();
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Mising player data' }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Mising player data' }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
 		const { pvp, pve } = playerStats[0];

@@ -31,11 +31,11 @@ module.exports = class Ban extends Command {
 		const members = await message.getMember();
 
 		// Make sure user isn't trying to punish themselves
-		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
 		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error('moderation/ban:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+			return message.channel.error('moderation/ban:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Ban user with reason and check if timed ban
@@ -55,7 +55,7 @@ module.exports = class Ban extends Command {
 
 			// Ban user from guild
 			await members[0].ban({ reason: reason });
-			message.channel.success('moderation/ban:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 8000 }));
+			message.channel.success('moderation/ban:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];
@@ -87,7 +87,7 @@ module.exports = class Ban extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

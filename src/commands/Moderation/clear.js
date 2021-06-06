@@ -27,10 +27,10 @@ module.exports = class Clear extends Command {
 		const amount = message.args[0];
 
 		// Make something was entered after `!clear`
-		if (!amount) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!amount) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Make sure x is a number
-		if (isNaN(amount) || (amount > 1000) || (amount < 1)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (isNaN(amount) || (amount > 1000) || (amount < 1)) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// make sure guild is premium if amount > 200
 		if (amount > 200 && !message.guild.premium) return message.channel.error('moderation/clear:NO_PREM');
@@ -79,7 +79,7 @@ module.exports = class Clear extends Command {
 								x = Math.ceil(amount / 100);
 							}
 						}
-						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.delete({ timeout: 3000 }));
+						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.timedDelete({ timeout: 3000 }));
 					} else if ([bot.customEmojis['cross'], '❌'].includes(reaction.emoji.toString())) {
 						await msg.reactions.removeAll();
 						embed.setDescription(message.translate('moderation/clear:CON_CNC'));
@@ -109,7 +109,7 @@ module.exports = class Clear extends Command {
 
 				// delete the message
 				await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
-				message.channel.success('moderation/clear:SUCCESS', { NUM: messages.size }).then(m => m.delete({ timeout: 3000 }));
+				message.channel.success('moderation/clear:SUCCESS', { NUM: messages.size }).then(m => m.timedDelete({ timeout: 3000 }));
 			});
 		}
 	}

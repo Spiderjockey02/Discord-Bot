@@ -20,7 +20,7 @@ module.exports = class Premium extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!message.args[0] || !['add', 'remove'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/premium:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0] || !['add', 'remove'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/premium:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Validate ID
 		let id;
@@ -43,7 +43,7 @@ module.exports = class Premium extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			if (!res && message.args[0] == 'add') {
@@ -91,10 +91,10 @@ module.exports = class Premium extends Command {
 				try {
 					await newPremium.save();
 					message.args[1] == 'user' ? await bot.users.fetch(message.args[2]).then(user => user.premium = true) : bot.guilds.cache.get(message.args[2]).premium = true;
-					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => m.delete({ timeout: 30000 }));
+					message.channel.send({ embed:{ color:3066993, description:`<:checkmark:762697412316889150> ${message.args[1]}: ${id} has been given premium.` } }).then(m => m.timedDelete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			} else if (res && message.args[0] == 'remove') {
 
@@ -103,10 +103,10 @@ module.exports = class Premium extends Command {
 					await PremiumSchema.collection.deleteOne({ ID: id, Type: message.args[1] });
 					message.args[1] == 'user' ? await bot.users.fetch(message.args[2]).then(user => user.premium = false) : bot.guilds.cache.get(message.args[2]).premium = false;
 					// send success message
-					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => m.delete({ timeout: 30000 }));
+					message.channel.send({ embed:{ color:15158332, description:`<:cross:762698700069011476> ${message.args[1]}: ${id} has lost premium` } }).then(m => m.timedDelete({ timeout: 30000 }));
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			} else {
 				return message.channel.send('Not an option');

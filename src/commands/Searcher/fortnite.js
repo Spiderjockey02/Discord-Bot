@@ -19,8 +19,8 @@ module.exports = class Fortnite extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Check if platform and user was entered
-		if (!['kbm', 'gamepad', 'touch'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/fortnite:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
-		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/fortnite:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!['kbm', 'gamepad', 'touch'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/fortnite:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/fortnite:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Get platform and user
 		const platform = message.args.shift(),
@@ -48,7 +48,7 @@ module.exports = class Fortnite extends Command {
 		}).catch(err => {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: 'fortnite' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		});
 		msg.delete();
 	}

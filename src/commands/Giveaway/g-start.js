@@ -24,17 +24,17 @@ module.exports = class G_start extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// Make sure a time, winner count & prize is entered
-		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Get time
 		const time = getTotalTime(message.args[0], message);
 		if (!time) return;
 
 		// Make sure that number of winners is a number
-		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.delete({ timeout: 5000 }));
+		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Make sure prize is less than 256 characters
-		if (message.args.slice(2).join(' ').length >= 256) return message.channel.error('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.delete({ timeout: 5000 }));
+		if (message.args.slice(2).join(' ').length >= 256) return message.channel.error('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Start the giveaway
 		bot.giveawaysManager.start(message.channel, {
@@ -65,7 +65,7 @@ module.exports = class G_start extends Command {
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 		}).catch(err => {
 			bot.logger.error(`Command: 'g-start' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		});
 	}
 };

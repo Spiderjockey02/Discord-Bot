@@ -23,7 +23,7 @@ module.exports = class Fact extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// Retrieve a random fact
@@ -40,7 +40,7 @@ module.exports = class Fact extends Command {
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// Retrieve a random fact

@@ -20,7 +20,7 @@ module.exports = class Search extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 		}
 
@@ -29,7 +29,7 @@ module.exports = class Search extends Command {
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Make sure that a song/url has been entered
@@ -47,7 +47,7 @@ module.exports = class Search extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		const search = message.args.join(' ');
@@ -61,7 +61,7 @@ module.exports = class Search extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error('music/search:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('music/search:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results

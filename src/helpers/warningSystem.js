@@ -11,7 +11,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 	}, async (err, res) => {
 		if (err) {
 			bot.logger.error(`Command: 'warn' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// This is their first warning
@@ -36,7 +36,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.setColor(15158332)
 					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
 					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(embed).then(m => m.timedDelete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
 				const embed2 = new Embed(bot, message.guild)
@@ -52,7 +52,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else {
 			// This is NOT their first warning
@@ -78,7 +78,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.setColor(15158332)
 					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
 					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
-				message.channel.send(embed).then(m => m.delete({ timeout: 30000 }));
+				message.channel.send(embed).then(m => m.timedDelete({ timeout: 30000 }));
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
@@ -98,11 +98,11 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				try {
 					await message.guild.members.cache.get(member).kick(wReason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: message.guild.id });
-					message.channel.success('moderation/warn:KICKED', { USER: member.user.tag }).then(m => m.delete({ timeout: 3500 }));
+					message.channel.success('moderation/warn:KICKED', { USER: member.user.tag }).then(m => m.timedDelete({ timeout: 3500 }));
 					// Delete user from database
 				} catch (err) {
 					bot.logger.error(`${err.message} when kicking user.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			}
 		}
