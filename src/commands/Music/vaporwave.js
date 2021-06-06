@@ -37,7 +37,7 @@ module.exports = class Vaporwave extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_2'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		} else {
 			player.setFilter({
 				equalizer: [
@@ -51,7 +51,7 @@ module.exports = class Vaporwave extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_1'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		}
 	}
 };

@@ -37,7 +37,7 @@ module.exports = class Nightcore extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/nightcore:DESC_2'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		} else {
 			player.setFilter({
 				equalizer: [
@@ -52,7 +52,7 @@ module.exports = class Nightcore extends Command {
 				.setDescription(message.translate('music/nightcore:DESC_1'));
 			await bot.delay(5000);
 			player.speed = 1.2;
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		}
 	}
 };

@@ -33,6 +33,11 @@ module.exports = class Play extends Command {
 			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
+		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
+			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
+		}
+
 		// Create player
 		let player;
 		try {

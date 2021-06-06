@@ -37,6 +37,12 @@ module.exports = class PLoad extends Command {
 			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
+		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
+			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
+		}
+
+		// send waiting message
 		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
 		// interact with database
@@ -85,7 +91,7 @@ module.exports = class PLoad extends Command {
 				content.then(async function() {
 					const embed = new Embed(bot, message.guild)
 						.setDescription(message.translate('music/p-load:QUEUE', { NUM: p.songs.length, TITLE: message.args[0] }));
-					msg.edit('', embed);
+					msg.edit(' ', embed);
 				});
 			} else {
 				msg.edit(message.translate('music/p-load:NO_PLAYLIST'));

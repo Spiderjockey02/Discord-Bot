@@ -33,9 +33,9 @@ module.exports = class Radio extends Command {
 			order: 'topclick',
 			hidebroken: true,
 			countrycodeexact: settings.language,
-			language: bot.languages.find((l) =>  l.name.includes(settings.Language)).nativeName,
+			language: bot.languages.find((l) => l.name.includes(settings.Language)).nativeName,
 			by: 'name',
-			searchterm: message.args.join(' ')
+			searchterm: message.args.join(' '),
 		})
 			.then(async data => {
 				if (!data[0]) return message.channel.send('No radio found with that name');

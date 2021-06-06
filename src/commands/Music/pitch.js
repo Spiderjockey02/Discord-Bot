@@ -37,7 +37,7 @@ module.exports = class Pitch extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/pitch:DESC_1'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		}
 
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/pitch:INVALID'));
@@ -50,6 +50,6 @@ module.exports = class Pitch extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('music/pitch:DESC_2', { NUM: message.args[0] }));
 		await bot.delay(5000);
-		return msg.edit('', embed);
+		return msg.edit(' ', embed);
 	}
 };

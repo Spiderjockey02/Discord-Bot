@@ -1,12 +1,8 @@
-const { timeStamp } = require('console');
-const { ConsoleMessage } = require('puppeteer');
-
 // Dependencies
 const { Client, Collection, APIMessage } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
-	fetch = require("node-fetch").default,
 	{ KSoftClient } = require('@ksoft/api'),
 	path = require('path'),
 	{ promisify } = require('util'),
@@ -139,10 +135,10 @@ module.exports = class Egglord extends Client {
 					data: {
 						name: cmd.help.name,
 						description: cmd.help.description,
-						options: cmd.conf.options
-					}
-				})
-				//console.log
+						options: cmd.conf.options,
+					},
+				});
+				// console.log
 				guild.interactions.set(cmd.help.name, cmd);
 			}
 			return false;
@@ -157,15 +153,15 @@ module.exports = class Egglord extends Client {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
 			if (cmd.conf.slash) {
 				await this.api.applications(this.user.id).guilds(guild.id).commands.get().then(async commandList => {
-					const interactionID = commandList.find(command => command.name === cmd.help.name).id
-					await this.api.applications(this.user.id).guilds(guild.id).commands(interactionID).delete().then(result => {
-						guild.interactions.delete(cmd.help.name, cmd)
-					})
-				})
+					const interactionID = commandList.find(command => command.name === cmd.help.name).id;
+					await this.api.applications(this.user.id).guilds(guild.id).commands(interactionID).delete().then(() => {
+						guild.interactions.delete(cmd.help.name, cmd);
+					});
+				});
 			}
 			return false;
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 			return `Unable to delete interaction ${commandName}: ${err}`;
 		}
 	}
@@ -173,8 +169,8 @@ module.exports = class Egglord extends Client {
 	// Loads a slash command category
 	async loadInteractionGroup(category, guild) {
 		try {
-			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
-			let arr = []
+			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
+			const arr = [];
 			commands.forEach((cmd) => {
 				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
 					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
@@ -182,37 +178,37 @@ module.exports = class Egglord extends Client {
 						arr.push({
 							name: command.help.name,
 							description: command.help.description,
-							options: command.conf.options
-						})
+							options: command.conf.options,
+						});
 						guild.interactions.set(command.help.name, command);
 					}
 				}
 			});
-			return arr
+			return arr;
 		} catch (err) {
-			return `Unable to load category ${category}: ${err}`
+			return `Unable to load category ${category}: ${err}`;
 		}
 	}
 
 	// Deletes a slash command category
 	async deleteInteractionGroup(category, guild) {
 		try {
-			const commands = (await readdir('./src/commands/' + category + "/")).filter((v, i, a) => a.indexOf(v) === i);
+			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
 			await commands.forEach(async (cmd) => {
-				console.log(cmd)
+				console.log(cmd);
 				if (guild.interactions.get(cmd.replace('.js', ''))) {
 					const resp = await this.deleteInteraction('./commands/' + category, cmd, guild);
 					if (resp) this.logger.error(resp);
 				}
 			});
 		} catch (err) {
-			console.log(err)
-			return `Unable to delete category ${category}: ${err}`
+			console.log(err);
+			return `Unable to delete category ${category}: ${err}`;
 		}
 	}
 	// Unload a command (you need to load them again)
 	async unloadCommand(commandPath, commandName) {
-		let command
+		let command;
 		if (this.commands.has(commandName)) {
 			command = this.commands.get(commandName);
 		} else if (this.aliases.has(commandName)) {
@@ -229,9 +225,9 @@ module.exports = class Egglord extends Client {
 		return this.api.interactions(interaction.id, interaction.token).callback.post({
 			data: {
 				type: 4,
-				data: { ...apiMessage.data, files: apiMessage.files }
-			}
-		})
+				data: { ...apiMessage.data, files: apiMessage.files },
+			},
+		});
 	}
 
 	// Fetches adult sites for screenshot NSFW blocking

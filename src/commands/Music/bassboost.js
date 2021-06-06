@@ -44,7 +44,7 @@ module.exports = class Bassboost extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/bassboost:DESC_1'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		}
 
 		// Turn off bassboost
@@ -54,7 +54,7 @@ module.exports = class Bassboost extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/bassboost:DESC_2'));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		}
 
 		// Make sure value is a number
@@ -71,6 +71,6 @@ module.exports = class Bassboost extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('music/bassboost:DESC_3', { DB: message.args[0] }));
 		await bot.delay(5000);
-		return msg.edit('', embed);
+		return msg.edit(' ', embed);
 	}
 };

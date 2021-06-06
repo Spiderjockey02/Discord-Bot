@@ -30,6 +30,11 @@ module.exports = class Join extends Command {
 		// Make sure the user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
 
+		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
+			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
+		}
+
 		// If no player (no song playing) create one and join channel
 		if (!player) {
 			try {

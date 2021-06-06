@@ -131,7 +131,7 @@ module.exports = class PCreate extends Command {
 				].join('\n'))
 				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })
 				.setTimestamp();
-			msg.edit('', embed);
+			msg.edit(' ', embed);
 		} else {
 			msg.delete();
 			return message.channel.error('music/p-create:NO_SONG');

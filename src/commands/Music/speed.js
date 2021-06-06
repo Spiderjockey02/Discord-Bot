@@ -44,7 +44,7 @@ module.exports = class Speed extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/speed:UPDATED', { NUM: player.speed }));
 			await bot.delay(5000);
-			return msg.edit('', embed);
+			return msg.edit(' ', embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
