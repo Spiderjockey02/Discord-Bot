@@ -1,5 +1,5 @@
 // Dependencies
-const { Client, Collection, APIMessage } = require('discord.js'),
+const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
@@ -221,13 +221,9 @@ module.exports = class Egglord extends Client {
 
 	// Handle slash command callback
 	async send(interaction, content) {
-		const apiMessage = await APIMessage.create(this.channels.resolve(interaction.channel_id), content).resolveData().resolveFiles();
-		return this.api.interactions(interaction.id, interaction.token).callback.post({
-			data: {
-				type: 4,
-				data: { ...apiMessage.data, files: apiMessage.files },
-			},
-		});
+		interaction.reply(content);
+		this.commandsUsed++;
+		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
 	}
 
 	// Fetches adult sites for screenshot NSFW blocking

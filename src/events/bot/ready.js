@@ -57,20 +57,11 @@ module.exports = class Ready extends Event {
 			}
 			try {
 				info.data = info.data.slice(0, 100);
-				// await bot.api.applications(bot.user.id).guilds(guild.id).commands.put(info)
+				await bot.api.applications(bot.user.id).guilds(guild.id)?.commands.set(info);
 				bot.logger.log('Loaded Interactions for guild: ' + guild.name);
 			} catch (err) {
 				console.log(err);
 			}
-		});
-
-		// when a slash command is created
-		bot.ws.on('INTERACTION_CREATE', async (interaction) => {
-			const guild = bot.guilds.cache.get(interaction.guild_id);
-			const Command = guild.interactions.get(interaction.data.name);
-			console.log(Command);
-			// No permission checking yet
-			return Command.callback(bot, interaction, guild, interaction.data.options);
 		});
 
 		// Delete server settings on servers that removed the bot while it was offline
