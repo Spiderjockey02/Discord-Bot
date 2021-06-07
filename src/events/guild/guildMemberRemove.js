@@ -42,6 +42,12 @@ module.exports = class guildMemberRemove extends Event {
 			}
 		}
 
+		// Welcome plugin (give roles and message)
+		if (settings.welcomePlugin) {
+			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
+			if (channel && settings.welcomeGoodbyeToggle) channel.send(settings.welcomeGoodbyeText.replace('{user}', member.user)).catch(e => bot.logger.error(e.message));
+		}
+
 		// Remove member's rank
 		try {
 			await RankSchema.findOneAndRemove({ userID: member.user.id,	guildID: member.guild.id });
