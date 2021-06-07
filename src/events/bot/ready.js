@@ -43,19 +43,16 @@ module.exports = class Ready extends Event {
 				bot.emit('guildCreate', guild);
 			}
 			const enabledPlugins = guild.settings.plugins;
-			const info = {
-				data: [],
-			};
+			const data = []
 
 			// get slash commands for category
 			for (let i = 0; i < enabledPlugins.length; i++) {
 				const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
-				if (Array.isArray(g)) info.data.push(...g);
+				if (Array.isArray(g)) data.push(...g);
 			}
 
 			try {
-				info.data = info.data.slice(0, 100);
-				await bot.api.applications(bot.user.id).guilds(guild.id)?.commands.set(info);
+				await bot.guilds.cache.get(guild.id)?.commands.set(data);
 				bot.logger.log('Loaded Interactions for guild: ' + guild.name);
 			} catch (err) {
 				console.log(err);

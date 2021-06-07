@@ -1,16 +1,6 @@
 # Command list
 ><> = required, [] = optional
 
-<<<<<<< HEAD
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
 ## Fun
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -25,8 +15,15 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
-=======
->>>>>>> 87b5a0010e070f451bce142a51ea5d6e8bb8e81a
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -42,13 +39,6 @@
 | user-info	|	Get information on the server.	|	`user-info [user]`	|
 
 
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
 ## Host
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -61,52 +51,6 @@
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-<<<<<<< HEAD
-=======
-
-
-## Fun
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| advice	|	Get some random advice	|	`advice`	|
-| fact	|	Receive a random fact.	|	`fact`	|
-| flip	|	Flip a coin.	|	`flip`	|
-| meme	|	Sends a random meme.	|	`meme`	|
-| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
-| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
-| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
-| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
-| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
-
-
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
->>>>>>> 87b5a0010e070f451bce142a51ea5d6e8bb8e81a
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -128,6 +72,26 @@
 | threats	|	Creates a threat meme.	|	`threats [image]`	|
 | twitter	|	Create a fake Twitter tweet.	|	`twitter [user] <text>`	|
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Moderation
@@ -175,7 +139,7 @@
 | play	|	Play a song.	|	`play <link / song name>`	|
 | previous	|	Displays the previous tracks that have been played.	|	`previous [pageNumber]`	|
 | queue	|	Displays the queue.	|	`queue [pageNumber]`	|
-| radio	|	Listen to the radio	|	`radio`	|
+| radio	|	Listen to the radio	|	`radio <query>`	|
 | remove	|	Removes a song from the queue	|	`remove <position> [position]`	|
 | resume	|	Resumes the music.	|	`resume`	|
 | rewind	|	Rewinds the player by your specified amount.	|	`rewind <time>`	|
@@ -225,6 +189,15 @@
 | weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
 
 
+## Ticket
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
+| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
+| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
+| ticket	|	Information on ticket plugin.	|	`ticket`	|
+
+
 ## Tags
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -233,13 +206,4 @@
 | tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
 | tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
 | tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
-
-
-## Ticket
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
-| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
-| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
-| ticket	|	Information on ticket plugin.	|	`ticket`	|
 

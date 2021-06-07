@@ -44,8 +44,7 @@ module.exports = class ShortURL extends Command {
 		}
 	}
 	async callback(bot, interaction, guild, args) {
-		console.log(args)
-		const channel = guild.channels.cache.get(interaction.channel_id)
+		const channel = guild.channels.cache.get(interaction.channelID)
 		const link = args[0].value
 
 		try {
@@ -54,7 +53,7 @@ module.exports = class ShortURL extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 })));
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
 		}
 	}
 };
