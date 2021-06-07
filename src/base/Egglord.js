@@ -126,12 +126,18 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Load a slash command [DEPRICATED]
-	/*
+	// Load a slash command
 	async loadInteraction(commandPath, commandName, guild) {
 		try {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
 			if (cmd.conf.slash) {
+				await this.api.applications(this.user.id).guilds(guild.id).commands.post({
+					data: {
+						name: cmd.help.name,
+						description: cmd.help.description,
+						options: cmd.conf.options,
+					},
+				});
 				// console.log
 				guild.interactions.set(cmd.help.name, cmd);
 			}
@@ -140,15 +146,18 @@ module.exports = class Egglord extends Client {
 			return `Unable to load interaction ${commandName}: ${err}`;
 		}
 	}
-	*/
 
-	// Deletes the slash command [DEPRICATED]
-	/*
+	// Deletes the slash command
 	async deleteInteraction(commandPath, commandName, guild) {
 		try {
 			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
 			if (cmd.conf.slash) {
-				guild.interactions.delete(cmd.help.name, cmd);
+				await this.api.applications(this.user.id).guilds(guild.id).commands.get().then(async commandList => {
+					const interactionID = commandList.find(command => command.name === cmd.help.name).id;
+					await this.api.applications(this.user.id).guilds(guild.id).commands(interactionID).delete().then(() => {
+						guild.interactions.delete(cmd.help.name, cmd);
+					});
+				});
 			}
 			return false;
 		} catch (err) {
@@ -156,7 +165,6 @@ module.exports = class Egglord extends Client {
 			return `Unable to delete interaction ${commandName}: ${err}`;
 		}
 	}
-	*/
 
 	// Loads a slash command category
 	async loadInteractionGroup(category, guild) {
@@ -186,23 +194,16 @@ module.exports = class Egglord extends Client {
 	async deleteInteractionGroup(category, guild) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
-			const arr = [];
-			commands.forEach((cmd) => {
-				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
-					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
-					if (command.conf.slash) {
-						arr.push({
-							name: command.help.name,
-							description: command.help.description,
-							options: command.conf.options,
-						});
-						guild.interactions.delete(command.help.name, command);
-					}
+			await commands.forEach(async (cmd) => {
+				console.log(cmd);
+				if (guild.interactions.get(cmd.replace('.js', ''))) {
+					const resp = await this.deleteInteraction('./commands/' + category, cmd, guild);
+					if (resp) this.logger.error(resp);
 				}
 			});
-			return arr;
 		} catch (err) {
-			return `Unable to load category ${category}: ${err}`;
+			console.log(err);
+			return `Unable to delete category ${category}: ${err}`;
 		}
 	}
 	// Unload a command (you need to load them again)

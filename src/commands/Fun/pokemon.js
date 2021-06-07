@@ -58,7 +58,7 @@ module.exports = class Pokemon extends Command {
 		message.channel.send(embed);
 	}
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channel_id);
 		const pokemon = args[0].value;
 		// Search for pokemon
 		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`)
@@ -66,7 +66,7 @@ module.exports = class Pokemon extends Command {
 			.catch(async (err) => {
 			// An error occured when looking for account
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 })));
 			});
 
 		// Send response to channel

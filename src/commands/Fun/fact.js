@@ -12,7 +12,6 @@ module.exports = class Fact extends Command {
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Receive a random fact.',
 			usage: 'fact',
-			slash: true,
 			cooldown: 1000,
 		});
 	}
@@ -37,11 +36,11 @@ module.exports = class Fact extends Command {
 		});
 	}
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channel_id);
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// Retrieve a random fact

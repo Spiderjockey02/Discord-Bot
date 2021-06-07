@@ -30,44 +30,15 @@ module.exports = class SetPlugin extends Command {
 		if (defaultPlugins.includes(message.args[0])) {
 			if (!settings.plugins.includes(message.args[0])) {
 				settings.plugins.push(message.args[0]);
-
-				const data = [];
-				const enabledPlugins = message.guild.settings.plugins;
-
-
-				enabledPlugins.push(message.args[0])
-				enabledPlugins.forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild)
-					if (Array.isArray(info)) data.push(...info);
-				})
-				try {
-					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
-				} catch (err) {
-					console.log(err);
-				}
+				bot.loadInteractionGroup(message.args[0], message.guild)
 				message.channel.send(message.translate('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] }));
-				console.log(data)
 			} else {
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
-
-				const data = [];
-				const enabledPlugins = message.guild.settings.plugins;
-
-				enabledPlugins.filter(h => h != message.args[0]).forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild)
-					if (Array.isArray(info)) data.push(...info);
-				})
-				console.log(data)
-				try {
-					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
-				} catch (err) {
-					console.log(err);
-				}
+				bot.deleteInteractionGroup(message.args[0], message.guild)
 				message.channel.send(message.translate('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] }));
 			}
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });
-				console.log("updated")
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));

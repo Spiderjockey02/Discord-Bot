@@ -33,9 +33,9 @@ module.exports = class Status extends Command {
 	//Run slash command
 	async callback(bot, interaction, guild) {
 		const embed = new Embed(bot, guild)
-			.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
-			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
-			.setTimestamp();
+		.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
+		.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+		.setTimestamp();
 		return await bot.send(interaction, embed);
 	}
 };
