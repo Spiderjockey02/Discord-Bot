@@ -23,6 +23,6 @@ module.exports = class Privacy extends Command {
 
 	// Run slash command
 	async callback(bot, interaction) {
-		return await bot.send(interaction, { embed:{ description:bot.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }) } } )
+		return await bot.send(interaction, { embeds: [{ description:bot.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }) }] } )
 	}
 };

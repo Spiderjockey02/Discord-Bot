@@ -64,7 +64,7 @@ module.exports = class Random extends Command {
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			return await bot.send(interaction, channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 })));
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)] })
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
