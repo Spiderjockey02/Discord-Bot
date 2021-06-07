@@ -6,7 +6,7 @@ const { Manager } = require('erela.js'),
 	{ Embed } = require('../utils');
 require('../structures/Player');
 
-module.exports = async (bot) => {
+module.exports = (bot) => {
 	const clientID = bot.config.api_keys.spotify.iD;
 	const clientSecret = bot.config.api_keys.spotify.secret;
 

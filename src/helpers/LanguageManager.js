@@ -42,6 +42,6 @@ module.exports = async () => {
 		preload: languages,
 	});
 
-	console.log(languages);
+	require('../utils/Logger').ready(`${languages.length} language(s) have loaded. (${languages.join(', ')})`);
 	return new Map(languages.map(item => [item, i18next.getFixedT(item)]));
 };

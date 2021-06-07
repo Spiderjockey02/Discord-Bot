@@ -14,13 +14,13 @@ module.exports = {
 		mongoose.set('useFindAndModify', false);
 		mongoose.Promise = global.Promise;
 		mongoose.connection.on('connected', () => {
-			bot.logger.log('Mongoose connection successfully opened', 'ready');
+			bot.logger.ready('MongoDB successfully connected');
 		});
 		mongoose.connection.on('err', (err) => {
-			bot.logger.error(`Mongoose connection error: \n ${err.stack}`);
+			bot.logger.error(`MongoDB has encountered an error: \n ${err.stack}`);
 		});
 		mongoose.connection.on('disconnected', () => {
-			bot.logger.error('Mongoose disconnected');
+			bot.logger.error('MongoDB disconnected');
 		});
 	},
 	async ping() {

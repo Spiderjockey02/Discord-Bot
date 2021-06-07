@@ -11,31 +11,28 @@ module.exports = class Ready extends Event {
 
 	// run event
 	async run(bot) {
-		// LOG ready event
-		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
-		bot.logger.log(`${bot.user.tag}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`, 'ready');
-		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
-
 		// Load up audio player
-		bot.manager.init(bot.user.id);
+		try {
+			bot.manager.init(bot.user.id);
+		} catch (err) {
+			bot.logger.error(err.message);
+		}
 
 		// set up webserver
 		try {
 			await require('../../http/api')(bot);
 		} catch (err) {
-			console.log(err);
+			console.log(err.message);
 		}
 
-		// webhook manager
+		// webhook manager (loop every 10secs)
 		setInterval(async () => {
 			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
 		// Updates the bot's status
-		setTimeout(() => {
-			bot.user.setStatus('Online');
-			bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
-		}, 3000);
+		bot.user.setStatus('Online');
+		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 
 		await require('../../scripts/update-commands.md.js')(bot);
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
@@ -55,6 +52,7 @@ module.exports = class Ready extends Event {
 				const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
 				if (Array.isArray(g)) info.data.push(...g);
 			}
+
 			try {
 				info.data = info.data.slice(0, 100);
 				await bot.api.applications(bot.user.id).guilds(guild.id)?.commands.set(info);
@@ -87,7 +85,7 @@ module.exports = class Ready extends Event {
 
 		bot.logger.ready('All guilds have been initialized.');
 
-		// Every 5 minutes fetch new guild data
+		// Every 1 minutes fetch new guild data
 		setInterval(async () => {
 			if (bot.config.debug) bot.logger.debug('Fetching guild settings (Interval: 1 minutes)');
 			bot.guilds.cache.forEach(async guild => {
@@ -97,15 +95,24 @@ module.exports = class Ready extends Event {
 
 		// check for premium users
 		const premium = await PremiumSchema.find({});
+		let users = 0, guilds = 0;
 		for (let i = 0; i < premium.length; i++) {
 			if (premium[i].Type == 'user') {
 				const user = await bot.users.fetch(premium[i].ID);
-				if (user) user.premium = true;
+				if (user) {
+					user.premium = true;
+					users++;
+				}
 			} else {
 				const guild = bot.guilds.cache.get(premium[i].ID);
-				if (guild) guild.premium = true;
+				if (guild) {
+					guild.premium = true;
+					guilds++;
+				}
 			}
 		}
+
+		bot.logger.ready(`${premium.length} premium tier(s) have been applied. (${users} users, ${guilds} guilds)`);
 
 		// enable time event handler (in case of bot restart)
 		try {
@@ -113,5 +120,10 @@ module.exports = class Ready extends Event {
 		} catch (err) {
 			console.log(err);
 		}
+
+		// LOG ready event
+		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
+		bot.logger.log(`${bot.user.tag}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`, 'ready');
+		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
 	}
 };
