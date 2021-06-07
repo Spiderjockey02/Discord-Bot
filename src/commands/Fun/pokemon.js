@@ -17,7 +17,7 @@ module.exports = class Pokemon extends Command {
 			options: [{
 				name: 'pokemon',
 				description: 'The specified pokemon to gather information on.',
-				type: 3,
+				type: 'STRING',
 				required: true,
 			}],
 		});
@@ -59,7 +59,7 @@ module.exports = class Pokemon extends Command {
 	}
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelID);
-		const pokemon = args[0].value;
+		const pokemon = args.get('pokemon').value;
 		// Search for pokemon
 		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`)
 			.then(async (info) => info.json())

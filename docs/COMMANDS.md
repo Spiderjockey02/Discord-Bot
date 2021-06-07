@@ -1,6 +1,15 @@
 # Command list
 ><> = required, [] = optional
 
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
 ## Fun
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -13,15 +22,6 @@
 | reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
 | screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
-
-
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
 
 ## Guild
@@ -39,6 +39,13 @@
 | user-info	|	Get information on the server.	|	`user-info [user]`	|
 
 
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
 ## Host
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -51,6 +58,19 @@
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -74,44 +94,18 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Level
+## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
-
-
-## Moderation
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
-| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
-| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
-| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
-| dm	|	DM a user	|	`dm <user> <message>`	|
-| kick	|	Kick a user.	|	`kick <user> [reason]`	|
-| mute	|	Mute a user.	|	`mute <user> [time]`	|
-| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
-| report	|	Report a user.	|	`report <user> [reason]`	|
-| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
-| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
-| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
-| unmute	|	Unmute a user.	|	`unmute <user>`	|
-| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
-| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Music
@@ -152,18 +146,24 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
-## NSFW
+## Moderation
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
+| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
+| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
+| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
+| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
+| dm	|	DM a user	|	`dm <user> <message>`	|
+| kick	|	Kick a user.	|	`kick <user> [reason]`	|
+| mute	|	Mute a user.	|	`mute <user> [time]`	|
+| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
+| report	|	Report a user.	|	`report <user> [reason]`	|
+| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
+| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
+| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
+| unmute	|	Unmute a user.	|	`unmute <user>`	|
+| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
+| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
 
 
 ## Plugins
@@ -174,6 +174,25 @@
 | set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
 | set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
 | set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
+
+
+## Tags
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| tag-add	|	Add a new tag to the server	|	`tag-add <name> <response>`	|
+| tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
+| tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
+| tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
+| tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
+
+
+## Ticket
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
+| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
+| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
+| ticket	|	Information on ticket plugin.	|	`ticket`	|
 
 
 ## Searcher
@@ -187,23 +206,4 @@
 | steam	|	Get information on a Steam account.	|	`steam <user>`	|
 | twitch	|	Get information on a twitch account.	|	`twitch <user>`	|
 | weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
-
-
-## Ticket
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
-| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
-| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
-| ticket	|	Information on ticket plugin.	|	`ticket`	|
-
-
-## Tags
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| tag-add	|	Add a new tag to the server	|	`tag-add <name> <response>`	|
-| tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
-| tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
-| tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
-| tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
 

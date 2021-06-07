@@ -11,6 +11,7 @@ module.exports = class Back extends Command {
 			description: 'Plays the previous song in the queue.',
 			usage: 'back',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -32,6 +33,28 @@ module.exports = class Back extends Command {
 
 		// Make sure there was a previous song
 		if (player.queue.previous == null) return message.channel.send(message.translate('music/back:NO_PREV'));
+
+		// Start playing the previous song
+		player.queue.unshift(player.queue.previous);
+		player.stop();
+	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+
+		// Make sure there was a previous song
+		if (player.queue.previous == null) return await bot.send(bot.translate('music/back:NO_PREV'));
 
 		// Start playing the previous song
 		player.queue.unshift(player.queue.previous);

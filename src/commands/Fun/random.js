@@ -15,13 +15,13 @@ module.exports = class Random extends Command {
 			options: [{
 				name: 'min',
 				description: 'The minimum number for the range.',
-				type: 4,
+				type: 'INTEGER',
 				required: true,
 			},
 			{
 				name: 'max',
 				description: 'The maximum number for the range.',
-				type: 4,
+				type: 'INTEGER',
 				required: true,
 			}],
 		});
@@ -59,8 +59,8 @@ module.exports = class Random extends Command {
 	async callback(bot, interaction, guild, args) {
 		const settings = guild.settings;
 		const max = 100000,
-			num1 = args[0].value,
-			num2 = args[1].value;
+			num1 = args.get('min').value;
+			num2 = args.get('max').value;
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
