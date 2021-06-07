@@ -13,17 +13,17 @@ module.exports = class Random extends Command {
 			examples: ['random 1 10', 'random 5 99'],
 			slash: true,
 			options: [{
-                name: "min",
-                description: "The minimum number for the range.",
-                type: 4,
-                required: true
-            },
-			{
-				name: "max",
-				description: "The maximum number for the range.",
+				name: 'min',
+				description: 'The minimum number for the range.',
 				type: 4,
-				required: true
-			}]
+				required: true,
+			},
+			{
+				name: 'max',
+				description: 'The maximum number for the range.',
+				type: 4,
+				required: true,
+			}],
 		});
 	}
 
@@ -57,7 +57,7 @@ module.exports = class Random extends Command {
 		}
 	}
 	async callback(bot, interaction, guild, args) {
-		const settings = guild.settings
+		const settings = guild.settings;
 		const max = 100000,
 			num1 = args[0].value,
 			num2 = args[1].value;

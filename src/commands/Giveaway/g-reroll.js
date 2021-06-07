@@ -11,7 +11,7 @@ module.exports = class G_reroll extends Command {
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'reroll a giveaway.',
-			usage: 'g-reroll <messageID>',
+			usage: 'g-reroll <messageID> [winners]',
 			cooldown: 2000,
 			examples: ['g-reroll 818821436255895612'],
 		});
@@ -30,8 +30,11 @@ module.exports = class G_reroll extends Command {
 		// re-roll the giveaway
 		const messageID = message.args[0];
 		bot.giveawaysManager.reroll(messageID, {
-			congrat: message.translate('giveaway/g-reroll:CONGRAT'),
-			error: message.translate('giveaway/g-reroll:ERROR'),
+			winnerCount: !parseInt(message.args[1]) ? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount : parseInt(message.args[1]),
+			messages: {
+				congrat: message.translate('giveaway/g-reroll:CONGRAT'),
+				error: message.translate('giveaway/g-reroll:ERROR'),
+			},
 		}).then(() => {
 			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
 		}).catch((err) => {

@@ -331,13 +331,13 @@ class Giveaway extends EventEmitter {
 				const embed = this.manager.generateEndEmbed(this, winners);
 				this.message.edit(this.messages.giveawayEnded, { embed });
 				const formattedWinners = winners.map((w) => '<@' + w.id + '>').join(', ');
-				this.channel.send(options.congrat
+				this.channel.send(options.messages.congrat
 					.replace('{winners}', formattedWinners)
 					.replace('{messageURL}', this.messageURL),
 				);
 				resolve(winners);
 			} else {
-				this.channel.send(options.error);
+				this.channel.send(options.messages.error);
 				resolve(new Array());
 			}
 		});

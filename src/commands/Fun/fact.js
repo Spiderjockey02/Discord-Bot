@@ -36,7 +36,7 @@ module.exports = class Fact extends Command {
 		});
 	}
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channel_id)
+		const channel = guild.channels.cache.get(interaction.channel_id);
 		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

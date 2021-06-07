@@ -1,6 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	Command = require('../../structures/Command.js');
 
 module.exports = class Flip extends Command {
 	constructor(bot) {
@@ -11,7 +10,7 @@ module.exports = class Flip extends Command {
 			description: 'Flip a coin.',
 			usage: 'flip',
 			cooldown: 1000,
-			slash: true
+			slash: true,
 		});
 	}
 

@@ -15,11 +15,11 @@ module.exports = class Pokemon extends Command {
 			examples: ['pokemon charizard', 'pokemon pikachu'],
 			slash: true,
 			options: [{
-                name: "pokemon",
-                description: "The specified pokemon to gather information on.",
-                type: 3,
-                required: true
-            }]
+				name: 'pokemon',
+				description: 'The specified pokemon to gather information on.',
+				type: 3,
+				required: true,
+			}],
 		});
 	}
 
@@ -58,16 +58,16 @@ module.exports = class Pokemon extends Command {
 		message.channel.send(embed);
 	}
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channel_id)
-		const pokemon = args[0].value
+		const channel = guild.channels.cache.get(interaction.channel_id);
+		const pokemon = args[0].value;
 		// Search for pokemon
 		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`)
-		.then(async (info) => info.json())
-		.catch(async (err) => {
+			.then(async (info) => info.json())
+			.catch(async (err) => {
 			// An error occured when looking for account
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 })));
-		});
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return await bot.send(interaction, channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 })));
+			});
 
 		// Send response to channel
 
