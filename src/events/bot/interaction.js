@@ -36,6 +36,6 @@ module.exports = class Interaction extends Event {
 
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-		return Command.callback(bot, interaction, guild, Command.conf.options);
+		return Command.callback(bot, interaction, guild, interaction.options);
 	}
 };

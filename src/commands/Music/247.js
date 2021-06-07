@@ -11,6 +11,7 @@ module.exports = class TwentyFourSeven extends Command {
 			description: 'Stays in the voice channel even if no one is in it.',
 			usage: '24/7',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -33,5 +34,27 @@ module.exports = class TwentyFourSeven extends Command {
 		// toggle 24/7 mode off and on
 		player.twentyFourSeven = !player.twentyFourSeven;
 		message.channel.send(message.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }));
+	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+
+		// toggle 24/7 mode off and on
+		player.twentyFourSeven = !player.twentyFourSeven;
+		await bot.send(interaction, bot.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }));
 	}
 };

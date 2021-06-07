@@ -12,12 +12,6 @@ module.exports = class Invite extends Command {
 			usage: 'invite',
 			cooldown: 2000,
 			slash: true,
-			options: [{
-                name: "text",
-                description: "write some text.",
-                type: 3,
-                required: true
-            }]
 		});
 	}
 

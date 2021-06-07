@@ -17,7 +17,7 @@ module.exports = class ShortURL extends Command {
 			options: [{
                 name: "url",
                 description: "The specified URL to shorten.",
-                type: 3,
+                type: 'STRING',
                 required: true
             }]
 		});
@@ -45,7 +45,7 @@ module.exports = class ShortURL extends Command {
 	}
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelID)
-		const link = args[0].value
+		const link = args.get('url').value;
 
 		try {
 			shorten(link, async function(res) {

@@ -1,4 +1,5 @@
 // Dependencies
+const { BrowserEmittedEvents } = require('puppeteer');
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -15,9 +16,9 @@ module.exports = class Play extends Command {
 			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
 			slash: true,
 			options: [{
-                name: "track",
-                description: "The link or name of the track.",
-                type: 3,
+                name: 'track',
+                description: 'The link or name of the track.',
+                type: 'STRING',
                 required: true
             }]
 		});
@@ -52,7 +53,7 @@ module.exports = class Play extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Make sure something was entered
@@ -84,7 +85,7 @@ module.exports = class Play extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 10000 }));
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
@@ -120,27 +121,27 @@ module.exports = class Play extends Command {
 		}
 	}
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channel_id);
-		const search = args[0].value;
-		const member = guild.members.cache.get(interaction.member.user.id);
-		const author = bot.users.cache.get(interaction.member.user.id);
-
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const search = args.get('track').value;
+		const member = guild.members.cache.get(interaction.user.id);
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return await bot.send(channel.error('misc:MISSING_ROLE')).then(m => m.delete({ timeout: 10000 }));
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!member.voice.channel) return await bot.send(channel.error('music/play:NOT_VC'));
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager.players.get(guild.id).voiceChannel) return await bot.send(channel.error('misc:NOT_VOICE')).then(m => m.delete({ timeout: 10000 }));
+			if (member.voice.channel.id != bot.manager.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
 		}
 
 		// Create player
 		let player;
+		let res;
+
 		try {
 			player = bot.manager.create({
 				guild: guild.id,
@@ -150,52 +151,51 @@ module.exports = class Play extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return await bot.send(channel.error('misc:ERROR_MESSAGE', { ERROR: err.message })).then(m => m.delete({ timeout: 5000 }));
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
 		}
 
 		// Search for track
 		try {
-			res = await player.search(search, author);
-			console.log("RESSS")
-			console.log(res)
+			res = await player.search(search, member)
 			if (res.loadType === 'LOAD_FAILED') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
 		} catch (err) {
-			return await bot.send(channel.error('music/play:ERROR', { ERROR: err.message })).then(m => m.delete({ timeout: 5000 }));
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] })
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return await bot.send(channel.error('music/play:NO_SONG'));
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] })
 
 		} else if (res.loadType == 'PLAYLIST_LOADED') {
 			// Connect to voice channel if not already
 			if (player.state !== 'CONNECTED') player.connect();
-
 			// Show how many songs have been added
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 
-			// Add songs to queue and then pLay the song(s) if not already
+			// Add songs to queue and then play the song(s) if not already
 			player.queue.add(res.tracks);
 			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 
-			return await bot.send((embed));
+			return await bot.send(interaction, embed);
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
 			player.queue.add(res.tracks[0]);
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
+				return await bot.send(interaction, 'Successfully started queue.') // Necessary to complete the interaction
 			} else {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				return await bot.send(embed);
+				return await bot.send(interaction, embed);
 			}
 		}
 	}

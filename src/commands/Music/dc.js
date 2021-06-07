@@ -11,6 +11,7 @@ module.exports = class Disconnect extends Command {
 			description: 'Disconnects the bot from the voice channel.',
 			usage: 'dc',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -33,5 +34,25 @@ module.exports = class Disconnect extends Command {
 		// Destory player (clears queue & leaves channel)
 		player.destroy();
 		return message.channel.success('music/dc:LEFT');
+	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+
+		return interaction.reply({ ephemeral: true, embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] })
 	}
 };
