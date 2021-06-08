@@ -14,6 +14,14 @@ module.exports = class Undeafen extends Command {
 			usage: 'undeafen <user>',
 			cooldown: 2000,
 			examples: ['undeafen username'],
+			slash: true,
+			options: [{
+				name: 'user',
+				description: 'The user you want to undeafen.',
+				type: 'USER',
+				required: true,
+			}],
+			defaultPermission: false,
 		});
 	}
 
@@ -46,6 +54,28 @@ module.exports = class Undeafen extends Command {
 			}
 		} else {
 			message.channel.error('moderation/undeafen:NOT_VC');
+		}
+	}
+	async callback(bot, interaction, guild, args) {
+		const author = guild.members.cache.get(interaction.user.id);
+		const member = guild.members.cache.get(args.get(user).value)
+
+		if(member?.voice.channel) {
+			if(!member.voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
+				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${guild.id}].`);
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: bot.translate('permissions:DEAFEN_MEMBERs') }, true)] })
+			}
+
+			if (member.user.id == author.id) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:SELF_PUNISH', { ERROR: null }, true)] })
+
+			try {
+				await member.voice.setDeaf(false);
+				return interaction.reply({ ephemeral: settings.ModerationClearToggle, embeds: [channel.success('moderation/undeafen:SUCCESS', { USER: member.user }, true)] })
+
+			} catch(err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			}
 		}
 	}
 };

@@ -1,30 +1,6 @@
 # Command list
 ><> = required, [] = optional
 
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
-## Guild
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
-| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
-| discrim	|	Discrim	|	`discrim <discriminator>`	|
-| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
-| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
-| guildicon	|	Get the server's icon.	|	`guildicon`	|
-| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
-| role-info	|	Get information on a role.	|	`role-info <role>`	|
-| server-info	|	Get information on the server.	|	`server-info`	|
-| user-info	|	Get information on the server.	|	`user-info [user]`	|
-
-
 ## Fun
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -53,6 +29,37 @@
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
 
 
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
+
+
+## Guild
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| avatar	|	Displays user's avatar.	|	`avatar [user]`	|
+| dashboard	|	Sends a link to your Server's dashboard.	|	`dashboard`	|
+| discrim	|	Discrim	|	`discrim <discriminator>`	|
+| emoji-list	|	Displays the server's emojis	|	`emojilist`	|
+| firstmessage	|	Gets the first message from the channel.	|	`firstmessage [channel]`	|
+| guildicon	|	Get the server's icon.	|	`guildicon`	|
+| poll	|	Create a poll for users to answer.	|	`poll <question>`	|
+| role-info	|	Get information on a role.	|	`role-info <role>`	|
+| server-info	|	Get information on the server.	|	`server-info`	|
+| user-info	|	Get information on the server.	|	`user-info [user]`	|
+
+
+## Level
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
 ## Image
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -74,26 +81,6 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Level
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
-
-
 ## Moderation
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -112,6 +99,19 @@
 | unmute	|	Unmute a user.	|	`unmute <user>`	|
 | warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
 | warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Music
@@ -142,47 +142,12 @@
 | radio	|	Listen to the radio	|	`radio <query>`	|
 | remove	|	Removes a song from the queue	|	`remove <position> [position]`	|
 | resume	|	Resumes the music.	|	`resume`	|
-| rewind	|	Rewinds the player by your specified amount.	|	`rewind <time>`	|
 | search	|	Searches for a song.	|	`search <link / song name>`	|
-| seek	|	Sets the playing track's position to the specified position.	|	`seek <time>`	|
 | shuffle	|	Shuffles the playlist.	|	`shuffle`	|
 | skip	|	Skips the current song.	|	`skip`	|
 | speed	|	Sets the player's playback speed.	|	`speed <Number>`	|
 | vaporwave	|	Toggles vaporwave mode.	|	`vaporwave`	|
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
-
-
-## Searcher
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| fortnite	|	Get information on a Fortnite account.	|	`fortnite <kbm / gamepad / touch> <user>`	|
-| instagram	|	Get information on an Instagram account.	|	`instagram <user>`	|
-| mc	|	Pings a minecraft for information.	|	`mc <IP> [Port]`	|
-| r6	|	Gets statistics on a Rainbow 6 Account.	|	`r6 <user> [pc / xbox / ps4] [eu / na / as]`	|
-| reddit	|	Send a random image from a chosen subreddit.	|	`reddit <subreddit>`	|
-| steam	|	Get information on a Steam account.	|	`steam <user>`	|
-| twitch	|	Get information on a twitch account.	|	`twitch <user>`	|
-| weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
-
-
-## Plugins
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
-| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
-| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
-| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
-| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
-
-
-## Tags
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| tag-add	|	Add a new tag to the server	|	`tag-add <name> <response>`	|
-| tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
-| tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
-| tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
-| tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
 
 
 ## NSFW
@@ -199,6 +164,29 @@
 | thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
+## Plugins
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
+| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
+| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
+| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
+| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
+
+
+## Searcher
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| fortnite	|	Get information on a Fortnite account.	|	`fortnite <kbm / gamepad / touch> <user>`	|
+| instagram	|	Get information on an Instagram account.	|	`instagram <user>`	|
+| mc	|	Pings a minecraft for information.	|	`mc <IP> [Port]`	|
+| r6	|	Gets statistics on a Rainbow 6 Account.	|	`r6 <user> [pc / xbox / ps4] [eu / na / as]`	|
+| reddit	|	Send a random image from a chosen subreddit.	|	`reddit <subreddit>`	|
+| steam	|	Get information on a Steam account.	|	`steam <user>`	|
+| twitch	|	Get information on a twitch account.	|	`twitch <user>`	|
+| weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
+
+
 ## Ticket
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -206,4 +194,14 @@
 | ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
 | ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
 | ticket	|	Information on ticket plugin.	|	`ticket`	|
+
+
+## Tags
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| tag-add	|	Add a new tag to the server	|	`tag-add <name> <response>`	|
+| tag-delete	|	Remove a tag from the server	|	`tag-delete <name>`	|
+| tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
+| tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
+| tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
 

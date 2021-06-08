@@ -56,7 +56,7 @@ module.exports = class FastForward extends Command {
 			message.channel.send(embed);
 		}
 	}
-	async callback(bot, interaction, guild) {
+	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);

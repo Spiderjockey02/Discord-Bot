@@ -13,6 +13,7 @@ module.exports = class Guildicon extends Command {
 			description: 'Get the server\'s icon.',
 			usage: 'guildicon',
 			cooldown: 2000,
+			slash: true,
 		});
 	}
 
@@ -27,6 +28,17 @@ module.exports = class Guildicon extends Command {
 		} else {
 			if (message.deletable) message.delete();
 			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild) {
+		// Check for guild icon & send message
+		if (guild.icon) {
+			const embed = new Embed(bot, guild)
+				.setDescription(bot.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }))
+				.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+			bot.send(interaction, embed);
+		} else {
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)] })
 		}
 	}
 };

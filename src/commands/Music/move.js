@@ -66,7 +66,7 @@ module.exports = class Move extends Command {
 			return message.channel.send(message.translate('music/move:MOVED_1', { TITLE: song.title, POS: message.args[1] }));
 		}
 	}
-	async callback(bot, interaction, guild) {
+	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);

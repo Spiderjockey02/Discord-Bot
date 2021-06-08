@@ -57,7 +57,7 @@ module.exports = class Back extends Command {
 			.setDescription(message.translate('music/volume:UPDATED', { NUM: player.volume }));
 		return message.channel.send(embed);
 	}
-	async callback(bot, interaction, guild) {
+	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);
 		const volume = args.get('volume').value;

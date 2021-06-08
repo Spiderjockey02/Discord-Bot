@@ -14,6 +14,14 @@ module.exports = class SlowMode extends Command {
 			usage: 'slowmode <time / off>',
 			cooldown: 5000,
 			examples: ['slowmode off', 'slowmode 1m'],
+			slash: true,
+			options: [{
+				name: 'time',
+				description: 'The slowmode time.',
+				type: 'STRING',
+				required: true,
+			}],
+			defaultPermission: false,
 		});
 	}
 
@@ -40,6 +48,25 @@ module.exports = class SlowMode extends Command {
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const apparentTime = args.get("time").value
+		let time;
+		if (apparentTime == 'off') {
+			time = 0;
+		} else if (apparentTime) {
+			time = getTotalTime(apparentTime, apparentTime);
+			if (!time) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: null }, true)] })
+		}
+		// Activate slowmode
+		try {
+			await channel.setRateLimitPerUser(time / 1000);
+			return interaction.reply({ ephemeral: settings.ModerationClearToggle, embeds: [channel.success('moderation/slowmode:SUCCESS', { TIME: time == 0 ? bot.translate('misc:OFF') : time / 1000 }, true)] })
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
 		}
 	}
 };

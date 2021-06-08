@@ -13,6 +13,13 @@ module.exports = class Weather extends Command {
 			usage: 'weather <location>',
 			cooldown: 3000,
 			examples: ['weather england', 'weather new york'],
+			slash: true,
+			options: [{
+				name: 'location',
+				description: 'The location to gather the weather of.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -48,6 +55,32 @@ module.exports = class Weather extends Command {
 				msg.delete();
 				bot.logger.error(`Command: 'weather' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			}
+		});
+	}
+	async callback(bot, interaction, guild, args) {
+		const location = args.get('location').value;
+
+		find({ search: location, degreeType: 'C' }, function(err, result) {
+			// make sure location was valid
+			if (!result[0]) return bot.send(interaction, 'Invalid location', true);
+
+			// Display weather at location
+			try {
+				const embed = new Embed(bot, guild)
+					.setTitle(bot.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
+					.setDescription(bot.translate('searcher/weather:DESC'))
+					.addField(bot.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
+					.addField(bot.translate('searcher/weather:SKY'), result[0].current.skytext, true)
+					.addField(bot.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
+					.addField(bot.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
+					.addField(bot.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
+					.addField(bot.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
+					.setThumbnail(result[0].current.imageUrl);
+				bot.send(interaction, embed);
+			} catch(err) {
+				bot.logger.error(`Command: 'weather' has error: ${err.message}.`);
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
 			}
 		});
 	}
