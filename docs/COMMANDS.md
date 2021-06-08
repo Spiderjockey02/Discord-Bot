@@ -15,20 +15,6 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-
-
 ## Giveaway
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -51,6 +37,20 @@
 | role-info	|	Get information on a role.	|	`role-info <role>`	|
 | server-info	|	Get information on the server.	|	`server-info`	|
 | user-info	|	Get information on the server.	|	`user-info [user]`	|
+
+
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
 
 
 ## Level
@@ -81,26 +81,6 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Moderation
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
-| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
-| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
-| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
-| dm	|	DM a user	|	`dm <user> <message>`	|
-| kick	|	Kick a user.	|	`kick <user> [reason]`	|
-| mute	|	Mute a user.	|	`mute <user> [time]`	|
-| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
-| report	|	Report a user.	|	`report <user> [reason]`	|
-| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
-| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
-| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
-| unmute	|	Unmute a user.	|	`unmute <user>`	|
-| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
-| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
-
-
 ## Misc
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -112,6 +92,26 @@
 | status	|	Gets the status of the bot.	|	`status`	|
 | support	|	Get support on the bot.	|	`support`	|
 | uptime	|	Gets the uptime of the bot.	|	`uptime`	|
+
+
+## Moderation
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
+| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
+| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
+| deafen	|	Deafen a user.	|	`deafen <user>`	|
+| dm	|	DM a user	|	`dm <user> <message>`	|
+| kick	|	Kick a user.	|	`kick <user> [reason]`	|
+| mute	|	Mute a user.	|	`mute <user> [time]`	|
+| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
+| report	|	Report a user.	|	`report <user> [reason]`	|
+| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
+| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
+| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
+| unmute	|	Unmute a user.	|	`unmute <user>`	|
+| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
+| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
 
 
 ## Music
@@ -150,6 +150,16 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
+## Plugins
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
+| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
+| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
+| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
+| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
+
+
 ## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -162,16 +172,6 @@
 | pgif	|	Look at NSFW images.	|	`pgif`	|
 | pussy	|	Look at NSFW images.	|	`pussy`	|
 | thigh	|	Look at NSFW images.	|	`thigh`	|
-
-
-## Plugins
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| rr-add	|	Create a reaction role	|	`rr-add [channelID]`	|
-| rr-remove	|	Make reaction roles	|	`reactionroles <messagelink>`	|
-| set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
-| set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
-| set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
 
 
 ## Searcher
@@ -187,15 +187,6 @@
 | weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
 
 
-## Ticket
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
-| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
-| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
-| ticket	|	Information on ticket plugin.	|	`ticket`	|
-
-
 ## Tags
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -204,4 +195,13 @@
 | tag-edit	|	Edit a tag from this server	|	`tag-edit <rename / edit> <name> <newName / newResponse>`	|
 | tag-view	|	View the server's tag(s)	|	`tag-view [name]`	|
 | tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
+
+
+## Ticket
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ticket-close	|	Closes the current ticket channel	|	`ticket-close`	|
+| ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
+| ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
+| ticket	|	Information on ticket plugin.	|	`ticket`	|
 

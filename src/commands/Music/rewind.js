@@ -60,7 +60,7 @@ module.exports = class Rewind extends Command {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);
-		const time = args.get('time').value;
+		const apparentTime = args.get('time').value;
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
@@ -79,7 +79,7 @@ module.exports = class Rewind extends Command {
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:LIVESTREAM', { ERROR: null }, true)] });
 
 		// update the time
-		const time = read24hrFormat((time) ? time : '10');
+		const time = read24hrFormat((apparentTime) ? apparentTime : '10');
 
 		if (time + player.position <= 0) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:INVALID', { ERROR: null }, true)] });

@@ -78,7 +78,7 @@ module.exports = class Seek extends Command {
 		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
 		
 		// update the time
-		const time = read24hrFormat(time);
+		time = read24hrFormat(time);
 
 		if (time > player.queue.current.duration) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
