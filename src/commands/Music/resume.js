@@ -37,4 +37,29 @@ module.exports = class Resume extends Command {
 		player.pause(false);
 		return message.channel.success('music/resume:SUCCESS');
 	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+	
+		// The music is already resumed
+		if (!player.paused) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/resume:IS_RESUMED', { PREFIX: guild.settings.prefix }, true)] })
+
+		// Resumes the music
+		player.pause(false);
+		return interaction.reply({ ephemeral: false, embeds: [channel.success('music/resume:SUCCESS', { ARGS: null }, true)] })
+	}
 };

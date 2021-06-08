@@ -11,6 +11,7 @@ module.exports = class Shuffle extends Command {
 			description: 'Shuffles the playlist.',
 			usage: 'shuffle',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -36,5 +37,30 @@ module.exports = class Shuffle extends Command {
 			.setColor(message.member.displayHexColor)
 			.setDescription(message.translate('music/shuffle:DESC'));
 		message.channel.send(embed);
+	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+
+		// shuffle queue
+		player.queue.shuffle();
+		const embed = new Embed(bot, guild)
+			.setColor(member.displayHexColor)
+			.setDescription(bot.translate('music/shuffle:DESC'));
+		bot.send(interaction, embed);
 	}
 };

@@ -13,6 +13,13 @@ module.exports = class Seek extends Command {
 			usage: 'seek <time>',
 			cooldown: 3000,
 			examples: ['seek 1:00'],
+			slash: true,
+			options: [{
+				name: 'time',
+				description: 'The time you want to seek to.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -45,10 +52,42 @@ module.exports = class Seek extends Command {
 			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
 			player.seek(time);
-			const embed = new MessageEmbed()
+			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			message.channel.send(embed);
+		}
+	}
+	async callback(bot, interaction, guild) {
+		// Check if the member has role to interact with music plugin
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const time = args.get('time').value;
+
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		
+		// update the time
+		const time = read24hrFormat(time);
+
+		if (time > player.queue.current.duration) {
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
+		} else {
+			player.seek(time);
+			const embed = new Embed(bot, guild)
+				.setColor(member.displayHexColor)
+				.setDescription(bot.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
+			bot.send(interaction, embed);
 		}
 	}
 };

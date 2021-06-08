@@ -75,6 +75,9 @@ module.exports = class FastForward extends Command {
 		// Check that user is in the same voice channel
 		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
 
+		// Make sure song isn't a stream
+		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)] })
+
 		// update the time
 		const time = read24hrFormat((amount) ? amount : '10');
 

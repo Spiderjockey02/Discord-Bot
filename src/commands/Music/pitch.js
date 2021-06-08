@@ -12,6 +12,13 @@ module.exports = class Pitch extends Command {
 			usage: 'pitch',
 			cooldown: 3000,
 			examples: ['pitch off', 'pitch 6'],
+			slash: true,
+			options: [{
+				name: 'amount',
+				description: 'The amount you want to pitch the song.',
+				type: 'STRING',
+				required: false,
+			}],
 		});
 	}
 
@@ -51,5 +58,43 @@ module.exports = class Pitch extends Command {
 			.setDescription(message.translate('music/pitch:DESC_2', { NUM: message.args[0] }));
 		await bot.delay(5000);
 		return msg.edit(' ', embed);
+	}
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const amount = args.get('amount').value;
+
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+	
+		if (amount && (amount.toLowerCase() == 'reset' || amount.toLowerCase() == 'off')) {
+			player.resetFilter();
+			const msg = await interaction.reply(bot.translate('music/pitch:PITCH_OFF'));
+			const embed = new Embed(bot, guild)
+				.setDescription(bot.translate('music/pitch:DESC_2'));
+			await bot.delay(5000);
+			return interaction.editReply(embed);
+		} else {
+			player.setFilter({
+				timescale: { pitch: message.args[0] },
+			});
+			const msg = await interaction.reply(bot.translate('music/pitch:PITCH_ON', { DB: amount }));
+			const embed = new Embed(bot, guild)
+				.setDescription(bot.translate('music/pitch:DESC_1'));
+			await bot.delay(5000);
+			return bot.editReply(embed);
+		}
+	
 	}
 };

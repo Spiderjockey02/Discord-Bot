@@ -13,6 +13,13 @@ module.exports = class Back extends Command {
 			usage: 'volume <Number>',
 			cooldown: 3000,
 			examples: ['volume 50'],
+			slash: true,
+			options: [{
+				name: 'volume',
+				description: 'The volume you want the song to play at.',
+				type: 'INTEGER',
+				required: false,
+			}],
 		});
 	}
 
@@ -49,5 +56,41 @@ module.exports = class Back extends Command {
 			.setColor(message.member.displayHexColor)
 			.setDescription(message.translate('music/volume:UPDATED', { NUM: player.volume }));
 		return message.channel.send(embed);
+	}
+	async callback(bot, interaction, guild) {
+		const member = guild.members.cache.get(interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const volume = args.get('volume').value;
+
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+			}
+		}
+
+		// Check that a song is being played
+		const player = bot.manager.players.get(guild.id);
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+
+		// Check that user is in the same voice channel
+		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+
+		// Make sure a number was entered
+		if (!volume) {
+			const embed = new Embed(bot, guild)
+				.setColor(member.displayHexColor)
+				.setDescription(bot.translate('music/volume:CURRENT', { NUM: player.volume }));
+			return await bot.send(interaction, embed);
+		}
+
+		if (volume <= 0 || volume > 1000) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] })
+	
+		// Update volume
+		player.setVolume(volume);
+		const embed = new Embed(bot, guild)
+			.setColor(member.displayHexColor)
+			.setDescription(bot.translate('music/volume:UPDATED', { NUM: player.volume }));
+		return bot.send(interaction, embed);
 	}
 };
