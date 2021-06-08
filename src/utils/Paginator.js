@@ -2,9 +2,9 @@
 const emojiList = ['⏮', '◀️', '▶️', '⏭'],
 	timeout = 120000;
 
-module.exports = async (bot, msg, pages) => {
+module.exports = async (bot, channel, pages) => {
 	let page = 0;
-	const curPage = await msg.channel.send(pages[page]);
+	const curPage = await channel.send(pages[page]);
 
 	// react to embed with all emojis
 	for (const emoji of emojiList) await curPage.react(emoji);
@@ -15,7 +15,7 @@ module.exports = async (bot, msg, pages) => {
 
 	// find out what emoji was reacted on to update pages
 	reactionCollector.on('collect', (reaction, user) => {
-		if (!user.bot && msg.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) reaction.users.remove(user.id);
+		if (!user.bot && channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) reaction.users.remove(user.id);
 		switch (reaction.emoji.name) {
 		case emojiList[0]:
 			page = 0;

@@ -16,6 +16,13 @@ module.exports = class Rank extends Command {
 			usage: 'level [username]',
 			cooldown: 3000,
 			examples: ['level userID', 'level @mention', 'level username'],
+			slash: true,
+			options: [{
+				name: 'user',
+				description: 'The user you want to view the rank of.',
+				type: 'USER',
+				required: true,
+			}],
 		});
 	}
 
@@ -68,6 +75,49 @@ module.exports = class Rank extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+	async callback(bot, interaction, guild, args) {
+		// Get user
+		const member = guild.members.cache.get(args.get('user').value);
+
+		// Retrieve Rank from databse
+		try {
+			RankSchema.find({
+				guildID: guild.id,
+			}).sort([
+				['user', 'descending'],
+			]).exec((err, res) => {
+				const user = res.find(doc => doc.userID == member.user.id);
+				// if they haven't send any messages
+				if (!user) {
+					return interaction.reply({ ephemeral: true, embeds: [channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true)] })
+				}
+				let rankScore;
+				for (let i = 0; i < res.length; i++) {
+					if (res[i].userID == member.user.id) rankScore = i;
+				}
+				// create rank card
+				const rankcard = new rank()
+					.setAvatar(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+					.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
+					.setLevel(user.Level)
+					.setRank(rankScore + 1)
+					.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
+					.setStatus(member.presence.status)
+					.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
+					.setUsername(member.user.username)
+					.setDiscriminator(member.user.discriminator);
+				// send rank card
+				rankcard.build().then(buffer => {
+					const attachment = new MessageAttachment(buffer, 'RankCard.png');
+					bot.send(interaction, attachment);
+				});
+
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
 		}
 	}
 };
