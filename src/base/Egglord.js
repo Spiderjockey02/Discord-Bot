@@ -171,6 +171,7 @@ module.exports = class Egglord extends Client {
 							name: command.help.name,
 							description: command.help.description,
 							options: command.conf.options,
+							defaultPermission: command.conf.defaultPermission
 						});
 						guild.interactions.set(command.help.name, command);
 					}
@@ -195,6 +196,7 @@ module.exports = class Egglord extends Client {
 							name: command.help.name,
 							description: command.help.description,
 							options: command.conf.options,
+							defaultPermission: command.conf.defaultPermission
 						});
 						guild.interactions.delete(command.help.name, command);
 					}
@@ -219,8 +221,8 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Handle slash command callback
-	async send(interaction, content) {
-		interaction.reply(content);
+	async send(interaction, content, ephemeralValue) {
+		interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, content });
 		this.commandsUsed++;
 		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
 	}

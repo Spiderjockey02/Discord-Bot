@@ -46,7 +46,6 @@ module.exports = class SetPlugin extends Command {
 					console.log(err);
 				}
 				message.channel.send(message.translate('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] }));
-				console.log(data)
 			} else {
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
 
@@ -57,7 +56,6 @@ module.exports = class SetPlugin extends Command {
 					const info = await bot.loadInteractionGroup(g, message.guild)
 					if (Array.isArray(info)) data.push(...info);
 				})
-				console.log(data)
 				try {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {

@@ -13,7 +13,20 @@ module.exports = class Interaction extends Event {
 	async run(bot, interaction) {
 		const guild = bot.guilds.cache.get(interaction.guildID),
 			Command = guild.interactions.get(interaction.commandName),
-			channel = guild.channels.cache.get(interaction.channelID);
+			channel = guild.channels.cache.get(interaction.channelID),
+			member = guild.members.cache.get(interaction.user.id);
+
+		// check user permissions
+		let neededPermissions = [];
+		Command.conf.userPermissions.forEach((perm) => {
+			if (!channel.permissionsFor(member).has(perm)) {
+				neededPermissions.push(perm);
+			}
+		});
+
+		if (neededPermissions.length > 0) {
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ')  }, true)] })
+		}
 
 		// Check to see if user is in 'cooldown'
 		if (!bot.cooldowns.has(Command.help.name)) {

@@ -10,20 +10,6 @@
 | g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
 
-## Fun
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| advice	|	Get some random advice	|	`advice`	|
-| fact	|	Receive a random fact.	|	`fact`	|
-| flip	|	Flip a coin.	|	`flip`	|
-| meme	|	Sends a random meme.	|	`meme`	|
-| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
-| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
-| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
-| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
-| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
-
-
 ## Guild
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -39,11 +25,18 @@
 | user-info	|	Get information on the server.	|	`user-info [user]`	|
 
 
-## Level
+## Fun
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
-| rank	|	Shows your rank/Level.	|	`level [username]`	|
+| advice	|	Get some random advice	|	`advice`	|
+| fact	|	Receive a random fact.	|	`fact`	|
+| flip	|	Flip a coin.	|	`flip`	|
+| meme	|	Sends a random meme.	|	`meme`	|
+| pokemon	|	Get information on a pokemon.	|	`pokemon <pokemon>`	|
+| random	|	Replies with a random number.	|	`random <LowNum> <HighNum>`	|
+| reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
+| screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
+| urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
 ## Host
@@ -58,19 +51,6 @@
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|
 | suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-
-
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
 ## Image
@@ -94,18 +74,44 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## NSFW
+## Level
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
+| leaderboard	|	Displays the Servers's level leaderboard.	|	`leaderboard`	|
+| rank	|	Shows your rank/Level.	|	`level [username]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
+
+
+## Moderation
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
+| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
+| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
+| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
+| dm	|	DM a user	|	`dm <user> <message>`	|
+| kick	|	Kick a user.	|	`kick <user> [reason]`	|
+| mute	|	Mute a user.	|	`mute <user> [time]`	|
+| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
+| report	|	Report a user.	|	`report <user> [reason]`	|
+| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
+| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
+| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
+| unmute	|	Unmute a user.	|	`unmute <user>`	|
+| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
+| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
 
 
 ## Music
@@ -146,24 +152,17 @@
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
 
 
-## Moderation
+## Searcher
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
-| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
-| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
-| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
-| dm	|	DM a user	|	`dm <user> <message>`	|
-| kick	|	Kick a user.	|	`kick <user> [reason]`	|
-| mute	|	Mute a user.	|	`mute <user> [time]`	|
-| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
-| report	|	Report a user.	|	`report <user> [reason]`	|
-| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
-| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
-| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
-| unmute	|	Unmute a user.	|	`unmute <user>`	|
-| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
-| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+| fortnite	|	Get information on a Fortnite account.	|	`fortnite <kbm / gamepad / touch> <user>`	|
+| instagram	|	Get information on an Instagram account.	|	`instagram <user>`	|
+| mc	|	Pings a minecraft for information.	|	`mc <IP> [Port]`	|
+| r6	|	Gets statistics on a Rainbow 6 Account.	|	`r6 <user> [pc / xbox / ps4] [eu / na / as]`	|
+| reddit	|	Send a random image from a chosen subreddit.	|	`reddit <subreddit>`	|
+| steam	|	Get information on a Steam account.	|	`steam <user>`	|
+| twitch	|	Get information on a twitch account.	|	`twitch <user>`	|
+| weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
 
 
 ## Plugins
@@ -186,6 +185,20 @@
 | tags	|	Edit server's tags	|	`tag <add/del/edit/view> <required paramters>`	|
 
 
+## NSFW
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
+
+
 ## Ticket
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -193,17 +206,4 @@
 | ticket-create	|	Creates a ticket	|	`ticket-create [reason]`	|
 | ticket-setup	|	Setups the ticket plugin	|	`ticket-setup`	|
 | ticket	|	Information on ticket plugin.	|	`ticket`	|
-
-
-## Searcher
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| fortnite	|	Get information on a Fortnite account.	|	`fortnite <kbm / gamepad / touch> <user>`	|
-| instagram	|	Get information on an Instagram account.	|	`instagram <user>`	|
-| mc	|	Pings a minecraft for information.	|	`mc <IP> [Port]`	|
-| r6	|	Gets statistics on a Rainbow 6 Account.	|	`r6 <user> [pc / xbox / ps4] [eu / na / as]`	|
-| reddit	|	Send a random image from a chosen subreddit.	|	`reddit <subreddit>`	|
-| steam	|	Get information on a Steam account.	|	`steam <user>`	|
-| twitch	|	Get information on a twitch account.	|	`twitch <user>`	|
-| weather	|	Look up the weather in a certain area.	|	`weather <location>`	|
 
