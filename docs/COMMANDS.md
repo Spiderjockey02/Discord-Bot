@@ -15,6 +15,20 @@
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
 
 
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+
+
 ## Giveaway
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -37,20 +51,6 @@
 | role-info	|	Get information on a role.	|	`role-info <role>`	|
 | server-info	|	Get information on the server.	|	`server-info`	|
 | user-info	|	Get information on the server.	|	`user-info [user]`	|
-
-
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
 
 
 ## Level
@@ -81,19 +81,6 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
-## Misc
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| about	|	Information about me.	|	`about`	|
-| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
-| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
-| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
-| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
-| status	|	Gets the status of the bot.	|	`status`	|
-| support	|	Get support on the bot.	|	`support`	|
-| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
-
-
 ## Moderation
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -112,6 +99,33 @@
 | unmute	|	Unmute a user.	|	`unmute <user>`	|
 | warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
 | warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+
+
+## Misc
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| about	|	Information about me.	|	`about`	|
+| help	|	Sends information about all the commands that I can do.	|	`help [command]`	|
+| invite	|	Send an invite link so people can add me to their server.	|	`invite`	|
+| privacy	|	Sends a link to the privacy policy.	|	`privacy`	|
+| shorturl	|	Creates a shorturl on the URL you sent.	|	`shorturl`	|
+| status	|	Gets the status of the bot.	|	`status`	|
+| support	|	Get support on the bot.	|	`support`	|
+| uptime	|	Gets the uptime of the bot.	|	`uptime`	|
+
+
+## NSFW
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Music
@@ -142,7 +156,9 @@
 | radio	|	Listen to the radio	|	`radio <query>`	|
 | remove	|	Removes a song from the queue	|	`remove <position> [position]`	|
 | resume	|	Resumes the music.	|	`resume`	|
+| rewind	|	Rewinds the player by your specified amount.	|	`rewind <time>`	|
 | search	|	Searches for a song.	|	`search <link / song name>`	|
+| seek	|	Sets the playing track's position to the specified position.	|	`seek <time>`	|
 | shuffle	|	Shuffles the playlist.	|	`shuffle`	|
 | skip	|	Skips the current song.	|	`skip`	|
 | speed	|	Sets the player's playback speed.	|	`speed <Number>`	|
@@ -158,20 +174,6 @@
 | set-lang	|	Choose the language for the bot.	|	`setlang <language>`	|
 | set-logs	|	Update the log plugin.	|	`set-logs <option> [data]`	|
 | set-plugin	|	Toggle plugins on and off	|	`set-plugin <option>`	|
-
-
-## NSFW
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Searcher

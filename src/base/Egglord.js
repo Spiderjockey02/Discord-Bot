@@ -1,3 +1,5 @@
+const { type } = require('os');
+
 // Dependencies
 const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
@@ -222,7 +224,18 @@ module.exports = class Egglord extends Client {
 
 	// Handle slash command callback
 	async send(interaction, content, ephemeralValue) {
-		interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, content });
+		switch(typeof(content)) {
+			case 'object':
+				if(content[0]) {
+					interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, embeds: content  });
+				} else {
+					interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, embeds: [ content ] });
+				}
+				break
+			default:
+				interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, content: content });
+				break
+		}
 		this.commandsUsed++;
 		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
 	}

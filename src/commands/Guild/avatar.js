@@ -40,7 +40,7 @@ module.exports = class Avatar extends Command {
 		message.channel.send(embed);
 	}
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get(user).value);
+		const member = guild.members.cache.get(args.get('user').value);
 		
 		// send embed
 		const embed = new Embed(bot, guild)

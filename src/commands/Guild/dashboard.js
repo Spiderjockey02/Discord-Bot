@@ -20,7 +20,7 @@ module.exports = class Dashboard extends Command {
 	async run(bot, message) {
 		message.channel.send(`${bot.config.websiteURL}/dashboard/${message.guild.id}`);
 	}
-	async callback(bot, interaction) {
+	async callback(bot, interaction, guild) {
 		bot.send(interaction, `${bot.config.websiteURL}/dashboard/${guild.id}`);
 	}
 };
