@@ -16,7 +16,7 @@ module.exports = class Advice extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -36,14 +36,16 @@ module.exports = class Advice extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channel_id);
+		const channel = guild.channels.cache.get(interaction.channelID);
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
-			return await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });
+			return await bot.send(interaction, [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }]);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			return bot.send(interaction, [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)]);
 		}
 	}
 };

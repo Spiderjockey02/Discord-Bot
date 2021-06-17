@@ -45,39 +45,38 @@ module.exports = class Ready extends Event {
 				bot.emit('guildCreate', guild);
 			}
 			const enabledPlugins = guild.settings.plugins;
-			const data = []
+			const data = [];
 
 			// get slash commands for category
 			for (let i = 0; i < enabledPlugins.length; i++) {
 				const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
 				if (Array.isArray(g)) data.push(...g);
 			}
+
 			try {
+				console.log(data);
+				console.log(data.map(g => g.name));
 				await bot.guilds.cache.get(guild.id)?.commands.set(data).then(async interactionIDs => {
-					if(guild.settings.plugins.find(plugin => plugin === 'Moderation')) {
+					if (guild.settings.plugins.find(plugin => plugin === 'Moderation')) {
 						const category = (await readdir('./src/commands/Moderation/')).filter((v, i, a) => a.indexOf(v) === i);
-						const lockedInteractions = []
+						const lockedInteractions = [];
 						const permissions = [];
 
 						guild.settings.ModeratorRoles.forEach(roleID => {
-							const role = guild.roles.cache.get(roleID)
-							if(role) {
-								permissions.push({ id: role.id, type: 'ROLE', permission: true })
-							}
+							const role = guild.roles.cache.get(roleID);
+							if (role) permissions.push({ id: role.id, type: 'ROLE', permission: true });
 						});
-						if(permissions.length >= 1) {
+						if (permissions.length >= 1) {
 							category.forEach(async (cmd) => {
-								if (!bot.config.disabledCommands.includes(cmd.replace('.js', ''))) {					
-									const interactionID = interactionIDs.find(interactionCmd => interactionCmd.name === cmd.replace('.js', ''))
-									if(interactionID) {
-										lockedInteractions.push({ id: interactionID.id, permissions: permissions })
-									}
+								if (!bot.config.disabledCommands.includes(cmd.replace('.js', ''))) {
+									const interactionID = interactionIDs.find(interactionCmd => interactionCmd.name === cmd.replace('.js', ''));
+									if (interactionID) lockedInteractions.push({ id: interactionID.id, permissions: permissions });
 								}
 							});
-							guild.commands.setPermissions(lockedInteractions)
-						}		
-					}		
-				})
+							guild.commands.setPermissions(lockedInteractions);
+						}
+					}
+				});
 				bot.logger.log('Loaded Interactions for guild: ' + guild.name);
 			} catch (err) {
 				console.log(err);

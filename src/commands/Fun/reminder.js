@@ -20,7 +20,7 @@ module.exports = class Reminder extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Make something that time and information is entered
 		if (!message.args[1]) {

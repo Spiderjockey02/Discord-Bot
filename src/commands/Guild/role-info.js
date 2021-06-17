@@ -18,7 +18,7 @@ module.exports = class RoleInfo extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check to see if a role was mentioned
 		const roles = message.getRole();

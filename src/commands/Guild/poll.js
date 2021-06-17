@@ -16,7 +16,7 @@ module.exports = class Poll extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 

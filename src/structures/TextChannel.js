@@ -1,4 +1,5 @@
-const { Structures } = require('discord.js');
+const { MessageEmbed } = require('discord.js'),
+	{ Structures } = require('discord.js');
 
 module.exports = Structures.extend('TextChannel', Channel => {
 	class CustomChannel extends Channel {
@@ -22,10 +23,13 @@ module.exports = Structures.extend('TextChannel', Channel => {
 		error(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
+				const embed = new MessageEmbed()
+					.setColor(15158332)
+					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}`);
 				if (returnValue) {
-					return { color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` };
+					return embed;
 				} else {
-					return this.send({ embed:{ color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
+					return this.send({ embeds: [{ color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` }] });
 				}
 			} catch (err) {
 				this.client.logger.error(err.message);
@@ -37,9 +41,9 @@ module.exports = Structures.extend('TextChannel', Channel => {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
 				if (returnValue) {
-					return { color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` };
+					return { color: 3066993, description: `${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` };
 				} else {
-					return this.send({ embed:{ color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
+					return this.send({ embed:{ color: 3066993, description: `${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
 				}
 			} catch (err) {
 				this.client.logger.error(err.message);

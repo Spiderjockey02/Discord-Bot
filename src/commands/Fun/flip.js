@@ -14,13 +14,15 @@ module.exports = class Flip extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		const r = Math.round(Math.random());
 		message.channel.send(`${message.checkEmoji() ? bot.customEmojis[['head', 'tail'][r]] : ''} ${message.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`);
 	}
+
+	// Function for slash command
 	async callback(bot, interaction) {
 		const r = Math.round(Math.random());
-		return await bot.send(interaction, `${bot.customEmojis[['head', 'tail'][r]]} ${bot.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`);
+		return await bot.send(interaction, [`${bot.customEmojis[['head', 'tail'][r]]} ${bot.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`]);
 	}
 };

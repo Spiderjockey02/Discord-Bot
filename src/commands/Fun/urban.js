@@ -17,7 +17,7 @@ module.exports = class Urban extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Get phrase
 		const phrase = message.args.join(' ');

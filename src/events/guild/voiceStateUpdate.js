@@ -76,7 +76,7 @@ module.exports = class voiceStateUpdate extends Event {
 		if (!newState.guild.members.cache.get(bot.user.id).voice.channelID) player.destroy();
 
 		// Check for stage channel audience change
-		if (newState.id == bot.user.id && newState.channel.type == 'stage') {
+		if (newState.id == bot.user.id && newState.channelID.type == 'stage') {
 			if (!oldState.channelID) {
 				try {
 					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));

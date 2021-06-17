@@ -23,7 +23,7 @@ module.exports = class Pokemon extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Get pokemon
 		const pokemon = message.args.join(' ');
@@ -48,7 +48,6 @@ module.exports = class Pokemon extends Command {
 			});
 
 		// Send response to channel
-		console.log(res);
 		const embed = new Embed(bot, message.guild)
 			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
@@ -57,6 +56,8 @@ module.exports = class Pokemon extends Command {
 		msg.delete();
 		message.channel.send(embed);
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelID);
 		const pokemon = args.get('pokemon').value;
@@ -66,17 +67,15 @@ module.exports = class Pokemon extends Command {
 			.catch(async (err) => {
 			// An error occured when looking for account
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return bot.send(interaction, [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], true);
 			});
 
 		// Send response to channel
-
 		const embed = new Embed(bot, guild)
 			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
-
-		return await bot.send(interaction, embed);
+		return await bot.send(interaction, [embed]);
 	}
 };

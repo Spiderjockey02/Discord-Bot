@@ -73,18 +73,18 @@ module.exports = class Join extends Command {
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 			}
 		}
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
 
 		// Make sure the user is in a voice channel
-		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)] })		
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)] });
 
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.me).has('MOVE_MEMBERS')) {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)] })	
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)] });
 		}
 
 		// If no player (no song playing) create one and join channel
@@ -98,7 +98,7 @@ module.exports = class Join extends Command {
 				}).connect();
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 			}
 		} else {
 			// Move the bot to the new voice channel / update text channel
@@ -111,8 +111,8 @@ module.exports = class Join extends Command {
 				bot.send(interaction, embed);
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })		
+				interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 			}
 		}
 	}
- };
+};

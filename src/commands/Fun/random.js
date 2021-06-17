@@ -27,8 +27,9 @@ module.exports = class Random extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
+
 		// Random number and facts command
 		const max = 100000,
 			num1 = parseInt(message.args[0]),
@@ -56,18 +57,21 @@ module.exports = class Random extends Command {
 			message.channel.send({ embed: { color: 'RANDOM', description: message.translate('fun/random:RESPONSE', { NUMBER: r }) } });
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const settings = guild.settings;
+		const channel = guild.channels.cache.get(interaction.channelID);
 		const max = 100000,
-			num1 = args.get('min').value;
+			num1 = args.get('min').value,
 			num2 = args.get('max').value;
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)] })
+			bot.send(interaction, [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)], true);
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return await bot.send(interaction, { embed: { color: 'RANDOM', description: bot.translate('fun/random:RESPONSE', { NUMBER: r }) } });
+		return await bot.send(interaction, [{ color: 'RANDOM', description: bot.translate('fun/random:RESPONSE', { NUMBER: r }) }]);
 	}
 };

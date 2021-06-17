@@ -70,24 +70,27 @@ module.exports = (bot) => {
 				// Don't leave channel if 24/7 mode is active
 				if (player.twentyFourSeven) return;
 
-				const vcName = bot.channels.cache.get(player.voiceChannel) ? bot.channels.cache.get(player.voiceChannel).name : 'unknown';
+				const vcName = bot.channels.cache.get(player.voiceChannel)?.name ?? 'unknown';
 				const embed = new MessageEmbed()
-					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild).settings.Language));
+					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild)?.settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
 				player.destroy();
 			}, 180000);
 		})
-		.on('playerMove', (player, currentChannel, newChannel) => {
+		.on('playerMove', async (player, currentChannel, newChannel) => {
 			// Voice channel updated
 			if (!newChannel) {
 				const embed = new MessageEmbed()
-					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild).settings.Language));
+					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild)?.settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send(embed);
 				player.destroy();
 			} else {
-				player.voiceChannel = bot.channels.cache.get(newChannel);
+				await player.setVoiceChannel(newChannel);
+				player.pause(true);
+				await bot.delay(1000);
+				player.pause(false);
 			}
 		});
 };

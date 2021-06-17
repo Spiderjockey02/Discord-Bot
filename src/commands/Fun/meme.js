@@ -15,43 +15,40 @@ module.exports = class Meme extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Retrieve a random meme
-		const meme = await this.fetchMeme(bot);
+		const embed = await this.fetchMeme(bot, message.guild, settings);
 
 		// Send the meme to channel
 		msg.delete();
-		const embed = new Embed(bot, message.guild)
-			.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
-			.setColor(16333359)
-			.setURL(meme.post.link)
-			.setImage(meme.url)
-			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
 		message.channel.send(embed);
 	}
 
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
-		const meme = await this.fetchMeme(bot);
-
-		const embed = new Embed(bot, guild)
-			.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
-			.setColor(16333359)
-			.setURL(meme.post.link)
-			.setImage(meme.url)
-			.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
-		return await bot.send(interaction, embed);
+		const embed = await this.fetchMeme(bot, guild, settings);
+		return await bot.send(interaction, [embed]);
 	}
 
-	// fetch meme
-	async fetchMeme(bot) {
+	// Fetch meme data
+	async fetchMeme(bot, guild, settings) {
 		const meme = await bot.Ksoft.images.meme();
-		if (!meme.url) return await this.fetchMeme();
-		return meme;
+		if (!meme.url) {
+			return await this.fetchMeme();
+		} else {
+			const embed = new Embed(bot, guild)
+				.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
+				.setColor(16333359)
+				.setURL(meme.post.link)
+				.setImage(meme.url)
+				.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
+			return embed;
+		}
 	}
 };

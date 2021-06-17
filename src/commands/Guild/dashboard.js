@@ -16,11 +16,13 @@ module.exports = class Dashboard extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		message.channel.send(`${bot.config.websiteURL}/dashboard/${message.guild.id}`);
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
-		bot.send(interaction, `${bot.config.websiteURL}/dashboard/${guild.id}`);
+		bot.send(interaction, [`${bot.config.websiteURL}/dashboard/${guild.id}`]);
 	}
 };

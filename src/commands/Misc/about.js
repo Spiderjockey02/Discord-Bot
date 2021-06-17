@@ -14,11 +14,11 @@ module.exports = class About extends Command {
 			description: 'Information about me.',
 			usage: 'about',
 			cooldown: 2000,
-			slash: true
+			slash: true,
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		const embed = new Embed(bot, message.guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
@@ -33,9 +33,9 @@ module.exports = class About extends Command {
 		message.channel.send(embed);
 	}
 
-	//Run slash command
+	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const settings = guild.settings
+		const settings = guild.settings;
 		const embed = new Embed(bot, guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 			.setTitle('misc/about:TITLE')
@@ -46,6 +46,6 @@ module.exports = class About extends Command {
 			.addField(bot.translate('misc/about:SERVERS'), bot.translate('misc/about:SERVERS_DESC', { SERVERS: bot.guilds.cache.size, SHARDS: bot.ws.totalShards }), true)
 			.addField(bot.translate('misc/about:MESSAGES'), bot.translate('misc/about:MESSAGES_DESC', { MESSAGES: bot.messagesSent, MSGSEC: (bot.messagesSent / (bot.uptime / 1000)).toFixed(2) }), true)
 			.addField(bot.translate('misc/about:UPTIME'), getReadableTime(bot.uptime), true);
-		return await bot.send(interaction, embed)
+		return await bot.send(interaction, embed);
 	}
 };

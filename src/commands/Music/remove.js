@@ -68,20 +68,20 @@ module.exports = class Remove extends Command {
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 			}
 		}
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+		if (message.member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
 
-		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:PLAYING', { PREFIX: guild.settings.prefix }, true)] })
-	
-		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:MISSING', { ERROR: null }, true)] })
-		
+		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:PLAYING', { PREFIX: guild.settings.prefix }, true)] });
+
+		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:MISSING', { ERROR: null }, true)] });
+
 		const { title } = player.queue[pos1 - 1];
 
 		player.queue.splice(pos1 - 1, 1);

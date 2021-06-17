@@ -1,5 +1,4 @@
 // Dependencies
-const { botClient } = require('../../config');
 const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
 	{ paginate } = require('../../utils'),
@@ -24,7 +23,7 @@ module.exports = class Leaderboard extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -84,6 +83,8 @@ module.exports = class Leaderboard extends Command {
 			}
 		});
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const channel = guild.channel.cache.get(interaction.channelID);
 		// Retrieve Ranks from database
@@ -95,7 +96,7 @@ module.exports = class Leaderboard extends Command {
 			// if an error occured
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 			}
 
 			const embed = new Embed(bot, guild)
@@ -133,11 +134,9 @@ module.exports = class Leaderboard extends Command {
 					pages.push(embed2);
 					if (i == pagesNum - 1 && pagesNum > 1) {
 						paginate(bot, channel, pages);
-						return await bot.send(interaction, "Loaded Leaderboard")
-					}
-					else if(pagesNum == 1) bot.send(interaction, embed2);
+						return await bot.send(interaction, 'Loaded Leaderboard');
+					} else if(pagesNum == 1) {bot.send(interaction, embed2);}
 				}
-				msg.delete();
 			}
 		});
 	}

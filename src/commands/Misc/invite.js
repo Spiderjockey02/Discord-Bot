@@ -20,8 +20,8 @@ module.exports = class Invite extends Command {
 		message.channel.send({ embed:{ description:message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } });
 	}
 
-	//Run slash command
-	async callback(bot, interaction, guild, member, args) {
-		return await bot.send(interaction, [{ description:bot.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }] )
+	// Run slash command
+	async callback(bot, interaction) {
+		return await bot.send(interaction, [{ description:bot.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }]);
 	}
 };

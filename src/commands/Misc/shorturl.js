@@ -15,15 +15,15 @@ module.exports = class ShortURL extends Command {
 			examples: ['shorturl https://www.google.com', 'shorturl https://www.youtube.com'],
 			slash: true,
 			options: [{
-                name: "url",
-                description: "The specified URL to shorten.",
-                type: 'STRING',
-                required: true
-            }]
+				name: 'url',
+				description: 'The specified URL to shorten.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		const mes = message.content.split(' ').slice(1).join(' ');
 
@@ -43,8 +43,10 @@ module.exports = class ShortURL extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID)
+		const channel = guild.channels.cache.get(interaction.channelID);
 		const link = args.get('url').value;
 
 		try {
@@ -53,7 +55,7 @@ module.exports = class ShortURL extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 };

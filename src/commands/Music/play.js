@@ -16,11 +16,11 @@ module.exports = class Play extends Command {
 			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
 			slash: true,
 			options: [{
-                name: 'track',
-                description: 'The link or name of the track.',
-                type: 'STRING',
-                required: true
-            }]
+				name: 'track',
+				description: 'The link or name of the track.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -126,16 +126,16 @@ module.exports = class Play extends Command {
 		const member = guild.members.cache.get(interaction.user.id);
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] })
+			if (member.voice.channel.id != bot.manager.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
 		}
 
 		// Create player
@@ -151,25 +151,25 @@ module.exports = class Play extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
 		// Search for track
 		try {
-			res = await player.search(search, member)
+			res = await player.search(search, member);
 			if (res.loadType === 'LOAD_FAILED') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] });
 
 		} else if (res.loadType == 'PLAYLIST_LOADED') {
 			// Connect to voice channel if not already
@@ -190,7 +190,7 @@ module.exports = class Play extends Command {
 			player.queue.add(res.tracks[0]);
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
-				return await bot.send(interaction, 'Successfully started queue.') // Necessary to complete the interaction
+				return await bot.send(interaction, 'Successfully started queue.'); // Necessary to complete the interaction
 			} else {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)

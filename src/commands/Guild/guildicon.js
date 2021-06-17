@@ -17,7 +17,7 @@ module.exports = class Guildicon extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
@@ -30,15 +30,19 @@ module.exports = class Guildicon extends Command {
 			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channelID);
 		// Check for guild icon & send message
 		if (guild.icon) {
 			const embed = new Embed(bot, guild)
 				.setDescription(bot.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }))
 				.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
-			bot.send(interaction, embed);
+			bot.send(interaction, [embed]);
 		} else {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)] })
+			// return interaction.reply({ ephemeral: true, embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)] });
+			return bot.send(interaction, [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)], true);
 		}
 	}
 };

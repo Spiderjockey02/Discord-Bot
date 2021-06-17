@@ -76,7 +76,7 @@ module.exports = class Seek extends Command {
 
 		// Check that user is in the same voice channel
 		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
-		
+
 		// update the time
 		time = read24hrFormat(time);
 

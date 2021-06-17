@@ -1,7 +1,7 @@
 // Dependencies
 const { Structures } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	{Collection } = require('discord.js'),
+	{ Collection } = require('discord.js'),
 	{ logger } = require('../utils');
 
 module.exports = Structures.extend('Guild', Guild => {
@@ -14,7 +14,7 @@ module.exports = Structures.extend('Guild', Guild => {
 			// premium guild or not
 			this.premium = false;
 
-			//slash commands
+			// slash commands
 			this.interactions = new Collection();
 		}
 

@@ -35,11 +35,11 @@ module.exports = class SetPlugin extends Command {
 				const enabledPlugins = message.guild.settings.plugins;
 
 
-				enabledPlugins.push(message.args[0])
+				enabledPlugins.push(message.args[0]);
 				enabledPlugins.forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild)
+					const info = await bot.loadInteractionGroup(g, message.guild);
 					if (Array.isArray(info)) data.push(...info);
-				})
+				});
 				try {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
@@ -53,9 +53,9 @@ module.exports = class SetPlugin extends Command {
 				const enabledPlugins = message.guild.settings.plugins;
 
 				enabledPlugins.filter(h => h != message.args[0]).forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild)
+					const info = await bot.loadInteractionGroup(g, message.guild);
 					if (Array.isArray(info)) data.push(...info);
-				})
+				});
 				try {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
@@ -65,7 +65,7 @@ module.exports = class SetPlugin extends Command {
 			}
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });
-				console.log("updated")
+				console.log('updated');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));

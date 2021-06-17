@@ -93,13 +93,13 @@ module.exports = class Queue extends Command {
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] })		
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] })
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;
@@ -139,15 +139,14 @@ module.exports = class Queue extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
-			if (pages.length == pagesNum && player.queue.length > 10) { 
+			if (pages.length == pagesNum && player.queue.length > 10) {
 				paginate(bot, channel, pages);
-				return await bot.send(interaction, "Loaded Queue")
-			}
-			else return bot.send(interaction, pages[0]);
+				return await bot.send(interaction, 'Loaded Queue');
+			} else {return bot.send(interaction, pages[0]);}
 		} else {
-			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] })
+			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
 			return await bot.send(interaction, pages[pageNum]);
 		}
 	}
- };
+};

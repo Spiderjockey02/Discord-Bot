@@ -1,7 +1,7 @@
 const express = require('express'),
- app = express(),
- port = 3000,
- cors = require('cors');
+	app = express(),
+	port = 3000,
+	cors = require('cors');
 
 module.exports = bot => {
 	app
@@ -20,6 +20,7 @@ module.exports = bot => {
 		.use('/statistics', require('./statistics.js')(bot))
 		// Command list
 		.use('/commands', require('./commands.js')(bot))
+		.use('/user', require('./user.js')(bot))
 		// Make sure web scrapers aren't used
 		.use('/guilds', require('./guilds.js')(bot))
 		.get('/robots.txt', function(req, res) {

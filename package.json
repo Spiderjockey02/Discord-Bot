@@ -29,7 +29,7 @@
     "cors": "^2.8.5",
     "dateformat": "^4.5.1",
     "deepmerge": "^4.2.2",
-    "discord.js": "^13.0.0-dev.dec191aa1e4f22690285ca06c6eee7e6086b2930",
+    "discord.js": "github:discordjs/discord.js",
     "duckduckgo-images-api": "^1.0.5",
     "erela.js": "^2.3.2",
     "erela.js-deezer": "^1.0.5",

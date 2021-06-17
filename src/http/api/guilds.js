@@ -1,6 +1,6 @@
 // Dependencies
 const express = require('express'),
- { Permissions } = require('discord.js'),
+	{ Permissions } = require('discord.js'),
 	router = express.Router();
 
 // Guild page
@@ -27,19 +27,19 @@ module.exports = function(bot) {
 		// fetch member list of guild
 		const guild = bot.guilds.cache.get(req.params.guildId);
 		if (guild) {
-			await guild.members.fetch()
+			await guild.members.fetch();
 
-			//check if an ID query was made
+			// check if an ID query was made
 			let members = guild.members.cache.map(member => ({
 				user: member.user.username,
 				id: member.user.id,
 				avatar: member.user.displayAvatarURL({ size: 128 }),
 			}));
 
-			//check for ID query
-			if (req.query.ID) members = members.filter(mem => mem.id == req.query.ID)
+			// check for ID query
+			if (req.query.ID) members = members.filter(mem => mem.id == req.query.ID);
 
-			//check if any member are left
+			// check if any member are left
 			if (!members[0]) {
 				res.status(400).json({ error: 'No members found!' });
 			} else {
@@ -49,7 +49,7 @@ module.exports = function(bot) {
 		res.status(400).json({ error: 'Guild not found!' });
 	});
 
-	//get list of channels
+	// get list of channels
 	router.get('/:guildId/channels', async (req, res) => {
 		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/guilds/${req.params.guildId}/channels\`.`);
 
@@ -60,23 +60,23 @@ module.exports = function(bot) {
 				type: channel.type,
 				id: channel.id,
 				name: channel.name,
-				parentID: channel.parentID || null
-			}))
+				parentID: channel.parentID || null,
+			}));
 
-			//check for type query
-			if (req.query.type) channels = channels.filter(c => c.type == req.query.type)
+			// check for type query
+			if (req.query.type) channels = channels.filter(c => c.type == req.query.type);
 
-			//check for permission query
+			// check for permission query
 			if (req.query.perms) {
-				const perms = new Permissions(parseInt(req.query.perms))
+				const perms = new Permissions(BigInt(parseInt(req.query.perms)));
 				channels = channels.filter(channel => {
-					ch = guild.channels.cache.get(channel.id)
-				  return ch.permissionsFor(bot.user).has(perms) ? true : false
+					const ch = guild.channels.cache.get(channel.id);
+					return ch.permissionsFor(bot.user).has(perms) ? true : false;
 				});
 			}
 
 
-			//check if any member are left
+			// check if any member are left
 			if (!channels[0]) {
 				res.status(400).json({ error: 'No channels found!' });
 			} else {

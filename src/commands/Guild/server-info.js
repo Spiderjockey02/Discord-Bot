@@ -17,7 +17,7 @@ module.exports = class ServerInfo extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Sort roles by position
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).array();

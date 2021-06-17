@@ -18,7 +18,7 @@ module.exports = class Screenshot extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure a website was entered
 		if (!message.args[0]) {

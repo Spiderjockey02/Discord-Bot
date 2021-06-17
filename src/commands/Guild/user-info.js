@@ -18,7 +18,7 @@ module.exports = class UserInfo extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Get user
 		const members = await message.getMember();

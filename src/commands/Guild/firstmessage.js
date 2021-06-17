@@ -23,7 +23,7 @@ module.exports = class Firstmessage extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// get channel
 		const channel = message.getChannel();
@@ -48,6 +48,8 @@ module.exports = class Firstmessage extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(args.get('channel').value);
 
@@ -64,10 +66,10 @@ module.exports = class Firstmessage extends Command {
 				.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
 				.setFooter('misc:ID', { ID: fMessage.id })
 				.setTimestamp(fMessage.createdAt);
-			bot.send(interaction, embed);
+			bot.send(interaction, [embed]);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 };

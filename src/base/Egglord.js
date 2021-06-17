@@ -1,5 +1,3 @@
-const { type } = require('os');
-
 // Dependencies
 const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
@@ -169,12 +167,15 @@ module.exports = class Egglord extends Client {
 				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
 					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
 					if (command.conf.slash) {
-						arr.push({
+						const item = {
 							name: command.help.name,
 							description: command.help.description,
-							options: command.conf.options,
-							defaultPermission: command.conf.defaultPermission
-						});
+							defaultPermission: command.conf.defaultPermission,
+						};
+						if (command.conf.options[0]) {
+							item.options = command.conf.options;
+						}
+						arr.push(item);
 						guild.interactions.set(command.help.name, command);
 					}
 				}
@@ -198,7 +199,7 @@ module.exports = class Egglord extends Client {
 							name: command.help.name,
 							description: command.help.description,
 							options: command.conf.options,
-							defaultPermission: command.conf.defaultPermission
+							defaultPermission: command.conf.defaultPermission,
 						});
 						guild.interactions.delete(command.help.name, command);
 					}
@@ -223,18 +224,11 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Handle slash command callback
-	async send(interaction, content, ephemeralValue) {
-		switch(typeof(content)) {
-			case 'object':
-				if(content[0]) {
-					interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, embeds: content  });
-				} else {
-					interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, embeds: [ content ] });
-				}
-				break
-			default:
-				interaction.reply({ ephemeral: ephemeralValue ? ephemeralValue : false, content: content });
-				break
+	async send(interaction, content, ephemeralValue = false) {
+		if (typeof (content[0]) == 'object') {
+			interaction.reply({ ephemeral: ephemeralValue, embeds: content });
+		} else {
+			interaction.reply({ ephemeral: ephemeralValue, content: content[0] });
 		}
 		this.commandsUsed++;
 		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);

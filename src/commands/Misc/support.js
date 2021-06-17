@@ -12,11 +12,11 @@ module.exports = class Support extends Command {
 			description: 'Get support on the bot.',
 			usage: 'support',
 			cooldown: 2000,
-			slash: true
+			slash: true,
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		const embed = new Embed(bot, message.guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
@@ -24,11 +24,11 @@ module.exports = class Support extends Command {
 		message.channel.send(embed);
 	}
 
-	//Run slash command
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const embed = new Embed(bot, guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
 			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
-		return await bot.send(interaction, embed)
+		return await bot.send(interaction, embed);
 	}
 };

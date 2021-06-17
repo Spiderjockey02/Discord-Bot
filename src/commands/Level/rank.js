@@ -26,7 +26,7 @@ module.exports = class Rank extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Get user
 		const members = await message.getMember();
@@ -77,8 +77,11 @@ module.exports = class Rank extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		// Get user
+		const channel = guild.channels.cache.get(interaction.channelID);
 		const member = guild.members.cache.get(args.get('user').value);
 
 		// Retrieve Rank from databse
@@ -91,7 +94,7 @@ module.exports = class Rank extends Command {
 				const user = res.find(doc => doc.userID == member.user.id);
 				// if they haven't send any messages
 				if (!user) {
-					return interaction.reply({ ephemeral: true, embeds: [channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true)] })
+					return interaction.reply({ ephemeral: true, embeds: [channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true)] });
 				}
 				let rankScore;
 				for (let i = 0; i < res.length; i++) {
@@ -117,7 +120,7 @@ module.exports = class Rank extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 };
