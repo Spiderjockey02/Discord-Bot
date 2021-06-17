@@ -17,7 +17,7 @@ module.exports = class Boobs extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('nsfw/4k:FETCHING', {
@@ -29,7 +29,7 @@ module.exports = class Boobs extends Command {
 					msg.delete();
 					const embed = new Embed(bot, message.guild)
 						.setImage(res.data.message);
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 				});
 		} catch (err) {
 			if (message.deletable) message.delete();

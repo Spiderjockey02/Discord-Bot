@@ -15,12 +15,12 @@ module.exports = class Invite extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		message.channel.send({ embed:{ description:message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } });
 	}
 
-	// Run slash command
+	// Function for slash command
 	async callback(bot, interaction) {
 		return await bot.send(interaction, [{ description:bot.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }]);
 	}

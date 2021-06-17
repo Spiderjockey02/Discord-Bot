@@ -33,7 +33,7 @@ module.exports = class Captcha extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setColor(9807270)
 				.setImage(json.message);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

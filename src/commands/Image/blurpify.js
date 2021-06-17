@@ -34,7 +34,7 @@ module.exports = class Blurpify extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setColor(3447003)
 				.setImage(json.message);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

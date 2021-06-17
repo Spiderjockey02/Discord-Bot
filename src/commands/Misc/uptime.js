@@ -20,7 +20,7 @@ module.exports = class Uptime extends Command {
 	async run(bot, message) {
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('misc/uptime:DESC', { TIME: getReadableTime(bot.uptime) }));
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

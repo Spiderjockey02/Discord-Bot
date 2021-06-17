@@ -37,6 +37,6 @@ module.exports = class Cat extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setColor(3426654)
 			.setImage(res.url);
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

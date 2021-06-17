@@ -83,7 +83,7 @@ module.exports = class Generate extends Command {
 				if (!image || !image.data) return;
 				const attachment = new MessageAttachment(image.data, `${choice}.${choice == 'triggered' ? 'gif' : 'png'}`);
 				msg.delete();
-				message.channel.send(attachment);
+				message.channel.send({ files: [attachment] });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				msg.delete();

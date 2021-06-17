@@ -36,7 +36,7 @@ module.exports = class Image extends Command {
 			// send image
 			const embed = new Embed(bot, message.guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

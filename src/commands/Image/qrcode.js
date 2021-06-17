@@ -33,7 +33,7 @@ module.exports = class QRcode extends Command {
 			const embed = new Embed(bot, message.guild)
 				.attachFiles(attachment)
 				.setImage('attachment://QRCODE.png');
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

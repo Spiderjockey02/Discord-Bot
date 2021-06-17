@@ -33,7 +33,7 @@ module.exports = class Ship extends Command {
 			// send image
 			const embed = new Embed(bot, message.guild)
 				.setImage(json.message);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

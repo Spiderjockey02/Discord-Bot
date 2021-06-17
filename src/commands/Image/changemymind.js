@@ -40,7 +40,7 @@ module.exports = class ChangeMyMind extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setColor(2067276)
 				.setImage(json.message);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

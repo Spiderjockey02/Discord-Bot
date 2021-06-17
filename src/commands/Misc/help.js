@@ -15,7 +15,7 @@ module.exports = class Help extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		if (!message.args[0]) {
 			// Show default help page
@@ -59,7 +59,7 @@ module.exports = class Help extends Command {
 							message.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
 							message.translate('misc/help:LAYOUT'),
 						].join('\n'));
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 				} else {
 					message.channel.error('misc/help:NO_COMMAND');
 				}

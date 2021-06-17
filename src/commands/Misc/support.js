@@ -21,7 +21,7 @@ module.exports = class Support extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
 			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

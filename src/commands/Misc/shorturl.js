@@ -50,12 +50,12 @@ module.exports = class ShortURL extends Command {
 		const link = args.get('url').value;
 
 		try {
-			shorten(link, async function(res) {
-				return await bot.send(interaction, res);
+			await shorten(link, async function(res) {
+				return await bot.send(interaction, [res]);
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return bot.send(interaction, [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)]);
 		}
 	}
 };

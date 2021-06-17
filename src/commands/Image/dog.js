@@ -36,6 +36,6 @@ module.exports = class Dog extends Command {
 		// send image
 		const embed = new Embed(bot, message.guild)
 			.setImage(res.url);
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

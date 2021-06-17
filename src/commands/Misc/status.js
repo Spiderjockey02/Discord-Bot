@@ -26,7 +26,7 @@ module.exports = class Status extends Command {
 			.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
 			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();
-		await message.channel.send(embed);
+		await message.channel.send({ embeds: [embed] });
 		m.timedDelete();
 	}
 
@@ -36,6 +36,6 @@ module.exports = class Status extends Command {
 			.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
 			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();
-		return await bot.send(interaction, embed);
+		return await bot.send(interaction, [embed]);
 	}
 };
