@@ -57,7 +57,7 @@ module.exports = class Reminder extends Command {
 					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:DESC')}](https://discord.com/channels/${message.guild?.id ?? '@me'}/${message.channel.id}/${message.id})`)
 					.setFooter('fun/reminder:FOOTER', { TIME: ms(time, { long: true }) });
 
-				message.author.send(embed).catch(() => {
+				message.channel.send({ embeds: [embed] }).catch(() => {
 					message.channel.send(message.translate('fun/reminder:RESPONSE', { INFO: message.args.join(' ') }).replace('{USER}', message.member));
 				});
 

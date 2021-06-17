@@ -54,7 +54,7 @@ module.exports = class Pokemon extends Command {
 			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
 		msg.delete();
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

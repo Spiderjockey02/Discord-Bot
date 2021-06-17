@@ -30,15 +30,15 @@ module.exports = class UserInfo extends Command {
 			.setThumbnail(members[0].user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
 				{ name: message.translate('guild/user-info:USERNAME'), value: members[0].user.username, inline: true },
-				{ name: message.translate('guild/user-info:DISCRIM'), value: members[0].user.discriminator, inline: true },
+				{ name: message.translate('guild/user-info:DISCRIM'), value: `${members[0].user.discriminator}`, inline: true },
 				{ name: message.translate('guild/user-info:ROBOT'), value: message.translate(`misc:${members[0].user.bot ? 'YES' : 'NO'}`), inline: true },
 				{ name: message.translate('guild/user-info:CREATE'), value: moment(members[0].user.createdAt).format('lll'), inline: true },
 				{ name: message.translate('guild/user-info:STATUS'), value: `\`${(members[0].presence.activities.length >= 1) ? `${members[0].presence.activities[0].name} - ${(members[0].presence.activities[0].type == 'CUSTOM_STATUS') ? members[0].presence.activities[0].state : members[0].presence.activities[0].details}` : 'None'}\``, inline: true },
-				{ name: message.translate('guild/user-info:ROLE'), value: members[0].roles.highest, inline: true },
+				{ name: message.translate('guild/user-info:ROLE'), value: `${members[0].roles.highest}`, inline: true },
 				{ name: message.translate('guild/user-info:JOIN'), value: moment(members[0].joinedAt).format('lll'), inline: true },
 				{ name: message.translate('guild/user-info:NICK'), value: members[0].nickname != null ? members[0].nickname : message.translate('misc:NONE'), inline: true },
 				{ name: message.translate('guild/user-info:ROLES'), value: members[0].roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
 			);
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

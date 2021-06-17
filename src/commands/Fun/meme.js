@@ -26,7 +26,7 @@ module.exports = class Meme extends Command {
 
 		// Send the meme to channel
 		msg.delete();
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

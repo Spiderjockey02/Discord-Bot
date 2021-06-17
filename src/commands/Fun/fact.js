@@ -33,7 +33,7 @@ module.exports = class Fact extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(facts[num]);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		});
 	}
 

@@ -65,7 +65,7 @@ module.exports = class Screenshot extends Command {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }).then(m => m.timedDelete({ timeout: 5000 }));
 		} else {
 			const attachment = new MessageAttachment(data, 'website.png');
-			await message.channel.send(attachment);
+			await message.channel.send({ files: [attachment] });
 		}
 		msg.delete();
 	}

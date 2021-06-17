@@ -34,8 +34,8 @@ module.exports = class Discrim extends Command {
 
 		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/discrim:TITLE', { DISCRIM: message.args[0] })
-			.setDescription(members);
-		message.channel.send(embed);
+			.setDescription(members.join(' '));
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

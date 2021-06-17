@@ -31,17 +31,10 @@ module.exports = class Firstmessage extends Command {
 		try {
 			// get first message in channel
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
+			const embed = this.createEmbed(bot, message.guild, fMessage);
 
-			// display information
-			const embed = new Embed(bot, message.guild)
-				.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
-				.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-				.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-				.setDescription(fMessage.content)
-				.addField(message.translate('guild/firstmessage:JUMP'), fMessage.url)
-				.setFooter('misc:ID', { ID: fMessage.id })
-				.setTimestamp(fMessage.createdAt);
-			message.channel.send(embed);
+			// send embed
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -56,20 +49,26 @@ module.exports = class Firstmessage extends Command {
 		try {
 			// get first message in channel
 			const fMessage = await channel.messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
+			const embed = this.createEmbed(bot, guild, fMessage);
 
-			// display information
-			const embed = new Embed(bot, guild)
-				.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
-				.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-				.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-				.setDescription(fMessage.content)
-				.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
-				.setFooter('misc:ID', { ID: fMessage.id })
-				.setTimestamp(fMessage.createdAt);
+			// send embed
 			bot.send(interaction, [embed]);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
+	}
+
+	// Create the embed for the first message in channel
+	createEmbed(bot, guild, fMessage) {
+		const embed = new Embed(bot, guild)
+			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
+			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
+			.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
+			.setDescription(fMessage.content)
+			.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
+			.setFooter('misc:ID', { ID: fMessage.id })
+			.setTimestamp(fMessage.createdAt);
+		return embed;
 	}
 };

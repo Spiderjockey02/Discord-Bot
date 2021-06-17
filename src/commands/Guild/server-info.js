@@ -33,7 +33,7 @@ module.exports = class ServerInfo extends Command {
 			.setThumbnail(message.guild.iconURL())
 			.addFields(
 				{ name: message.translate('guild/server-info:NAME'), value: `\`${message.guild.name}\``, inline: true },
-				{ name: message.translate('guild/server-info:OWNER'), value: `\`${message.guild.owner.user.tag}\``, inline: true },
+				{ name: message.translate('guild/server-info:OWNER'), value: `\`${await message.guild.fetchOwner().then(m => m.user.tag)}\``, inline: true },
 				{ name: message.translate('guild/server-info:ID'), value: `\`${message.guild.id}\``, inline: true },
 				{ name: message.translate('guild/server-info:CREATED'), value: `\`${moment(message.guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
 				{ name: message.translate('guild/server-info:REGION'), value: `\`${message.guild.region}\``, inline: true },
@@ -46,6 +46,6 @@ module.exports = class ServerInfo extends Command {
 			)
 			.setTimestamp()
 			.setFooter('guild/server-info:FOOTER', { USER: message.author.tag });
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

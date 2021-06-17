@@ -126,38 +126,6 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Load a slash command [DEPRICATED]
-	/*
-	async loadInteraction(commandPath, commandName, guild) {
-		try {
-			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			if (cmd.conf.slash) {
-				// console.log
-				guild.interactions.set(cmd.help.name, cmd);
-			}
-			return false;
-		} catch (err) {
-			return `Unable to load interaction ${commandName}: ${err}`;
-		}
-	}
-	*/
-
-	// Deletes the slash command [DEPRICATED]
-	/*
-	async deleteInteraction(commandPath, commandName, guild) {
-		try {
-			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			if (cmd.conf.slash) {
-				guild.interactions.delete(cmd.help.name, cmd);
-			}
-			return false;
-		} catch (err) {
-			console.log(err);
-			return `Unable to delete interaction ${commandName}: ${err}`;
-		}
-	}
-	*/
-
 	// Loads a slash command category
 	async loadInteractionGroup(category, guild) {
 		try {
@@ -225,6 +193,7 @@ module.exports = class Egglord extends Client {
 
 	// Handle slash command callback
 	async send(interaction, content, ephemeralValue = false) {
+		// check if content is just text or not
 		if (typeof (content[0]) == 'object') {
 			interaction.reply({ ephemeral: ephemeralValue, embeds: content });
 		} else {

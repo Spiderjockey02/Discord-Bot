@@ -31,7 +31,7 @@ module.exports = class Avatar extends Command {
 		const embed = this.avatarEmbed(bot, message.guild, members[0]);
 
 		// send embed
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

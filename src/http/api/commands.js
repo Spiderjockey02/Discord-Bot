@@ -34,7 +34,7 @@ module.exports = function(bot) {
 	router.get('/:command', function(req, res) {
 		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/commands/${req.params.command}\`.`);
 
-		//check if command exists
+		// check if command exists
 		if (bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command))) {
 			const command = bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command));
 			res.status(200).json({

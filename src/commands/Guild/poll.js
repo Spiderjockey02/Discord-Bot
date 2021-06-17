@@ -28,7 +28,7 @@ module.exports = class Poll extends Command {
 			.setTitle('guild/poll:TITLE', { USER: message.author.tag })
 			.setDescription(message.args.join(' '))
 			.setFooter('guild/poll:FOOTER', {});
-		message.channel.send(embed).then(async (msg) => {
+		message.channel.send({ embeds: [embed] }).then(async (msg) => {
 			// Add reactions to message
 			await msg.react('✅');
 			await msg.react('❌');

@@ -47,7 +47,7 @@ module.exports = class Urban extends Command {
 				.setDescription(message.translate('fun/urban:DESCRIPTION', { DEFINTION: entries[0].definition, EXAMPLES: entries[0].example }))
 				.addField('👍', entries[0].thumbs_up, true)
 				.addField('👎', entries[0].thumbs_down, true);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 			msg.delete();
 		});
 	}

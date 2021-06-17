@@ -28,7 +28,7 @@ module.exports = class Advice extends Command {
 			msg.delete();
 			const embed = new MessageEmbed()
 				.setDescription(`💡 ${data.slip.advice}`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

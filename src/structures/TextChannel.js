@@ -43,7 +43,7 @@ module.exports = Structures.extend('TextChannel', Channel => {
 				if (returnValue) {
 					return { color: 3066993, description: `${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` };
 				} else {
-					return this.send({ embed:{ color: 3066993, description: `${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
+					return this.send({ embeds: [{ color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` }] });
 				}
 			} catch (err) {
 				this.client.logger.error(err.message);

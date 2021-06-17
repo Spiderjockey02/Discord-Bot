@@ -41,15 +41,15 @@ module.exports = class RoleInfo extends Command {
 			.addFields(
 				{ name: message.translate('guild/role-info:MEMBERS'), value: roles[0].members.size.toLocaleString(settings.Language), inline: true },
 				{ name: message.translate('guild/role-info:COLOR'), value: roles[0].hexColor, inline: true },
-				{ name: message.translate('guild/role-info:POSITION'), value: roles[0].position, inline: true },
+				{ name: message.translate('guild/role-info:POSITION'), value: `${roles[0].position}`, inline: true },
 				{ name: message.translate('guild/role-info:MENTION'), value: `<@&${roles[0].id}>`, inline: true },
-				{ name: message.translate('guild/role-info:HOISTED'), value: roles[0].hoist, inline: true },
-				{ name: message.translate('guild/role-info:MENTIONABLE'), value: roles[0].mentionable, inline: true },
+				{ name: message.translate('guild/role-info:HOISTED'), value: `${roles[0].hoist}`, inline: true },
+				{ name: message.translate('guild/role-info:MENTIONABLE'), value: `${roles[0].mentionable}`, inline: true },
 				{ name: message.translate('guild/role-info:PERMISSION'), value: permissions },
 				{ name: message.translate('guild/role-info:CREATED'), value: moment(roles[0].createdAt).format('lll') },
 			)
 			.setTimestamp()
 			.setFooter('guild/role-info:FOOTER', { MEMBER: message.author.tag, ID: roles[0].id });
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };
