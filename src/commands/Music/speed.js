@@ -22,7 +22,7 @@ module.exports = class Speed extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -51,13 +51,15 @@ module.exports = class Speed extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/speed:UPDATED', { NUM: player.speed }));
 			await bot.delay(5000);
-			return msg.edit(' ', embed);
+			return msg.edit({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);

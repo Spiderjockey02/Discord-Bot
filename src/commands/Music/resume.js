@@ -14,7 +14,7 @@ module.exports = class Resume extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -37,6 +37,8 @@ module.exports = class Resume extends Command {
 		player.pause(false);
 		return message.channel.success('music/resume:SUCCESS');
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);

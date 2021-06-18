@@ -16,7 +16,7 @@ module.exports = class Join extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -58,7 +58,7 @@ module.exports = class Join extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/join:MOVED'));
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -66,6 +66,8 @@ module.exports = class Join extends Command {
 			}
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);

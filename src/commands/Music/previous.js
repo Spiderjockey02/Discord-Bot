@@ -18,7 +18,7 @@ module.exports = class Previous extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -36,7 +36,7 @@ module.exports = class Previous extends Command {
 		if (queue.size == 0) {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('No previous tracks have been played');
-			return message.channel.send(embed);
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		// get total page number
@@ -65,12 +65,12 @@ module.exports = class Previous extends Command {
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
 			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, message, pages);
-			else return message.channel.send(pages[0]);
+			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			if (isNaN(message.args[0])) return message.channel.send('Page must be a number.');
 			if (message.args[0] > pagesNum) return message.channel.send(`There are only ${pagesNum} pages available.`);
 			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
-			return message.channel.send(pages[pageNum]);
+			return message.channel.send({ embeds: [pages[pageNum]] });
 		}
 	}
 };

@@ -15,7 +15,7 @@ module.exports = class Back extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -38,11 +38,16 @@ module.exports = class Back extends Command {
 		player.queue.unshift(player.queue.previous);
 		player.stop();
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
+
 		// Check if the member has role to interact with music plugin
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return bot.send(interaction, [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)], true);
 			}
 		}
 

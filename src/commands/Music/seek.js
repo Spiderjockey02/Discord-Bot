@@ -23,7 +23,7 @@ module.exports = class Seek extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -52,12 +52,14 @@ module.exports = class Seek extends Command {
 			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
 			player.seek(time);
-			const embed = new Embed(bot, message.guild)
+			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);

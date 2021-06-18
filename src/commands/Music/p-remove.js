@@ -16,6 +16,7 @@ module.exports = class PRemove extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

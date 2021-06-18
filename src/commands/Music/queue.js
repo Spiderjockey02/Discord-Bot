@@ -25,7 +25,7 @@ module.exports = class Queue extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -43,7 +43,7 @@ module.exports = class Queue extends Command {
 		if (queue.size == 0) {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('music/queue:EMPTY');
-			return message.channel.send(embed);
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		// get total page number
@@ -77,14 +77,16 @@ module.exports = class Queue extends Command {
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
 			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message.channel, pages);
-			else return message.channel.send(pages[0]);
+			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			if (isNaN(message.args[0])) return message.channel.send(message.translate('music/queue:NAN'));
 			if (message.args[0] > pagesNum) return message.channel.send(message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }));
 			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
-			return message.channel.send(pages[pageNum]);
+			return message.channel.send({ embeds: [pages[pageNum]] });
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);

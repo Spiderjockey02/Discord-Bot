@@ -16,6 +16,7 @@ module.exports = class PDelete extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// Make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-delete:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

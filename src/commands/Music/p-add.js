@@ -17,6 +17,7 @@ module.exports = class PAdd extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -70,7 +71,7 @@ module.exports = class PAdd extends Command {
 						.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 						.setColor(message.member.displayHexColor)
 						.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 
 					try {
 						collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });

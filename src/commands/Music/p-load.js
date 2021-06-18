@@ -18,6 +18,7 @@ module.exports = class PLoad extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-load:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -91,7 +92,7 @@ module.exports = class PLoad extends Command {
 				content.then(async function() {
 					const embed = new Embed(bot, message.guild)
 						.setDescription(message.translate('music/p-load:QUEUE', { NUM: p.songs.length, TITLE: message.args[0] }));
-					msg.edit(' ', embed);
+					msg.edit({ embeds: [embed] });
 				});
 			} else {
 				msg.edit(message.translate('music/p-load:NO_PLAYLIST'));

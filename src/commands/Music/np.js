@@ -17,7 +17,7 @@ module.exports = class NowPlaying extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -41,13 +41,15 @@ module.exports = class NowPlaying extends Command {
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester.id)}]`)
 				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);

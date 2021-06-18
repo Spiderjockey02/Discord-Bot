@@ -24,7 +24,7 @@ module.exports = class Play extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -101,7 +101,7 @@ module.exports = class Play extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/play:QUEUED', { NUM: res.tracks.length }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 
 			// Add songs to queue and then pLay the song(s) if not already
 			player.queue.add(res.tracks);
@@ -116,10 +116,12 @@ module.exports = class Play extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 			}
 		}
 	}
+
+	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelID);
 		const search = args.get('track').value;

@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ MessageEmbed } = require('discord.js'),
 	{ getStations } = require('radio-browser'),
 	Command = require('../../structures/Command.js');
 
@@ -15,7 +16,7 @@ module.exports = class Radio extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -41,11 +42,11 @@ module.exports = class Radio extends Command {
 				if (!data[0]) return message.channel.send('No radio found with that name');
 
 				const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-				const embed = new Embed(bot, message.guild)
+				let embed = new Embed(bot, message.guild)
 					.setTitle(`Results for ${message.args.join(' ')}`)
 					.setColor(message.member.displayHexColor)
 					.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 
 				const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
 				const max = data.length;
@@ -94,7 +95,10 @@ module.exports = class Radio extends Command {
 					if (!player.playing && !player.paused && !player.queue.size) {
 						player.play();
 					} else {
-						message.channel.send({ embed: { color: message.member.displayHexColor, description:`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})` } });
+						embed = new MessageEmbed()
+							.setColor(message.member.displayHexColor)
+							.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
+						message.channel.send({ embeds: [embed] });
 					}
 				}
 			});

@@ -22,7 +22,7 @@ module.exports = class Vaporwave extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -44,7 +44,7 @@ module.exports = class Vaporwave extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_2'));
 			await bot.delay(5000);
-			return msg.edit(' ', embed);
+			return msg.edit({ embeds: [embed] });
 		} else {
 			player.setFilter({
 				equalizer: [
@@ -58,9 +58,11 @@ module.exports = class Vaporwave extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/vaporwave:DESC_1'));
 			await bot.delay(5000);
-			return msg.edit(' ', embed);
+			return msg.edit({ embeds: [embed] });
 		}
 	}
+
+	// Function for slash command
 	async callbacK(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);

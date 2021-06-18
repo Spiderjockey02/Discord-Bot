@@ -18,6 +18,7 @@ module.exports = class PCreate extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -84,7 +85,7 @@ module.exports = class PCreate extends Command {
 					.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-				const search = await message.channel.send(embed);
+				const search = await message.channel.send({ embeds: [embed] });
 
 				try {
 					collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
@@ -131,7 +132,7 @@ module.exports = class PCreate extends Command {
 				].join('\n'))
 				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })
 				.setTimestamp();
-			msg.edit(' ', embed);
+			msg.edit({ embeds: [embed] });
 		} else {
 			msg.delete();
 			return message.channel.error('music/p-create:NO_SONG');

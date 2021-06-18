@@ -16,7 +16,7 @@ module.exports = class Lyrics extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Check that a song is being played
 		let options;

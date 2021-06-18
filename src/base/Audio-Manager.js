@@ -41,7 +41,7 @@ module.exports = (bot) => {
 				.setTitle('music/np:AUTHOR')
 				.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send(embed).then(m => m.timedDelete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+			if (channel) channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
 
 			// clear timeout (for queueEnd event)
 			if (player.timeout != null) return clearTimeout(player.timeout);
@@ -62,7 +62,7 @@ module.exports = (bot) => {
 				.setColor(15158332)
 				.setDescription(`An error has occured on playback: \`${payload.error}\``);
 			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send(embed).then(m => m.timedDelete({ timeout: 15000 }));
+			if (channel) channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
 		})
 		.on('queueEnd', (player) => {
 			// When the queue has finished
@@ -74,7 +74,7 @@ module.exports = (bot) => {
 				const embed = new MessageEmbed()
 					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild)?.settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
-				if (channel) channel.send(embed);
+				if (channel) channel.send({ embeds: [embed] });
 				player.destroy();
 			}, 180000);
 		})
@@ -84,7 +84,7 @@ module.exports = (bot) => {
 				const embed = new MessageEmbed()
 					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild)?.settings.Language));
 				const channel = bot.channels.cache.get(player.textChannel);
-				if (channel) channel.send(embed);
+				if (channel) channel.send({ embeds: [embed] });
 				player.destroy();
 			} else {
 				await player.setVoiceChannel(newChannel);

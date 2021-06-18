@@ -15,7 +15,7 @@ module.exports = class Search extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -85,7 +85,7 @@ module.exports = class Search extends Command {
 				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 
 			try {
 				collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });

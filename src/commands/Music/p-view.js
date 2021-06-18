@@ -19,6 +19,7 @@ module.exports = class PView extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({
