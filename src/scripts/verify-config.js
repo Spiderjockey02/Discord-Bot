@@ -29,7 +29,7 @@ module.exports.run = async (config) => {
 		logger.error(`${chalk.red('✗')} Bot token is missing.`);
 		error = true;
 	} else {
-		const client = new Discord.Client();
+		const client = new Discord.Client({ intents: [] });
 		await client.login(config.token).catch(e => {
 			if (e.message == 'An invalid token was provided.') {
 				logger.error(`${chalk.red('✗')} Bot token is incorrect.`);

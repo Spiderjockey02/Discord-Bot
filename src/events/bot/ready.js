@@ -54,8 +54,6 @@ module.exports = class Ready extends Event {
 			}
 
 			try {
-				console.log(data);
-				console.log(data.map(g => g.name));
 				await bot.guilds.cache.get(guild.id)?.commands.set(data).then(async interactionIDs => {
 					if (guild.settings.plugins.find(plugin => plugin === 'Moderation')) {
 						const category = (await readdir('./src/commands/Moderation/')).filter((v, i, a) => a.indexOf(v) === i);
@@ -79,7 +77,7 @@ module.exports = class Ready extends Event {
 				});
 				bot.logger.log('Loaded Interactions for guild: ' + guild.name);
 			} catch (err) {
-				console.log(err);
+				bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 			}
 		});
 

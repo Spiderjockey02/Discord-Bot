@@ -61,9 +61,9 @@ module.exports = class GuildCreate extends Event {
 		// update bot's activity
 		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
 
-		const enabledPlugins = guild.settings.plugins
-		enabledPlugins.forEach(function(category, index) { 
-			bot.loadInteractionGroup(category, guild)
-		})
+		const enabledPlugins = guild.settings.plugins;
+		enabledPlugins.forEach((category) => {
+			bot.loadInteractionGroup(category, guild);
+		});
 	}
 };
