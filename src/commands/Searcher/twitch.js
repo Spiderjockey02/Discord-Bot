@@ -47,7 +47,7 @@ module.exports = class Twitch extends Command {
 						.addField('\u200B', message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 			} else {
 				message.channel.error('searcher/twitch:NOT_FOUND');
 			}

@@ -15,18 +15,18 @@ module.exports = class Warnings extends Command {
 			usage: 'warnings [user]',
 			cooldown: 2000,
 			examples: ['warnings username'],
-			slash: true, 
+			slash: true,
 			options: [{
 				name: 'user',
 				description: 'The user you want to view the warnings of.',
 				type: 'USER',
 				required: true,
 			}],
-			defaultPermission: false
+			defaultPermission: false,
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -70,9 +70,12 @@ module.exports = class Warnings extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for message command
 	async callback(bot, interaction, guild, args) {
-		//Get user
-		const member = guild.members.cache.get(args.get('user').value)
+		// Get user
+		const member = guild.members.cache.get(args.get('user').value);
+		const channel = guild.channels.cache.get(interaction.channelID);
 
 		try {
 			await WarningSchema.find({

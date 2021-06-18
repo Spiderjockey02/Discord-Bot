@@ -47,15 +47,17 @@ module.exports = class TicketCreate extends Command {
 				const successEmbed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket-create:TITLE')
 					.setDescription(message.translate('ticket/ticket-create:DESC').replace('{channel}', channel));
-				message.channel.send(successEmbed).then(m => m.timedDelete({ timeout:10000 }));
+				message.channel.send({ embeds: [successEmbed] }).then(m => m.timedDelete({ timeout:10000 }));
 
 				// Add message to ticket channel
+				console.log(message.translate('ticket/ticket-create:FIELDT'));
+				console.log(reason);
 				const embed = new Embed()
 					.setColor(0xFF5555)
 					.addField(message.translate('ticket/ticket-create:FIELD1').replace('{username}', message.author.username), message.translate('ticket/ticket-create:FIELDT'))
 					.addField(message.translate('ticket/ticket-create:FIELD2'), reason)
 					.setTimestamp();
-				channel.send(`${message.author}, ${supportRole}`, embed);
+				channel.send(`${message.author}, ${supportRole}`, { embeds: [embed] });
 
 				// run ticketcreate event
 				await bot.emit('ticketCreate', channel, embed);

@@ -24,7 +24,7 @@ module.exports = class Deafen extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -55,25 +55,28 @@ module.exports = class Deafen extends Command {
 			message.channel.error('moderation/deafen:NOT_VC');
 		}
 	}
+
+	// Function for message command
 	async callback(bot, interaction, guild, args) {
-		const author = guild.members.cache.get(interaction.user.id);
-		const member = guild.members.cache.get(args.get(user).value);
+		const author = guild.members.cache.get(interaction.user.id),
+			member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelID);
 
 		if(member?.voice.channel) {
 			if(!member.voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
 				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${guild.id}].`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: bot.translate('permissions:DEAFEN_MEMBERs') }, true)] })
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: bot.translate('permissions:DEAFEN_MEMBERs') }, true)] });
 			}
 
-			if (member.user.id == author.id) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:SELF_PUNISH', { ERROR: null }, true)] })
+			if (member.user.id == author.id) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:SELF_PUNISH', { ERROR: null }, true)] });
 
 			try {
 				await member.voice.setDeaf(true);
-				return interaction.reply({ ephemeral: settings.ModerationClearToggle, embeds: [channel.success('moderation/deafen:SUCCESS', { USER: member.user }, true)] })
+				return interaction.reply({ ephemeral: guild.settings.ModerationClearToggle, embeds: [channel.success('moderation/deafen:SUCCESS', { USER: member.user }, true)] });
 
 			} catch(err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 			}
 		}
 	}

@@ -18,7 +18,7 @@ module.exports = class Clear extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -41,7 +41,7 @@ module.exports = class Clear extends Command {
 				.setTitle(message.translate('moderation/clear:TITLE'))
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
-			message.channel.send(embed).then(async msg => {
+			message.channel.send({ embeds: [embed] }).then(async msg => {
 				// React to message
 				await msg.react(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
 				await msg.react(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
@@ -94,7 +94,7 @@ module.exports = class Clear extends Command {
 					} else {
 						await msg.reactions.removeAll();
 						embed.setDescription(message.translate('moderation/clear:CON_TO'));
-						await msg.edit(embed);
+						await msg.edit({ embeds: [embed] });
 					}
 				});
 			});

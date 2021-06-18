@@ -43,8 +43,8 @@ module.exports = class Fortnite extends Command {
 				.addField(message.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins.toLocaleString(settings.Language), true)
 				.addField(message.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
 				.addField(message.translate('searcher/fortnite:KILLS'), data.stats.lifetime.kills.toLocaleString(settings.Language), true)
-				.addField(message.translate('searcher/fortnite:K/D'), data.stats.lifetime.kd, true);
-			await message.channel.send(embed);
+				.addField(message.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
+			await message.channel.send({ embeds: [embed] });
 		}).catch(err => {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: 'fortnite' has error: ${err.message}.`);

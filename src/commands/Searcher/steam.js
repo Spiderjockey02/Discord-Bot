@@ -75,6 +75,6 @@ module.exports = class Steam extends Command {
 			}))
 			.setTimestamp();
 		msg.delete();
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

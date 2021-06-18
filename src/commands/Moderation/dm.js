@@ -17,7 +17,7 @@ module.exports = class DM extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Make sure a member was mentioned
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -33,7 +33,7 @@ module.exports = class DM extends Command {
 				.setDescription(message.args.join(' ').slice(message.args[0].length))
 				.setTimestamp()
 				.setFooter(message.author.tag, message.author.displayAvatarURL({ format: 'png', size: 1024 }));
-			await members[0].user.send(embed);
+			await members[0].user.send({ embeds: [embed] });
 			message.channel.send(message.translate('moderation/dm:SUCCESS', { TAG: members[0].user.tag }));
 		} catch (err) {
 			if (message.deletable) message.delete();

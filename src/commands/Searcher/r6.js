@@ -76,9 +76,17 @@ module.exports = class R6 extends Command {
 
 		// get statistics of player
 		player = player[0];
-		const playerRank = await getRank(platform, player.id);
-		const playerStats = await getStats(platform, player.id);
-		const playerGame = await getLevel(platform, player.id);
+		let playerRank, playerStats, playerGame;
+		try {
+			playerRank = await getRank(platform, player.id);
+			playerStats = await getStats(platform, player.id);
+			playerGame = await getLevel(platform, player.id);
+		} catch (err) {
+			if (message.deletable) message.delete();
+			msg.delete();
+			bot.logger.error(`Command: 'fortnite' has error: ${err.message}.`);
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
 
 		if (!playerRank.length || !playerStats.length || !playerGame.length) {
 			msg.delete();
@@ -106,6 +114,6 @@ module.exports = class R6 extends Command {
 			.setTimestamp()
 			.setFooter(message.author.username);
 		msg.delete();
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

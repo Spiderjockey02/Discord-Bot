@@ -18,7 +18,7 @@ module.exports = class Mute extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();

@@ -31,9 +31,8 @@ module.exports = class QRcode extends Command {
 			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
 			// send image in embed
 			const embed = new Embed(bot, message.guild)
-				.attachFiles(attachment)
 				.setImage('attachment://QRCODE.png');
-			message.channel.send({ embeds: [embed] });
+			message.channel.send({ embeds: [embed], files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

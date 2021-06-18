@@ -33,24 +33,31 @@ module.exports = class MC extends Command {
 		// Ping server
 		status(message.args[0], { port: parseInt(message.args[1]) }).then((response) => {
 			// turn favicon to thumbnail
-			const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
-			const attachment = new MessageAttachment(imageStream, 'favicon.png');
+			let attachment;
+			if (response.favicon) {
+				const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
+				attachment = new MessageAttachment(imageStream, 'favicon.png');
+			}
 
 			const embed = new Embed(bot, message.guild)
 				.setColor(0x0099ff)
-				.setTitle('searcher/mc:TITLE')
-				.attachFiles([attachment])
-				.setThumbnail('attachment://favicon.png')
-				.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`)
-				.addField(message.translate('searcher/mc:IP'), response.host)
-				.addField(message.translate('searcher/mc:VERSION'), response.version)
-				.addField(message.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''))
-				.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(settings.Language)}/${response.maxPlayers.toLocaleString(settings.Language)}`);
+				.setTitle('searcher/mc:TITLE');
+			if (response.favicon) embed.setThumbnail('attachment://favicon.png');
+			embed.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`);
+			embed.addField(message.translate('searcher/mc:IP'), response.host);
+			embed.addField(message.translate('searcher/mc:VERSION'), response.version);
+			embed.addField(message.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
+			embed.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(settings.Language)}/${response.maxPlayers.toLocaleString(settings.Language)}`);
 			msg.delete();
-			message.channel.send(embed);
+			if (response.favicon) {
+				message.channel.send({ embeds: [embed], files: [attachment] });
+			} else {
+				message.channel.send({ embeds: [embed] });
+			}
 		}).catch(err => {
 			// An error occured (either no IP, Open port or timed out)
 			msg.delete();
+			console.log(err);
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));

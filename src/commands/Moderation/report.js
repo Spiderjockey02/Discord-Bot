@@ -17,7 +17,7 @@ module.exports = class Report extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete command for privacy
 		if (message.deletable) message.delete();
@@ -46,7 +46,7 @@ module.exports = class Report extends Command {
 				.setFooter(message.guild.name);
 			const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 			if (repChannel) {
-				repChannel.send(embed);
+				repChannel.send({ embeds: [embed] });
 				message.channel.success('moderation/report:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 			}
 		} else {

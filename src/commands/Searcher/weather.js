@@ -23,7 +23,7 @@ module.exports = class Weather extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/weather:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
@@ -31,57 +31,43 @@ module.exports = class Weather extends Command {
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name}` }));
 
-		// search up weather stats
-		find({ search: message.args.join(' '), degreeType: 'C' }, function(err, result) {
-			// make sure location was valid
-			if (!result[0]) return message.channel.send('Invalid location');
-
-			// Display weather at location
-			try {
-				const embed = new Embed(bot, message.guild)
-					.setTitle(message.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
-					.setDescription(message.translate('searcher/weather:DESC'))
-					.addField(message.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
-					.addField(message.translate('searcher/weather:SKY'), result[0].current.skytext, true)
-					.addField(message.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
-					.addField(message.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
-					.addField(message.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
-					.addField(message.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
-					.setThumbnail(result[0].current.imageUrl);
-				msg.delete();
-				message.channel.send(embed);
-			} catch(err) {
-				if (message.deletable) message.delete();
-				msg.delete();
-				bot.logger.error(`Command: 'weather' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-		});
+		// Display weather
+		const res = await this.weatherResponse(bot, message.guild, message.args.join(' '));
+		console.log(res);
+		msg.delete();
+		message.channel.send({ embeds: [res] });
 	}
-	async callback(bot, interaction, guild, args) {
-		const location = args.get('location').value;
 
-		find({ search: location, degreeType: 'C' }, function(err, result) {
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		// Get weather data
+		const location = args.get('location').value;
+		const res = await this.weatherResponse(bot, guild, location);
+
+		// Display weather
+		return bot.send(interaction, [res]);
+	}
+
+	// create weather embed
+	async weatherResponse(bot, guild, location) {
+		const t = await find({ search: location, degreeType: 'C' }, (err, result) => {
 			// make sure location was valid
-			if (!result[0]) return bot.send(interaction, 'Invalid location', true);
+			if (!result[0]) return 'Invalid location';
 
 			// Display weather at location
-			try {
-				const embed = new Embed(bot, guild)
-					.setTitle(bot.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
-					.setDescription(bot.translate('searcher/weather:DESC'))
-					.addField(bot.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
-					.addField(bot.translate('searcher/weather:SKY'), result[0].current.skytext, true)
-					.addField(bot.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
-					.addField(bot.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
-					.addField(bot.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
-					.addField(bot.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
-					.setThumbnail(result[0].current.imageUrl);
-				bot.send(interaction, embed);
-			} catch(err) {
-				bot.logger.error(`Command: 'weather' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] })
-			}
+			const embed = new Embed(bot, guild)
+				.setTitle(bot.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
+				.setDescription(bot.translate('searcher/weather:DESC'))
+				.addField(bot.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
+				.addField(bot.translate('searcher/weather:SKY'), result[0].current.skytext, true)
+				.addField(bot.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
+				.addField(bot.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
+				.addField(bot.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
+				.addField(bot.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
+				.setThumbnail(result[0].current.imageUrl);
+			return embed;
 		});
+
+		console.log(t);
 	}
 };

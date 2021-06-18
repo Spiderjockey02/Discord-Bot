@@ -60,6 +60,6 @@ module.exports = class Instagram extends Command {
 			.addField(message.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count.toLocaleString(settings.Language), true)
 			.addField(message.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
 			.addField(message.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
-		message.channel.send(embed);
+		message.channel.send({ embeds: [embed] });
 	}
 };

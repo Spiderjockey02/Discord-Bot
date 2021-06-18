@@ -19,7 +19,7 @@ module.exports = class Ban extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
@@ -49,7 +49,7 @@ module.exports = class Ban extends Command {
 					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
 					.addField(message.translate('moderation/ban:BAN_BY'), message.author.tag, true)
 					.addField(message.translate('misc:REASON'), reason, true);
-				await members[0].send(embed);
+				await members[0].send({ embeds: [embed] });
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 

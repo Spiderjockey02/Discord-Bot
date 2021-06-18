@@ -25,7 +25,7 @@ module.exports = class TicketSetup extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('ticket/ticket-setup:TITLE')
 				.setDescription(`\`${settings.prefix}ticket-setup category <channelID>\` - The parent of the channels \n\`${settings.prefix}ticket-setup role <roleID>\` - The support role for accessing channels`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else if (message.args[0] == 'category') {
 
 			// update category channel

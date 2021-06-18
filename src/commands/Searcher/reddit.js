@@ -42,7 +42,7 @@ module.exports = class Reddit extends Command {
 				.setImage(reddit.url)
 				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(settings.Language) });
 			msg.delete();
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			msg.delete();
