@@ -19,7 +19,7 @@ module.exports = class Avatar extends Command {
 				name: 'user',
 				description: 'The user you want to grab the avatar of.',
 				type: 'USER',
-				required: true,
+				required: false,
 			}],
 		});
 	}
@@ -40,7 +40,7 @@ module.exports = class Avatar extends Command {
 		const embed = this.avatarEmbed(bot, guild, member);
 
 		// send embed
-		return await bot.send(interaction, [embed]);
+		return await bot.send(interaction, {embeds: [embed]});
 	}
 
 	// create avatar embed

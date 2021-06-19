@@ -86,7 +86,7 @@ module.exports = class Leaderboard extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channel.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelID);
 		// Retrieve Ranks from database
 		RankSchema.find({
 			guildID: guild.id,

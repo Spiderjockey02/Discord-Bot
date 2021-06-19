@@ -23,6 +23,6 @@ module.exports = class EmojiList extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		bot.send(interaction, [bot.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') })]);
+		bot.send(interaction, {content: bot.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
 	}
 };

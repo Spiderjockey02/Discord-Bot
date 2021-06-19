@@ -122,6 +122,7 @@ module.exports = class Egglord extends Client {
 			});
 			return false;
 		} catch (err) {
+			console.log(err)
 			return `Unable to load command ${commandName}: ${err}`;
 		}
 	}
@@ -192,13 +193,8 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Handle slash command callback
-	async send(interaction, content, ephemeralValue = false) {
-		// check if content is just text or not
-		if (typeof (content[0]) == 'object') {
-			interaction.reply({ ephemeral: ephemeralValue, embeds: content });
-		} else {
-			interaction.reply({ ephemeral: ephemeralValue, content: content[0] });
-		}
+	async send(interaction, content) {
+		interaction.reply(content);
 		this.commandsUsed++;
 		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
 	}

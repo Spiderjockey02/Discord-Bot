@@ -67,7 +67,7 @@ module.exports = class Pokemon extends Command {
 			.catch(async (err) => {
 			// An error occured when looking for account
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return bot.send(interaction, [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], true);
+				return bot.send(interaction, {embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true});
 			});
 
 		// Send response to channel
@@ -76,6 +76,6 @@ module.exports = class Pokemon extends Command {
 			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
-		return await bot.send(interaction, [embed]);
+		return await bot.send(interaction, {embeds: [embed]});
 	}
 };

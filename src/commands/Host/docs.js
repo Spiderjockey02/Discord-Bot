@@ -23,7 +23,7 @@ module.exports = class Docs extends Command {
 		get(url).then(({ data }) => {
 
 			// Display discord.js docs (if any)
-			(data && !data.error) ? 	message.channel.send({ embed: data }) : message.channel.error('host/docs:MISSING');
+			(data && !data.error) ? message.channel.send({ embed: [data] }) : message.channel.error('host/docs:MISSING');
 		}).catch(err => {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.response.data.message}.`);

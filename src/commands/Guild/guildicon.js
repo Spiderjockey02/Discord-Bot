@@ -39,10 +39,11 @@ module.exports = class Guildicon extends Command {
 			const embed = new Embed(bot, guild)
 				.setDescription(bot.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }))
 				.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
-			bot.send(interaction, [embed]);
+			bot.send(interaction, {embeds: [embed]});
 		} else {
 			// return interaction.reply({ ephemeral: true, embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)] });
-			return bot.send(interaction, [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)], true);
+			bot.send(interaction, {embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { }, true)], ephemeral: true});
+			//return bot.send(interaction, [channel.error('guild/guildicon:NO_GUILD_ICON', { ERROR: null }, true)], true);
 		}
 	}
 };

@@ -13,7 +13,7 @@ const path = require('path');
 (async () => {
 	// load commands
 	const cmdFolders = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
+	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 137 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
 		if (bot.config.disabledPlugins.includes(dir)) return;
 		try {

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageAttachment } = require('discord.js'),
+const { MessageAttachment, MessageEmbed } = require('discord.js'),
 	{ RankSchema } = require('../../database/models'),
 	{ Rank: rank } = require('canvacord'),
 	Command = require('../../structures/Command.js');
@@ -21,7 +21,7 @@ module.exports = class Rank extends Command {
 				name: 'user',
 				description: 'The user you want to view the rank of.',
 				type: 'USER',
-				required: true,
+				required: false,
 			}],
 		});
 	}
@@ -37,40 +37,12 @@ module.exports = class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			RankSchema.find({
-				guildID: message.guild.id,
-			}).sort([
-				['user', 'descending'],
-			]).exec((err, res) => {
-				const user = res.find(doc => doc.userID == members[0].user.id);
-				// if they haven't send any messages
-				if (!user) {
-					msg.delete();
-					return message.channel.error('level/rank:NO_MESSAGES');
-				}
-				let rankScore;
-				for (let i = 0; i < res.length; i++) {
-					if (res[i].userID == members[0].user.id) rankScore = i;
-				}
-				// create rank card
-				const rankcard = new rank()
-					.setAvatar(members[0].user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-					.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
-					.setLevel(user.Level)
-					.setRank(rankScore + 1)
-					.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
-					.setStatus(members[0].presence.status)
-					.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-					.setUsername(members[0].user.username)
-					.setDiscriminator(members[0].user.discriminator);
-				// send rank card
-				rankcard.build().then(buffer => {
-					const attachment = new MessageAttachment(buffer, 'RankCard.png');
-					msg.delete();
-					message.channel.send(attachment);
-				});
-
-			});
+			const res = await this.createRankCard(message.guild, members[0], message.channel)
+			if (typeof(res) == 'object') {
+				await message.channel.send({files: [res]})
+			} else {
+				await message.channel.send(res);
+			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
@@ -82,45 +54,50 @@ module.exports = class Rank extends Command {
 	async callback(bot, interaction, guild, args) {
 		// Get user
 		const channel = guild.channels.cache.get(interaction.channelID);
-		const member = guild.members.cache.get(args.get('user').value);
+		const member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member
 
 		// Retrieve Rank from databse
 		try {
-			RankSchema.find({
-				guildID: guild.id,
-			}).sort([
-				['user', 'descending'],
-			]).exec((err, res) => {
-				const user = res.find(doc => doc.userID == member.user.id);
-				// if they haven't send any messages
-				if (!user) {
-					return interaction.reply({ ephemeral: true, embeds: [channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true)] });
-				}
-				let rankScore;
-				for (let i = 0; i < res.length; i++) {
-					if (res[i].userID == member.user.id) rankScore = i;
-				}
-				// create rank card
-				const rankcard = new rank()
-					.setAvatar(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
-					.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
-					.setLevel(user.Level)
-					.setRank(rankScore + 1)
-					.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
-					.setStatus(member.presence.status)
-					.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-					.setUsername(member.user.username)
-					.setDiscriminator(member.user.discriminator);
-				// send rank card
-				rankcard.build().then(buffer => {
-					const attachment = new MessageAttachment(buffer, 'RankCard.png');
-					bot.send(interaction, attachment);
-				});
+			const res = await this.createRankCard(guild, member, channel);
+			if (typeof(res) == 'object') {
+				await bot.send(interaction, {files: [res]})
+			} else {
+				await bot.send(interaction, {content: res })
+			}
 
-			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
+	}
+
+	//Create the rank card
+	async createRankCard(guild, member, channel) {
+		const res = await RankSchema.find({ guildID: guild.id }).sort([ ['user', 'descending'] ])
+		const user = res.find(doc => doc.userID == member.user.id);
+		// if they haven't send any messages
+		if (!user) {
+			return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
+		}
+		let rankScore;
+		for (let i = 0; i < res.length; i++) {
+			if (res[i].userID == member.user.id) rankScore = i;
+		}
+		// create rank card
+		const rankcard = new rank()
+			.setAvatar(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+			.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
+			.setLevel(user.Level)
+			.setRank(rankScore + 1)
+			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
+			.setStatus(member.presence.status)
+			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
+			.setUsername(member.user.username)
+			.setDiscriminator(member.user.discriminator);
+
+		// create rank card
+		const buffer = await rankcard.build();
+		const attachment = new MessageAttachment(buffer, 'RankCard.png');
+		return attachment;
 	}
 };
