@@ -27,6 +27,6 @@ module.exports = class Uptime extends Command {
 	async callback(bot, interaction, guild) {
 		const embed = new Embed(bot, guild)
 			.setDescription(bot.translate('misc/uptime:DESC', { TIME: getReadableTime(bot.uptime) }));
-		return bot.send(interaction, {embeds: [embed]});
+		return bot.send(interaction, { embeds: [embed] });
 	}
 };

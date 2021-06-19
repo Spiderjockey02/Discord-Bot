@@ -122,7 +122,7 @@ module.exports = class Egglord extends Client {
 			});
 			return false;
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 			return `Unable to load command ${commandName}: ${err}`;
 		}
 	}

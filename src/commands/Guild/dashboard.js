@@ -23,6 +23,6 @@ module.exports = class Dashboard extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		bot.send(interaction, {content: `${bot.config.websiteURL}/dashboard/${guild.id}`});
+		bot.send(interaction, { content: `${bot.config.websiteURL}/dashboard/${guild.id}` });
 	}
 };
