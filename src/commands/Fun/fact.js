@@ -43,7 +43,7 @@ module.exports = class Fact extends Command {
 		fs.readFile('./src/assets/json/random-facts.json', async (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				await bot.send(interaction, {embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true});
+				await bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 			}
 
 			// Retrieve a random fact
@@ -52,7 +52,7 @@ module.exports = class Fact extends Command {
 			const embed = new Embed(bot, guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(facts[num]);
-			await bot.send(interaction, {embeds: [embed]});
+			await bot.send(interaction, { embeds: [embed] });
 		});
 	}
 };

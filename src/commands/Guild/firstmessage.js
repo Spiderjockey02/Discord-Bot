@@ -52,10 +52,10 @@ module.exports = class Firstmessage extends Command {
 			const embed = this.createEmbed(bot, guild, fMessage);
 
 			// send embed
-			bot.send(interaction, {embeds: [embed]});
+			bot.send(interaction, { embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			bot.send(interaction, {embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true});
+			bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

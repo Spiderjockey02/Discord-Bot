@@ -37,9 +37,9 @@ module.exports = class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(message.guild, members[0], message.channel)
-			if (typeof(res) == 'object') {
-				await message.channel.send({files: [res]})
+			const res = await this.createRankCard(message.guild, members[0], message.channel);
+			if (typeof (res) == 'object') {
+				await message.channel.send({ files: [res] });
 			} else {
 				await message.channel.send(res);
 			}
@@ -54,15 +54,15 @@ module.exports = class Rank extends Command {
 	async callback(bot, interaction, guild, args) {
 		// Get user
 		const channel = guild.channels.cache.get(interaction.channelID);
-		const member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member
+		const member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
 
 		// Retrieve Rank from databse
 		try {
 			const res = await this.createRankCard(guild, member, channel);
-			if (typeof(res) == 'object') {
-				await bot.send(interaction, {files: [res]})
+			if (typeof (res) == 'object') {
+				await bot.send(interaction, { files: [res] });
 			} else {
-				await bot.send(interaction, {content: res })
+				await bot.send(interaction, { content: res });
 			}
 
 		} catch (err) {
@@ -71,9 +71,9 @@ module.exports = class Rank extends Command {
 		}
 	}
 
-	//Create the rank card
+	// Create the rank card
 	async createRankCard(guild, member, channel) {
-		const res = await RankSchema.find({ guildID: guild.id }).sort([ ['user', 'descending'] ])
+		const res = await RankSchema.find({ guildID: guild.id }).sort([ ['user', 'descending'] ]);
 		const user = res.find(doc => doc.userID == member.user.id);
 		// if they haven't send any messages
 		if (!user) {
