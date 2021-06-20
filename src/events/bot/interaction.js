@@ -23,7 +23,7 @@ module.exports = class Interaction extends Event {
 		});
 
 		if (neededPermissions.length > 0) {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)] });
+			return await bot.send(interaction, { embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
 		}
 
 		// Check to see if user is in 'cooldown'
@@ -40,13 +40,12 @@ module.exports = class Interaction extends Event {
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				console.log(channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true));
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)] });
+				return await bot.send(interaction, { embeds:[channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)], ephemeral: true });
 			}
 		}
 
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-		return Command.callback(bot, interaction, guild, interaction.options);
+		Command.callback(bot, interaction, guild, interaction.options);
 	}
 };

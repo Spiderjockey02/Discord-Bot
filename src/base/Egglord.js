@@ -194,9 +194,9 @@ module.exports = class Egglord extends Client {
 
 	// Handle slash command callback
 	async send(interaction, content) {
-		interaction.reply(content);
-		this.commandsUsed++;
 		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
+		this.commandsUsed++;
+		return await interaction.reply(content);
 	}
 
 	// Fetches adult sites for screenshot NSFW blocking

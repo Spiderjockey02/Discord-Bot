@@ -4,7 +4,7 @@ const emojiList = ['⏮', '◀️', '▶️', '⏭'],
 
 module.exports = async (bot, channel, pages) => {
 	let page = 0;
-	const curPage = await channel.send(pages[page]);
+	const curPage = await channel.send({ embeds: [pages[page]] });
 
 	// react to embed with all emojis
 	for (const emoji of emojiList) await curPage.react(emoji);
@@ -32,7 +32,7 @@ module.exports = async (bot, channel, pages) => {
 		default:
 			break;
 		}
-		curPage.edit(pages[page]);
+		curPage.edit({ embeds: [pages[page]] });
 	});
 
 	// when timer runs out remove all reactions to show end of pageinator

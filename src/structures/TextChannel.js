@@ -25,11 +25,11 @@ module.exports = Structures.extend('TextChannel', Channel => {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				const embed = new MessageEmbed()
 					.setColor(15158332)
-					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}`);
+					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				if (returnValue) {
 					return embed;
 				} else {
-					return this.send({ embeds: [{ color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` }] });
+					return this.send({ embeds: [embed] });
 				}
 			} catch (err) {
 				this.client.logger.error(err.message);
@@ -40,10 +40,13 @@ module.exports = Structures.extend('TextChannel', Channel => {
 		success(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
+				const embed = new MessageEmbed()
+					.setColor(3066993)
+					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				if (returnValue) {
-					return { color: 3066993, description: `${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` };
+					return embed;
 				} else {
-					return this.send({ embeds: [{ color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` }] });
+					return this.send({ embeds: [embed] });
 				}
 			} catch (err) {
 				this.client.logger.error(err.message);

@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { functions: { checkMusic } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Disconnect extends Command {
 	constructor(bot) {
@@ -17,46 +18,28 @@ module.exports = class Disconnect extends Command {
 
 	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
-
-		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Destory player (clears queue & leaves channel)
+		const player = bot.manager.players.get(message.guild.id);
 		player.destroy();
 		return message.channel.success('music/dc:LEFT');
 	}
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
-
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
-
-		// Check that user is in the same voice channel
-		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Destory player (clears queue & leaves channel)
+		const player = bot.manager.players.get(member.guild.id);
 		player.destroy();
-		return interaction.reply({ ephemeral: false, embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
+		return bot.send(interaction, { embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
 	}
 };

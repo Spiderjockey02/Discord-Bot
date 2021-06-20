@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Shuffle extends Command {
@@ -17,19 +18,11 @@ module.exports = class Shuffle extends Command {
 
 	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// shuffle queue
 		player.queue.shuffle();
@@ -45,24 +38,17 @@ module.exports = class Shuffle extends Command {
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelID);
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
-
-		// Check that user is in the same voice channel
-		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		const player = bot.manager.players.get(member.guild.id);
 
 		// shuffle queue
 		player.queue.shuffle();
 		const embed = new Embed(bot, guild)
 			.setColor(member.displayHexColor)
 			.setDescription(bot.translate('music/shuffle:DESC'));
-		bot.send(interaction, embed);
+		bot.send(interaction, { embeds: [embed] });
 	}
 };

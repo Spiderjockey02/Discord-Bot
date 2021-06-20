@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Back extends Command {
@@ -18,26 +19,18 @@ module.exports = class Back extends Command {
 				name: 'volume',
 				description: 'The volume you want the song to play at.',
 				type: 'INTEGER',
-				required: false,
+				required: true,
 			}],
 		});
 	}
 
 	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure a number was entered
 		if (!message.args[0]) {
@@ -60,23 +53,15 @@ module.exports = class Back extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
-		const volume = args.get('volume').value;
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID),
+			volume = args.get('volume').value;
 
-		// Check if the member has role to interact with music plugin
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
-
-		// Check that user is in the same voice channel
-		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		const player = bot.manager.players.get(member.guild.id);
 
 		// Make sure a number was entered
 		if (!volume) {
@@ -86,7 +71,7 @@ module.exports = class Back extends Command {
 			return await bot.send(interaction, embed);
 		}
 
-		if (volume <= 0 || volume > 1000) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
+		if (volume <= 0 || volume > 1000) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
 
 		// Update volume
 		player.setVolume(volume);
