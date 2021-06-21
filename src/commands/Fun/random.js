@@ -1,5 +1,6 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const max = 100000,
+	{ MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Random extends Command {
@@ -32,8 +33,7 @@ module.exports = class Random extends Command {
 	async run(bot, message, settings) {
 
 		// Random number and facts command
-		const max = 100000,
-			num1 = parseInt(message.args[0]),
+		const num1 = parseInt(message.args[0]),
 			num2 = parseInt(message.args[1]);
 
 		// Make sure both entries are there
@@ -64,9 +64,8 @@ module.exports = class Random extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const settings = guild.settings;
-		const channel = guild.channels.cache.get(interaction.channelID);
-		const max = 100000,
+		const channel = guild.channels.cache.get(interaction.channelID),
+			settings = guild.settings,
 			num1 = args.get('min').value,
 			num2 = args.get('max').value;
 
@@ -76,6 +75,6 @@ module.exports = class Random extends Command {
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: bot.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		return await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 };

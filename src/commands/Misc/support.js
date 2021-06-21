@@ -28,7 +28,7 @@ module.exports = class Support extends Command {
 	async callback(bot, interaction, guild) {
 		const embed = new Embed(bot, guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
-			.setDescription(bot.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
+			.setDescription(guild.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
 		return await bot.send(interaction, { embeds: [embed] });
 	}
 };

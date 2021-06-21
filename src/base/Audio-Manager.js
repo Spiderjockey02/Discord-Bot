@@ -72,7 +72,7 @@ module.exports = (bot) => {
 
 				const vcName = bot.channels.cache.get(player.voiceChannel)?.name ?? 'unknown';
 				const embed = new MessageEmbed()
-					.setDescription(bot.translate('music/dc:INACTIVE', { VC: vcName }, bot.guilds.cache.get(player.guild)?.settings.Language));
+					.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:INACTIVE', { VC: vcName }));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send({ embeds: [embed] });
 				player.destroy();
@@ -82,7 +82,7 @@ module.exports = (bot) => {
 			// Voice channel updated
 			if (!newChannel) {
 				const embed = new MessageEmbed()
-					.setDescription(bot.translate('music/dc:KICKED', {}, bot.guilds.cache.get(player.guild)?.settings.Language));
+					.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:KICKED'));
 				const channel = bot.channels.cache.get(player.textChannel);
 				if (channel) channel.send({ embeds: [embed] });
 				player.destroy();

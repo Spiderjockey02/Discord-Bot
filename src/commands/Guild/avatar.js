@@ -36,7 +36,7 @@ module.exports = class Avatar extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user').value);
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 		const embed = this.avatarEmbed(bot, guild, member);
 
 		// send embed

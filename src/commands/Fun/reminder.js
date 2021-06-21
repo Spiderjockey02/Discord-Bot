@@ -1,9 +1,8 @@
 // Dependencies
 const ms = require('ms'),
 	{ MessageAttachment } = require('discord.js'),
-	{ Embed } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
-	{ time: { getTotalTime } } = require('../../utils'),
+	{ time: { getTotalTime }, Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Reminder extends Command {

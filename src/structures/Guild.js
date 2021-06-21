@@ -29,6 +29,13 @@ module.exports = Structures.extend('Guild', Guild => {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
 			return await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings).then(async () => await this.fetchGuildConfig());
 		}
+
+		// This will get the translation for the provided text
+		translate(key, args) {
+			const language = this.client.translations.get(this.settings.Language);
+			if (!language) throw 'Invalid language set in data.';
+			return language(key, args);
+		}
 	}
 	return CustomGuild;
 });

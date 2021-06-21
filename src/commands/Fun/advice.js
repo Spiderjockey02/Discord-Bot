@@ -41,7 +41,7 @@ module.exports = class Advice extends Command {
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelID);
 		try {
-			const data = await ftch('https://api.adviceslip.com/advice').then(res => res.json());
+			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
