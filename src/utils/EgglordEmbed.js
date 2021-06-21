@@ -5,7 +5,7 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 		super(data);
 		this.bot = bot;
 		this.guild = guild;
-		this.setColor('RANDOM')
+		this.setColor(bot.config.embedColor)
 			.setTimestamp();
 	}
 

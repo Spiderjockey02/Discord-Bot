@@ -86,7 +86,6 @@ module.exports = class R6 extends Command {
 		} else {
 			message.channel.send({ embeds: [resp] });
 		}
-		console.log(resp);
 	}
 
 	// Function for slash command
@@ -98,11 +97,11 @@ module.exports = class R6 extends Command {
 
 		// Get platform
 		let device = platforms['pc'];
-		if (['pc', 'xbox', 'ps4'].includes(platform)) device = platforms[platform.toLowerCase()];
+		if (['pc', 'xbox', 'ps4'].includes(platform?.toLowerCase())) device = platforms[platform.toLowerCase()];
 
 		// Get region
 		let Region = regions['eu'];
-		if (['eu', 'na', 'as'].includes(region.toLowerCase())) Region = regions[region.toLowerCase()];
+		if (['eu', 'na', 'as'].includes(region?.toLowerCase())) Region = regions[region.toLowerCase()];
 
 		// display stats
 		const resp = await this.fetchUserData(bot, guild, channel, username, device, Region);
