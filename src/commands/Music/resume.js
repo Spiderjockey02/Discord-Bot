@@ -33,17 +33,15 @@ module.exports = class Resume extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
-
 		// The music is already resumed
+		const player = bot.manager.players.get(member.guild.id);
 		if (!player.paused) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/resume:IS_RESUMED', {}, true)] });
 
 		// Resumes the music

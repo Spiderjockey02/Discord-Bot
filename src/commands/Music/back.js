@@ -17,7 +17,7 @@ module.exports = class Back extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
@@ -42,7 +42,7 @@ module.exports = class Back extends Command {
 
 		// Make sure there was a previous song
 		const player = bot.manager.players.get(member.guild.id);
-		if (player.queue.previous == null) return await bot.send(interaction, { content: bot.translate('music/back:NO_PREV') });
+		if (player.queue.previous == null) return await bot.send(interaction, { content: guild.translate('music/back:NO_PREV') });
 
 		// Start playing the previous song
 		player.queue.unshift(player.queue.previous);

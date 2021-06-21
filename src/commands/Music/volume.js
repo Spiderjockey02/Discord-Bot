@@ -25,7 +25,7 @@ module.exports = class Back extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
@@ -61,23 +61,23 @@ module.exports = class Back extends Command {
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
-
 		// Make sure a number was entered
+		const player = bot.manager.players.get(member.guild.id);
 		if (!volume) {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/volume:CURRENT', { NUM: player.volume }));
+				.setDescription(guild.translate('music/volume:CURRENT', { NUM: player.volume }));
 			return await bot.send(interaction, embed);
 		}
 
+		// make sure volume is between 0 and 1000
 		if (volume <= 0 || volume > 1000) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
 
 		// Update volume
 		player.setVolume(volume);
 		const embed = new Embed(bot, guild)
 			.setColor(member.displayHexColor)
-			.setDescription(bot.translate('music/volume:UPDATED', { NUM: player.volume }));
+			.setDescription(guild.translate('music/volume:UPDATED', { NUM: player.volume }));
 		return bot.send(interaction, embed);
 	}
 };

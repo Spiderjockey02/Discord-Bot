@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ time: { read24hrFormat, getReadableTime } } = require('../../utils'),
+	{ time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Rewind extends Command {
@@ -25,20 +25,12 @@ module.exports = class Rewind extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
+	async run(bot, message) {
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure song isn't a stream
 		if (!player.queue.current.isSeekable) return message.channel.error('music/rewind:LIVESTREAM');
@@ -59,29 +51,19 @@ module.exports = class Rewind extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
-		const time = args.get('time').value;
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
-
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
-
-		// Check that user is in the same voice channel
-		if (member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure song isn't a stream
+		const player = bot.manager.players.get(member.guild.id);
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:LIVESTREAM', { ERROR: null }, true)] });
 
 		// update the time
-		time = read24hrFormat((time) ? time : '10');
+		const time = read24hrFormat(args.get('time')?.value ?? '10');
 
 		if (time + player.position <= 0) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:INVALID', { ERROR: null }, true)] });
@@ -89,7 +71,7 @@ module.exports = class Rewind extends Command {
 			player.seek(player.position - time);
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(guild.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			bot.send(interaction, embed);
 		}
 	}

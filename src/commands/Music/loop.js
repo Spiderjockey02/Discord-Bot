@@ -34,7 +34,7 @@ module.exports = class Loop extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
@@ -59,7 +59,7 @@ module.exports = class Loop extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelID),
-			type = args.get('type').value;
+			type = args.get('type')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
@@ -70,12 +70,12 @@ module.exports = class Loop extends Command {
 		if (!type || type == 'song') {
 			// (un)loop the song
 			player.setTrackRepeat(!player.trackRepeat);
-			const trackRepeat = bot.translate(`misc:${player.trackRepeat ? 'ENABLED' : 'DISABLED'}`);
+			const trackRepeat = guild.translate(`misc:${player.trackRepeat ? 'ENABLED' : 'DISABLED'}`);
 			return bot.send(interaction, { content: bot.translate('music/loop:TRACK', { TOGGLE: trackRepeat }) });
 		} else if (type == 'queue') {
 			// (un)loop the queue
 			player.setQueueRepeat(!player.queueRepeat);
-			const queueRepeat = bot.translate(`misc:${player.queueRepeat ? 'ENABLED' : 'DISABLED'}`);
+			const queueRepeat = guild.translate(`misc:${player.queueRepeat ? 'ENABLED' : 'DISABLED'}`);
 			return bot.send(interaction, { content: bot.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
 		}
 	}

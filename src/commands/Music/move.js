@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { functions: { checkMusic } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Move extends Command {
 	constructor(bot) {
@@ -29,21 +30,12 @@ module.exports = class Move extends Command {
 
 	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
-
-		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure positions are number(s)
+		const player = bot.manager.players.get(message.guild.id);
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/move:INVALID'));
 
 		// Can't move currently playing song
@@ -69,29 +61,20 @@ module.exports = class Move extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID),
+			pos1 = args.get('position').value,
+			pos2 = args.get('newposition').value;
 
-		const pos1 = args.get('position').value;
-		const pos2 = args.get('newposition').value;
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		const player = bot.manager.players.get(member.guild.id);
 
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		if (pos1 === 0) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 
-		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', { PREFIX: guild.settings.prefix }, true)] });
-
-		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', { ERROR: null }, true)] });
-
+		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 
 		if (!pos2) {
 			const song = player.queue[pos1 - 1];
@@ -99,12 +82,12 @@ module.exports = class Move extends Command {
 			player.queue.splice(0, 0, song);
 			return await bot.send(interaction, bot.translate('music/move:MOVED_1', { TITLE: song.title }));
 		} else if (pos2) {
-			if (pos2 == 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', { PREFIX: guild.settings.prefix }, true)] });
-			if ((pos2 > player.queue.length) || !player.queue[pos2]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', { ERROR: null }, true)] });
+			if (pos2 == 0) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
+			if ((pos2 > player.queue.length) || !player.queue[pos2]) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(pos2 - 1, 0, song);
-			return await bot.send(interaction, bot.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
+			return await bot.send(interaction, guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
 		}
 	}
 };

@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { functions: { checkMusic } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Remove extends Command {
 	constructor(bot) {
@@ -14,28 +15,26 @@ module.exports = class Remove extends Command {
 			slash: true,
 			options: [{
 				name: 'position',
-				description: 'The position of the song.',
+				description: 'The position of the queue.',
 				type: 'INTEGER',
 				required: true,
+			},
+			{
+				name: 'newposition',
+				description: 'The 2nd position of the queue.',
+				type: 'INTEGER',
+				required: false,
 			}],
 		});
 	}
 
 	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/remove:NAN'));
 
@@ -60,33 +59,31 @@ module.exports = class Remove extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID),
+			pos1 = args.get('position').value,
+			pos2 = args.get('newposition')?.value;
 
-		const pos1 = args.get('position').value;
-		const pos2 = args.get('newposition').value;
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
+		const player = bot.manager.players.get(member.guild.id);
+		if (!pos2) {
+			if (pos1 == 0) return bot.send(interaction, { content: guild.translate('music/remove:PLAYING') });
+			if (pos1 > player.queue.length) return bot.send(interaction, { content: guild.translate('music/remove:MISSING') });
+			const { title } = player.queue[pos1 - 1];
+
+			player.queue.splice(pos1 - 1, 1);
+			return bot.send(interaction, { content: guild.translate('music/remove:REMOVED', { TITLE: title }) });
+		} else {
+			if (pos1 == 0 || pos2 == 0) return bot.send(interaction, { content: guild.translate('music/remove:PLAYING') });
+			if (pos1 > player.queue.length || pos2 > player.queue.length) return bot.send(interaction, { content: guild.translate('music/remove:MISSING') });
+			if (pos1 > pos2) return bot.send(interaction, { content: guild.translate('music/remove:INVALID') });
+
+			const songsToRemove = pos2 - pos1;
+			player.queue.splice(pos1 - 1, songsToRemove + 1);
+			return bot.send(interaction, bot.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }));
 		}
-		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
-
-		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:PLAYING', { PREFIX: guild.settings.prefix }, true)] });
-
-		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/remove:MISSING', { ERROR: null }, true)] });
-
-		const { title } = player.queue[pos1 - 1];
-
-		player.queue.splice(pos1 - 1, 1);
-
-		return await bot.send(interaction, bot.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }));
 	}
 };

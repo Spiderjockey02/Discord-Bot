@@ -13,7 +13,7 @@ module.exports = class Bassboost extends Command {
 			description: 'Bassboost the song',
 			usage: 'bassboost [value]',
 			cooldown: 3000,
-			examples: ['bb 8', 'bb -4'],
+			examples: ['bb 8', 'bb'],
 			slash: true,
 			options: [{
 				name: 'amount',
@@ -25,19 +25,18 @@ module.exports = class Bassboost extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
 
 		// update player's bassboost
-		const player = bot.manager.players.get(member.guild.id);
-		if (!amount) {
+		const player = bot.manager.players.get(message.guild.id);
+		if (!message.args[0]) {
 			player.setBassboost(!player.bassboost);
-			const msg = await  message.channel.send(message.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`))
-			const embed = new Embed(bot, guild)
+			const msg = await message.channel.send(message.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`));
+			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
 			return msg.edit({ embeds: [embed] });
@@ -47,7 +46,7 @@ module.exports = class Bassboost extends Command {
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/bassboost:INVALID'));
 
 		// Turn on bassboost with custom value
-		player.setBassboost(amount / 10);
+		player.setBassboost(parseInt(message.args[0]) / 10);
 		const msg = await message.channel.send(message.translate('music/bassboost:SET_BB', { DB: message.args[0] }));
 		const embed = new Embed(bot, message.guild)
 			.setDescription(message.translate('music/bassboost:DESC_3', { DB: message.args[0] }));
@@ -69,11 +68,11 @@ module.exports = class Bassboost extends Command {
 		const player = bot.manager.players.get(member.guild.id);
 		if (!amount) {
 			player.setBassboost(!player.bassboost);
-			const msg = await bot.send(interaction, { content: bot.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`, {}, guild.settings.Language) });
+			await bot.send(interaction, { content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
 			const embed = new Embed(bot, guild)
-				.setDescription(bot.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`, {}, guild.settings.Language));
+				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
-			return interaction.editReply(embed);
+			return await interaction.editReply(embed);
 		}
 
 		// Make sure value is a number
@@ -85,6 +84,6 @@ module.exports = class Bassboost extends Command {
 		const embed = new Embed(bot, guild)
 			.setDescription(bot.translate('music/bassboost:DESC_3', { DB: amount }));
 		await bot.delay(5000);
-		return bot.editReply(embed);
+		return msg.editReply(embed);
 	}
 };

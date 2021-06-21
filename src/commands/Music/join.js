@@ -45,6 +45,10 @@ module.exports = class Join extends Command {
 					textChannel: message.channel.id,
 					selfDeafen: true,
 				}).connect();
+				const embed = new Embed(bot, message.guild)
+					.setColor(message.member.displayHexColor)
+					.setDescription(bot.translate('music/join:JOIN'));
+				message.channel.send({ embeds:[embed] });
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -69,24 +73,23 @@ module.exports = class Join extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
+				return bot.send(interaction, { embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)], ephemeral: true });
 			}
 		}
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
 
 		// Make sure the user is in a voice channel
-		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)] });
+		if (!member.voice.channel) return bot.send(interaction, { embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)], ephemeral: true });
 
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.me).has('MOVE_MEMBERS')) {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)] });
+			return bot.send(interaction, { embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)], ephemeral: true });
 		}
 
 		// If no player (no song playing) create one and join channel
@@ -98,9 +101,13 @@ module.exports = class Join extends Command {
 					textChannel: channel.id,
 					selfDeafen: true,
 				}).connect();
+				const embed = new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(bot.translate('music/join:JOIN'));
+				bot.send(interaction, { embeds:[embed] });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+				return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 			}
 		} else {
 			// Move the bot to the new voice channel / update text channel
@@ -110,10 +117,10 @@ module.exports = class Join extends Command {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/join:MOVED'));
-				bot.send(interaction, embed);
+				bot.send(interaction, { embeds:[embed] });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+				return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 			}
 		}
 	}

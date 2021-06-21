@@ -11,6 +11,7 @@ module.exports = class Pause extends Command {
 			description: 'Pauses the music.',
 			usage: 'pause',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -31,7 +32,7 @@ module.exports = class Pause extends Command {
 	}
 
 	// Function for slash command
-	async callback(bot, interaction, guild, args) {
+	async callback(bot, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelID);
 
@@ -45,6 +46,6 @@ module.exports = class Pause extends Command {
 
 		// Pauses the music
 		player.pause(true);
-		return bot.send(interaction, { embeds: [channel.error('music/pause:SUCCESS', {}, true)] });
+		return bot.send(interaction, { embeds: [channel.success('music/pause:SUCCESS', {}, true)] });
 	}
 };

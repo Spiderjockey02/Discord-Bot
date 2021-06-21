@@ -17,7 +17,7 @@ module.exports = class Shuffle extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
+	async run(bot, message) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
@@ -34,21 +34,19 @@ module.exports = class Shuffle extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		// Check if the member has role to interact with music plugin
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
-
 		// shuffle queue
+		const player = bot.manager.players.get(member.guild.id);
 		player.queue.shuffle();
-		const embed = new Embed(bot, guild)
+		const embed = new MessageEmbed(bot, guild)
 			.setColor(member.displayHexColor)
-			.setDescription(bot.translate('music/shuffle:DESC'));
+			.setDescription(guild.translate('music/shuffle:DESC'));
 		bot.send(interaction, { embeds: [embed] });
 	}
 };
