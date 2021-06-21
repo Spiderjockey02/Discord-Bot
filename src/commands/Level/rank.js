@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageAttachment, MessageEmbed } = require('discord.js'),
+const { MessageAttachment } = require('discord.js'),
 	{ RankSchema } = require('../../database/models'),
 	{ Rank: rank } = require('canvacord'),
 	Command = require('../../structures/Command.js');
@@ -37,7 +37,7 @@ module.exports = class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(message.guild, members[0], message.channel);
+			const res = await this.createRankCard(bot, message.guild, members[0], message.channel);
 			if (typeof (res) == 'object') {
 				await message.channel.send({ files: [res] });
 			} else {
@@ -52,33 +52,30 @@ module.exports = class Rank extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		// Get user
-		const channel = guild.channels.cache.get(interaction.channelID);
-		const member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
+		const channel = guild.channels.cache.get(interaction.channelID),
+			member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(guild, member, channel);
+			const res = await this.createRankCard(bot, guild, member, channel);
 			if (typeof (res) == 'object') {
 				await bot.send(interaction, { files: [res] });
 			} else {
 				await bot.send(interaction, { content: res });
 			}
-
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return bot.send(interaction, { ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
 	// Create the rank card
-	async createRankCard(guild, member, channel) {
+	async createRankCard(bot, guild, member, channel) {
 		const res = await RankSchema.find({ guildID: guild.id }).sort([ ['user', 'descending'] ]);
 		const user = res.find(doc => doc.userID == member.user.id);
 		// if they haven't send any messages
-		if (!user) {
-			return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
-		}
+		if (!user) return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
+
 		let rankScore;
 		for (let i = 0; i < res.length; i++) {
 			if (res[i].userID == member.user.id) rankScore = i;
