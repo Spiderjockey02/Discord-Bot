@@ -37,4 +37,20 @@ module.exports = class Gonewild extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channelID);
+		try {
+			get('https://nekobot.xyz/api/image?type=gonewild')
+				.then(res => {
+					const embed = new Embed(bot, guild)
+						.setImage(res.data.message);
+					bot.send(interaction, { embeds: [embed] });
+				});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
+	}
 };
