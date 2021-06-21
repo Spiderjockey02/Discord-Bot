@@ -15,10 +15,23 @@ module.exports = class MC extends Command {
 			usage: 'mc <IP> [Port]',
 			cooldown: 3000,
 			examples: ['mc eu.hypixel.net'],
+			slash: true,
+			options: [{
+				name: 'ip',
+				description: 'IP of the Minecraft server.',
+				type: 'STRING',
+				required: true,
+			},
+			{
+				name: 'port',
+				description: 'Port of the Minecraft server.',
+				type: 'STRING',
+				required: false,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Ping a minecraft server
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/mc:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -28,39 +41,56 @@ module.exports = class MC extends Command {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// If no ping use 25565
-		if(!message.args[1]) message.args[1] = '25565';
+		if (!message.args[1]) message.args[1] = '25565';
 
 		// Ping server
-		status(message.args[0], { port: parseInt(message.args[1]) }).then((response) => {
-			// turn favicon to thumbnail
-			let attachment;
-			if (response.favicon) {
-				const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
-				attachment = new MessageAttachment(imageStream, 'favicon.png');
-			}
+		const resp = await this.createEmbed(bot, message.guild, message.args[0], message.args[1]);
+		msg.delete();
+		console.log(resp);
+	}
 
-			const embed = new Embed(bot, message.guild)
-				.setColor(0x0099ff)
-				.setTitle('searcher/mc:TITLE');
-			if (response.favicon) embed.setThumbnail('attachment://favicon.png');
-			embed.setURL(`https://mcsrvstat.us/server/${message.args[0]}:${message.args[1]}`);
-			embed.addField(message.translate('searcher/mc:IP'), response.host);
-			embed.addField(message.translate('searcher/mc:VERSION'), response.version);
-			embed.addField(message.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
-			embed.addField(message.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(settings.Language)}/${response.maxPlayers.toLocaleString(settings.Language)}`);
-			msg.delete();
-			if (response.favicon) {
-				message.channel.send({ embeds: [embed], files: [attachment] });
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID),
+			IP = args.get('ip').value,
+			port = args.get('port')?.value ?? 25565;
+
+		try {
+			const resp = await this.createEmbed(bot, guild, IP, port);
+			if (Array.isArray(resp)) {
+				await bot.send(interaction, { embeds: [resp[0]], files: [resp[1]] });
 			} else {
-				message.channel.send({ embeds: [embed] });
+				await bot.send(interaction, { embeds: [resp] });
 			}
-		}).catch(err => {
-			// An error occured (either no IP, Open port or timed out)
-			msg.delete();
-			console.log(err);
-			if (message.deletable) message.delete();
+		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-		});
+			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
+	}
+
+	// create MC embed
+	async createEmbed(bot, guild, IP, port) {
+		const response = await status(IP, { port: port });
+		// turn favicon to thumbnail
+		let attachment;
+		if (response.favicon) {
+			const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
+			attachment = new MessageAttachment(imageStream, 'favicon.png');
+		}
+
+		const embed = new Embed(bot, guild)
+			.setColor(0x0099ff)
+			.setTitle('searcher/mc:TITLE');
+		if (response.favicon) embed.setThumbnail('attachment://favicon.png');
+		embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`);
+		embed.addField(guild.translate('searcher/mc:IP'), response.host);
+		embed.addField(guild.translate('searcher/mc:VERSION'), response.version);
+		embed.addField(guild.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
+		embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(guild.settings.Language)}/${response.maxPlayers.toLocaleString(guild.settings.Language)}`);
+		if (response.favicon) {
+			return [embed, attachment];
+		} else {
+			return embed;
+		}
 	}
 };

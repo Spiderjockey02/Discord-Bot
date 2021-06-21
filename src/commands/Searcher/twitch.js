@@ -16,10 +16,17 @@ module.exports = class Twitch extends Command {
 			usage: 'twitch <user>',
 			cooldown: 3000,
 			examples: ['twitch ninja'],
+			slash: true,
+			options: [{
+				name: 'username',
+				description: 'Account name',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Get information on twitch accounts
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/twitch:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -31,9 +38,9 @@ module.exports = class Twitch extends Command {
 
 		// fetch data
 		try {
-			const twitchUser = await getUserByUsername(user);
+			const twitchUser = await this.getUserByUsername(bot, user);
 			if (twitchUser) {
-				const stream = await getStreamByUsername(user);
+				const stream = await this.getStreamByUsername(bot, user);
 				const embed = new Embed(bot, message.guild)
 					.setTitle(twitchUser.display_name)
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
@@ -41,7 +48,7 @@ module.exports = class Twitch extends Command {
 					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
 					.addField(message.translate('searcher/twitch:BIO'), twitchUser.description || message.translate('searcher/twitch:NO_BIO'), true)
 					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(settings.Language), true)
-					.addField(message.translate('searcher/twitch:FOLLOWERS'), await getFollowersFromId(twitchUser.id).then(num => num.toLocaleString(settings.Language)), true);
+					.addField(message.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(settings.Language)), true);
 				if (stream) {
 					embed
 						.addField('\u200B', message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
@@ -58,44 +65,76 @@ module.exports = class Twitch extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
+	}
 
-		// fetch basic user info (and check that user exists)
-		async function getUserByUsername(login) {
-			return request('/users', { login }).then(u => u && u.data[0]);
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID),
+			user = args.get('username').value;
+
+		try {
+			const twitchUser = await this.getUserByUsername(bot, user);
+			if (twitchUser) {
+				const stream = await this.getStreamByUsername(bot, user);
+				const embed = new Embed(bot, guild)
+					.setTitle(twitchUser.display_name)
+					.setURL(`https://twitch.tv/${twitchUser.login}`)
+					.setThumbnail(twitchUser.profile_image_url)
+					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
+					.addField(guild.translate('searcher/twitch:BIO'), twitchUser.description || guild.translate('searcher/twitch:NO_BIO'), true)
+					.addField(guild.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(guild.settings.Language), true)
+					.addField(guild.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(guild.settings.Language)), true);
+				if (stream) {
+					embed
+						.addField('\u200B', guild.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
+						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
+				}
+				bot.send(interaction, { embeds: [embed] });
+			} else {
+				bot.send(interaction, { embeds: [channel.error('searcher/twitch:NOT_FOUND', {}, true)] });
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
+	}
 
-		// fetch stream data from user (if user is streaming)
-		async function getStreamByUsername(username) {
-			return request('/streams', { user_login: username }).then(s => s && s.data[0]);
-		}
+	// fetch basic user info (and check that user exists)
+	async getUserByUsername(bot, login) {
+		return this.request(bot, '/users', { login }).then(u => u && u.data[0]);
+	}
 
-		// fetches the data for other functions
-		function request(endpoint, queryParams = {}) {
-			const qParams = new URLSearchParams(queryParams);
-			return fetch('https://api.twitch.tv/helix' + endpoint + `?${qParams.toString()}`, {
-				headers: { 'Client-ID': bot.config.api_keys.twitch.clientID, 'Authorization': `Bearer ${access_token}` },
-			}).then(res => res.json())
-				.then(data => {
-					if (data.error === 'Unauthorized') {
-						return refreshTokens()
-							.then(() => request(endpoint, queryParams));
-					}
-					return data;
-				}).catch(e => console.log(e));
-		}
+	// fetch stream data from user (if user is streaming)
+	async getStreamByUsername(bot, username) {
+		return this.request(bot, '/streams', { user_login: username }).then(s => s && s.data[0]);
+	}
 
-		// Fetch follower data from user ID
-		async function getFollowersFromId(id) {
-			return request('/users/follows', { to_id: id }).then(u => u && u.total);
-		}
-
-		// Fetch access_token to interact with twitch API
-		async function refreshTokens() {
-			await fetch(`https://id.twitch.tv/oauth2/token?client_id=${bot.config.api_keys.twitch.clientID}&client_secret=${bot.config.api_keys.twitch.clientSecret}&grant_type=client_credentials`, {
-				method: 'POST',
-			}).then(res => res.json()).then(data => {
-				access_token = data.access_token;
+	// fetches the data for other functions
+	request(bot, endpoint, queryParams = {}) {
+		const qParams = new URLSearchParams(queryParams);
+		return fetch('https://api.twitch.tv/helix' + endpoint + `?${qParams.toString()}`, {
+			headers: { 'Client-ID': bot.config.api_keys.twitch.clientID, 'Authorization': `Bearer ${access_token}` },
+		}).then(res => res.json())
+			.then(data => {
+				if (data.error === 'Unauthorized') {
+					return this.refreshTokens(bot)
+						.then(() => this.request(bot, endpoint, queryParams));
+				}
+				return data;
 			}).catch(e => console.log(e));
-		}
+	}
+
+	// Fetch follower data from user ID
+	async getFollowersFromId(bot, id) {
+		return this.request(bot, '/users/follows', { to_id: id }).then(u => u && u.total);
+	}
+
+	// Fetch access_token to interact with twitch API
+	async refreshTokens(bot) {
+		await fetch(`https://id.twitch.tv/oauth2/token?client_id=${bot.config.api_keys.twitch.clientID}&client_secret=${bot.config.api_keys.twitch.clientSecret}&grant_type=client_credentials`, {
+			method: 'POST',
+		}).then(res => res.json()).then(data => {
+			access_token = data.access_token;
+		}).catch(e => console.log(e));
 	}
 };
