@@ -50,7 +50,6 @@ module.exports = class FastForward extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		// get data from interaction
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelID);
 
