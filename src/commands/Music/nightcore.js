@@ -1,5 +1,5 @@
 // Dependencies
-const { Embed } = require('../../utils'),
+const { MessageEmbed } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -23,16 +23,15 @@ module.exports = class Nightcore extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-
 		// toggle nightcore mode on/off
 		const player = bot.manager.players.get(message.guild.id);
 		player.setNightcore(!player.nightcore);
 		const msg = await message.channel.send(message.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`));
-		const embed = new Embed(bot, message.guild)
+		const embed = new MessageEmbed()
 			.setDescription(message.translate(`music/nightcore:DESC_${player.nightcore ? '1' : '2'}`));
 		await bot.delay(5000);
 		if (player.nightcore) player.speed = 1.2;
-		return msg.editReply(embed);
+		return msg.edit({ content: '​​ ', embeds: [embed] });
 	}
 
 	// Function for slash command
@@ -47,11 +46,11 @@ module.exports = class Nightcore extends Command {
 		// toggle nightcore mode on/off
 		const player = bot.manager.players.get(member.guild.id);
 		player.setNightcore(!player.nightcore);
-		const msg = await guild.send(interaction, { content: bot.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
-		const embed = new Embed(bot, guild)
+		await bot.send(interaction, { content: guild.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
+		const embed = new MessageEmbed()
 			.setDescription(guild.translate(`music/nightcore:DESC_${player.nightcore ? '1' : '2'}`));
 		await bot.delay(5000);
 		if (player.nightcore) player.speed = 1.2;
-		return msg.editReply(embed);
+		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
 };

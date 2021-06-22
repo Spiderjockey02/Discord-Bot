@@ -7,7 +7,10 @@ module.exports = async (bot, channel, pages) => {
 	const curPage = await channel.send({ embeds: [pages[page]] });
 
 	// react to embed with all emojis
-	for (const emoji of emojiList) await curPage.react(emoji);
+	for (const emoji of emojiList) {
+		await curPage.react(emoji);
+		await bot.delay(750);
+	}
 
 	// create reactionCollector to update page in embed
 	const filter = (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot;
@@ -24,7 +27,7 @@ module.exports = async (bot, channel, pages) => {
 			page = page > 0 ? --page : 0;
 			break;
 		case emojiList[2]:
-			page = page + 1 < pages.length ? ++page : pages.length;
+			page = page + 1 < pages.length ? ++page : (pages.length - 1);
 			break;
 		case emojiList[3]:
 			page = pages.length - 1;
