@@ -14,6 +14,13 @@ module.exports = class Urban extends Command {
 			usage: 'urban <word>',
 			cooldown: 1000,
 			examples: ['urban watermelon sugar', 'urban nice drip'],
+			slash: true,
+			options: [{
+				name: 'phrase',
+				description: 'Phrase to look up.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -31,24 +38,38 @@ module.exports = class Urban extends Command {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Search up phrase in urban dictionary
-		define(`${phrase}`, (err, entries) => {
-			if (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				msg.delete();
-				return message.channel.error('fun/urban:INCORRECT_URBAN', { PHRASE: phrase }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
+		const resp = await this.fetchDefinition(bot, message.guild, phrase, message.channel);
+		msg.delete();
+		message.channel.send(resp);
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID),
+			phrase = args.get('phrase').value;
+
+		// display phrases' definition
+		const resp = await this.fetchDefinition(bot, guild, phrase, channel);
+		bot.send(interaction, { embeds: [resp] });
+	}
+
+	// fetch defintion of word
+	async fetchDefinition(bot, guild, phrase, channel) {
+		try {
+			const resp = await define(phrase);
 
 			// send definition of word
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(bot, guild)
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
-				.setURL(entries[0].permalink)
+				.setURL(resp[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-				.setDescription(message.translate('fun/urban:DESCRIPTION', { DEFINTION: entries[0].definition, EXAMPLES: entries[0].example }))
-				.addField('👍', entries[0].thumbs_up, true)
-				.addField('👎', entries[0].thumbs_down, true);
-			message.channel.send({ embeds: [embed] });
-			msg.delete();
-		});
+				.setDescription(guild.translate('fun/urban:DESCRIPTION', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
+				.addField('👍', `${resp[0].thumbs_up}`, true)
+				.addField('👎', `${resp[0].thumbs_down}`, true);
+			return embed;
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return channel.error('fun/urban:INCORRECT_URBAN', { PHRASE: phrase }, true);
+		}
 	}
 };

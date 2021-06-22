@@ -15,6 +15,13 @@ module.exports = class Screenshot extends Command {
 			usage: 'screenshot <url>',
 			cooldown: 5000,
 			examples: ['screenshot https://www.google.com/'],
+			slash: true,
+			options: [{
+				name: 'url',
+				description: 'url of website to screenshot.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -42,23 +49,7 @@ module.exports = class Screenshot extends Command {
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
-		// try and create screenshot
-		let data;
-		try {
-			const browser = await Puppeteer.launch();
-			const page = await browser.newPage();
-			await page.setViewport({
-				width: 1280,
-				height: 720,
-			});
-			await page.goto(message.args[0]);
-			await bot.delay(1500);
-			data = await page.screenshot();
-			await browser.close();
-		} catch (err) {
-			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-		}
+		const data = await this.fetchScreenshot(bot, message.args[0]);
 
 		// make screenshot
 		if (!data) {
@@ -68,5 +59,55 @@ module.exports = class Screenshot extends Command {
 			await message.channel.send({ files: [attachment] });
 		}
 		msg.delete();
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID),
+			url = args.get('url').value;
+
+		// make sure URl is valid
+		if (!validUrl.isUri(url)) {
+			return bot.send(interaction, { embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
+		}
+
+		// Make sure website is not NSFW in a non-NSFW channel
+		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) {
+			return bot.send(interaction, { embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
+		}
+
+		// display phrases' definition
+		await interaction.defer();
+		const data = await this.fetchScreenshot(bot, url);
+		console.log(data);
+		if (!data) {
+			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
+		} else {
+			console.log('boo');
+			const attachment = new MessageAttachment(data, 'website.png');
+			console.log(attachment);
+			interaction.editReply({ files: [attachment] });
+		}
+	}
+
+	// create screenshot of website
+	async fetchScreenshot(bot, URL) {
+		// try and create screenshot
+		let data;
+		try {
+			const browser = await Puppeteer.launch();
+			const page = await browser.newPage();
+			await page.setViewport({
+				width: 1280,
+				height: 720,
+			});
+			await page.goto(URL);
+			await bot.delay(1500);
+			data = await page.screenshot();
+			await browser.close();
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+		}
+		return data;
 	}
 };
