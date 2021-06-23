@@ -46,7 +46,7 @@ module.exports = class Gonewild extends Command {
 				.then(res => {
 					const embed = new Embed(bot, guild)
 						.setImage(res.data.message);
-					bot.send(interaction, { embeds: [embed] });
+					bot.send(interaction, { embeds: [embed], ephemeral: true });
 				});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
