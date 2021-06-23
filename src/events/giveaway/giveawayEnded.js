@@ -22,7 +22,7 @@ module.exports = class ticketClose extends Event {
 						`Prize: \`${giveaway.prize}\`.`,
 						`Message link: [link](https://discord.com/channels/${giveaway.guildID}/${giveaway.channelID}/${giveaway.messageID}).`,
 					].join('\n'));
-				await member.send(embed);
+				await member.send({ embeds: [embed] });
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

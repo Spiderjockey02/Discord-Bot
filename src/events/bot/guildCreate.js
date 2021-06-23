@@ -33,10 +33,10 @@ module.exports = class GuildCreate extends Event {
 		const owner = await guild.members.fetch(guild.ownerID);
 		const embed = new MessageEmbed()
 			.setTitle(`[GUILD JOIN] ${guild.name}`);
+		let attachment;
 		if (guild.icon == null) {
 			const icon = await Canvas.guildIcon(guild.name, 128);
-			const attachment = new MessageAttachment(icon, 'guildicon.png');
-			embed.attachFiles([attachment]);
+			attachment = new MessageAttachment(icon, 'guildicon.png');
 			embed.setImage('attachment://guildicon.png');
 		} else {
 			embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
@@ -56,7 +56,7 @@ module.exports = class GuildCreate extends Event {
 
 		// Find channel and send message
 		const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-		if (modChannel) bot.addEmbed(modChannel.id, embed);
+		if (modChannel) bot.addEmbed(modChannel.id, [embed, attachment]);
 
 		// update bot's activity
 		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');

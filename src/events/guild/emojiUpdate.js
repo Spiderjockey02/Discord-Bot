@@ -67,7 +67,7 @@ module.exports = class emojiUpdate extends Event {
 				// Find channel and send message
 				try {
 					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newEmoji.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newEmoji.guild.id) bot.addEmbed(modChannel.id, embed);
+					if (modChannel && modChannel.guild.id == newEmoji.guild.id) bot.addEmbed(modChannel.id, [embed]);
 				} catch (err) {
 					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}

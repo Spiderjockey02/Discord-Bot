@@ -17,13 +17,13 @@ module.exports = class guildDelete extends Event {
 		await bot.DeleteGuild(guild);
 
 		// Send message to channel that bot has left a server
+		let attachment;
 		try {
 			const embed = new MessageEmbed()
 				.setTitle(`[GUILD LEAVE] ${guild.name}`);
 			if (guild.icon == null) {
 				const icon = await Canvas.guildIcon(guild.name, 128);
-				const attachment = new MessageAttachment(icon, 'guildicon.png');
-				embed.attachFiles([attachment]);
+				attachment = new MessageAttachment(icon, 'guildicon.png');
 				embed.setImage('attachment://guildicon.png');
 			} else {
 				embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
@@ -35,7 +35,7 @@ module.exports = class guildDelete extends Event {
 			].join('\n'));
 
 			const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-			if (modChannel) bot.addEmbed(modChannel.id, embed);
+			if (modChannel) bot.addEmbed(modChannel.id, [embed, attachment]);
 		} catch (err) {
 			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
