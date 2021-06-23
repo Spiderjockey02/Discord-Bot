@@ -1,7 +1,7 @@
 const { Structure } = require('erela.js');
 
 module.exports = Structure.extend('Player', Player => {
-	class Player extends Player {
+	class player extends Player {
 		constructor(...args) {
 			super(...args);
 			// extra settings
@@ -119,5 +119,5 @@ module.exports = Structure.extend('Player', Player => {
 			return this;
 		}
 	}
-	return Player;
+	return player;
 });
