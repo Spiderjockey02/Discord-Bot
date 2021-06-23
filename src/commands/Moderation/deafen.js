@@ -27,7 +27,7 @@ module.exports = class Deafen extends Command {
 	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Checks to make sure user is in the server
 		const members = await message.getMember();

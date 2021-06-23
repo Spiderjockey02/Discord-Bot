@@ -98,7 +98,7 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Set bot's activity
-	SetActivity(array = [], type) {
+	SetActivity(type, array = []) {
 		this.Activity = array;
 		this.PresenceType = type;
 		try {
@@ -210,7 +210,7 @@ module.exports = class Egglord extends Client {
 	translate(key, args, locale) {
 		if (!locale) locale = this.config.defaultSettings.Language;
 		const language = this.translations.get(locale);
-		if (!language) throw 'Invalid language set in data.';
+		if (!language) return 'Invalid language set in data.';
 		return language(key, args);
 	}
 

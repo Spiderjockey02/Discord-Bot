@@ -27,7 +27,7 @@ module.exports = class SetLog extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		if (message.args[0] == 'true' || message.args[0] == 'false') {
 

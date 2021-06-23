@@ -1,6 +1,8 @@
 // Dependencies
-const defaultPlugins = ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket', 'Tags'],
+const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
+
+const defaultPlugins = ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket', 'Tags'];
 
 module.exports = class SetPlugin extends Command {
 	constructor(bot) {
@@ -21,51 +23,59 @@ module.exports = class SetPlugin extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('plugins/set-plugin:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) {
+			const embed = new Embed(bot, message.guild)
+				.setTitle('Plugins')
+				.setDescription([
+					`Available plugins: \`${defaultPlugins.join('`, `') }\`.`,
+					'',
+					`Active plugins: \`${settings.plugins.join('`, `') }\`.`,
+				].join('\n'));
+			return message.channel.send({ embeds: [embed] });
+		}
 
 		// make sure it's a real plugin
 		if (defaultPlugins.includes(message.args[0])) {
 			if (!settings.plugins.includes(message.args[0])) {
+
+				const data = [];
 				settings.plugins.push(message.args[0]);
 
-				const data = [];
-				const enabledPlugins = message.guild.settings.plugins;
-
-
-				enabledPlugins.push(message.args[0]);
-				enabledPlugins.forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild);
+				// Fetch slash command data
+				for (let i = 0; i < settings.plugins.length; i++) {
+					const info = await bot.loadInteractionGroup(settings.plugins[i], message.guild);
 					if (Array.isArray(info)) data.push(...info);
-				});
+				}
+
 				try {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
 				}
-				message.channel.send(message.translate('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] }));
+				message.channel.success('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] });
 			} else {
-				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
 
 				const data = [];
-				const enabledPlugins = message.guild.settings.plugins;
-
-				enabledPlugins.filter(h => h != message.args[0]).forEach(async g => {
-					const info = await bot.loadInteractionGroup(g, message.guild);
+				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
+				// Fetch slash command data
+				for (let i = 0; i < settings.plugins.length; i++) {
+					const info = await bot.loadInteractionGroup(settings.plugins[i], message.guild);
 					if (Array.isArray(info)) data.push(...info);
-				});
+				}
+
 				try {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
 				}
-				message.channel.send(message.translate('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] }));
+				message.channel.success('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] });
 			}
+
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });
-				console.log('updated');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));

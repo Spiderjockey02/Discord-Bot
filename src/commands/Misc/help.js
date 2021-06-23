@@ -12,21 +12,42 @@ module.exports = class Help extends Command {
 			usage: 'help [command]',
 			cooldown: 2000,
 			examples: ['help play'],
+			slash: true,
+			options: [{
+				name: 'command',
+				description: 'Name of command to look up.',
+				type: 'STRING',
+				required: false,
+			}],
 		});
 	}
 
 	// Function for message command
-	async run(bot, message, settings) {
-		if (!message.args[0]) {
+	async run(bot, message) {
+		// show help embed
+		const embed = this.createEmbed(bot, message.guild, message.channel, message.args[0], message.author);
+		message.channel.send({ embeds: [embed] });
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID);
+		const embed = this.createEmbed(bot, guild, channel, args.get('command')?.value, interaction.member.user);
+		bot.send(interaction, { embeds: [embed] });
+	}
+
+	// create Help embed
+	createEmbed(bot, guild, channel, command, user) {
+		if (!command) {
 			// Show default help page
-			const embed = new Embed(bot, message.guild)
-				.setAuthor(message.translate('misc/help:AUTHOR'), bot.user.displayAvatarURL({ format: 'png' }))
+			const embed = new Embed(bot, guild)
+				.setAuthor(guild.translate('misc/help:AUTHOR'), bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					message.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
-					message.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: message.translate('misc/help:USAGE') }),
+					guild.translate('misc/help:PREFIX_DESC', { PREFIX: guild.settings.prefix, ID: bot.user.id }),
+					guild.translate('misc/help:INFO_DESC', { PREFIX: guild.settings.prefix, USAGE: guild.translate('misc/help:USAGE') }),
 				].join('\n'));
-			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
-			if (bot.config.ownerID.includes(message.author.id)) categories.push('Host');
+			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => guild.settings.plugins.includes(v) && a.indexOf(v) === i);
+			if (bot.config.ownerID.includes(user.id)) categories.push('Host');
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
@@ -37,37 +58,37 @@ module.exports = class Help extends Command {
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
-					if (category == 'NSFW' && !message.channel.nsfw && message.guild) return;
+					if (category == 'NSFW' && !channel.nsfw && guild) return;
 					embed.addField(`${category} [**${length}**]`, commands);
 				});
 			// send message
-			message.channel.send(embed);
-		} else if (message.args.length == 1) {
+			return embed;
+		} else if (command) {
 			// Check if arg is command
-			if (bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]))) {
+			if (bot.commands.get(command) || bot.commands.get(bot.aliases.get(command))) {
 				// arg was a command
-				const cmd = bot.commands.get(message.args[0]) || bot.commands.get(bot.aliases.get(message.args[0]));
+				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
 				// Check if the command is allowed on the server
-				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(message.author.id)) {
-					const embed = new Embed(bot, message.guild)
-						.setTitle('misc/help:TITLE', { COMMAND: `${settings.prefix}${cmd.help.name}` })
+				if (guild.settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(user.id)) {
+					const embed = new Embed(bot, guild)
+						.setTitle('misc/help:TITLE', { COMMAND: `${guild.settings.prefix}${cmd.help.name}` })
 						.setDescription([
-							message.translate('misc/help:DESC', { DESC: cmd.help.description }),
-							message.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
-							message.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
-							message.translate('misc/help:USE', { USAGE: settings.prefix.concat(message.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
-							message.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
-							message.translate('misc/help:LAYOUT'),
+							guild.translate('misc/help:DESC', { DESC: cmd.help.description }),
+							guild.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
+							guild.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
+							guild.translate('misc/help:USE', { USAGE: guild.settings.prefix.concat(guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							guild.translate('misc/help:EXAMPLE', { EX: `${guild.settings.prefix}${cmd.help.examples.join(`,\n ${guild.settings.prefix}`)}` }),
+							guild.translate('misc/help:LAYOUT'),
 						].join('\n'));
-					message.channel.send({ embeds: [embed] });
+					return embed;
 				} else {
-					message.channel.error('misc/help:NO_COMMAND');
+					return channel.error('misc/help:NO_COMMAND', {}, true);
 				}
 			} else {
-				message.channel.error('misc/help:NO_COMMAND');
+				return channel.error('misc/help:NO_COMMAND', {}, true);
 			}
 		} else {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			return channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: guild.settings.prefix.concat(guild.translate('giveaway/g-start:USAGE')) }, true);
 		}
 	}
 };

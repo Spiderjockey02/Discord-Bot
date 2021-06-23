@@ -156,7 +156,7 @@ module.exports = Structures.extend('Message', Message => {
 
 		translate(key, args) {
 			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
-			if (!language) throw 'Message: Invalid language set in data.';
+			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
 		}
 

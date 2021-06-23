@@ -22,7 +22,7 @@ module.exports = class ReactionRoleAdd extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// check if the guild has reached max reaction roles
 		await ReactionRoleSchema.find({

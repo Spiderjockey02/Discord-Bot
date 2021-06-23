@@ -21,7 +21,7 @@ module.exports = class Unmute extends Command {
 	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Find user
 		const members = await message.getMember();

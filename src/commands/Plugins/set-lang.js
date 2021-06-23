@@ -20,7 +20,7 @@ module.exports = class Setlang extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// get language
 		const language = bot.languages.find((l) => l.name === message.args[0] || l.aliases.includes(message.args[0]));

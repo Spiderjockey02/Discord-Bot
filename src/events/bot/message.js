@@ -38,13 +38,13 @@ module.exports = class Message extends Event {
 					`[Join support server](${bot.config.SupportServer.link})`,
 					`[Website](${bot.config.websiteURL})`,
 				].join('\n'));
-			return message.channel.send(embed);
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		// Check if the message was @someone
 		if (['@someone', '@person'].includes(message.content)) {
 			if (message.channel.type == 'dm') return message.channel.error('events/message:GUILD_ONLY');
-			return message.channel.send({ embed:{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` } });
+			return message.channel.send({ embeds: [{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` }] });
 		}
 
 		// Check if message was a command

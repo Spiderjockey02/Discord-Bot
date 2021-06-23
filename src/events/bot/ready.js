@@ -34,7 +34,7 @@ module.exports = class Ready extends Event {
 
 		// Updates the bot's status
 		bot.user.setStatus('Online');
-		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
+		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 
 		await require('../../scripts/update-commands.md.js')(bot);
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');

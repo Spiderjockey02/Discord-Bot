@@ -21,7 +21,7 @@ module.exports = class G_edit extends Command {
 	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure the message ID of the giveaway embed is entered
 		if (message.args.length <= 3) {

@@ -40,7 +40,7 @@ module.exports = class Meme extends Command {
 	async fetchMeme(bot, guild, settings) {
 		const meme = await bot.Ksoft.images.meme();
 		if (!meme.url) {
-			return await this.fetchMeme();
+			return this.fetchMeme();
 		} else {
 			const embed = new Embed(bot, guild)
 				.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })

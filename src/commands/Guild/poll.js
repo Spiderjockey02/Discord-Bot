@@ -18,7 +18,7 @@ module.exports = class Poll extends Command {
 
 	// Function for message command
 	async run(bot, message, settings) {
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure a poll was provided
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
