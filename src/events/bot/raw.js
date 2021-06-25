@@ -11,6 +11,6 @@ module.exports = class Raw extends Event {
 	// run event
 	async run(bot, data) {
 		// Used for the music plugin
-		bot.manager.updateVoiceState(data);
+		bot.manager?.updateVoiceState(data);
 	}
 };
