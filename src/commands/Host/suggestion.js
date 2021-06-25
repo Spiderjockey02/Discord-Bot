@@ -44,7 +44,7 @@ module.exports = class Suggestion extends Command {
 				.setTimestamp()
 				.setFooter(`${bot.user.username} suggestions`, bot.user.displayAvatarURL());
 
-			channel.send(embed).then(async (msg) => {
+			channel.send({ embeds: [embed] }).then(async (msg) => {
 				await msg.react('👍');
 				await msg.react('👎');
 			});

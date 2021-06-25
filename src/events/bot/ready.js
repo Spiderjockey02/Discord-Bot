@@ -1,4 +1,4 @@
-const { GuildSchema, PremiumSchema } = require('../../database/models'),
+const { GuildSchema, userSchema } = require('../../database/models'),
 	Event = require('../../structures/Event'),
 	{ promisify } = require('util'),
 	readdir = promisify(require('fs').readdir);
@@ -17,7 +17,7 @@ module.exports = class Ready extends Event {
 		try {
 			bot.manager.init(bot.user.id);
 		} catch (err) {
-			bot.logger.error(err.message);
+			bot.logger.error(`Audio manager failed to load due to error: ${err.message}`);
 		}
 
 		// set up webserver
@@ -113,25 +113,15 @@ module.exports = class Ready extends Event {
 		}, 60000);
 
 		// check for premium users
-		const premium = await PremiumSchema.find({});
-		let users = 0, guilds = 0;
-		for (let i = 0; i < premium.length; i++) {
-			if (premium[i].Type == 'user') {
-				const user = await bot.users.fetch(premium[i].ID);
-				if (user) {
-					user.premium = true;
-					users++;
-				}
-			} else {
-				const guild = bot.guilds.cache.get(premium[i].ID);
-				if (guild) {
-					guild.premium = true;
-					guilds++;
-				}
-			}
+		const users = await userSchema.find({});
+		for (let i = 0; i < users.length; i++) {
+			const user = await bot.users.fetch(users[i].userID);
+			user.premium = users[i].premium;
+			this.cmdBanned = users[i].cmdBanned;
+			this.rankImage = users[i].rankImage;
 		}
 
-		bot.logger.ready(`${premium.length} premium tier(s) have been applied. (${users} users, ${guilds} guilds)`);
+		// bot.logger.ready(`${premium.length} premium tier(s) have been applied. (${users} users, ${guilds} guilds)`);
 
 		// enable time event handler (in case of bot restart)
 		try {

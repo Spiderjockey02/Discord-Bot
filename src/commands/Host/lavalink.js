@@ -15,6 +15,14 @@ module.exports = class Lavalink extends Command {
 		});
 	}
 
+
+	/*
+
+	UPDATE THIS COMMAND TO ALLOW MULTIPLY NODE
+
+	*/
+
+
 	// Run command
 	async run(bot, message) {
 		let msg, memory,	cpu,	uptime,	playingPlayers,	players;

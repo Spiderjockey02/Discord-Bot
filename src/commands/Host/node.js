@@ -27,11 +27,11 @@ module.exports = class MusicNode extends Command {
 		if (message.args[0].toLowerCase() == 'add') {
 			try {
 				// Connect to new node
-				await new Node({
+				await (new Node({
 					host: message.args[1] ?? 'localhost',
 					password: message.args[2] ?? 'youshallnotpass',
 					port: message.args[3] ?? 5000,
-				}).connect();
+				})).connect();
 				message.channel.success('host/node:ADDED_NODE');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -39,11 +39,11 @@ module.exports = class MusicNode extends Command {
 			}
 		} else if (message.args[0].toLowerCase() == 'remove') {
 			try {
-				await new Node({
+				await (new Node({
 					host: message.args[1] ?? 'localhost',
 					password: message.args[2] ?? 'youshallnotpass',
 					port: message.args[3] ?? 5000,
-				}).destroy();
+				})).destroy();
 				message.channel.success('host/node:REMOVED_NODE');
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
