@@ -1,7 +1,6 @@
 // Dependencies
 const { WarningSchema, timeEventSchema } = require('../database/models'),
-	{ time: { getTotalTime } } = require('../../utils'),
-	{ Embed } = require('../../utils');
+	{ time: { getTotalTime }, Embed } = require('../utils');
 
 module.exports.run = (bot, message, member, wReason, settings) => {
 	// retrieve user data in warning database
@@ -15,7 +14,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 		}
 
 		// This is their first warning
-		let newWarn;
+		let newWarn, embed;
 		if (!res[0]) {
 			// debugging mode
 			if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the first time in guild: ${message.guild.id}`);
@@ -32,14 +31,14 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 
 				// save and send response to moderator
 				await newWarn.save();
-				const embed = new Embed(bot, message.guild)
+				embed = new Embed(bot, message.guild)
 					.setColor(15158332)
 					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
 					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
-				message.channel.send(embed).then(m => m.timedDelete({ timeout: 30000 }));
+				message.channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 30000 }));
 
 				// try and send warning embed to culprit
-				const embed2 = new Embed(bot, message.guild)
+				embed = new Embed(bot, message.guild)
 					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
@@ -48,7 +47,7 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.addField(message.translate('misc:REASON'), wReason, true)
 					.addField(message.translate('moderation/warn:WARN_CNTR'), '1/3');
 				// eslint-disable-next-line no-empty-function
-				member.send(embed2).catch(() => {});
+				member.send({ embeds: [embed] }).catch(() => {});
 
 			} catch (err) {
 				bot.logger.error(`${err.message} when running command: warnings.`);
@@ -74,15 +73,15 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 				bot.commands.get('mute').run(bot, message, settings);
 
 				// send embed
-				const embed = new Embed(bot, message.guild)
+				embed = new Embed(bot, message.guild)
 					.setColor(15158332)
 					.setAuthor(message.translate('moderation/warn:SUCCESS', { USER: member.user.tag }), member.user.displayAvatarURL())
 					.setDescription(message.translate('moderation/warn:REASON', { REASON: wReason }));
-				message.channel.send(embed).then(m => m.timedDelete({ timeout: 30000 }));
+				message.channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 30000 }));
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the second time in guild: ${message.guild.id}`);
 
 				// try and send warning embed to culprit
-				const embed2 = new Embed(bot, message.guild)
+				embed = new Embed(bot, message.guild)
 					.setTitle('moderation/warn:TITLE')
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
@@ -90,8 +89,8 @@ module.exports.run = (bot, message, member, wReason, settings) => {
 					.addField(message.translate('moderation/warn:WARN_BY'), message.author.tag, true)
 					.addField(message.translate('misc:REASON'), wReason, true)
 					.addField(message.translate('moderation/warn:WARN_CNTR'), '2/3');
-					// eslint-disable-next-line no-empty-function
-				member.send(embed2).catch(() => {});
+				// eslint-disable-next-line no-empty-function
+				member.send({ embeds: [embed] }).catch(() => {});
 			} else {
 				if (bot.config.debug) bot.logger.debug(`${member.user.tag} was warned for the third time in guild: ${message.guild.id}`);
 				// try and kick user from guild
