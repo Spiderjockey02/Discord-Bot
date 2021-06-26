@@ -37,29 +37,23 @@ module.exports = class Random extends Command {
 			num2 = parseInt(message.args[1]);
 
 		// Make sure both entries are there
-		if (!num1 || !message.args[1]) {
+		if (!num1 || !num2) {
 			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-		} else {
-			// Make sure both entries are numbers
-			if (isNaN(num1) || isNaN(num2)) {
-				if (message.deletable) message.delete();
-				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-
-			// Make sure they follow correct rules
-			if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-				if (message.deletable) message.delete();
-				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-
-			// send result
-			const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-			const embed = new MessageEmbed()
-				.setColor('RANDOM')
-				.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
-			message.channel.send({ embeds: [embed] });
 		}
+
+		// Make sure they follow correct rules
+		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
+			if (message.deletable) message.delete();
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+
+		// send result
+		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
+		const embed = new MessageEmbed()
+			.setColor('RANDOM')
+			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

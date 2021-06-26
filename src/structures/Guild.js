@@ -27,7 +27,7 @@ module.exports = Structures.extend('Guild', Guild => {
 		// update guild settings
 		async updateGuild(settings) {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
-			return await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings).then(async () => await this.fetchGuildConfig());
+			return GuildSchema.findOneAndUpdate({ guildID: this.id }, settings).then(async () => await this.fetchGuildConfig());
 		}
 
 		// This will get the translation for the provided text

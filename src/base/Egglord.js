@@ -112,19 +112,13 @@ module.exports = class Egglord extends Client {
 
 	// Load a command
 	loadCommand(commandPath, commandName) {
-		try {
-			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			this.logger.log(`Loading Command: ${cmd.help.name}.`);
-			cmd.conf.location = commandPath;
-			this.commands.set(cmd.help.name, cmd);
-			cmd.help.aliases.forEach((alias) => {
-				this.aliases.set(alias, cmd.help.name);
-			});
-			return false;
-		} catch (err) {
-			console.log(err);
-			return `Unable to load command ${commandName}: ${err}`;
-		}
+		const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
+		this.logger.log(`Loading Command: ${cmd.help.name}.`);
+		cmd.conf.location = commandPath;
+		this.commands.set(cmd.help.name, cmd);
+		cmd.help.aliases.forEach((alias) => {
+			this.aliases.set(alias, cmd.help.name);
+		});
 	}
 
 	// Loads a slash command category

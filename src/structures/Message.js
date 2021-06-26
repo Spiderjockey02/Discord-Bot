@@ -112,20 +112,16 @@ module.exports = Structures.extend('Message', Message => {
 			}
 
 			// check for message link
-			for (let i = 0; i < this.args.length; i++) {
+			for (const value of this.args) {
 				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
-				if (patt.test(this.args[i])) {
-					const stuff = this.args[i].split('/');
-					const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
-					if (message) {
-						if (message.attachments.size > 0) {
-							const url = message.attachments.first().url;
-							for (let z = 0; z < fileTypes.length; z++) {
-								if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
-									file.push(url);
-								}
-							}
-						}
+				if (!patt.test(value)) return;
+				const stuff = value.split('/');
+				const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+				if (!message && message.attachments.size == 0) return;
+				const url = message.attachments.first().url;
+				for (let z = 0; z < fileTypes.length; z++) {
+					if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
+						file.push(url);
 					}
 				}
 			}

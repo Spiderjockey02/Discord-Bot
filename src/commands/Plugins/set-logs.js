@@ -48,7 +48,7 @@ module.exports = class SetLog extends Command {
 					.setTitle('plugins/set-logs:TITLE')
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('plugins/set-logs:DESC', { FEAT: features.join('`, `'), CUR_FEAT: currentFeatures.join('`, `') }));
-				message.channel.send(embed).then(m => m.timedDelete({ timeout: 15000 }));
+				message.channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
 			} else if (message.args[0] == 'add') {
 
 				// add new Logging
@@ -95,7 +95,7 @@ module.exports = class SetLog extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('plugins/set-logs:TITLE_2')
 				.setDescription(message.translate('plugins/set-logs:DESC_2', { ID: settings.ModLogChannel, TOGGLE: settings.ModLog, FEAT: settings.ModLogEvents.join('`, `') }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else {
 			// if nothing was entered
 			const embed = new Embed(bot, message.guild)
@@ -107,7 +107,7 @@ module.exports = class SetLog extends Command {
 					`\`${settings.prefix}set-logs <add | remove> LOG\``,
 					`\`${settings.prefix}set-logs list\``,
 				].join('\n'));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 };

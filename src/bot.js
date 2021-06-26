@@ -15,17 +15,17 @@ const path = require('path');
 	const cmdFolders = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
 	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 137 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
-		if (bot.config.disabledPlugins.includes(dir)) return;
-		try {
-			const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
-			commands.forEach((cmd) => {
-				if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
-				const resp = bot.loadCommand('./commands/' + dir, cmd);
-				if (resp) bot.logger.error(resp);
-			});
-		} catch (err) {
-			console.log(err.message);
-		}
+		if (bot.config.disabledPlugins.includes(dir) || dir == 'command.example.js') return;
+		const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
+		commands.forEach((cmd) => {
+			if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
+			try {
+				bot.loadCommand('./commands/' + dir, cmd);
+			} catch (err) {
+				if (bot.config.debug) console.log(err);
+				bot.logger.error(`Unable to load command ${cmd}: ${err}`);
+			}
+		});
 	});
 
 	// load events
