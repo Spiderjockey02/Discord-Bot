@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { Structures } = require('discord.js'),
 	{ findBestMatch } = require('string-similarity');
 
@@ -108,24 +108,31 @@ module.exports = Structures.extend('Message', Message => {
 				}
 
 				// no file with the correct format was found
-				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.delete({ timeout: 10000 }));
+				if (file.length == 0) return this.channel.error(this.guild.settings.Language, 'IMAGE/INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 
 			// check for message link
-			for (let i = 0; i < this.args.length; i++) {
+			for (const value of this.args) {
 				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
-				if (patt.test(this.args[i])) {
-					const stuff = this.args[i].split('/');
-					const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
-					if (message) {
-						if (message.attachments.size > 0) {
-							const url = message.attachments.first().url;
-							for (let z = 0; z < fileTypes.length; z++) {
-								if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
-									file.push(url);
-								}
-							}
-						}
+				if (!patt.test(value)) return;
+				const stuff = value.split('/');
+				const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+				if (!message && message.attachments.size == 0) return;
+				const url = message.attachments.first().url;
+				for (let z = 0; z < fileTypes.length; z++) {
+					if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
+						file.push(url);
+					}
+				}
+			}
+
+			// Check message reply
+			if (this.type == 'REPLY') {
+				const messages = await this.channel.messages.fetch(this.reference.messageID);
+				const url = messages.attachments.first().url;
+				for (let i = 0; i < fileTypes.length; i++) {
+					if (url.indexOf(fileTypes[i]) !== -1) {
+						file.push(url);
 					}
 				}
 			}
@@ -145,8 +152,14 @@ module.exports = Structures.extend('Message', Message => {
 
 		translate(key, args) {
 			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
-			if (!language) throw 'Message: Invalid language set in data.';
+			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
+		}
+
+		timedDelete(obj) {
+			setTimeout(() => {
+				super.delete();
+			}, obj.timeout || 3000);
 		}
 	}
 	return CustomMessage;

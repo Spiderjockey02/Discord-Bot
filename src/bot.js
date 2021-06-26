@@ -3,9 +3,7 @@ const Client = require('./base/Egglord.js');
 require('./structures');
 const bot = new Client({
 	partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
-	ws: {
-		intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
-	},
+	intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
 });
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
@@ -15,19 +13,19 @@ const path = require('path');
 (async () => {
 	// load commands
 	const cmdFolders = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 125 -=-=-=-=-=-=-=');
+	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 137 -=-=-=-=-=-=-=');
 	cmdFolders.forEach(async (dir) => {
-		if (bot.config.disabledPlugins.includes(dir)) return;
-		try {
-			const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
-			commands.forEach((cmd) => {
-				if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
-				const resp = bot.loadCommand('./commands/' + dir, cmd);
-				if (resp) bot.logger.error(resp);
-			});
-		} catch (err) {
-			console.log(err.message);
-		}
+		if (bot.config.disabledPlugins.includes(dir) || dir == 'command.example.js') return;
+		const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
+		commands.forEach((cmd) => {
+			if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
+			try {
+				bot.loadCommand('./commands/' + dir, cmd);
+			} catch (err) {
+				if (bot.config.debug) console.log(err);
+				bot.logger.error(`Unable to load command ${cmd}: ${err}`);
+			}
+		});
 	});
 
 	// load events
@@ -76,6 +74,6 @@ const path = require('path');
 		bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
 
 		// show full error if debug mode is on
-		if (bot.config.debug) console.log(err);
+		console.log(err);
 	});
 })();

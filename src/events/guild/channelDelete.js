@@ -28,7 +28,7 @@ module.exports = class channelDelete extends Event {
 		// Check if event channelDelete is for logging
 		if (settings.ModLogEvents.includes('CHANNELDELETE') && settings.ModLog) {
 			const embed = new Embed(bot, channel.guild)
-				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Deleted: ${'#' + channel.name}**`)
+				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} channel deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${channel.id}`)
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
@@ -37,7 +37,7 @@ module.exports = class channelDelete extends Event {
 			// Find channel and send message
 			try {
 				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${channel.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == channel.guild.id) bot.addEmbed(modChannel.id, embed);
+				if (modChannel && modChannel.guild.id == channel.guild.id) bot.addEmbed(modChannel.id, [embed]);
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

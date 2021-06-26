@@ -13,20 +13,35 @@ module.exports = class Guildicon extends Command {
 			description: 'Get the server\'s icon.',
 			usage: 'guildicon',
 			cooldown: 2000,
+			slash: true,
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Check for guild icon & send message
 		if (message.guild.icon) {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('guild/guildicon:ICON', { URL: message.guild.iconURL({ dynamic: true, size: 1024 }) }))
 				.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else {
 			if (message.deletable) message.delete();
-			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('guild/guildicon:NO_GUILD_ICON').then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channelID);
+		// Check for guild icon & send message
+		if (guild.icon) {
+			const embed = new Embed(bot, guild)
+				.setDescription(guild.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }))
+				.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+			bot.send(interaction, { embeds: [embed] });
+		} else {
+			bot.send(interaction, { embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { }, true)], ephemeral: true });
 		}
 	}
 };

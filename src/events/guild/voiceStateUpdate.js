@@ -13,7 +13,7 @@ module.exports = class voiceStateUpdate extends Event {
 	// run event
 	async run(bot, oldState, newState) {
 		// variables for easier coding
-		const newMember = newState.guild.member(newState.id);
+		const newMember = newState.guild.members.cache.get(newState.id);
 		const channel = newState.channelID ? newState.guild.channels.cache.get(newState.channelID.id || newState.channelID) : null;
 
 
@@ -62,7 +62,7 @@ module.exports = class voiceStateUpdate extends Event {
 				// Find channel and send message
 				try {
 					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newState.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newState.guild.id) bot.addEmbed(modChannel.id, embed);
+					if (modChannel && modChannel.guild.id == newState.guild.id) bot.addEmbed(modChannel.id, [embed]);
 				} catch (err) {
 					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
@@ -74,6 +74,21 @@ module.exports = class voiceStateUpdate extends Event {
 
 		if (!player) return;
 		if (!newState.guild.members.cache.get(bot.user.id).voice.channelID) player.destroy();
+
+		// Check for stage channel audience change
+		if (newState.id == bot.user.id && newState.channelID.type == 'stage') {
+			if (!oldState.channelID) {
+				try {
+					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));
+				} catch (err) {
+					player.pause(true);
+				}
+			} else if (oldState.suppress !== newState.suppress) {
+				player.pause(newState.suppress);
+			}
+		}
+
+
 		if (oldState.id === bot.user.id) return;
 		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelID) return;
 
@@ -82,7 +97,7 @@ module.exports = class voiceStateUpdate extends Event {
 
 		// Make sure the bot is in the voice channel that 'activated' the event
 		if (oldState.guild.members.cache.get(bot.user.id).voice.channelID === oldState.channelID) {
-			if (oldState.guild.voice.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
+			if (oldState.guild.voice?.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 				const vcName = oldState.guild.me.voice.channel.name;
 				await delay(180000);
 
@@ -96,7 +111,7 @@ module.exports = class voiceStateUpdate extends Event {
 						.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);
 					try {
 						const c = bot.channels.cache.get(player.textChannel);
-						if (c) c.send(embed).then(m => m.delete({ timeout: 60000 }));
+						if (c) c.send(embed).then(m => m.timedDelete({ timeout: 60000 }));
 					} catch (err) {
 						bot.logger.error(err.message);
 					}

@@ -1,10 +1,12 @@
-// Dependecies
+// Dependencies
 const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	Fortnite = require('fortnite'),
 	{ KSoftClient } = require('@ksoft/api'),
-	path = require('path');
+	path = require('path'),
+	{ promisify } = require('util'),
+	readdir = promisify(require('fs').readdir);
 
 // Creates Egglord class
 module.exports = class Egglord extends Client {
@@ -30,6 +32,7 @@ module.exports = class Egglord extends Client {
 		// For command handler
 		this.aliases = new Collection();
 		this.commands = new Collection();
+		this.interactions = new Collection();
 		this.cooldowns = new Collection();
 
 		// connect to database
@@ -95,7 +98,7 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Set bot's activity
-	SetActivity(array = [], type) {
+	SetActivity(type, array = []) {
 		this.Activity = array;
 		this.PresenceType = type;
 		try {
@@ -109,20 +112,67 @@ module.exports = class Egglord extends Client {
 
 	// Load a command
 	loadCommand(commandPath, commandName) {
+		const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
+		this.logger.log(`Loading Command: ${cmd.help.name}.`);
+		cmd.conf.location = commandPath;
+		this.commands.set(cmd.help.name, cmd);
+		cmd.help.aliases.forEach((alias) => {
+			this.aliases.set(alias, cmd.help.name);
+		});
+	}
+
+	// Loads a slash command category
+	async loadInteractionGroup(category, guild) {
 		try {
-			const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-			this.logger.log(`Loading Command: ${cmd.help.name}.`);
-			cmd.conf.location = commandPath;
-			this.commands.set(cmd.help.name, cmd);
-			cmd.help.aliases.forEach((alias) => {
-				this.aliases.set(alias, cmd.help.name);
+			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
+			const arr = [];
+			commands.forEach((cmd) => {
+				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
+					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
+					if (command.conf.slash) {
+						const item = {
+							name: command.help.name,
+							description: command.help.description,
+							defaultPermission: command.conf.defaultPermission,
+						};
+						if (command.conf.options[0]) {
+							item.options = command.conf.options;
+						}
+						arr.push(item);
+						guild.interactions.set(command.help.name, command);
+					}
+				}
 			});
-			return false;
+			return arr;
 		} catch (err) {
-			return `Unable to load command ${commandName}: ${err}`;
+			return `Unable to load category ${category}: ${err}`;
 		}
 	}
 
+	// Deletes a slash command category
+	async deleteInteractionGroup(category, guild) {
+		try {
+			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
+			const arr = [];
+			commands.forEach((cmd) => {
+				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
+					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
+					if (command.conf.slash) {
+						arr.push({
+							name: command.help.name,
+							description: command.help.description,
+							options: command.conf.options,
+							defaultPermission: command.conf.defaultPermission,
+						});
+						guild.interactions.delete(command.help.name, command);
+					}
+				}
+			});
+			return arr;
+		} catch (err) {
+			return `Unable to load category ${category}: ${err}`;
+		}
+	}
 	// Unload a command (you need to load them again)
 	async unloadCommand(commandPath, commandName) {
 		let command;
@@ -136,6 +186,13 @@ module.exports = class Egglord extends Client {
 		return false;
 	}
 
+	// Handle slash command callback
+	async send(interaction, content) {
+		await interaction.reply(content);
+		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
+		this.commandsUsed++;
+	}
+
 	// Fetches adult sites for screenshot NSFW blocking
 	async fetchAdultSiteList() {
 		const blockedWebsites = require('../assets/json/whitelistWebsiteList.json');
@@ -147,7 +204,7 @@ module.exports = class Egglord extends Client {
 	translate(key, args, locale) {
 		if (!locale) locale = this.config.defaultSettings.Language;
 		const language = this.translations.get(locale);
-		if (!language) throw 'Invalid language set in data.';
+		if (!language) return 'Invalid language set in data.';
 		return language(key, args);
 	}
 

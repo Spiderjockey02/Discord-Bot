@@ -17,10 +17,10 @@ module.exports = class Unban extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Unban user
 		const user = message.args[0];
@@ -30,7 +30,7 @@ module.exports = class Unban extends Command {
 				const bUser = bans.find(ban => ban.user.id == user);
 				if (bUser) {
 					await message.guild.members.unban(bUser.user);
-					message.channel.success('moderation/unban:SUCCESS', { USER: bUser.user }).then(m => m.delete({ timeout: 3000 }));
+					message.channel.success('moderation/unban:SUCCESS', { USER: bUser.user }).then(m => m.timedDelete({ timeout: 3000 }));
 				} else {
 					message.channel.error('moderation/unban:MISSING', { ID: user });
 				}
@@ -38,7 +38,7 @@ module.exports = class Unban extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

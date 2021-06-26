@@ -17,10 +17,10 @@ module.exports = class Kick extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Get user and reason
 		const members = await message.getMember(),
@@ -28,11 +28,11 @@ module.exports = class Kick extends Command {
 
 		// Make sure user isn't trying to punish themselves
 
-		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (members[0].hasPermission('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-			return message.channel.error('moderation/kick:TOO_POWERFUL').then(m => m.delete({ timeout: 10000 }));
+		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+			return message.channel.error('moderation/kick:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Kick user with reason
@@ -46,17 +46,17 @@ module.exports = class Kick extends Command {
 					.setDescription(message.translate('moderation/kick:DESC', { NAME: message.guild.name }))
 					.addField(message.translate('moderation/kick:KICKED'), message.author.tag, true)
 					.addField(message.translate('misc:REASON'), reason, true);
-				await members[0].send(embed);
+				await members[0].send({ embeds: [embed] });
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
 
 			// kick user from guild
 			await members[0].kick({ reason: reason });
-			message.channel.success('moderation/kick:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
+			message.channel.success('moderation/kick:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

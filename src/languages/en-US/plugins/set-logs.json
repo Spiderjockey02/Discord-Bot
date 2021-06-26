@@ -8,5 +8,5 @@
   "REM_LOG": "Removed: {{LOG}} to logging.",
   "CHANNEL": "Logging channel updated to: <#{{ID}}>",
   "TITLE_2": "Logging information",
-  "DESC": "**Channel:** <#{{ID}}>\n**Enabled:** {{TOGGLE}}\n\n**Feature logging:** `{{FEAT}}`."
+  "DESC_2": "**Channel:** <#{{ID}}>\n**Enabled:** {{TOGGLE}}\n\n**Feature logging:** `{{FEAT}}`."
 }

@@ -32,11 +32,11 @@ module.exports = class Stickbug extends Command {
 
 			// send image in embed
 			const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
-			message.channel.send(attachment);
+			await message.channel.send({ files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
 	}

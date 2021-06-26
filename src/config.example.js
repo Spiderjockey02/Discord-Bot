@@ -3,7 +3,7 @@ const config = {
 	token: 'YourBotToken',
 	botClient: 'YourBotClientSecret',
 	// replace BOTID with the bot's ID
-	inviteLink: 'https://discord.com/api/oauth2/authorize?client_id=BOTID&permissions=485846102&scope=bot',
+	inviteLink: 'https://discord.com/api/oauth2/authorize?client_id=BOTID&permissions=485846102&scope=applications.commands%20bot',
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
 		// https://dev.twitch.tv/console/apps
@@ -58,6 +58,8 @@ const config = {
 	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
+	// embed colour
+	embedColor: 'RANDOM',
 	// This will spam your console if you enable this but will help with bug fixing
 	debug: false,
 };

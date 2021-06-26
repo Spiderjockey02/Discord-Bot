@@ -5,21 +5,23 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 		super(data);
 		this.bot = bot;
 		this.guild = guild;
-		this.setColor('RANDOM')
+		this.setColor(bot.config.embedColor)
 			.setTimestamp();
 	}
 
 	// Language translator for title
 	setTitle(key, args) {
-		this.title = this.bot.translate(key, args, this.guild.settings.Language) ? this.bot.translate(key, args, this.guild.settings.Language) : key;
+		const language = this.guild?.settings.Language ?? this.bot.config.defaultSettings.Language;
+		this.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
 		return this;
 	}
 
 	// Language translator for footer
 	setFooter(key, args, icon) {
 		if (typeof args === 'object') {
+			const language = this.guild?.settings.Language ?? this.bot.config.defaultSettings.Language;
 			this.footer = {
-				text: this.bot.translate(key, args, this.guild.settings.Language),
+				text: this.bot.translate(key, args, language),
 				iconURL: icon,
 			};
 		} else {

@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ MessageEmbed } = require('discord.js'),
 	{ getStations } = require('radio-browser'),
 	Command = require('../../structures/Command.js');
 
@@ -10,38 +11,42 @@ module.exports = class Radio extends Command {
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Listen to the radio',
-			usage: 'radio',
+			usage: 'radio <query>',
 			cooldown: 3000,
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 		}
 
 		// make sure a radio station was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/radio:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/radio:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Search for radio station
 		getStations({
-			limit: 5,
-			by: 'tag',
+			limit: 10,
+			order: 'topclick',
+			hidebroken: true,
+			countrycodeexact: settings.language,
+			language: bot.languages.find((l) => l.name.includes(settings.Language)).nativeName,
+			by: 'name',
 			searchterm: message.args.join(' '),
 		})
 			.then(async data => {
 				if (!data[0]) return message.channel.send('No radio found with that name');
 
 				const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-				const embed = new Embed(bot, message.guild)
+				let embed = new Embed(bot, message.guild)
 					.setTitle(`Results for ${message.args.join(' ')}`)
 					.setColor(message.member.displayHexColor)
 					.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 
 				const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
 				const max = data.length;
@@ -74,7 +79,7 @@ module.exports = class Radio extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 
 				const res = await player.search(data[index].url, message.author);
@@ -90,7 +95,10 @@ module.exports = class Radio extends Command {
 					if (!player.playing && !player.paused && !player.queue.size) {
 						player.play();
 					} else {
-						message.channel.send({ embed: { color: message.member.displayHexColor, description:`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})` } });
+						embed = new MessageEmbed()
+							.setColor(message.member.displayHexColor)
+							.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
+						message.channel.send({ embeds: [embed] });
 					}
 				}
 			});

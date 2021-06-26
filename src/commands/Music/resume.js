@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { functions: { checkMusic } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Resume extends Command {
 	constructor(bot) {
@@ -14,21 +15,13 @@ module.exports = class Resume extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
-			}
-		}
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.delete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
 
 		// The music is already resumed
 		if (!player.paused) return message.channel.error('music/resume:IS_RESUMED', { PREFIX: settings.prefix });
@@ -36,5 +29,23 @@ module.exports = class Resume extends Command {
 		// Resumes the music
 		player.pause(false);
 		return message.channel.success('music/resume:SUCCESS');
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
+
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+
+		// The music is already resumed
+		const player = bot.manager.players.get(member.guild.id);
+		if (!player.paused) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/resume:IS_RESUMED', {}, true)] });
+
+		// Resumes the music
+		player.pause(false);
+		return bot.send(interaction, { embeds: [channel.error('music/resume:SUCCESS', {}, true)] });
 	}
 };

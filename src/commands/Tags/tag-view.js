@@ -42,7 +42,7 @@ module.exports = class TagView extends Command {
 				result.forEach(value => {
 					resultEmbed.addField(message.translate('tags/tag-view:TITLE', { NAME: value.name }), message.translate('tags/tag-view:RESP', { RESP: value.response }));
 				});
-				return message.channel.send(resultEmbed);
+				return message.channel.send({ embeds: [resultEmbed] });
 			} else {
 				return message.channel.send(message.translate('tags/tag-view:NO_EXIST'));
 			}

@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ time: { getReadableTime } } = require('../../utils'),
@@ -19,6 +19,7 @@ module.exports = class PView extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({
@@ -28,7 +29,7 @@ module.exports = class PView extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			if (!p[0]) {
@@ -69,7 +70,7 @@ module.exports = class PView extends Command {
 							.setTimestamp()
 							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration`);
 						pages.push(embed);
-						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message, pages);
+						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message.channel, pages);
 						else if(pagesNum == 1) message.channel.send(embed);
 					}
 				} else {

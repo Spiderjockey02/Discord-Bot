@@ -20,7 +20,7 @@ module.exports = class Ship extends Command {
 	async run(bot, message, settings) {
 		// Get image, defaults to author's avatar
 		const members = await message.getImage();
-		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/ship:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/ship:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -33,11 +33,11 @@ module.exports = class Ship extends Command {
 			// send image
 			const embed = new Embed(bot, message.guild)
 				.setImage(json.message);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
 	}

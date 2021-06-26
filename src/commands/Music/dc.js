@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { functions: { checkMusic } } = require('../../utils'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Disconnect extends Command {
 	constructor(bot) {
@@ -11,27 +12,34 @@ module.exports = class Disconnect extends Command {
 			description: 'Disconnects the bot from the voice channel.',
 			usage: 'dc',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
-	// Run command
-	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
-			}
-		}
-
-		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.delete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+	// Function for message command
+	async run(bot, message) {
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Destory player (clears queue & leaves channel)
+		const player = bot.manager.players.get(message.guild.id);
 		player.destroy();
 		return message.channel.success('music/dc:LEFT');
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
+
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+
+		// Destory player (clears queue & leaves channel)
+		const player = bot.manager.players.get(member.guild.id);
+		player.destroy();
+		return bot.send(interaction, { embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
 	}
 };

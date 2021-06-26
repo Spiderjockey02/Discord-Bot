@@ -31,13 +31,12 @@ module.exports = class QRcode extends Command {
 			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
 			// send image in embed
 			const embed = new Embed(bot, message.guild)
-				.attachFiles(attachment)
 				.setImage('attachment://QRCODE.png');
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed], files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
 	}

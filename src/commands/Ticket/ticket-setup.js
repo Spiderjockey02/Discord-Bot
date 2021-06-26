@@ -25,7 +25,7 @@ module.exports = class TicketSetup extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('ticket/ticket-setup:TITLE')
 				.setDescription(`\`${settings.prefix}ticket-setup category <channelID>\` - The parent of the channels \n\`${settings.prefix}ticket-setup role <roleID>\` - The support role for accessing channels`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else if (message.args[0] == 'category') {
 
 			// update category channel
@@ -39,7 +39,7 @@ module.exports = class TicketSetup extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'role') {
 
@@ -54,7 +54,7 @@ module.exports = class TicketSetup extends Command {
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		}
 	}

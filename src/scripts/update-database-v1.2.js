@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const mongoose = require('mongoose'),
 	logger = require('../utils/logger'),
 	config = require('../config.js'),

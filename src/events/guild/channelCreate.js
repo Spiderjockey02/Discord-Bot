@@ -28,7 +28,7 @@ module.exports = class channelCreate extends Event {
 		// Check if event channelCreate is for logging
 		if (settings.ModLogEvents.includes('CHANNELCREATE') && settings.ModLog) {
 			const embed = new Embed(bot, channel.guild)
-				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} Created: ${channel.toString()}**`)
+				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} channel created: ${channel.toString()}**`)
 				.setColor(3066993)
 				.setFooter('misc:ID', { ID: channel.id })
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
@@ -37,7 +37,7 @@ module.exports = class channelCreate extends Event {
 			// Find channel and send message
 			try {
 				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${channel.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == channel.guild.id) bot.addEmbed(modChannel.id, embed);
+				if (modChannel && modChannel.guild.id == channel.guild.id) bot.addEmbed(modChannel.id, [embed]);
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

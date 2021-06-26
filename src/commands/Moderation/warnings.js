@@ -18,10 +18,10 @@ module.exports = class Warnings extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Get user
 		const members = await message.getMember();
@@ -36,12 +36,12 @@ module.exports = class Warnings extends Command {
 				if (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 
 				if (!warn[0]) {
 					// There are no warnings with this user
-					message.channel.send(bot.translate('moderation:warnings/NO_WARNINGS')).then(m => m.delete({ timeout: 3500 }));
+					message.channel.error('moderation/warnings:NO_WARNINGS').then(m => m.timedDelete({ timeout: 3500 }));
 				} else {
 					// Warnings have been found
 					let list = `Warnings (${warn.length}):\n`;
@@ -50,16 +50,16 @@ module.exports = class Warnings extends Command {
 					}
 
 					const embed = new Embed(bot, message.guild)
-						.setTitle('moderation/warns:TITLE', { USER: members[0].user.username })
+						.setTitle('moderation/warnings:TITLE', { USER: members[0].user.username })
 						.setDescription(list)
 						.setTimestamp();
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 				}
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

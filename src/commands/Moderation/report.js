@@ -17,7 +17,7 @@ module.exports = class Report extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Delete command for privacy
 		if (message.deletable) message.delete();
@@ -29,10 +29,10 @@ module.exports = class Report extends Command {
 			const members = await message.getMember();
 
 			// Make sure user isn't trying to punish themselves
-			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.delete({ timeout: 10000 }));
+			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 			// Make sure a reason was added
-			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 			// Send messages to ModLog channel
 			const embed = new Embed(bot, message.guild)
@@ -46,11 +46,11 @@ module.exports = class Report extends Command {
 				.setFooter(message.guild.name);
 			const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
 			if (repChannel) {
-				repChannel.send(embed);
-				message.channel.success('moderation/report:SUCCESS', { USER: members[0].user }).then(m => m.delete({ timeout: 3000 }));
+				repChannel.send({ embeds: [embed] });
+				message.channel.success('moderation/report:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 			}
 		} else {
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

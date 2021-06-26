@@ -36,10 +36,16 @@ module.exports = class guildMemberRemove extends Event {
 			// Find channel and send message
 			try {
 				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, embed);
+				if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, [embed]);
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
+		}
+
+		// Welcome plugin (give roles and message)
+		if (settings.welcomePlugin) {
+			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
+			if (channel && settings.welcomeGoodbyeToggle) channel.send(settings.welcomeGoodbyeText.replace('{user}', member.user)).catch(e => bot.logger.error(e.message));
 		}
 
 		// Remove member's rank

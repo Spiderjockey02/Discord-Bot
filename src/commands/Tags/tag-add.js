@@ -23,7 +23,7 @@ module.exports = class TagAdd extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-add:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-add:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		try {
 			// Validate input
@@ -51,11 +51,11 @@ module.exports = class TagAdd extends Command {
 					name: message.args[0],
 					response: responseString,
 				})).save();
-				message.channel.send(message.translate('tags/tag-add:SAME_NAME', { TAG: message.args[0] }));
+				message.channel.send(message.translate('tags/tag-add:TAGS_SAVED', { TAG: message.args[0] }));
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

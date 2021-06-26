@@ -26,14 +26,14 @@ module.exports = class Eval extends Command {
 				const hrStart = process.hrtime(),
 					evaluated = inspect(await eval(toEval, { depth: 0 })),
 					hrDiff = process.hrtime(hrStart);
-				message.channel.send(bot.translate('host/eval:RESPONSE', { DIFF: `${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}`, CODE: evaluated }), { split: true });
+				message.channel.send(bot.translate('host/eval:RESPONSE', { DIFF: `${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}`, CODE: evaluated }), { maxLength: 1900 });
 			} else {
-				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/eval:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/eval:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

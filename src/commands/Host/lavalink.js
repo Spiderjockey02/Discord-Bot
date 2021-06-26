@@ -15,6 +15,14 @@ module.exports = class Lavalink extends Command {
 		});
 	}
 
+
+	/*
+
+	UPDATE THIS COMMAND TO ALLOW MULTIPLY NODE
+
+	*/
+
+
 	// Run command
 	async run(bot, message) {
 		let msg, memory,	cpu,	uptime,	playingPlayers,	players;
@@ -45,7 +53,7 @@ module.exports = class Lavalink extends Command {
 			.addField(message.translate('host/lavalink:CPU'), message.translate('host/lavalink:CPU_STATS', { CORES: cpu.cores, SYSLOAD: systemLoad, LVLLOAD: lavalinkLoad }))
 			.addField(message.translate('host/lavalink:UPTIME'), message.translate('host/lavalink:UPTIME_STATS', { NUM: botUptime }))
 			.setTimestamp(Date.now());
-		return msg.edit('', embed);
+		return await msg.edit({ embeds: [embed] });
 	}
 
 	uptime(time) {

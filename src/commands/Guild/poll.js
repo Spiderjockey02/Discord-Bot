@@ -16,19 +16,19 @@ module.exports = class Poll extends Command {
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure a poll was provided
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Send poll to channel
 		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/poll:TITLE', { USER: message.author.tag })
 			.setDescription(message.args.join(' '))
 			.setFooter('guild/poll:FOOTER', {});
-		message.channel.send(embed).then(async (msg) => {
+		message.channel.send({ embeds: [embed] }).then(async (msg) => {
 			// Add reactions to message
 			await msg.react('✅');
 			await msg.react('❌');

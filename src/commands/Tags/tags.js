@@ -22,7 +22,7 @@ module.exports = class Tags extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// run subcommands
 		const option = message.args[0].toLowerCase();
@@ -43,7 +43,7 @@ module.exports = class Tags extends Command {
 			break;
 		default:
 			// delete message
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

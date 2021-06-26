@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ time: { read24hrFormat } } = require('../../utils'),
+	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Seek extends Command {
@@ -13,30 +13,29 @@ module.exports = class Seek extends Command {
 			usage: 'seek <time>',
 			cooldown: 3000,
 			examples: ['seek 1:00'],
+			slash: true,
+			options: [{
+				name: 'time',
+				description: 'The time you want to seek to.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
-			}
-		}
+		// check to make sure bot can play music based on permissions
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Check that a song is being played
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.delete({ timeout: 10000 }));
-
-		// Check that user is in the same voice channel
-		if (message.member.voice.channel.id !== player.voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
 
 		// Make sure song isn't a stream
 		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM');
 
 		// Make sure a time was inputted
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// update the time
 		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
@@ -48,7 +47,31 @@ module.exports = class Seek extends Command {
 			const embed = new MessageEmbed()
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
+		}
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelID);
+
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+
+		// update the time
+		const player = bot.manager.players.get(member.guild.id);
+		const time = read24hrFormat(args.get('time').value);
+
+		if (time > player.queue.current.duration) {
+			return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
+		} else {
+			player.seek(time);
+			const embed = new MessageEmbed()
+				.setColor(member.displayHexColor)
+				.setDescription(bot.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
+			bot.send(interaction, { embeds: [embed] });
 		}
 	}
 };

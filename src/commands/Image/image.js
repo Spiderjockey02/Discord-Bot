@@ -22,7 +22,7 @@ module.exports = class Image extends Command {
 		// Make sure a topic was included
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/image:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/image:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -36,11 +36,11 @@ module.exports = class Image extends Command {
 			// send image
 			const embed = new Embed(bot, message.guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
 	}

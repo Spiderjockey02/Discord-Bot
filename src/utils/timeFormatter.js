@@ -102,19 +102,19 @@ module.exports.getTimeObject = (ms) => {
 module.exports.getTotalTime = (timeFormat, message) => {
 	// Make sure it ends with the correct time delimiter
 	if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
-		message.channel.error('time:INCORRECT_DELIMITERS').then(m => m.delete({ timeout:5000 }));
+		message.channel.error('time:INCORRECT_DELIMITERS').then(m => m.timedDelete({ timeout:5000 }));
 		return false;
 	}
 	// make sure its a number infront of the time delimiter
 	if (isNaN(timeFormat.slice(0, -1))) {
-		message.channel.error('time:INVALID_TIME').then(m => m.delete({ timeout:5000 }));
+		message.channel.error('time:INVALID_TIME').then(m => m.timedDelete({ timeout:5000 }));
 		return false;
 	}
 	// convert timeFormat to milliseconds
 	const time = require('ms')(timeFormat);
 	// Make sure time isn't over 10 days
 	if (time >= 864000000) {
-		message.channel.error('time:MAX_TIME').then(m => m.delete({ timeout: 5000 }));
+		message.channel.error('time:MAX_TIME').then(m => m.timedDelete({ timeout: 5000 }));
 		return false;
 	}
 	// return time to requested command

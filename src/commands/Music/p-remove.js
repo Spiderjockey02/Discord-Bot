@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
@@ -16,9 +16,10 @@ module.exports = class PRemove extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		PlaylistSchema.findOne({
 			name: message.args[0],
@@ -28,7 +29,7 @@ module.exports = class PRemove extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// playlist found
@@ -39,14 +40,14 @@ module.exports = class PRemove extends Command {
 					} else if (!isNaN(message.args[1])) {
 						p.songs.splice(message.args[1] - 1, 1);
 					} else {
-						return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+						return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 					await p.save();
 					message.channel.success('music/p-remove:SUCCESS');
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
 			} else {
 				message.channel.error('music/p-remove:NO_PLAYLIST');

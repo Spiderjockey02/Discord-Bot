@@ -1,4 +1,0 @@
-{
-  "DESCRIPTION": "Add or remove user's premium",
-  "USAGE": "premium <add / remove> <user / guild> <ID> [time]"
-}

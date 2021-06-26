@@ -14,38 +14,54 @@ module.exports = class ServerInfo extends Command {
 			description: 'Get information on the server.',
 			usage: 'server-info',
 			cooldown: 2000,
+			slash: true,
 		});
 	}
 
-	// Run command
-	async run(bot, message, settings) {
+	// Function for message command
+	async run(bot, message) {
 		// Sort roles by position
-		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).array();
+		const embed = await this.createEmbed(bot, message.guild, message.author);
+		message.channel.send({ embeds: [embed] });
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const user = interaction.member.user;
+
+		// send embed
+		const embed = await this.createEmbed(bot, guild, user);
+		bot.send(interaction, { embeds: [embed] });
+	}
+
+	// create serverinfo embed
+	async createEmbed(bot, guild, user) {
+		const roles = guild.roles.cache.sort((a, b) => b.position - a.position).array();
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
 
 		// Send server information
-		const member = message.guild.members.cache;
-		const embed = new Embed(bot, message.guild)
-			.setAuthor(message.translate('guild/server-info:AUTHOR', { NAME: message.guild.name }), message.guild.iconURL())
+		const member = guild.members.cache;
+		const embed = new Embed(bot, guild)
+			.setAuthor(guild.translate('guild/server-info:AUTHOR', { NAME: guild.name }), guild.iconURL())
 			.setColor(3447003)
-			.setThumbnail(message.guild.iconURL())
+			.setThumbnail(guild.iconURL())
 			.addFields(
-				{ name: message.translate('guild/server-info:NAME'), value: `\`${message.guild.name}\``, inline: true },
-				{ name: message.translate('guild/server-info:OWNER'), value: `\`${message.guild.owner.user.tag}\``, inline: true },
-				{ name: message.translate('guild/server-info:ID'), value: `\`${message.guild.id}\``, inline: true },
-				{ name: message.translate('guild/server-info:CREATED'), value: `\`${moment(message.guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
-				{ name: message.translate('guild/server-info:REGION'), value: `\`${message.guild.region}\``, inline: true },
-				{ name: message.translate('guild/server-info:VERIFICATION'), value: `\`${message.guild.verificationLevel}\``, inline: true },
-				{ name: message.translate('guild/server-info:MEMBER', { NUM: message.guild.memberCount }), value: message.translate('guild/server-info:MEMBER_DESC', {
-					ONLINE: member.filter(m => m.presence.status === 'online').size.toLocaleString(settings.Language), IDLE: member.filter(m => m.presence.status === 'idle').size.toLocaleString(settings.Language), DND: member.filter(m => m.presence.status === 'dnd').size.toLocaleString(settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(settings.Language),
+				{ name: guild.translate('guild/server-info:NAME'), value: `\`${guild.name}\``, inline: true },
+				{ name: guild.translate('guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.tag)}\``, inline: true },
+				{ name: guild.translate('guild/server-info:ID'), value: `\`${guild.id}\``, inline: true },
+				{ name: guild.translate('guild/server-info:CREATED'), value: `\`${moment(guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
+				{ name: guild.translate('guild/server-info:REGION'), value: `\`${guild.region}\``, inline: true },
+				{ name: guild.translate('guild/server-info:VERIFICATION'), value: `\`${guild.verificationLevel}\``, inline: true },
+				{ name: guild.translate('guild/server-info:MEMBER', { NUM: guild.memberCount }), value: guild.translate('guild/server-info:MEMBER_DESC', {
+					ONLINE: member.filter(m => m.presence.status === 'online').size.toLocaleString(guild.settings.Language), IDLE: member.filter(m => m.presence.status === 'idle').size.toLocaleString(guild.settings.Language), DND: member.filter(m => m.presence.status === 'dnd').size.toLocaleString(guild.settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(guild.settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(guild.settings.Language),
 				}), inline: true },
-				{ name: message.translate('guild/server-info:FEATURES'), value: `\`${(message.guild.features.length == 0) ? message.translate('misc:NONE') : message.guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
-				{ name: message.translate('guild/server-info:ROLES', { NUM: message.guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != message.guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },
+				{ name: guild.translate('guild/server-info:FEATURES'), value: `\`${(guild.features.length == 0) ? guild.translate('misc:NONE') : guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
+				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },
 			)
 			.setTimestamp()
-			.setFooter('guild/server-info:FOOTER', { USER: message.author.tag });
-		message.channel.send(embed);
+			.setFooter('guild/server-info:FOOTER', { USER: user.tag });
+		return embed;
 	}
 };

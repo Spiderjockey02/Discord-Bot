@@ -12,10 +12,17 @@ module.exports = class Search extends Command {
 			usage: 'search <link / song name>',
 			cooldown: 3000,
 			examples: ['search palaye royale'],
+			slash: true,
+			options: [{
+				name: 'track',
+				description: 'track to search for.',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -25,11 +32,16 @@ module.exports = class Search extends Command {
 		}
 
 		// make sure user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.send(message.translate('music/search:NOT_VC'));
+		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.delete({ timeout: 10000 }));
 
 		// Check that user is in the same voice channel
 		if (bot.manager.players.get(message.guild.id)) {
 			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+		}
+
+		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
+			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Make sure that a song/url has been entered
@@ -47,7 +59,7 @@ module.exports = class Search extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		const search = message.args.join(' ');
@@ -61,7 +73,7 @@ module.exports = class Search extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error('music/search:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('music/search:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results
@@ -80,7 +92,7 @@ module.exports = class Search extends Command {
 				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 
 			try {
 				collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
@@ -106,6 +118,83 @@ module.exports = class Search extends Command {
 				player.play();
 			} else {
 				message.channel.send(message.translate('music/search:ADDED', { TITLE: track.title }));
+			}
+		}
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelID),
+			member = guild.members.cache.get(interaction.user.id),
+			search = args.get('track').value;
+
+		// Create player
+		let player;
+		try {
+			player = bot.manager.create({
+				guild: guild.id,
+				voiceChannel: member.voice.channel.id,
+				textChannel: channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+		}
+
+		// Search for track
+		let res;
+		try {
+			res = await player.search(search, member.user);
+			if (res.loadType === 'LOAD_FAILED') {
+				if (!player.queue.current) player.destroy();
+				throw res.exception;
+			}
+		} catch (err) {
+			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+		}
+
+		// Workout what to do with the results
+		if (res.loadType == 'NO_MATCHES') {
+			// An error occured or couldn't find the track
+			if (!player.queue.current) player.destroy();
+			return bot.send(interaction, { embeds: [channel.error('music/search:NO_SONG', {}, true)] });
+		} else {
+			// Display the options for search
+			let max = 10, collected;
+			const filter = (m) => m.author.id === member.user.id && /^(\d+|cancel)$/i.test(m.content);
+			if (res.tracks.length < max) max = res.tracks.length;
+
+			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+			const embed = new Embed(bot, guild)
+				.setTitle('music/search:TITLE', { TITLE: search })
+				.setColor(member.displayHexColor)
+				.setDescription(guild.translate('music/search:DESC', { RESULTS: results }));
+			bot.send(interaction, { embeds: [embed] });
+
+			try {
+				collected = await channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+			} catch (e) {
+				if (!player.queue.current) player.destroy();
+				return bot.send(interaction, { content:guild.translate('misc:WAITED_TOO_LONG') });
+			}
+			const first = collected.first().content;
+			if (first.toLowerCase() === 'cancel') {
+				if (!player.queue.current) player.destroy();
+				return bot.send(interaction, { content:guild.translate('misc:CANCELLED') });
+			}
+
+			const index = Number(first) - 1;
+			if (index < 0 || index > max - 1) return bot.send(interaction, { content:guild.translate('music/search:INVALID', { NUM: max }) });
+
+			const track = res.tracks[index];
+			if (player.state !== 'CONNECTED') player.connect();
+			player.queue.add(track);
+
+			if (!player.playing && !player.paused && !player.queue.size) {
+				player.play();
+			} else {
+				bot.send(interaction, { content:guild.translate('music/search:ADDED', { TITLE: track.title }) });
 			}
 		}
 	}

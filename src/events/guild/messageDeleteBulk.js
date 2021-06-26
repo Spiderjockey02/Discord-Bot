@@ -44,7 +44,7 @@ module.exports = class messageDeleteBulk extends Event {
 					.addField('Deleted Messages:', `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, true)
 					.setTimestamp();
 
-				bot.addEmbed(modChannel.id, embed);
+				bot.addEmbed(modChannel.id, [embed]);
 			}
 		}
 	}

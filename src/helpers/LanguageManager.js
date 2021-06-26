@@ -41,5 +41,7 @@ module.exports = async () => {
 		ns: namespaces,
 		preload: languages,
 	});
+
+	require('../utils/Logger').ready(`${languages.length} language(s) have loaded. (${languages.join(', ')})`);
 	return new Map(languages.map(item => [item, i18next.getFixedT(item)]));
 };

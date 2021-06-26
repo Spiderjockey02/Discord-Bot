@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ time: { getReadableTime } } = require('../../utils'),
@@ -18,9 +18,10 @@ module.exports = class PCreate extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 
-		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
 		const msg = await message.channel.send(message.translate('music/p-create:WAITING'));
@@ -32,7 +33,7 @@ module.exports = class PCreate extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// response from database
@@ -63,7 +64,7 @@ module.exports = class PCreate extends Command {
 		try {
 			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
 		// Workout what to do with the results
@@ -84,7 +85,7 @@ module.exports = class PCreate extends Command {
 					.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-				const search = await message.channel.send(embed);
+				const search = await message.channel.send({ embeds: [embed] });
 
 				try {
 					collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
@@ -131,7 +132,7 @@ module.exports = class PCreate extends Command {
 				].join('\n'))
 				.setFooter('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' })
 				.setTimestamp();
-			msg.edit('', embed);
+			msg.edit({ embeds: [embed] });
 		} else {
 			msg.delete();
 			return message.channel.error('music/p-create:NO_SONG');

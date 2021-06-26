@@ -1,4 +1,5 @@
-const { Structures } = require('discord.js');
+const { MessageEmbed } = require('discord.js'),
+	{ Structures } = require('discord.js');
 
 module.exports = Structures.extend('TextChannel', Channel => {
 	class CustomChannel extends Channel {
@@ -19,20 +20,34 @@ module.exports = Structures.extend('TextChannel', Channel => {
 		}
 
 		// This will add the error emoji as the prefix and then translate the message
-		error(key, args) {
+		error(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
-				return this.send({ embed:{ color:15158332, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
+				const embed = new MessageEmbed()
+					.setColor(15158332)
+					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
+				if (returnValue) {
+					return embed;
+				} else {
+					return this.send({ embeds: [embed] });
+				}
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}
 		}
 
 		// This will add the success emoji as the prefix and then translate the message
-		success(key, args) {
+		success(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
-				return this.send({ embed:{ color:3066993, description:`${emoji} ${this.client.translate(key, args, this.guild.settings.Language)}` } });
+				const embed = new MessageEmbed()
+					.setColor(3066993)
+					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
+				if (returnValue) {
+					return embed;
+				} else {
+					return this.send({ embeds: [embed] });
+				}
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}

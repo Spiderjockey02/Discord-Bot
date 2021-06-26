@@ -1,15 +1,6 @@
 # Command list
 ><> = required, [] = optional
 
-## Giveaway
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
-| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
-| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID>`	|
-| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
-
-
 ## Fun
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -22,6 +13,29 @@
 | reminder	|	Set a reminder.	|	`reminder <time> <information>`	|
 | screenshot	|	Get a screenshot of a website.	|	`screenshot <url>`	|
 | urban	|	Get the urban dictionary of a word.	|	`urban <word>`	|
+
+
+## Host
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
+| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
+| eval	|	Evaluates JS code.	|	`eval <code>`	|
+| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
+| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
+| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
+| reload	|	Reloads a command.	|	`reload <command / event>`	|
+| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
+| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
+
+
+## Giveaway
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| g-delete	|	Delete a giveaway	|	`g-delete <messageID>`	|
+| g-edit	|	Edit a giveaway.	|	`g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>`	|
+| g-reroll	|	reroll a giveaway.	|	`g-reroll <messageID> [winners]`	|
+| g-start	|	Start a giveaway	|	`g-start <time> <Number of winners> <prize>`	|
 
 
 ## Guild
@@ -46,20 +60,6 @@
 | rank	|	Shows your rank/Level.	|	`level [username]`	|
 
 
-## Host
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| blacklist	|	Update global ban list	|	`blacklist <add / remove> <userID> [reason]`	|
-| docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
-| eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink [host]`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
-| premium	|	Add or remove user's premium	|	`premium <add / remove> <user / guild> <ID> [time]`	|
-| reload	|	Reloads a command.	|	`reload <command / event>`	|
-| shutdown	|	Shutdowns the bot.	|	`shutdown`	|
-| suggestion	|	Add a suggestion to bot	|	`suggestion <title> - <description> - <plugin>`	|
-
-
 ## Image
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -81,6 +81,26 @@
 | whowouldwin	|	Create a whowouldwin image.	|	`whowouldwin <user1> [user2]`	|
 
 
+## Moderation
+|	Command	| description	| Usage
+|---------------|--------------------|--------------|
+| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
+| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
+| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
+| deafen	|	Deafen a user.	|	`deafen <user>`	|
+| dm	|	DM a user	|	`dm <user> <message>`	|
+| kick	|	Kick a user.	|	`kick <user> [reason]`	|
+| mute	|	Mute a user.	|	`mute <user> [time]`	|
+| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
+| report	|	Report a user.	|	`report <user> [reason]`	|
+| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
+| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
+| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
+| unmute	|	Unmute a user.	|	`unmute <user>`	|
+| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
+| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+
+
 ## Misc
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
@@ -94,24 +114,18 @@
 | uptime	|	Gets the uptime of the bot.	|	`uptime`	|
 
 
-## Moderation
+## NSFW
 |	Command	| description	| Usage
 |---------------|--------------------|--------------|
-| ban	|	Ban a user.	|	`ban <user> [reason] [time]`	|
-| clear-warning	|	Remove warnings from a user.	|	`clear-warning <user> [warning number]`	|
-| clear	|	Clear a certain amount of messages.	|	`clear <Number> [member]`	|
-| deafen	|	Deafen a user.	|	`deafen <user> [time]`	|
-| dm	|	DM a user	|	`dm <user> <message>`	|
-| kick	|	Kick a user.	|	`kick <user> [reason]`	|
-| mute	|	Mute a user.	|	`mute <user> [time]`	|
-| nick	|	Change the nickname of a user.	|	`nick <user> <name>`	|
-| report	|	Report a user.	|	`report <user> [reason]`	|
-| slowmode	|	Activate slowmode on a channel.	|	`slowmode <time / off>`	|
-| unban	|	Unban a user.	|	`unban <userID> [reason]`	|
-| undeafen	|	Undeafen a user.	|	`undeafen <user>`	|
-| unmute	|	Unmute a user.	|	`unmute <user>`	|
-| warn	|	Warn a user.	|	`warn <user> [time] [reason]`	|
-| warnings	|	Display number of warnings a user has.	|	`warnings [user]`	|
+| 4k	|	Look at NSFW images.	|	`4k`	|
+| anal	|	Look at NSFW images.	|	`anal`	|
+| ass	|	Look at NSFW images.	|	`ass`	|
+| boobs	|	Look at NSFW images.	|	`boobs`	|
+| gonewild	|	Look at NSFW images.	|	`gonewild`	|
+| hneko	|	Look at NSFW images.	|	`hneko`	|
+| pgif	|	Look at NSFW images.	|	`pgif`	|
+| pussy	|	Look at NSFW images.	|	`pussy`	|
+| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Music
@@ -139,7 +153,7 @@
 | play	|	Play a song.	|	`play <link / song name>`	|
 | previous	|	Displays the previous tracks that have been played.	|	`previous [pageNumber]`	|
 | queue	|	Displays the queue.	|	`queue [pageNumber]`	|
-| radio	|	Listen to the radio	|	`radio`	|
+| radio	|	Listen to the radio	|	`radio <query>`	|
 | remove	|	Removes a song from the queue	|	`remove <position> [position]`	|
 | resume	|	Resumes the music.	|	`resume`	|
 | rewind	|	Rewinds the player by your specified amount.	|	`rewind <time>`	|
@@ -150,20 +164,6 @@
 | speed	|	Sets the player's playback speed.	|	`speed <Number>`	|
 | vaporwave	|	Toggles vaporwave mode.	|	`vaporwave`	|
 | volume	|	Changes the volume of the song	|	`volume <Number>`	|
-
-
-## NSFW
-|	Command	| description	| Usage
-|---------------|--------------------|--------------|
-| 4k	|	Look at NSFW images.	|	`4k`	|
-| anal	|	Look at NSFW images.	|	`anal`	|
-| ass	|	Look at NSFW images.	|	`ass`	|
-| boobs	|	Look at NSFW images.	|	`boobs`	|
-| gonewild	|	Look at NSFW images.	|	`gonewild`	|
-| hneko	|	Look at NSFW images.	|	`hneko`	|
-| pgif	|	Look at NSFW images.	|	`pgif`	|
-| pussy	|	Look at NSFW images.	|	`pussy`	|
-| thigh	|	Look at NSFW images.	|	`thigh`	|
 
 
 ## Plugins

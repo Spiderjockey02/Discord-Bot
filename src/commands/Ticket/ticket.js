@@ -26,7 +26,7 @@ module.exports = class Ticket extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')
 					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
-				message.channel.send(embed).then(async msg => {
+				message.channel.send({ embeds: [embed] }).then(async msg => {
 					// add reaction
 					await msg.react('🎟');
 
@@ -47,7 +47,7 @@ module.exports = class Ticket extends Command {
 						`\`${settings.prefix}t-setup\` - Sets up the ticket plugin (Admin only).`,
 						`\`${settings.prefix}ticket reaction\` - Add reaction ticket embed (Admin only).`,
 					].join('\n'));
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 			}
 		}
 	}

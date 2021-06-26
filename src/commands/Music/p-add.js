@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const { PlaylistSchema } = require('../../database/models'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
@@ -17,9 +17,10 @@ module.exports = class PAdd extends Command {
 		});
 	}
 
+	// Function for message command
 	async run(bot, message, settings) {
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		PlaylistSchema.findOne({
 			name: message.args[0],
@@ -29,7 +30,7 @@ module.exports = class PAdd extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// playlist found
@@ -57,7 +58,7 @@ module.exports = class PAdd extends Command {
 					} catch (err) {
 						if (message.deletable) message.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 				}	else if (res.loadType == 'SEARCH_RESULT') {
 					// Display the options for search
@@ -70,7 +71,7 @@ module.exports = class PAdd extends Command {
 						.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
 						.setColor(message.member.displayHexColor)
 						.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 
 					try {
 						collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });

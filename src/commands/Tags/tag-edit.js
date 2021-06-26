@@ -23,7 +23,7 @@ module.exports = class TagEdit extends Command {
 		if (settings.ModerationClearToggle & message.deletable) message.delete();
 
 		// make sure something was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Get user options
 		let responseString;
@@ -38,7 +38,7 @@ module.exports = class TagEdit extends Command {
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0].toLowerCase() == 'edit') {
 			// edit the tag with the new response
@@ -51,10 +51,10 @@ module.exports = class TagEdit extends Command {
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.delete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };

@@ -199,7 +199,7 @@ class Giveaway extends EventEmitter {
 	async checkWinnerEntry(user) {
 		const guild = this.channel.guild;
 		if (!user) return false;
-		const member = guild.member(user.id) || await guild.members.fetch(user.id);
+		const member = guild.members.cache.get(user.id) || await guild.members.fetch(user.id);
 		if (!member) return false;
 		const exemptMember = await this.exemptMembers(member);
 		if (exemptMember) return false;
@@ -241,7 +241,7 @@ class Giveaway extends EventEmitter {
 			}
 		}
 
-		return winners.map((user) => guild.member(user) || user);
+		return winners.map((user) => guild.members.cache.get(user) || user);
 	}
 
 	// Edits the giveaway
@@ -331,13 +331,13 @@ class Giveaway extends EventEmitter {
 				const embed = this.manager.generateEndEmbed(this, winners);
 				this.message.edit(this.messages.giveawayEnded, { embed });
 				const formattedWinners = winners.map((w) => '<@' + w.id + '>').join(', ');
-				this.channel.send(options.congrat
+				this.channel.send(options.messages.congrat
 					.replace('{winners}', formattedWinners)
 					.replace('{messageURL}', this.messageURL),
 				);
 				resolve(winners);
 			} else {
-				this.channel.send(options.error);
+				this.channel.send(options.messages.error);
 				resolve(new Array());
 			}
 		});

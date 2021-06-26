@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ MutedMemberSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildMemberUpdate extends Event {
@@ -102,10 +103,19 @@ module.exports = class guildMemberUpdate extends Event {
 				// Find channel and send message
 				try {
 					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newMember.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, embed);
+					if (modChannel && modChannel.guild.id == newMember.guild.id) bot.addEmbed(modChannel.id, [embed]);
 				} catch (err) {
 					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
+			}
+		}
+
+		// check if member lost mute role manually
+		if (oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id)).map(r => r.id).includes(settings.MutedRole)) {
+			try {
+				await MutedMemberSchema.findOneAndRemove({ userID: newMember.user.id, guildID: newMember.guild.id });
+			} catch (err) {
+				bot.logger.error(`${newMember.user.id}`);
 			}
 		}
 	}

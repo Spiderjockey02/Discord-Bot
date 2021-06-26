@@ -54,11 +54,11 @@ module.exports = class Generate extends Command {
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				});
 			} else if (image_2.includes(choice)) {
 				// Check that 2 files have been uploaded
-				if (!file[1]) return message.channel.error('image/generate:NEED_2IMG').then(m => m.delete({ timeout: 5000 }));
+				if (!file[1]) return message.channel.error('image/generate:NEED_2IMG').then(m => m.timedDelete({ timeout: 5000 }));
 
 				// send 'waiting' message to show bot has recieved message
 				msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -75,7 +75,7 @@ module.exports = class Generate extends Command {
 					msg.delete();
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				});
 			}
 			// send embed
@@ -83,11 +83,11 @@ module.exports = class Generate extends Command {
 				if (!image || !image.data) return;
 				const attachment = new MessageAttachment(image.data, `${choice}.${choice == 'triggered' ? 'gif' : 'png'}`);
 				msg.delete();
-				message.channel.send(attachment);
+				message.channel.send({ files: [attachment] });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				msg.delete();
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		}
 	}

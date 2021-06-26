@@ -15,30 +15,53 @@ module.exports = class UserInfo extends Command {
 			usage: 'user-info [user]',
 			cooldown: 2000,
 			examples: ['user-info userID', 'user-info @mention', 'user-info username'],
+			slash: true,
+			options: [{
+				name: 'user',
+				description: 'The user you want to information of.',
+				type: 'USER',
+				required: false,
+			}],
 		});
 	}
 
-	// Run command
+	// Function for message command
 	async run(bot, message) {
 		// Get user
 		const members = await message.getMember();
+		const embed = this.createEmbed(bot, message.guild, members[0]);
 
 		// send user info
-		const embed = new Embed(bot, message.guild)
-			.setAuthor(members[0].user.tag, members[0].user.displayAvatarURL())
+		message.channel.send({ embeds: [embed] });
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
+
+		// send embed
+		const embed = await this.createEmbed(bot, guild, member);
+		bot.send(interaction, { embeds: [embed] });
+	}
+
+
+	// create userinfo embed
+	createEmbed(bot, guild, member) {
+		const embed = new Embed(bot, guild)
+			.setAuthor(member.user.tag, member.user.displayAvatarURL())
 			.setColor(3447003)
-			.setThumbnail(members[0].user.displayAvatarURL({ format: 'png', size: 512 }))
+			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: message.translate('guild/user-info:USERNAME'), value: members[0].user.username, inline: true },
-				{ name: message.translate('guild/user-info:DISCRIM'), value: members[0].user.discriminator, inline: true },
-				{ name: message.translate('guild/user-info:ROBOT'), value: message.translate(`misc:${members[0].user.bot ? 'YES' : 'NO'}`), inline: true },
-				{ name: message.translate('guild/user-info:CREATE'), value: moment(members[0].user.createdAt).format('lll'), inline: true },
-				{ name: message.translate('guild/user-info:STATUS'), value: `\`${(members[0].presence.activities.length >= 1) ? `${members[0].presence.activities[0].name} - ${(members[0].presence.activities[0].type == 'CUSTOM_STATUS') ? members[0].presence.activities[0].state : members[0].presence.activities[0].details}` : 'None'}\``, inline: true },
-				{ name: message.translate('guild/user-info:ROLE'), value: members[0].roles.highest, inline: true },
-				{ name: message.translate('guild/user-info:JOIN'), value: moment(members[0].joinedAt).format('lll'), inline: true },
-				{ name: message.translate('guild/user-info:NICK'), value: members[0].nickname != null ? members[0].nickname : message.translate('misc:NONE'), inline: true },
-				{ name: message.translate('guild/user-info:ROLES'), value: members[0].roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
+				{ name: guild.translate('guild/user-info:USERNAME'), value: member.user.username, inline: true },
+				{ name: guild.translate('guild/user-info:DISCRIM'), value: `${member.user.discriminator}`, inline: true },
+				{ name: guild.translate('guild/user-info:ROBOT'), value: guild.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`), inline: true },
+				{ name: guild.translate('guild/user-info:CREATE'), value: moment(member.user.createdAt).format('lll'), inline: true },
+				{ name: guild.translate('guild/user-info:STATUS'), value: `\`${(member.presence.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None'}\``, inline: true },
+				{ name: guild.translate('guild/user-info:ROLE'), value: `${member.roles.highest}`, inline: true },
+				{ name: guild.translate('guild/user-info:JOIN'), value: moment(member.joinedAt).format('lll'), inline: true },
+				{ name: guild.translate('guild/user-info:NICK'), value: member.nickname != null ? member.nickname : guild.translate('misc:NONE'), inline: true },
+				{ name: guild.translate('guild/user-info:ROLES'), value: member.roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
 			);
-		message.channel.send(embed);
+		return embed;
 	}
 };

@@ -1,4 +1,4 @@
-// Dependecies
+// Dependencies
 const Command = require('../../structures/Command.js');
 
 module.exports = class Setlang extends Command {
@@ -20,7 +20,7 @@ module.exports = class Setlang extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// get language
 		const language = bot.languages.find((l) => l.name === message.args[0] || l.aliases.includes(message.args[0]));
@@ -35,7 +35,7 @@ module.exports = class Setlang extends Command {
 			return message.channel.success('plugins/set-lang:SUCCESS', { NAME: language.nativeName });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.delete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 };
