@@ -1,5 +1,5 @@
 // Dependencies
-const { timeEventSchema, WarningSchema, PremiumSchema, MutedMemberSchema } = require('../database/models'),
+const { timeEventSchema, WarningSchema, MutedMemberSchema } = require('../database/models'),
 	ms = require('ms'),
 	{ Embed, time: { getTotalTime } } = require('../utils'),
 	{ MessageAttachment } = require('discord.js');
@@ -15,61 +15,61 @@ module.exports = async (bot) => {
 		// check each event
 		for (let i = 0; i < events.length; i++) {
 			// get settings for the guild
-			const settings = bot.guilds.cache.get(events[i].guildID)?.settings;
+			const guild = bot.guilds.cache.get(events[i].guildID);
+			// const settings = guild?.settings;
+			const user = await bot.users.fetch(events[i].userID);
 
-			// check if current time is 'older' then event time.
 			if (new Date() >= new Date(events[i].time)) {
-				// if event type was reminder
-				if (events[i].type == 'reminder') {
-					bot.logger.debug(`Reminding ${bot.users.cache.get(events[i].userID).tag}`);
-					// Message user about reminder
-					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+				switch(events[i].type) {
+				case 'ban': {
+					bot.logger.debug(`Unbanning ${user.tag} in guild: ${guild.id}.`);
 
-					const embed = new Embed(bot, bot.guilds.cache.get(events[i].guildID))
-						.setTitle('fun/reminder:TITLE')
-						.attachFiles(attachment)
-						.setThumbnail('attachment://Timer.png')
-						.setDescription(`${events[i].message}\n[${bot.translate('fun/reminder:DESC', {}, settings.Language)}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID}})`)
-						.setFooter('fun/reminder:FOOTER', { TIME: ms(events[i].time, { long: true }) });
-					try {
-						await bot.users.cache.get(events[i].userID).send(embed);
-					} catch (e) {
-						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.send(bot.translate(settings.Language, 'FUN/REMINDER_RESPONSE', [`\n**REMINDER:**\n ${bot.users.cache.get(events[i].userID)}`, `${events[i].message}`]));
-					}
-				} else if (events[i].type == 'ban') {
-					// if event type was mute
-					bot.logger.debug(`Unbanning ${bot.users.cache.get(events[i].userID).tag} in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
-
-					// unban user
+					// unban user from guild
 					try {
 						const bans = await bot.guilds.cache.get(events[i].guildID).fetchBans();
 						if (bans.size == 0) return;
 						const bUser = bans.find(ban => ban.user.id == events[i].userID);
 						if (!bUser) return;
 
-						bot.guilds.cache.get(events[i].guildID).members.unban(bUser.user);
+						await guild.members.unban(bUser.user);
 						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNBAN', await bot.users.fetch(events[i].userID)).then(m => m.timedDelete({ timeout: 3000 }));
+						if (channel) await channel.success('moderation/unban:SUCCESS', { USER: user }).then(m => m.timedDelete({ timeout: 3000 }));
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
-						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
+						bot.channels.cache.get(events[i].channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
-				} else if (events[i].type == 'mute') {
-					// if event type was mute
-					bot.logger.debug(`Unmuting ${bot.users.cache.get(events[i].userID).tag} in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
+					break;
+				}
+				case 'reminder': {
+					bot.logger.debug(`Reminding ${bot.users.cache.get(events[i].userID).tag}`);
+
+					// Message user about reminder
+					const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+					const embed = new Embed(bot, guild)
+						.setTitle('fun/reminder:TITLE')
+						.setThumbnail('attachment://Timer.png')
+						.setDescription(`${events[i].message}\n[${guild.translate('fun/reminder:DESC')}](https://discord.com/channels/${events[i].guildID}/${events[i].channelID}})`)
+						.setFooter('fun/reminder:FOOTER', { TIME: ms(events[i].time, { long: true }) });
+					try {
+						await bot.users.cache.get(events[i].userID).send({ embeds: [embed], files: [attachment] });
+					} catch (err) {
+						bot.logger.error(`Error: ${err.message} when sending reminder to user. (timed event)`);
+						bot.channels.cache.get(events[i].channelID)?.send(guild.translate('fun/reminder:RESPONSE', { USER: user.id, INFO: events[i].message }));
+					}
+					break;
+				}
+				case 'mute': {
+					bot.logger.debug(`Unmuting ${user.tag} in guild: ${guild.id}.`);
 
 					// get muted role
-					const muteRole = bot.guilds.cache.get(events[i].guildID).roles.cache.get(settings.MutedRole);
-					if (!muteRole) return bot.logger.error(`Muted role is missing in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
+					const muteRole = guild.roles.cache.get(guild.settings.MutedRole);
+					if (!muteRole) return bot.logger.error(`Muted role is missing in guild: ${guild.id}.`);
 
 					// get member to unmute
-					const member = bot.guilds.cache.get(events[i].guildID).members.cache.get(events[i].userID);
+					const member = await guild.members.fetch(user.id);
 
 					// delete muted member from database (even if they not in guild anymore)
 					await MutedMemberSchema.findOneAndRemove({ userID: member.user.id,	guildID: events[i].guildID });
-
 					if (!member) return bot.logger.error(`Member is no longer in guild: ${bot.guilds.cache.get(events[i].guildID).id}.`);
 
 					// update member
@@ -77,21 +77,22 @@ module.exports = async (bot) => {
 						await member.roles.remove(muteRole);
 						// if in a VC unmute them
 						if (member.voice.channelID) member.voice.setMute(false);
-
-						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) await channel.success(settings.Language, 'MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.timedDelete({ timeout: 3000 }));
+						bot.channels.cache.get(events[i].channelID)?.success('MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.timedDelete({ timeout: 3000 }));
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
-						const channel = bot.channels.cache.get(events[i].channelID);
-						if (channel) channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
+						bot.channels.cache.get(events[i].channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
-				} else if (events[i].type == 'warn') {
+					break;
+				}
+				case 'warn':
 					// remove warning
-					WarningSchema.find({ userID: events[i].userID, guildID: events[i].guildID,
+					WarningSchema.find({
+						userID: events[i].userID,
+						guildID: events[i].guildID,
 					}, async (err, res) => {
 						if (err) {
 							bot.logger.error(`Error: ${err.message} fetching warns. (timed events)`);
-							return bot.channels.cache.get(events[i].channelID)?.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 5000 }));
+							return bot.channels.cache.get(events[i].channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 						}
 
 						// find the timed warning
@@ -103,7 +104,7 @@ module.exports = async (bot) => {
 								if (time) {
 									const a = new Date(res[j].IssueDate).getTime() + parseInt(time);
 									const b = new Date(events[i].time).getTime();
-									if (((a > b) ? (a - b) : (b - a)) <= 4000) {
+									if (Math.abs(a, b) <= 4000) {
 										// warning found, time to delete
 										await WarningSchema.findByIdAndRemove(res[j]._id);
 									}
@@ -111,23 +112,18 @@ module.exports = async (bot) => {
 							}
 						}
 					});
-				} else if (events[i].type == 'premium') {
-					// Delete premium 'Type' from DB
-					await PremiumSchema.collection.deleteOne({
-						ID: events[i].userID == 0 ? events[i].guildID : events[i].userID,
-						Type: events[i].userID == 0 ? 'guild' : 'user' });
-
-					events[i].userID == 0 ? bot.guilds.cache.get(events[i].guildID).premium = false : await bot.users.fetch(events[i].userID).then(user => user.premium = false);
+					break;
+				case 'premium': {
+					// code block
+					break;
 				}
-
-				// Delete from database as bot didn't crash
-				await timeEventSchema.findByIdAndRemove(events[i]._id, (err) => {
-					if (err) console.log(err);
-				});
-
-				// delete from 'cache'
-				events.splice(events.indexOf(events[i]), 1);
+				default:
+					// code block
+					bot.logger.error(`Invalid event type: ${events[i].type}.`);
+				}
 			}
+			// delete from 'cache'
+			events.splice(events.indexOf(events[i]), 1);
 		}
 	}, 3000);
 };
