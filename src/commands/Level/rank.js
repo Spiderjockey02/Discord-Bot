@@ -38,14 +38,15 @@ module.exports = class Rank extends Command {
 		// Retrieve Rank from databse
 		try {
 			const res = await this.createRankCard(bot, message.guild, members[0], message.channel);
+			msg.delete();
 			if (typeof (res) == 'object') {
 				await message.channel.send({ files: [res] });
 			} else {
 				await message.channel.send(res);
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
@@ -80,6 +81,7 @@ module.exports = class Rank extends Command {
 		for (let i = 0; i < res.length; i++) {
 			if (res[i].userID == member.user.id) rankScore = i;
 		}
+
 		// create rank card
 		const rankcard = new rank()
 			.setAvatar(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
@@ -91,6 +93,7 @@ module.exports = class Rank extends Command {
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
 			.setUsername(member.user.username)
 			.setDiscriminator(member.user.discriminator);
+		if (member.user.rankImage && member.user.premium) rankcard.setBackground('IMAGE', member.user.rankImage);
 
 		// create rank card
 		const buffer = await rankcard.build();

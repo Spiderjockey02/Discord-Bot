@@ -2,6 +2,7 @@
 const { MessageEmbed } = require('discord.js'),
 	{ userSchema } = require('../../database/models'),
 	moment = require('moment'),
+	axios = require('axios'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class UserData extends Command {
@@ -12,7 +13,7 @@ module.exports = class UserData extends Command {
 			dirname: __dirname,
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Edit a user\'s data',
-			usage: 'user <id> [premium / banned] [true / false]',
+			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
 		});
@@ -41,7 +42,7 @@ module.exports = class UserData extends Command {
 					`ID: \`${user.id}\``,
 					`Creation Date: \`${moment(user.createdAt).format('lll')}\``,
 					'',
-					`Premium: \`${user.premium}\``,
+					`Premium: \`${user.premium}\`	(${(new Date(parseInt(user.premiumSince)).toLocaleString()).split(',')[0]}).`,
 					`Is banned: \`${user.cmdBanned}\``,
 					`No. of mutual servers: \`${bot.guilds.cache.filter(g => g.members.cache.get(user.id)).size}\``,
 				].join('\n'));
@@ -55,9 +56,10 @@ module.exports = class UserData extends Command {
 					await (new userSchema({
 						userID: user.id,
 						premium: message.args[2],
+						premiumSince: Date.now(),
 					})).save();
 				} else {
-					await userSchema.findOneAndUpdate({ userID: user.id }, { premium: message.args[2] });
+					await userSchema.findOneAndUpdate({ userID: user.id }, { premium: message.args[2], premiumSince: Date.now() });
 				}
 				user.premium = message.args[2];
 				message.channel.success('host/user:SUCCESS_PREM').then(m => m.timedDelete({ timeout: 10000 }));
@@ -81,6 +83,40 @@ module.exports = class UserData extends Command {
 				}
 				user.cmdBanned = message.args[2];
 				message.channel.success('host/user:SUCCESS_BAN').then(m => m.timedDelete({ timeout: 10000 }));
+			} catch (err) {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			}
+		} else if (message.args[1].toLowerCase() == 'rank') {
+			// Update user's rank card
+			if (message.attachments.first().url) {
+				try {
+					const response = await axios.get(message.attachments.first().url, { responseType: 'arraybuffer' });
+					if (!['png', 'jpeg'].includes(response.headers['content-type'].replace('image/', ''))) return message.channel.error(`File type must be \`PNG\` or \`JPEG\`, this file type was: ${response.headers['content-type'].replace('image/', '')}`).then(m => m.timedDelete({ timeout: 5000 }));
+					const resp = await userSchema.findOne({ userID: user.id	});
+					if (!resp) {
+						await (new userSchema({
+							userID: user.id,
+							rankImage: Buffer.from(response.data, 'utf-8'),
+						})).save();
+					} else {
+						await userSchema.findOneAndUpdate({ userID: user.id }, { rankImage: Buffer.from(response.data, 'utf-8') });
+					}
+					user.rankImage = Buffer.from(response.data, 'utf-8');
+					message.channel.success('host/user:SUCCESS_RANK').then(m => m.timedDelete({ timeout: 10000 }));
+				} catch (err) {
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
+			} else {
+				return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
+			}
+		} else if (message.args[1].toLowerCase() == 'reset') {
+			try {
+				await userSchema.findOneAndRemove({ userID: user.id });
+				message.channel.success('host/user:SUCCESS_RESET').then(m => m.timedDelete({ timeout: 10000 }));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

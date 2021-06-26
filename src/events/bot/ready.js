@@ -116,9 +116,12 @@ module.exports = class Ready extends Event {
 		const users = await userSchema.find({});
 		for (let i = 0; i < users.length; i++) {
 			const user = await bot.users.fetch(users[i].userID);
+			// const userData = users[i];
+			// user = { ...user, ...userData };
 			user.premium = users[i].premium;
-			this.cmdBanned = users[i].cmdBanned;
-			this.rankImage = users[i].rankImage;
+			user.premiumSince = users[i].premiumSince ?? 0;
+			user.cmdBanned = users[i].cmdBanned;
+			user.rankImage = Buffer.from(users[i].rankImage, 'base64');
 		}
 
 		// bot.logger.ready(`${premium.length} premium tier(s) have been applied. (${users} users, ${guilds} guilds)`);
