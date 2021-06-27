@@ -41,6 +41,8 @@ const guildSchema = Schema({
 	CommandChannels: { type: Array, default: [11111111] },
 	CommandCooldown: { type: Boolean, default: false },
 	CommandCooldownSec: { type: Number, default: 2 },
+	// Tag plugin
+	PrefixTags: { type: Boolean, default: false },
 	// Moderation plugin
 	ModeratorRoles: { type: Array, default: ['owner'] },
 	MutedRole: { type: String, default: '00' },

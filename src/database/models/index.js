@@ -8,6 +8,6 @@ module.exports = {
 	timeEventSchema: require('./TimedEvents'),
 	MutedMemberSchema: require('./MutedMembers'),
 	ticketEmbedSchema: require('./TicketEmbed'),
-	TagsSchema: require('./tag'),
+	TagsSchema: require('./Tag'),
 	userSchema: require('./userSettings.js'),
 };

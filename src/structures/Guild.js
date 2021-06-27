@@ -14,6 +14,9 @@ module.exports = Structures.extend('Guild', Guild => {
 			// premium guild or not
 			this.premium = false;
 
+			// tags
+			this.tags  = new Collection();
+
 			// slash commands
 			this.interactions = new Collection();
 		}
