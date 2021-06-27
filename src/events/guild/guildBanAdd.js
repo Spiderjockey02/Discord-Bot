@@ -14,6 +14,12 @@ module.exports = class guildBanAdd extends Event {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${user.tag} has been banned in guild: ${guild.id}.`);
 
+		try {
+			if (user.partial) await user.fetch();
+		} catch (err) {
+			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		}
+
 		// Get server settings / if no settings then return
 		const settings = guild.settings;
 		if (Object.keys(settings).length == 0) return;

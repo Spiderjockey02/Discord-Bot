@@ -32,7 +32,7 @@ module.exports = class messageDeleteBulk extends Event {
 			// Get modlog channel
 			const modChannel = messages.first().guild.channels.cache.get(settings.ModLogChannel);
 			if (modChannel) {
-				const msg = await modChannel.send(attachment);
+				const msg = await modChannel.send({ files: [attachment] });
 
 				// embed
 				const embed = new Embed(bot, messages.first().guild.id)
@@ -40,7 +40,7 @@ module.exports = class messageDeleteBulk extends Event {
 					.setColor(15158332)
 					.setFooter(`Channel: ${messages.first().channel.id}`)
 					.setAuthor(messages.first().channel.name, messages.first().guild.iconURL)
-					.addField('Message count:', messages.size, true)
+					.addField('Message count:', `${messages.size}`, true)
 					.addField('Deleted Messages:', `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, true)
 					.setTimestamp();
 
