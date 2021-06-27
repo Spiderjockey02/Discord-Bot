@@ -20,7 +20,7 @@ module.exports = class TagEdit extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// delete message
-		if (settings.ModerationClearToggle & message.deletable) message.delete();
+		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

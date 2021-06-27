@@ -15,7 +15,7 @@ module.exports = (bot) => {
 				if (!gs) guilds.splice(guilds.indexOf(g), 1);
 			}));
 			res.status(200).json({ guilds });
-		} else if (req.query.ID & !req.query.guilds) {
+		} else if (req.query.ID && !req.query.guilds) {
 			// missing guilds
 			res.status(200).json({ error: 'Missing array of guild ID\'s'	});
 		} else {

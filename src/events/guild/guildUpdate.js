@@ -19,7 +19,7 @@ module.exports = class guildUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildUpdate is for logging
-		if (settings.ModLog & settings.ModLogEvents.includes('GUILDUPDATE')) {
+		if (settings.ModLog && settings.ModLogEvents.includes('GUILDUPDATE')) {
 			let embed, updated = false;
 
 			// Guild name change
