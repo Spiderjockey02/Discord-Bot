@@ -40,7 +40,7 @@ module.exports = class Ready extends Event {
 			await guild.fetchGuildConfig();
 			if (guild.settings == null) {
 				// new guild has been found
-				bot.emit('guildCreate', guild);
+				await bot.emit('guildCreate', guild);
 			}
 			const enabledPlugins = guild.settings.plugins;
 			const data = [];

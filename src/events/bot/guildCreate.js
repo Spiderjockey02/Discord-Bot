@@ -61,9 +61,19 @@ module.exports = class GuildCreate extends Event {
 		// update bot's activity
 		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 
+		// get slash commands for category
 		const enabledPlugins = guild.settings.plugins;
-		enabledPlugins.forEach((category) => {
-			bot.loadInteractionGroup(category, guild);
-		});
+		const data = [];
+		for (let i = 0; i < enabledPlugins.length; i++) {
+			const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
+			if (Array.isArray(g)) data.push(...g);
+		}
+		// upload slash commands to guild
+		try {
+			await bot.guilds.cache.get(guild.id)?.commands.set(data);
+			bot.logger.log('Loaded Interactions for guild: ' + guild.name);
+		} catch (err) {
+			bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
+		}
 	}
 };

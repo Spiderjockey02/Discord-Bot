@@ -21,7 +21,7 @@ module.exports = class Ticket extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Add ticket reaction embed
-		if (message.member.hasPermission('MANAGE_GUILD')) {
+		if (message.member.permissions.has('MANAGE_GUILD')) {
 			if (message.args[0] == 'reaction') {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')
