@@ -59,7 +59,7 @@ module.exports = class GuildCreate extends Event {
 		if (modChannel) bot.addEmbed(modChannel.id, [embed, attachment]);
 
 		// update bot's activity
-		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
+		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 
 		const enabledPlugins = guild.settings.plugins;
 		enabledPlugins.forEach((category) => {

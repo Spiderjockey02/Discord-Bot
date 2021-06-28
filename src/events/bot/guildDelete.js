@@ -82,6 +82,6 @@ module.exports = class guildDelete extends Event {
 		}
 
 		// update bot's activity
-		bot.SetActivity([`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`], 'WATCHING');
+		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 	}
 };
