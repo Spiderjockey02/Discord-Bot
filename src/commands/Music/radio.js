@@ -53,7 +53,7 @@ module.exports = class Radio extends Command {
 
 				let collected;
 				try {
-					collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+					collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
 				} catch (e) {
 					return message.reply('You didn\'t choose a song in time.');
 				}

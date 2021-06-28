@@ -30,7 +30,7 @@ module.exports = class MusicNode extends Command {
 				await (new Node({
 					host: message.args[1] ?? 'localhost',
 					password: message.args[2] ?? 'youshallnotpass',
-					port: message.args[3] ?? 5000,
+					port: parseInt(message.args[3]) ?? 5000,
 				})).connect();
 				message.channel.success('host/node:ADDED_NODE');
 			} catch (err) {
@@ -42,7 +42,7 @@ module.exports = class MusicNode extends Command {
 				await (new Node({
 					host: message.args[1] ?? 'localhost',
 					password: message.args[2] ?? 'youshallnotpass',
-					port: message.args[3] ?? 5000,
+					port: parseInt(message.args[3]) ?? 5000,
 				})).destroy();
 				message.channel.success('host/node:REMOVED_NODE');
 			} catch (err) {

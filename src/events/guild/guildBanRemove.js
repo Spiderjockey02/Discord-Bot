@@ -10,33 +10,35 @@ module.exports = class guildBanRemove extends Event {
 	}
 
 	// run event
-	async run(bot, guild, user) {
-		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${user.tag} has been unbanned in guild: ${guild.id}.`);
-
+	async run(bot, guildBan) {
+		// Make sure all relevant data is fetched
 		try {
-			if (user.partial) await user.fetch();
+			if (guildBan.partial) await guildBan.fetch();
+			if (guildBan.user.partial) await guildBan.user.fetch();
 		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
+		// For debugging
+		if (bot.config.debug) bot.logger.debug(`Member: ${guildBan.user.tag} has been unbanned in guild: ${guildBan.id}.`);
+
 		// Get server settings / if no settings then return
-		const settings = guild.settings;
+		const settings = guildBan.settings;
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildBanRemove is for logging
 		if (settings.ModLogEvents.includes('GUILDBANREMOVE') && settings.ModLog) {
-			const embed = new Embed(bot, guild)
-				.setDescription(`${user.toString()}\n${user.tag}`)
-				.setFooter(`ID: ${user.id}`)
-				.setThumbnail(`${user.displayAvatarURL()}`)
+			const embed = new Embed(bot, guildBan)
+				.setDescription(`${guildBan.user.toString()}\n${guildBan.user.tag}`)
+				.setFooter(`ID: ${guildBan.user.id}`)
+				.setThumbnail(`${guildBan.user.displayAvatarURL()}`)
 				.setAuthor('User: Unbanned')
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) bot.addEmbed(modChannel.id, [embed]);
+				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${guildBan.id} logging channel`));
+				if (modChannel && modChannel.guild.id == guildBan.id) bot.addEmbed(modChannel.id, [embed]);
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

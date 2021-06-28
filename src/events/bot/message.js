@@ -141,7 +141,6 @@ module.exports = class Message extends Event {
 			const now = Date.now();
 			const timestamps = bot.cooldowns.get(cmd.help.name);
 			const cooldownAmount = (message.author.premium ? cmd.conf.cooldown * 0.75 : cmd.conf.cooldown);
-			console.log(cooldownAmount);
 
 			if (timestamps.has(message.author.id)) {
 				const expirationTime = timestamps.get(message.author.id) + cooldownAmount;

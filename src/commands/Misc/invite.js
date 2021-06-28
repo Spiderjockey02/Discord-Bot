@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { MessageEmbed } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 module.exports = class Invite extends Command {
 	constructor(bot) {
@@ -17,7 +18,9 @@ module.exports = class Invite extends Command {
 
 	// Function for message command
 	async run(bot, message) {
-		message.channel.send({ embed:{ description:message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) } });
+		const embed = new MessageEmbed()
+			.setDescription(message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }));
+		message.channel.send({ embeds: [embed] });
 	}
 
 	// Function for slash command

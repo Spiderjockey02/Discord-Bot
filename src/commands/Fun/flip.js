@@ -23,6 +23,6 @@ module.exports = class Flip extends Command {
 	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const r = Math.round(Math.random());
-		return await bot.send(interaction, { content: `${bot.customEmojis[['head', 'tail'][r]]} ${guild.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}` });
+		return bot.send(interaction, { content: `${bot.customEmojis[['head', 'tail'][r]]} ${guild.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}` });
 	}
 };

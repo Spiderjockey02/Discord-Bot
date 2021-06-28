@@ -20,20 +20,21 @@ module.exports = Structures.extend('Guild', Guild => {
 
 		// Fetch guild settings (only on ready event)
 		async fetchGuildConfig() {
-			const data = await GuildSchema.findOne({ guildID: this.id });
-			this.settings = data;
+			this.settings = await GuildSchema.findOne({ guildID: this.id });
+			return this.settings;
 		}
 
 		// update guild settings
 		async updateGuild(settings) {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
-			return GuildSchema.findOneAndUpdate({ guildID: this.id }, settings).then(async () => await this.fetchGuildConfig());
+			await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
+			return this.fetchGuildConfig();
 		}
 
 		// This will get the translation for the provided text
 		translate(key, args) {
 			const language = this.client.translations.get(this.settings.Language);
-			if (!language) throw 'Invalid language set in data.';
+			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
 		}
 	}
