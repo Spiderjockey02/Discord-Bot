@@ -46,7 +46,11 @@ module.exports = class MC extends Command {
 		// Ping server
 		const resp = await this.createEmbed(bot, message.guild, message.args[0], message.args[1]);
 		msg.delete();
-		console.log(resp);
+		if (Array.isArray(resp)) {
+			await message.channel.send({ embeds: [resp[0]], files: [resp[1]] });
+		} else {
+			await message.channel.send({ embeds: [resp] });
+		}
 	}
 
 	// Function for slash command
@@ -70,7 +74,7 @@ module.exports = class MC extends Command {
 
 	// create MC embed
 	async createEmbed(bot, guild, IP, port) {
-		const response = await status(IP, { port: port });
+		const response = await status(IP, { port: parseInt(port) });
 		// turn favicon to thumbnail
 		let attachment;
 		if (response.favicon) {
