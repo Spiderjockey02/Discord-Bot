@@ -34,6 +34,7 @@ module.exports = class Reddit extends Command {
 		// try and retrieve image from reddit
 		try {
 			const resp = await this.fetchPost(bot, message.channel, message.args[0]);
+			msg.delete();
 			await message.channel.send({ embeds: [resp] });
 		} catch (err) {
 			if (message.deletable) message.delete();

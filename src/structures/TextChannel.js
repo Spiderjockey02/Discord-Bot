@@ -1,3 +1,4 @@
+// Dependecies
 const { MessageEmbed } = require('discord.js'),
 	{ Structures } = require('discord.js');
 

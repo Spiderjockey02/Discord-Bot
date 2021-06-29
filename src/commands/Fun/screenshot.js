@@ -49,9 +49,8 @@ module.exports = class Screenshot extends Command {
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
 			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
-		const data = await this.fetchScreenshot(bot, message.args[0]);
-
 		// make screenshot
+		const data = await this.fetchScreenshot(bot, message.args[0]);
 		if (!data) {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }).then(m => m.timedDelete({ timeout: 5000 }));
 		} else {
@@ -79,13 +78,10 @@ module.exports = class Screenshot extends Command {
 		// display phrases' definition
 		await interaction.defer();
 		const data = await this.fetchScreenshot(bot, url);
-		console.log(data);
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
 		} else {
-			console.log('boo');
 			const attachment = new MessageAttachment(data, 'website.png');
-			console.log(attachment);
 			interaction.editReply({ files: [attachment] });
 		}
 	}

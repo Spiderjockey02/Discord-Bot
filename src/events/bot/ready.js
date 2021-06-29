@@ -38,10 +38,7 @@ module.exports = class Ready extends Event {
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
 		bot.guilds.cache.forEach(async guild => {
 			await guild.fetchGuildConfig();
-			if (guild.settings == null) {
-				// new guild has been found
-				await bot.emit('guildCreate', guild);
-			}
+			if (guild.settings == null) return await bot.emit('guildCreate', guild);
 			const enabledPlugins = guild.settings.plugins;
 			const data = [];
 
