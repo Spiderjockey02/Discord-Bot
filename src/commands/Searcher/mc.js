@@ -74,27 +74,32 @@ module.exports = class MC extends Command {
 
 	// create MC embed
 	async createEmbed(bot, guild, IP, port) {
-		const response = await status(IP, { port: parseInt(port) });
-		// turn favicon to thumbnail
-		let attachment;
-		if (response.favicon) {
-			const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
-			attachment = new MessageAttachment(imageStream, 'favicon.png');
-		}
+		try {
+			const response = await status(IP, { port: parseInt(port) });
+			// turn favicon to thumbnail
+			let attachment;
+			if (response.favicon) {
+				const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
+				attachment = new MessageAttachment(imageStream, 'favicon.png');
+			}
 
-		const embed = new Embed(bot, guild)
-			.setColor(0x0099ff)
-			.setTitle('searcher/mc:TITLE');
-		if (response.favicon) embed.setThumbnail('attachment://favicon.png');
-		embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`);
-		embed.addField(guild.translate('searcher/mc:IP'), response.host);
-		embed.addField(guild.translate('searcher/mc:VERSION'), response.version);
-		embed.addField(guild.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
-		embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(guild.settings.Language)}/${response.maxPlayers.toLocaleString(guild.settings.Language)}`);
-		if (response.favicon) {
-			return [embed, attachment];
-		} else {
-			return embed;
+			const embed = new Embed(bot, guild)
+				.setColor(0x0099ff)
+				.setTitle('searcher/mc:TITLE');
+			if (response.favicon) embed.setThumbnail('attachment://favicon.png');
+			embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`);
+			embed.addField(guild.translate('searcher/mc:IP'), response.host);
+			embed.addField(guild.translate('searcher/mc:VERSION'), response.version);
+			embed.addField(guild.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
+			embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(guild.settings.Language)}/${response.maxPlayers.toLocaleString(guild.settings.Language)}`);
+			if (response.favicon) {
+				return [embed, attachment];
+			} else {
+				return embed;
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 };

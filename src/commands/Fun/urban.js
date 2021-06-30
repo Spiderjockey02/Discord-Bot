@@ -40,7 +40,7 @@ module.exports = class Urban extends Command {
 		// Search up phrase in urban dictionary
 		const resp = await this.fetchDefinition(bot, message.guild, phrase, message.channel);
 		msg.delete();
-		message.channel.send(resp);
+		message.channel.send({ embeds: [resp] });
 	}
 
 	// Function for slash command
@@ -63,7 +63,7 @@ module.exports = class Urban extends Command {
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
 				.setURL(resp[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-				.setDescription(guild.translate('fun/urban:DESCRIPTION', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
+				.setDescription(guild.translate('fun/urban:DESC', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
 				.addField('👍', `${resp[0].thumbs_up}`, true)
 				.addField('👎', `${resp[0].thumbs_down}`, true);
 			return embed;

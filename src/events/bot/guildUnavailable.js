@@ -19,7 +19,8 @@ module.exports = class guildUnavailable extends Event {
 			// remove guild from array after an error
 			setTimeout(function() {
 				unavailableGuilds.splice(unavailableGuilds.indexOf(guild.id), 1);
-			}, 3600000);
+				// 1 hour interval
+			}, 60 * 60 * 1000);
 		} else {
 			bot.logger.log(`[GUILD UNAVAILABLE] ${guild.name} (${guild.id}).`);
 			unavailableGuilds.push(guild.id);
