@@ -82,8 +82,9 @@ Egglord is in a continuous state of development. New features/updates may come a
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
 ## 📜 Credits
-* **[Tovade#6617](https://github.com/tovade)** - *Initial reaction role system*
-* **Josh_V2#9733** - 1000 message clear command + slash commands (coming soon)
+* **[Tovade#6617](https://github.com/tovade)** - Initial Reaction Role System
+* **Josh_V2#9733** - Slash Commands & Tags System
+* **XBouBou#0856** - French Translation
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
 
 ## ❗ Disclaimer
