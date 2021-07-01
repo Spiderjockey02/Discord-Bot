@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Active le mode **vaporwave**.",
+  "USAGE": "vaporwave",
+  "ON_VW": "Activation du mode **vaporwave**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Mode **vaporwave** activé.",
+  "OFF_VW": "Mode **vaporwave** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **vaporwave** désactivé."
+}

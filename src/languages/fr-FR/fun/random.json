@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Retourne un nombre aléatoire.",
+  "USAGE": "random <mini> <maxi>",
+  "RESPONSE": "🎲 Nombre aléatoire : {{NUMBER}}"
+}

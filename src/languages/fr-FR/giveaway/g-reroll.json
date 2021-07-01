@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Relance un concours terminé",
+  "USAGE": "g-reroll <ID_du_message>",
+  "SUCCESS_GIVEAWAY": "Le concours a été relancé !",
+  "UNKNOWN_GIVEAWAY": "Pas de concours trouvé avec l'ID message : `{{ID}}`, merci de vérifier et essayer à nouveau.",
+  "CONGRAT": "🎉 Nouveau gagnant : {winners}! Félicitations !",
+  "ERROR": "Le concours a été annulé, aucune participation valide."
+}

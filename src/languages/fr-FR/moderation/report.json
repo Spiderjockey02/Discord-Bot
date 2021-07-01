@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Signaler un membre.",
+  "USAGE": "report <membre> [motif]",
+  "AUTHOR": "~Membre Signalé~",
+  "MEMBER": "Membre :",
+  "BY": "Signalé par :",
+  "IN": "Signalé dans :",
+  "REASON": "Motif :",
+  "SUCCESS": "*Un signalement concernant <@{{USER}}> a été émis*."
+}

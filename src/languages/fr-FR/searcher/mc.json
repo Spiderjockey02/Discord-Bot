@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Ping un serveur minecraft et récupère des informations.",
+  "USAGE": "mc <IP> [Port]",
+  "FETCHING": "{{EMOJI}} Récupère {{ITEM}} les informations du serveur...",
+  "TITLE": "Etat du Serveur",
+  "IP": "IP :",
+  "VERSION": "Version:",
+  "DESC": "Description :",
+  "PLAYERS": "Joueurs en ligne !"
+}

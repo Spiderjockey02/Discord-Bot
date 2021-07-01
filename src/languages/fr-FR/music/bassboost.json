@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Active le mode **Bassboost**.",
+  "USAGE": "bassboost [nombre]",
+  "ON_BB": "Activation du mode **bassboost**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Mode **bassboost** activé.",
+  "OFF_BB": "Mode **bassboost** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **bassboost** désactivé.",
+  "INVALID": "La valeur doit être un nombre.",
+  "SET_BB": "Bassboost à **{{DB}}dB**. Cela prendra effet dans quelques instants...",
+  "DESC_3": "Bassboost à **{{DB}}dB**"
+}

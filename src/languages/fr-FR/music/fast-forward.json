@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Avance rapide du lecteur suivant une durée spécifique.",
+  "USAGE": "fast-forward <durée>",
+  "LIVESTREAM": "Flux audio en direct, impossible d'effectuer cette action sur un Stream.",
+  "TOO_LONG": "Impossible, le titre ne dure que {{TIME}}.",
+  "DESC": "**Avance rapide de `{{OLD}}` à la position : `{{NEW}}`.**"
+}

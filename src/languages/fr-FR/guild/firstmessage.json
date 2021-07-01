@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Obtenir le premier message d'un salon.",
+  "USAGE": "firstmessage [salon]",
+  "JUMP": "❯ Lien"
+}

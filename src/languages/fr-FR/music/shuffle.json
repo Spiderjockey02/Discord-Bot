@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Lecture aléatoire de la playlist.",
+  "USAGE": "shuffle",
+  "DESC": "La playlist a été mélangée."
+}

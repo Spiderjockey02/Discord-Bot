@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Obtenir des information sur un compte Twitch.",
+  "USAGE": "twitch <utilisateur>",
+  "BIO": "Biographie : ",
+  "NO_BIO": "Cet utilisateur n'a pas renseigné de biographie.",
+  "TOTAL": "Viewers : ",
+  "FOLLOWERS": "Followers : ",
+  "NOT_FOUND": "Utilisateur introuvable.",
+  "STREAMING": "**{{TITLE}}** pour {{NUM}} viewers"
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Retour arrière du lecteur suivant une durée spécifique.",
+  "USAGE": "rewind <durée>",
+  "LIVESTREAM": "Flux audio en direct, impossible d'effectuer cette action sur un Stream.",
+  "INVALID": "Un titre ne peut pas durer moins de 0 secondes.",
+  "NEW_TIME": "**Retour arrière de `{{OLD}}` à la position : `{{NEW}}`.**"
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Enonce un fait aléatoire.",
+  "USAGE": "fact",
+  "FACT_TITLE": "Random Fact:"
+}

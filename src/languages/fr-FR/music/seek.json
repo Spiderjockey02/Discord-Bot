@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Positionne le lecteur audio à la durée indiquée.",
+  "USAGE": "seek <durée>",
+  "LIVESTREAM": "Flux audio en direct, impossible d'effectuer cette action sur un Stream.",
+  "INVALID": "Choisir une durée entre 0 et {{TIME}}.",
+  "UPDATED": "Lecture en cours à la position : `{{TIME}}`."
+}

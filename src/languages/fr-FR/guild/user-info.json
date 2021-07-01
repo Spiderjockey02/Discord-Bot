@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Informations sur un membre du serveur.",
+  "USAGE": "user-info [utilisateur]",
+  "USERNAME": "✍ Utilisateur :",
+  "DISCRIM": "#️⃣  Tag :",
+  "ROBOT": "🤖 Robot :",
+  "CREATE": "Création :",
+  "STATUS": "📶 Etat :",
+  "ROLE": "🔼 Rôle le plus élevé :",
+  "JOIN": "Ici depuis :",
+  "NICK": "📝 Pseudo :",
+  "ROLES": "Rôles :"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Retirer un titre d'une liste de lecture",
+  "USAGE": "p-remove <nom_de_la_playlist> <position> [position]",
+  "SUCCESS": "Liste de lecture mise à jour.",
+  "NO_PLAYLIST": "Liste de lecture non trouvée."
+}

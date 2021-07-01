@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Effacer des messages par lot.",
+  "USAGE": "clear <Nombre> [membre]",
+  "NO_PREM": "Seul la soucription d'un abonnement Premium pour le serveur te permet de supprimer plus de `200` messages.",
+  "TITLE": "Confirmation de suppression",
+  "DESC": "Es-tu certain de vouloit effacer {{NUM}} messages depuis ce salon ? Merci de réagir pour confirmer cette action.",
+  "DEL_MSG": "Supprimer {{NUM}} messages prendra approximativement {{TIME}} secondes.\nNE PAS ENVOYER D'AUTRES MESSAGES PENDANT CE TEMPS.",
+  "SUCCESS": "{{NUM}} messages ont été supprimés.",
+  "CON_CNC": "Commande annulée.",
+  "CON_TO": "Pas de réponse dans les délais, commande annulée."
+}

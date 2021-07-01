@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Modifie le volume de la lecture en cours.",
+  "USAGE": "volume <Nombre>",
+  "CURRENT": "🔊 Le volume actuel du lecteur est **{{NUM}}%**.",
+  "UPDATED": "🔊 Le volume du lecteur est réglé à **{{NUM}}%**.",
+  "TOO_HIGH": "Merci de saisir une valeur entre 0 and 1000."
+}

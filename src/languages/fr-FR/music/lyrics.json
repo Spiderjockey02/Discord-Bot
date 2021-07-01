@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Obtenir les paroles d'une chanson.",
+  "USAGE": "lyrics [chanson]",
+  "NO_LYRICS": "Je ne trouve pas cette chanson.",
+  "FOOTER": "Demandé par {{TAG}}"
+}

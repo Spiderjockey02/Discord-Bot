@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "MP un membre",
+  "USAGE": "dm <membre> <message>",
+  "TITLE": "MP reçu depuis le serveur : {{NAME}}",
+  "SUCCESS": "MP envoyé avec succès à {{TAG}}."
+}

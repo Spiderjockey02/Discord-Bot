@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Suspendre une lecture en cours.",
+  "USAGE": "pause",
+  "IS_PAUSED": "Lecture déjà suspendue, `{{PREFIX}}resume` pour reprendre la lecture.",
+  "SUCCESS": "Lecture suspendue."
+}

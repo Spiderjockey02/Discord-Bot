@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Créer un QR code.",
+  "USAGE": "qrcode <texte / fichier>"
+}

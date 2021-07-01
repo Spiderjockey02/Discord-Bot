@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Pile ou Face.",
+  "USAGE": "Lance une pièce",
+  "HEADS": "Face",
+  "TAILS": "Pile"
+}

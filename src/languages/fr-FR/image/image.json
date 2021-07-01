@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Recherche une image correspondant à un thème.",
+  "USAGE": "image <thème>"
+}

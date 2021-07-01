@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Supprime une liste de lecture",
+  "USAGE": "p-delete <nom_de_la_playlist>",
+  "MISSING": "Je ne trouve pas de liste de lecture avec ce nom : {{TITLE}}.",
+  "SUCCESS": "Liste de lecture {{TITLE}} supprimée."
+}

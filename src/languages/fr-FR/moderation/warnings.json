@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Affiche le nombre d'avertissements d'un membre.",
+  "USAGE": "warnings [membre]",
+  "NO_WARNINGS": "Cet utilisateur n'a jamais reçu d'avertissements.",
+  "TITLE": "Liste d'avertissements {{USER}}."
+}

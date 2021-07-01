@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Créer un sondage auprès des membres.",
+  "USAGE": "poll <question>",
+  "TITLE": "🗳️ Sondage crée par {{USER}}",
+  "FOOTER": "Réagir pour répondre au sondage..."
+}

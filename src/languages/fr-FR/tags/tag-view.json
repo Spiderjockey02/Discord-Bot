@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Affiche  tag(s)",
+  "USAGE": "tag-view [nom]",
+  "NO_TAG": "Aucun Tag enregistré",
+  "TITLE": "Liste des Tags pour : {{NAME}}",
+  "NAME": "Nom : {{NAME}}",
+  "RESP": "Réponse : {{RESP}}",
+  "NO_EXIST": "Il n'existe aucun Tag."
+}

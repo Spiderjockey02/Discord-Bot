@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Activité du bot.",
+  "USAGE": "uptime",
+  "DESC": "📶 Bot démarré depuis : {{TIME}}."
+}

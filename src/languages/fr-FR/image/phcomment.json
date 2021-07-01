@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Créer un faux commentaire Pornhub.",
+  "USAGE": "phcomment [membre] <texte>",
+  "TOO_LONG": "Ton message ne peut pas dépasser 70 caractères."
+}

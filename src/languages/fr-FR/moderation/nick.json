@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Change le pseudo d'un membre.",
+  "USAGE": "nick <membre> <pseudo>",
+  "TOO_POWERFUL": "Je ne suis pas en mesure de renommer ce membre en raison de ses droits.",
+  "ENTER_NICKNAME": "Merci de préciser un pseudo.",
+  "LONG_NICKNAME": "Le pseudo doit faire moins de 32 caractères.",
+  "SUCCESS": "*Le pseudo de <@{{USER}}> a été modifié.*"
+}

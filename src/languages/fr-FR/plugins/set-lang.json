@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Définir la langue du Bot.",
+  "USAGE": "setlang <langue>",
+  "MISSING_LANG": "Merci de saisir une langue parmi cette liste : {{list}}",
+  "SUCCESS": "La langue du serveur est désormais : {{NAME}}!"
+}

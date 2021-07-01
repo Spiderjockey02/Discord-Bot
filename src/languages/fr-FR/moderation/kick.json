@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Expulser un membre.",
+  "USAGE": "kick <membre> [motif]",
+  "TITLE": "TU SORS !",
+  "TOO_POWERFUL": "Je ne suis pas en mesure d'expulser ce membre en raison de ses droits",
+  "DESC": "Tu as été expulsé de {{NAME}}.",
+  "KICKED": "Expulsé par :",
+  "SUCCESS": "*<@{{USER}}> a été expulsé*."
+}

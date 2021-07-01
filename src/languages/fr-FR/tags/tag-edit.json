@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Modifier un Tag du serveur.",
+  "USAGE": "tag-edit <rename / edit> <nom> <nouveau_nom / nouvelle_réponse>",
+  "INVALID_NAME": "Merci de spécifier un nom pour le Tag.",
+  "INVALID_NEW_NAME": "Merci de spécifier un nouveau nom pour le Tag.",
+  "UPDATED_NAME": "Mise à jour du Tag sous le nom de : `{{NAME}}`.",
+  "INVALID_NEW_RESP": "Merci de spécifier la nouvelle réponse pour ce Tag.",
+  "UPDATED_RESP": "Mise à jour du Tag avec la réponse : `{{RESP}}`."
+}

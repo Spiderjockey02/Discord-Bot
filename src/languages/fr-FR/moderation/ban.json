@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Bannir un membre.",
+  "USAGE": "ban <membre> [motif] [durée]",
+  "TITLE": "BANNI",
+  "TOO_POWERFUL": "Je ne suis pas en mesure de bannir ce membre en raison de ses droits.",
+  "DESC": "Tu as été banni de {{NAME}}.",
+  "BAN_BY": "Banni par :",
+  "SUCCESS": "*<@{{USER}}> est désormais banni*."
+}

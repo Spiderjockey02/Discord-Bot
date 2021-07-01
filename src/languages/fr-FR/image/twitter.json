@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Créer un faux tweet.",
+  "USAGE": "twitter [membre] <texte>",
+  "TOO_LONG": "Ton message ne peut pas dépasser 60 caractères."
+}

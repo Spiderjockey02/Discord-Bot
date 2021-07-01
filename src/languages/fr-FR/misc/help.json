@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Informations sur les commandes disponibles.",
+  "USAGE": "help [commande]",
+  "AUTHOR": "Commandes disponibles",
+  "PREFIX_DESC": "**Préfixe :** `{{PREFIX}}` (Tu peux également utiliser <@!{{ID}}> comme un préfixe)",
+  "INFO_DESC": "**Saisir `{{PREFIX}}{{USAGE}}` pour des informations spécifiques à la commande.**",
+  "TITLE": "`Commande : {{COMMAND}}`",
+  "DESC": "**Description :** {{DESC}}",
+  "ALIAS": "**Alias :** {{ALIAS}}",
+  "COOLDOWN": "**Délais entre deux commandes :** {{CD}} secondes",
+  "USE": "**Usage :** {{USAGE}}",
+  "EXAMPLE": "**Exemple :** {{EX}}",
+  "LAYOUT": "\n**Format** : `<> = requis, [] = optionnel`",
+  "NO_COMMAND": "Ce n'est pas une commande valide"
+}

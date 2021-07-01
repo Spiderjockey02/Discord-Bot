@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Information sur le plugin ticket.",
+  "USAGE": "ticket",
+  "TITLE_REACT": "Réagir pour ouvrir un ticket",
+  "REACT_DESC": "Réagir ici ou utiliser la commande suivante :\n `{{PREFIX}}t-open [motif]`.",
+  "TITLE": "Assistance par Ticket"
+}

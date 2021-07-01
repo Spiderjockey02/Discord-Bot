@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Supprime le message permettant d'associer un rôle à une réaction - **réaction rôle**",
+  "USAGE": "reactionroles <ID_du_message>",
+  "INVALID": "ID du message invalide.",
+  "SUCCESS": "Réaction rôle supprimé."
+}

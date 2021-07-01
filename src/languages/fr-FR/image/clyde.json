@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Créer un faux message Discord de *Clyde*.",
+  "USAGE": "clyde <texte>",
+  "TOO_LONG": "Ton message ne peut pas dépasser 70 caractères."
+}

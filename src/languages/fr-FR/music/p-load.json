@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Charge une liste de lecture",
+  "USAGE": "p-load <nom_de_la_playlist>",
+  "QUEUE": "En file d'attente **{{NUM}} titres** depuis **{{TITLE}}**.",
+  "NO_PLAYLIST": "Liste de lecture non trouvée."
+}

@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Déplace un titre de la file d'attente en cours.",
+  "USAGE": "move <position> <nouvelle_position>",
+  "INVALID": "Nombre invalide.",
+  "IS_PLAYING": "Impossible de déplacer un titre en cours de lecture. Pour passer au titre suivant : `{{PREFIX}}skip`",
+  "NOT_FOUND": "Je ne trouve pas ce titre.",
+  "MOVED_1": "Titre déplacé **{{TITLE}}** au début de la file d'attente.",
+  "MOVED_2": "Titre déplacé **{{TITLE}}** à la position {{POS}}."
+}

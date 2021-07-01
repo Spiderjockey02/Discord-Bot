@@ -1,0 +1,7 @@
+{
+  "GUILD_ONLY": "Cette commande peut être utilisée uniquement sur un serveur.",
+  "COMMAND_COOLDOWN": "Tu dois attendre {{NUM}} secondes entre chaque commande.",
+  "BANNED_USER": "Tu n'es pas autorisé à utiliser les commandes.",
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, cette commande est désactivée dans ce salon.",
+  "NOT_NSFW_CHANNEL": "Cette commande ne peut être utilisée que dans un salon `NSFW`."
+}

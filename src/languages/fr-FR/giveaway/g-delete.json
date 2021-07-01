@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Supprime le concours",
+  "USAGE": "g-delete <messageID>",
+  "SUCCESS_GIVEAWAY": "Concours supprimé avec succès !",
+  "UNKNOWN_GIVEAWAY": "Aucun concours avec l'identifiant : `{{ID}}`, merci de vérifier celui-ci et essayer à nouveau."
+}

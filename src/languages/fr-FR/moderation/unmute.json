@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Rétablir la parole d'un membre.",
+  "USAGE": "unmute <membre>",
+  "SUCCESS": "*<@{{USER}}> peut désormais s'exprimer à nouveau*."
+}

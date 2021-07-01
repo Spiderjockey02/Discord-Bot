@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Recherche un titre.",
+  "USAGE": "search <lien / titre_de_la_chanson>",
+  "NOT_VC": "Tu n'es pas dans un salon vocal auquel j'ai accès.",
+  "NO_INPUT": "Merci de saisir un lien ou bien un titre.",
+  "ERROR": "Une erreur s'est produite lors de la recherche : `{{ERROR}}`",
+  "NO_SONG": "Je ne trouve pas ce titre.",
+  "TITLE": "Résultats pour {{TITLE}}",
+  "DESC": "{{RESULTS}}\n\n\tChoisir un nombre de 1 à 10 ou annuler avec *cancel*.\n",
+  "INVALID": "Ce nombre est trop petit ou trop grand (1-{{NUM}}).",
+  "ADDED": "Ajouté à la file d'attente : [{{TITLE}}]"
+}

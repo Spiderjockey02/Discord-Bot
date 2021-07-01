@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Affiche le Rang/Niveau.",
+  "USAGE": "level [membre]",
+  "NO_MESSAGES": "Tu n'as pas encore atteint un rang. Envoi quelques messages puis essaie à nouveau."
+}
