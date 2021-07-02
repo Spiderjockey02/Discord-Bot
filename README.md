@@ -13,7 +13,8 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Spiderjockey02_Discord-Bot&metric=ncloc)](https://sonarcloud.io/dashboard?id=Spiderjockey02_Discord-Bot)
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=http%3A%2F%2F86.25.177.233%2F)
-
+[![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
+  
 </div>
 
 <p align="center">
@@ -57,6 +58,7 @@ Egglord also comes packed with a variety of features, such as:
 
   * **Welcome messages** and **farewell messages**.
   * **Extensive Logging** for 37 events.
+  * **Slash Commands**
   * **Advanced** auto-moderation.
   * **Audio filters** for music plugin.
   * **Custom** playlist support.
@@ -82,9 +84,9 @@ Egglord is in a continuous state of development. New features/updates may come a
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
 ## 📜 Credits
-* **[Tovade#6617](https://github.com/tovade)** - Initial Reaction Role System
-* **Josh_V2#9733** - Slash Commands & Tags System
-* **XBouBou#0856** - French Translation
+* **[Tovade#6617](https://github.com/tovade)** - Initial Reaction Role System.
+* **Josh_V2#9733** - Slash Commands & Tags System.
+* **XBouBou#0856** - French Translation.
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
 
 ## ❗ Disclaimer
