@@ -66,7 +66,7 @@ module.exports = class Clear extends Command {
 								let messages = await message.channel.messages.fetch({ limit: z > 100 ? 100 : z });
 								// Delete user messages
 								if (message.args[1]) {
-									const member = message.getMember();
+									const member = await message.getMember();
 									messages = messages.filter((m) => m.author.id == member[0].user.id);
 								}
 
@@ -103,7 +103,7 @@ module.exports = class Clear extends Command {
 			await message.channel.messages.fetch({ limit: amount }).then(async messages => {
 				// Delete user messages
 				if (message.args[1]) {
-					const member = message.getMember();
+					const member = await message.getMember();
 					messages = messages.filter((m) => m.author.id == member[0].user.id);
 				}
 

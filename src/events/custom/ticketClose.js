@@ -19,8 +19,8 @@ module.exports = class ticketClose extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setTitle('ticket/ticket-close:TITLE')
 				.setColor(15158332)
-				.addField(bot.translate('ticket/ticket-close:TICKET', {}, settings.Language), channel)
-				.addField(bot.translate('ticket/ticket-close:USER', {}, settings.Language), bot.users.cache.get(channel.name.split('-')[1]))
+				.addField(channel.guild.translate('ticket/ticket-close:TICKET'), `${channel}`)
+				.addField(channel.guild.translate('ticket/ticket-close:USER'), `${bot.users.cache.get(channel.name.split('-')[1])}`)
 				.setTimestamp();
 
 			// Find channel and send message

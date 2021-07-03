@@ -227,7 +227,9 @@ class Giveaway extends EventEmitter {
 
 		for (const u of rolledWinners) {
 			const isValidEntry = await this.checkWinnerEntry(u) && !winners.some((winner) => winner.id === u.id);
-			if (isValidEntry) {winners.push(u);} else {
+			if (isValidEntry) {
+				winners.push(u);
+			} else {
 				// find a new winner
 				for (const user of users.array()) {
 					const alreadyRolled = winners.some((winner) => winner.id === user.id);
@@ -240,8 +242,7 @@ class Giveaway extends EventEmitter {
 				}
 			}
 		}
-
-		return winners.map((user) => guild.members.cache.get(user) || user);
+		return winners.map((user) => guild.members.cache.get(user.id) || user);
 	}
 
 	// Edits the giveaway

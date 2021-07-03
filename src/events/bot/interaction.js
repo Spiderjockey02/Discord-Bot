@@ -12,7 +12,7 @@ module.exports = class Interaction extends Event {
 	// run event
 	async run(bot, interaction) {
 		const guild = bot.guilds.cache.get(interaction.guildID),
-			cmd = guild.interactions.get(interaction.commandName),
+			cmd = bot.commands.get(interaction.commandName),
 			channel = guild.channels.cache.get(interaction.channelID),
 			member = guild.members.cache.get(interaction.user.id);
 
@@ -63,7 +63,7 @@ module.exports = class Interaction extends Event {
 
 		const now = Date.now(),
 			timestamps = bot.cooldowns.get(cmd.help.name),
-			cooldownAmount = (cmd.conf.cooldown || 3000);
+			cooldownAmount = (member.user.premium ? cmd.conf.cooldown * 0.75 : cmd.conf.cooldown);
 
 		if (timestamps.has(interaction.user.id)) {
 			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;

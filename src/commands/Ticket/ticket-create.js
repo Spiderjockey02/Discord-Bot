@@ -38,26 +38,25 @@ module.exports = class TicketCreate extends Command {
 			reason: reason,
 			parent: category.id,
 			permissionOverwrites:[
-				{ id:message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id:supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id:message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id:bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] }] })
+				{ id: message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+				{ id: supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+				{ id: message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+				{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
+			] })
 			.then(async channel => {
 			// reply to user saying that channel has been created
 				const successEmbed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket-create:TITLE')
-					.setDescription(message.translate('ticket/ticket-create:DESC').replace('{channel}', channel));
+					.setDescription(message.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
 				message.channel.send({ embeds: [successEmbed] }).then(m => m.timedDelete({ timeout:10000 }));
 
 				// Add message to ticket channel
-				console.log(message.translate('ticket/ticket-create:FIELDT'));
-				console.log(reason);
-				const embed = new Embed()
+				const embed = new Embed(bot, message.guild)
 					.setColor(0xFF5555)
-					.addField(message.translate('ticket/ticket-create:FIELD1').replace('{username}', message.author.username), message.translate('ticket/ticket-create:FIELDT'))
+					.addField(message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.tag }), message.translate('ticket/ticket-create:FIELDT'))
 					.addField(message.translate('ticket/ticket-create:FIELD2'), reason)
 					.setTimestamp();
-				channel.send(`${message.author}, ${supportRole}`, { embeds: [embed] });
+				channel.send({ content: `${message.author}, ${supportRole}`, embeds: [embed] });
 
 				// run ticketcreate event
 				await bot.emit('ticketCreate', channel, embed);

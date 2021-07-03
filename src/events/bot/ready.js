@@ -20,7 +20,7 @@ module.exports = class Ready extends Event {
 
 		// set up webserver
 		try {
-			await require('../../http/api')(bot);
+			require('../../http/api')(bot);
 		} catch (err) {
 			console.log(err.message);
 		}
@@ -37,7 +37,7 @@ module.exports = class Ready extends Event {
 		await require('../../scripts/update-commands.md.js')(bot);
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
 		bot.guilds.cache.forEach(async guild => {
-			await guild.fetchGuildConfig();
+			await guild.fetchSettings();
 			if (guild.settings == null) return await bot.emit('guildCreate', guild);
 			const enabledPlugins = guild.settings.plugins;
 			const data = [];
@@ -106,7 +106,7 @@ module.exports = class Ready extends Event {
 		setInterval(async () => {
 			if (bot.config.debug) bot.logger.debug('Fetching guild settings (Interval: 1 minutes)');
 			bot.guilds.cache.forEach(async guild => {
-				guild.fetchGuildConfig();
+				guild.fetchSettings();
 			});
 		}, 60000);
 
@@ -121,8 +121,6 @@ module.exports = class Ready extends Event {
 			user.cmdBanned = users[i].cmdBanned;
 			user.rankImage = Buffer.from(users[i].rankImage, 'base64');
 		}
-
-		// bot.logger.ready(`${premium.length} premium tier(s) have been applied. (${users} users, ${guilds} guilds)`);
 
 		// enable time event handler (in case of bot restart)
 		try {

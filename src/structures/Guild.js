@@ -1,7 +1,6 @@
 // Dependencies
 const { Structures } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	{ Collection } = require('discord.js'),
 	{ logger } = require('../utils');
 
 module.exports = Structures.extend('Guild', Guild => {
@@ -13,13 +12,10 @@ module.exports = Structures.extend('Guild', Guild => {
 
 			// premium guild or not
 			this.premium = false;
-
-			// slash commands
-			this.interactions = new Collection();
 		}
 
 		// Fetch guild settings (only on ready event)
-		async fetchGuildConfig() {
+		async fetchSettings() {
 			this.settings = await GuildSchema.findOne({ guildID: this.id });
 			return this.settings;
 		}
@@ -28,7 +24,7 @@ module.exports = Structures.extend('Guild', Guild => {
 		async updateGuild(settings) {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
 			await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
-			return this.fetchGuildConfig();
+			return this.fetchSettings();
 		}
 
 		// This will get the translation for the provided text

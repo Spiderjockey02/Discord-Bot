@@ -24,7 +24,7 @@ module.exports = class GuildCreate extends Event {
 
 			// Create guild settings and fetch cache.
 			await bot.CreateGuild(newGuild);
-			await guild.fetchGuildConfig();
+			await guild.fetchSettings();
 		} catch (err) {
 			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}

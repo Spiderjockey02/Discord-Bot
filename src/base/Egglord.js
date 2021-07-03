@@ -122,7 +122,7 @@ module.exports = class Egglord extends Client {
 	}
 
 	// Loads a slash command category
-	async loadInteractionGroup(category, guild) {
+	async loadInteractionGroup(category) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
 			const arr = [];
@@ -139,7 +139,6 @@ module.exports = class Egglord extends Client {
 							item.options = command.conf.options;
 						}
 						arr.push(item);
-						guild.interactions.set(command.help.name, command);
 					}
 				}
 			});

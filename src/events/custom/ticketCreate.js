@@ -19,9 +19,9 @@ module.exports = class ticketCreate extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setTitle('ticket/ticket-create:LOG_TITLE')
 				.setColor(3066993)
-				.addField(bot.translate('ticket/ticket-create:TICKET', {}, settings.Language), channel)
-				.addField(bot.translate('ticket/ticket-create:USER', {}, settings.Language), bot.users.cache.get(channel.name.split('-')[1]), true)
-				.addField(bot.translate('ticket/ticket-create:FIELD2', {}, settings.Language), ticket.fields[1].value, true)
+				.addField(channel.guild.translate('ticket/ticket-create:TICKET'), `${channel}`)
+				.addField(channel.guild.translate('ticket/ticket-create:USER'), `${bot.users.cache.get(channel.name.split('-')[1])}`, true)
+				.addField(channel.guild.translate('ticket/ticket-create:FIELD2'), ticket.fields[1].value, true)
 				.setTimestamp();
 
 			// Find channel and send message
