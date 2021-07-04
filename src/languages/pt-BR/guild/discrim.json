@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Mostra membros com o discriminador iguais ao inserido",
+  "USAGE": "discrim <discrimandor>",
+  "TITLE": "Membros com o discriminador: {{DISCRIM}}"
+}

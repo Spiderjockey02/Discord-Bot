@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Mostra informações de uma conta no Rainbow 6.",
+  "USAGE": "r6 <usuário> [pc / xbox / ps4] [eu / na / as]",
+  "UNKNOWN_USER": "Ese nome não foi encontrado.",
+  "DESC": "Estatíscas de **{{REGION}}** em **{{PLATFORM}}**",
+  "GENERAL": "Geral: ",
+  "GEN_DATA": "**Nível:** {{LVL}} ({{XP}} xp) \n**Rank:** {{NAME}} (Máximo: {{MAX_NAME}}) \n**MMR:** {{MMR}}",
+  "STATS": "Estatíscas: ",
+  "STAT_DATA": "**Vitórias:** {{WIN}} \n**Derrotas:** {{LOSS}} \n**Vitórias/derrotas ratio:** {{WL}} \n**Eliminações** {{KILL}} \n**Mortes:** {{DEATH}} \n**K/D Ratio** {{KD}} \n**Tempo de jogo:** {{TIME}} horas",
+  "TERRORIST": "Caça terrorista: "
+}

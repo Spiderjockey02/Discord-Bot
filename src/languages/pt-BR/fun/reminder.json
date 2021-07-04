@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Cria um lembrete.",
+  "USAGE": "reminder <tempo> <informação>",
+  "MESSAGE": "Eu irei te lembrar de `{{INFO}}` em {{TIME}}.",
+  "DESC": "Link da mensagem",
+  "TITLE": "Lembrete",
+  "FOOTER": "Lembrete de {{TIME}} atrás.",
+  "RESPONSE": "\n**Lembrete:**\n {USER} seu lembrete: {{INFO}}"
+}

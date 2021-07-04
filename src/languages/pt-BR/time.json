@@ -1,0 +1,14 @@
+{
+    "ONE_DAY": "1 dia",
+    "DAYS": "{{amount}} dias",
+    "ONE_HOUR": "1 hora",
+    "HOURS": "{{amount}} horas",
+    "ONE_MINUTE": "1 minuto",
+    "MINUTES": "{{amount}} minutos",
+    "ONE_SECOND": "1 segundo",
+    "SECONDS": "{{amount}} segundos",
+    "NOT_NUMBER": "Precisa ser um número.",
+    "INCORRECT_DELIMITERS": "Porfavor, use um dos seguintes formatos de tempos: `d`,  `h`,  `m`, `s`.",
+    "MAX_TIME": "Não pode ser maior que 10 dias",
+    "INVALID_TIME": "O número inserido não é válido. (Exemplo: 1m ou 16h)"
+}

@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Adiciona uma nova tag para o servidor",
+  "USAGE": "tag-add <nome> <respostas>",
+  "INVALID_NAME": "Por favor, especifique o nome da tag.",
+  "NAME_TOO_LONG": "Por favor, reduza o nome da tag.",
+  "INVALID_RESP": "Por favor, especifique uma resposta para a tag.",
+  "NEED_PREMIUM": "Você precisa de premium para adicinar mais tags. Servidores premium conseguem adicionar `50` tags",
+  "MAX_TAGS": "Você passou do número máximo de tags.",
+  "SAME_NAME": "Já existe uma tag com esse nome.",
+  "TAGS_SAVED": "A tag foi salva com o nome de: `{{TAG}}`."
+}

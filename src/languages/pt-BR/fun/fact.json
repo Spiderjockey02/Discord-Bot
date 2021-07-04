@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Receba um fato aleatório.",
+  "USAGE": "fact",
+  "FACT_TITLE": "Fato aleatório:"
+}

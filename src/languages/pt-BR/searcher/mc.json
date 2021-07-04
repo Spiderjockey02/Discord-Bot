@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Mostra informações de um servidor de minecraft.",
+  "USAGE": "mc <IP> [Porta]",
+  "FETCHING": "{{EMOJI}} Buscando informações de {{ITEM}}...",
+  "TITLE": "Status do servidor",
+  "IP": "IP do servidor:",
+  "VERSION": "Versão do servidor:",
+  "DESC": "Descrição:",
+  "PLAYERS": "Jogadores online"
+}

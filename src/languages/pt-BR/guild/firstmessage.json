@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Mostra a primeira mensagem do servidor.",
+  "USAGE": "firstmessage [canal]",
+  "JUMP": "❯ Vá até ela"
+}

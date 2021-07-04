@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Edita as tags do servidor",
+  "USAGE": "tag <add/del/edit/view> <parâmetro>"
+}

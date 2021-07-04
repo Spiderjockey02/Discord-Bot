@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Cria uma edição \"change my mind\".",
+  "USAGE": "changemymind <texto>",
+  "TOO_LONG": "Sua mensagem não pode ser maior que 80 caracteres."
+}

@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Mostra informações de uma conta no instagram.",
+  "USAGE": "instagram <usuário>",
+  "UNKNOWN_USER": "Não foi possível achar nenhum usuário com esse nome.",
+  "USERNAME": "Nome: ",
+  "FULL_NAME": "Nome completo: ",
+  "BIOGRAPHY": "Biografia: ",
+  "POSTS": "Posts: ",
+  "FOLLOWERS": "Seguidores: ",
+  "FOLLOWING": "Seguindo: ",
+  "PRIVATE": "Conta privada: ",
+  "VERIFIED": "Conta verificada: "
+}

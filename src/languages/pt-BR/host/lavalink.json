@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Mostra informações do node Lavalink",
+  "USAGE": "lavalink",
+  "AUTHOR": "Estatísticas do Lavalink: {{NAME}}",
+  "PLAYERS": "Playing Players/Players",
+  "PLAYER_STATS": "```{{PLAYING}} tocando / {{PLAYERS}} ouvindo```",
+  "MEMORY": "Memory",
+  "MEMORY_STATS": "```Alocado: {{ALL}} MB\nUsado: {{USED}} MB\nGrátis: {{FREE}} MB\nReservado: {{RESERVE}} MB```",
+  "CPU": "CPU",
+  "CPU_STATS": "```Cores: {{CORES}}\nSystem Load: {{SYSLOAD}}%\nLavalink Load: {{LVLLOAD}}%```",
+  "UPTIME": "Tempo de atividade",
+  "UPTIME_STATS": "```{{NUM}}```"
+}

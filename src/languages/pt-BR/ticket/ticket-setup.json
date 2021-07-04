@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Configura o plugin de tickets",
+  "USAGE": "ticket-setup",
+  "TITLE": "Ticket setup Help",
+  "NOT_CATEGORY": "Isso não é uma categoria.",
+  "UPDATED_CATEGORY": "Atualizada categoria de ticket para: `{{NAME}}`.",
+  "NOT_ROLE": "Isso ão é uma role.",
+  "UPDATED_ROLE": "Atualizado cargo de suporte para: {ROLE}."
+}

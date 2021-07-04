@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Mostra informações de uma conta na steam.",
+  "USAGE": "steam <usuário>",
+  "AUTHOR": "Serviços Steam | {{NAME}}",
+  "STATE": ["Offline", "Online", "Ocupado(a)", "Ausente", "Dormindo", "Procurando por uma troca", "Procurando um jogo"],
+  "DESC": "**Nome real:** {{NAME}}\n**Status:** {{STATUS}}\n**País:** :flag_{{FLAG}}:\n**Conta criada em:** {{TIME}}\n**Bans:** Vac: {{VAC_BANS}}, Jogos: {{GAME_BANS}}\n**Link:** [Link para o perfil]({{URL}})"
+}

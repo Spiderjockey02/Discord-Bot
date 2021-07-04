@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Cria um ticket",
+  "USAGE": "ticket-create [motivo]",
+  "TICKET_EXISTS": "Você já possui um canal de tciaket aberto",
+  "NO_SUPPORT_ROLE": "Nenhum cargo de suporte foi criado até o momento.",
+  "NO_CATEGORY": "Por favor, atualize o ID da categoria.",
+  "TITLE": "✅ Sucesso!",
+  "DESC": "Seu ticket foi criado: {channel}",
+  "FIELD1": "Olá {username}!",
+  "FIELDT": "Nossa equipe de suporte entrará em contato o mais rápido possível.",
+  "FIELD2": "Motivo: ",
+  "TICKET": "Ticket: ",
+  "USER": "Usuário: ",
+  "LOG_TITLE": "Ticket aberto!"
+}

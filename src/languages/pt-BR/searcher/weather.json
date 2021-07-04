@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Mostra o clima em alguma área.",
+  "USAGE": "weather <localização>",
+  "INVALID": "Localização inválida",
+  "TITLE": "Clima - {{LOC}}",
+  "DESC": "As unidades de temperatura podem ser diferentes em algum momento",
+  "TEMP": "Temparatura:",
+  "SKY": "Sky Text:",
+  "HUMIDITY": "Humidade:",
+  "SPEED": "Velocidade do vento:",
+  "TIME": "Tempo de observação:",
+  "DISPLAY": "Exibição de vento:"
+}

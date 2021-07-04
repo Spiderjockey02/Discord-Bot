@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Mostra uma screenshot de um site.",
+  "USAGE": "screenshot <url>",
+  "INVALID_URL": "Isso não é um URL de site.",
+  "BLACKLIST_WEBSITE": "Você só pode usar esse comando em canais `NSFW`"
+}

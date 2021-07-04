@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Fecha um canal de ticket ativo",
+  "USAGE": "ticket-close",
+  "NOT_SUPPORT": "Você não tem permissão para fechar esse canal.",
+  "NOT_TICKET": "Isso não é um canal de ticket.",
+  "TITLE": "Ticket fechado!",
+  "TICKET": "Ticket: ",
+  "USER": "Usuário: "
+}

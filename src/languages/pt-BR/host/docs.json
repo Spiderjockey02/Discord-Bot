@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Mostra a documentação do discord.",
+  "USAGE": "docs <query>",
+  "MISSING": "Não consegui encontrar uma documentação para isso."
+}

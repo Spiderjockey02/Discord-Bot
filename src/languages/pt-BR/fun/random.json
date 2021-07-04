@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Gera um número aleatório entre dois números.",
+  "USAGE": "random <LowNum> <HighNum>",
+  "RESPONSE": "🎲 Seu número aleatório é: {{NUMBER}}"
+}

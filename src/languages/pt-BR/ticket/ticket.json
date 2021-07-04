@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Informações sobre o plugin de tickets.",
+  "USAGE": "ticket",
+  "TITLE_REACT": "Reaja para criar um canal de Ticket",
+  "REACT_DESC": "Você pode reagir ou usar o seguinte comando:\n `{{PREFIX}}t-open [motivo]`.",
+  "TITLE": "Ticket de ajuda"
+}

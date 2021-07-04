@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Mostra informações de um usuário",
+  "USAGE": "user-info [usuário]",
+  "USERNAME": "✍ Nome",
+  "DISCRIM": "#️⃣ Discriminador",
+  "ROBOT": "🤖 Robô",
+  "CREATE": "Criado em",
+  "STATUS": "📶 Status",
+  "ROLE": "🔼 Maior cargo",
+  "JOIN": "Entrou em",
+  "NICK": "📝 Nickname",
+  "ROLES": "Cargos"
+}

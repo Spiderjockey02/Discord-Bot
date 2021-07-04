@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Escolhe novos vencedores para o sorteio.",
+  "USAGE": "g-reroll <messageID>",
+  "SUCCESS_GIVEAWAY": "Sucesso! Novos ganhadores escolhidos!",
+  "UNKNOWN_GIVEAWAY": "Nenhum sorteio encontrado com o ID: `{{ID}}`, verifique se realmente está correto.",
+  "CONGRAT": "🎉 Novo(s) vencedores(s): {winners}! Parabéns!",
+  "ERROR": "Sem resultados! Nenhum ganhador pode ser escolhido!"
+}

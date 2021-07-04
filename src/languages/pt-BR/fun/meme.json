@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Mostra um meme aleatório.",
+  "USAGE": "meme",
+  "TITLE": "De {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}} | Por KSOFT.API"
+}

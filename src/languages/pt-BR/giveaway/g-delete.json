@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Encerra um sorteio",
+  "USAGE": "g-delete <messageID>",
+  "SUCCESS_GIVEAWAY": "Sucesso! Sorteio deletado!",
+  "UNKNOWN_GIVEAWAY": "Nenhum sorteio encontrado com o ID: `{{ID}}`, verifique se realmente está correto."
+}

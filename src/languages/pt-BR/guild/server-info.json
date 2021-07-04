@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Mostra informações de um servidor.",
+  "USAGE": "server-info",
+  "AUTHOR": "Informações de {{NAME}}",
+  "NAME": "Nome do servidor:",
+  "OWNER": "Dono do servidor:",
+  "ID": "ID do servidor:",
+  "CREATED": "Servidor criado em:",
+  "REGION": "Região do servidor:",
+  "VERIFICATION": "Nível de verificação:",
+  "MEMBER": "Número de membros [{{NUM}}]:",
+  "MEMBER_DESC": "`{{ONLINE}} online, {{IDLE}} ausente e {{DND}} não pertube \n{{BOTS}} bots, {{HUMANS}} humanos`",
+  "FEATURES": "Features:",
+  "ROLES": "Crgos [{{NUM}}]:",
+  "FOOTER": "Executado por: {{USER}}"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Jogue uma moeda.",
+  "USAGE": "flip",
+  "HEADS": "Cara",
+  "TAILS": "Coroa"
+}
