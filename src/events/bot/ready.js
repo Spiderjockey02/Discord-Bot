@@ -31,8 +31,8 @@ module.exports = class Ready extends Event {
 		}, 10000);
 
 		// Updates the bot's status
-		bot.user.setStatus('Online');
-		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
+		// bot.user.setStatus('Online');
+		// bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 
 		await require('../../scripts/update-commands.md.js')(bot);
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
@@ -106,7 +106,7 @@ module.exports = class Ready extends Event {
 		setInterval(async () => {
 			if (bot.config.debug) bot.logger.debug('Fetching guild settings (Interval: 1 minutes)');
 			bot.guilds.cache.forEach(async guild => {
-				guild.fetchSettings();
+				await guild.fetchSettings();
 			});
 		}, 60000);
 
@@ -119,7 +119,7 @@ module.exports = class Ready extends Event {
 			user.premium = users[i].premium;
 			user.premiumSince = users[i].premiumSince ?? 0;
 			user.cmdBanned = users[i].cmdBanned;
-			user.rankImage = Buffer.from(users[i].rankImage, 'base64');
+			user.rankImage = Buffer.from(users[i].rankImage ?? '', 'base64') ?? '';
 		}
 
 		// enable time event handler (in case of bot restart)

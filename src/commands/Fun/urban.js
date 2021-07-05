@@ -59,14 +59,13 @@ module.exports = class Urban extends Command {
 			const resp = await define(phrase);
 
 			// send definition of word
-			const embed = new Embed(bot, guild)
+			return new Embed(bot, guild)
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
 				.setURL(resp[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
 				.setDescription(guild.translate('fun/urban:DESC', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
 				.addField('👍', `${resp[0].thumbs_up}`, true)
 				.addField('👎', `${resp[0].thumbs_down}`, true);
-			return embed;
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return channel.error('fun/urban:INCORRECT_URBAN', { PHRASE: phrase }, true);

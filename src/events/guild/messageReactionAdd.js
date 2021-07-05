@@ -21,8 +21,8 @@ module.exports = class messageReactionAdd extends Event {
 
 		// If reaction needs to be fetched
 		try {
-			if (reaction.message.partial) await reaction.message.fetch();
 			if (reaction.partial) await reaction.fetch();
+			if (reaction.message.partial) await reaction.message.fetch();
 		} catch (err) {
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
@@ -42,6 +42,7 @@ module.exports = class messageReactionAdd extends Event {
 			// ticket found
 			if (ticketReaction) {
 				reaction.message.author = user;
+				if (reaction.message.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) await reaction.users.remove(user);
 				return bot.commands.get('ticket-create').run(bot, reaction.message, settings);
 			}
 		}

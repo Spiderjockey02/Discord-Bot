@@ -57,7 +57,7 @@ module.exports = class RoleInfo extends Command {
 		const permissions = role.permissions.toArray().map((p) => guild.translate(`permissions:${p}`)).join(' » ');
 
 		// Send information to channel
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setColor(role.color)
 			.setAuthor(user.tag, user.displayAvatarURL())
 			.setDescription(guild.translate('guild/role-info:NAME', { NAME: role.name }))
@@ -73,6 +73,5 @@ module.exports = class RoleInfo extends Command {
 			)
 			.setTimestamp()
 			.setFooter('guild/role-info:FOOTER', { MEMBER: user.tag, ID: role.id });
-		return embed;
 	}
 };

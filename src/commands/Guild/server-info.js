@@ -43,7 +43,7 @@ module.exports = class ServerInfo extends Command {
 
 		// Send server information
 		const member = guild.members.cache;
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setAuthor(guild.translate('guild/server-info:AUTHOR', { NAME: guild.name }), guild.iconURL())
 			.setColor(3447003)
 			.setThumbnail(guild.iconURL())
@@ -62,6 +62,5 @@ module.exports = class ServerInfo extends Command {
 			)
 			.setTimestamp()
 			.setFooter('guild/server-info:FOOTER', { USER: user.tag });
-		return embed;
 	}
 };

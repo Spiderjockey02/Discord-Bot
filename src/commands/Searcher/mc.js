@@ -44,7 +44,7 @@ module.exports = class MC extends Command {
 		if (!message.args[1]) message.args[1] = '25565';
 
 		// Ping server
-		const resp = await this.createEmbed(bot, message.guild, message.args[0], message.args[1]);
+		const resp = await this.createEmbed(bot, message.guild, message.channel, message.args[0], message.args[1]);
 		msg.delete();
 		if (Array.isArray(resp)) {
 			await message.channel.send({ embeds: [resp[0]], files: [resp[1]] });
@@ -60,7 +60,7 @@ module.exports = class MC extends Command {
 			port = args.get('port')?.value ?? 25565;
 
 		try {
-			const resp = await this.createEmbed(bot, guild, IP, port);
+			const resp = await this.createEmbed(bot, guild, channel, IP, port);
 			if (Array.isArray(resp)) {
 				await bot.send(interaction, { embeds: [resp[0]], files: [resp[1]] });
 			} else {
@@ -73,7 +73,7 @@ module.exports = class MC extends Command {
 	}
 
 	// create MC embed
-	async createEmbed(bot, guild, IP, port) {
+	async createEmbed(bot, guild, channel, IP, port) {
 		try {
 			const response = await status(IP, { port: parseInt(port) });
 			// turn favicon to thumbnail

@@ -20,7 +20,7 @@ module.exports = class Message extends Event {
 		if (message.author.bot) return;
 
 		// Get server settings
-		const settings = (message.guild) ? message.guild.settings : bot.config.defaultSettings;
+		const settings = message.guild?.settings ?? bot.config.defaultSettings;
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned

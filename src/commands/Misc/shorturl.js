@@ -51,7 +51,7 @@ module.exports = class ShortURL extends Command {
 
 		try {
 			await shorten(link, async function(res) {
-				return await bot.send(interaction, { content: res });
+				return bot.send(interaction, { content: res });
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

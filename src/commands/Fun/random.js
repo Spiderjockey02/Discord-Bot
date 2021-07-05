@@ -69,6 +69,6 @@ module.exports = class Random extends Command {
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		return bot.send(interaction, { embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 };

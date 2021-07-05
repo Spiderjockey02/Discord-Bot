@@ -25,6 +25,6 @@ module.exports = class Invite extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		return await bot.send(interaction, { embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }] });
+		return bot.send(interaction, { embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }] });
 	}
 };

@@ -10,8 +10,23 @@ const { Client, Collection } = require('discord.js'),
 
 // Creates Egglord class
 module.exports = class Egglord extends Client {
-	constructor(options) {
-		super(options);
+	constructor() {
+		super({
+			messageCacheMaxSize: -1,
+			messageCacheLifetime: 1210000,
+			messageSweepInterval: 86400,
+			partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
+			intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
+			restGlobalRateLimit: 50,
+			presence: {
+				status: 'online',
+				activities: [{
+					name: 'my mention',
+					type: 'LISTENING',
+					url: 'https://www.twitch.tv/ram5s5',
+				}],
+			},
+		});
 		// for console logging
 		this.logger = require('../utils/Logger');
 

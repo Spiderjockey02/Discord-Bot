@@ -19,7 +19,7 @@ module.exports = class messageDelete extends Event {
 		if (message.channel.type == 'dm') return;
 
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
-		if (!message.content && !message.attachments) return;
+		if (!message.content && !message.attachments && !message.embeds[0]) return;
 
 		// if the message is a partial return
 		if (message.partial) return;

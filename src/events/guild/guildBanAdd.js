@@ -16,6 +16,7 @@ module.exports = class guildBanAdd extends Event {
 			if (guildBan.partial) await guildBan.fetch();
 			if (guildBan.user.partial) await guildBan.user.fetch();
 		} catch (err) {
+			if (err.message == 'Missing Access') return;
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 

@@ -33,7 +33,7 @@ module.exports = class Meme extends Command {
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
 		const embed = await this.fetchMeme(bot, guild, settings);
-		return await bot.send(interaction, { embeds: [embed] });
+		return bot.send(interaction, { embeds: [embed] });
 	}
 
 	// Fetch meme data
@@ -42,13 +42,12 @@ module.exports = class Meme extends Command {
 		if (!meme.url) {
 			return this.fetchMeme();
 		} else {
-			const embed = new Embed(bot, guild)
+			return new Embed(bot, guild)
 				.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
 				.setColor(16333359)
 				.setURL(meme.post.link)
 				.setImage(meme.url)
 				.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
-			return embed;
 		}
 	}
 };

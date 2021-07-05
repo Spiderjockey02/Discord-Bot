@@ -22,6 +22,7 @@ module.exports = class messageUpdate extends Event {
 			if (oldMessage.partial) await oldMessage.fetch();
 			if (newMessage.partial) await newMessage.fetch();
 		} catch (err) {
+			if (err.message == 'Missing Access') return;
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 

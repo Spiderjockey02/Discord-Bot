@@ -47,7 +47,8 @@ module.exports = class UserInfo extends Command {
 
 	// create userinfo embed
 	createEmbed(bot, guild, member) {
-		const embed = new Embed(bot, guild)
+		const status = (member.presence.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
+		return new Embed(bot, guild)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL())
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
@@ -56,12 +57,11 @@ module.exports = class UserInfo extends Command {
 				{ name: guild.translate('guild/user-info:DISCRIM'), value: `${member.user.discriminator}`, inline: true },
 				{ name: guild.translate('guild/user-info:ROBOT'), value: guild.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`), inline: true },
 				{ name: guild.translate('guild/user-info:CREATE'), value: moment(member.user.createdAt).format('lll'), inline: true },
-				{ name: guild.translate('guild/user-info:STATUS'), value: `\`${(member.presence.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None'}\``, inline: true },
+				{ name: guild.translate('guild/user-info:STATUS'), value: `\`${status}\``, inline: true },
 				{ name: guild.translate('guild/user-info:ROLE'), value: `${member.roles.highest}`, inline: true },
 				{ name: guild.translate('guild/user-info:JOIN'), value: moment(member.joinedAt).format('lll'), inline: true },
 				{ name: guild.translate('guild/user-info:NICK'), value: member.nickname != null ? member.nickname : guild.translate('misc:NONE'), inline: true },
 				{ name: guild.translate('guild/user-info:ROLES'), value: member.roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
 			);
-		return embed;
 	}
 };

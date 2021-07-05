@@ -70,7 +70,7 @@ module.exports = class Help extends Command {
 				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(user.id)) {
-					const embed = new Embed(bot)
+					return new Embed(bot)
 						.setTitle('misc/help:TITLE', { COMMAND: `${settings.prefix}${cmd.help.name}` })
 						.setDescription([
 							bot.translate('misc/help:DESC', { DESC: cmd.help.description }),
@@ -80,7 +80,6 @@ module.exports = class Help extends Command {
 							bot.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
 							bot.translate('misc/help:LAYOUT'),
 						].join('\n'));
-					return embed;
 				} else {
 					return channel.error('misc/help:NO_COMMAND', {}, true);
 				}

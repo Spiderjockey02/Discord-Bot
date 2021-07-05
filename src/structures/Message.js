@@ -1,17 +1,15 @@
 // Dependencies
-const { Structures } = require('discord.js'),
+const { Message } = require('discord.js'),
 	{ findBestMatch } = require('string-similarity');
 
-module.exports = Structures.extend('Message', Message => {
-	class CustomMessage extends Message {
-		constructor(bot, data, channel) {
-			super(bot, data, channel);
-			// This for caching server settings
-			this.args = [];
-		}
-
-		// mainly be used for fetch messages and then getting the args from it
-		getArgs() {
+module.exports = Object.defineProperties(Message.prototype, {
+	args: {
+		value: [],
+		writable: true,
+	},
+	// Fetch the args from a message
+	getArgs: {
+		value: function() {
 			const args = this.content.split(' ');
 			args.shift();
 			if (this.content.startsWith(`<@!${this.client.user.id}>`)) args.shift();
@@ -19,10 +17,11 @@ module.exports = Structures.extend('Message', Message => {
 			// append it to message structure
 			this.args = args;
 			return args;
-		}
-
-		// Get User from @ or ID
-		async getMember() {
+		},
+	},
+	// Get member(s) from message (via ID, mention or username)
+	getMember: {
+		value: async function() {
 			const users = [];
 			// add all mentioned users
 			for (let i = 0; i < this.args.length; i++) {
@@ -53,10 +52,11 @@ module.exports = Structures.extend('Message', Message => {
 			// add author at the end
 			users.push(this.member);
 			return users;
-		}
-
-		// get channel from # or ID
-		getChannel() {
+		},
+	},
+	// Get channel(s) from message (via ID or mention)
+	getChannel: {
+		value: async function() {
 			const channels = [];
 			// get all channels mentioned
 			for (let i = 0; i < this.args.length; i++) {
@@ -66,10 +66,11 @@ module.exports = Structures.extend('Message', Message => {
 			}
 			channels.push(this.channel);
 			return channels;
-		}
-
-		// get role from # or ID
-		getRole() {
+		},
+	},
+	// Get role(s) from message (via ID, mention or name)
+	getRole: {
+		value: function() {
 			const roles = [];
 			// get all channels mentioned
 			for (let i = 0; i < this.args.length; i++) {
@@ -91,10 +92,11 @@ module.exports = Structures.extend('Message', Message => {
 			}
 			// return the array of roles
 			return roles;
-		}
-
-		// Get image, from file download or avatar
-		async getImage() {
+		},
+	},
+	// Get image(s) from message (via file upload, message link, reply feature or this.getMember()'s avatar)
+	getImage: {
+		value: async function() {
 			const fileTypes = ['png', 'jpeg', 'tiff', 'jpg', 'webp'];
 			// get image if there is one
 			const file = [];
@@ -119,10 +121,8 @@ module.exports = Structures.extend('Message', Message => {
 				const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
 				if (!message && message.attachments.size == 0) return;
 				const url = message.attachments.first().url;
-				for (let z = 0; z < fileTypes.length; z++) {
-					if (url.toLowerCase().indexOf(fileTypes[z]) !== -1) {
-						file.push(url);
-					}
+				for (const type of fileTypes) {
+					if (url.indexOf(type) !== -1) file.push(url);
 				}
 			}
 
@@ -130,37 +130,39 @@ module.exports = Structures.extend('Message', Message => {
 			if (this.type == 'REPLY') {
 				const messages = await this.channel.messages.fetch(this.reference.messageID);
 				const url = messages.attachments.first().url;
-				for (let i = 0; i < fileTypes.length; i++) {
-					if (url.indexOf(fileTypes[i]) !== -1) {
-						file.push(url);
-					}
+				for (const type of fileTypes) {
+					if (url.indexOf(type) !== -1) file.push(url);
 				}
 			}
 			// add avatar URL's to file
 			file.push(...(await this.getMember()).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;
-		}
-
-		// check external emoji
-		checkEmoji() {
+		},
+	},
+	// Check if bot has permission to send custom emoji
+	checkEmoji: {
+		value: function() {
 			if (this.channel.type == 'dm') {
 				return true;
 			} else {
 				return this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? true : false;
 			}
-		}
-
-		translate(key, args) {
-			const language = this.client.translations.get(this.guild ? this.guild.settings.Language : 'en-US');
+		},
+	},
+	// Used for translating strings
+	translate: {
+		value: function(key, args) {
+			const language = this.client.translations.get(this.guild?.settings.Language ?? 'en-US');
 			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
-		}
-
-		timedDelete(obj) {
+		},
+	},
+	// Added timed message delete as djs v13 removed it.
+	timedDelete: {
+		value: function(obj) {
 			setTimeout(() => {
-				super.delete();
+				this.delete();
 			}, obj.timeout || 3000);
-		}
-	}
-	return CustomMessage;
+		},
+	},
 });

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const warningSchema = Schema({
+const userSchema = Schema({
 	userID: String,
 	premium: { type: Boolean, default: false },
 	premiumSince: String,
@@ -12,4 +12,4 @@ const warningSchema = Schema({
 	cmdBanned: { type: Boolean, default: false },
 });
 
-module.exports = model('Users', warningSchema);
+module.exports = model('Users', userSchema);

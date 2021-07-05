@@ -1,11 +1,12 @@
+// Dependencies
 const { logger } = require('./utils');
 
-(async function load() {
+(async () => {
 
-	// This is to verify config file
-	const configCorrect = await require('./scripts/verify-config.js').run(require('./config.js'));
+	// This is to verify the config file
+	// const configCorrect = await require('./scripts/verify-config.js').run(require('./config.js'));
 
-	if (!configCorrect) {
+	if (true) {
 		// This file is for sharding
 		const { ShardingManager } = require('discord.js');
 
@@ -17,7 +18,12 @@ const { logger } = require('./utils');
 		});
 
 		// Spawn your shards
-		manager.spawn().then(logger.log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-='));
+		logger.log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-=');
+		try {
+			await manager.spawn();
+		} catch (err) {
+			logger.error(`Error loading shards: ${err.message}`);
+		}
 
 		// Emitted when a shard is created
 		manager.on('shardCreate', (shard) => {

@@ -42,12 +42,16 @@ module.exports = class UserData extends Command {
 					`ID: \`${user.id}\``,
 					`Creation Date: \`${moment(user.createdAt).format('lll')}\``,
 					'',
-					`Premium: \`${user.premium}\`	(${(new Date(parseInt(user.premiumSince)).toLocaleString()).split(',')[0]}).`,
+					`Premium: \`${user.premium}\`${user.premium ? ` (${(new Date(parseInt(user.premiumSince)).toLocaleString()).split(',')[0]})` : ''}.`,
 					`Is banned: \`${user.cmdBanned}\``,
 					`No. of mutual servers: \`${bot.guilds.cache.filter(g => g.members.cache.get(user.id)).size}\``,
 				].join('\n'));
 			return message.channel.send({ embeds: [embed] });
-		} else if (message.args[1].toLowerCase() === 'premium') {
+		}
+
+		// find input
+		switch (message.args[1].toLowerCase()) {
+		case 'premium':
 			// Update the user's premium
 			try {
 				if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -68,7 +72,8 @@ module.exports = class UserData extends Command {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
-		} else if (message.args[1].toLowerCase() == 'banned') {
+			break;
+		case 'banned':
 			// Update the user's global ban
 			try {
 				if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -88,7 +93,8 @@ module.exports = class UserData extends Command {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
-		} else if (message.args[1].toLowerCase() == 'rank') {
+			break;
+		case 'rank':
 			// Update user's rank card
 			if (message.attachments.first().url) {
 				try {
@@ -113,17 +119,23 @@ module.exports = class UserData extends Command {
 			} else {
 				return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
 			}
-		} else if (message.args[1].toLowerCase() == 'reset') {
+			break;
+		case 'reset':
 			try {
 				await userSchema.findOneAndRemove({ userID: user.id });
+				user.premium = false;
+				user.cmdBanned = false;
+				user.rankImage = '';
 				message.channel.success('host/user:SUCCESS_RESET').then(m => m.timedDelete({ timeout: 10000 }));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
-		} else {
+			break;
+		default:
 			message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			break;
 		}
 	}
 };

@@ -97,7 +97,6 @@ module.exports = class Rank extends Command {
 
 		// create rank card
 		const buffer = await rankcard.build();
-		const attachment = new MessageAttachment(buffer, 'RankCard.png');
-		return attachment;
+		return new MessageAttachment(buffer, 'RankCard.png');
 	}
 };

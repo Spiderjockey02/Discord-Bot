@@ -99,15 +99,14 @@ class Giveaway extends EventEmitter {
 	async exemptMembers(member) {
 		if (this.options.exemptMembers && typeof this.options.exemptMembers === 'function') {
 			try {
-				const result = await this.options.exemptMembers(member);
-				return result;
+				return this.options.exemptMembers(member);
 			} catch (error) {
 				console.error(error);
 				return false;
 			}
 		}
 		if (this.manager.options.default.exemptMembers && typeof this.manager.options.default.exemptMembers === 'function') {
-			return await this.manager.options.default.exemptMembers(member);
+			return this.manager.options.default.exemptMembers(member);
 		}
 		return false;
 	}
@@ -142,18 +141,17 @@ class Giveaway extends EventEmitter {
             (!isMinute ? '' : `{minutes} ${minuteUnit}, `) +
             `{seconds} ${secondUnit}`;
 		// Format the pattern with the right values
-		const content = this.messages.timeRemaining
+		return this.messages.timeRemaining
 			.replace('{duration}', pattern)
 			.replace('{days}', days.toString())
 			.replace('{hours}', hours.toString())
 			.replace('{minutes}', minutes.toString())
 			.replace('{seconds}', seconds.toString());
-		return content;
 	}
 
 	// The raw giveaway object for this giveaway
 	get data() {
-		const baseData = {
+		return {
 			messageID: this.messageID,
 			channelID: this.channelID,
 			guildID: this.guildID,
@@ -175,7 +173,6 @@ class Giveaway extends EventEmitter {
 			winnerIDs: this.winnerIDs,
 			extraData: this.extraData,
 		};
-		return baseData;
 	}
 
 	// Fetches the giveaway message in its channel

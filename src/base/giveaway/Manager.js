@@ -189,8 +189,7 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async deleteGiveaway(messageID) {
-		await GiveawaySchema.findOneAndDelete({ messageID: messageID }).exec();
-		return;
+		return GiveawaySchema.findOneAndDelete({ messageID: messageID }).exec();
 	}
 
 	async refreshStorage(client) {
@@ -198,7 +197,7 @@ class GiveawaysManager extends EventEmitter {
 	}
 
 	async getAllGiveaways() {
-		return await GiveawaySchema.find({});
+		return GiveawaySchema.find({});
 	}
 
 	async editGiveaway(_messageID, _giveawayData) {
@@ -210,14 +209,12 @@ class GiveawaysManager extends EventEmitter {
 				else return;
 			}
 		}
-		await data.updateOne(_giveawayData);
-		return;
+		return data.updateOne(_giveawayData);
 	}
 
 	async saveGiveaway(messageID, giveawayData) {
 		const newGuild = await new GiveawaySchema(giveawayData);
 		await newGuild.save();
-		return;
 	}
 
 	_checkGiveaway() {

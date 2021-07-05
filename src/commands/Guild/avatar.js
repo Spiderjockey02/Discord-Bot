@@ -40,18 +40,17 @@ module.exports = class Avatar extends Command {
 		const embed = this.avatarEmbed(bot, guild, member);
 
 		// send embed
-		return await bot.send(interaction, { embeds: [embed] });
+		return bot.send(interaction, { embeds: [embed] });
 	}
 
 	// create avatar embed
 	avatarEmbed(bot, guild, member) {
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member.user.tag })
 			.setDescription([
 				`${bot.translate('guild/avatar:AVATAR_DESCRIPTION')}`,
 				`[png](${member.user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member.user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member.user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member.user.displayAvatarURL({ format: 'webp', size: 1024 })})`,
 			].join('\n'))
 			.setImage(`${member.user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
-		return embed;
 	}
 };

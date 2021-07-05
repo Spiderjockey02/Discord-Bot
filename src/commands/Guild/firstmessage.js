@@ -61,7 +61,7 @@ module.exports = class Firstmessage extends Command {
 
 	// Create the embed for the first message in channel
 	createEmbed(bot, guild, fMessage) {
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 			.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
@@ -69,6 +69,5 @@ module.exports = class Firstmessage extends Command {
 			.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
 			.setFooter('misc:ID', { ID: fMessage.id })
 			.setTimestamp(fMessage.createdAt);
-		return embed;
 	}
 };

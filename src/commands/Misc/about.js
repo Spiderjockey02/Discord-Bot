@@ -33,7 +33,7 @@ module.exports = class About extends Command {
 
 	// create the 'about' embed
 	createEmbed(bot, guild, settings) {
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 			.setTitle('misc/about:TITLE')
 			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: bot.config.inviteLink, SERVER: bot.config.websiteURL, USERNAME: bot.user.username }))
@@ -43,6 +43,5 @@ module.exports = class About extends Command {
 			.addField(guild.translate('misc/about:SERVERS'), bot.translate('misc/about:SERVERS_DESC', { SERVERS: bot.guilds.cache.size, SHARDS: bot.ws.totalShards }), true)
 			.addField(guild.translate('misc/about:MESSAGES'), bot.translate('misc/about:MESSAGES_DESC', { MESSAGES: bot.messagesSent, MSGSEC: (bot.messagesSent / (bot.uptime / 1000)).toFixed(2) }), true)
 			.addField(guild.translate('misc/about:UPTIME'), getReadableTime(bot.uptime), true);
-		return embed;
 	}
 };

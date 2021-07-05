@@ -33,10 +33,11 @@ module.exports = class Bassboost extends Command {
 
 		// update player's bassboost
 		const player = bot.manager.players.get(message.guild.id);
+		let msg, embed;
 		if (!message.args[0]) {
 			player.setBassboost(!player.bassboost);
-			const msg = await message.channel.send(message.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`));
-			const embed = new MessageEmbed()
+			msg = await message.channel.send(message.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`));
+			embed = new MessageEmbed()
 				.setDescription(message.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
 			return msg.edit({ content: '​​ ', embeds: [embed] });
@@ -47,8 +48,8 @@ module.exports = class Bassboost extends Command {
 
 		// Turn on bassboost with custom value
 		player.setBassboost(parseInt(message.args[0]) / 10);
-		const msg = await message.channel.send(message.translate('music/bassboost:SET_BB', { DB: message.args[0] }));
-		const embed = new MessageEmbed()
+		msg = await message.channel.send(message.translate('music/bassboost:SET_BB', { DB: message.args[0] }));
+		embed = new MessageEmbed()
 			.setDescription(message.translate('music/bassboost:DESC_3', { DB: message.args[0] }));
 		await bot.delay(5000);
 		return msg.edit({ content: '​​ ', embeds: [embed] });
@@ -66,10 +67,11 @@ module.exports = class Bassboost extends Command {
 
 		// update player's bassboost
 		const player = bot.manager.players.get(member.guild.id);
+		let embed;
 		if (!amount) {
 			player.setBassboost(!player.bassboost);
 			await bot.send(interaction, { content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
-			const embed = new MessageEmbed()
+			embed = new MessageEmbed()
 				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
 			return await interaction.editReply({ content: '​​ ', embeds: [embed] });
@@ -81,7 +83,7 @@ module.exports = class Bassboost extends Command {
 		// Turn on bassboost with custom value
 		player.setBassboost(amount / 10);
 		await bot.send(interaction, { content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
-		const embed = new MessageEmbed()
+		embed = new MessageEmbed()
 			.setDescription(bot.translate('music/bassboost:DESC_3', { DB: amount }));
 		await bot.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });

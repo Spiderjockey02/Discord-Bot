@@ -1,38 +1,41 @@
 // Dependencies
-const { Structures } = require('discord.js'),
+const { Guild } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	{ logger } = require('../utils');
 
-module.exports = Structures.extend('Guild', Guild => {
-	class CustomGuild extends Guild {
-		constructor(bot, data) {
-			super(bot, data);
-			// This for caching server settings
-			this.settings = {};
-
-			// premium guild or not
-			this.premium = false;
-		}
-
-		// Fetch guild settings (only on ready event)
-		async fetchSettings() {
+// Add custom stuff to Guild
+module.exports = Object.defineProperties(Guild.prototype, {
+	// Fetch guild settings
+	fetchSettings: {
+		value: async function() {
 			this.settings = await GuildSchema.findOne({ guildID: this.id });
 			return this.settings;
-		}
-
-		// update guild settings
-		async updateGuild(settings) {
+		},
+	},
+	// Update guild settings
+	updateGuild: {
+		value: async function(settings) {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
 			await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
 			return this.fetchSettings();
-		}
-
-		// This will get the translation for the provided text
-		translate(key, args) {
+		},
+	},
+	// Used for translating strings
+	translate: {
+		value: function(key, args) {
 			const language = this.client.translations.get(this.settings.Language);
 			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
-		}
-	}
-	return CustomGuild;
+		},
+	},
+	// Append the settings to guild
+	settings: {
+		value: {},
+		writable: true,
+	},
+	// Append premium to guild
+	premium: {
+		value: false,
+		writable: true,
+	},
 });
