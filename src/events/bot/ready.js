@@ -119,7 +119,8 @@ module.exports = class Ready extends Event {
 			user.premium = users[i].premium;
 			user.premiumSince = users[i].premiumSince ?? 0;
 			user.cmdBanned = users[i].cmdBanned;
-			user.rankImage = Buffer.from(users[i].rankImage ?? '', 'base64') ?? '';
+			console.log(users[i].rankImage);
+			user.rankImage = users[i].rankImage ? Buffer.from(users[i].rankImage ?? '', 'base64') : '';
 		}
 
 		// enable time event handler (in case of bot restart)

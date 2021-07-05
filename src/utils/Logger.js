@@ -1,14 +1,11 @@
 // Dependencies
 const chalk = require('chalk'),
-	moment = require('moment');
-
-const opts = {
-	errorEventName: 'error',
-	logDirectory: './src/utils/logs',
-	fileNamePattern: 'roll-<DATE>.log',
-	dateFormat: 'YYYY.MM.DD',
-};
-const log = require('simple-node-logger').createRollingFileLogger(opts);
+	moment = require('moment'),
+	log = require('simple-node-logger').createRollingFileLogger({
+		logDirectory: './src/utils/logs',
+		fileNamePattern: 'roll-<DATE>.log',
+		dateFormat: 'YYYY.MM.DD',
+	});
 
 // Logger
 exports.log = (content, type = 'log') => {
