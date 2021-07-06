@@ -30,7 +30,7 @@ module.exports = class GuildCreate extends Event {
 		}
 
 		// Send message to channel that bot has joined a server
-		const owner = await guild.members.fetch(guild.ownerID);
+		const owner = await guild.members.fetch(guild.ownerId);
 		const embed = new MessageEmbed()
 			.setTitle(`[GUILD JOIN] ${guild.name}`);
 		let attachment;

@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ MessageActionRow, MessageButton } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Clear extends Command {
@@ -41,21 +42,32 @@ module.exports = class Clear extends Command {
 				.setTitle(message.translate('moderation/clear:TITLE'))
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
-			message.channel.send({ embeds: [embed] }).then(async msg => {
-				// React to message
-				await msg.react(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
-				await msg.react(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
+			// create the buttons
+			const success = new MessageButton()
+				.setCustomId('success')
+				.setLabel('Confirm')
+				.setStyle('SUCCESS')
+				.setEmoji(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
+			const	cancel = new MessageButton()
+				.setCustomId('cancel')
+				.setLabel('Cancel')
+				.setStyle('DANGER')
+				.setEmoji(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
 
-				// filter
-				const filter = (reaction, user) => {
-					return [bot.customEmojis['checkmark'], '✅', bot.customEmojis['cross'], '❌'].includes(reaction.emoji.toString()) && user.id === message.author.id;
-				};
+			// Send confirmation message
+			await message.channel.send({ embeds: [embed], components: [[success, cancel]] }).then(async msg => {
+				// create collector
+				const filter = (i) => ['cancel', 'success'].includes(i.customId) && i.user.id === message.author.id;
+				const collector = msg.createMessageComponentCollector({ filter, time: 15000 });
 
-				// Collect the reactions
-				const collector = msg.createReactionCollector(filter, { time: 15000 });
-				collector.on('collect', async (reaction) => {
-					if ([bot.customEmojis['checkmark'], '✅'].includes(reaction.emoji.toString())) {
-						// send message telling users not to send messages
+				// A button was clicked
+				collector.on('collect', async i => {
+					// User pressed cancel button
+					if (i.customId === 'cancel') {
+						embed.setDescription(message.translate('moderation/clear:CON_CNC'));
+						msg.edit({ embeds: [embed], components: [] });
+					} else {
+						// Delete the messages
 						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
 						await bot.delay(5000);
 
@@ -80,21 +92,16 @@ module.exports = class Clear extends Command {
 							}
 						}
 						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.timedDelete({ timeout: 3000 }));
-					} else if ([bot.customEmojis['cross'], '❌'].includes(reaction.emoji.toString())) {
-						await msg.reactions.removeAll();
-						embed.setDescription(message.translate('moderation/clear:CON_CNC'));
-						msg.edit(embed);
 					}
 				});
 
-				// The user did not respond in time
+				// user did not react in time
 				collector.on('end', async () => {
 					if (embed.description == message.translate('moderation/clear:CON_CNC')) {
 						await msg.delete();
 					} else {
-						await msg.reactions.removeAll();
 						embed.setDescription(message.translate('moderation/clear:CON_TO'));
-						await msg.edit({ embeds: [embed] });
+						await msg.edit({ embeds: [embed], components: [] });
 					}
 				});
 			});
