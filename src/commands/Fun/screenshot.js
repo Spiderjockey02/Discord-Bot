@@ -62,7 +62,7 @@ module.exports = class Screenshot extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			url = args.get('url').value;
 
 		// make sure URl is valid

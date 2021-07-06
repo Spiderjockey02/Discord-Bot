@@ -31,7 +31,7 @@ module.exports = class Help extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		const embed = this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
 		bot.send(interaction, { embeds: [embed] });
 	}

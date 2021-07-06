@@ -69,7 +69,7 @@ module.exports = class Twitch extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			user = args.get('username').value;
 
 		try {

@@ -33,7 +33,7 @@ module.exports = class Guildicon extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		// Check for guild icon & send message
 		if (guild.icon) {
 			const embed = new Embed(bot, guild)

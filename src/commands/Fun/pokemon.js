@@ -59,7 +59,7 @@ module.exports = class Pokemon extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			pokemon = args.get('pokemon').value;
 
 		// Search for pokemon

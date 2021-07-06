@@ -58,7 +58,7 @@ module.exports = class Loop extends Command {
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelID),
+			channel = guild.channels.cache.get(interaction.channelId),
 			type = args.get('type')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing

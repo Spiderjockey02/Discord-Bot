@@ -58,7 +58,7 @@ module.exports = class Random extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			settings = guild.settings,
 			num1 = args.get('min').value,
 			num2 = args.get('max').value;

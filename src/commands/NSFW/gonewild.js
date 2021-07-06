@@ -40,7 +40,7 @@ module.exports = class Gonewild extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			get('https://nekobot.xyz/api/image?type=gonewild')
 				.then(res => {

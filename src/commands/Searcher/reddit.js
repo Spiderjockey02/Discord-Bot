@@ -46,7 +46,7 @@ module.exports = class Reddit extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			subreddit = args.get('subreddit').value;
 
 		// send subreddit post
@@ -54,6 +54,7 @@ module.exports = class Reddit extends Command {
 			const resp = await this.fetchPost(bot, channel, subreddit);
 			await bot.send(interaction, { embeds: [resp] });
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}

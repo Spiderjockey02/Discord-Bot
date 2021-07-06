@@ -39,7 +39,7 @@ module.exports = class Fact extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		fs.readFile('./src/assets/json/random-facts.json', async (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

@@ -74,7 +74,7 @@ module.exports = class Join extends Command {
 	// Function for slash command
 	async callback(bot, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelID);
+			channel = guild.channels.cache.get(interaction.channelId);
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {

@@ -63,7 +63,7 @@ module.exports = class Lyrics extends Command {
 
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelID),
+			channel = guild.channels.cache.get(interaction.channelId),
 			song = args.get('track')?.value;
 
 		// create options

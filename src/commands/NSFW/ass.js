@@ -41,7 +41,7 @@ module.exports = class Ass extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			get('https://nekobot.xyz/api/image?type=ass')
 				.then(res => {

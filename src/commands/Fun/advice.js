@@ -39,7 +39,7 @@ module.exports = class Advice extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });

@@ -56,7 +56,7 @@ module.exports = class Pitch extends Command {
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelID);
+		const channel = guild.channels.cache.get(interaction.channelId);
 		const amount = args.get('amount')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing

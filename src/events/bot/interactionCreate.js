@@ -11,9 +11,9 @@ module.exports = class Interaction extends Event {
 
 	// run event
 	async run(bot, interaction) {
-		const guild = bot.guilds.cache.get(interaction.guildID),
+		const guild = bot.guilds.cache.get(interaction.guildId),
 			cmd = bot.commands.get(interaction.commandName),
-			channel = guild.channels.cache.get(interaction.channelID),
+			channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id);
 
 		// Check to see if the command is being run in a blacklisted channel

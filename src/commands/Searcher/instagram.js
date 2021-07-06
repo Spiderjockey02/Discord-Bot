@@ -47,7 +47,7 @@ module.exports = class Instagram extends Command {
 
 	// Function for slash command
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelID),
+		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value;
 
 		const res = await this.createEmbed(bot, username, guild);
