@@ -23,7 +23,7 @@ module.exports = class channelDelete extends Event {
 
 		// IF it's a ticket channel and TICKET logging is enabled then don't show CHANNELDELETE log
 		const regEx = /ticket-\d{18}/g;
-		if (regEx.test(channel.name) && settings.ModLogEvents.includes('TICKET')) return await bot.emit('ticketClose', channel);
+		if (regEx.test(channel.name) && settings.ModLogEvents.includes('TICKET')) return bot.emit('ticketClose', channel);
 
 		// Check if event channelDelete is for logging
 		if (settings.ModLogEvents.includes('CHANNELDELETE') && settings.ModLog) {

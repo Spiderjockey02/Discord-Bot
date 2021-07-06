@@ -53,7 +53,7 @@ module.exports = class Lavalink extends Command {
 			.addField(message.translate('host/lavalink:CPU'), message.translate('host/lavalink:CPU_STATS', { CORES: cpu.cores, SYSLOAD: systemLoad, LVLLOAD: lavalinkLoad }))
 			.addField(message.translate('host/lavalink:UPTIME'), message.translate('host/lavalink:UPTIME_STATS', { NUM: botUptime }))
 			.setTimestamp(Date.now());
-		return await msg.edit({ embeds: [embed] });
+		return msg.edit({ embeds: [embed] });
 	}
 
 	uptime(time) {

@@ -72,7 +72,7 @@ module.exports = class Instagram extends Command {
 
 		// Displays Data
 		const account = res.graphql.user;
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setColor(0x0099ff)
 			.setTitle(account.full_name)
 			.setURL(`https://instagram.com/${username}`)
@@ -85,6 +85,5 @@ module.exports = class Instagram extends Command {
 			.addField(guild.translate('searcher/instagram:FOLLOWING'), account.edge_follow.count.toLocaleString(guild.settings.Language), true)
 			.addField(guild.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
 			.addField(guild.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
-		return embed;
 	}
 };

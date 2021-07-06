@@ -64,10 +64,11 @@ module.exports = class GuildCreate extends Event {
 		// get slash commands for category
 		const enabledPlugins = guild.settings.plugins;
 		const data = [];
-		for (let i = 0; i < enabledPlugins.length; i++) {
-			const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
+		for (const plugin of enabledPlugins) {
+			const g = await bot.loadInteractionGroup(plugin, guild);
 			if (Array.isArray(g)) data.push(...g);
 		}
+
 		// upload slash commands to guild
 		try {
 			await bot.guilds.cache.get(guild.id)?.commands.set(data);

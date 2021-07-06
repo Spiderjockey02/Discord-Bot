@@ -74,7 +74,7 @@ module.exports = class Bassboost extends Command {
 			embed = new MessageEmbed()
 				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
-			return await interaction.editReply({ content: '​​ ', embeds: [embed] });
+			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
 		// Make sure value is a number

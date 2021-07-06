@@ -2,6 +2,7 @@
 const { Embed } = require('../../utils'),
 	{ ticketEmbedSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
+const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = class Ticket extends Command {
 	constructor(bot) {
@@ -26,7 +27,22 @@ module.exports = class Ticket extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')
 					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
-				message.channel.send({ embeds: [embed] }).then(async msg => {
+
+				const row = new MessageActionRow()
+					.addComponents(
+						new MessageButton()
+							.setCustomId('primary')
+							.setLabel('Create ticket')
+							.setStyle('SECONDARY')
+							.setEmoji('🎟'),
+						new MessageButton()
+							.setCustomId('primary')
+							.setLabel('Close ticket')
+							.setStyle('DANGER')
+							.setEmoji('🔒'),
+					);
+
+				message.channel.send({ embeds: [embed], components: [row] }).then(async msg => {
 					// add reaction
 					await msg.react('🎟');
 

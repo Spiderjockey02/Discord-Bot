@@ -67,7 +67,7 @@ module.exports = class Back extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/volume:CURRENT', { NUM: player.volume }));
-			return await bot.send(interaction, embed);
+			return bot.send(interaction, embed);
 		}
 
 		// make sure volume is between 0 and 1000

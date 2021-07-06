@@ -45,9 +45,9 @@ module.exports = class SetPlugin extends Command {
 				settings.plugins.push(message.args[0]);
 
 				// Fetch slash command data
-				for (let i = 0; i < settings.plugins.length; i++) {
-					const info = await bot.loadInteractionGroup(settings.plugins[i], message.guild);
-					if (Array.isArray(info)) data.push(...info);
+				for (const plugin of settings.plugins) {
+					const g = await bot.loadInteractionGroup(plugin, message.guild);
+					if (Array.isArray(g)) data.push(...g);
 				}
 
 				try {
@@ -61,9 +61,9 @@ module.exports = class SetPlugin extends Command {
 				const data = [];
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
 				// Fetch slash command data
-				for (let i = 0; i < settings.plugins.length; i++) {
-					const info = await bot.loadInteractionGroup(settings.plugins[i], message.guild);
-					if (Array.isArray(info)) data.push(...info);
+				for (const plugin of settings.plugins) {
+					const g = await bot.loadInteractionGroup(plugin, message.guild);
+					if (Array.isArray(g)) data.push(...g);
 				}
 
 				try {

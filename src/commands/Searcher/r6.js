@@ -148,7 +148,7 @@ module.exports = class R6 extends Command {
 		platform = Object.keys(platforms).find(key => platforms[key] === platform).toLowerCase();
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setAuthor(player.username, bot.user.displayAvatarURL)
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.image)
@@ -160,6 +160,5 @@ module.exports = class R6 extends Command {
 				WIN: pve.general.wins.toLocaleString(guild.settings.Language), LOSS: pve.general.losses.toLocaleString(guild.settings.Language), WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills.toLocaleString(guild.settings.Language), DEATH: pve.general.deaths.toLocaleString(guild.settings.Language), KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600).toLocaleString(guild.settings.Language),
 			}))
 			.setTimestamp();
-		return embed;
 	}
 };

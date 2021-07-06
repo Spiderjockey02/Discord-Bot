@@ -38,11 +38,9 @@ module.exports = class TagAdd extends Command {
 				if (guildTags.length >= 50) return message.channel.send(message.translate('tags/tag-add:MAX_TAGS'));
 
 				// Make sure the tagName doesn't exist
-				for (let i = 0; i < guildTags.length; i++) {
-					// tagName alreaddy exists
-					if (guildTags[i].name == message.args[0]) {
-						return message.channel.send(message.translate('tags/tag-add:SAME_NAME'));
-					}
+				for (const tag of guildTags) {
+					// tagName already exists
+					if (tag.name == message.args[0]) return message.channel.send(message.translate('tags/tag-add:SAME_NAME'));
 				}
 
 				// save tag as name doesn't exists

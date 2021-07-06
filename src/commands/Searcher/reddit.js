@@ -72,11 +72,10 @@ module.exports = class Reddit extends Command {
 		}
 
 		// Send message to channel
-		const embed = new Embed(bot, channel.guild)
+		return new Embed(bot, channel.guild)
 			.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
 			.setURL(reddit.post.link)
 			.setImage(reddit.url)
 			.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(channel.guild.settings.Language) });
-		return embed;
 	}
 };

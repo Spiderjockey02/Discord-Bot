@@ -27,11 +27,9 @@ module.exports = class TagView extends Command {
 
 			// check if an input was entered
 			if (message.args[0]) {
-				for (let i = 0; i < result.length; i++) {
-				// tagName alreaddy exists
-					if (result[i].name == message.args[0]) {
-						return message.channel.send(result[i].response);
-					}
+				for (const tag of result) {
+					// tagName already exists
+					if (tag.name == message.args[0]) return message.channel.send(tag.response);
 				}
 			}
 

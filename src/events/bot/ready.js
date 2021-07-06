@@ -38,13 +38,13 @@ module.exports = class Ready extends Event {
 		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
 		bot.guilds.cache.forEach(async guild => {
 			await guild.fetchSettings();
-			if (guild.settings == null) return await bot.emit('guildCreate', guild);
+			if (guild.settings == null) return bot.emit('guildCreate', guild);
 			const enabledPlugins = guild.settings.plugins;
 			const data = [];
 
 			// get slash commands for category
-			for (let i = 0; i < enabledPlugins.length; i++) {
-				const g = await bot.loadInteractionGroup(enabledPlugins[i], guild);
+			for (const plugin of enabledPlugins) {
+				const g = await bot.loadInteractionGroup(plugin, guild);
 				if (Array.isArray(g)) data.push(...g);
 			}
 
@@ -89,13 +89,12 @@ module.exports = class Ready extends Event {
 				guildCount.push(bot.guilds.cache.array()[i].id);
 			}
 			// Now check database for bot guild ID's
-			for (let i = 0; i < data.length; i++) {
-				if (!guildCount.includes(data[i].guildID)) {
-					const guild = {
-						id: `${data[i].guildID}`,
-						name: `${data[i].guildName}`,
-					};
-					bot.emit('guildDelete', guild);
+			for (const guild of data) {
+				if (!guildCount.includes(guild.guildID)) {
+					bot.emit('guildDelete', {
+						id: `${guild.guildID}`,
+						name: `${guild.guildName}`,
+					});
 				}
 			}
 		}
@@ -119,7 +118,6 @@ module.exports = class Ready extends Event {
 			user.premium = users[i].premium;
 			user.premiumSince = users[i].premiumSince ?? 0;
 			user.cmdBanned = users[i].cmdBanned;
-			console.log(users[i].rankImage);
 			user.rankImage = users[i].rankImage ? Buffer.from(users[i].rankImage ?? '', 'base64') : '';
 		}
 

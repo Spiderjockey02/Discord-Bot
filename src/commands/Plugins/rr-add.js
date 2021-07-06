@@ -84,11 +84,7 @@ module.exports = class ReactionRoleAdd extends Command {
 				let roles =	roleMsgs.first().getRole();
 				// Check role hierarchy to make sure bot can give user those roles or if the role is managed by integration (a bot role etc)
 				roles = roles.filter(r => {
-					if (r.comparePositionTo(message.guild.me.roles.highest) >= 0 || r.managed) {
-						return false;
-					} else {
-						return true;
-					}
+					return !(r.comparePositionTo(message.guild.me.roles.highest) >= 0 || r.managed);
 				});
 				// if no roles then stop reaction role creation
 				if (!roles[0]) return message.channel.send('No roles entered');
@@ -184,11 +180,7 @@ module.exports = class ReactionRoleAdd extends Command {
 			// Get custom emojis
 			if (s.split(':').length == 3) {
 				const lastTerm = s.split(':')[2].toString();
-				if (msg.guild.emojis.cache.get(lastTerm.substring(0, lastTerm.length - 1))) {
-					return true;
-				} else {
-					return false;
-				}
+				return msg.guild.emojis.cache.get(lastTerm.substring(0, lastTerm.length - 1));
 			}
 			return true;
 		});

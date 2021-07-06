@@ -80,14 +80,14 @@ module.exports = class Move extends Command {
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(0, 0, song);
-			return await bot.send(interaction, bot.translate('music/move:MOVED_1', { TITLE: song.title }));
+			return bot.send(interaction, bot.translate('music/move:MOVED_1', { TITLE: song.title }));
 		} else if (pos2) {
 			if (pos2 == 0) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 			if ((pos2 > player.queue.length) || !player.queue[pos2]) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(pos2 - 1, 0, song);
-			return await bot.send(interaction, guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
+			return bot.send(interaction, guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
 		}
 	}
 };

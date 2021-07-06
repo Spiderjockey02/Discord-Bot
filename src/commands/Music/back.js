@@ -42,7 +42,7 @@ module.exports = class Back extends Command {
 
 		// Make sure there was a previous song
 		const player = bot.manager.players.get(member.guild.id);
-		if (player.queue.previous == null) return await bot.send(interaction, { content: guild.translate('music/back:NO_PREV') });
+		if (player.queue.previous == null) return bot.send(interaction, { content: guild.translate('music/back:NO_PREV') });
 
 		// Start playing the previous song
 		player.queue.unshift(player.queue.previous);

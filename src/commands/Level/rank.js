@@ -89,7 +89,7 @@ module.exports = class Rank extends Command {
 			.setLevel(user.Level)
 			.setRank(rankScore + 1)
 			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
-			.setStatus(member.presence.status)
+			.setStatus(member.presence?.status ?? 'dnd')
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
 			.setUsername(member.user.username)
 			.setDiscriminator(member.user.discriminator);

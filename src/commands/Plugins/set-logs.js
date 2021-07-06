@@ -67,10 +67,8 @@ module.exports = class SetLog extends Command {
 
 				// remove features
 				try {
-					for (let i = 0; i < message.args.length; i++) {
-						if (currentFeatures.indexOf(message.args[i].toUpperCase()) > -1) {
-							currentFeatures.splice(currentFeatures.indexOf(message.args[i].toUpperCase()), 1);
-						}
+					for (const featues of message.args) {
+						if (currentFeatures.indexOf(featues.toUpperCase()) > -1) currentFeatures.splice(currentFeatures.indexOf(featues.toUpperCase()), 1);
 					}
 
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });

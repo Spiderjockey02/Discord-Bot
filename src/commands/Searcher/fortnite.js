@@ -74,7 +74,7 @@ module.exports = class Fortnite extends Command {
 	// create fortnite Embed
 	async createEmbed(bot, guild, username, platform) {
 		const data = await bot.Fortnite.user(username, platform);
-		const embed = new Embed(bot, guild)
+		return new Embed(bot, guild)
 			.setColor(0xffffff)
 			.setTitle('searcher/fortnite:TITLE', { USER: data.username })
 			.setURL(data.url)
@@ -86,6 +86,5 @@ module.exports = class Fortnite extends Command {
 			.addField(guild.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
 			.addField(guild.translate('searcher/fortnite:KILLS'), `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, true)
 			.addField(guild.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
-		return embed;
 	}
 };

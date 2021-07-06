@@ -103,10 +103,8 @@ module.exports = Object.defineProperties(Message.prototype, {
 			// Check attachments
 			if (this.attachments.size > 0) {
 				const url = this.attachments.first().url;
-				for (let i = 0; i < fileTypes.length; i++) {
-					if (url.toLowerCase().indexOf(fileTypes[i]) !== -1) {
-						file.push(url);
-					}
+				for (const type of fileTypes) {
+					if (url.toLowerCase().indexOf(type) !== -1) file.push(url);
 				}
 
 				// no file with the correct format was found
