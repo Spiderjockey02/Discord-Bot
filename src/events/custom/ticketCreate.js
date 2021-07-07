@@ -1,5 +1,5 @@
 // Dependencies
-const{ Embed } = require('../../utils'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 module.exports = class ticketCreate extends Event {

@@ -47,7 +47,7 @@ module.exports = class UserInfo extends Command {
 
 	// create userinfo embed
 	createEmbed(bot, guild, member) {
-		const status = (member.presence.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
+		const status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
 		return new Embed(bot, guild)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL())
 			.setColor(3447003)

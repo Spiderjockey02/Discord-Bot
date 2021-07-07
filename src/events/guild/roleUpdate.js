@@ -55,8 +55,8 @@ module.exports = class roleUpdate extends Event {
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
 					.setAuthor(newRole.guild.name, newRole.guild.iconURL())
-					.addField('Before:', oldRole.permissions.bitfield)
-					.addField('After:', newRole.permissions.bitfield)
+					.addField('Before:', `${oldRole.permissions.bitfield}`)
+					.addField('After:', `${newRole.permissions.bitfield}`)
 					.setTimestamp();
 				updated = true;
 			}

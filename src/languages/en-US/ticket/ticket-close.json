@@ -5,5 +5,7 @@
   "NOT_TICKET": "This is not a ticket channel.",
   "TITLE": "Ticket Closed!",
   "TICKET": "Ticket: ",
-  "USER": "User: "
+  "USER": "User: ",
+  "SUCCESS": "Successfully deleted channel",
+  "MISSING_TICKET": "You do not have a ticket to delete."
 }

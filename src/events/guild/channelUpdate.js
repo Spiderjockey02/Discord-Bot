@@ -52,14 +52,28 @@ module.exports = class channelUpdate extends Event {
 				updated = true;
 			}
 
+			if (oldChannel.rtcRegion != newChannel.rtcRegion) {
+				embed = new Embed(bot, newChannel.guild)
+					.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
+					.setColor(15105570)
+					.setFooter(`ID: ${newChannel.id}`)
+					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
+					.addFields(
+						{ name: 'Old:', value: `${oldChannel.rtcRegion}`, inline: true },
+						{ name: 'New:', value: `${newChannel.rtcRegion}`, inline: true },
+					)
+					.setTimestamp();
+				updated = true;
+			}
+
 			// Check for permission change
-			const permDiff = oldChannel.permissionOverwrites.filter(x => {
-				if (newChannel.permissionOverwrites.find(y => y.allow.bitfield == x.allow.bitfield) && newChannel.permissionOverwrites.find(y => y.deny.bitfield == x.deny.bitfield)) {
+			const permDiff = oldChannel.permissionOverwrites.cache.filter(x => {
+				if (newChannel.permissionOverwrites.cache.find(y => y.allow.bitfield == x.allow.bitfield) && newChannel.permissionOverwrites.cache.find(y => y.deny.bitfield == x.deny.bitfield)) {
 					return false;
 				}
 				return true;
-			}).concat(newChannel.permissionOverwrites.filter(x => {
-				if (oldChannel.permissionOverwrites.find(y => y.allow.bitfield == x.allow.bitfield) && oldChannel.permissionOverwrites.find(y => y.deny.bitfield == x.deny.bitfield)) {
+			}).concat(newChannel.permissionOverwrites.cache.filter(x => {
+				if (oldChannel.permissionOverwrites.cache.find(y => y.allow.bitfield == x.allow.bitfield) && oldChannel.permissionOverwrites.cache.find(y => y.deny.bitfield == x.deny.bitfield)) {
 					return false;
 				}
 				return true;

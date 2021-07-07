@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MessageActionRow, MessageButton } = require('discord.js'),
+	{ MessageButton } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Clear extends Command {

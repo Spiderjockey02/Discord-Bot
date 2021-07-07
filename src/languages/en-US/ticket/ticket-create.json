@@ -11,5 +11,6 @@
   "FIELD2": "Reason: ",
   "TICKET": "Ticket: ",
   "USER": "User: ",
-  "LOG_TITLE": "Ticket Opened!"
+  "LOG_TITLE": "Ticket Opened!",
+  "COOLDOWN": "You can open a ticket in {{NUM}} minutes."
 }

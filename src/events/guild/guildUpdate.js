@@ -35,17 +35,6 @@ module.exports = class guildUpdate extends Event {
 				updated = true;
 			}
 
-			// region change
-			if (oldGuild.region != newGuild.region) {
-				embed = new Embed(bot, newGuild)
-					.setDescription('**Server region changed**')
-					.setAuthor(newGuild.name, newGuild.iconURL())
-					.addField('Before:', oldGuild.region)
-					.addField('After:', newGuild.region)
-					.setTimestamp();
-				updated = true;
-			}
-
 			// Server's boost level has changed
 			if (oldGuild.premiumTier != newGuild.premiumTier) {
 				embed = new Embed(bot, newGuild)

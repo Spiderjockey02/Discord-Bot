@@ -31,21 +31,18 @@ module.exports = class Ticket extends Command {
 				const row = new MessageActionRow()
 					.addComponents(
 						new MessageButton()
-							.setCustomId('primary')
+							.setCustomId('crt_ticket')
 							.setLabel('Create ticket')
 							.setStyle('SECONDARY')
 							.setEmoji('🎟'),
 						new MessageButton()
-							.setCustomId('primary')
+							.setCustomId('cl_ticket')
 							.setLabel('Close ticket')
 							.setStyle('DANGER')
 							.setEmoji('🔒'),
 					);
 
 				message.channel.send({ embeds: [embed], components: [row] }).then(async msg => {
-					// add reaction
-					await msg.react('🎟');
-
 					// update database (in case bot restarts and reactionCollector will stop working)
 					const newEmbed = await new ticketEmbedSchema({
 						messageID: msg.id,

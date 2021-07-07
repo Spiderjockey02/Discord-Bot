@@ -21,7 +21,7 @@ module.exports = class WhoWouldWin extends Command {
 	async run(bot, message, settings) {
 		// Get user
 		const members = await message.getImage();
-		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/ship:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/whowouldwin:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {

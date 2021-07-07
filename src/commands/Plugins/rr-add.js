@@ -65,7 +65,8 @@ module.exports = class ReactionRoleAdd extends Command {
 				// Get list of roles for reaction roles
 				let roleMsgs;
 				try {
-					roleMsgs = await message.channel.awaitMessages(filter, {
+					roleMsgs = await message.channel.awaitMessages({
+						filter,
 						time: 60000,
 						max: 1,
 						errors: ['time'],
@@ -96,12 +97,13 @@ module.exports = class ReactionRoleAdd extends Command {
 						'',
 						message.translate('plugins/rr-add:SEND_EMOJIS'),
 					].join('\n'));
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 
 				// Get list of emojis for reaction roles
 				let emojiMsgs;
 				try {
-					emojiMsgs = await message.channel.awaitMessages(filter, {
+					emojiMsgs = await message.channel.awaitMessages({
+						filter,
 						time: 60000,
 						max: 1,
 						errors: ['time'],
@@ -131,7 +133,7 @@ module.exports = class ReactionRoleAdd extends Command {
 						createDescription(roles, emojis),
 					].join('\n'));
 
-				channel.send(embed2).then(async (msg) => {
+				channel.send({ embeds: [embed2] }).then(async (msg) => {
 					// add reactions to message embed
 					for (let i = 0; i < roles.length; i++) {
 						await msg.react(emojis[i]);
