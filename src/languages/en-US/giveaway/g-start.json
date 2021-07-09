@@ -8,7 +8,7 @@
   "INVITE_PARTICIPATE": "React with 🎉 to participate!",
   "WIN_MESSAGE": "Congratulations, {winners}! You won **{prize}**!",
   "FOOTER": "Giveaways",
-  "NO_WINNER": "Giveaway cancelled, no valid participation.",
+  "NO_WINNER": "Giveaway cancelled, no valid participations.",
   "WINNERS": "winner(s)",
   "END_AT": "End at",
   "HOSTED": "Hosted by: {user}"

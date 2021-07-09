@@ -7,7 +7,6 @@ module.exports = {
 	ReactionRoleSchema: require('./ReactionRole'),
 	timeEventSchema: require('./TimedEvents'),
 	MutedMemberSchema: require('./MutedMembers'),
-	ticketEmbedSchema: require('./TicketEmbed'),
 	TagsSchema: require('./tag'),
 	userSchema: require('./userSettings.js'),
 };

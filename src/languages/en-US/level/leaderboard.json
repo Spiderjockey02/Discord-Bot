@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Displays the Servers's level leaderboard.",
+  "DESCRIPTION": "Displays the Server's level leaderboard.",
   "USAGE": "leaderboard",
   "TITLE": "Leaderboard",
   "EMPTY_TITLE": "No data found",

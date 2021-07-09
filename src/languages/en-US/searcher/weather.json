@@ -1,7 +1,6 @@
 {
   "DESCRIPTION": "Look up the weather in a certain area.",
   "USAGE": "weather <location>",
-  "INVALID": "Invalid location",
   "TITLE": "Weather - {{LOC}}",
   "DESC": "Temperature units can may be differ some time",
   "TEMP": "Temperature:",
