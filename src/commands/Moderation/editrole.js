@@ -24,7 +24,7 @@ module.exports = class addrole extends Command {
 
         if(!message.args[0]) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: "Please provide the name of the role" }).then(m => m.timedDelete({ timeout: 5000 }));
 
-        const role = message.guild.roles.cache.find(r => r.name.toLowerCase() == message.args[0].toLowerCase())
+        const role = message.guild.roles.cache.find(r => r.name.toLowerCase() == message.args[0].toLowerCase()) ?? message.getRoles[0]
 
         if(!role) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: "Role not found" }).then(m => m.timedDelete({ timeout: 5000 }));
 
