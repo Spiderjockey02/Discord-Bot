@@ -32,7 +32,7 @@ module.exports = class FastForward extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager.players.get(message.guild.id);
-		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM');
+		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM').then(m => m.timedDelete({ timeout: 5000 }));
 
 		// update the time
 		const time = read24hrFormat(message.args[0] ?? '10');

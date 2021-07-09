@@ -1,6 +1,7 @@
 {
   "DESCRIPTION": "Displays Lavalink node information",
   "USAGE": "lavalink",
+  "FETCHING": "Getting lavalink stats...",
   "AUTHOR": "Lavalink Statistics: {{NAME}}",
   "PLAYERS": "Playing Players/Players",
   "PLAYER_STATS": "```{{PLAYING}} playing / {{PLAYERS}} players```",

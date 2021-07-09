@@ -43,7 +43,7 @@ module.exports = class clickButton extends Event {
 
 			// Make sure ticket dosen't already exist
 			if (guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`)) {
-				button.reply({ embeds: [channel.error('ticket/ticket-create:TICKET_EXISTS', {}, true)] }).then(() => {
+				return button.reply({ embeds: [channel.error('ticket/ticket-create:TICKET_EXISTS', {}, true)] }).then(() => {
 					setTimeout(function() {
 						button.deleteReply();
 					}, 5000);
@@ -100,7 +100,7 @@ module.exports = class clickButton extends Event {
 
 			// delete channel
 			guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`).delete().then(() => {
-				button.reply({ embeds: [channel.success('ticket/ticket-close:SUCCESS', {}, true)] }).then(() => {
+				return button.reply({ embeds: [channel.success('ticket/ticket-close:SUCCESS', {}, true)] }).then(() => {
 					setTimeout(function() {
 						button.deleteReply();
 					}, 5000);

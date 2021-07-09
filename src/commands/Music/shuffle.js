@@ -22,9 +22,8 @@ module.exports = class Shuffle extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
-
 		// shuffle queue
+		const player = bot.manager.players.get(message.guild.id);
 		player.queue.shuffle();
 		const embed = new MessageEmbed()
 			.setColor(message.member.displayHexColor)

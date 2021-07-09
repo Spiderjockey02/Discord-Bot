@@ -41,7 +41,7 @@ module.exports = class Back extends Command {
 		}
 
 		// make sure the number was between 0 and 1000
-		if (Number(message.args[0]) <= 0 || Number(message.args[0]) > 1000) return message.channel.error('music/volume:TOO_HIGH');
+		if (Number(message.args[0]) <= 0 || Number(message.args[0]) > 1000) return message.channel.error('music/volume:TOO_HIGH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Update volume
 		player.setVolume(Number(message.args));

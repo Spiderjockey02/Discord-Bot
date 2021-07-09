@@ -29,13 +29,12 @@ module.exports = class Speed extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
-
 		// Make sure song isn't a stream
-		if (!player.queue.current.isSeekable) return message.channel.error('music/speed:LIVESTREAM');
+		const player = bot.manager.players.get(message.guild.id);
+		if (!player.queue.current.isSeekable) return message.channel.error('music/speed:LIVESTREAM').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure Number is a number
-		if (isNaN(message.args[0]) || message.args[0] < 0 || message.args[0] > 10) return message.channel.error('music/speed:INVALID');
+		if (isNaN(message.args[0]) || message.args[0] < 0 || message.args[0] > 10) return message.channel.error('music/speed:INVALID').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Change speed value
 		try {

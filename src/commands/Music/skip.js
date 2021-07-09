@@ -28,9 +28,8 @@ module.exports = class Skip extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
-
 		// skip song
+		const player = bot.manager.players.get(message.guild.id);
 		if (!isNaN(message.args[0]) && message.args[0] < player.queue.length) {
 			player.stop(parseInt(message.args[0]));
 		} else {

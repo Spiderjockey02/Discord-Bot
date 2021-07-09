@@ -42,7 +42,7 @@ module.exports = class Move extends Command {
 		if (message.args[0] === 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
 
 		// Make sure number is position in the queue
-		if ((message.args[0] > player.queue.length) || (message.args[0] && !player.queue[message.args[0]])) return message.channel.send(message.translate('music/move:NOT_FOUND'));
+		if ((message.args[0] > player.queue.length) || (message.args[0] && !player.queue[message.args[0]])) return message.channel.send(message.translate('music/move:NOT_FOUND')).then(m => m.timedDelete({ timeout: 10000 }));
 
 		if (!message.args[1]) {
 			const song = player.queue[message.args[0] - 1];
@@ -51,7 +51,7 @@ module.exports = class Move extends Command {
 			return message.channel.send(message.translate('music/move:MOVED_1', { TITLE: song.title }));
 		} else if (message.args[1]) {
 			if (message.args[1] == 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
-			if ((message.args[1] > player.queue.length) || !player.queue[message.args[1]]) return message.channel.send(message.translate('music/move:NOT_FOUND'));
+			if ((message.args[1] > player.queue.length) || !player.queue[message.args[1]]) return message.channel.send(message.translate('music/move:NOT_FOUND')).then(m => m.timedDelete({ timeout: 10000 }));
 			const song = player.queue[message.args[0] - 1];
 			player.queue.splice(message.args[0] - 1, 1);
 			player.queue.splice(message.args[1] - 1, 0, song);

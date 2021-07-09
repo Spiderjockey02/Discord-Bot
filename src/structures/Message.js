@@ -114,13 +114,15 @@ module.exports = Object.defineProperties(Message.prototype, {
 			// check for message link
 			for (const value of this.args) {
 				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
-				if (!patt.test(value)) return;
-				const stuff = value.split('/');
-				const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
-				if (!message && message.attachments.size == 0) return;
-				const url = message.attachments.first().url;
-				for (const type of fileTypes) {
-					if (url.indexOf(type) !== -1) file.push(url);
+				if (patt.test(value)) {
+					const stuff = value.split('/');
+					const message = await this.client.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+					if (message && message.attachments.size >= 1) {
+						const url = message.attachments.first().url;
+						for (const type of fileTypes) {
+							if (url.indexOf(type) !== -1) file.push(url);
+						}
+					}
 				}
 			}
 
@@ -132,6 +134,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 					if (url.indexOf(type) !== -1) file.push(url);
 				}
 			}
+
 			// add avatar URL's to file
 			file.push(...(await this.getMember()).map(member => member.user.displayAvatarURL({ format: 'png', size: 1024 })));
 			return file;

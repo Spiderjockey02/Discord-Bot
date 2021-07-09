@@ -14,7 +14,7 @@ module.exports = class voiceStateUpdate extends Event {
 	async run(bot, oldState, newState) {
 		// variables for easier coding
 		const newMember = newState.guild.members.cache.get(newState.id);
-		const channel = newState.channelID ? newState.guild.channels.cache.get(newState.channelID.id || newState.channelID) : null;
+		const channel = newState.guild.channels.cache.get(newState.channel.id ?? newState.channelID);
 
 
 		// Get server settings / if no settings then return
@@ -76,7 +76,7 @@ module.exports = class voiceStateUpdate extends Event {
 		if (!newState.guild.members.cache.get(bot.user.id).voice.channelID) player.destroy();
 
 		// Check for stage channel audience change
-		if (newState.id == bot.user.id && newState.channelID.type == 'stage') {
+		if (newState.id == bot.user.id && channel?.type == 'stage') {
 			if (!oldState.channelID) {
 				try {
 					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));

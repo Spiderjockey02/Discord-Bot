@@ -36,11 +36,11 @@ module.exports = class Remove extends Command {
 
 		const player = bot.manager.players.get(message.guild.id);
 
-		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/remove:NAN'));
+		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/remove:NAN')).then(m => m.timedDelete({ timeout: 10000 }));
 
 		if (!message.args[1]) {
 			if (message.args[0] == 0) return message.channel.send(message.translate('music/remove:PLAYING', { PREFIX: settings.prefix }));
-			if (message.args[0] > player.queue.length) return message.channel.send(message.translate('music/remove:MISSING'));
+			if (message.args[0] > player.queue.length) return message.channel.send(message.translate('music/remove:MISSING')).then(m => m.timedDelete({ timeout: 10000 }));
 
 			const { title } = player.queue[message.args[0] - 1];
 
