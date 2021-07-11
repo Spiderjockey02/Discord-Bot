@@ -21,9 +21,9 @@ module.exports = class Message extends Event {
 		if (message.author.bot) return;
 
 		// Get server settings
-		const settings = await getGuildData(bot, message.guild.id)
+		const settings = await getGuildData(bot, message.guild.id);
 		if (Object.keys(settings).length == 0) return;
-		const usersettings = await getUserData(bot, message.author.id)
+		const usersettings = await getUserData(bot, message.author.id);
 		if (Object.keys(usersettings).length == 0) return;
 
 		// Check if bot was mentioned
