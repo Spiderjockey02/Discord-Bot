@@ -22,9 +22,9 @@ module.exports = class slashCreate extends Event {
 			member = guild.members.cache.get(interaction.user.id);
 
 
-		const settings = await getGuildData(bot, guild.id)
+		const settings = await getGuildData(bot, guild.id);
 		if (Object.keys(settings).length == 0) return;
-		const usersettings = await getUserData(bot, interaction.user.id) /* Maybe for checking if USER IS CMDBANNED?? */
+		const usersettings = await getUserData(bot, interaction.user.id); /* Maybe for checking if USER IS CMDBANNED?? */
 		if (Object.keys(usersettings).length == 0) return;
 
 
