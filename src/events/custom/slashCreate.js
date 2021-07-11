@@ -1,6 +1,12 @@
 // Dependencies
-const { Collection } = require('discord.js'),
+const {
+	Collection
+} = require('discord.js'),
 	Event = require('../../structures/Event');
+const {
+	getGuildData,
+	getUserData
+} = require('../../utils/functions');
 
 module.exports = class slashCreate extends Event {
 	constructor(...args) {
@@ -15,14 +21,29 @@ module.exports = class slashCreate extends Event {
 			channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id);
 
+
+		const settings = await getGuildData(bot, guild.id)
+		if (Object.keys(settings).length == 0) return;
+		const usersettings = await getUserData(bot, interaction.user.id) // Maybe for checking if USER IS CMDBANNED??
+		if (Object.keys(usersettings).length == 0) return;
+
+
 		// Check to see if the command is being run in a blacklisted channel
-		if ((guild.settings.CommandChannelToggle) && (guild.settings.CommandChannels.includes(channel.id))) {
-			return bot.send(interaction, { embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', { USER: member.user.tag }, true)], ephermal: true });
+		if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(channel.id))) {
+			return bot.send(interaction, {
+				embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', {
+					USER: member.user.tag
+				}, true)],
+				ephermal: true
+			});
 		}
 
 		// Make sure NSFW commands are only being run in a NSFW channel
 		if (!channel.nsfw && cmd.conf.nsfw) {
-			return bot.send(interaction, { embeds:[channel.error('events/message:NOT_NSFW_CHANNEL', {}, true)], ephemeral: true });
+			return bot.send(interaction, {
+				embeds: [channel.error('events/message:NOT_NSFW_CHANNEL', {}, true)],
+				ephemeral: true
+			});
 		}
 
 		// Check for bot permissions
@@ -41,7 +62,12 @@ module.exports = class slashCreate extends Event {
 		// Display missing bot permissions
 		if (neededPermissions.length > 0) {
 			bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${guild.id}].`);
-			return bot.send(interaction, { embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
+			return bot.send(interaction, {
+				embeds: [channel.error('misc:MISSING_PERMISSION', {
+					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ')
+				}, true)],
+				ephemeral: true
+			});
 		}
 
 		// Check for user permissions
@@ -52,7 +78,12 @@ module.exports = class slashCreate extends Event {
 
 		// Display missing user permissions
 		if (neededPermissions.length > 0) {
-			return bot.send(interaction, { embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
+			return bot.send(interaction, {
+				embeds: [channel.error('misc:USER_PERMISSION', {
+					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ')
+				}, true)],
+				ephemeral: true
+			});
 		}
 
 		// Check to see if user is in 'cooldown'
@@ -69,7 +100,12 @@ module.exports = class slashCreate extends Event {
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				return bot.send(interaction, { embeds:[channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)], ephemeral: true });
+				return bot.send(interaction, {
+					embeds: [channel.error('events/message:COMMAND_COOLDOWN', {
+						NUM: timeLeft.toFixed(1)
+					}, true)],
+					ephemeral: true
+				});
 			}
 		}
 
