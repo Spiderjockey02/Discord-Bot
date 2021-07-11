@@ -1,11 +1,11 @@
 // Dependencies
 const {
-	Collection
+	Collection,
 } = require('discord.js'),
 	Event = require('../../structures/Event');
 const {
 	getGuildData,
-	getUserData
+	getUserData,
 } = require('../../utils/functions');
 
 module.exports = class slashCreate extends Event {
@@ -22,9 +22,9 @@ module.exports = class slashCreate extends Event {
 			member = guild.members.cache.get(interaction.user.id);
 
 
-		const settings = await getGuildData(bot, guild.id);
+		const settings = await getGuildData(bot, guild.id)
 		if (Object.keys(settings).length == 0) return;
-		const usersettings = await getUserData(bot, interaction.user.id); // Maybe for checking if USER IS CMDBANNED??
+		const usersettings = await getUserData(bot, interaction.user.id) /* Maybe for checking if USER IS CMDBANNED?? */
 		if (Object.keys(usersettings).length == 0) return;
 
 
@@ -32,9 +32,9 @@ module.exports = class slashCreate extends Event {
 		if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(channel.id))) {
 			return bot.send(interaction, {
 				embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', {
-					USER: member.user.tag
+					USER: member.user.tag,
 				}, true)],
-				ephermal: true
+				ephermal: true,
 			});
 		}
 
@@ -42,7 +42,7 @@ module.exports = class slashCreate extends Event {
 		if (!channel.nsfw && cmd.conf.nsfw) {
 			return bot.send(interaction, {
 				embeds: [channel.error('events/message:NOT_NSFW_CHANNEL', {}, true)],
-				ephemeral: true
+				ephemeral: true,
 			});
 		}
 
@@ -64,9 +64,9 @@ module.exports = class slashCreate extends Event {
 			bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${guild.id}].`);
 			return bot.send(interaction, {
 				embeds: [channel.error('misc:MISSING_PERMISSION', {
-					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ')
+					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', '),
 				}, true)],
-				ephemeral: true
+				ephemeral: true,
 			});
 		}
 
@@ -80,9 +80,9 @@ module.exports = class slashCreate extends Event {
 		if (neededPermissions.length > 0) {
 			return bot.send(interaction, {
 				embeds: [channel.error('misc:USER_PERMISSION', {
-					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ')
+					PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', '),
 				}, true)],
-				ephemeral: true
+				ephemeral: true,
 			});
 		}
 
@@ -102,9 +102,9 @@ module.exports = class slashCreate extends Event {
 				const timeLeft = (expirationTime - now) / 1000;
 				return bot.send(interaction, {
 					embeds: [channel.error('events/message:COMMAND_COOLDOWN', {
-						NUM: timeLeft.toFixed(1)
+						NUM: timeLeft.toFixed(1),
 					}, true)],
-					ephemeral: true
+					ephemeral: true,
 				});
 			}
 		}
