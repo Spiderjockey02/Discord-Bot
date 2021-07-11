@@ -1,16 +1,12 @@
-const { GuildSchema, userSchema } = require("../database/models");
+const { GuildSchema, userSchema } = require("../database/models")
 
 module.exports.checkMusic = checkMusic;
 module.exports.getGuildData = getGuildData;
 module.exports.getUserData = getUserData;
 
-async function checkMusic(member, bot, guildId) {
-	let settings;
-	try {
-		settings = await getGuildData(bot, guildId);
-	} catch (error) {
-		return false;
-	}
+async function checkMusic (member, bot, guildId) {
+	let settings = await getGuildData(bot, guildId)
+	
 	// Check if the member has role to interact with music plugin
 	if (member.guild.roles.cache.get(settings.MusicDJRole)) {
 		if (!member.roles.cache.has(settings.MusicDJRole)) {
@@ -30,22 +26,22 @@ async function checkMusic(member, bot, guildId) {
 async function getGuildData(bot, guildId) {
 	let settings = await GuildSchema.findOne({
 		guildID: guildId,
-	});
+	})
 
 	if (!settings) {
-		settings = bot.config.defaultSettings;
-		settings.guildID = guildId;
+		settings = bot.config.defaultSettings
+		settings.guildID = guildId
 	}
 	return settings;
 }
 async function getUserData(bot, userId) {
 	let settings = await userSchema.findOne({
 		userID: userId,
-	});
+	})
 
 	if (!settings) {
-		settings = bot.config.defaultUserSettings; /* New Thing to be set in config.js */
-		settings.userID = userId;
+		settings = bot.config.defaultUserSettings /* New Thing to be set in config.js */
+		settings.userID = userId
 	}
 	return settings;
 }
