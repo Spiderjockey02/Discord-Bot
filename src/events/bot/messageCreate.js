@@ -3,6 +3,7 @@ const { Collection } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Event = require('../../structures/Event');
+const { getGuildData, getUserData } = require('../../utils/functions');
 
 module.exports = class Message extends Event {
 	constructor(...args) {
@@ -20,8 +21,10 @@ module.exports = class Message extends Event {
 		if (message.author.bot) return;
 
 		// Get server settings
-		const settings = message.guild?.settings ?? bot.config.defaultSettings;
+		const settings = await getGuildData(bot, message.guild.id)
 		if (Object.keys(settings).length == 0) return;
+		const usersettings = await getUserData(bot, message.author.id)
+		if (Object.keys(usersettings).length == 0) return;
 
 		// Check if bot was mentioned
 		if ([`<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content == p)) {
@@ -62,7 +65,7 @@ module.exports = class Message extends Event {
 			message.args = args;
 
 			// make sure user is not on banned list
-			if (message.author.cmdBanned) {
+			if (usersettings.cmdBanned) {
 				if (message.deletable) message.delete();
 				return message.channel.error('events/message:BANNED_USER').then(m => m.timedDelete({ timeout: 5000 }));
 			}
