@@ -24,7 +24,8 @@ module.exports = class slashCreate extends Event {
 
 		const settings = await getGuildData(bot, guild.id);
 		if (Object.keys(settings).length == 0) return;
-		const usersettings = await getUserData(bot, interaction.user.id); /* Maybe for checking if USER IS CMDBANNED?? */
+		// usefull for: is user cmdbanned?
+		const usersettings = await getUserData(bot, interaction.user.id)
 		if (Object.keys(usersettings).length == 0) return;
 
 
