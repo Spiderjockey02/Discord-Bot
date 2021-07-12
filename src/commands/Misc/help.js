@@ -71,7 +71,7 @@ module.exports = class Help extends Command {
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(user.id)) {
 					return new Embed(bot)
-						.setTitle('misc/help:TITLE', { COMMAND: `${settings.prefix}${cmd.help.name}` })
+						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
 						.setDescription([
 							bot.translate('misc/help:DESC', { DESC: cmd.help.description }),
 							bot.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),

@@ -8,7 +8,7 @@ module.exports = class Docs extends Command {
 			name: 'docs',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays Discord.js documentation.',
 			usage: 'docs <query>',
 			cooldown: 3000,

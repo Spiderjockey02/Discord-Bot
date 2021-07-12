@@ -8,7 +8,7 @@ module.exports = class Lavalink extends Command {
 			name: 'lavalink',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays Lavalink node information',
 			usage: 'lavalink [host / list]',
 			cooldown: 3000,

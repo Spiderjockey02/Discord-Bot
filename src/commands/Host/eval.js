@@ -9,7 +9,7 @@ module.exports = class Eval extends Command {
 			name: 'eval',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Evaluates JS code.',
 			usage: 'eval <code>',
 			cooldown: 3000,

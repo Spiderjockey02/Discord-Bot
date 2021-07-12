@@ -11,7 +11,7 @@ module.exports = class UserData extends Command {
 			name: 'user',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Edit a user\'s data',
 			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,

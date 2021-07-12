@@ -7,7 +7,7 @@ module.exports = class Shutdown extends Command {
 			name: 'shutdown',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Shutdowns the bot.',
 			usage: 'shutdown',
 			cooldown: 3000,
@@ -19,7 +19,7 @@ module.exports = class Shutdown extends Command {
 		// try and shutdown the server
 		try {
 			await message.channel.success('host/shutdown:success');
-			await bot.logger.log(`Bot was shutdown by ${message.author.username}#${message.author.discriminator} in server: [${message.guild.id}]`);
+			await bot.logger.log(`Bot was shutdown by ${message.author.tag} in server: [${message.guild.id}]`);
 			await bot.destroy();
 			process.exit();
 		} catch(err) {

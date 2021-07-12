@@ -8,7 +8,7 @@ module.exports = class MusicNode extends Command {
 			name: 'node',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add/remove a Node for lavalink.',
 			usage: 'node <add / remove> [host] [password] [port]',
 			cooldown: 3000,
