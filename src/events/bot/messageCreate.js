@@ -93,9 +93,6 @@ module.exports = class Message extends Event {
 				return message.channel.send('Nice try').then(m => m.timedDelete({ timeout:5000 }));
 			}
 
-			// Check if command is disabled
-			if ((message.channel.type != 'dm') && (settings.DisabledCommands.includes(cmd.name))) return;
-
 			// check permissions
 			if (message.guild) {
 				// check bot permissions

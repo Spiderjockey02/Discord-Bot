@@ -1,5 +1,5 @@
 // Dependencies
-const { Embed } = require('../../utils'),
+const { MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Join extends Command {
@@ -45,7 +45,7 @@ module.exports = class Join extends Command {
 					textChannel: message.channel.id,
 					selfDeafen: true,
 				}).connect();
-				const embed = new Embed(bot, message.guild)
+				const embed = new MessageEmbed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(bot.translate('music/join:JOIN'));
 				message.channel.send({ embeds:[embed] });
@@ -59,7 +59,7 @@ module.exports = class Join extends Command {
 			try {
 				await player.setVoiceChannel(message.member.voice.channel.id);
 				await player.setTextChannel(message.channel.id);
-				const embed = new Embed(bot, message.guild)
+				const embed = new MessageEmbed(bot, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/join:MOVED'));
 				message.channel.send({ embeds: [embed] });

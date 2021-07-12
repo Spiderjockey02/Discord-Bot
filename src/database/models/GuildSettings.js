@@ -46,7 +46,6 @@ const guildSchema = Schema({
 	// Moderation plugin
 	ModeratorRoles: { type: Array, default: ['owner'] },
 	MutedRole: { type: String, default: '00' },
-	automoderation: Schema.Types.Mixed,
 	// How many warnings till the user is kicked from server
 	ModerationWarningCounter: { type: Number, default: 3 },
 	// If moderation commands should be deleted after.
@@ -57,28 +56,7 @@ const guildSchema = Schema({
 	TicketToggle: { type: Boolean, default: true },
 	TicketSupportRole: { type: String, default: '00' },
 	TicketCategory: { type: String, default: '00' },
-	// for report command
-	ReportToggle: { type: Boolean, default: true },
-	// Anti-raid plugin
-	AntiRaidPlugin: { type: Boolean, default: false },
-	// 0 = nothing, 1 = verify account by reacting to message, 2 = must complete CAPTCHA to join
-	AntiRaidCompletion: { type: Number, default: 0 },
-	AntiRaidChannelID: { type: String, default: '00' },
-	// Search PLugin
-	// Misc
-	DisabledCommands: { type: Array, default: ['IWannaHackYou'] },
-	// Server stats plugin
-	ServerStats: { type: Boolean, default: false },
-	ServerStatsCate: { type: String, default: '00' },
-	// bot
-	ServerStatsBot: { type: Boolean, default: false },
-	ServerStatsBotChannel: { type: String, default: '00' },
-	// user
-	ServerStatsUser: { type: Boolean, default: false },
-	ServerStatsUserChannel: { type: String, default: '00' },
-	// human
-	ServerStatsHuman: { type: Boolean, default: false },
-	ServerStatsHumanChannel: { type: String, default: '00' },
+	// language
 	Language: { type: String, default: 'en-US' },
 	plugins: { type: Array, default: ['Fun', 'Giveaway', 'Guild', 'Image', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket'] },
 	version: { type: Number, default: '1.1' },

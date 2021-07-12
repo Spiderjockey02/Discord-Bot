@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ReactionRoleSchema, ticketEmbedSchema } = require('../../database/models'),
+	{ ReactionRoleSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageReactionAdd extends Event {
@@ -31,29 +31,13 @@ module.exports = class messageReactionAdd extends Event {
 		const settings = reaction.message.guild.settings;
 		if (Object.keys(settings).length == 0) return;
 
-		// Check for ticket embed
-		if (reaction.emoji.name == '🎟') {
-			const ticketReaction = await ticketEmbedSchema.findOne({
-				messageID: reaction.message.id,
-				channelID: reaction.message.channel.id,
-				guildID: reaction.message.guild.id,
-			});
-
-			// ticket found
-			if (ticketReaction) {
-				reaction.message.author = user;
-				if (reaction.message.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) await reaction.users.remove(user);
-				return bot.commands.get('ticket-create').run(bot, reaction.message, settings);
-			}
-		}
-
 		// Check for reaction
 		const { guild } = reaction.message;
 		// eslint-disable-next-line no-empty-function
 		const member = await guild.members.fetch(user.id).catch(() => {});
 		if (!member) return;
 
-		// fetch database
+		// check database if reaction is from reaction role embed
 		const dbReaction = await ReactionRoleSchema.findOne({
 			guildID: guild.id,
 			messageID: reaction.message.id,

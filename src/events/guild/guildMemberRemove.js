@@ -14,7 +14,7 @@ module.exports = class guildMemberRemove extends Event {
 	// run event
 	async run(bot, member) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has left guild: ${member.guild.id}.`);
 
 		if (member.user.id == bot.user.id) return;
 
