@@ -1,5 +1,5 @@
 // Dependencies
-Command = require('../../structures/Command.js');
+const Command = require('../../structures/Command.js');
 
 module.exports = class addrole extends Command {
 	constructor(bot) {
@@ -10,8 +10,8 @@ module.exports = class addrole extends Command {
 			aliases: ['removerole', 'deleterole'],
 			userPermissions: ['MANAGE_ROLES'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
-			description: 'Remove warnings from a user.',
-			usage: 'delrole <role name>',
+			description: 'Delete a role from the server.',
+			usage: 'delrole <role>',
 			cooldown: 5000,
 			examples: ['delrole Test'],
 		});
@@ -22,17 +22,22 @@ module.exports = class addrole extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
-        if(!message.args[0]) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: "Please provide the name of the role" }).then(m => m.timedDelete({ timeout: 5000 }));
+		// Make sure a role name was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/delrole:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
-        const role = message.guild.roles.cache.find(r => r.name.toLowerCase() == message.args[0].toLowerCase()) ?? message.getRoles[0]
+		// find role based on mention, ID or name
+		const role = message.getRole();
 
-        if(!role) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: "Role not found" }).then(m => m.timedDelete({ timeout: 5000 }));
+		// No role was found
+		if (!role[0]) return message.channel.error('moderation/delrole:MISSING').then(m => m.timedDelete({ timeout: 5000 }));
 
-        if (message.member.permissions.has('ADMINISTRATOR') || role.comparePositionTo(message.guild.me.roles.highest) >= 0) {
-            role.delete()
-            message.channel.success('moderation/kick:SUCCESS', { REASON: "Role successfully created" }).then(m => m.timedDelete({ timeout: 3000 }));
-        } else {
-            return message.channel.error('misc:ERROR_MESSAGE', { ERROR: "Your role is not high enouigh" }).then(m => m.timedDelete({ timeout: 5000 }));
-        }
+		// delete role
+		try {
+			const delRole = await role[0].delete();
+			message.channel.success('moderation/delrole:SUCCESS', { ROLE: delRole.name }).then(m => m.timedDelete({ timeout: 3000 }));
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.channel.error('moderation/delrole:FAIL').then(m => m.timedDelete({ timeout: 5000 }));
+		}
 	}
 };

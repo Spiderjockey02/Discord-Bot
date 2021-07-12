@@ -2,18 +2,18 @@
 const { MessageEmbed, TextChannel } = require('discord.js');
 
 // override send method
-let oriSend = TextChannel.prototype.send;
+const oriSend = TextChannel.prototype.send;
 TextChannel.prototype.send = function(...args) {
-	oriSend = oriSend.bind(this);
+	const send = oriSend.bind(this);
 	// check permissions
 	if (!this.permissionsFor(this.client.user).has('SEND_MESSAGES')) return;
 	if (!this.permissionsFor(this.client.user).has('EMBED_LINKS')) {
-		return oriSend(this.client.translate('misc:MISSING_PERMISSION', { PERMISSIONS: this.client.translate('permissions:EMBED_LINKS', {}, this.guild.settings.Language) }, this.guild.settings.Language));
+		return send(this.client.translate('misc:MISSING_PERMISSION', { PERMISSIONS: this.client.translate('permissions:EMBED_LINKS', {}, this.guild.settings.Language) }, this.guild.settings.Language));
 	}
 
 	// send message
 	try {
-		return oriSend(...args);
+		return send(...args);
 	} catch (err) {
 		this.client.logger.error(err.message);
 	}
