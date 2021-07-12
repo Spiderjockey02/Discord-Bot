@@ -2,12 +2,13 @@
 const mongoose = require('mongoose'),
 	logger = require('../utils/logger'),
 	config = require('../config.js'),
-	{ Guild } = require('../modules/database/models');
+	{ GuildSchema } = require('../database/models');
 
 module.exports.run = async () => {
 	mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).then(async () => {
 		logger.log('Updating database');
-		await Guild.updateMany({ version: '1.1' }, [
+		await GuildSchema.updateMany({ version: '1.1' }, [
+			{ $set: { version: '1.2' } },
 			{ $unset: [	'ModerationBadwords',
 				'ModerationBadwordChannel',
 				'ModerationBadwordRole',

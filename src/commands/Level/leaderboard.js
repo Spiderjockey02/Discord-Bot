@@ -68,7 +68,8 @@ module.exports = class Leaderboard extends Command {
 
 	// create leaderboard
 	async createLeaderboard(bot, guild) {
-		const res = await RankSchema.find({ guildID: guild.id }).sort([['Xp', 'descending']]);
+		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
+
 		// if an error occured
 		const embed = new Embed(bot, guild)
 			.setTitle('level/leaderboard:TITLE')

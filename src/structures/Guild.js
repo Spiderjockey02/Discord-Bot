@@ -1,6 +1,6 @@
 // Dependencies
 const { Guild } = require('discord.js'),
-	{ GuildSchema } = require('../database/models'),
+	{ GuildSchema, RankSchema } = require('../database/models'),
 	{ logger } = require('../utils');
 
 // Add custom stuff to Guild
@@ -8,7 +8,7 @@ module.exports = Object.defineProperties(Guild.prototype, {
 	// Fetch guild settings
 	fetchSettings: {
 		value: async function() {
-			this.settings = await GuildSchema.findOne({ guildID: this.id });
+			this.settings = await GuildSchema.findOne({ guildID: this.id }) ?? require('../assets/json/defaultGuildSettings.json');
 			return this.settings;
 		},
 	},
@@ -28,6 +28,13 @@ module.exports = Object.defineProperties(Guild.prototype, {
 			return language(key, args);
 		},
 	},
+	// Fetch ranks for this guild
+	fetchLevels: {
+		value: async function() {
+			this.levels = await RankSchema.find({ guildID: this.id });
+			return this.levels;
+		},
+	},
 	// Append the settings to guild
 	settings: {
 		value: {},
@@ -36,6 +43,11 @@ module.exports = Object.defineProperties(Guild.prototype, {
 	// Append premium to guild
 	premium: {
 		value: false,
+		writable: true,
+	},
+	// Append users' ranks to guild
+	levels: {
+		value: [],
 		writable: true,
 	},
 });

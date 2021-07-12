@@ -1,6 +1,5 @@
 // Dependencies
 const { MessageAttachment } = require('discord.js'),
-	{ RankSchema } = require('../../database/models'),
 	{ Rank: rank } = require('canvacord'),
 	Command = require('../../structures/Command.js');
 
@@ -72,7 +71,8 @@ module.exports = class Rank extends Command {
 
 	// Create the rank card
 	async createRankCard(bot, guild, member, channel) {
-		const res = await RankSchema.find({ guildID: guild.id }).sort([ ['user', 'descending'] ]);
+		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
+
 		const user = res.find(doc => doc.userID == member.user.id);
 		// if they haven't send any messages
 		if (!user) return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
