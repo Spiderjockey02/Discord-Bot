@@ -1,0 +1,7 @@
+{
+  "guildID": "000",
+  "guildName": "Unknown",
+  "prefix": "*",
+  "Language": "en-US",
+  "plugins": ["Fun", "Giveaway", "Misc", "NSFW", "Searcher", "Image", "Guild", "Level"]
+}
