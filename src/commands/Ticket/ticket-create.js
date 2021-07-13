@@ -36,7 +36,7 @@ module.exports = class TicketCreate extends Command {
 		// create channel
 		message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
 			reason: reason,
-			parent: category.id,
+			parent: category?.id,
 			permissionOverwrites:[
 				{ id: message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
 				{ id: supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },

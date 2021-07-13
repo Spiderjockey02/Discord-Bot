@@ -6,6 +6,7 @@ module.exports = class PRemove extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-remove',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-remove'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

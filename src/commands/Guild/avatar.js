@@ -17,7 +17,7 @@ module.exports = class Avatar extends Command {
 			slash: true,
 			options: [{
 				name: 'user',
-				description: 'The user you want to grab the avatar of.',
+				description: 'The user you want the avatar of',
 				type: 'USER',
 				required: false,
 			}],

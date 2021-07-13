@@ -6,6 +6,7 @@ module.exports = class TagEdit extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-edit',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-edit'],
 			userPermissions: ['MANAGE_GUILD'],

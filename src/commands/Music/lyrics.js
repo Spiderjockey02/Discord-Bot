@@ -8,6 +8,7 @@ module.exports = class Lyrics extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'lyrics',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get lyrics on a song.',

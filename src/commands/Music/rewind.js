@@ -7,6 +7,7 @@ module.exports = class Rewind extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'rewind',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rw'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

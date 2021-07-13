@@ -6,6 +6,7 @@ module.exports = class Disconnect extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'dc',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['stop', 'disconnect'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

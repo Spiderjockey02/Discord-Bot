@@ -6,6 +6,7 @@ module.exports = class TwentyFourSeven extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: '247',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['stay', '24/7'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

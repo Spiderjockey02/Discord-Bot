@@ -7,6 +7,7 @@ module.exports = class Back extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'volume',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['vol'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

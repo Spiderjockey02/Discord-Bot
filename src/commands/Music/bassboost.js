@@ -7,6 +7,7 @@ module.exports = class Bassboost extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'bassboost',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['bb'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

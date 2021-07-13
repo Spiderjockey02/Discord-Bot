@@ -7,6 +7,7 @@ module.exports = class NowPlaying extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'np',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['song'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

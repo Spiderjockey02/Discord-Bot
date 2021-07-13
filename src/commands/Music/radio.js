@@ -8,6 +8,7 @@ module.exports = class Radio extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'radio',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Listen to the radio',

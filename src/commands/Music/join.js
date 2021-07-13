@@ -6,6 +6,7 @@ module.exports = class Join extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'join',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['movehere'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
@@ -101,7 +102,7 @@ module.exports = class Join extends Command {
 					textChannel: channel.id,
 					selfDeafen: true,
 				}).connect();
-				const embed = new Embed(bot, guild)
+				const embed = new MessageEmbed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/join:JOIN'));
 				interaction.reply({ embeds:[embed] });
@@ -114,7 +115,7 @@ module.exports = class Join extends Command {
 			try {
 				await player.setVoiceChannel(member.voice.channel.id);
 				await player.setTextChannel(channel.id);
-				const embed = new Embed(bot, guild)
+				const embed = new MessageEmbed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/join:MOVED'));
 				interaction.reply({ embeds:[embed] });

@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ RankSchema } = require('../../database/models'),
 	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 

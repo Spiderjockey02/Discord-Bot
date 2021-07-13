@@ -7,6 +7,7 @@ module.exports = class TagView extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-view',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-view'],
 			userPermissions: ['MANAGE_GUILD'],

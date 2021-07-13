@@ -6,6 +6,7 @@ module.exports = class TagDelete extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-delete',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-delete', 't-remove', 'tag-del'],
 			userPermissions: ['MANAGE_GUILD'],

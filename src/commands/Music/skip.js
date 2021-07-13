@@ -6,6 +6,7 @@ module.exports = class Skip extends Command {
 	constructor(bot) {
 		super(bot, {
 			name:  'skip',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['next', 'skipto'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

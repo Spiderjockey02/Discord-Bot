@@ -6,6 +6,7 @@ module.exports = class DM extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'dm',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['direct-message', 'dmsg'],
 			userPermissions: ['MANAGE_GUILD'],

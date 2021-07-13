@@ -6,6 +6,7 @@ module.exports = class Search extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'search',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
 			description: 'Searches for a song.',

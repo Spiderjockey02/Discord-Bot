@@ -7,6 +7,7 @@ module.exports = class Pitch extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'pitch',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Sets the player\'s pitch. If you input "reset", it will set the pitch back to default.',

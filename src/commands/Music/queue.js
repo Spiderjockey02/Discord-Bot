@@ -8,6 +8,7 @@ module.exports = class Queue extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'queue',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['que'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],

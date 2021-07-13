@@ -6,6 +6,7 @@ module.exports = class Move extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'move',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Moves the specified song to the specified position.',

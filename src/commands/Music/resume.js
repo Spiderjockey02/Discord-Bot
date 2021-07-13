@@ -6,6 +6,7 @@ module.exports = class Resume extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'resume',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['previous', 'prev'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

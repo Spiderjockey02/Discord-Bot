@@ -59,6 +59,8 @@ module.exports.run = async () => {
 				'CommandChannels',
 				'CommandCooldown',
 				'CommandCooldownSec',
+				'MusicTriviaPlugin',
+				'MusicTriviaGenres',
 			] }]);
 		logger.ready('Database has been updated to v1.2');
 	}).catch((err) => {

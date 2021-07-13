@@ -7,6 +7,7 @@ module.exports = class Shuffle extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'shuffle',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Shuffles the playlist.',

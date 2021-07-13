@@ -9,6 +9,7 @@ module.exports = class PView extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-view',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-view'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

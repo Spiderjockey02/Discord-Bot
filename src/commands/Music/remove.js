@@ -6,6 +6,7 @@ module.exports = class Remove extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'remove',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Removes a song from the queue',

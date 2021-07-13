@@ -6,6 +6,7 @@ module.exports = class PDelete extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-delete',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-delete'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

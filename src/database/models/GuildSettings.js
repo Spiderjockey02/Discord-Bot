@@ -19,18 +19,15 @@ const guildSchema = Schema({
 	welcomeGoodbyeText: { type: String, default: '**{user}** just left the server.' },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
 	LevelOption: { type: Number, default: 1 },
-	LevelChannel: { type: String, default: '00' },
+	LevelChannel: { type: String },
 	LevelMessage: { type: String, default: 'GG {user}, you have leveled up to {level}!' },
-	LevelIgnoreRoles: { type: Array, default: ['No-xp'] },
-	LevelIgnoreChannel: { type: Array, default: ['No-xp'] },
+	LevelIgnoreRoles: { type: Array },
+	LevelIgnoreChannel: { type: Array },
 	LevelMultiplier: { type: Number, default: 1 },
-	LevelRoleRewards: { type: Array, default: ['gf'] },
+	LevelRoleRewards: { type: Array },
 	// Music plugin
 	MusicDJ: { type: Boolean, default: false },
-	MusicDJRole: { type: String, default: '00' },
-	// Music trivia plugin
-	MusicTriviaPlugin: { type: Boolean, default: false },
-	MusicTriviaGenres: { type: Array, default: ['pop'] },
+	MusicDJRole: { type: String },
 	// logging plugin
 	ModLog: { type: Boolean, default: false },
 	ModLogEvents: { type: Array, default: ['GUILDBANADD', 'GUILDMEMBERADD'] },
@@ -40,8 +37,9 @@ const guildSchema = Schema({
 	// Tag plugin
 	PrefixTags: { type: Boolean, default: false },
 	// Moderation plugin
-	ModeratorRoles: { type: Array, default: ['owner'] },
-	MutedRole: { type: String, default: '00' },
+	ModeratorRoles: { type: Array },
+	MutedRole: { type: String },
+	MutedMembers: { type: Array },
 	// How many warnings till the user is kicked from server
 	ModerationWarningCounter: { type: Number, default: 3 },
 	// If moderation commands should be deleted after.
@@ -50,8 +48,8 @@ const guildSchema = Schema({
 	ModerationIgnoreBotToggle: { type: Boolean, default: true },
 	// For ticket command
 	TicketToggle: { type: Boolean, default: true },
-	TicketSupportRole: { type: String, default: '00' },
-	TicketCategory: { type: String, default: '00' },
+	TicketSupportRole: { type: String },
+	TicketCategory: { type: String },
 	// language
 	Language: { type: String, default: 'en-US' },
 	plugins: { type: Array, default: ['Fun', 'Giveaway', 'Guild', 'Image', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket'] },

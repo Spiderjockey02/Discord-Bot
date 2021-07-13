@@ -5,6 +5,7 @@ module.exports = class Tags extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'tags',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['modifytags', 'tag'],
 			userPermissions: ['MANAGE_GUILD'],

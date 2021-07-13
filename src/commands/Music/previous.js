@@ -8,6 +8,7 @@ module.exports = class Previous extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'previous',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['played'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK', 'ADD_REACTIONS'],

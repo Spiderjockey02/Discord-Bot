@@ -7,6 +7,7 @@ module.exports = class Seek extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'seek',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Sets the playing track\'s position to the specified position.',

@@ -6,6 +6,7 @@ module.exports = class Play extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'play',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['p'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],

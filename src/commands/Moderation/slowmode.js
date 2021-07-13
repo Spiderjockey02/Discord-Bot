@@ -6,6 +6,7 @@ module.exports = class SlowMode extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'slowmode',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['slow-mode'],
 			userPermissions: ['MANAGE_CHANNELS'],

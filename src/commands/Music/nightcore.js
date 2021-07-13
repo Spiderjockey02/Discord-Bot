@@ -7,6 +7,7 @@ module.exports = class Nightcore extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'nightcore',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
 			description: 'Toggles nightcore mode.',

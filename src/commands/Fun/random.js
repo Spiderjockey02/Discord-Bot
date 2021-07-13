@@ -16,13 +16,13 @@ module.exports = class Random extends Command {
 			slash: true,
 			options: [{
 				name: 'min',
-				description: 'The minimum number for the range.',
+				description: 'The minimum number',
 				type: 'INTEGER',
 				required: true,
 			},
 			{
 				name: 'max',
-				description: 'The maximum number for the range.',
+				description: 'The maximum number',
 				type: 'INTEGER',
 				required: true,
 			}],

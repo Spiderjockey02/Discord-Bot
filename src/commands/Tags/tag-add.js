@@ -6,6 +6,7 @@ module.exports = class TagAdd extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-add',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-add'],
 			userPermissions: ['MANAGE_GUILD'],

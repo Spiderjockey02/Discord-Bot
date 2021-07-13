@@ -8,6 +8,7 @@ module.exports = class PCreate extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-create',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-create'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

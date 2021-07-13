@@ -16,7 +16,13 @@ module.exports = Object.defineProperties(Guild.prototype, {
 	updateGuild: {
 		value: async function(settings) {
 			logger.log(`Guild: [${this.id}] updated settings: ${Object.keys(settings)}`);
-			await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
+			// Check if the DB is getting updated or creating new schema
+			if (this.settings.guildID) {
+				await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
+			} else {
+				const newGuild = new GuildSchema({ guildID: this.id, guildName: this.name });
+				await newGuild.save();
+			}
 			return this.fetchSettings();
 		},
 	},

@@ -8,6 +8,7 @@ module.exports = class PLoad extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-load',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-load'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],

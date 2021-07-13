@@ -7,6 +7,7 @@ module.exports = class PAdd extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'p-add',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-add'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],

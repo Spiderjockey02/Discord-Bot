@@ -7,6 +7,7 @@ module.exports = class FastForward extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'fast-forward',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['ffw', 'fastforward'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],

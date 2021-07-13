@@ -6,6 +6,7 @@ module.exports = class Loop extends Command {
 	constructor(bot) {
 		super(bot, {
 			name: 'loop',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['repeat'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
