@@ -60,7 +60,7 @@ module.exports = class Speed extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		const player = bot.manager.players.get(member.guild.id);
 
@@ -70,7 +70,7 @@ module.exports = class Speed extends Command {
 		// Change speed value
 		try {
 			player.setSpeed(speed);
-			await bot.send(interaction, { content: guild.translate('music/speed:ON_SPD') });
+			await interaction.reply({ content: guild.translate('music/speed:ON_SPD') });
 			const embed = new Embed(bot, guild)
 				.setDescription(guild.translate('music/speed:UPDATED', { NUM: player.speed }));
 			await bot.delay(5000);

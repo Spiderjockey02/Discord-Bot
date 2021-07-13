@@ -38,7 +38,7 @@ module.exports = class Shuffle extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// shuffle queue
 		const player = bot.manager.players.get(member.guild.id);
@@ -46,6 +46,6 @@ module.exports = class Shuffle extends Command {
 		const embed = new MessageEmbed(bot, guild)
 			.setColor(member.displayHexColor)
 			.setDescription(guild.translate('music/shuffle:DESC'));
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 };

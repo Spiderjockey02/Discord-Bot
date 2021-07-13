@@ -64,10 +64,10 @@ module.exports = class Fortnite extends Command {
 		// send embed
 		try {
 			const embed = await this.createEmbed(bot, guild, username, platform);
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

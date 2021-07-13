@@ -89,13 +89,13 @@ module.exports = class Twitch extends Command {
 						.addField('\u200B', guild.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
-				bot.send(interaction, { embeds: [embed] });
+				interaction.reply({ embeds: [embed] });
 			} else {
-				bot.send(interaction, { embeds: [channel.error('searcher/twitch:NOT_FOUND', {}, true)] });
+				interaction.reply({ embeds: [channel.error('searcher/twitch:NOT_FOUND', {}, true)] });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 

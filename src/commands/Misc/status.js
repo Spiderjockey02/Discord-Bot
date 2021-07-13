@@ -36,6 +36,6 @@ module.exports = class Status extends Command {
 			.addField(guild.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
 			.addField(guild.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();
-		return bot.send(interaction, { embeds: [embed] });
+		return interaction.reply({ embeds: [embed] });
 	}
 };

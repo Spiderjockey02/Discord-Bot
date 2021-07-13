@@ -28,7 +28,7 @@ module.exports = class About extends Command {
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
 		const embed = this.createEmbed(bot, guild, settings);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
 	// create the 'about' embed

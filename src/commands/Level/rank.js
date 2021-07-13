@@ -59,13 +59,13 @@ module.exports = class Rank extends Command {
 		try {
 			const res = await this.createRankCard(bot, guild, member, channel);
 			if (typeof (res) == 'object') {
-				await bot.send(interaction, { files: [res] });
+				await interaction.reply({ files: [res] });
 			} else {
-				await bot.send(interaction, { content: res });
+				await interaction.reply({ content: res });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 

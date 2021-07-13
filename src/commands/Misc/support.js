@@ -29,6 +29,6 @@ module.exports = class Support extends Command {
 		const embed = new Embed(bot, guild)
 			.setTitle('misc/support:TITLE', { USER: bot.user.username })
 			.setDescription(guild.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
-		return bot.send(interaction, { embeds: [embed] });
+		return interaction.reply({ embeds: [embed] });
 	}
 };

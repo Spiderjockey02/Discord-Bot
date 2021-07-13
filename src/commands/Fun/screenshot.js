@@ -67,12 +67,12 @@ module.exports = class Screenshot extends Command {
 
 		// make sure URl is valid
 		if (!validUrl.isUri(url)) {
-			return bot.send(interaction, { embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
+			return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
 		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) {
-			return bot.send(interaction, { embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
+			return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
 		}
 
 		// display phrases' definition

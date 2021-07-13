@@ -1,5 +1,5 @@
 // Dependencies
-const { MutedMemberSchema, timeEventSchema } = require('../../database/models'),
+const { timeEventSchema } = require('../../database/models'),
 	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 

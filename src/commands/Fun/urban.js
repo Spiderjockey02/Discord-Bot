@@ -50,7 +50,7 @@ module.exports = class Urban extends Command {
 
 		// display phrases' definition
 		const resp = await this.fetchDefinition(bot, guild, phrase, channel);
-		bot.send(interaction, { embeds: [resp] });
+		interaction.reply({ embeds: [resp] });
 	}
 
 	// fetch defintion of word

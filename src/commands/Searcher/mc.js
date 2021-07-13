@@ -62,13 +62,13 @@ module.exports = class MC extends Command {
 		try {
 			const resp = await this.createEmbed(bot, guild, channel, IP, port);
 			if (Array.isArray(resp)) {
-				await bot.send(interaction, { embeds: [resp[0]], files: [resp[1]] });
+				await interaction.reply({ embeds: [resp[0]], files: [resp[1]] });
 			} else {
-				await bot.send(interaction, { embeds: [resp] });
+				await interaction.reply({ embeds: [resp] });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

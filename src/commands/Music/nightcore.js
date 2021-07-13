@@ -41,12 +41,12 @@ module.exports = class Nightcore extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// toggle nightcore mode on/off
 		const player = bot.manager.players.get(member.guild.id);
 		player.setNightcore(!player.nightcore);
-		await bot.send(interaction, { content: guild.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
+		await interaction.reply({ content: guild.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
 		const embed = new MessageEmbed()
 			.setDescription(guild.translate(`music/nightcore:DESC_${player.nightcore ? '1' : '2'}`));
 		await bot.delay(5000);

@@ -139,7 +139,7 @@ module.exports = class Search extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
 		// Search for track
@@ -151,14 +151,14 @@ module.exports = class Search extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return bot.send(interaction, { embeds: [channel.error('music/search:NO_SONG', {}, true)] });
+			return interaction.reply({ embeds: [channel.error('music/search:NO_SONG', {}, true)] });
 		} else {
 			// Display the options for search
 			let max = 10, collected;
@@ -170,22 +170,22 @@ module.exports = class Search extends Command {
 				.setTitle('music/search:TITLE', { TITLE: search })
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/search:DESC', { RESULTS: results }));
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 
 			try {
 				collected = await channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
 			} catch (e) {
 				if (!player.queue.current) player.destroy();
-				return bot.send(interaction, { content:guild.translate('misc:WAITED_TOO_LONG') });
+				return interaction.reply({ content:guild.translate('misc:WAITED_TOO_LONG') });
 			}
 			const first = collected.first().content;
 			if (first.toLowerCase() === 'cancel') {
 				if (!player.queue.current) player.destroy();
-				return bot.send(interaction, { content:guild.translate('misc:CANCELLED') });
+				return interaction.reply({ content:guild.translate('misc:CANCELLED') });
 			}
 
 			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return bot.send(interaction, { content:guild.translate('music/search:INVALID', { NUM: max }) });
+			if (index < 0 || index > max - 1) return interaction.reply({ content:guild.translate('music/search:INVALID', { NUM: max }) });
 
 			const track = res.tracks[index];
 			if (player.state !== 'CONNECTED') player.connect();
@@ -194,7 +194,7 @@ module.exports = class Search extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				bot.send(interaction, { content:guild.translate('music/search:ADDED', { TITLE: track.title }) });
+				interaction.reply({ content:guild.translate('music/search:ADDED', { TITLE: track.title }) });
 			}
 		}
 	}

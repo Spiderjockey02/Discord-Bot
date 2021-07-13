@@ -57,13 +57,13 @@ module.exports = class NowPlaying extends Command {
 		// Check if the member has role to interact with music plugin
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return bot.send(interaction, { ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
-		if(!player) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Get current song information
 		const { title, requester, thumbnail, uri, duration } = player.queue.current;
@@ -76,10 +76,10 @@ module.exports = class NowPlaying extends Command {
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${guild.members.cache.get(requester.id)}]`)
 				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: null }, true)] });
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: null }, true)] });
 		}
 	}
 };

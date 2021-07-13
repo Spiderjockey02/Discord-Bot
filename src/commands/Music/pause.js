@@ -38,14 +38,14 @@ module.exports = class Pause extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// The music is already paused
 		const player = bot.manager.players.get(member.guild.id);
-		if (player.paused) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/pause:IS_PAUSED', {}, true)] });
+		if (player.paused) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/pause:IS_PAUSED', {}, true)] });
 
 		// Pauses the music
 		player.pause(true);
-		return bot.send(interaction, { embeds: [channel.success('music/pause:SUCCESS', {}, true)] });
+		return interaction.reply({ embeds: [channel.success('music/pause:SUCCESS', {}, true)] });
 	}
 };

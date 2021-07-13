@@ -63,14 +63,14 @@ module.exports = class Bassboost extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// update player's bassboost
 		const player = bot.manager.players.get(member.guild.id);
 		let embed;
 		if (!amount) {
 			player.setBassboost(!player.bassboost);
-			await bot.send(interaction, { content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
+			await interaction.reply({ content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
 			embed = new MessageEmbed()
 				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
@@ -78,11 +78,11 @@ module.exports = class Bassboost extends Command {
 		}
 
 		// Make sure value is a number
-		if (isNaN(amount)) return bot.send(interaction, { embeds: [channel.error('music/bassboost:INVALID', { ERROR: null }, true)], ephemeral: true });
+		if (isNaN(amount)) return interaction.reply({ embeds: [channel.error('music/bassboost:INVALID', { ERROR: null }, true)], ephemeral: true });
 
 		// Turn on bassboost with custom value
 		player.setBassboost(amount / 10);
-		await bot.send(interaction, { content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
+		await interaction.reply({ content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
 		embed = new MessageEmbed()
 			.setDescription(bot.translate('music/bassboost:DESC_3', { DB: amount }));
 		await bot.delay(5000);

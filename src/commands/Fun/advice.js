@@ -42,10 +42,10 @@ module.exports = class Advice extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
-			await bot.send(interaction, { embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });
+			await interaction.reply({ embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 };

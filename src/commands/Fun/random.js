@@ -65,10 +65,10 @@ module.exports = class Random extends Command {
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			bot.send(interaction, { embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)], ephemeral: true });
+			interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)], ephemeral: true });
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return bot.send(interaction, { embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		return interaction.reply({ embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 };

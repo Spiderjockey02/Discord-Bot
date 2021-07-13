@@ -59,7 +59,7 @@ module.exports = class Back extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure a number was entered
 		const player = bot.manager.players.get(member.guild.id);
@@ -67,17 +67,17 @@ module.exports = class Back extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/volume:CURRENT', { NUM: player.volume }));
-			return bot.send(interaction, embed);
+			return interaction.reply(embed);
 		}
 
 		// make sure volume is between 0 and 1000
-		if (volume <= 0 || volume > 1000) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
+		if (volume <= 0 || volume > 1000) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
 
 		// Update volume
 		player.setVolume(volume);
 		const embed = new Embed(bot, guild)
 			.setColor(member.displayHexColor)
 			.setDescription(guild.translate('music/volume:UPDATED', { NUM: player.volume }));
-		return bot.send(interaction, embed);
+		return interaction.reply(embed);
 	}
 };

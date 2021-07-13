@@ -63,7 +63,7 @@ module.exports = class Loop extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Check what to loop (queue or song) - default to song
 		const player = bot.manager.players.get(member.guild.id);
@@ -71,12 +71,12 @@ module.exports = class Loop extends Command {
 			// (un)loop the song
 			player.setTrackRepeat(!player.trackRepeat);
 			const trackRepeat = guild.translate(`misc:${player.trackRepeat ? 'ENABLED' : 'DISABLED'}`);
-			return bot.send(interaction, { content: bot.translate('music/loop:TRACK', { TOGGLE: trackRepeat }) });
+			return interaction.reply({ content: bot.translate('music/loop:TRACK', { TOGGLE: trackRepeat }) });
 		} else if (type == 'queue') {
 			// (un)loop the queue
 			player.setQueueRepeat(!player.queueRepeat);
 			const queueRepeat = guild.translate(`misc:${player.queueRepeat ? 'ENABLED' : 'DISABLED'}`);
-			return bot.send(interaction, { content: bot.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
+			return interaction.reply({ content: bot.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
 		}
 	}
 };

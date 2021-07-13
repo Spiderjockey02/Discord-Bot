@@ -56,7 +56,7 @@ module.exports = class Rewind extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure song isn't a stream
 		const player = bot.manager.players.get(member.guild.id);
@@ -72,7 +72,7 @@ module.exports = class Rewind extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
-			bot.send(interaction, embed);
+			interaction.reply(embed);
 		}
 	}
 };

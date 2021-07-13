@@ -108,7 +108,7 @@ module.exports = class Queue extends Command {
 		if (queue.size == 0) {
 			const embed = new Embed(bot, guild)
 				.setTitle('music/queue:EMPTY');
-			return bot.send(interaction, embed);
+			return interaction.reply(embed);
 		}
 
 		// get total page number
@@ -143,14 +143,14 @@ module.exports = class Queue extends Command {
 		if (!page) {
 			if (pages.length == pagesNum && player.queue.length > 10) {
 				paginate(bot, channel, pages);
-				return bot.send(interaction, 'Loaded Queue');
+				return interaction.reply('Loaded Queue');
 			} else {
-				return bot.send(interaction, pages[0]);
+				return interaction.reply(pages[0]);
 			}
 		} else {
 			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
-			return bot.send(interaction, pages[pageNum]);
+			return interaction.reply(pages[pageNum]);
 		}
 	}
 };

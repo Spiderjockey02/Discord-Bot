@@ -55,23 +55,23 @@ module.exports = class FastForward extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure song isn't a stream
 		const player = bot.manager.players.get(member.guild.id);
-		if (!player.queue.current.isSeekable) return bot.send(interaction, { embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)], ephemeral: true });
+		if (!player.queue.current.isSeekable) return interaction.reply({ embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)], ephemeral: true });
 
 		// update the time
 		const time = read24hrFormat(args.get('amount')?.value ?? '10');
 
 		if (time + player.position >= player.queue.current.duration) {
-			bot.send(interaction, guild.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
+			interaction.reply(guild.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
 		} else {
 			player.seek(player.position + time);
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		}
 	}
 };

@@ -66,24 +66,24 @@ module.exports = class Remove extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		const player = bot.manager.players.get(member.guild.id);
 		if (!pos2) {
-			if (pos1 == 0) return bot.send(interaction, { content: guild.translate('music/remove:PLAYING') });
-			if (pos1 > player.queue.length) return bot.send(interaction, { content: guild.translate('music/remove:MISSING') });
+			if (pos1 == 0) return interaction.reply({ content: guild.translate('music/remove:PLAYING') });
+			if (pos1 > player.queue.length) return interaction.reply({ content: guild.translate('music/remove:MISSING') });
 			const { title } = player.queue[pos1 - 1];
 
 			player.queue.splice(pos1 - 1, 1);
-			return bot.send(interaction, { content: guild.translate('music/remove:REMOVED', { TITLE: title }) });
+			return interaction.reply({ content: guild.translate('music/remove:REMOVED', { TITLE: title }) });
 		} else {
-			if (pos1 == 0 || pos2 == 0) return bot.send(interaction, { content: guild.translate('music/remove:PLAYING') });
-			if (pos1 > player.queue.length || pos2 > player.queue.length) return bot.send(interaction, { content: guild.translate('music/remove:MISSING') });
-			if (pos1 > pos2) return bot.send(interaction, { content: guild.translate('music/remove:INVALID') });
+			if (pos1 == 0 || pos2 == 0) return interaction.reply({ content: guild.translate('music/remove:PLAYING') });
+			if (pos1 > player.queue.length || pos2 > player.queue.length) return interaction.reply({ content: guild.translate('music/remove:MISSING') });
+			if (pos1 > pos2) return interaction.reply({ content: guild.translate('music/remove:INVALID') });
 
 			const songsToRemove = pos2 - pos1;
 			player.queue.splice(pos1 - 1, songsToRemove + 1);
-			return bot.send(interaction, bot.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }));
+			return interaction.reply(bot.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }));
 		}
 	}
 };

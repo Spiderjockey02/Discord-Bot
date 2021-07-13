@@ -31,7 +31,7 @@ module.exports = class ServerInfo extends Command {
 
 		// send embed
 		const embed = await this.createEmbed(bot, guild, user);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
 	// create serverinfo embed

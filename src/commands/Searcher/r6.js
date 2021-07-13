@@ -106,9 +106,9 @@ module.exports = class R6 extends Command {
 		// display stats
 		const resp = await this.fetchUserData(bot, guild, channel, username, device, Region);
 		if (resp.color && resp.color == 15158332) {
-			bot.send(interaction, { embeds: [resp], ephermal: true });
+			interaction.reply({ embeds: [resp], ephermal: true });
 		} else {
-			bot.send(interaction, { embeds: [resp] });
+			interaction.reply({ embeds: [resp] });
 		}
 	}
 

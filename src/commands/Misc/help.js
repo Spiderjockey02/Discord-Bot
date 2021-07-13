@@ -33,7 +33,7 @@ module.exports = class Help extends Command {
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const embed = this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
 	// create Help embed

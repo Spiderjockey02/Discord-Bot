@@ -51,7 +51,7 @@ module.exports = class Steam extends Command {
 		const resp = await this.fetchSteamData(bot, guild, channel, token, username);
 
 		// send data
-		bot.send(interaction, { embeds: [resp] });
+		interaction.reply({ embeds: [resp] });
 	}
 
 	// Fetch account data from steam

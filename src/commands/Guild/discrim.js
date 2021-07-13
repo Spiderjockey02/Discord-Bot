@@ -47,6 +47,6 @@ module.exports = class Discrim extends Command {
 		const embed = new Embed(bot, guild)
 			.setTitle('guild/discrim:TITLE', { DISCRIM: discrim })
 			.setDescription(`${members}`);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 };

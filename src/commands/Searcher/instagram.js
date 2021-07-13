@@ -52,9 +52,9 @@ module.exports = class Instagram extends Command {
 
 		const res = await this.createEmbed(bot, username, guild);
 		if (typeof (res) == 'object') {
-			bot.send(interaction, { embeds: [res] });
+			interaction.reply({ embeds: [res] });
 		} else {
-			bot.send(interaction, { embeds: [channel.error(res, {}, true)] });
+			interaction.reply({ embeds: [channel.error(res, {}, true)] });
 		}
 	}
 	// create Instagram embed

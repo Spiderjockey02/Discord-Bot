@@ -35,11 +35,11 @@ module.exports = class Disconnect extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Destory player (clears queue & leaves channel)
 		const player = bot.manager.players.get(member.guild.id);
 		player.destroy();
-		return bot.send(interaction, { embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
+		return interaction.reply({ embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
 	}
 };

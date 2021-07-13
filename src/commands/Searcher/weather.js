@@ -73,7 +73,7 @@ module.exports = class Weather extends Command {
 				.addField(guild.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
 				.addField(guild.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
 				.setThumbnail(result[0].current.imageUrl);
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		});
 	}
 };

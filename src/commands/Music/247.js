@@ -35,11 +35,11 @@ module.exports = class TwentyFourSeven extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// toggle 24/7 mode off and on
 		const player = bot.manager.players.get(member.guild.id);
 		player.twentyFourSeven = !player.twentyFourSeven;
-		await bot.send(interaction, { content: bot.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }) });
+		await interaction.reply({ content: bot.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }) });
 	}
 };

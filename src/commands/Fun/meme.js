@@ -33,7 +33,7 @@ module.exports = class Meme extends Command {
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
 		const embed = await this.fetchMeme(bot, guild, settings);
-		return bot.send(interaction, { embeds: [embed] });
+		return interaction.reply({ embeds: [embed] });
 	}
 
 	// Fetch meme data

@@ -52,11 +52,11 @@ module.exports = class Reddit extends Command {
 		// send subreddit post
 		try {
 			const resp = await this.fetchPost(bot, channel, subreddit);
-			await bot.send(interaction, { embeds: [resp] });
+			await interaction.reply({ embeds: [resp] });
 		} catch (err) {
 			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

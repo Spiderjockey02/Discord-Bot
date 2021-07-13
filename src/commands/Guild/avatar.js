@@ -40,7 +40,7 @@ module.exports = class Avatar extends Command {
 		const embed = this.avatarEmbed(bot, guild, member);
 
 		// send embed
-		return bot.send(interaction, { embeds: [embed] });
+		return interaction.reply({ embeds: [embed] });
 	}
 
 	// create avatar embed

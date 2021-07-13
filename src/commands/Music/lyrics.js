@@ -71,7 +71,7 @@ module.exports = class Lyrics extends Command {
 		if (!song) {
 			// Check if a song is playing and use that song
 			const player = bot.manager.players.get(guild.id);
-			if (!player) return bot.send(interaction, { embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+			if (!player) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: player.queue.current.title,
@@ -93,7 +93,7 @@ module.exports = class Lyrics extends Command {
 		if (Array.isArray(lyrics)) {
 			paginate(bot, channel, lyrics);
 		} else {
-			bot.send(interaction, { content: lyrics });
+			interaction.reply({ content: lyrics });
 		}
 	}
 

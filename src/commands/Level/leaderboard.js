@@ -56,13 +56,13 @@ module.exports = class Leaderboard extends Command {
 			if (Array.isArray(res)) {
 				paginate(bot, channel, res);
 			} else if (typeof (res) == 'object') {
-				bot.send(interaction, { embeds: [res] });
+				interaction.reply({ embeds: [res] });
 			} else {
-				bot.send(interaction, { content: res });
+				interaction.reply({ content: res });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

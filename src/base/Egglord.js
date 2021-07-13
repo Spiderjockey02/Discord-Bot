@@ -200,13 +200,6 @@ module.exports = class Egglord extends Client {
 		return false;
 	}
 
-	// Handle slash command callback
-	async send(interaction, content) {
-		await interaction.reply(content);
-		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
-		this.commandsUsed++;
-	}
-
 	// Fetches adult sites for screenshot NSFW blocking
 	async fetchAdultSiteList() {
 		const blockedWebsites = require('../assets/json/whitelistWebsiteList.json');
