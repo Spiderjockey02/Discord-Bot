@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MessageButton } = require('discord.js'),
+	{ MessageButton, MessageActionRow } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 module.exports = class Clear extends Command {
@@ -48,14 +48,15 @@ module.exports = class Clear extends Command {
 				.setLabel('Confirm')
 				.setStyle('SUCCESS')
 				.setEmoji(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
-			const	cancel = new MessageButton()
+			const cancel = new MessageButton()
 				.setCustomId('cancel')
 				.setLabel('Cancel')
 				.setStyle('DANGER')
 				.setEmoji(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
 
+			let rows = [new MessageActionRow().addComponents(success), new MessageActionRow().addComponents(cancel)];
 			// Send confirmation message
-			await message.channel.send({ embeds: [embed], components: [[success, cancel]] }).then(async msg => {
+			await message.channel.send({ embeds: [embed], components: [...rows] }).then(async msg => {
 				// create collector
 				const filter = (i) => ['cancel', 'success'].includes(i.customId) && i.user.id === message.author.id;
 				const collector = msg.createMessageComponentCollector({ filter, time: 15000 });
@@ -65,7 +66,7 @@ module.exports = class Clear extends Command {
 					// User pressed cancel button
 					if (i.customId === 'cancel') {
 						embed.setDescription(message.translate('moderation/clear:CON_CNC'));
-						msg.edit({ embeds: [embed], components: [] });
+						return msg.edit({ embeds: [embed], components: [] });
 					} else {
 						// Delete the messages
 						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
@@ -91,7 +92,7 @@ module.exports = class Clear extends Command {
 								x = Math.ceil(amount / 100);
 							}
 						}
-						message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.timedDelete({ timeout: 3000 }));
+						return message.channel.success('moderation/clear:SUCCESS', { NUM: y }).then(m => m.timedDelete({ timeout: 3000 }));
 					}
 				});
 
