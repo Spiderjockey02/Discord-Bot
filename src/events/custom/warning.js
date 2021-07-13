@@ -16,7 +16,7 @@ module.exports = class Warning extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// fetch latest warning to get information
-		if (settings.ModLogEvents.includes('WARNING') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('WARNING') && settings.ModLog) {
 
 			const warns = await WarningSchema.find({
 				userID: member.user.id,

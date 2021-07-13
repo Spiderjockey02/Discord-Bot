@@ -19,7 +19,7 @@ module.exports = class channelUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event channelDelete is for logging
-		if (settings.ModLogEvents.includes('CHANNELUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('CHANNELUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// Channel name change

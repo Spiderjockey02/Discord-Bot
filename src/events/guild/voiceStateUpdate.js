@@ -22,7 +22,7 @@ module.exports = class voiceStateUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event voiceStateUpdate is for logging
-		if (settings.ModLogEvents.includes('VOICESTATEUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('VOICESTATEUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// member has been server (un)deafened

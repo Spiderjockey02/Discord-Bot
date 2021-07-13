@@ -35,8 +35,8 @@ module.exports = class Ready extends Event {
 		// bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 		bot.guilds.cache.forEach(async guild => {
 			await guild.fetchSettings();
-			await guild.fetchLevels();
 			if (guild.settings == null) return bot.emit('guildCreate', guild);
+			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
 		});
 
 		// Delete server settings on servers that removed the bot while it was offline

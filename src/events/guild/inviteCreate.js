@@ -17,7 +17,7 @@ module.exports = class inviteCreate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildMemberAdd is for logging
-		if (settings.ModLogEvents.includes('INVITECREATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('INVITECREATE') && settings.ModLog) {
 			const embed = new Embed(bot, invite.guild)
 				.setDescription([
 					`Invite created ${invite.channel ? `in channel: ${invite.channel}` : ''}`,

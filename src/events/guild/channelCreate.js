@@ -23,10 +23,10 @@ module.exports = class channelCreate extends Event {
 
 		// IF it's a ticket channel and TICKET logging is enabled then don't show CHANNELCREATE log
 		const regEx = /ticket-\d{18}/g;
-		if (regEx.test(channel.name) && settings.ModLogEvents.includes('TICKET')) return;
+		if (regEx.test(channel.name) && settings.ModLogEvents?.includes('TICKET')) return;
 
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents.includes('CHANNELCREATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('CHANNELCREATE') && settings.ModLog) {
 			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${channel.type.charAt(0).toUpperCase() + channel.type.slice(1)} channel created: ${channel.toString()}**`)
 				.setColor(3066993)

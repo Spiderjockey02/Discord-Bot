@@ -51,7 +51,7 @@ module.exports = class messageDelete extends Event {
 		if (message.content.startsWith(settings.prefix)) return;
 
 		// Check if event messageDelete is for logging
-		if (settings.ModLogEvents.includes('MESSAGEDELETE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('MESSAGEDELETE') && settings.ModLog) {
 			// shorten message if it's longer then 1024
 			let shortened = false;
 			let content = message.content;

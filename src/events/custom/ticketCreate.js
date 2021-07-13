@@ -15,7 +15,7 @@ module.exports = class ticketCreate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// send ticket log (goes in ModLog channel)
-		if (settings.ModLogEvents.includes('TICKET') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('TICKET') && settings.ModLog) {
 			const embed = new Embed(bot, channel.guild)
 				.setTitle('ticket/ticket-create:LOG_TITLE')
 				.setColor(3066993)

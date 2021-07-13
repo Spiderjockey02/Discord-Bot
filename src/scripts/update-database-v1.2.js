@@ -55,6 +55,10 @@ module.exports.run = async () => {
 				'AntiRaidCompletion',
 				'AntiRaidChannelID',
 				'ReportToggle',
+				'CommandChannelToggle',
+				'CommandChannels',
+				'CommandCooldown',
+				'CommandCooldownSec',
 			] }]);
 		logger.ready('Database has been updated to v1.2');
 	}).catch((err) => {

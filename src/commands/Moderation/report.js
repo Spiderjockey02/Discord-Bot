@@ -23,7 +23,7 @@ module.exports = class Report extends Command {
 		if (message.deletable) message.delete();
 
 		// Make sure that REPORT is in the mod logs
-		if (settings.ModLogEvents.includes('REPORT')) {
+		if (settings.ModLogEvents?.includes('REPORT')) {
 
 			// Find user
 			const members = await message.getMember();

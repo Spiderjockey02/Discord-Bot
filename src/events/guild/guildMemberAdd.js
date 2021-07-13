@@ -22,7 +22,7 @@ module.exports = class guildMemberAdd extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildMemberAdd is for logging
-		if (settings.ModLogEvents.includes('GUILDMEMBERADD') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDMEMBERADD') && settings.ModLog) {
 			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(3066993)

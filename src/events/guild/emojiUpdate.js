@@ -19,7 +19,7 @@ module.exports = class emojiUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event emojiUpdate is for logging
-		if (settings.ModLogEvents.includes('EMOJIUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('EMOJIUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// emoji name change

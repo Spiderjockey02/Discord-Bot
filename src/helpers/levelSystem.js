@@ -4,10 +4,10 @@ const levelcd = new Set();
 
 module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
-	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
+	if (settings.LevelIgnoreChannel?.includes(message.channel.id)) return;
 
 	const roles = message.member.roles.cache.map(r => r.id);
-	if (roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
+	if (roles.some(r => settings.LevelIgnoreRoles?.includes(r))) return;
 
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {
@@ -48,7 +48,13 @@ module.exports.run = (bot, message, settings) => {
 				}
 
 				// update database
-				Xp.save().catch(err => bot.logger.error(err.message));
+				Xp.save()
+					.then(() => {
+						const res = message.guild.levels.find(({ userID }) => userID == message.author.id);
+						res.Xp = Xp.Xp;
+						res.Level = Xp.Level;
+					})
+					.catch(err => bot.logger.error(err.message));
 			}
 		});
 

@@ -16,7 +16,7 @@ module.exports = class inviteDelete extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildMemberAdd is for logging
-		if (settings.ModLogEvents.includes('INVITEDELETE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('INVITEDELETE') && settings.ModLog) {
 			const embed = new Embed(bot, invite.guild)
 				.setDescription('**Invite Deleted**')
 				.setColor(15158332)

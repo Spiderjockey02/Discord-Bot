@@ -37,10 +37,6 @@ const guildSchema = Schema({
 	ModLogChannel: { type: String, default: '00' },
 	ModLogIgnoreBot: { type: Boolean, default: true },
 	// CommandCooldown
-	CommandChannelToggle: { type: Boolean, default: false },
-	CommandChannels: { type: Array, default: [11111111] },
-	CommandCooldown: { type: Boolean, default: false },
-	CommandCooldownSec: { type: Number, default: 2 },
 	// Tag plugin
 	PrefixTags: { type: Boolean, default: false },
 	// Moderation plugin

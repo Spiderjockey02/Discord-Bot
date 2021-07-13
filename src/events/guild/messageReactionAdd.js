@@ -65,7 +65,7 @@ module.exports = class messageReactionAdd extends Event {
 		if (reaction.message.author.id == bot.user.id) return;
 
 		// Check if event messageReactionAdd is for logging
-		if (settings.ModLogEvents.includes('MESSAGEREACTIONADD') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('MESSAGEREACTIONADD') && settings.ModLog) {
 			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(3066993)

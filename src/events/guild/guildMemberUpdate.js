@@ -25,7 +25,7 @@ module.exports = class guildMemberUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// nickname change

@@ -30,7 +30,7 @@ module.exports = class guildBanAdd extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildBanAdd is for logging
-		if (settings.ModLogEvents.includes('GUILDBANADD') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDBANADD') && settings.ModLog) {
 			const embed = new Embed(bot, guild)
 				.setDescription(`User: ${user.toString()}`)
 				.setColor(15158332)

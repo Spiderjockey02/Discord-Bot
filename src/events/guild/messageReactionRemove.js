@@ -34,7 +34,7 @@ module.exports = class messageReactionRemove extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event messageReactionRemove is for logging
-		if (settings.ModLogEvents.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {
 			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(15158332)
