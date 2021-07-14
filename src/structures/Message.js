@@ -143,7 +143,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 	// Check if bot has permission to send custom emoji
 	checkEmoji: {
 		value: function() {
-			if (this.channel.type == 'dm') {
+			if (this.channel.type == 'DM') {
 				return true;
 			} else {
 				return this.channel.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? true : false;

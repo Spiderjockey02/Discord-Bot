@@ -209,7 +209,7 @@ module.exports = class Egglord extends Client {
 
 	// This will get the translation for the provided text
 	translate(key, args, locale) {
-		if (!locale) locale = this.config.defaultSettings.Language;
+		if (!locale) locale = require('../assets/json/defaultGuildSettings.json').Language;
 		const language = this.translations.get(locale);
 		if (!language) return 'Invalid language set in data.';
 		return language(key, args);

@@ -19,7 +19,7 @@ module.exports = class Message extends Event {
 		// Should not respond to bots
 		if (message.author.bot) return;
 		// Get server settings
-		const settings = message.guild?.settings ?? bot.config.defaultSettings;
+		const settings = message.guild?.settings ?? require('../../assets/json/defaultGuildSettings.json');
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned

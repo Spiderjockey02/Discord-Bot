@@ -49,13 +49,6 @@ const config = {
 		// Where the bot will send Guild join/leave messages to
 		GuildChannel: '761619652009787392',
 	},
-	// THESE SETTINGS ARE FOR DMS ONLY
-	defaultSettings: {
-		// default settings
-		prefix: 'e!',
-		Language: 'en-US',
-		plugins: ['Fun', 'Image', 'Misc', 'NSFW', 'Recording', 'Searcher'],
-	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
 	// embed colour

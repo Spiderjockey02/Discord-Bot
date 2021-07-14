@@ -23,9 +23,9 @@ module.exports = class Help extends Command {
 	}
 
 	// Function for message command
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// show help embed
-		const embed = this.createEmbed(bot, message.guild?.settings ?? bot.config.defaultSettings, message.channel, message.args[0], message.author);
+		const embed = this.createEmbed(bot, settings, message.channel, message.args[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
@@ -46,8 +46,13 @@ module.exports = class Help extends Command {
 					bot.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
 					bot.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: bot.translate('misc/help:USAGE') }),
 				].join('\n'));
-			const categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+
+			// Determine what categories to show
+			let categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+			if (!channel.guild) categories = categories.filter(c => !bot.commands.filter(cmd => cmd.help.category === c).first().conf.guildOnly);
 			if (bot.config.ownerID.includes(user.id)) categories.push('Host');
+
+			// Create the help embed
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
@@ -59,7 +64,7 @@ module.exports = class Help extends Command {
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
 					if (category == 'NSFW' && !channel.nsfw) return;
-					embed.addField(`${category} [**${length}**]`, commands);
+					embed.addField(`${category} [**${length}**]`, `${commands}.`);
 				});
 			// send message
 			return embed;
