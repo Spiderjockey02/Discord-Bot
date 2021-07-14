@@ -8,7 +8,7 @@ module.exports.run = async () => {
 	mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).then(async () => {
 		logger.log('Updating database');
 		await GuildSchema.updateMany({ version: '1.1' }, [
-			{ $set: { version: '1.2' } },
+			{ $set: { version: '1.2', MutedMembers: [] } },
 			{ $unset: [	'ModerationBadwords',
 				'ModerationBadwordChannel',
 				'ModerationBadwordRole',

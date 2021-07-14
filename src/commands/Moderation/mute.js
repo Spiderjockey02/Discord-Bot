@@ -72,12 +72,11 @@ module.exports = class Mute extends Command {
 					}
 				}
 
-				// update database (in case user leaves to try and remove the muted role)
-				const newMute = await new MutedMemberSchema({
-					userID: members[0].user.id,
-					guildID: message.guild.id,
-				});
-				await newMute.save();
+				// update server with no muted role
+				if (!settings.MutedMembers.includes(members[0].user.id)) {
+					await message.guild.updateGuild({ MutedMembers: [...settings.MutedMembers, members[0].user.id] });
+					settings.MutedMembers.push(members[0].user.id);
+				}
 
 				// reply to user
 				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));

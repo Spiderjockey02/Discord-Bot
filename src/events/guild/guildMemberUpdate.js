@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MutedMemberSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildMemberUpdate extends Event {
@@ -113,7 +112,8 @@ module.exports = class guildMemberUpdate extends Event {
 		// check if member lost mute role manually
 		if (oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id)).map(r => r.id).includes(settings.MutedRole)) {
 			try {
-				await MutedMemberSchema.findOneAndRemove({ userID: newMember.user.id, guildID: newMember.guild.id });
+				await newMember.guild.updateGuild({ MutedMembers: settings.MutedMembers.filter(user => user != newMember.user.id) });
+				settings.MutedMembers.filter(user => user != newMember.user.id);
 			} catch (err) {
 				bot.logger.error(`${newMember.user.id}`);
 			}

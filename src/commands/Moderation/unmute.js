@@ -1,6 +1,5 @@
 // Dependencies
-const { MutedMemberSchema } = require('../../database/models'),
-	Command = require('../../structures/Command.js');
+const Command = require('../../structures/Command.js');
 
 module.exports = class Unmute extends Command {
 	constructor(bot) {
@@ -42,7 +41,8 @@ module.exports = class Unmute extends Command {
 			members[0].roles.remove(muteRole);
 
 			// delete muted member from database
-			await MutedMemberSchema.findOneAndRemove({ userID: members[0].user.id,	guildID: message.guild.id });
+			await message.guild.updateGuild({ MutedMembers: settings.MutedMembers.filter(user => user != members[0].user.id) });
+			settings.MutedMembers.filter(user => user != members[0].user.id);
 
 			// if in a VC unmute them
 			if (members[0].voice.channelID) await members[0].voice.setMute(false);
