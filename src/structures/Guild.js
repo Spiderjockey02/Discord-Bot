@@ -20,7 +20,7 @@ module.exports = Object.defineProperties(Guild.prototype, {
 			if (this.settings.guildID) {
 				await GuildSchema.findOneAndUpdate({ guildID: this.id }, settings);
 			} else {
-				const newGuild = new GuildSchema({ guildID: this.id, guildName: this.name });
+				const newGuild = new GuildSchema(Object.assign({ guildID: this.id, guildName: this.name }, settings));
 				await newGuild.save();
 			}
 			return this.fetchSettings();

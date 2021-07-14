@@ -43,20 +43,24 @@ module.exports = class Clear extends Command {
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
 			// create the buttons
-			const success = new MessageButton()
-				.setCustomId('success')
-				.setLabel('Confirm')
-				.setStyle('SUCCESS')
-				.setEmoji(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅');
-			const cancel = new MessageButton()
-				.setCustomId('cancel')
-				.setLabel('Cancel')
-				.setStyle('DANGER')
-				.setEmoji(message.checkEmoji() ? bot.customEmojis['cross'] : '❌');
+			const row = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+						.setCustomId('success')
+						.setLabel('Confirm')
+						.setStyle('SUCCESS')
+						.setEmoji(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅'),
+				)
+				.addComponents(
+					new MessageButton()
+						.setCustomId('cancel')
+						.setLabel('Cancel')
+						.setStyle('DANGER')
+						.setEmoji(message.checkEmoji() ? bot.customEmojis['cross'] : '❌'),
+				);
 
-			let rows = [new MessageActionRow().addComponents(success), new MessageActionRow().addComponents(cancel)];
 			// Send confirmation message
-			await message.channel.send({ embeds: [embed], components: [...rows] }).then(async msg => {
+			await message.channel.send({ embeds: [embed], components: [row] }).then(async msg => {
 				// create collector
 				const filter = (i) => ['cancel', 'success'].includes(i.customId) && i.user.id === message.author.id;
 				const collector = msg.createMessageComponentCollector({ filter, time: 15000 });

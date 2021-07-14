@@ -41,7 +41,7 @@ module.exports = class SetLog extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
-			const currentFeatures = settings.ModLogEvents;
+			const currentFeatures = settings.ModLogEvents ?? [];
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
 				const embed = new Embed(bot, message.guild)

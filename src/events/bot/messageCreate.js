@@ -18,23 +18,24 @@ module.exports = class Message extends Event {
 
 		// Should not respond to bots
 		if (message.author.bot) return;
+
 		// Get server settings
 		const settings = message.guild?.settings ?? require('../../assets/json/defaultGuildSettings.json');
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned
-		if ([`<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content == p)) {
+		if (message.content == `<@!${bot.user.id}>`) {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					`Hello, my name is ${bot.user.username}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.`,
-					`I've been online for ${getReadableTime(bot.uptime)}, helping ${bot.guilds.cache.size} servers and ${bot.users.cache.size} users with ${bot.commands.size} commands.`,
+					message.translate('events/message:INTRO', { USER: bot.user.username }),
+					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.users.cache.size, CMDS: bot.commands.size }),
 				].join('\n\n'))
-				.addField('Useful Links:', [
-					`[Add to server](${bot.config.inviteLink})`,
-					`[Join support server](${bot.config.SupportServer.link})`,
-					`[Website](${bot.config.websiteURL})`,
+				.addField(message.translate('events/message:LINKS'), [
+					message.translate('events/message:ADD', { INVITE: bot.config.inviteLink }),
+					message.translate('events/message:SUPPORT', { LINK: bot.config.SupportServer.link }),
+					message.translate('events/message:WEBSITE', { URL: bot.config.websiteURL }),
 				].join('\n'));
 			return message.channel.send({ embeds: [embed] });
 		}
@@ -47,10 +48,10 @@ module.exports = class Message extends Event {
 
 		// Check if message was a command
 		const args = message.content.split(' ');
-		if ([settings.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
+		if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
 			const command = args.shift().slice(settings.prefix.length).toLowerCase();
 			let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
-			if (!cmd && [`<@${bot.user.id}>`, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
+			if (!cmd && message.content.startsWith(`<@!${bot.user.id}>`)) {
 				// check to see if user is using mention as prefix
 				cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
 				args.shift();
