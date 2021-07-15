@@ -34,7 +34,9 @@ module.exports = class Captcha extends Command {
 				.setColor(9807270)
 				.setImage(json.message);
 			message.channel.send({ embeds: [embed] });
-		} catch(err) {
+		} catch (err) {
+			console.log(err);
+			console.log(err.message);
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));

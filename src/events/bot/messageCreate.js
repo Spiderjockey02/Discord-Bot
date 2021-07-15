@@ -68,9 +68,9 @@ module.exports = class Message extends Event {
 			}
 
 			// Make sure guild only commands are done in the guild only
-			if (message.guild && cmd.guildOnly) {
+			if (!message.guild && cmd.conf.guildOnly) {
 				if (message.deletable) message.delete();
-				return message.channel.error('event/message:GUILD_ONLY').then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('events/message:GUILD_ONLY').then(m => m.timedDelete({ timeout: 5000 }));
 			}
 
 			// Check to see if the command is being run in a blacklisted channel

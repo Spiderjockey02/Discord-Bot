@@ -20,8 +20,10 @@ module.exports = class WhoWouldWin extends Command {
 	// Run command
 	async run(bot, message, settings) {
 		// Get user
-		const members = await message.getImage();
-		if (!members[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/whowouldwin:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		const files = await message.getImage();
+		if (!Array.isArray(files)) return;
+
+		if (!files[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/whowouldwin:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -29,7 +31,7 @@ module.exports = class WhoWouldWin extends Command {
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=whowouldwin&user1=${members[0]}&user2=${members[1]}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=whowouldwin&user1=${files[0]}&user2=${files[1]}`)).then(res => res.json());
 
 			// send image in embed
 			const embed = new Embed(bot, message.guild)

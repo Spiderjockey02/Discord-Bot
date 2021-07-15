@@ -1,11 +1,11 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	R6API = require('r6api.js'),
+	R6API = require('r6api.js').default,
 	config = require('../../config.js'),
-	{ getId, getLevel, getRank, getStats } = new R6API(config.api_keys.rainbow.email, config.api_keys.rainbow.password),
+	{ findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys.rainbow.email, password: config.api_keys.rainbow.password }),
 	Command = require('../../structures/Command.js');
 
-const platforms = { pc: 'UPLAY', xbox: 'XBL', ps4: 'PSN' };
+const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
 const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
 
 module.exports = class R6 extends Command {
@@ -115,7 +115,7 @@ module.exports = class R6 extends Command {
 	async fetchUserData(bot, guild, channel, player, platform, region) {
 		if (platform === 'xbl') player = player.replace('_', '');
 		try {
-			player = await getId(platform, player);
+			player = await findByUsername(platform, player);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
@@ -130,9 +130,9 @@ module.exports = class R6 extends Command {
 		player = player[0];
 		let playerRank, playerStats, playerGame;
 		try {
-			playerRank = await getRank(platform, player.id);
+			playerRank = await getRanks(platform, player.id);
 			playerStats = await getStats(platform, player.id);
-			playerGame = await getLevel(platform, player.id);
+			playerGame = await getProgression(platform, player.id);
 		} catch (err) {
 			bot.logger.error(`Command: 'r6' has error: ${err.message}.`);
 			channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
@@ -141,17 +141,16 @@ module.exports = class R6 extends Command {
 		if (!playerRank?.length || !playerStats?.length || !playerGame?.length) {
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: 'Missing player data' }, true);
 		}
-		const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ];
+		const { current, max } = playerRank[0].seasons[Object.keys(playerRank[0].seasons)[0]].regions[ region ].boards.pvp_ranked;
 		const { pvp, pve } = playerStats[0];
 		const { level, xp } = playerGame[0];
-
 		platform = Object.keys(platforms).find(key => platforms[key] === platform).toLowerCase();
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
 		return new Embed(bot, guild)
 			.setAuthor(player.username, bot.user.displayAvatarURL)
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
-			.setThumbnail(current.image)
+			.setThumbnail(current.icon)
 			.addField(guild.translate('searcher/r6:GENERAL'), guild.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(guild.settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(guild.settings.Language) }))
 			.addField(guild.translate('searcher/r6:STATS'), guild.translate('searcher/r6:STAT_DATA', {
 				WIN: pvp.general.wins.toLocaleString(guild.settings.Language), LOSS: pvp.general.losses.toLocaleString(guild.settings.Language), WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills.toLocaleString(guild.settings.Language), DEATH: pvp.general.deaths.toLocaleString(guild.settings.Language), KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600).toLocaleString(guild.settings.Language),

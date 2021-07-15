@@ -14,7 +14,7 @@ module.exports = class voiceStateUpdate extends Event {
 	async run(bot, oldState, newState) {
 		// variables for easier coding
 		const newMember = newState.guild.members.cache.get(newState.id);
-		const channel = newState.guild.channels.cache.get(newState.channel?.id ?? newState.channelID);
+		const channel = newState.guild.channels.cache.get(newState.channel?.id ?? newState.channelId);
 
 
 		// Get server settings / if no settings then return
@@ -73,11 +73,11 @@ module.exports = class voiceStateUpdate extends Event {
 		const player = bot.manager.players.get(newState.guild.id);
 
 		if (!player) return;
-		if (!newState.guild.members.cache.get(bot.user.id).voice.channelID) player.destroy();
+		if (!newState.guild.members.cache.get(bot.user.id).voice.channelId) player.destroy();
 
 		// Check for stage channel audience change
-		if (newState.id == bot.user.id && channel?.type == 'stage') {
-			if (!oldState.channelID) {
+		if (newState.id == bot.user.id && channel?.type == 'GUILD_STAGE_VOICE') {
+			if (!oldState.channelId) {
 				try {
 					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));
 				} catch (err) {
@@ -90,13 +90,13 @@ module.exports = class voiceStateUpdate extends Event {
 
 
 		if (oldState.id === bot.user.id) return;
-		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelID) return;
+		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelId) return;
 
 		// Don't leave channel if 24/7 mode is active
 		if (player.twentyFourSeven) return;
 
 		// Make sure the bot is in the voice channel that 'activated' the event
-		if (oldState.guild.members.cache.get(bot.user.id).voice.channelID === oldState.channelID) {
+		if (oldState.guild.members.cache.get(bot.user.id).voice.channelId === oldState.channelId) {
 			if (oldState.guild.voice?.channel && oldState.guild.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 				const vcName = oldState.guild.me.voice.channel.name;
 				await delay(180000);
