@@ -14,7 +14,7 @@ module.exports = async (bot, channel, pages) => {
 
 	// create reactionCollector to update page in embed
 	const filter = (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot;
-	const reactionCollector = await curPage.createReactionCollector(filter, { time: timeout });
+	const reactionCollector = await curPage.createReactionCollector({ filter, time: timeout });
 
 	// find out what emoji was reacted on to update pages
 	reactionCollector.on('collect', (reaction, user) => {

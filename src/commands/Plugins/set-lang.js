@@ -31,7 +31,6 @@ module.exports = class Setlang extends Command {
 		// update database
 		try {
 			await message.guild.updateGuild({ Language: language.name });
-			settings.Language = language.name;
 			return message.channel.success('plugins/set-lang:SUCCESS', { NAME: language.nativeName });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

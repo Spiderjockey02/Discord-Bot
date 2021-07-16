@@ -34,7 +34,6 @@ module.exports = class TicketSetup extends Command {
 				if (!channel || channel.type != 'category') return message.channel.send(message.translate('ticket/ticket-setup:NOT_CATEGORY'));
 				// update database
 				await message.guild.updateGuild({ TicketCategory: message.args[1] });
-				settings.TicketCategory = message.args[1];
 				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_CATEGORY', { NAME: channel.name }));
 			} catch (err) {
 				if (message.deletable) message.delete();
@@ -49,7 +48,6 @@ module.exports = class TicketSetup extends Command {
 				if (!supportRole) return message.channel.send(message.translate('ticket/ticket-setup:NOT_ROLE'));
 				// update database
 				await message.guild.updateGuild({ TicketSupportRole: message.args[1] });
-				settings.TicketSupportRole = message.args[1];
 				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_ROLE').replace('{ROLE}', supportRole));
 			} catch (err) {
 				if (message.deletable) message.delete();

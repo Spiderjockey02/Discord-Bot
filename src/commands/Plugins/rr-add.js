@@ -13,7 +13,7 @@ module.exports = class ReactionRoleAdd extends Command {
 			userPermissions: ['MANAGE_GUILD'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_ROLES'],
 			description: 'Create a reaction role',
-			usage: 'rr-add [channelID]',
+			usage: 'rr-add [channelID / message link]',
 			cooldown: 5000,
 			examples: ['rr-add 3784484	8481818441'],
 		});
@@ -44,10 +44,21 @@ module.exports = class ReactionRoleAdd extends Command {
 				return message.channel.send(message.translate('plugins/rr-add:MAX_RR'));
 			} else {
 				// They can create more reaction roles
+				// Fetch channel for reaction role
+				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
+				let channel, msgLink;
+				if (patt.test(message.args[0])) {
+					console.log('test');
+					const stuff = message.args[0].split('/');
+					msgLink = await bot.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+					if (!msgLink) return message.channel.error('Incorrect message link.');
+					channel = msgLink.channel;
+				} else {
+					channel = message.guild.channels.cache.get(message.args[0]) ?? message.channel;
+				}
 
 				// Make sure channel is a text channel and permission
-				const channel = message.guild.channels.cache.get(message.args[0]) ? message.guild.channels.cache.get(message.args[1]) : message.channel;
-				if (!channel || channel.type !== 'text' || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
+				if (!(channel || channel.isText() || channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))) {
 					return message.channel.error('misc:MISSING_CHANNEL');
 				} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:SEND_MESSAGES') }).then(m => m.timedDelete({ timeout: 10000 }));
@@ -133,34 +144,40 @@ module.exports = class ReactionRoleAdd extends Command {
 						createDescription(roles, emojis),
 					].join('\n'));
 
-				channel.send({ embeds: [embed2] }).then(async (msg) => {
-					// add reactions to message embed
-					for (let i = 0; i < roles.length; i++) {
-						await msg.react(emojis[i]);
-					}
+				// Whether or not bot needs to make an embed or use existing one
+				let msg;
+				if (patt.test(message.args[0])) {
+					msg = msgLink;
+				} else {
+					msg = await channel.send({ embeds: [embed2] });
+				}
 
-					// create reactions data for Schema
-					const reactions = [];
-					for (let i = 0; i < roles.length; i++) {
-						reactions.push({ roleID: roles[i].id, emoji: emojis[i] });
-					}
+				// add reactions to message embed
+				for (let i = 0; i < roles.length; i++) {
+					await msg.react(emojis[i]);
+				}
 
-					// save reaction role to database
-					try {
-						const newRR = new ReactionRoleSchema({
-							guildID: message.guild.id,
-							channelID: channel.id,
-							messageID: msg.id,
-							reactions: reactions,
-						});
-						await newRR.save();
-					} catch (err) {
-						if (message.deletable) message.delete();
-						msg.delete();
-						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-					}
-				});
+				// create reactions data for Schema
+				const reactions = [];
+				for (let i = 0; i < roles.length; i++) {
+					reactions.push({ roleID: roles[i].id, emoji: emojis[i] });
+				}
+
+				// save reaction role to database
+				try {
+					const newRR = new ReactionRoleSchema({
+						guildID: message.guild.id,
+						channelID: channel.id,
+						messageID: msg.id,
+						reactions: reactions,
+					});
+					await newRR.save();
+				} catch (err) {
+					if (message.deletable) message.delete();
+					msg.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
 			}
 			// create the description
 			function createDescription(roles, emojis) {

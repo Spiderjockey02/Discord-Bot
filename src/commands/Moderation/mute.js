@@ -51,7 +51,6 @@ module.exports = class Mute extends Command {
 				});
 				// update server with no muted role
 				await message.guild.updateGuild({ MutedRole: muteRole.id });
-				settings.MutedRole = muteRole.id;
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -75,7 +74,6 @@ module.exports = class Mute extends Command {
 				// update server with no muted role
 				if (!settings.MutedMembers.includes(members[0].user.id)) {
 					await message.guild.updateGuild({ MutedMembers: [...settings.MutedMembers, members[0].user.id] });
-					settings.MutedMembers.push(members[0].user.id);
 				}
 
 				// reply to user

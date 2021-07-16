@@ -34,7 +34,6 @@ module.exports = class SetLog extends Command {
 			// Enabled/Disable ModLogs
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
-				settings.ModLog = message.args[0];
 				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.timedDelete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -57,7 +56,6 @@ module.exports = class SetLog extends Command {
 					const events = message.args.filter(arg => currentFeatures.indexOf(arg.toUpperCase()) == -1);
 					currentFeatures.push(...events);
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					settings.ModLogEvents = currentFeatures;
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events[0] ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -72,7 +70,6 @@ module.exports = class SetLog extends Command {
 					}
 
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					settings.ModLogEvents = currentFeatures;
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase().join('`, `')}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -83,7 +80,6 @@ module.exports = class SetLog extends Command {
 			try {
 				const channelID = (message.guild.channels.cache.get(message.args[1])) ? message.guild.channels.cache.get(message.args[1]).id : message.channel.id;
 				await message.guild.updateGuild({ ModLogChannel: channelID });
-				settings.ModLogChannel = channelID;
 				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
