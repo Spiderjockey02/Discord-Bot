@@ -1,8 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ticketEmbedSchema } = require('../../database/models'),
+	{ MessageActionRow, MessageButton } = require('discord.js'),
 	Command = require('../../structures/Command.js');
-const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = class Ticket extends Command {
 	constructor(bot) {
@@ -27,37 +26,24 @@ module.exports = class Ticket extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')
 					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
-
+				// Create button
 				const row = new MessageActionRow()
 					.addComponents(
 						new MessageButton()
 							.setCustomId('crt_ticket')
 							.setLabel('Create ticket')
 							.setStyle('SECONDARY')
-							.setEmoji('🎟'),
-						new MessageButton()
-							.setCustomId('cl_ticket')
-							.setLabel('Close ticket')
-							.setStyle('DANGER')
-							.setEmoji('🔒'),
+							.setEmoji('📩'),
 					);
 
-				message.channel.send({ embeds: [embed], components: [row] }).then(async msg => {
-					// update database (in case bot restarts and reactionCollector will stop working)
-					const newEmbed = await new ticketEmbedSchema({
-						messageID: msg.id,
-						channelID: msg.channel.id,
-						guildID: msg.guild.id,
-					});
-					await newEmbed.save();
-				});
+				message.channel.send({ embeds: [embed], components: [row] });
 			} else {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE')
 					.setDescription([
-						`\`${settings.prefix}t-<open|create> [reason]\` - Will open a ticket for support.`,
-						`\`${settings.prefix}t-close\` - Will close the current ticket channel (Support only).`,
-						`\`${settings.prefix}t-setup\` - Sets up the ticket plugin (Admin only).`,
+						`\`${settings.prefix}t-<open|create> [reason]\` - ${message.translate('ticket/ticket-create:DESCRIPTION')}.`,
+						`\`${settings.prefix}t-close\` - ${message.translate('ticket/ticket-close:DESCRIPTION')} (Support only).`,
+						`\`${settings.prefix}t-setup\` - ${message.translate('ticket/ticket-setup:DESCRIPTION')} (Admin only).`,
 						`\`${settings.prefix}ticket reaction\` - Add reaction ticket embed (Admin only).`,
 					].join('\n'));
 				message.channel.send({ embeds: [embed] });

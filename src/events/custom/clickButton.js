@@ -88,24 +88,6 @@ module.exports = class clickButton extends Event {
 
 			cooldowns.set(member.user.id, now);
 			setTimeout(() => cooldowns.delete(member.user.id), cooldownAmount);
-		} else if (ID == 'cl_ticket') {
-			// Make sure user has a ticket
-			if (!guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`)) {
-				return button.reply({ embeds: [channel.error('ticket/ticket-close:MISSING_TICKET', {}, true)] }).then(() => {
-					setTimeout(function() {
-						button.deleteReply();
-					}, 5000);
-				});
-			}
-
-			// delete channel
-			guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`).delete().then(() => {
-				return button.reply({ embeds: [channel.success('ticket/ticket-close:SUCCESS', {}, true)] }).then(() => {
-					setTimeout(function() {
-						button.deleteReply();
-					}, 5000);
-				});
-			});
 		}
 	}
 };
