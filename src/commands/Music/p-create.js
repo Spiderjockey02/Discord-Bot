@@ -108,7 +108,7 @@ module.exports = class PCreate extends Command {
 				search.delete();
 			} else {
 				tracks = res.tracks.slice(0, message.author.premium ? 200 : 100);
-				thumbnail = res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail;
+				thumbnail = res.playlist?.selectedTrack?.thumbnail ?? res.tracks[0].thumbnail;
 				duration = res.playlist?.duration ?? res.tracks[0].duration;
 			}
 

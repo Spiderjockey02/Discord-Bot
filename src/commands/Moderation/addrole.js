@@ -32,6 +32,9 @@ module.exports = class addrole extends Command {
 		// Make sure 'hoist' is true or false
 		if (message.args[2] && !['true', 'false'].includes(message.args[2])) return message.channel.error('moderation/addrole:BOOLEAN').then(m => m.timedDelete({ timeout: 5000 }));
 
+		// Make sure there isn't already the max number of roles in the guilds
+		if (message.guild.roles.cache.size == 250) return message.channel.error('moderation/addrole:MAX_ROLES').then(m => m.timedDelete({ timeout: 5000 }));
+
 		// Check colour name for role
 		fs.readFile('./src/assets/json/colours.json', async (err, data) => {
 			if (err) {

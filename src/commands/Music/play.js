@@ -67,10 +67,8 @@ module.exports = class Play extends Command {
 			const fileTypes = ['mp3', 'mp4', 'wav', 'm4a', 'webm', 'aac', 'ogg'];
 			if (message.attachments.size > 0) {
 				const url = message.attachments.first().url;
-				for (let i = 0; i < fileTypes.length; i++) {
-					if (url.endsWith(fileTypes[i])) {
-						message.args.push(url);
-					}
+				for (const type of fileTypes) {
+					if (url.endsWith(fileTypes[type])) message.args.push(url);
 				}
 				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			} else {
@@ -189,19 +187,19 @@ module.exports = class Play extends Command {
 			player.queue.add(res.tracks);
 			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 
-			return await interaction.reply({ embeds: [embed] });
+			return interaction.reply({ embeds: [embed] });
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
 			player.queue.add(res.tracks[0]);
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
-				return await interaction.reply({ content: 'Successfully started queue.' });
+				return interaction.reply({ content: 'Successfully started queue.' });
 			} else {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				return await interaction.reply({ embeds: [embed] });
+				return interaction.reply({ embeds: [embed] });
 			}
 		}
 	}

@@ -6,7 +6,7 @@ const express = require('express'),
 	cors = require('cors');
 
 module.exports = async bot => {
-	const routes = (await readdir('./src/http/api/')).filter((v, i, a) => a.indexOf(v) === i);
+	const routes = (await readdir('./src/http/routes')).filter((v, i, a) => a.indexOf(v) === i);
 	const endpoints = [];
 
 	// IP logger
@@ -19,8 +19,8 @@ module.exports = async bot => {
 	// Get all routes
 	for (const route of routes) {
 		if (route !== 'index.js') {
-			app.use(`/${route.replace('.js', '')}`, require(`./${route}`)(bot));
-			endpoints.push(`${route.replace('.js', '')}:`, ...(require(`./${route}`)(bot).stack.map(item => `\t ${item.route.path}`).filter((v, i, a) => a.indexOf(v) === i && v !== '/')));
+			app.use(`/${route.replace('.js', '')}`, require(`./routes/${route}`)(bot));
+			endpoints.push(`${route.replace('.js', '')}:`, ...(require(`./routes/${route}`)(bot).stack.map(item => `\t ${item.route.path}`).filter((v, i, a) => a.indexOf(v) === i && v !== '/')));
 		}
 	}
 

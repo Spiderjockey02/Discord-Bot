@@ -20,7 +20,7 @@ module.exports = class Ready extends Event {
 
 		// set up webserver
 		try {
-			require('../../http/api')(bot);
+			require('../../http')(bot);
 		} catch (err) {
 			console.log(err.message);
 		}
@@ -30,14 +30,12 @@ module.exports = class Ready extends Event {
 			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
-		// Updates the bot's status
-		// bot.user.setStatus('Online');
-		// bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
-		bot.guilds.cache.forEach(async guild => {
+		// Sort out guild settings
+		for (const guild of bot.guilds.cache.array()) {
 			await guild.fetchSettings();
 			if (guild.settings == null) return bot.emit('guildCreate', guild);
 			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
-		});
+		}
 
 		// Delete server settings on servers that removed the bot while it was offline
 		const data = await GuildSchema.find({});
@@ -51,10 +49,7 @@ module.exports = class Ready extends Event {
 			// Now check database for bot guild ID's
 			for (const guild of data) {
 				if (!guildCount.includes(guild.guildID)) {
-					bot.emit('guildDelete', {
-						id: `${guild.guildID}`,
-						name: `${guild.guildName}`,
-					});
+					bot.emit('guildDelete', { id: guild.guildID, name: guild.guildName });
 				}
 			}
 		}

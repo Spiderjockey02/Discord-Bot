@@ -26,8 +26,8 @@ module.exports = class Firstmessage extends Command {
 	// Function for message command
 	async run(bot, message) {
 		// get channel
-		const channel = message.getChannel();
-
+		const channel = await message.getChannel();
+		console.log(channel);
 		try {
 			// get first message in channel
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());

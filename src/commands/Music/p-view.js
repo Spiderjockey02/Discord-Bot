@@ -37,10 +37,7 @@ module.exports = class PView extends Command {
 				message.channel.error('music/p-view:NO_PLAYLIST');
 			} else {
 				// Get all playlists name
-				const playlistNames = [];
-				for (let i = 0; i < p.length; i++) {
-					playlistNames.push(p[i].name);
-				}
+				const playlistNames = p.map(pl => pl.name);
 
 				// no playlist name was entered
 				if (!message.args[0]) return message.channel.send(message.translate('music/p-view:AVAIABLE', { NAMES: playlistNames.join('`, `') }));
@@ -53,10 +50,8 @@ module.exports = class PView extends Command {
 					let pagesNum = Math.ceil(p.songs.length / 10);
 					if (pagesNum === 0) pagesNum = 1;
 
-					let totalQueueDuration = 0;
-					for(let i = 0; i < p.songs.length; i++) {
-						totalQueueDuration += p.songs[i].duration;
-					}
+					// Get total playlist duration
+					const totalQueueDuration = p.songs.reduce((a, b) => a + b.duration, 0);
 
 					const pages = [];
 					let n = 1;
@@ -72,7 +67,7 @@ module.exports = class PView extends Command {
 							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration`);
 						pages.push(embed);
 						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message.channel, pages);
-						else if(pagesNum == 1) message.channel.send(embed);
+						else if (pagesNum == 1) message.channel.send(embed);
 					}
 				} else {
 					message.channel.error('music/p-view:NO_PLAYLIST');
