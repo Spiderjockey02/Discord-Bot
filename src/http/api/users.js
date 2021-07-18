@@ -5,7 +5,6 @@ const express = require('express'),
 module.exports = (bot) => {
 	// statistics page
 	router.get('/', async function(req, res) {
-		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/user\`.`);
 
 		// check for ID query
 		if (req.query.ID && req.query.guilds) {
