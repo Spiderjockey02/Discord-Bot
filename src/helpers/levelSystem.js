@@ -51,8 +51,12 @@ module.exports.run = (bot, message, settings) => {
 				Xp.save()
 					.then(() => {
 						const res = message.guild.levels.find(({ userID }) => userID == message.author.id);
-						res.Xp = Xp.Xp;
-						res.Level = Xp.Level;
+						if (res) {
+							res.Xp = Xp.Xp;
+							res.Level = Xp.Level;
+						} else {
+							message.guild.levels.push({ userID: message.author.id, guildID: message.guild.id, Xp: xpAdd, Level: 1 });
+						}
 					})
 					.catch(err => bot.logger.error(err.message));
 			}

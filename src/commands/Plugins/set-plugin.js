@@ -56,6 +56,7 @@ module.exports = class SetPlugin extends Command {
 					console.log(err);
 				}
 				message.channel.success('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] });
+				if (settings.plugins.includes('Level')) await message.guild.fetchLevels();
 			} else {
 
 				const data = [];
