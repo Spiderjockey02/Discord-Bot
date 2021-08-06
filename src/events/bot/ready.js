@@ -31,7 +31,7 @@ module.exports = class Ready extends Event {
 		}, 10000);
 
 		// Sort out guild settings
-		for (const guild of bot.guilds.cache.array()) {
+		for (const guild of [...bot.guilds.cache.values()]) {
 			await guild.fetchSettings();
 			if (guild.settings == null) return bot.emit('guildCreate', guild);
 			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
@@ -44,7 +44,7 @@ module.exports = class Ready extends Event {
 			const guildCount = [];
 			// Get bot guild ID's
 			for (let i = 0; i < bot.guilds.cache.size; i++) {
-				guildCount.push(bot.guilds.cache.array()[i].id);
+				guildCount.push([...bot.guilds.cache.values()][i].id);
 			}
 			// Now check database for bot guild ID's
 			for (const guild of data) {

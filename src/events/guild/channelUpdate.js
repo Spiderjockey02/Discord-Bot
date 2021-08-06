@@ -2,6 +2,15 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
+const types = {
+	GUILD_TEXT: 'Text',
+	GUILD_VOICE: 'Voice',
+	GUILD_CATEGORY: 'Category',
+	GUILD_STAGE_VOICE: 'Stage',
+	GUILD_NEWS: 'Annoucement',
+	GUILD_STORE: 'Store',
+};
+
 module.exports = class channelUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
@@ -12,7 +21,7 @@ module.exports = class channelUpdate extends Event {
 	// run event
 	async run(bot, oldChannel, newChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${newChannel.type})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${types[newChannel.type]})`);
 
 		// Get server settings / if no settings then return
 		const settings = newChannel.guild.settings;

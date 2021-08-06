@@ -92,7 +92,7 @@ module.exports = class Queue extends Command {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);
-		const page = args.get('page').value;
+		const page = args.get('page')?.value;
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
@@ -102,7 +102,7 @@ module.exports = class Queue extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;

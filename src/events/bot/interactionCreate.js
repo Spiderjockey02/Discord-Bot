@@ -1,7 +1,7 @@
 // Dependencies
 const Event = require('../../structures/Event');
 
-module.exports = class Interaction extends Event {
+module.exports = class interactionCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,

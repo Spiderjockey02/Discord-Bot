@@ -4,7 +4,7 @@ const { Collection } = require('discord.js'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class Message extends Event {
+module.exports = class messageCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,

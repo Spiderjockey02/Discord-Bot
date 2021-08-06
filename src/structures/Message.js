@@ -27,9 +27,9 @@ module.exports = Object.defineProperties(Message.prototype, {
 			// add all mentioned users
 			for (let i = 0; i < this.args.length; i++) {
 				// eslint-disable-next-line no-empty-function
-				if (this.mentions.users.array()[i] || await this.client.users.fetch(this.args[i]).catch(() => {})) {
+				if ([...this.mentions.users.values()][i] || await this.client.users.fetch(this.args[i]).catch(() => {})) {
 					// eslint-disable-next-line no-empty-function
-					users.push(this.mentions.users.array()[i] || await this.client.users.fetch(this.args[i]).catch(() => {}));
+					users.push([...this.mentions.users.values()][i] || await this.client.users.fetch(this.args[i]).catch(() => {}));
 				}
 			}
 
@@ -77,8 +77,8 @@ module.exports = Object.defineProperties(Message.prototype, {
 			const channels = [];
 			// get all channels mentioned
 			for (let i = 0; i < this.args.length; i++) {
-				if (this.mentions.channels.array()[i] || this.guild.channels.cache.get(this.args[i])) {
-					channels.push(this.mentions.channels.array()[i] || this.guild.channels.cache.get(this.args[i]));
+				if ([...this.mentions.channels.values()][i] || this.guild.channels.cache.get(this.args[i])) {
+					channels.push([...this.mentions.channels.values()][i] || this.guild.channels.cache.get(this.args[i]));
 				}
 			}
 			channels.push(this.channel);
@@ -91,8 +91,8 @@ module.exports = Object.defineProperties(Message.prototype, {
 			const roles = [];
 			// get all roles mentioned or ID
 			for (let i = 0; i < this.args.length; i++) {
-				if (this.mentions.roles.array()[i] || this.guild.roles.cache.get(this.args[i])) {
-					roles.push(this.mentions.roles.array()[i] || this.guild.roles.cache.get(this.args[i]));
+				if ([...this.mentions.roles.values()][i] || this.guild.roles.cache.get(this.args[i])) {
+					roles.push([...this.mentions.roles.values()][i] || this.guild.roles.cache.get(this.args[i]));
 				}
 			}
 

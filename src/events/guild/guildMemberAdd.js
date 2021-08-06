@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MutedMemberSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildMemberAdd extends Event {
@@ -57,8 +56,7 @@ module.exports = class guildMemberAdd extends Event {
 		}
 
 		// Check if member is trying to mute evade
-		const muteOrNot = await MutedMemberSchema.findOne({ userID: member.user.id, guildID: member.guild.id });
-		if (muteOrNot) {
+		if (settings.MutedMembers.includes(member.user.id)) {
 			try {
 				await member.roles.add(settings.MutedRole);
 			} catch (err) {
