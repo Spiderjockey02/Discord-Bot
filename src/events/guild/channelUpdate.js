@@ -34,7 +34,7 @@ module.exports = class channelUpdate extends Event {
 			// Channel name change
 			if (oldChannel.name != newChannel.name) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
 					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
@@ -49,7 +49,7 @@ module.exports = class channelUpdate extends Event {
 			// channel topic (description) change
 			if (oldChannel.topic != newChannel.topic) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
 					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
@@ -63,7 +63,7 @@ module.exports = class channelUpdate extends Event {
 
 			if (oldChannel.rtcRegion != newChannel.rtcRegion) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
 					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
@@ -90,7 +90,7 @@ module.exports = class channelUpdate extends Event {
 
 			if (permDiff.size) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'category' ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
+					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
 					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
