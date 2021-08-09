@@ -32,19 +32,20 @@ module.exports = class Rank extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }), { tts: true });
+			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Retrieve Rank from databse
 		try {
 			const res = await this.createRankCard(bot, message.guild, members[0], message.channel);
 			msg.delete();
-			if (typeof (res) == 'object') {
+			if (typeof (res) == 'object' && !res.description) {
 				await message.channel.send({ files: [res] });
+			} else if (res.description) {
+				await message.channel.send({ embeds: [res] });
 			} else {
 				await message.channel.send(res);
 			}
 		} catch (err) {
-			msg.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
@@ -88,7 +89,7 @@ module.exports = class Rank extends Command {
 			.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setLevel(user.Level)
 			.setRank(rankScore + 1)
-			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100))
+			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (user.Level == 1 ? 0 : (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setStatus(member.presence?.status ?? 'dnd')
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
 			.setUsername(member.user.username)

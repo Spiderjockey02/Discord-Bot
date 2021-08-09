@@ -14,6 +14,13 @@ module.exports = class Deepfry extends Command {
 			usage: 'deepfry [file]',
 			cooldown: 5000,
 			examples: ['deepfry <attachment>', 'deepfry username'],
+			slash: true,
+			options: [{
+				name: 'user',
+				description: 'User\'s avatar to deepfry.',
+				type: 'USER',
+				required: false,
+			}],
 		});
 	}
 
@@ -41,5 +48,23 @@ module.exports = class Deepfry extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+		try {
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=deepfry&image=${member.user.displayAvatarURL({ format: 'png', size: 1024 })}`)).then(res => res.json());
+			const embed = new Embed(bot, guild)
+				.setColor(3447003)
+				.setImage(json.message);
+			interaction.editReply({ content: ' ', embeds: [embed] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

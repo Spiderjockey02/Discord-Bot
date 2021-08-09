@@ -14,6 +14,13 @@ module.exports = class QRcode extends Command {
 			usage: 'qrcode <text / file>',
 			cooldown: 5000,
 			examples: ['qrcode https://www.google.com/', 'qrcode <attachment>'],
+			slash: true,
+			options: [{
+				name: 'text',
+				description: 'URL',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -39,5 +46,23 @@ module.exports = class QRcode extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const text = args.get('text').value;
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+
+		try {
+			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
+			const embed = new Embed(bot, guild)
+				.setImage('attachment://QRCODE.png');
+			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

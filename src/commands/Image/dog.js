@@ -13,6 +13,7 @@ module.exports = class Dog extends Command {
 			description: 'Have a nice picture of a dog.',
 			usage: 'dog',
 			cooldown: 2000,
+			slash: true,
 		});
 	}
 
@@ -37,5 +38,23 @@ module.exports = class Dog extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setImage(res.url);
 		message.channel.send({ embeds: [embed] });
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+		try {
+			const res = await fetch('https://nekos.life/api/v2/img/woof').then(info => info.json());
+			// send image
+			const embed = new Embed(bot, guild)
+				.setColor(3426654)
+				.setImage(res.url);
+			interaction.editReply({ content: ' ', embeds: [embed] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

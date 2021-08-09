@@ -21,6 +21,24 @@ module.exports = class Generate extends Command {
 			usage: 'generate <option> [image]',
 			cooldown: 5000,
 			examples: ['generate 3000years username', 'generate beautiful <attachment>', 'generate list'],
+			slash: true,
+			options: [{
+				name: 'option',
+				description: 'Option',
+				type: 'STRING',
+				required: true,
+				choices: [{ name: 'list', value: 'list' }, ...image_1.map(item => ({ name: item, value: item })), ...image_2.map(item => ({ name: item, value: item }))].slice(0, 24),
+			}, {
+				name: 'user',
+				description: 'User\'s avatar to manipulate.',
+				type: 'USER',
+				required: false,
+			}, {
+				name: 'user2',
+				description: 'Second user\'s avatar to manipulate.',
+				type: 'USER',
+				required: false,
+			}],
 		});
 	}
 
@@ -71,6 +89,41 @@ module.exports = class Generate extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const option = args.get('option').value;
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id).user.displayAvatarURL({ format: 'png', size: 1024 });
+		const member2 = guild.members.cache.get(args.get('user2')?.value ?? interaction.user.id).user.displayAvatarURL({ format: 'png', size: 1024 });
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+
+		try {
+			if (option == 'list') {
+				const embed = new Embed(bot, guild)
+					.setDescription(guild.translate('image/generate:DESC', { IMG_1: `${image_1.join('`, `')}`, IMG_2: `${image_2.join('`, `')}` }));
+				return interaction.editReply({ content: ' ', embeds: [embed] });
+			}
+
+			// generate image
+			const options = image_1.includes(option) ? { 'url' : member } : { 'avatar': member2, 'url' : member };
+			const image = await post(`https://v1.api.amethyste.moe/generate/${option}`, options, {
+				responseType: 'arraybuffer',
+				headers: {
+					'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
+				},
+			});
+
+			// display image
+			if (!image || !image.data) return;
+			const attachment = new MessageAttachment(image.data, `${option}.${option == 'triggered' ? 'gif' : 'png'}`);
+			interaction.editReply({ content: ' ', files: [attachment] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 };

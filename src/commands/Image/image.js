@@ -14,6 +14,13 @@ module.exports = class Image extends Command {
 			usage: 'image <topic>',
 			cooldown: 2000,
 			examples: ['image food'],
+			slash: true,
+			options: [{
+				name: 'topic',
+				description: 'Topic for image search',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -43,5 +50,23 @@ module.exports = class Image extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const topic = args.get('topic').value;
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+
+		try {
+			const results = await image_search({ query: topic, moderate: (channel.nsfw || channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+			const embed = new Embed(bot, guild)
+				.setImage(results[Math.floor(Math.random() * results.length)].image);
+			interaction.editReply({ content: ' ', embeds: [embed] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

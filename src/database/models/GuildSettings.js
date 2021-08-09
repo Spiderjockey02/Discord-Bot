@@ -9,12 +9,12 @@ const guildSchema = Schema({
 	// if anti-raid is true and welcome plugin is true both will get activated so this will make sure anti-riad runs first and once 'accepeted' welcome plugn will run
 	welcomeRaidConnect: { type: Boolean, default: false },
 	welcomeMessageToggle: { type: Boolean, default: false },
-	welcomeMessageChannel: { type: String, default: '00' },
+	welcomeMessageChannel: { type: String },
 	welcomeMessageText: { type: String, default: 'Hello {user}, Welcome to **{server}**!' },
 	welcomePrivateToggle: { type: Boolean, default: false },
 	welcomePrivateText: { type: String, default: 'Have a great time here in **{server}**.' },
 	welcomeRoleToggle: { type: Boolean, default: false },
-	welcomeRoleGive: { type: Array, default: ['562297641879470082'] },
+	welcomeRoleGive: { type: Array },
 	welcomeGoodbyeToggle: { type: Boolean, default: false },
 	welcomeGoodbyeText: { type: String, default: '**{user}** just left the server.' },
 	// 0 = no announcement, 1 = reply, 2 = choosen channel
@@ -30,9 +30,10 @@ const guildSchema = Schema({
 	MusicDJRole: { type: String },
 	// logging plugin
 	ModLog: { type: Boolean, default: false },
-	ModLogEvents: { type: Array, default: ['GUILDBANADD', 'GUILDMEMBERADD'] },
-	ModLogChannel: { type: String, default: '00' },
+	ModLogEvents: { type: Array },
+	ModLogChannel: { type: String },
 	ModLogIgnoreBot: { type: Boolean, default: true },
+	ModLogIgnoreChannel: { type: Array },
 	// CommandCooldown
 	// Tag plugin
 	PrefixTags: { type: Boolean, default: false },

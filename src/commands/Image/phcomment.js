@@ -14,6 +14,18 @@ module.exports = class PHcomment extends Command {
 			usage: 'phcomment [user] <text>',
 			cooldown: 5000,
 			examples: ['phcomment username Wow nice'],
+			slash: true,
+			options: [{
+				name: 'user',
+				description: 'User who made comment',
+				type: 'USER',
+				required: true,
+			}, {
+				name: 'text',
+				description: 'comment content',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
@@ -50,5 +62,28 @@ module.exports = class PHcomment extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
+	}
+
+	// Function for slash command
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value);
+		const text = args.get('text').value;
+		const channel = guild.channels.cache.get(interaction.channelId);
+
+		// make sure the text isn't longer than 80 characters
+		if (text.length >= 71) return interaction.reply({ embeds: [channel.error('image/phcomment:TOO_LONG', {}, true)], ephemeral: true });
+
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+		try {
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=phcomment&username=${member.user.username}&image=${member.user.displayAvatarURL({ format: 'png', size: 512 })}&text=${text}`)).then(res => res.json());
+			const embed = new Embed(bot, guild)
+				.setColor(3447003)
+				.setImage(json.message);
+			interaction.editReply({ content: ' ', embeds: [embed] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

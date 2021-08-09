@@ -25,7 +25,7 @@ module.exports = async (bot) => {
 
 					// unban user from guild
 					try {
-						const bans = await bot.guilds.cache.get(event.guildID).fetchBans();
+						const bans = await bot.guilds.cache.get(event.guildID).bans.fetch();
 						if (bans.size == 0) return;
 						const bUser = bans.find(ban => ban.user.id == event.userID);
 						if (!bUser) return;

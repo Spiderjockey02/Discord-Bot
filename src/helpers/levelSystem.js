@@ -29,11 +29,11 @@ module.exports.run = (bot, message, settings) => {
 					Level: 1,
 				});
 				newXp.save().catch(err => bot.logger.error(err.message));
+				message.guild.levels.push({ userID: message.author.id, guildID: message.guild.id, Xp: xpAdd, Level: 1 });
 			} else {
 				// user was found
 				Xp.Xp = Xp.Xp + xpAdd;
 				const xpNeed = (5 * (Xp.Level ** 2) + 50 * Xp.Level + 100);
-
 				// User has leveled up
 				if (Xp.Xp >= xpNeed) {
 					// now check how to send message
