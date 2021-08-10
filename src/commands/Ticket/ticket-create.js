@@ -24,25 +24,22 @@ module.exports = class TicketCreate extends Command {
 			return message.channel.error('ticket/ticket-create:TICKET_EXISTS').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
-		// make sure ticket has been set-up properly
-		const supportRole = message.guild.roles.cache.get(settings.TicketSupportRole);
-		if (!supportRole) return message.channel.error('ticket/ticket-create:NO_SUPPORT_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-		const category = message.guild.channels.cache.get(settings.TicketCategory);
-		if (!category) return message.channel.error('ticket/ticket-create:NO_CATEGORY').then(m => m.timedDelete({ timeout: 10000 }));
-
 		// get reason
 		const reason = (message.args[0]) ? message.args.join(' ') : message.translate('misc:NO_REASON');
+
+		// create perm array
+		const perms = [
+			{ id: message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+			{ id: message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+			{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
+		];
+		if (message.guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] });
 
 		// create channel
 		message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
 			reason: reason,
-			parent: category?.id,
-			permissionOverwrites:[
-				{ id: message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id: supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id: message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-				{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
-			] })
+			parent: settings.TicketCategory,
+			permissionOverwrites: perms })
 			.then(async channel => {
 			// reply to user saying that channel has been created
 				const successEmbed = new Embed(bot, message.guild)
@@ -56,7 +53,7 @@ module.exports = class TicketCreate extends Command {
 					.addField(message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.tag }), message.translate('ticket/ticket-create:FIELDT'))
 					.addField(message.translate('ticket/ticket-create:FIELD2'), reason)
 					.setTimestamp();
-				channel.send({ content: `${message.author}, ${supportRole}`, embeds: [embed] });
+				channel.send({ content: `${message.author}${message.guild.roles.cache.get(settings.TicketSupportRole) ? `, <@&${settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
 				// run ticketcreate event
 				await bot.emit('ticketCreate', channel, embed);
