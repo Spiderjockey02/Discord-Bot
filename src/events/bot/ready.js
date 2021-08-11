@@ -1,4 +1,4 @@
-const { GuildSchema, userSchema } = require('../../database/models'),
+const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class Ready extends Event {
@@ -30,11 +30,20 @@ module.exports = class Ready extends Event {
 			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
-		// Sort out guild settings
 		for (const guild of [...bot.guilds.cache.values()]) {
+			// Sort out guild settings
 			await guild.fetchSettings();
 			if (guild.settings == null) return bot.emit('guildCreate', guild);
 			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
+
+			// Append tags to guild specific arrays
+			if(guild.settings.PrefixTags) {
+				TagsSchema.find({ guildID: guild.id }).then(result => {
+					result.forEach(value => {
+						guild.guildTags.push(value.name)
+					});
+				});
+			}
 		}
 
 		// Delete server settings on servers that removed the bot while it was offline

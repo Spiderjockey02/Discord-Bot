@@ -31,6 +31,7 @@ module.exports = class TagDelete extends Command {
 			const result = await TagsSchema.findOneAndRemove({ guildID: message.guild.id, name: message.args[0] });
 			if (result) {
 				message.channel.send(message.translate('tags/tag-delete:TAG_DELETED', { TAG: message.args[0] }));
+				message.guild.guildTags.splice(message.guild.guildTags.indexOf(message.args[0]), 1);
 			} else {
 				message.channel.send(message.translate('tags/tag-delete:NO_TAG', { TAG: message.args[0] }));
 			}

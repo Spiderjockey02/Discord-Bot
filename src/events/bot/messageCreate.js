@@ -2,6 +2,7 @@
 const { Collection } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
+	{ TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageCreate extends Event {
@@ -57,7 +58,13 @@ module.exports = class messageCreate extends Event {
 				args.shift();
 				if (!cmd) return;
 			} else if (!cmd) {
-				return;
+				let tag = message.guild.guildTags.find(result => result.toLowerCase() == command)
+				if(tag) {
+					const response = await TagsSchema.find({ guildID: message.guild.id, name: tag })
+					return message.channel.send(response[0].response)
+				} else {
+					return;
+				}
 			}
 			message.args = args;
 

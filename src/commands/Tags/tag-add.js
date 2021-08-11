@@ -51,6 +51,7 @@ module.exports = class TagAdd extends Command {
 					response: responseString,
 				})).save();
 				message.channel.send(message.translate('tags/tag-add:TAGS_SAVED', { TAG: message.args[0] }));
+				message.guild.guildTags.push(message.args[0]);
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

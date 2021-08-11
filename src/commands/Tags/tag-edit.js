@@ -36,6 +36,8 @@ module.exports = class TagEdit extends Command {
 			try {
 				await TagsSchema.findOneAndUpdate({ guildID: message.guild.id, name: message.args[1] }, { name: message.args[2] }).then(() => {
 					message.channel.send(message.translate('tags/tag-edit:UPDATED_NAME', { NAME: message.args[2] }));
+					message.guild.guildTags.splice(message.guild.guildTags.indexOf(message.args[1]), 1);
+					message.guild.guildTags.push(message.args[2]);
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

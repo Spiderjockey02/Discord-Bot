@@ -46,6 +46,11 @@ module.exports = Object.defineProperties(Guild.prototype, {
 		value: {},
 		writable: true,
 	},
+	// Append guild-tags to guild
+	guildTags: {
+		value: [],
+		writable: true
+	},
 	// Append premium to guild
 	premium: {
 		value: false,
