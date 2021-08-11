@@ -12,12 +12,8 @@ const { Client, Collection } = require('discord.js'),
 module.exports = class Egglord extends Client {
 	constructor() {
 		super({
-			messageCacheMaxSize: -1,
-			messageCacheLifetime: 1210000,
-			messageSweepInterval: 86400,
 			partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
 			intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
-			restGlobalRateLimit: 50,
 			presence: {
 				status: 'online',
 				activities: [{

@@ -80,11 +80,11 @@ module.exports = class guildMemberUpdate extends Event {
 			const rolesRemoved = oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id));
 			if (rolesAdded.size != 0 || rolesRemoved.size != 0) {
 				const roleAddedString = [];
-				for (const role of rolesAdded.array()) {
+				for (const role of [...rolesAdded.values()]) {
 					roleAddedString.push(role.toString());
 				}
 				const roleRemovedString = [];
-				for (const role of rolesRemoved.array()) {
+				for (const role of [...rolesRemoved.values()]) {
 					roleRemovedString.push(role.toString());
 				}
 				embed = new Embed(bot, newMember.guild)

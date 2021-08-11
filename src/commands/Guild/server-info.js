@@ -36,7 +36,7 @@ module.exports = class ServerInfo extends Command {
 
 	// create serverinfo embed
 	async createEmbed(bot, guild, user) {
-		const roles = guild.roles.cache.sort((a, b) => b.position - a.position).array();
+		const roles = [...guild.roles.cache.sort((a, b) => b.position - a.position).values()];
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
@@ -58,7 +58,7 @@ module.exports = class ServerInfo extends Command {
 					ONLINE: member.filter(m => m.presence?.status === 'online').size.toLocaleString(guild.settings.Language), IDLE: member.filter(m => m.presence?.status === 'idle').size.toLocaleString(guild.settings.Language), DND: member.filter(m => m.presence?.status === 'dnd').size.toLocaleString(guild.settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(guild.settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(guild.settings.Language),
 				}), inline: true },
 				{ name: guild.translate('guild/server-info:FEATURES'), value: `\`${(guild.features.length == 0) ? guild.translate('misc:NONE') : guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
-				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },
+				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
 			)
 			.setTimestamp()
 			.setFooter('guild/server-info:FOOTER', { USER: user.tag });
