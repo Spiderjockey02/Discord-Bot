@@ -35,7 +35,7 @@ module.exports = class Remove extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/remove:NAN')).then(m => m.timedDelete({ timeout: 10000 }));
 
@@ -69,7 +69,7 @@ module.exports = class Remove extends Command {
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		if (!pos2) {
 			if (pos1 == 0) return interaction.reply({ content: guild.translate('music/remove:PLAYING') });
 			if (pos1 > player.queue.length) return interaction.reply({ content: guild.translate('music/remove:MISSING') });

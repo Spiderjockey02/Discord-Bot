@@ -26,7 +26,7 @@ module.exports = class Leaderboard extends Command {
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
 			const res = await this.createLeaderboard(bot, message.guild);

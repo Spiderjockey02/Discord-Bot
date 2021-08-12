@@ -62,7 +62,7 @@ module.exports = class Generate extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
 		// get image
 		const options = image_1.includes(choice) ? { 'url' : files[0] } : { 'avatar': files[1], 'url' : files[0] };

@@ -27,7 +27,7 @@ module.exports = class Join extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		// Make sure the user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
@@ -83,7 +83,7 @@ module.exports = class Join extends Command {
 			}
 		}
 		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
+		const player = bot.manager?.players.get(guild.id);
 
 		// Make sure the user is in a voice channel
 		if (!member.voice.channel) return interaction.reply({ embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)], ephemeral: true });

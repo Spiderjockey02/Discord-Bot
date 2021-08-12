@@ -22,7 +22,7 @@ module.exports = class Pause extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		// The music is already paused
 		if (player.paused) return message.channel.error('music/pause:IS_PAUSED', { PREFIX: settings.prefix });
@@ -42,7 +42,7 @@ module.exports = class Pause extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// The music is already paused
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		if (player.paused) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/pause:IS_PAUSED', {}, true)] });
 
 		// Pauses the music

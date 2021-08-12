@@ -49,14 +49,14 @@ module.exports = class Clear extends Command {
 						.setCustomId('success')
 						.setLabel('Confirm')
 						.setStyle('SUCCESS')
-						.setEmoji(message.checkEmoji() ? bot.customEmojis['checkmark'] : '✅'),
+						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
 				)
 				.addComponents(
 					new MessageButton()
 						.setCustomId('cancel')
 						.setLabel('Cancel')
 						.setStyle('DANGER')
-						.setEmoji(message.checkEmoji() ? bot.customEmojis['cross'] : '❌'),
+						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
 				);
 
 			// Send confirmation message

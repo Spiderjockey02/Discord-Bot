@@ -40,7 +40,7 @@ module.exports = class Loop extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		// Check what to loop (queue or song) - default to song
 		if (!message.args[0] || message.args[0].toLowerCase() == 'song') {
@@ -67,7 +67,7 @@ module.exports = class Loop extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Check what to loop (queue or song) - default to song
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		if (!type || type == 'song') {
 			// (un)loop the song
 			player.setTrackRepeat(!player.trackRepeat);

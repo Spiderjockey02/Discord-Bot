@@ -34,7 +34,7 @@ module.exports = class Image extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
 		// get results (image links etc)
 		try {

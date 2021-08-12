@@ -29,7 +29,7 @@ module.exports = class Previous extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure at least one previous track is recorder is not empty

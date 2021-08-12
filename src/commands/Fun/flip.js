@@ -16,13 +16,22 @@ module.exports = class Flip extends Command {
 
 	// Function for message command
 	async run(bot, message) {
-		const r = Math.round(Math.random());
-		message.channel.send(`${message.checkEmoji() ? bot.customEmojis[['head', 'tail'][r]] : ''} ${message.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}`);
+		const num = Math.round(Math.random()),
+			emoji = message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis[['head', 'tail'][num]] : '',
+			result = message.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
+
+		// send result
+		message.channel.send(`${emoji} ${result}`);
 	}
 
 	// Function for slash command
 	async callback(bot, interaction, guild) {
-		const r = Math.round(Math.random());
-		return interaction.reply({ content: `${bot.customEmojis[['head', 'tail'][r]]} ${guild.translate(`fun/flip:${r < 0.5 ? 'HEADS' : 'TAILS'}`)}` });
+		const channel = guild.channels.cache.get(interaction.channelId),
+			num = Math.round(Math.random()),
+			emoji = channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis[['head', 'tail'][num]] : '',
+			result = guild.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
+
+		// send result
+		return interaction.reply({ content: `${emoji} ${result}` });
 	}
 };

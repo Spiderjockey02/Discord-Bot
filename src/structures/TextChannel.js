@@ -57,4 +57,14 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 			}
 		},
 	},
+	// Check if bot has permission to send custom emoji
+	checkPerm: {
+		value: function(perm) {
+			try {
+				return this.permissionsFor(this.client.user).has(perm);
+			} catch {
+				return false;
+			}
+		},
+	},
 });

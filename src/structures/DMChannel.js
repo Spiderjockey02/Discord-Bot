@@ -31,4 +31,10 @@ module.exports = Object.defineProperties(DMChannel.prototype, {
 			}
 		},
 	},
+	// Check if bot has permission to send custom emoji
+	checkPerm: {
+		value: function() {
+			return true;
+		},
+	},
 });

@@ -36,7 +36,7 @@ module.exports = class Move extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure positions are number(s)
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/move:INVALID'));
 
 		// Can't move currently playing song
@@ -71,7 +71,7 @@ module.exports = class Move extends Command {
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 
 		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 

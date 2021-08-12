@@ -24,7 +24,7 @@ module.exports = class Shuffle extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// shuffle queue
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		player.queue.shuffle();
 		const embed = new MessageEmbed()
 			.setColor(message.member.displayHexColor)
@@ -42,7 +42,7 @@ module.exports = class Shuffle extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// shuffle queue
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		player.queue.shuffle();
 		const embed = new MessageEmbed(bot, guild)
 			.setColor(member.displayHexColor)

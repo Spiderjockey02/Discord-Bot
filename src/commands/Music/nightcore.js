@@ -25,7 +25,7 @@ module.exports = class Nightcore extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// toggle nightcore mode on/off
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		player.setNightcore(!player.nightcore);
 		const msg = await message.channel.send(message.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`));
 		const embed = new MessageEmbed()
@@ -45,7 +45,7 @@ module.exports = class Nightcore extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// toggle nightcore mode on/off
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		player.setNightcore(!player.nightcore);
 		await interaction.reply({ content: guild.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
 		const embed = new MessageEmbed()

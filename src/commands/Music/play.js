@@ -37,8 +37,8 @@ module.exports = class Play extends Command {
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Check that user is in the same voice channel
-		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
+		if (bot.manager?.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
@@ -140,8 +140,8 @@ module.exports = class Play extends Command {
 		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
 
 		// Check that user is in the same voice channel
-		if (bot.manager.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
+		if (bot.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { ERROR: null }, true)] });
 		}
 
 		// Create player

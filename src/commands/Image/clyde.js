@@ -36,7 +36,7 @@ module.exports = class Clyde extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=clyde&text=${text}`)).then(res => res.json());

@@ -19,7 +19,7 @@ module.exports = class Meme extends Command {
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Retrieve a random meme
 		const embed = await this.fetchMeme(bot, message.guild, settings);
@@ -38,16 +38,23 @@ module.exports = class Meme extends Command {
 
 	// Fetch meme data
 	async fetchMeme(bot, guild, settings) {
-		const meme = await bot.Ksoft.images.meme();
-		if (!meme.url) {
-			return this.fetchMeme();
-		} else {
+		try {
+			const meme = await bot.Ksoft.images.meme();
+			if (!meme.url) {
+				return this.fetchMeme();
+			} else {
+				return new Embed(bot, guild)
+					.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
+					.setColor(16333359)
+					.setURL(meme.post.link)
+					.setImage(meme.url)
+					.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
+			}
+		} catch (err) {
+			bot.logger.error(err.message);
+			bot.commands.delete('meme');
 			return new Embed(bot, guild)
-				.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
-				.setColor(16333359)
-				.setURL(meme.post.link)
-				.setImage(meme.url)
-				.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
+				.setDescription('Meme failed to load');
 		}
 	}
 };

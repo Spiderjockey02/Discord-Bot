@@ -36,8 +36,8 @@ module.exports = class Search extends Command {
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.delete({ timeout: 10000 }));
 
 		// Check that user is in the same voice channel
-		if (bot.manager.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+		if (bot.manager?.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
 		}
 
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)

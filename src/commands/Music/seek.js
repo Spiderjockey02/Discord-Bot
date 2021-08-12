@@ -31,7 +31,7 @@ module.exports = class Seek extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure song isn't a stream
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure a time was inputted
@@ -61,7 +61,7 @@ module.exports = class Seek extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// update the time
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		const time = read24hrFormat(args.get('time').value);
 
 		if (time > player.queue.current.duration) {

@@ -36,7 +36,7 @@ module.exports = class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure queue is not empty
@@ -101,7 +101,7 @@ module.exports = class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
+		const player = bot.manager?.players.get(guild.id);
 		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty

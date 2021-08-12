@@ -38,7 +38,7 @@ module.exports = class MC extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/mc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// If no ping use 25565
 		if (!message.args[1]) message.args[1] = '25565';

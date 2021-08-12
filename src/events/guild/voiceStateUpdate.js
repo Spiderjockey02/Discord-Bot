@@ -70,7 +70,7 @@ module.exports = class voiceStateUpdate extends Event {
 		}
 
 		// Only keep the bot in the voice channel by its self for 3 minutes
-		const player = bot.manager.players.get(newState.guild.id);
+		const player = bot.manager?.players.get(newState.guild.id);
 
 		if (!player) return;
 		if (!newState.guild.members.cache.get(bot.user.id).voice.channelId) player.destroy();
@@ -104,7 +104,7 @@ module.exports = class voiceStateUpdate extends Event {
 				// times up check if bot is still by themselves in VC (exluding bots)
 				const vcMembers = oldState.guild.voice.channel.members.size;
 				if (!vcMembers || vcMembers === 1) {
-					const newPlayer = bot.manager.players.get(newState.guild.id);
+					const newPlayer = bot.manager?.players.get(newState.guild.id);
 					(newPlayer) ? player.destroy() : oldState.guild.voice.channel.leave();
 					const embed = new Embed(bot, newState.guild)
 					// eslint-disable-next-line no-inline-comments

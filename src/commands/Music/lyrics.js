@@ -30,7 +30,7 @@ module.exports = class Lyrics extends Command {
 		let options;
 		if (message.args.length == 0) {
 			// Check if a song is playing and use that song
-			const player = bot.manager.players.get(message.guild.id);
+			const player = bot.manager?.players.get(message.guild.id);
 			if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 			options = {
 				apiKey: bot.config.api_keys.genuis,
@@ -50,7 +50,7 @@ module.exports = class Lyrics extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// display lyrics
 		const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
@@ -71,7 +71,7 @@ module.exports = class Lyrics extends Command {
 		let options;
 		if (!song) {
 			// Check if a song is playing and use that song
-			const player = bot.manager.players.get(guild.id);
+			const player = bot.manager?.players.get(guild.id);
 			if (!player) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
 			options = {
 				apiKey: bot.config.api_keys.genuis,

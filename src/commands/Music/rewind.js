@@ -31,7 +31,7 @@ module.exports = class Rewind extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		// Make sure song isn't a stream
 		if (!player.queue.current.isSeekable) return message.channel.error('music/rewind:LIVESTREAM');
@@ -60,7 +60,7 @@ module.exports = class Rewind extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure song isn't a stream
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:LIVESTREAM', { ERROR: null }, true)] });
 
 		// update the time

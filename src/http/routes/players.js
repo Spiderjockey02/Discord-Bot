@@ -6,7 +6,7 @@ const express = require('express'),
 module.exports = function(bot) {
 	// Get information of the player
 	router.get('/:guildId', async (req, res) => {
-		const player = bot.manager.players.get(req.params.guildId);
+		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			res.status(200).json({
 				voiceChannel: player.voiceChannel,
@@ -27,7 +27,7 @@ module.exports = function(bot) {
 
 	// Skips the song
 	router.get('/:guildId/skip', async (req, res) => {
-		const player = bot.manager.players.get(req.params.guildId);
+		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			// update player
 			player.stop();
@@ -40,7 +40,7 @@ module.exports = function(bot) {
 
 	// Change volume of the song
 	router.get('/:guildId/volume', async (req, res) => {
-		const player = bot.manager.players.get(req.params.guildId);
+		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			const volume = req.query.num;
 			if (volume && Number(volume) > 0 && Number(volume) < 1000) {
@@ -57,7 +57,7 @@ module.exports = function(bot) {
 
 	// updated player's filters
 	router.get('/:guildId/filter', async (req, res) => {
-		const player = bot.manager.players.get(req.params.guildId);
+		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			let filter = req.query.option;
 			if (['nightcore', 'bassboost', 'vaporwave', 'speed'].includes(filter)) {

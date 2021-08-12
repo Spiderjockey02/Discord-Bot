@@ -24,7 +24,7 @@ module.exports = class Disconnect extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Destory player (clears queue & leaves channel)
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		player.destroy();
 		return message.channel.success('music/dc:LEFT');
 	}
@@ -39,7 +39,7 @@ module.exports = class Disconnect extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Destory player (clears queue & leaves channel)
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		player.destroy();
 		return interaction.reply({ embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
 	}

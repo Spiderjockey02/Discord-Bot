@@ -33,7 +33,7 @@ module.exports = class Instagram extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Gather data from database
 		const res = await this.createEmbed(bot, username, message.guild);

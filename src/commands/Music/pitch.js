@@ -30,7 +30,7 @@ module.exports = class Pitch extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 
 		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
 			player.resetFilter();
@@ -64,7 +64,7 @@ module.exports = class Pitch extends Command {
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 
 		if (amount && ['reset', 'off'].includes(amount.toLowerCase())) {
 			player.resetFilter();

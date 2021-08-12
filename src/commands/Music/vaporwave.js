@@ -25,7 +25,7 @@ module.exports = class Vaporwave extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// toggle vaporwave mode on/off
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		player.setVaporwave(!player.vaporwave);
 		const msg = await message.channel.send(message.translate(`music/vaporwave:${player.vaporwave ? 'ON' : 'OFF'}_VW`));
 		const embed = new MessageEmbed()
@@ -44,7 +44,7 @@ module.exports = class Vaporwave extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// toggle vaporwave mode on/off
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		player.setVaporwave(!player.vaporwave);
 		await interaction.reply({ content: guild.translate(`music/vaporwave:${player.vaporwave ? 'ON' : 'OFF'}_VW`) });
 		const embed = new MessageEmbed(bot, guild)

@@ -24,7 +24,7 @@ module.exports = class Back extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure there was a previous song
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (player.queue.previous == null) return message.channel.send(message.translate('music/back:NO_PREV'));
 
 		// Start playing the previous song
@@ -42,7 +42,7 @@ module.exports = class Back extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure there was a previous song
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		if (player.queue.previous == null) return interaction.reply({ content: guild.translate('music/back:NO_PREV') });
 
 		// Start playing the previous song

@@ -21,7 +21,7 @@ module.exports = class Dog extends Command {
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		const res = await fetch('https://nekos.life/api/v2/img/woof')
 			.then(info => info.json())

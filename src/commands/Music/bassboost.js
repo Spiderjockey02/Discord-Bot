@@ -33,7 +33,7 @@ module.exports = class Bassboost extends Command {
 
 
 		// update player's bassboost
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		let msg, embed;
 		if (!message.args[0]) {
 			player.setBassboost(!player.bassboost);
@@ -67,7 +67,7 @@ module.exports = class Bassboost extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// update player's bassboost
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		let embed;
 		if (!amount) {
 			player.setBassboost(!player.bassboost);

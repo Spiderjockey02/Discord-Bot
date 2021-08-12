@@ -24,7 +24,7 @@ module.exports = class TwentyFourSeven extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// toggle 24/7 mode off and on
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		player.twentyFourSeven = !player.twentyFourSeven;
 		message.channel.send(message.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }));
 	}
@@ -39,7 +39,7 @@ module.exports = class TwentyFourSeven extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// toggle 24/7 mode off and on
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		player.twentyFourSeven = !player.twentyFourSeven;
 		await interaction.reply({ content: bot.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }) });
 	}
