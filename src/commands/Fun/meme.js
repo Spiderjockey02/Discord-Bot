@@ -57,7 +57,7 @@ module.exports = class Meme extends Command {
 
 	/**
  	 * Function for fetching meme embed.
- 	 * @param {bot} bot The instantiating client.
+ 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command ran in
  	 * @param {settings} guildSettings The settings of the guild
  	 * @returns {embed}

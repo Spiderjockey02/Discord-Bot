@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Twitter command
+ * @extends {Command}
+*/
 module.exports = class Twitter extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'twitter',
@@ -29,7 +37,12 @@ module.exports = class Twitter extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Get user
 		const members = await message.getMember();
@@ -65,7 +78,13 @@ module.exports = class Twitter extends Command {
 		msg.delete();
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user').value);
 		const text = args.get('text').value;

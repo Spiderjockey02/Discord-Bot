@@ -10,7 +10,15 @@ const image_1 = ['3000years', 'approved', 'beautiful', 'brazzers', 'burn', 'chal
 	'tobecontinued', 'triggered', 'subzero', 'unsharpen', 'utatoo', 'wanted', 'wasted'];
 const image_2 = ['afusion', 'batslap', 'vs'];
 
+/**
+ * Generate command
+ * @extends {Command}
+*/
 module.exports = class Generate extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'generate',
@@ -42,7 +50,12 @@ module.exports = class Generate extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// If user wants to see generate list
 		if (!message.args || ['list', '?'].includes(message.args[0])) {
@@ -92,7 +105,13 @@ module.exports = class Generate extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const option = args.get('option').value;
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id).user.displayAvatarURL({ format: 'png', size: 1024 });

@@ -3,7 +3,15 @@ const { image_search } = require('duckduckgo-images-api'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Image command
+ * @extends {Command}
+*/
 module.exports = class Image extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'image',
@@ -24,7 +32,12 @@ module.exports = class Image extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Make sure a topic was included
 		if (!message.args[0]) {
@@ -52,7 +65,13 @@ module.exports = class Image extends Command {
 		msg.delete();
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const topic = args.get('topic').value;
 		const channel = guild.channels.cache.get(interaction.channelId);

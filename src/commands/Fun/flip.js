@@ -39,7 +39,7 @@ module.exports = class Flip extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
+ 	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly

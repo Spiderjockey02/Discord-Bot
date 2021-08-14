@@ -63,7 +63,7 @@ module.exports = class Avatar extends Command {
 	}
 
 	/**
-	 * Function for fetching meme embed
+	 * Function for creating avatar embed.
 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command ran in
 	 * @param {member} GuildMember The guildMember to get the avatar from

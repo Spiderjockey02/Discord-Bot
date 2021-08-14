@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Ship command
+ * @extends {Command}
+*/
 module.exports = class Ship extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'ship',
@@ -28,7 +36,12 @@ module.exports = class Ship extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Get image, defaults to author's avatar
 		const files = await message.getImage();
@@ -56,7 +69,13 @@ module.exports = class Ship extends Command {
 		msg.delete();
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user').value);
 		const member2 = guild.members.cache.get(args.get('user2')?.value ?? interaction.user.id);

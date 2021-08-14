@@ -3,7 +3,15 @@ const { MessageAttachment } = require('discord.js'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Stickbug command
+ * @extends {Command}
+*/
 module.exports = class Stickbug extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'stickbug',
@@ -24,7 +32,12 @@ module.exports = class Stickbug extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get image, defaults to author's avatar
 		const files = await message.getImage();
@@ -49,7 +62,13 @@ module.exports = class Stickbug extends Command {
 		msg.delete();
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);

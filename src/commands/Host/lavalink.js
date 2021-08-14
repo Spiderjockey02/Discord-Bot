@@ -71,8 +71,8 @@ module.exports = class Lavalink extends Command {
 	}
 
 	/**
-	 * Function for recieving message.
-	 * @param {time} number The uptime of the lavalink server.
+	 * Function for turning number to timestamp.
+	 * @param {time} number The uptime of the lavalink server
  	 * @returns {String}
 	*/
 	uptime(time) {

@@ -73,7 +73,7 @@ module.exports = class Urban extends Command {
 	}
 
 	/**
-	 * Function for creating the screenshot of the URL
+	 * Function for fetching and creating definition embed.
 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command was ran in
 	 * @param {string} phrase The phrase to search

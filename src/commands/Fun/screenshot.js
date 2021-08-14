@@ -75,7 +75,7 @@ module.exports = class Screenshot extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
+ 	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
@@ -106,7 +106,7 @@ module.exports = class Screenshot extends Command {
 	}
 
 	/**
-	 * Function for creating the screenshot of the URL
+	 * Function for creating the screenshot of the URL.
 	 * @param {bot} bot The instantiating client
 	 * @param {string} URL The URL to screenshot from
 	 * @returns {embed}

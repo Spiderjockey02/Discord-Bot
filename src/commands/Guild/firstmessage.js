@@ -79,7 +79,7 @@ module.exports = class Firstmessage extends Command {
 	}
 
 	/**
-	 * Function for fetching meme embed.
+	 * Function for creating first message embed.
 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command ran in
 	 * @param {fMessage} Message The first message of the channel

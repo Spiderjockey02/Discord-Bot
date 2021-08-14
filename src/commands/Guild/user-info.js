@@ -35,7 +35,7 @@ module.exports = class UserInfo extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
+	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command.
  	 * @readonly
 	*/
@@ -66,7 +66,7 @@ module.exports = class UserInfo extends Command {
 
 	/**
 	 * Function for creating embed of user information
-	 * @param {bot} bot The instantiating client.
+	 * @param {bot} bot The instantiating client
 	 * @param {guild} Guild The guild the command was ran in
 	 * @param {user} GuildMember The member to get information of
 	 * @returns {embed}

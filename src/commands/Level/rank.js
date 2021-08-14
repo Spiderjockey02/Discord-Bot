@@ -3,7 +3,15 @@ const { MessageAttachment } = require('discord.js'),
 	{ Rank: rank } = require('canvacord'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Rank command
+ * @extends {Command}
+*/
 module.exports = class Rank extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'rank',
@@ -25,7 +33,12 @@ module.exports = class Rank extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get user
 		const members = await message.getMember();
@@ -51,7 +64,13 @@ module.exports = class Rank extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
@@ -70,7 +89,14 @@ module.exports = class Rank extends Command {
 		}
 	}
 
-	// Create the rank card
+	/**
+ 	 * Function for fetching meme embed.
+ 	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command ran in
+ 	 * @param {member} guildMember The settings of the guild
+ 	 * @param {channel} channel The channel the command ran in
+ 	 * @returns {embed}
+	*/
 	async createRankCard(bot, guild, member, channel) {
 		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
 

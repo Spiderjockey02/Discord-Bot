@@ -3,7 +3,15 @@ const	{ MessageAttachment } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * QRCode command
+ * @extends {Command}
+*/
 module.exports = class QRcode extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'qrcode',
@@ -24,7 +32,12 @@ module.exports = class QRcode extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get text for QR encoding (including file URl)
 		const text = (!message.args[0]) ? await message.getImage().then(r => r[0]) : message.args.join(' ');
@@ -48,7 +61,13 @@ module.exports = class QRcode extends Command {
 		msg.delete();
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const text = args.get('text').value;
 		const channel = guild.channels.cache.get(interaction.channelId);

@@ -7,7 +7,15 @@ const { Embed } = require('../../utils'),
 // eslint-disable-next-line no-sparse-arrays
 const ordinal = (num) => `${num.toLocaleString('en-US')}${[, 'st', 'nd', 'rd'][(num / 10) % 10 ^ 1 && num % 10] || 'th'}`;
 
+/**
+ * Leaderboard command
+ * @extends {Command}
+*/
 module.exports = class Leaderboard extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'leaderboard',
@@ -22,7 +30,12 @@ module.exports = class Leaderboard extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -45,7 +58,13 @@ module.exports = class Leaderboard extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 
@@ -65,7 +84,12 @@ module.exports = class Leaderboard extends Command {
 		}
 	}
 
-	// create leaderboard
+	/**
+	 * Function for creating leaderboard paginator
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command ran in
+	 * @returns {embed}
+	*/
 	async createLeaderboard(bot, guild) {
 		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
 
