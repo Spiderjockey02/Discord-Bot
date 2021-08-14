@@ -34,8 +34,8 @@ module.exports = class Urban extends Command {
 
 	/**
  	 * Function for recieving message.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
   */
 	async run(bot, message, settings) {
@@ -58,9 +58,9 @@ module.exports = class Urban extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -74,10 +74,10 @@ module.exports = class Urban extends Command {
 
 	/**
 	 * Function for creating the screenshot of the URL
-	 * @param {bot} bot The instantiating client.
-	 * @param {guild} guild The guild the command was ran in.
-	 * @param {string} phrase The phrase to search.
-	 * @param {channel} channel The channel the command was ran in.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {string} phrase The phrase to search
+	 * @param {channel} channel The channel the command was ran in
 	 * @returns {embed}
 	*/
 	async fetchDefinition(bot, guild, phrase, channel) {

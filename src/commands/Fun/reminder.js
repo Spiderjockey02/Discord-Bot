@@ -29,8 +29,8 @@ module.exports = class Reminder extends Command {
 
 	/**
  	 * Function for recieving message.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
   */
 	async run(bot, message, settings) {

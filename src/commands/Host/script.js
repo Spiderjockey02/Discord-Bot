@@ -4,7 +4,15 @@ const { MessageEmbed } = require('discord.js'),
 	readdir = promisify(require('fs').readdir),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Script command
+ * @extends {Command}
+*/
 module.exports = class Script extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'script',
@@ -19,7 +27,12 @@ module.exports = class Script extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		const scripts = (await readdir('./src/scripts')).filter((v, i, a) => a.indexOf(v) === i);
 

@@ -33,8 +33,8 @@ module.exports = class Pokemon extends Command {
 
 	/**
  	 * Function for recieving message.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
   */
 	async run(bot, message, settings) {
@@ -50,52 +50,53 @@ module.exports = class Pokemon extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Search for pokemon
-		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${message.args.join(' ')}`)
-			.then((info) => info.json())
-			.catch((err) => {
-				// An error occured when looking for account
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				msg.delete();
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			});
 
-		// Send response to channel
-		const embed = new Embed(bot, message.guild)
-			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
-			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
-			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
-			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
-		msg.delete();
-		message.channel.send({ embeds: [embed] });
+		try {
+			const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`).then(info => info.json());
+
+			// Send response to channel
+			const embed = new Embed(bot, message.guild)
+				.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
+				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
+				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
+				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
+			msg.delete();
+			message.channel.send({ embeds: [embed] });
+		} catch (err) {
+			// An error occured when looking for account
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			msg.delete();
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
 	}
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
- 	 * @readonly
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @returns {embed}
 	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			pokemon = args.get('pokemon').value;
 
 		// Search for pokemon
-		const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`)
-			.then(async (info) => info.json())
-			.catch(async (err) => {
-			// An error occured when looking for account
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
-			});
+		try {
+			const res = await fetch(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/pokedex.php?pokemon=${pokemon}`).then(info => info.json());
 
-		// Send response to channel
-		const embed = new Embed(bot, guild)
-			.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
-			.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
-			.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
-			.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
-		return interaction.reply({ embeds: [embed] });
+			// Send response to channel
+			const embed = new Embed(bot, guild)
+				.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
+				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
+				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
+				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
+			return interaction.reply({ embeds: [embed] });
+		} catch (err) {
+			// An error occured when looking for account
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

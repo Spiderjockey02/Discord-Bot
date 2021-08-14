@@ -25,8 +25,8 @@ module.exports = class Meme extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
 	async run(bot, message, settings) {
@@ -44,9 +44,9 @@ module.exports = class Meme extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
@@ -56,7 +56,7 @@ module.exports = class Meme extends Command {
 	}
 
 	/**
- 	 * Function for fetching meme embed
+ 	 * Function for fetching meme embed.
  	 * @param {bot} bot The instantiating client.
 	 * @param {guild} guild The guild the command ran in
  	 * @param {settings} guildSettings The settings of the guild

@@ -34,8 +34,8 @@ module.exports = class Avatar extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
 	async run(bot, message) {
@@ -49,9 +49,9 @@ module.exports = class Avatar extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -64,10 +64,10 @@ module.exports = class Avatar extends Command {
 
 	/**
 	 * Function for fetching meme embed
-	 * @param {bot} bot The instantiating client.
+	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command ran in
 	 * @param {member} GuildMember The guildMember to get the avatar from
-	 * @readonly
+	 * @returns {embed}
 	*/
 	avatarEmbed(bot, guild, member) {
 		return new Embed(bot, guild)

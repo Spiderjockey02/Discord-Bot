@@ -3,7 +3,15 @@ const { inspect } = require('util'),
 	{ MessageEmbed } = require ('discord.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Eval command
+ * @extends {Command}
+*/
 module.exports = class Eval extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'eval',
@@ -17,7 +25,12 @@ module.exports = class Eval extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Evaluated the code
 		const toEval = message.args.join(' ');

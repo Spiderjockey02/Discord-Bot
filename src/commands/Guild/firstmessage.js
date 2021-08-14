@@ -33,8 +33,8 @@ module.exports = class Firstmessage extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
 	async run(bot, message) {
@@ -57,9 +57,9 @@ module.exports = class Firstmessage extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -78,7 +78,13 @@ module.exports = class Firstmessage extends Command {
 		}
 	}
 
-	// Create the embed for the first message in channel
+	/**
+	 * Function for fetching meme embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command ran in
+	 * @param {fMessage} Message The first message of the channel
+	 * @returns {embed}
+	*/
 	createEmbed(bot, guild, fMessage) {
 		return new Embed(bot, guild)
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)

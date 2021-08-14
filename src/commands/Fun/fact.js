@@ -33,7 +33,7 @@ module.exports = class Fact extends Command {
   */
 	async run(bot, message) {
 		// Get the random facts file
-		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
+		fs.readFile('./src/assets/json/random-facts.jsn', (err, data) => {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -52,9 +52,9 @@ module.exports = class Fact extends Command {
 
 	/**
 	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
   */
 	async callback(bot, interaction, guild) {

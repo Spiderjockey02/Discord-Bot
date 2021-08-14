@@ -5,7 +5,15 @@ const { MessageEmbed } = require('discord.js'),
 	axios = require('axios'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * User command
+ * @extends {Command}
+*/
 module.exports = class UserData extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'user',
@@ -19,7 +27,12 @@ module.exports = class UserData extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		let user;
 		try {

@@ -34,8 +34,8 @@ module.exports = class Discrim extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
 	async run(bot, message) {
@@ -53,9 +53,9 @@ module.exports = class Discrim extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {

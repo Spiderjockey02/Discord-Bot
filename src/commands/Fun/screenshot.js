@@ -35,8 +35,8 @@ module.exports = class Screenshot extends Command {
 
 	/**
  	 * Function for recieving message.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
   */
 	async run(bot, message, settings) {
@@ -76,8 +76,8 @@ module.exports = class Screenshot extends Command {
 	/**
  	 * Function for recieving interaction.
  	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -107,8 +107,8 @@ module.exports = class Screenshot extends Command {
 
 	/**
 	 * Function for creating the screenshot of the URL
-	 * @param {bot} bot The instantiating client.
-	 * @param {string} URL The URL to screenshot from.
+	 * @param {bot} bot The instantiating client
+	 * @param {string} URL The URL to screenshot from
 	 * @returns {embed}
 	*/
 	async fetchScreenshot(bot, URL) {

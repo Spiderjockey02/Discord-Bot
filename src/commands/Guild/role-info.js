@@ -35,8 +35,8 @@ module.exports = class RoleInfo extends Command {
 
 	/**
 	 * Function for recieving message.
-	 * @param {bot} bot The instantiating client.
- 	 * @param {message} message The message that ran the command.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
 	async run(bot, message, settings) {
@@ -56,9 +56,9 @@ module.exports = class RoleInfo extends Command {
 
 	/**
  	 * Function for recieving interaction.
- 	 * @param {bot} bot The instantiating client.
- 	 * @param {interaction} interaction The interaction that ran the command.
- 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -71,10 +71,10 @@ module.exports = class RoleInfo extends Command {
 	}
 
 	/**
-	 * Function for creating embed of role information
-	 * @param {bot} bot The instantiating client.
-	 * @param {guild} Guild The guild the command was ran in.
-	 * @param {role} Role The role to get information from.
+	 * Function for creating embed of role information.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} Guild The guild the command was ran in
+	 * @param {role} Role The role to get information from
 	 * @param {user} User The user for embed#footer
 	 * @returns {embed}
 	*/

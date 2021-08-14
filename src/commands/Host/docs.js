@@ -2,7 +2,15 @@
 const { get } = require('axios'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Docs command
+ * @extends {Command}
+*/
 module.exports = class Docs extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'docs',
@@ -16,7 +24,12 @@ module.exports = class Docs extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get docs information
 		get(`https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(message.args.join(' '))}`)
