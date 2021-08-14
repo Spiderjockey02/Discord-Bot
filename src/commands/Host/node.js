@@ -28,6 +28,7 @@ module.exports = class MusicNode extends Command {
 	 * Function for recieving message.
 	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
 	async run(bot, message, settings) {

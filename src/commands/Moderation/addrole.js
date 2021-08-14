@@ -2,7 +2,15 @@
 const fs = require('fs'),
 	Command = require('../../structures/Command.js');
 
-module.exports = class addrole extends Command {
+/**
+ * Addrole command
+ * @extends {Command}
+*/
+module.exports = class AddRole extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'addrole',
@@ -18,7 +26,13 @@ module.exports = class addrole extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
