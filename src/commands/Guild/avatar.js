@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Avatar command
+ * @extends {Command}
+*/
 module.exports = class Avatar extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name: 'avatar',
@@ -24,7 +32,12 @@ module.exports = class Avatar extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client.
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get avatar embed
 		const members = await message.getMember();
@@ -34,7 +47,13 @@ module.exports = class Avatar extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {interaction} interaction The interaction that ran the command.
+ 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 		const embed = this.avatarEmbed(bot, guild, member);
@@ -43,7 +62,13 @@ module.exports = class Avatar extends Command {
 		return interaction.reply({ embeds: [embed] });
 	}
 
-	// create avatar embed
+	/**
+	 * Function for fetching meme embed
+	 * @param {bot} bot The instantiating client.
+	 * @param {guild} guild The guild the command ran in
+	 * @param {member} GuildMember The guildMember to get the avatar from
+	 * @readonly
+	*/
 	avatarEmbed(bot, guild, member) {
 		return new Embed(bot, guild)
 			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member.user.tag })

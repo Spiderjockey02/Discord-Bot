@@ -5,7 +5,15 @@ const ms = require('ms'),
 	{ time: { getTotalTime }, Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+	* Reminder command
+	* @extends {Command}
+*/
 module.exports = class Reminder extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'reminder',
@@ -19,7 +27,12 @@ module.exports = class Reminder extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Make something that time and information is entered
 		if (!message.args[1]) {

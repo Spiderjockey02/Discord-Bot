@@ -3,7 +3,15 @@ const { define } = require('urban-dictionary'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Urban command
+ * @extends {Command}
+*/
 module.exports = class Urban extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'urban',
@@ -24,7 +32,12 @@ module.exports = class Urban extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Get phrase
 		const phrase = message.args.join(' ');
@@ -43,7 +56,13 @@ module.exports = class Urban extends Command {
 		message.channel.send({ embeds: [resp] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {interaction} interaction The interaction that ran the command.
+ 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			phrase = args.get('phrase').value;
@@ -53,7 +72,14 @@ module.exports = class Urban extends Command {
 		interaction.reply({ embeds: [resp] });
 	}
 
-	// fetch defintion of word
+	/**
+	 * Function for creating the screenshot of the URL
+	 * @param {bot} bot The instantiating client.
+	 * @param {guild} guild The guild the command was ran in.
+	 * @param {string} phrase The phrase to search.
+	 * @param {channel} channel The channel the command was ran in.
+	 * @returns {embed}
+	*/
 	async fetchDefinition(bot, guild, phrase, channel) {
 		try {
 			const resp = await define(phrase);

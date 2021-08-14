@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Meme command
+ * @extends {Command}
+*/
 module.exports = class Meme extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'meme',
@@ -15,7 +23,12 @@ module.exports = class Meme extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client.
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -29,19 +42,31 @@ module.exports = class Meme extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {interaction} interaction The interaction that ran the command.
+ 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
 		const embed = await this.fetchMeme(bot, guild, settings);
 		return interaction.reply({ embeds: [embed] });
 	}
 
-	// Fetch meme data
+	/**
+ 	 * Function for fetching meme embed
+ 	 * @param {bot} bot The instantiating client.
+	 * @param {guild} guild The guild the command ran in
+ 	 * @param {settings} guildSettings The settings of the guild
+ 	 * @returns {embed}
+	*/
 	async fetchMeme(bot, guild, settings) {
 		try {
 			const meme = await bot.Ksoft.images.meme();
 			if (!meme.url) {
-				return this.fetchMeme();
+				return this.fetchMeme(bot, guild, settings);
 			} else {
 				return new Embed(bot, guild)
 					.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })

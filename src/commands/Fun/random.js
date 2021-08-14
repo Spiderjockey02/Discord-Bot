@@ -3,7 +3,15 @@ const max = 100000,
 	{ MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Random command
+ * @extends {Command} [src/structures/Command]
+*/
 module.exports = class Random extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'random',
@@ -29,7 +37,12 @@ module.exports = class Random extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 
 		// Random number and facts command
@@ -56,7 +69,13 @@ module.exports = class Random extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client.
+ 	 * @param {interaction} interaction The interaction that ran the command.
+ 	 * @param {guild} guild The guild the interaction ran in.
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			settings = guild.settings,
