@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Help command
+ * @extends {Command}
+*/
 module.exports = class Help extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'help',
@@ -22,21 +30,41 @@ module.exports = class Help extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// show help embed
 		const embed = this.createEmbed(bot, settings, message.channel, message.args[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const embed = this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
 		interaction.reply({ embeds: [embed] });
 	}
 
-	// create Help embed
+	/**
+	 * Function for creating bot about embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {channel} channel The channel the command was ran in
+	 * @param {command} command The command to show, if any
+	 * @param {user} user The user who ran the command
+ 	 * @returns {embed}
+	*/
 	createEmbed(bot, settings, channel, command, user) {
 		if (!command) {
 			// Show default help page

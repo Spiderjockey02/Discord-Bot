@@ -2,7 +2,15 @@
 const { MessageEmbed } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Privacy command
+ * @extends {Command}
+*/
 module.exports = class Privacy extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'privacy',
@@ -16,7 +24,12 @@ module.exports = class Privacy extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Send link to privacy policy
 		const embed = new MessageEmbed()
@@ -24,7 +37,13 @@ module.exports = class Privacy extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const embed = new MessageEmbed()
 			.setDescription(guild.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }));

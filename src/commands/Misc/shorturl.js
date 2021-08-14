@@ -2,7 +2,15 @@
 const { shorten } = require('tinyurl'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * ShortURL command
+ * @extends {Command}
+*/
 module.exports = class ShortURL extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'shorturl',
@@ -23,7 +31,12 @@ module.exports = class ShortURL extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		const mes = message.content.split(' ').slice(1).join(' ');
 
@@ -44,7 +57,13 @@ module.exports = class ShortURL extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const link = args.get('url').value;

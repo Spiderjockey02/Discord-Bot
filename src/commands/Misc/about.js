@@ -4,7 +4,15 @@ const { version } = require('discord.js'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * About command
+ * @extends {Command}
+*/
 module.exports = class About extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'about',
@@ -18,20 +26,37 @@ module.exports = class About extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		const embed = this.createEmbed(bot, message.guild, settings);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const settings = guild.settings;
 		const embed = this.createEmbed(bot, guild, settings);
 		interaction.reply({ embeds: [embed] });
 	}
 
-	// create the 'about' embed
+	/**
+	 * Function for creating bot about embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {settings} settings The settings of the guild
+ 	 * @returns {embed}
+	*/
 	createEmbed(bot, guild, settings) {
 		return new Embed(bot, guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
