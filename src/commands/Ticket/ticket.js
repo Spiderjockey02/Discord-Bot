@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	{ MessageActionRow, MessageButton } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Ticket command
+ * @extends {Command}
+*/
 module.exports = class Ticket extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'ticket',
@@ -18,7 +26,13 @@ module.exports = class Ticket extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Add ticket reaction embed
 		if (message.member.permissions.has('MANAGE_GUILD')) {
