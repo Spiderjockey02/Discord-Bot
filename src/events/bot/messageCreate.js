@@ -58,10 +58,10 @@ module.exports = class messageCreate extends Event {
 				args.shift();
 				if (!cmd) return;
 			} else if (!cmd) {
-				let tag = message.guild.guildTags.find(result => result.toLowerCase() == command)
-				if(tag) {
-					const response = await TagsSchema.find({ guildID: message.guild.id, name: tag })
-					return message.channel.send(response[0].response)
+				const tag = message.guild.guildTags.find(result => result.toLowerCase() == command);
+				if (tag) {
+					const response = await TagsSchema.find({ guildID: message.guild.id, name: tag });
+					return message.channel.send(response[0].response);
 				} else {
 					return;
 				}

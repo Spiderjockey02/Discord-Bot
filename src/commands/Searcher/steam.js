@@ -56,12 +56,13 @@ module.exports = class Steam extends Command {
 	}
 
 	/**
- * Function for recieving interaction.
- * @param {bot} bot The instantiating client.
- * @param {interaction} interaction The interaction that ran the command.
- * @param {guild} guild The guild the interaction ran in.
- * @readonly
-*/
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value;
@@ -74,7 +75,15 @@ module.exports = class Steam extends Command {
 		interaction.reply({ embeds: [resp] });
 	}
 
-	// Fetch account data from steam
+	/**
+	 * Function for fetching/creating instagram embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {channel} channel The channel the command was ran in
+	 * @param {string} token API token to interact with steam API
+	 * @param {string} username The username to search
+	 * @returns {embed}
+	*/
 	async fetchSteamData(bot, guild, channel, token, username) {
 		const { response } = await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${token}&vanityurl=${username}`)
 			.then(res => res.json())

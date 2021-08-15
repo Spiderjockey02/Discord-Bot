@@ -4,7 +4,15 @@ const { paginate } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * previous command
+ * @extends {Command}
+*/
 module.exports = class Previous extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'previous',
@@ -19,7 +27,12 @@ module.exports = class Previous extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {

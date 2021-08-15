@@ -103,12 +103,13 @@ module.exports = class R6 extends Command {
 	}
 
 	/**
- * Function for recieving interaction.
- * @param {bot} bot The instantiating client.
- * @param {interaction} interaction The interaction that ran the command.
- * @param {guild} guild The guild the interaction ran in.
- * @readonly
-*/
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value,
@@ -132,6 +133,16 @@ module.exports = class R6 extends Command {
 		}
 	}
 
+	/**
+	 * Function for fetching/creating instagram embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {channel} channel The channel the command was ran in
+	 * @param {string} player The player name to search
+	 * @param {string} platform The platform to search the player on
+	 * @param {string} region The region the player is from
+	 * @returns {embed}
+	*/
 	async fetchUserData(bot, guild, channel, player, platform, region) {
 		if (platform === 'xbl') player = player.replace('_', '');
 		try {

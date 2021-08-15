@@ -1,5 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -32,7 +33,7 @@ module.exports = class Invite extends Command {
 	*/
 	async run(bot, message) {
 		const embed = new MessageEmbed()
-			.setDescription(message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }));
+			.setDescription(message.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }));
 		message.channel.send({ embeds: [embed] });
 	}
 

@@ -59,12 +59,13 @@ module.exports = class Reddit extends Command {
 	}
 
 	/**
- * Function for recieving interaction.
- * @param {bot} bot The instantiating client.
- * @param {interaction} interaction The interaction that ran the command.
- * @param {guild} guild The guild the interaction ran in.
- * @readonly
-*/
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			subreddit = args.get('subreddit').value;
@@ -80,7 +81,13 @@ module.exports = class Reddit extends Command {
 		}
 	}
 
-	// fetch a random post from the subreddit
+	/**
+	 * Function for fetching/creating instagram embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {string} subreddit The subreddit to get a post from
+	 * @returns {embed}
+	*/
 	async fetchPost(bot, channel, subreddit) {
 		let reddit;
 		try {
@@ -91,7 +98,6 @@ module.exports = class Reddit extends Command {
 			} else {
 				reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: true });
 			}
-
 			// Send message to channel
 			return new Embed(bot, channel.guild)
 				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })

@@ -75,6 +75,7 @@ module.exports = class WhoWouldWin extends Command {
  	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {

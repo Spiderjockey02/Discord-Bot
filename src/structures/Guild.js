@@ -49,7 +49,7 @@ module.exports = Object.defineProperties(Guild.prototype, {
 	// Append guild-tags to guild
 	guildTags: {
 		value: [],
-		writable: true
+		writable: true,
 	},
 	// Append premium to guild
 	premium: {

@@ -5,7 +5,15 @@ const	{ Embed } = require('../../utils'),
 	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * playlist view command
+ * @extends {Command}
+*/
 module.exports = class PView extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'p-view',
@@ -20,7 +28,12 @@ module.exports = class PView extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message) {
 		// Find all playlists made by the user
 		PlaylistSchema.find({

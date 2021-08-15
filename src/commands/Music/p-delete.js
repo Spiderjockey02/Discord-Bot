@@ -2,7 +2,15 @@
 const { PlaylistSchema } = require('../../database/models'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * playlist delete command
+ * @extends {Command}
+*/
 module.exports = class PDelete extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'p-delete',
@@ -17,7 +25,12 @@ module.exports = class PDelete extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-delete:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

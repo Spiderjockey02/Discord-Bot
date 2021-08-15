@@ -9,7 +9,15 @@ const features = ['CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREAT
 	'VOICESTATEUPDATE', 'REPORT', 'WARNING', 'TICKET', 'INVITECREATE', 'INVITEDELETE', 'THREADCREATE', 'THREADDELETE', 'THREADUPDATE', 'THREADMEMBERSUPDATE',
 	'STICKERCREATE', 'STICKERDELETE', 'STICKERUPDATE'];
 
+/**
+ * Setlog command
+ * @extends {Command}
+*/
 module.exports = class SetLog extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'set-logs',
@@ -25,7 +33,13 @@ module.exports = class SetLog extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();

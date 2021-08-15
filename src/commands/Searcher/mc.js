@@ -68,12 +68,13 @@ module.exports = class MC extends Command {
 	}
 
 	/**
- * Function for recieving interaction.
- * @param {bot} bot The instantiating client.
- * @param {interaction} interaction The interaction that ran the command.
- * @param {guild} guild The guild the interaction ran in.
- * @readonly
-*/
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			IP = args.get('ip').value,
@@ -92,7 +93,15 @@ module.exports = class MC extends Command {
 		}
 	}
 
-	// create MC embed
+	/**
+	 * Function for fetching/creating instagram embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {channel} channel The channel the command was ran in
+	 * @param {string} IP The IP of the server to ping
+	 * @param {string} port The port that the server runs on
+	 * @returns {embed}
+	*/
 	async createEmbed(bot, guild, channel, IP, port) {
 		try {
 			const response = await status(IP, { port: parseInt(port) });

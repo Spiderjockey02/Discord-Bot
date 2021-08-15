@@ -82,12 +82,13 @@ module.exports = class Twitch extends Command {
 	}
 
 	/**
- * Function for recieving interaction.
- * @param {bot} bot The instantiating client.
- * @param {interaction} interaction The interaction that ran the command.
- * @param {guild} guild The guild the interaction ran in.
- * @readonly
-*/
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			user = args.get('username').value;
@@ -119,17 +120,33 @@ module.exports = class Twitch extends Command {
 		}
 	}
 
-	// fetch basic user info (and check that user exists)
+	/**
+	 * Function for fetching basic information on user
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} login The username to search
+	 * @returns {object}
+	*/
 	async getUserByUsername(bot, login) {
 		return this.request(bot, '/users', { login }).then(u => u && u.data[0]);
 	}
 
-	// fetch stream data from user (if user is streaming)
+	/**
+	 * Function for checking if user is streaming
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} username The username to search
+	 * @returns {object}
+	*/
 	async getStreamByUsername(bot, username) {
 		return this.request(bot, '/streams', { user_login: username }).then(s => s && s.data[0]);
 	}
 
-	// fetches the data for other functions
+	/**
+	 * Function for fetching data from twitch API
+	 * @param {bot} bot The instantiating client
+	 * @param {string} endpoint the endpoint of the twitch API to request
+	 * @param {object} queryParams The query sent to twitch API
+	 * @returns {object}
+	*/
 	request(bot, endpoint, queryParams = {}) {
 		const qParams = new URLSearchParams(queryParams);
 		return fetch('https://api.twitch.tv/helix' + endpoint + `?${qParams.toString()}`, {
@@ -144,12 +161,21 @@ module.exports = class Twitch extends Command {
 			}).catch(e => console.log(e));
 	}
 
-	// Fetch follower data from user ID
+	/**
+	 * Function for fetching follower data from user
+	 * @param {bot} bot The instantiating client
+	 * @param {string} id the ID of the user
+	 * @returns {object}
+	*/
 	async getFollowersFromId(bot, id) {
 		return this.request(bot, '/users/follows', { to_id: id }).then(u => u && u.total);
 	}
 
-	// Fetch access_token to interact with twitch API
+	/**
+	 * Function for fetching access_token to interact with the twitch API
+	 * @param {bot} bot The instantiating client
+	 * @returns {string}
+	*/
 	async refreshTokens(bot) {
 		await fetch(`https://id.twitch.tv/oauth2/token?client_id=${bot.config.api_keys.twitch.clientID}&client_secret=${bot.config.api_keys.twitch.clientSecret}&grant_type=client_credentials`, {
 			method: 'POST',

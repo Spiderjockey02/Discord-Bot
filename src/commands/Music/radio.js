@@ -4,7 +4,15 @@ const { Embed } = require('../../utils'),
 	{ getStations } = require('radio-browser'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * radio command
+ * @extends {Command}
+*/
 module.exports = class Radio extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'radio',
@@ -17,7 +25,12 @@ module.exports = class Radio extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {

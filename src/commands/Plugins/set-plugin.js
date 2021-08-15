@@ -2,9 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
-const defaultPlugins = ['Fun', 'Giveaway', 'Guild', 'Image', 'Level', 'Misc', 'Moderation', 'Music', 'NSFW', 'Plugins', 'Searcher', 'Ticket', 'Tags'];
-
+/**
+ * setplugin command
+ * @extends {Command}
+*/
 module.exports = class SetPlugin extends Command {
+	/**
+ * @param {Client} client The instantiating client
+ * @param {CommandData} data The data for the command
+*/
 	constructor(bot) {
 		super(bot, {
 			name: 'set-plugin',
@@ -20,8 +26,17 @@ module.exports = class SetPlugin extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
+		// Get all the command categories
+		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i);
+
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 

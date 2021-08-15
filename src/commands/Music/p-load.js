@@ -4,7 +4,15 @@ const	{ Embed } = require('../../utils'),
 	{ TrackUtils } = require('erela.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * playlist load command
+ * @extends {Command}
+*/
 module.exports = class PLoad extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'p-load',
@@ -19,7 +27,12 @@ module.exports = class PLoad extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-load:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
