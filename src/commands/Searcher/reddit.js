@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Reddit command
+ * @extends {Command}
+*/
 module.exports = class Reddit extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'reddit',
@@ -22,7 +30,13 @@ module.exports = class Reddit extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Get subreddit
 		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/reddit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -44,7 +58,13 @@ module.exports = class Reddit extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ * Function for recieving interaction.
+ * @param {bot} bot The instantiating client.
+ * @param {interaction} interaction The interaction that ran the command.
+ * @param {guild} guild The guild the interaction ran in.
+ * @readonly
+*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			subreddit = args.get('subreddit').value;
@@ -63,19 +83,26 @@ module.exports = class Reddit extends Command {
 	// fetch a random post from the subreddit
 	async fetchPost(bot, channel, subreddit) {
 		let reddit;
-		// Check if its a NSFW channel or not
-		if (channel.nsfw) {
-			// NSFW content can be shown
-			reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: false });
-		} else {
-			reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: true });
-		}
+		try {
+			// Check if its a NSFW channel or not
+			if (channel.nsfw || channel.type == 'DM') {
+				// NSFW content can be shown
+				reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: false });
+			} else {
+				reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: true });
+			}
 
-		// Send message to channel
-		return new Embed(bot, channel.guild)
-			.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
-			.setURL(reddit.post.link)
-			.setImage(reddit.url)
-			.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(channel.guild.settings.Language) });
+			// Send message to channel
+			return new Embed(bot, channel.guild)
+				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
+				.setURL(reddit.post.link)
+				.setImage(reddit.url)
+				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(channel.guild.settings.Language) });
+		} catch (err) {
+			bot.logger.error(err.message);
+			bot.commands.delete('reddit');
+			return new Embed(bot, channel.guild)
+				.setDescription('Meme failed to load');
+		}
 	}
 };

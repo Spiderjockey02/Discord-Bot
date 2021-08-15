@@ -3,7 +3,15 @@ const { find } = require('weather-js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Weather command
+ * @extends {Command}
+*/
 module.exports = class Weather extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'weather',
@@ -23,7 +31,13 @@ module.exports = class Weather extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/weather:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
@@ -52,7 +66,13 @@ module.exports = class Weather extends Command {
 		});
 	}
 
-	// Function for slash command
+	/**
+ * Function for recieving interaction.
+ * @param {bot} bot The instantiating client.
+ * @param {interaction} interaction The interaction that ran the command.
+ * @param {guild} guild The guild the interaction ran in.
+ * @readonly
+*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			location = args.get('location').value;

@@ -2,7 +2,15 @@
 const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * TagEdit command
+ * @extends {Command}
+*/
 module.exports = class TagEdit extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-edit',
@@ -18,7 +26,13 @@ module.exports = class TagEdit extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();

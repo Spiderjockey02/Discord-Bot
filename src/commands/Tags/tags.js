@@ -2,6 +2,10 @@
 const Command = require('../../structures/Command.js');
 
 module.exports = class Tags extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'tags',
@@ -17,7 +21,13 @@ module.exports = class Tags extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
