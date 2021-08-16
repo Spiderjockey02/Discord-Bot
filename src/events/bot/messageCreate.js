@@ -1,7 +1,7 @@
 // Dependencies
 const { Collection } = require('discord.js'),
 	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime } } = require('../../utils'),
+	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
@@ -34,7 +34,7 @@ module.exports = class messageCreate extends Event {
 					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.users.cache.size, CMDS: bot.commands.size }),
 				].join('\n\n'))
 				.addField(message.translate('events/message:LINKS'), [
-					message.translate('events/message:ADD', { INVITE: bot.config.inviteLink }),
+					message.translate('events/message:ADD', { INVITE: genInviteLink(bot) }),
 					message.translate('events/message:SUPPORT', { LINK: bot.config.SupportServer.link }),
 					message.translate('events/message:WEBSITE', { URL: bot.config.websiteURL }),
 				].join('\n'));

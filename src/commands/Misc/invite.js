@@ -45,6 +45,6 @@ module.exports = class Invite extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		return interaction.reply({ embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }] });
+		return interaction.reply({ embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }) }] });
 	}
 };

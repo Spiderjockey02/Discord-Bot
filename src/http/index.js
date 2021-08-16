@@ -28,18 +28,19 @@ module.exports = async bot => {
 	app
 		.use(cors())
 		.get('/', (req, res) => {
-			// if (bot.config.debug) log()  bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/commands\`.`);
-			res.type('text/plain');
-			res.send([
-				`API server for ${bot.user.tag}`,
-				'Endpoints:',
-				endpoints.join('\n'),
-			].join('\n'));
+			res
+				.type('text/plain')
+				.send([
+					`API server for ${bot.user.tag}`,
+					'Endpoints:',
+					endpoints.join('\n'),
+				].join('\n'));
 		})
 		// Make sure web scrapers aren't used
 		.get('/robots.txt', function(req, res) {
-			res.type('text/plain');
-			res.send('User-agent: *\ndisallow: /');
+			res
+				.type('text/plain')
+				.send('User-agent: *\ndisallow: /');
 		})
 		.get('*', async function(req, res) {
 			res.send('No data here. Go away!');

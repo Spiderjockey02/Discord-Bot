@@ -15,3 +15,13 @@ module.exports.checkMusic = (member, bot) => {
 
 	return true;
 };
+
+module.exports.checkNSFW = (channel) => {
+	return channel.nsfw || channel.type == 'DM';
+};
+
+module.exports.genInviteLink = (bot) => {
+	return bot.generateInvite({
+		permissions: BigInt(1073081686),
+		scopes: ['bot', 'applications.commands'] });
+};
