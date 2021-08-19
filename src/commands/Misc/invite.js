@@ -1,8 +1,17 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
+	{ functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Invite command
+ * @extends {Command}
+*/
 module.exports = class Invite extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'invite',
@@ -16,15 +25,26 @@ module.exports = class Invite extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		const embed = new MessageEmbed()
-			.setDescription(message.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }));
+			.setDescription(message.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }));
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
-		return bot.send(interaction, { embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: bot.config.inviteLink }) }] });
+		return interaction.reply({ embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }) }] });
 	}
 };

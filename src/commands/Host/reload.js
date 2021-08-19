@@ -4,13 +4,21 @@ const { promisify } = require('util'),
 	path = require('path'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Reload command
+ * @extends {Command}
+*/
 module.exports = class Reload extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'reload',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Reloads a command.',
 			usage: 'reload <command / event>',
 			cooldown: 3000,
@@ -18,7 +26,13 @@ module.exports = class Reload extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (message.deletable) message.delete();

@@ -34,7 +34,7 @@ module.exports = class messageUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event channelDelete is for logging
-		if (settings.ModLogEvents.includes('MESSAGEUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('MESSAGEUPDATE') && settings.ModLog) {
 			// shorten both messages when the content is larger then 1024 chars
 			let oldShortened = false;
 			let oldContent = oldMessage.content;

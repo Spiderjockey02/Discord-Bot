@@ -2,10 +2,19 @@
 const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * TagDelete command
+ * @extends {Command}
+*/
 module.exports = class TagDelete extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-delete',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-delete', 't-remove', 'tag-del'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -17,7 +26,13 @@ module.exports = class TagDelete extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -30,6 +45,7 @@ module.exports = class TagDelete extends Command {
 			const result = await TagsSchema.findOneAndRemove({ guildID: message.guild.id, name: message.args[0] });
 			if (result) {
 				message.channel.send(message.translate('tags/tag-delete:TAG_DELETED', { TAG: message.args[0] }));
+				message.guild.guildTags.splice(message.guild.guildTags.indexOf(message.args[0]), 1);
 			} else {
 				message.channel.send(message.translate('tags/tag-delete:NO_TAG', { TAG: message.args[0] }));
 			}

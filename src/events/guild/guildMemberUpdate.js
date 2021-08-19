@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MutedMemberSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class guildMemberUpdate extends Event {
@@ -25,7 +24,7 @@ module.exports = class guildMemberUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDMEMBERUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// nickname change
@@ -81,11 +80,11 @@ module.exports = class guildMemberUpdate extends Event {
 			const rolesRemoved = oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id));
 			if (rolesAdded.size != 0 || rolesRemoved.size != 0) {
 				const roleAddedString = [];
-				for (const role of rolesAdded.array()) {
+				for (const role of [...rolesAdded.values()]) {
 					roleAddedString.push(role.toString());
 				}
 				const roleRemovedString = [];
-				for (const role of rolesRemoved.array()) {
+				for (const role of [...rolesRemoved.values()]) {
 					roleRemovedString.push(role.toString());
 				}
 				embed = new Embed(bot, newMember.guild)
@@ -113,7 +112,8 @@ module.exports = class guildMemberUpdate extends Event {
 		// check if member lost mute role manually
 		if (oldMember.roles.cache.filter(x => !newMember.roles.cache.get(x.id)).map(r => r.id).includes(settings.MutedRole)) {
 			try {
-				await MutedMemberSchema.findOneAndRemove({ userID: newMember.user.id, guildID: newMember.guild.id });
+				await newMember.guild.updateGuild({ MutedMembers: settings.MutedMembers.filter(user => user != newMember.user.id) });
+				settings.MutedMembers.filter(user => user != newMember.user.id);
 			} catch (err) {
 				bot.logger.error(`${newMember.user.id}`);
 			}

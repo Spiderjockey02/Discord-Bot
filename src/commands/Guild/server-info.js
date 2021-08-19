@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Server-info command
+ * @extends {Command}
+*/
 module.exports = class ServerInfo extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name:  'server-info',
@@ -18,25 +26,42 @@ module.exports = class ServerInfo extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Sort roles by position
 		const embed = await this.createEmbed(bot, message.guild, message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const user = interaction.member.user;
 
 		// send embed
 		const embed = await this.createEmbed(bot, guild, user);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
-	// create serverinfo embed
+	/**
+	 * Function for creating embed of server information.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} Guild The guild the command was ran in
+	 * @param {user} User The user for embed#footer
+	 * @returns {embed}
+	*/
 	async createEmbed(bot, guild, user) {
-		const roles = guild.roles.cache.sort((a, b) => b.position - a.position).array();
+		const roles = [...guild.roles.cache.sort((a, b) => b.position - a.position).values()];
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
@@ -58,7 +83,7 @@ module.exports = class ServerInfo extends Command {
 					ONLINE: member.filter(m => m.presence?.status === 'online').size.toLocaleString(guild.settings.Language), IDLE: member.filter(m => m.presence?.status === 'idle').size.toLocaleString(guild.settings.Language), DND: member.filter(m => m.presence?.status === 'dnd').size.toLocaleString(guild.settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(guild.settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(guild.settings.Language),
 				}), inline: true },
 				{ name: guild.translate('guild/server-info:FEATURES'), value: `\`${(guild.features.length == 0) ? guild.translate('misc:NONE') : guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
-				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.sort((a, b) => b.position - a.position).array().length) ? '...' : '.'}` },
+				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
 			)
 			.setTimestamp()
 			.setFooter('guild/server-info:FOOTER', { USER: user.tag });

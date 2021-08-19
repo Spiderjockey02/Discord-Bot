@@ -35,12 +35,6 @@ module.exports = class clickButton extends Event {
 				}
 			}
 
-			// make sure ticket has been set-up properly
-			const supportRole = guild.roles.cache.get(guild.settings.TicketSupportRole);
-			if (!supportRole) return channel.error('ticket/ticket-create:NO_SUPPORT_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			const category = guild.channels.cache.get(guild.settings.TicketCategory);
-			if (!category) return channel.error('ticket/ticket-create:NO_CATEGORY').then(m => m.timedDelete({ timeout: 10000 }));
-
 			// Make sure ticket dosen't already exist
 			if (guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`)) {
 				return button.reply({ embeds: [channel.error('ticket/ticket-create:TICKET_EXISTS', {}, true)] }).then(() => {
@@ -50,16 +44,19 @@ module.exports = class clickButton extends Event {
 				});
 			}
 
+			// create perm array
+			const perms = [
+				{ id: member.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+				{ id: guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
+				{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
+			];
+			if (guild.roles.cache.get(guild.settings.TicketSupportRole)) perms.push({ id: guild.settings.TicketSupportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] });
+
 			// create channel
 			guild.channels.create(`ticket-${member.user.id}`, { type: 'text',
 				reason: guild.translate('misc:NO_REASON'),
-				parent: category.id,
-				permissionOverwrites:[
-					{ id: member.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-					{ id: supportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-					{ id: guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-					{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
-				] })
+				parent: guild.settings.TicketCategory,
+				permissionOverwrites: perms })
 				.then(async c => {
 				// reply to user saying that channel has been created
 					const successEmbed = new Embed(bot, guild)
@@ -78,34 +75,17 @@ module.exports = class clickButton extends Event {
 						.addField(guild.translate('ticket/ticket-create:FIELD1', { USERNAME: member.user.tag }), guild.translate('ticket/ticket-create:FIELDT'))
 						.addField(guild.translate('ticket/ticket-create:FIELD2'), guild.translate('misc:NO_REASON'))
 						.setTimestamp();
-					c.send({ content: `${member.user}, ${supportRole}`, embeds: [embed] });
+					c.send({ content: `${member.user}${guild.roles.cache.get(guild.settings.TicketSupportRole) ? `, <@&${guild.settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
 					// run ticketcreate event
 					await bot.emit('ticketCreate', channel, embed);
 				}).catch(err => {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					console.log(err);
+					bot.logger.error(`Command: '${this.conf.name}' has error: ${err.message}.`);
 				});
 
 			cooldowns.set(member.user.id, now);
 			setTimeout(() => cooldowns.delete(member.user.id), cooldownAmount);
-		} else if (ID == 'cl_ticket') {
-			// Make sure user has a ticket
-			if (!guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`)) {
-				return button.reply({ embeds: [channel.error('ticket/ticket-close:MISSING_TICKET', {}, true)] }).then(() => {
-					setTimeout(function() {
-						button.deleteReply();
-					}, 5000);
-				});
-			}
-
-			// delete channel
-			guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`).delete().then(() => {
-				return button.reply({ embeds: [channel.success('ticket/ticket-close:SUCCESS', {}, true)] }).then(() => {
-					setTimeout(function() {
-						button.deleteReply();
-					}, 5000);
-				});
-			});
 		}
 	}
 };

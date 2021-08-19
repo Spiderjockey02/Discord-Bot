@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ReactionRoleSchema, GiveawaySchema, ticketEmbedSchema } = require('../../database/models'),
+	{ ReactionRoleSchema, GiveawaySchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class messageDelete extends Event {
@@ -21,11 +21,8 @@ module.exports = class messageDelete extends Event {
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
 		if (!message.content && !message.attachments && !message.embeds[0]) return;
 
-		// if the message is a partial return
-		if (message.partial) return;
-
-		// make sure it wasn't a webhook message
-		if (message.webhookID) return;
+		// if the message is a partial or a webhook return
+		if (message.partial || message.webhookID) return;
 
 		// Check if the message was a giveaway/reaction role embed
 		try {
@@ -39,10 +36,6 @@ module.exports = class messageDelete extends Event {
 				await bot.giveawaysManager.delete(message.id);
 				bot.logger.log('A giveaway embed was deleted.');
 			}
-
-			// check ticket embed
-			const te = await ticketEmbedSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
-			if (te) bot.logger.log('A ticket reaction embed was deleted.');
 		} catch (err) {
 			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
@@ -58,7 +51,7 @@ module.exports = class messageDelete extends Event {
 		if (message.content.startsWith(settings.prefix)) return;
 
 		// Check if event messageDelete is for logging
-		if (settings.ModLogEvents.includes('MESSAGEDELETE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('MESSAGEDELETE') && settings.ModLog) {
 			// shorten message if it's longer then 1024
 			let shortened = false;
 			let content = message.content;

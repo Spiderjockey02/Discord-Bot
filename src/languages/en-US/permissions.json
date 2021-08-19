@@ -10,7 +10,7 @@
 	"CREATE_INSTANT_INVITE": "Create Invite",
 	"CHANGE_NICKNAME": "Change Nickname",
 	"MANAGE_NICKNAMES": "Manage Nicknames",
-	"MANAGE_EMOJIS": "Manage Emojis",
+	"MANAGE_EMOJIS_AND_STICKERS": "Manage Emojis & Stickers",
 	"MANAGE_WEBHOOKS": "Manage Webhooks",
 	"VIEW_CHANNEL": "Read Text Channels & See Voice Channels",
 	"SEND_MESSAGES": "Send Messages",

@@ -2,13 +2,21 @@
 const { get } = require('axios'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Docs command
+ * @extends {Command}
+*/
 module.exports = class Docs extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'docs',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays Discord.js documentation.',
 			usage: 'docs <query>',
 			cooldown: 3000,
@@ -16,18 +24,26 @@ module.exports = class Docs extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get docs information
-		const url = `https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(message.args.join(' '))}`;
-		get(url).then(({ data }) => {
-
+		get(`https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(message.args.join(' '))}`)
+			.then(({ data }) => {
 			// Display discord.js docs (if any)
-			(data && !data.error) ? message.channel.send({ embed: [data] }) : message.channel.error('host/docs:MISSING');
-		}).catch(err => {
-			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.response.data.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-		});
+				if (data && !data.error) {
+					message.channel.send({ embeds: [data] });
+				} else {
+					message.channel.error('host/docs:MISSING');
+				}
+			}).catch(err => {
+				if (message.deletable) message.delete();
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			});
 	}
 };

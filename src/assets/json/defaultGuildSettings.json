@@ -1,0 +1,8 @@
+{
+  "prefix": "*",
+  "Language": "en-US",
+  "plugins": ["Fun", "Guild", "Image", "Level", "Misc", "Moderation", "Music", "NSFW", "Plugins", "Searcher"],
+  "LevelOption": 1,
+  "LevelMessage": "GG {user}, you have leveled up to {level}!",
+  "LevelMultiplier": 1
+}

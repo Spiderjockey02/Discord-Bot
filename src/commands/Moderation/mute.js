@@ -1,9 +1,17 @@
 // Dependencies
-const { MutedMemberSchema, timeEventSchema } = require('../../database/models'),
+const { timeEventSchema } = require('../../database/models'),
 	{ time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Mute command
+ * @extends {Command}
+*/
 module.exports = class Mute extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'mute',
@@ -18,7 +26,13 @@ module.exports = class Mute extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -51,7 +65,6 @@ module.exports = class Mute extends Command {
 				});
 				// update server with no muted role
 				await message.guild.updateGuild({ MutedRole: muteRole.id });
-				settings.MutedRole = muteRole.id;
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -72,12 +85,10 @@ module.exports = class Mute extends Command {
 					}
 				}
 
-				// update database (in case user leaves to try and remove the muted role)
-				const newMute = await new MutedMemberSchema({
-					userID: members[0].user.id,
-					guildID: message.guild.id,
-				});
-				await newMute.save();
+				// update server with no muted role
+				if (!settings.MutedMembers.includes(members[0].user.id)) {
+					await message.guild.updateGuild({ MutedMembers: [...settings.MutedMembers, members[0].user.id] });
+				}
 
 				// reply to user
 				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));

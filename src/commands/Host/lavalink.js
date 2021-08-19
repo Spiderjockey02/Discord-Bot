@@ -2,20 +2,33 @@
 const	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Lavalink command
+ * @extends {Command}
+*/
 module.exports = class Lavalink extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'lavalink',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays Lavalink node information',
 			usage: 'lavalink [host / list]',
 			cooldown: 3000,
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		let msg, memory,	cpu,	uptime,	playingPlayers,	players;
 		if (message.args[0] == 'list') {
@@ -57,7 +70,11 @@ module.exports = class Lavalink extends Command {
 		return msg.edit({ content: ' ', embeds: [embed] });
 	}
 
-	// Create time string
+	/**
+	 * Function for turning number to timestamp.
+	 * @param {time} number The uptime of the lavalink server
+ 	 * @returns {String}
+	*/
 	uptime(time) {
 		const calculations = {
 			week: Math.floor(time / (1000 * 60 * 60 * 24 * 7)),

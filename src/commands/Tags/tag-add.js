@@ -2,10 +2,19 @@
 const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * TagAdd command
+ * @extends {Command}
+*/
 module.exports = class TagAdd extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-add',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-add'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -17,7 +26,13 @@ module.exports = class TagAdd extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -50,6 +65,7 @@ module.exports = class TagAdd extends Command {
 					response: responseString,
 				})).save();
 				message.channel.send(message.translate('tags/tag-add:TAGS_SAVED', { TAG: message.args[0] }));
+				message.guild.guildTags.push(message.args[0]);
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

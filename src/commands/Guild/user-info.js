@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * User-info command
+ * @extends {Command}
+*/
 module.exports = class UserInfo extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name:  'user-info',
@@ -11,21 +19,26 @@ module.exports = class UserInfo extends Command {
 			dirname: __dirname,
 			aliases: ['userinfo', 'whois'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
-			description: 'Get information on the server.',
+			description: 'Get information on a user.',
 			usage: 'user-info [user]',
 			cooldown: 2000,
 			examples: ['user-info userID', 'user-info @mention', 'user-info username'],
 			slash: true,
 			options: [{
 				name: 'user',
-				description: 'The user you want to information of.',
+				description: 'The user you want to get information of',
 				type: 'USER',
 				required: false,
 			}],
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command.
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// Get user
 		const members = await message.getMember();
@@ -35,17 +48,30 @@ module.exports = class UserInfo extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 
 		// send embed
 		const embed = await this.createEmbed(bot, guild, member);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
 
-	// create userinfo embed
+	/**
+	 * Function for creating embed of user information
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} Guild The guild the command was ran in
+	 * @param {user} GuildMember The member to get information of
+	 * @returns {embed}
+	*/
 	createEmbed(bot, guild, member) {
 		const status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
 		return new Embed(bot, guild)

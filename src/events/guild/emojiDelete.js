@@ -19,7 +19,7 @@ module.exports = class emojiDelete extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event emojiDelete is for logging
-		if (settings.ModLogEvents.includes('EMOJIDELETE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('EMOJIDELETE') && settings.ModLog) {
 			const embed = new Embed(bot, emoji.guild)
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was deleted**`)
 				.setColor(15158332)

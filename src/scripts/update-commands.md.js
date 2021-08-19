@@ -1,7 +1,7 @@
 // Dependencies
 const fs = require('fs');
 
-module.exports = async (bot) => {
+module.exports.run = async (bot) => {
 	const content = [
 		'# Command list',
 		'><> = required, [] = optional',

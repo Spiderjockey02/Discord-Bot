@@ -7,11 +7,21 @@ module.exports.checkMusic = (member, bot) => {
 	}
 
 	// Check that a song is being played
-	const player = bot.manager.players.get(member.guild.id);
+	const player = bot.manager?.players.get(member.guild.id);
 	if (!player) return bot.translate('misc:NO_QUEUE', {}, member.guild.settings.Language);
 
 	// Check that user is in the same voice channel
 	if (member.voice.channel.id !== player.voiceChannel) return bot.translate('misc:NOT_VOICE', {}, member.guild.settings.Language);
 
 	return true;
+};
+
+module.exports.checkNSFW = (channel) => {
+	return channel.nsfw || channel.type == 'DM';
+};
+
+module.exports.genInviteLink = (bot) => {
+	return bot.generateInvite({
+		permissions: BigInt(1073081686),
+		scopes: ['bot', 'applications.commands'] });
 };

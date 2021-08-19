@@ -16,7 +16,7 @@ module.exports = class guildBanAdd extends Event {
 			if (guildBan.partial) await guildBan.fetch();
 			if (guildBan.user.partial) await guildBan.user.fetch();
 		} catch (err) {
-			if (err.message == 'Missing Access') return;
+			if (['Missing Permissions', 'Missing Access'].includes(err.message)) return;
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
@@ -30,7 +30,7 @@ module.exports = class guildBanAdd extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildBanAdd is for logging
-		if (settings.ModLogEvents.includes('GUILDBANADD') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDBANADD') && settings.ModLog) {
 			const embed = new Embed(bot, guild)
 				.setDescription(`User: ${user.toString()}`)
 				.setColor(15158332)

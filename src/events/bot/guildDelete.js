@@ -30,7 +30,7 @@ module.exports = class guildDelete extends Event {
 			}
 			embed.setDescription([
 				`Guild ID: ${guild.id ?? 'undefined'}`,
-				`Owner: ${guild.owner?.user.tag}`,
+				`Owner: ${bot.users.cache.get(guild.ownerId)?.tag}`,
 				`MemberCount: ${guild?.memberCount ?? 'undefined'}`,
 			].join('\n'));
 

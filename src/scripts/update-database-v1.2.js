@@ -2,61 +2,13 @@
 const mongoose = require('mongoose'),
 	logger = require('../utils/logger'),
 	config = require('../config.js'),
-	{ Guild } = require('../modules/database/models');
+	{ GuildSchema } = require('../database/models');
 
-module.exports = async () => {
+module.exports.run = async () => {
 	mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).then(async () => {
 		logger.log('Updating database');
-		await Guild.updateMany({ version: '1.1' }, [
-			{ $set: { automoderation: {
-				enabled: false,
-				badwords: {
-					enabled: false,
-					word: [],
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				ServerInvites: {
-					enabled: false,
-					Invites: [],
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				ExternalLinks: {
-					enabled: false,
-					URLs: [],
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				SpammedCaps: {
-					enabled: false,
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				ExcessiveEmojis: {
-					enabled: false,
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				MassMention: {
-					enabled: false,
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-				Attachments: {
-					enabled: false,
-					limit: 5,
-					channels: [],
-					roles: [],
-					punishmentLevel: 1,
-				},
-			} } },
+		await GuildSchema.updateMany({ version: '1.1' }, [
+			{ $set: { version: '1.2', MutedMembers: [] } },
 			{ $unset: [	'ModerationBadwords',
 				'ModerationBadwordChannel',
 				'ModerationBadwordRole',
@@ -90,8 +42,27 @@ module.exports = async () => {
 				'ModerationZalgo',
 				'ModerationZalgoChannel',
 				'ModerationZalgoRole',
+				'ServerStats',
+				'ServerStatsCate',
+				'ServerStatsBot',
+				'ServerStatsBotChannel',
+				'ServerStatsUse',
+				'ServerStatsUserChannel',
+				'ServerStatsHuman',
+				'ServerStatsHumanChannel',
+				'DisabledCommands',
+				'AntiRaidPlugin',
+				'AntiRaidCompletion',
+				'AntiRaidChannelID',
+				'ReportToggle',
+				'CommandChannelToggle',
+				'CommandChannels',
+				'CommandCooldown',
+				'CommandCooldownSec',
+				'MusicTriviaPlugin',
+				'MusicTriviaGenres',
 			] }]);
-		logger.ready('Database has been updated to v1.1');
+		logger.ready('Database has been updated to v1.2');
 	}).catch((err) => {
 		console.log(err);
 	});

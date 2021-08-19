@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Firstmessage command
+ * @extends {Command}
+*/
 module.exports = class Firstmessage extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name: 'firstmessage',
@@ -23,11 +31,16 @@ module.exports = class Firstmessage extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// get channel
-		const channel = message.getChannel();
-
+		const channel = await message.getChannel();
+		console.log(channel);
 		try {
 			// get first message in channel
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
@@ -42,7 +55,14 @@ module.exports = class Firstmessage extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(args.get('channel').value);
 
@@ -52,14 +72,20 @@ module.exports = class Firstmessage extends Command {
 			const embed = this.createEmbed(bot, guild, fMessage);
 
 			// send embed
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
-	// Create the embed for the first message in channel
+	/**
+	 * Function for creating first message embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command ran in
+	 * @param {fMessage} Message The first message of the channel
+	 * @returns {embed}
+	*/
 	createEmbed(bot, guild, fMessage) {
 		return new Embed(bot, guild)
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)

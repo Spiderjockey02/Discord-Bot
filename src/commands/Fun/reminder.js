@@ -5,7 +5,15 @@ const ms = require('ms'),
 	{ time: { getTotalTime }, Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+	* Reminder command
+	* @extends {Command}
+*/
 module.exports = class Reminder extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'reminder',
@@ -19,7 +27,13 @@ module.exports = class Reminder extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Make something that time and information is entered
 		if (!message.args[1]) {
@@ -52,10 +66,10 @@ module.exports = class Reminder extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('fun/reminder:TITLE')
 					.setThumbnail('attachment://Timer.png')
-					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:DESC')}](https://discord.com/channels/${message.guild?.id ?? '@me'}/${message.channel.id}/${message.id})`)
+					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:MSG_LINK')}](https://discord.com/channels/${message.guild?.id ?? '@me'}/${message.channel.id}/${message.id})`)
 					.setFooter('fun/reminder:FOOTER', { TIME: ms(time, { long: true }) });
 
-				message.channel.send({ embeds: [embed], files: [attachment] }).catch(() => {
+				message.member.send({ embeds: [embed], files: [attachment] }).catch(() => {
 					message.channel.send(message.translate('fun/reminder:RESPONSE', { INFO: message.args.join(' ') }).replace('{USER}', message.member));
 				});
 

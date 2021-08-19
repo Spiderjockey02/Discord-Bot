@@ -1,7 +1,15 @@
 // Dependencies
 const	Command = require('../../structures/Command.js');
 
+/**
+ * Undeafen command
+ * @extends {Command}
+*/
 module.exports = class Undeafen extends Command {
+	/**
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'undeafen',
@@ -17,7 +25,13 @@ module.exports = class Undeafen extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();

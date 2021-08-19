@@ -3,7 +3,15 @@ const { image_search } = require('duckduckgo-images-api'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Image command
+ * @extends {Command}
+*/
 module.exports = class Image extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'image',
@@ -14,10 +22,23 @@ module.exports = class Image extends Command {
 			usage: 'image <topic>',
 			cooldown: 2000,
 			examples: ['image food'],
+			slash: true,
+			options: [{
+				name: 'topic',
+				description: 'Topic for image search',
+				type: 'STRING',
+				required: true,
+			}],
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Make sure a topic was included
 		if (!message.args[0]) {
@@ -27,7 +48,7 @@ module.exports = class Image extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '' }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
 		// get results (image links etc)
 		try {
@@ -43,5 +64,30 @@ module.exports = class Image extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 		msg.delete();
+	}
+
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const topic = args.get('topic').value;
+		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
+			EMOJI: bot.customEmojis['loading'] }) });
+
+		try {
+			const results = await image_search({ query: topic, moderate: (channel.nsfw || channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+			const embed = new Embed(bot, guild)
+				.setImage(results[Math.floor(Math.random() * results.length)].image);
+			interaction.editReply({ content: ' ', embeds: [embed] });
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 };

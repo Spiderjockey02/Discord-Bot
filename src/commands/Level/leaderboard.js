@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ RankSchema } = require('../../database/models'),
 	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -8,7 +7,15 @@ const { Embed } = require('../../utils'),
 // eslint-disable-next-line no-sparse-arrays
 const ordinal = (num) => `${num.toLocaleString('en-US')}${[, 'st', 'nd', 'rd'][(num / 10) % 10 ^ 1 && num % 10] || 'th'}`;
 
+/**
+ * Leaderboard command
+ * @extends {Command}
+*/
 module.exports = class Leaderboard extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'leaderboard',
@@ -23,11 +30,16 @@ module.exports = class Leaderboard extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
 			const res = await this.createLeaderboard(bot, message.guild);
@@ -46,7 +58,13 @@ module.exports = class Leaderboard extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 
@@ -56,19 +74,25 @@ module.exports = class Leaderboard extends Command {
 			if (Array.isArray(res)) {
 				paginate(bot, channel, res);
 			} else if (typeof (res) == 'object') {
-				bot.send(interaction, { embeds: [res] });
+				interaction.reply({ embeds: [res] });
 			} else {
-				bot.send(interaction, { content: res });
+				interaction.reply({ content: res });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
-	// create leaderboard
+	/**
+	 * Function for creating leaderboard paginator
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command ran in
+	 * @returns {embed}
+	*/
 	async createLeaderboard(bot, guild) {
-		const res = await RankSchema.find({ guildID: guild.id }).sort([['Xp', 'descending']]);
+		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
+
 		// if an error occured
 		const embed = new Embed(bot, guild)
 			.setTitle('level/leaderboard:TITLE')

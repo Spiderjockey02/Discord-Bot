@@ -19,7 +19,7 @@ module.exports = class emojiUpdate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event emojiUpdate is for logging
-		if (settings.ModLogEvents.includes('EMOJIUPDATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('EMOJIUPDATE') && settings.ModLog) {
 			let embed, updated = false;
 
 			// emoji name change
@@ -43,11 +43,11 @@ module.exports = class emojiUpdate extends Event {
 				const rolesRemoved = oldEmoji.roles.cache.filter(x => !newEmoji.roles.cache.get(x.id));
 				if (rolesAdded.size != 0 || rolesRemoved.size != 0) {
 					const roleAddedString = [];
-					for (const role of rolesAdded.array()) {
+					for (const role of [...rolesAdded.values()]) {
 						roleAddedString.push(role.toString());
 					}
 					const roleRemovedString = [];
-					for (const role of rolesRemoved.array()) {
+					for (const role of [...rolesRemoved.values()]) {
 						roleRemovedString.push(role.toString());
 					}
 					embed = new Embed(bot, newEmoji.guild)
@@ -57,7 +57,7 @@ module.exports = class emojiUpdate extends Event {
 						.setAuthor(newEmoji.guild.name, newEmoji.guild.iconURL())
 						.addFields(
 							{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },
-							{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString.join('\n ')}`, inline: true })
+							{ name: `Removed roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString.join('\n ')}`, inline: true })
 						.setTimestamp();
 					updated = true;
 				}

@@ -1,4 +1,4 @@
-const { GuildSchema, userSchema } = require('../../database/models'),
+const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 module.exports = class Ready extends Event {
@@ -20,7 +20,7 @@ module.exports = class Ready extends Event {
 
 		// set up webserver
 		try {
-			require('../../http/api')(bot);
+			require('../../http')(bot);
 		} catch (err) {
 			console.log(err.message);
 		}
@@ -30,53 +30,21 @@ module.exports = class Ready extends Event {
 			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
-		// Updates the bot's status
-		// bot.user.setStatus('Online');
-		// bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
-
-		bot.logger.log('=-=-=-=-=-=-=- Loading Guild Specific Interaction(s) -=-=-=-=-=-=-=');
-		bot.guilds.cache.forEach(async guild => {
+		for (const guild of [...bot.guilds.cache.values()]) {
+			// Sort out guild settings
 			await guild.fetchSettings();
 			if (guild.settings == null) return bot.emit('guildCreate', guild);
-			const enabledPlugins = guild.settings.plugins;
-			const data = [];
+			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
 
-			// get slash commands for category
-			for (const plugin of enabledPlugins) {
-				const g = await bot.loadInteractionGroup(plugin, guild);
-				if (Array.isArray(g)) data.push(...g);
-			}
-
-			try {
-				await bot.guilds.cache.get(guild.id)?.commands.set(data);
-				/*	ADD THIS WHEN MODERATION SLASH COMMANDS ARE ADDED
-					.then(async interactionIDs => {
-						if (guild.settings.plugins.find(plugin => plugin === 'Moderation')) {
-							const category = (await readdir('./src/commands/Moderation/')).filter((v, i, a) => a.indexOf(v) === i);
-							const lockedInteractions = [];
-							const permissions = [];
-
-							guild.settings.ModeratorRoles.forEach(roleID => {
-								const role = guild.roles.cache.get(roleID);
-								if (role) permissions.push({ id: role.id, type: 'ROLE', permission: true });
-							});
-							if (permissions.length >= 1) {
-								category.forEach(async (cmd) => {
-									if (!bot.config.disabledCommands.includes(cmd.replace('.js', ''))) {
-										const interactionID = interactionIDs.find(interactionCmd => interactionCmd.name === cmd.replace('.js', ''));
-										if (interactionID) lockedInteractions.push({ id: interactionID.id, permissions: permissions });
-									}
-								});
-								guild.commands.setPermissions(lockedInteractions);
-							}
-						}
+			// Append tags to guild specific arrays
+			if(guild.settings.PrefixTags) {
+				TagsSchema.find({ guildID: guild.id }).then(result => {
+					result.forEach(value => {
+						guild.guildTags.push(value.name);
 					});
-				*/
-				bot.logger.log('Loaded Interactions for guild: ' + guild.name);
-			} catch (err) {
-				bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
+				});
 			}
-		});
+		}
 
 		// Delete server settings on servers that removed the bot while it was offline
 		const data = await GuildSchema.find({});
@@ -85,15 +53,12 @@ module.exports = class Ready extends Event {
 			const guildCount = [];
 			// Get bot guild ID's
 			for (let i = 0; i < bot.guilds.cache.size; i++) {
-				guildCount.push(bot.guilds.cache.array()[i].id);
+				guildCount.push([...bot.guilds.cache.values()][i].id);
 			}
 			// Now check database for bot guild ID's
 			for (const guild of data) {
 				if (!guildCount.includes(guild.guildID)) {
-					bot.emit('guildDelete', {
-						id: `${guild.guildID}`,
-						name: `${guild.guildName}`,
-					});
+					bot.emit('guildDelete', { id: guild.guildID, name: guild.guildName });
 				}
 			}
 		}

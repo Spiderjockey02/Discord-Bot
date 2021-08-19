@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	moment = require('moment'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Role-info command
+ * @extends {Command}
+*/
 module.exports = class RoleInfo extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name:  'role-info',
@@ -25,7 +33,13 @@ module.exports = class RoleInfo extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Check to see if a role was mentioned
 		const roles = message.getRole();
@@ -41,17 +55,31 @@ module.exports = class RoleInfo extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const role = guild.roles.cache.get(args.get('role').value);
 		const user = interaction.member.user;
 
 		// send embed
 		const embed = this.createEmbed(bot, guild, role, user);
-		bot.send(interaction, { embeds: [embed] });
+		interaction.reply({ embeds: [embed] });
 	}
 
-	// create role embed
+	/**
+	 * Function for creating embed of role information.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} Guild The guild the command was ran in
+	 * @param {role} Role The role to get information from
+	 * @param {user} User The user for embed#footer
+	 * @returns {embed}
+	*/
 	createEmbed(bot, guild, role, user) {
 		// translate permissions
 		const permissions = role.permissions.toArray().map((p) => guild.translate(`permissions:${p}`)).join(' » ');

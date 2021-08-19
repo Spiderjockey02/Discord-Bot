@@ -17,12 +17,12 @@ module.exports = class slashCreate extends Event {
 
 		// Check to see if the command is being run in a blacklisted channel
 		if ((guild.settings.CommandChannelToggle) && (guild.settings.CommandChannels.includes(channel.id))) {
-			return bot.send(interaction, { embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', { USER: member.user.tag }, true)], ephermal: true });
+			return interaction.reply({ embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', { USER: member.user.tag }, true)], ephermal: true });
 		}
 
 		// Make sure NSFW commands are only being run in a NSFW channel
 		if (!channel.nsfw && cmd.conf.nsfw) {
-			return bot.send(interaction, { embeds:[channel.error('events/message:NOT_NSFW_CHANNEL', {}, true)], ephemeral: true });
+			return interaction.reply({ embeds:[channel.error('events/message:NOT_NSFW_CHANNEL', {}, true)], ephemeral: true });
 		}
 
 		// Check for bot permissions
@@ -41,7 +41,7 @@ module.exports = class slashCreate extends Event {
 		// Display missing bot permissions
 		if (neededPermissions.length > 0) {
 			bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${guild.id}].`);
-			return bot.send(interaction, { embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
 		}
 
 		// Check for user permissions
@@ -52,7 +52,7 @@ module.exports = class slashCreate extends Event {
 
 		// Display missing user permissions
 		if (neededPermissions.length > 0) {
-			return bot.send(interaction, { embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
 		}
 
 		// Check to see if user is in 'cooldown'
@@ -69,12 +69,15 @@ module.exports = class slashCreate extends Event {
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				return bot.send(interaction, { embeds:[channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)], ephemeral: true });
+				return interaction.reply({ embeds:[channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)], ephemeral: true });
 			}
 		}
 
-		timestamps.set(interaction.user.id, now);
+		// Run slash command
+		if (bot.config.debug) bot.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-		return cmd.callback(bot, interaction, guild, interaction.options);
+		await cmd.callback(bot, interaction, guild, interaction.options);
+		timestamps.set(interaction.user.id, now);
+		this.commandsUsed++;
 	}
 };

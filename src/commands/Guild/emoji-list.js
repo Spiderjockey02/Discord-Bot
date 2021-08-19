@@ -1,7 +1,15 @@
 // Dependencies
 const	Command = require('../../structures/Command.js');
 
+/**
+ * Emoji-list command
+ * @extends {Command}
+*/
 module.exports = class EmojiList extends Command {
+	/**
+   * @param {Client} client The instantiating client
+   * @param {CommandData} data The data for the command
+  */
 	constructor(bot) {
 		super(bot, {
 			name: 'emoji-list',
@@ -16,13 +24,24 @@ module.exports = class EmojiList extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+	*/
 	async run(bot, message) {
 		message.channel.send(message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') }));
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild) {
-		bot.send(interaction, { content: guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
+		interaction.reply({ content: guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
 	}
 };

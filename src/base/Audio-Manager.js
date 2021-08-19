@@ -7,18 +7,21 @@ const { Manager } = require('erela.js'),
 require('../structures/Player');
 
 module.exports = (bot) => {
-	const clientID = bot.config.api_keys.spotify.iD;
-	const clientSecret = bot.config.api_keys.spotify.secret;
+	// create plugins array
+	const clientID = bot.config.api_keys.spotify.iD,
+		clientSecret = bot.config.api_keys.spotify.secret,
+		plugins = [
+			new Deezer({ playlistLimit: 1, albumLimit:1 }),
+			new Facebook(),
+		];
+	if (clientID && clientSecret) plugins.push(new Spotify({ clientID, clientSecret }));
 
+	// create audio manager
 	bot.manager = new Manager({
 		nodes: [
 			{ host: 'localhost', port: 5000, password: 'youshallnotpass' },
 		],
-		plugins: [
-			new Spotify({ clientID, clientSecret }),
-			new Deezer({ playlistLimit: 1, albumLimit:1 }),
-			new Facebook(),
-		],
+		plugins: plugins,
 		autoPlay: true,
 		send(id, payload) {
 			const guild = bot.guilds.cache.get(id);

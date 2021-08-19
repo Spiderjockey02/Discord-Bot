@@ -14,7 +14,7 @@ module.exports = class guildMemberRemove extends Event {
 	// run event
 	async run(bot, member) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been left guild: ${member.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has left guild: ${member.guild.id}.`);
 
 		if (member.user.id == bot.user.id) return;
 
@@ -23,7 +23,7 @@ module.exports = class guildMemberRemove extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildMemberRemove is for logging
-		if (settings.ModLogEvents.includes('GUILDMEMBERREMOVE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('GUILDMEMBERREMOVE') && settings.ModLog) {
 			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(15158332)

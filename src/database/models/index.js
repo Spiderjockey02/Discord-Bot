@@ -6,7 +6,6 @@ module.exports = {
 	PlaylistSchema: require('./Playlist'),
 	ReactionRoleSchema: require('./ReactionRole'),
 	timeEventSchema: require('./TimedEvents'),
-	MutedMemberSchema: require('./MutedMembers'),
 	TagsSchema: require('./tag'),
 	userSchema: require('./userSettings.js'),
 };

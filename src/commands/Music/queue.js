@@ -4,10 +4,19 @@ const { paginate } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * queue command
+ * @extends {Command}
+*/
 module.exports = class Queue extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'queue',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['que'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
@@ -25,7 +34,12 @@ module.exports = class Queue extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -35,7 +49,7 @@ module.exports = class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure queue is not empty
@@ -86,12 +100,18 @@ module.exports = class Queue extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);
-		const page = args.get('page').value;
+		const page = args.get('page')?.value;
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
 			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
@@ -100,15 +120,15 @@ module.exports = class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		const player = bot.manager?.players.get(guild.id);
+		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;
 		if (queue.size == 0) {
 			const embed = new Embed(bot, guild)
 				.setTitle('music/queue:EMPTY');
-			return bot.send(interaction, embed);
+			return interaction.reply(embed);
 		}
 
 		// get total page number
@@ -143,14 +163,14 @@ module.exports = class Queue extends Command {
 		if (!page) {
 			if (pages.length == pagesNum && player.queue.length > 10) {
 				paginate(bot, channel, pages);
-				return bot.send(interaction, 'Loaded Queue');
+				return interaction.reply('Loaded Queue');
 			} else {
-				return bot.send(interaction, pages[0]);
+				return interaction.reply(pages[0]);
 			}
 		} else {
 			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
-			return bot.send(interaction, pages[pageNum]);
+			return interaction.reply(pages[pageNum]);
 		}
 	}
 };

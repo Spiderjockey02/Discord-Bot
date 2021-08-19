@@ -2,7 +2,15 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Fortnite command
+ * @extends {Command}
+*/
 module.exports = class Fortnite extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'fortnite',
@@ -29,7 +37,13 @@ module.exports = class Fortnite extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Check if platform and user was entered
 		if (!['kbm', 'gamepad', 'touch'].includes(message.args[0])) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/fortnite:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -41,7 +55,7 @@ module.exports = class Fortnite extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Fetch fornite account information
 		try {
@@ -55,7 +69,14 @@ module.exports = class Fortnite extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value,
@@ -64,14 +85,21 @@ module.exports = class Fortnite extends Command {
 		// send embed
 		try {
 			const embed = await this.createEmbed(bot, guild, username, platform);
-			bot.send(interaction, { embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return bot.send(interaction, { embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
-	// create fortnite Embed
+	/**
+	 * Function for fetching/creating fornite embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the command was ran in
+	 * @param {string} username The username to search
+	 * @param {string} platform The platform to search the user on
+ 	 * @returns {embed}
+	*/
 	async createEmbed(bot, guild, username, platform) {
 		const data = await bot.Fortnite.user(username, platform);
 		return new Embed(bot, guild)

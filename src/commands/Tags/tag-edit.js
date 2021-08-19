@@ -2,10 +2,19 @@
 const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * TagEdit command
+ * @extends {Command}
+*/
 module.exports = class TagEdit extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'tag-edit',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-edit'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -17,7 +26,13 @@ module.exports = class TagEdit extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -35,6 +50,8 @@ module.exports = class TagEdit extends Command {
 			try {
 				await TagsSchema.findOneAndUpdate({ guildID: message.guild.id, name: message.args[1] }, { name: message.args[2] }).then(() => {
 					message.channel.send(message.translate('tags/tag-edit:UPDATED_NAME', { NAME: message.args[2] }));
+					message.guild.guildTags.splice(message.guild.guildTags.indexOf(message.args[1]), 1);
+					message.guild.guildTags.push(message.args[2]);
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

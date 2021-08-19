@@ -5,13 +5,21 @@ const { MessageEmbed } = require('discord.js'),
 	axios = require('axios'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * User command
+ * @extends {Command}
+*/
 module.exports = class UserData extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'user',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Edit a user\'s data',
 			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,
@@ -19,7 +27,13 @@ module.exports = class UserData extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		let user;
 		try {

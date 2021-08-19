@@ -4,10 +4,19 @@ const { Embed } = require('../../utils'),
 	{ paginate } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Lyrics command
+ * @extends {Command}
+*/
 module.exports = class Lyrics extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'lyrics',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Get lyrics on a song.',
@@ -23,13 +32,18 @@ module.exports = class Lyrics extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message) {
 		// Check that a song is being played
 		let options;
 		if (message.args.length == 0) {
 			// Check if a song is playing and use that song
-			const player = bot.manager.players.get(message.guild.id);
+			const player = bot.manager?.players.get(message.guild.id);
 			if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 			options = {
 				apiKey: bot.config.api_keys.genuis,
@@ -49,7 +63,7 @@ module.exports = class Lyrics extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// display lyrics
 		const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
@@ -61,6 +75,13 @@ module.exports = class Lyrics extends Command {
 		}
 	}
 
+	/**
+	 * Function for recieving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
@@ -70,8 +91,8 @@ module.exports = class Lyrics extends Command {
 		let options;
 		if (!song) {
 			// Check if a song is playing and use that song
-			const player = bot.manager.players.get(guild.id);
-			if (!player) return bot.send(interaction, { embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+			const player = bot.manager?.players.get(guild.id);
+			if (!player) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: player.queue.current.title,
@@ -93,7 +114,7 @@ module.exports = class Lyrics extends Command {
 		if (Array.isArray(lyrics)) {
 			paginate(bot, channel, lyrics);
 		} else {
-			bot.send(interaction, { content: lyrics });
+			interaction.reply({ content: lyrics });
 		}
 	}
 

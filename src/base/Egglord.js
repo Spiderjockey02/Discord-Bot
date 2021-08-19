@@ -8,16 +8,15 @@ const { Client, Collection } = require('discord.js'),
 	{ promisify } = require('util'),
 	readdir = promisify(require('fs').readdir);
 
-// Creates Egglord class
+/**
+ * Egglord custom client
+ * @extends {Client}
+*/
 module.exports = class Egglord extends Client {
 	constructor() {
 		super({
-			messageCacheMaxSize: -1,
-			messageCacheLifetime: 1210000,
-			messageSweepInterval: 86400,
 			partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
-			intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
-			restGlobalRateLimit: 50,
+			intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES'],
 			presence: {
 				status: 'online',
 				activities: [{
@@ -27,10 +26,17 @@ module.exports = class Egglord extends Client {
 				}],
 			},
 		});
-		// for console logging
+
+		/**
+ 		 * The logger file
+ 	 	 * @type {function}
+ 	  */
 		this.logger = require('../utils/Logger');
 
-		// Giveaway manager
+		/**
+		 * The Giveaway manager
+		 * @type {GiveawaysManager}
+		*/
 		this.giveawaysManager = new GiveawaysManager(this, {
 			storage: false,
 			updateCountdownEvery: 10000,
@@ -44,64 +50,99 @@ module.exports = class Egglord extends Client {
 			},
 		});
 
-		// For command handler
+		/**
+		 * The command data
+		 * @type {Collection}
+		 * @type {Collection}
+		 * @type {Collection}
+		 * @type {Collection}
+		*/
 		this.aliases = new Collection();
 		this.commands = new Collection();
 		this.interactions = new Collection();
 		this.cooldowns = new Collection();
 
-		// connect to database
+		/**
+		 * ALlows connection to database
+		 * @type {function}
+		*/
 		this.mongoose = require('../database/mongoose');
 
-		// config file
+		/**
+		 * The config file
+		 * @type {object}
+		*/
 		this.config = require('../config.js');
 
-		// for Activity
+		/**
+		 * The activity for the bot
+		 * @type {array}
+		 * @type {string}
+		*/
 		this.Activity = [];
 		this.PresenceType = 'PLAYING';
 
-		// for KSOFT API
+		/**
+		 * The manager for interacting with Ksoft API
+		 * @type {Manager}
+		*/
 		if (this.config.api_keys.ksoft) {
 			this.Ksoft = new KSoftClient(this.config.api_keys.ksoft);
 		}
 
-		// for Fortnite API
+		/**
+		 * The manager for interacting with Fortnite API
+		 * @type {Manager}
+		*/
 		if (this.config.api_keys.fortnite) {
 			this.Fortnite = new Fortnite(this.config.api_keys.fortnite);
 		}
 
-		// Basic statistics for the bot
+		/**
+		 * Basic statistics for the bot
+		 * @type {number}
+		 * @type {number}
+		*/
 		this.messagesSent = 0;
 		this.commandsUsed = 0;
 
-		// for Screenshot command
+		/**
+		 * The array of adult sites for blocking on non-nsfw channels.
+		 * @type {array}
+		*/
 		this.adultSiteList = [];
 
-		// for webhook
+		/**
+		 * The collection of embeds for the webhook manager. (Stops API abuse)
+		 * @type {Collection}
+		*/
 		this.embedCollection = new Collection();
 
-		// for emojis
+		/**
+		 * The custom emojis the bot uses.
+		 * @type {object}
+		*/
 		this.customEmojis = require('../assets/json/emojis.json');
 
-		// for language translation
+		/**
+		 * The langauges the bot supports.
+		 * @type {object}
+		*/
 		this.languages = require('../languages/language-meta.json');
 
-		// for waiting for things
+		/**
+		 * Function for waiting. (acts like a pause)
+		 * @param {number} ms How long to wait
+		 * @type {function}
+		*/
 		this.delay = ms => new Promise(res => setTimeout(res, ms));
 	}
 
-	// when the bot joins create guild settings
-	async CreateGuild(settings) {
-		try {
-			const newGuild = new GuildSchema(settings);
-			return await newGuild.save();
-		} catch (err) {
-			if (this.config.debug) this.logger.debug(err.message);
-			return false;
-		}
-	}
-
-	// Delete guild from server when bot leaves server
+	/**
+	 * Function for deleting guilds settings from database.
+	 * @param {guild} guild The guild that kicked the bot
+	 * @returns {boolean}
+	*/
 	async DeleteGuild(guild) {
 		try {
 			await GuildSchema.findOneAndRemove({ guildID: guild.id });
@@ -112,20 +153,29 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Set bot's activity
+	/**
+	 * Function for deleting guilds settings from database.
+	 * @param {string} type The type of activity: PLAYING, STREAMING, LISTENING, WATCHING, CUSTOM or COMPETING.
+	 * @param {?array} Activities The guild that kicked the bot
+	 * @readonly
+	*/
 	SetActivity(type, array = []) {
 		this.Activity = array;
 		this.PresenceType = type;
 		try {
 			let j = 0;
-			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/yassuo' }), 10000);
-			return;
+			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/ram5s5' }), 10000);
 		} catch (e) {
 			console.log(e);
 		}
 	}
 
-	// Load a command
+	/**
+	 * Function for loading commands to the bot.
+	 * @param {string} commandPath The path of where the command is located
+	 * @param {string} commandName The name of the command
+	 * @readonly
+	*/
 	loadCommand(commandPath, commandName) {
 		const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
 		this.logger.log(`Loading Command: ${cmd.help.name}.`);
@@ -136,7 +186,11 @@ module.exports = class Egglord extends Client {
 		});
 	}
 
-	// Loads a slash command category
+	/**
+	 * Function for fetching slash command data.
+	 * @param {string} category The command category to get data from
+	 * @returns {?array}
+	*/
 	async loadInteractionGroup(category) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
@@ -163,7 +217,12 @@ module.exports = class Egglord extends Client {
 		}
 	}
 
-	// Deletes a slash command category
+	/**
+	 * Function for deleting slash command category from guild.
+	 * @param {string} category The command category to get data from
+	 * @param {guild} guild The guild to delete the slash commands from
+	 * @returns {?array}
+	*/
 	async deleteInteractionGroup(category, guild) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
@@ -187,7 +246,13 @@ module.exports = class Egglord extends Client {
 			return `Unable to load category ${category}: ${err}`;
 		}
 	}
-	// Unload a command (you need to load them again)
+
+	/**
+	 * Function for unloading commands to the bot.
+	 * @param {string} commandPath The path of where the command is located
+	 * @param {string} commandName The name of the command
+	 * @readonly
+	*/
 	async unloadCommand(commandPath, commandName) {
 		let command;
 		if (this.commands.has(commandName)) {
@@ -200,29 +265,36 @@ module.exports = class Egglord extends Client {
 		return false;
 	}
 
-	// Handle slash command callback
-	async send(interaction, content) {
-		await interaction.reply(content);
-		if (this.config.debug) this.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.username}.`);
-		this.commandsUsed++;
-	}
-
-	// Fetches adult sites for screenshot NSFW blocking
+	/**
+	 * Function adult sites for blocking on non-nsfw channels.
+	 * @return {array}
+	*/
 	async fetchAdultSiteList() {
 		const blockedWebsites = require('../assets/json/whitelistWebsiteList.json');
 		this.adultSiteList = blockedWebsites.websites;
 		return this.adultSiteList;
 	}
 
-	// This will get the translation for the provided text
+	/**
+	 * Function for getting translations.
+	 * @param {string} key The key to search up
+	 * @param {object} args The args for variables in the key
+	 * @param {string} locale The langauge to translate to
+	 * @return {string}
+	*/
 	translate(key, args, locale) {
-		if (!locale) locale = this.config.defaultSettings.Language;
+		if (!locale) locale = require('../assets/json/defaultGuildSettings.json').Language;
 		const language = this.translations.get(locale);
 		if (!language) return 'Invalid language set in data.';
 		return language(key, args);
 	}
 
-	// for adding embeds to the webhook manager
+	/**
+	 * Function for adding embeds to the webhook manager. (Stops API abuse)
+	 * @param {string} channelID The key to search up
+	 * @param {embed} embed The args for variables in the key
+	 * @readonly
+	*/
 	addEmbed(channelID, embed) {
 		// collect embeds
 		if (!this.embedCollection.has(channelID)) {

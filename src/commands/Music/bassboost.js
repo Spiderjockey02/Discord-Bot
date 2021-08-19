@@ -3,10 +3,19 @@ const { MessageEmbed } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Bassboost command
+ * @extends {Command}
+*/
 module.exports = class Bassboost extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'bassboost',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['bb'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
@@ -24,7 +33,12 @@ module.exports = class Bassboost extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
@@ -32,7 +46,7 @@ module.exports = class Bassboost extends Command {
 
 
 		// update player's bassboost
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		let msg, embed;
 		if (!message.args[0]) {
 			player.setBassboost(!player.bassboost);
@@ -55,7 +69,13 @@ module.exports = class Bassboost extends Command {
 		return msg.edit({ content: '​​ ', embeds: [embed] });
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
@@ -63,14 +83,14 @@ module.exports = class Bassboost extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// update player's bassboost
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 		let embed;
 		if (!amount) {
 			player.setBassboost(!player.bassboost);
-			await bot.send(interaction, { content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
+			await interaction.reply({ content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
 			embed = new MessageEmbed()
 				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
 			await bot.delay(5000);
@@ -78,11 +98,11 @@ module.exports = class Bassboost extends Command {
 		}
 
 		// Make sure value is a number
-		if (isNaN(amount)) return bot.send(interaction, { embeds: [channel.error('music/bassboost:INVALID', { ERROR: null }, true)], ephemeral: true });
+		if (isNaN(amount)) return interaction.reply({ embeds: [channel.error('music/bassboost:INVALID', { ERROR: null }, true)], ephemeral: true });
 
 		// Turn on bassboost with custom value
 		player.setBassboost(amount / 10);
-		await bot.send(interaction, { content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
+		await interaction.reply({ content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
 		embed = new MessageEmbed()
 			.setDescription(bot.translate('music/bassboost:DESC_3', { DB: amount }));
 		await bot.delay(5000);

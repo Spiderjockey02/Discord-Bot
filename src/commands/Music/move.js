@@ -2,10 +2,19 @@
 const { functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Move command
+ * @extends {Command}
+*/
 module.exports = class Move extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'move',
+			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Moves the specified song to the specified position.',
@@ -28,14 +37,19 @@ module.exports = class Move extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure positions are number(s)
-		const player = bot.manager.players.get(message.guild.id);
+		const player = bot.manager?.players.get(message.guild.id);
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/move:INVALID'));
 
 		// Can't move currently playing song
@@ -59,7 +73,13 @@ module.exports = class Move extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
@@ -68,26 +88,26 @@ module.exports = class Move extends Command {
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return bot.send(interaction, { embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager.players.get(member.guild.id);
+		const player = bot.manager?.players.get(member.guild.id);
 
-		if (pos1 === 0) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
+		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 
-		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
+		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 
 		if (!pos2) {
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(0, 0, song);
-			return bot.send(interaction, bot.translate('music/move:MOVED_1', { TITLE: song.title }));
+			return interaction.reply(bot.translate('music/move:MOVED_1', { TITLE: song.title }));
 		} else if (pos2) {
-			if (pos2 == 0) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
-			if ((pos2 > player.queue.length) || !player.queue[pos2]) return bot.send(interaction, { ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
+			if (pos2 == 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
+			if ((pos2 > player.queue.length) || !player.queue[pos2]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(pos2 - 1, 0, song);
-			return bot.send(interaction, guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
+			return interaction.reply(guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
 		}
 	}
 };

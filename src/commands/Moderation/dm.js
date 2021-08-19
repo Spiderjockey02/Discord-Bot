@@ -2,10 +2,19 @@
 const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * DM command
+ * @extends {Command}
+*/
 module.exports = class DM extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'dm',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['direct-message', 'dmsg'],
 			userPermissions: ['MANAGE_GUILD'],
@@ -17,7 +26,13 @@ module.exports = class DM extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// Make sure a member was mentioned
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

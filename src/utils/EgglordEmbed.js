@@ -11,7 +11,7 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 
 	// Language translator for title
 	setTitle(key, args) {
-		const language = this.guild?.settings.Language ?? this.bot.config.defaultSettings.Language;
+		const language = this.guild?.settings.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
 		this.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
 		return this;
 	}
@@ -19,7 +19,7 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 	// Language translator for footer
 	setFooter(key, args, icon) {
 		if (typeof args === 'object') {
-			const language = this.guild?.settings.Language ?? this.bot.config.defaultSettings.Language;
+			const language = this.guild?.settings.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
 			this.footer = {
 				text: this.bot.translate(key, args, language),
 				iconURL: icon,

@@ -4,10 +4,19 @@ const	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * playlist create command
+ * @extends {Command}
+*/
 module.exports = class PCreate extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'p-create',
+			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-create'],
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
@@ -18,7 +27,12 @@ module.exports = class PCreate extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -107,7 +121,7 @@ module.exports = class PCreate extends Command {
 				search.delete();
 			} else {
 				tracks = res.tracks.slice(0, message.author.premium ? 200 : 100);
-				thumbnail = res.playlist?.selectedTrack.thumbnail ?? res.tracks[0].thumbnail;
+				thumbnail = res.playlist?.selectedTrack?.thumbnail ?? res.tracks[0].thumbnail;
 				duration = res.playlist?.duration ?? res.tracks[0].duration;
 			}
 

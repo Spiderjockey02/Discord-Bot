@@ -3,7 +3,15 @@ const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Instagram command
+ * @extends {Command}
+*/
 module.exports = class Instagram extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'instagram',
@@ -24,7 +32,13 @@ module.exports = class Instagram extends Command {
 		});
 	}
 
-	// Function for message command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		const username = message.args.join(' ');
 
@@ -33,7 +47,7 @@ module.exports = class Instagram extends Command {
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.checkEmoji() ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Gather data from database
 		const res = await this.createEmbed(bot, username, message.guild);
@@ -45,19 +59,33 @@ module.exports = class Instagram extends Command {
 		}
 	}
 
-	// Function for slash command
+	/**
+ 	 * Function for recieving interaction.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {interaction} interaction The interaction that ran the command
+ 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+ 	 * @readonly
+	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value;
 
 		const res = await this.createEmbed(bot, username, guild);
 		if (typeof (res) == 'object') {
-			bot.send(interaction, { embeds: [res] });
+			interaction.reply({ embeds: [res] });
 		} else {
-			bot.send(interaction, { embeds: [channel.error(res, {}, true)] });
+			interaction.reply({ embeds: [channel.error(res, {}, true)] });
 		}
 	}
-	// create Instagram embed
+
+	/**
+	 * Function for fetching/creating instagram embed.
+	 * @param {bot} bot The instantiating client
+	 * @param {string} username The username to search
+	 * @param {guild} guild The guild the command was ran in
+	 * @returns {embed}
+	*/
 	async createEmbed(bot, username, guild) {
 		const res = await fetch(`https://instagram.com/${username}/feed/?__a=1`)
 			.then(info => info.json())

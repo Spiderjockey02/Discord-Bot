@@ -2,13 +2,21 @@
 const { Node } = require('erela.js'),
 	Command = require('../../structures/Command.js');
 
+/**
+ * Node command
+ * @extends {Command}
+*/
 module.exports = class MusicNode extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'node',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Add/remove a Node for lavalink.',
 			usage: 'node <add / remove> [host] [password] [port]',
 			cooldown: 3000,
@@ -16,7 +24,13 @@ module.exports = class MusicNode extends Command {
 		});
 	}
 
-	// Run command
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+ 	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// delete message
 		if (message.deletable) message.delete();

@@ -4,9 +4,8 @@ const express = require('express'),
 
 // Command page
 module.exports = function(bot) {
-	// Show list of commands
+	// List of all commands
 	router.get('/', function(req, res) {
-		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/commands\`.`);
 
 		// show list of commands
 		const categories = bot.commands
@@ -19,27 +18,22 @@ module.exports = function(bot) {
 					.sort((a, b) => a.help.name - b.help.name)
 					.map(c => c.help.name),
 			}));
-
-		res.status(200).json({
-			categories,
-		});
+		res.status(200).json({ categories });
 	});
 
-	router.get('/raw', function(req, res) {
-		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/commands/raw\`.`);
+	// JSON view of all commands
+	router.get('/json', function(req, res) {
+
 		res.status(200).json([...bot.commands]);
 	});
 
 	// Show information on a particular command
 	router.get('/:command', function(req, res) {
-		if (bot.config.debug) bot.logger.debug(`IP: ${req.connection.remoteAddress.slice(7)} accessed \`/commands/${req.params.command}\`.`);
 
 		// check if command exists
 		if (bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command))) {
 			const command = bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command));
-			res.status(200).json({
-				command,
-			});
+			res.status(200).json({ command });
 		} else {
 			res.status(400).json({ error: 'Invalid command!' });
 		}

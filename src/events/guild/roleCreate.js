@@ -19,7 +19,7 @@ module.exports = class roleCreate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event roleCreate is for logging
-		if (settings.ModLogEvents.includes('ROLECREATE') && settings.ModLog) {
+		if (settings.ModLogEvents?.includes('ROLECREATE') && settings.ModLog) {
 			const embed = new Embed(bot, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was created**`)
 				.setColor(3066993)

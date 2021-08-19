@@ -4,10 +4,10 @@ const levelcd = new Set();
 
 module.exports.run = (bot, message, settings) => {
 	// Check if this was triggered by an ignored channel
-	if (settings.LevelIgnoreChannel.includes(message.channel.id)) return;
+	if (settings.LevelIgnoreChannel?.includes(message.channel.id)) return;
 
 	const roles = message.member.roles.cache.map(r => r.id);
-	if (roles.some(r => settings.LevelIgnoreRoles.includes(r))) return;
+	if (roles.some(r => settings.LevelIgnoreRoles?.includes(r))) return;
 
 	// Add a cooldown so people can't spam levels
 	if (!levelcd.has(message.author.id)) {
@@ -29,11 +29,11 @@ module.exports.run = (bot, message, settings) => {
 					Level: 1,
 				});
 				newXp.save().catch(err => bot.logger.error(err.message));
+				message.guild.levels.push({ userID: message.author.id, guildID: message.guild.id, Xp: xpAdd, Level: 1 });
 			} else {
 				// user was found
 				Xp.Xp = Xp.Xp + xpAdd;
 				const xpNeed = (5 * (Xp.Level ** 2) + 50 * Xp.Level + 100);
-
 				// User has leveled up
 				if (Xp.Xp >= xpNeed) {
 					// now check how to send message
@@ -48,7 +48,17 @@ module.exports.run = (bot, message, settings) => {
 				}
 
 				// update database
-				Xp.save().catch(err => bot.logger.error(err.message));
+				Xp.save()
+					.then(() => {
+						const res = message.guild.levels.find(({ userID }) => userID == message.author.id);
+						if (res) {
+							res.Xp = Xp.Xp;
+							res.Level = Xp.Level;
+						} else {
+							message.guild.levels.push({ userID: message.author.id, guildID: message.guild.id, Xp: xpAdd, Level: 1 });
+						}
+					})
+					.catch(err => bot.logger.error(err.message));
 			}
 		});
 

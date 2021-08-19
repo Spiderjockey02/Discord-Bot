@@ -6,9 +6,18 @@ const { Embed } = require('../../utils'),
 const features = ['CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREATE', 'EMOJIDELETE', 'EMOJIUPDATE',
 	'GUILDBANADD', 'GUILDBANREMOVE', 'GUILDMEMBERADD', 'GUILDMEMBERREMOVE', 'GUILDMEMBERUPDATE', 'GUILDUPDATE', 'MESSAGEDELETE',
 	'MESSAGEDELETEBULK', 'MESSAGEREACTIONADD', 'MESSAGEREACTIONREMOVE', 'MESSAGEREACTIONREMOVEALL', 'MESSAGEUPDATE', 'ROLECREATE', 'ROLEDELETE', 'ROLEUPDATE',
-	'VOICESTATEUPDATE', 'REPORT', 'WARNING', 'TICKET', 'INVITECREATE', 'INVITEDELETE'];
+	'VOICESTATEUPDATE', 'REPORT', 'WARNING', 'TICKET', 'INVITECREATE', 'INVITEDELETE', 'THREADCREATE', 'THREADDELETE', 'THREADUPDATE', 'THREADMEMBERSUPDATE',
+	'STICKERCREATE', 'STICKERDELETE', 'STICKERUPDATE'];
 
+/**
+ * Setlog command
+ * @extends {Command}
+*/
 module.exports = class SetLog extends Command {
+	/**
+ 	 * @param {Client} client The instantiating client
+ 	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
 			name: 'set-logs',
@@ -24,7 +33,13 @@ module.exports = class SetLog extends Command {
 		});
 	}
 
-	// Run command
+	/**
+ 	 * Function for recieving message.
+ 	 * @param {bot} bot The instantiating client
+ 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
+ 	 * @readonly
+  */
 	async run(bot, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -34,14 +49,13 @@ module.exports = class SetLog extends Command {
 			// Enabled/Disable ModLogs
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
-				settings.ModLog = message.args[0];
 				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.timedDelete({ timeout:10000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
-			const currentFeatures = settings.ModLogEvents;
+			const currentFeatures = settings.ModLogEvents ?? [];
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
 				const embed = new Embed(bot, message.guild)
@@ -57,7 +71,6 @@ module.exports = class SetLog extends Command {
 					const events = message.args.filter(arg => currentFeatures.indexOf(arg.toUpperCase()) == -1);
 					currentFeatures.push(...events);
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					settings.ModLogEvents = currentFeatures;
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events[0] ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -72,7 +85,6 @@ module.exports = class SetLog extends Command {
 					}
 
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					settings.ModLogEvents = currentFeatures;
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase().join('`, `')}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -83,7 +95,6 @@ module.exports = class SetLog extends Command {
 			try {
 				const channelID = (message.guild.channels.cache.get(message.args[1])) ? message.guild.channels.cache.get(message.args[1]).id : message.channel.id;
 				await message.guild.updateGuild({ ModLogChannel: channelID });
-				settings.ModLogChannel = channelID;
 				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
