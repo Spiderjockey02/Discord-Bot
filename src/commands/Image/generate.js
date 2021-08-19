@@ -58,7 +58,7 @@ module.exports = class Generate extends Command {
 	*/
 	async run(bot, message) {
 		// If user wants to see generate list
-		if (!message.args || ['list', '?'].includes(message.args[0])) {
+		if (!message.args[0] || ['list', '?'].includes(message.args[0])) {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('image/generate:DESC', { IMG_1: `${image_1.join('`, `')}`, IMG_2: `${image_2.join('`, `')}` }));
 			return message.channel.send({ embeds: [embed] });

@@ -66,10 +66,10 @@ module.exports = class Reminder extends Command {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('fun/reminder:TITLE')
 					.setThumbnail('attachment://Timer.png')
-					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:DESC')}](https://discord.com/channels/${message.guild?.id ?? '@me'}/${message.channel.id}/${message.id})`)
+					.setDescription(`${message.args.join(' ')}\n[${message.translate('fun/reminder:MSG_LINK')}](https://discord.com/channels/${message.guild?.id ?? '@me'}/${message.channel.id}/${message.id})`)
 					.setFooter('fun/reminder:FOOTER', { TIME: ms(time, { long: true }) });
 
-				message.channel.send({ embeds: [embed], files: [attachment] }).catch(() => {
+				message.member.send({ embeds: [embed], files: [attachment] }).catch(() => {
 					message.channel.send(message.translate('fun/reminder:RESPONSE', { INFO: message.args.join(' ') }).replace('{USER}', message.member));
 				});
 
