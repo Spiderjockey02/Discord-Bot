@@ -1,6 +1,10 @@
 // Dependencies
 const Command = require('../../structures/Command.js');
 
+/**
+ * Tags command
+ * @extends {Command}
+*/
 module.exports = class Tags extends Command {
 	/**
  	 * @param {Client} client The instantiating client

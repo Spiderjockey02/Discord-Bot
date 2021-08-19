@@ -4,7 +4,8 @@
   "description": "This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)",
   "main": "src/index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "generate-docs": "jsdoc --configure C:/Users/benja/Desktop/Discord-Bot/jsdoc.json --verbose"
   },
   "engines": {
     "node": ">=16.x",
@@ -56,6 +57,8 @@
     "weather-js": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.29.0"
+    "clean-jsdoc-theme": "^3.2.7",
+    "eslint": "^7.29.0",
+    "jsdoc": "^3.6.7"
   }
 }

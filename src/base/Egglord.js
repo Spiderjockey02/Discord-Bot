@@ -10,7 +10,7 @@ const { Client, Collection } = require('discord.js'),
 
 /**
  * Egglord custom client
- * @extends {Command}
+ * @extends {Client}
 */
 module.exports = class Egglord extends Client {
 	constructor() {
