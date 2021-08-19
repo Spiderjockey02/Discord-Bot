@@ -164,8 +164,7 @@ module.exports = class Egglord extends Client {
 		this.PresenceType = type;
 		try {
 			let j = 0;
-			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/yassuo' }), 10000);
-			return;
+			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/ram5s5' }), 10000);
 		} catch (e) {
 			console.log(e);
 		}
@@ -190,7 +189,7 @@ module.exports = class Egglord extends Client {
 	/**
 	 * Function for fetching slash command data.
 	 * @param {string} category The command category to get data from
-	 * @readonly
+	 * @returns {?array}
 	*/
 	async loadInteractionGroup(category) {
 		try {
@@ -222,7 +221,7 @@ module.exports = class Egglord extends Client {
 	 * Function for deleting slash command category from guild.
 	 * @param {string} category The command category to get data from
 	 * @param {guild} guild The guild to delete the slash commands from
-	 * @readonly
+	 * @returns {?array}
 	*/
 	async deleteInteractionGroup(category, guild) {
 		try {
