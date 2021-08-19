@@ -40,7 +40,7 @@ module.exports = class Ready extends Event {
 			if(guild.settings.PrefixTags) {
 				TagsSchema.find({ guildID: guild.id }).then(result => {
 					result.forEach(value => {
-						guild.guildTags.push(value.name)
+						guild.guildTags.push(value.name);
 					});
 				});
 			}
