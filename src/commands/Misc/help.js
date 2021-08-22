@@ -107,12 +107,12 @@ module.exports = class Help extends Command {
 					return new Embed(bot)
 						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
 						.setDescription([
-							bot.translate('misc/help:DESC', { DESC: cmd.help.description }),
-							bot.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
-							bot.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
-							bot.translate('misc/help:USE', { USAGE: settings.prefix.concat(bot.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
-							bot.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
-							bot.translate('misc/help:LAYOUT'),
+							channel.guild.translate('misc/help:DESC', { DESC: channel.guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:DESCRIPTION`) }),
+							channel.guild.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
+							channel.guild.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
+							channel.guild.translate('misc/help:USE', { USAGE: settings.prefix.concat(bot.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							channel.guild.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
+							channel.guild.translate('misc/help:LAYOUT'),
 						].join('\n'));
 				} else {
 					return channel.error('misc/help:NO_COMMAND', {}, true);

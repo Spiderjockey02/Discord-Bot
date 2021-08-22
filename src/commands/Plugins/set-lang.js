@@ -64,12 +64,18 @@ module.exports = class Setlang extends Command {
 						.setPlaceholder(bot.languages.find((lan) => lan.name == settings.Language).nativeName)
 						.addOptions(options),
 				);
-			await message.channel.send({ content: 'Please select a language for this server', components: [row] }).then(async msg => {
+
+			// send message
+			message.channel.send({ content: 'Please select a language for this server', components: [row] }).then(async msg => {
 				const filter = (interaction) => interaction.customId === 'setlang' && interaction.user.id === message.author.id;
 
-				const resp = await msg.awaitMessageComponent({ filter, componentType: 'SELECT_MENU', time: 15000 });
-				await updateLanguage(message.guild, bot.languages.find(l => l.name === resp.values[0]));
-				msg.delete();
+				try {
+					const resp = await msg.awaitMessageComponent({ filter, componentType: 'SELECT_MENU', time: 15000 });
+					await updateLanguage(message.guild, bot.languages.find(l => l.name === resp.values[0]));
+					msg.delete();
+				} catch {
+					msg.delete();
+				}
 			});
 		}
 
