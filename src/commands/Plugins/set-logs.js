@@ -68,7 +68,7 @@ module.exports = class SetLog extends Command {
 				// add new Logging
 				try {
 					message.args.shift();
-					const events = message.args.filter(arg => currentFeatures.indexOf(arg.toUpperCase()) == -1);
+					const events = message.args.map(args => args.toUpperCase()).filter(arg => currentFeatures.indexOf(arg.toUpperCase()) == -1);
 					currentFeatures.push(...events);
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events[0] ? events.join('`, `') : 'Nothing'}\`` });
@@ -80,12 +80,12 @@ module.exports = class SetLog extends Command {
 
 				// remove features
 				try {
-					for (const featues of message.args) {
+					for (const featues of message.args.map(args => args.toUpperCase())) {
 						if (currentFeatures.indexOf(featues.toUpperCase()) > -1) currentFeatures.splice(currentFeatures.indexOf(featues.toUpperCase()), 1);
 					}
 
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase().join('`, `')}\`` });
+					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase()}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -93,9 +93,9 @@ module.exports = class SetLog extends Command {
 			}
 		} else if (message.args[0] == 'channel') {
 			try {
-				const channelID = (message.guild.channels.cache.get(message.args[1])) ? message.guild.channels.cache.get(message.args[1]).id : message.channel.id;
-				await message.guild.updateGuild({ ModLogChannel: channelID });
-				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID });
+				const channelID = message.getChannel();
+				await message.guild.updateGuild({ ModLogChannel: channelID[0].id });
+				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID[0].id });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
