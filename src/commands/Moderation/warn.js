@@ -36,10 +36,14 @@ module.exports = class Warn extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/warn:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		// check if a user was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/warn:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
 
-		// Get user to warn
-		const members = await message.getMember();
+		// Get members mentioned in message
+		const members = await message.getMember(false);
+
+		// Make sure atleast a guildmember was found
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user isn't trying to punish themselves
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));

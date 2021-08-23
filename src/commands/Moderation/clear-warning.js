@@ -37,8 +37,15 @@ module.exports = class ClearWarning extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
-		// Get user
-		const members = await message.getMember();
+		// check if a user was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear-warning:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+
+
+		// Get members mentioned in message
+		const members = await message.getMember(false);
+
+		// Make sure atleast a guildmember was found
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// get warnings of user
 		try {

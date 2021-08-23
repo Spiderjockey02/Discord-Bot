@@ -21,7 +21,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 	},
 	// Get member(s) from message (via ID, mention or username)
 	getMember: {
-		value: async function() {
+		value: async function(fallback = true) {
 			const users = [];
 
 			// add all mentioned users
@@ -57,11 +57,13 @@ module.exports = Object.defineProperties(Message.prototype, {
 					users.push(member);
 				}
 			}
-			users.push(this.author);
+
+			// check if it should return the author as a fallback value
+			if (fallback) users.push(this.author);
 
 			let items;
 			if (this.guild) {
-				items = users.map(user => this.guild.members.cache.get(user.id));
+				items = users.map(user => this.guild.members.cache.get(user.id)).filter(member => member !== undefined);
 			} else {
 				items = users.map(user => Object.assign({ id: user.id }, { user: user }));
 			}

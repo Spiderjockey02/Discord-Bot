@@ -37,8 +37,14 @@ module.exports = class Mute extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
-		// add user to role (if no role, make role)
-		const members = await message.getMember();
+		// check if a user was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/mute:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+
+		// Get members mentioned in message
+		const members = await message.getMember(false);
+
+		// Make sure atleast a guildmember was found
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Get the channel the member is in
 		const channel = message.guild.channels.cache.get(members[0].voice.channelID);

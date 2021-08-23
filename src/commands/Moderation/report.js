@@ -33,14 +33,20 @@ module.exports = class Report extends Command {
  	 * @readonly
 	*/
 	async run(bot, message, settings) {
-		// Delete command for privacy
-		if (message.deletable) message.delete();
-
 		// Make sure that REPORT is in the mod logs
 		if (settings.ModLogEvents?.includes('REPORT')) {
 
-			// Find user
-			const members = await message.getMember();
+			// Delete command for privacy
+			if (message.deletable) message.delete();
+
+			// check if a user was entered
+			if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+
+			// Get members mentioned in message
+			const members = await message.getMember(false);
+
+			// Make sure atleast a guildmember was found
+			if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 			// Make sure user isn't trying to punish themselves
 			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));

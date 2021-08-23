@@ -37,8 +37,11 @@ module.exports = class DM extends Command {
 		// Make sure a member was mentioned
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
-		// Get user
-		const members = await message.getMember();
+		// Get members mentioned in message
+		const members = await message.getMember(false);
+
+		// Make sure atleast a guildmember was found
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// send message
 		try {

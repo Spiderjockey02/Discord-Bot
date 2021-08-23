@@ -35,8 +35,15 @@ module.exports = class Deafen extends Command {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
-		// Checks to make sure user is in the server
-		const members = await message.getMember();
+		// check if a user was entered
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/deafen:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+
+
+		// Get members mentioned in message
+		const members = await message.getMember(false);
+
+		// Make sure atleast a guildmember was found
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure that the user is in a voice channel
 		if (members[0]?.voice.channel) {
