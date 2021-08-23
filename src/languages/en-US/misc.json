@@ -1,7 +1,7 @@
 {
 	"ERROR_MESSAGE": "The following error has occurred: `{{ERROR}}`. If this error keeps occurring, please contact support.",
 	"FETCHING": "{{EMOJI}} Fetching {{ITEM}}...",
-	"INCORRECT_FORMAT": "Please use the format: `{{EXAMPLE}}`.",
+	"INCORRECT_FORMAT": "Please use the format: `{{EXAMPLE}}`. \n\n**Layout**: `<> = required, [] = optional`",
 	"GENERATING_IMAGE": "{{EMOJI}} Generating your image..",
 	"NO_REASON": "No reason given.",
 	"WAITED_TOO_LONG": "You didn't reply in time",

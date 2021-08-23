@@ -60,7 +60,7 @@ module.exports.run = async (config) => {
 			return true;
 		}
 	} else {
-		logger.error(`${chalk.red('✗')} Twitch API key is missing.`);
+		logger.log(`${chalk.red('✗')} Twitch API key is missing.`);
 	}
 
 	// Check fortnite API

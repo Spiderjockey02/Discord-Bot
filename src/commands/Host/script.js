@@ -1,6 +1,6 @@
 // Dependencies
 const { MessageEmbed } = require('discord.js'),
-	{ promisify } = require('util'),
+	{ promisify, inspect } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	Command = require('../../structures/Command.js');
 
@@ -48,7 +48,7 @@ module.exports = class Script extends Command {
 		if (scripts.includes(`${message.args[0]}.js`)) {
 			try {
 				const resp = await require(`../../scripts/${message.args[0]}.js`).run(eval(message.args[1], { depth: 0 }), eval(message.args[2], { depth: 0 }), eval(message.args[3], { depth: 0 }));
-				message.channel.send(`Output: ${resp}`);
+				message.channel.send('```js\n' + `${inspect(resp).substring(0, 1990)}` + '```');
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
