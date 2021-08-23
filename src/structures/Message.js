@@ -32,7 +32,6 @@ module.exports = Object.defineProperties(Message.prototype, {
 					users.push([...this.mentions.users.values()][i] || await this.client.users.fetch(this.args[i]).catch(() => {}));
 				}
 			}
-
 			// find user
 			if (this.args[0]) {
 				const members = [], indexes = [];
@@ -73,7 +72,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 	},
 	// Get channel(s) from message (via ID or mention)
 	getChannel: {
-		value: async function() {
+		value: function() {
 			const channels = [];
 			// get all channels mentioned
 			for (let i = 0; i < this.args.length; i++) {

@@ -19,7 +19,7 @@ module.exports = class messageDelete extends Event {
 		if (message.channel.type == 'dm') return;
 
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
-		if (!message.content && !message.attachments && !message.embeds[0]) return;
+		if (!message.content && message.attachments.size == 0 && message.embeds[0]) return;
 
 		// if the message is a partial or a webhook return
 		if (message.partial || message.webhookID) return;
@@ -70,14 +70,12 @@ module.exports = class messageDelete extends Event {
 			embed.setTimestamp();
 			// check for attachment deletion
 			if (message.attachments.size > 0) {
-				let attachments = '';
-				for (const attachment of message.attachments) {
-					attachments += attachment[1].url + '\n';
-					embed.fields.push({
-						'name': 'Attachments',
-						'value': attachments,
-					});
-				}
+				console.log(message.attachments.map(file => `${file.url} \n`));
+				console.log(message.attachments);
+				embed.fields.push({
+					'name': 'Attachments:',
+					'value': message.attachments.map(file => file.url).join('\n'),
+				});
 			}
 
 			// Find channel and send message

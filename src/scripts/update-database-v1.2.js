@@ -1,6 +1,6 @@
 // Dependencies
 const mongoose = require('mongoose'),
-	logger = require('../utils/logger'),
+	{ logger } = require('../utils'),
 	config = require('../config.js'),
 	{ GuildSchema } = require('../database/models');
 

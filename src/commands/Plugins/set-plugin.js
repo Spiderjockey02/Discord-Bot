@@ -22,7 +22,7 @@ module.exports = class SetPlugin extends Command {
 			description: 'Toggle plugins on and off',
 			usage: 'set-plugin <option>',
 			cooldown: 5000,
-			examples: ['set-plugin <option>'],
+			examples: ['set-plugin', 'setplugin Giveaway'],
 		});
 	}
 
@@ -35,7 +35,7 @@ module.exports = class SetPlugin extends Command {
   */
 	async run(bot, message, settings) {
 		// Get all the command categories
-		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i);
+		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
 
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
@@ -45,7 +45,7 @@ module.exports = class SetPlugin extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('Plugins')
 				.setDescription([
-					`Available plugins: \`${defaultPlugins.join('`, `') }\`.`,
+					`Available plugins: \`${defaultPlugins.filter(item => !settings.plugins.includes(item)).join('`, `') }\`.`,
 					'',
 					`Active plugins: \`${settings.plugins.join('`, `') }\`.`,
 				].join('\n'));
