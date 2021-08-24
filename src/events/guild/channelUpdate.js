@@ -97,8 +97,8 @@ module.exports = class channelUpdate extends Event {
 					.setTimestamp();
 				for (const permID of permDiff.keys()) {
 					// load both overwrites into variables
-					const oldPerm = oldChannel.permissionOverwrites.get(permID) || {};
-					const newPerm = newChannel.permissionOverwrites.get(permID) || {};
+					const oldPerm = oldChannel.permissionOverwrites.cache.get(permID) || {};
+					const newPerm = newChannel.permissionOverwrites.cache.get(permID) || {};
 					const oldBitfields = {
 						allowed: oldPerm.allow ? oldPerm.allow.bitfield : 0,
 						denied: oldPerm.deny ? oldPerm.deny.bitfield : 0,

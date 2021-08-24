@@ -48,7 +48,7 @@ module.exports = class messageCreate extends Event {
 		}
 
 		// Check if message was a command
-		const args = message.content.split(' ');
+		const args = message.content.split(/ +/);
 		if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
 			const command = args.shift().slice(settings.prefix.length).toLowerCase();
 			let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));

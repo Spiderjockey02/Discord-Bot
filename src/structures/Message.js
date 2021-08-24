@@ -10,7 +10,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 	// Fetch the args from a message
 	getArgs: {
 		value: function() {
-			const args = this.content.split(' ');
+			const args = this.content.split(/ +/);
 			args.shift();
 			if (this.content.startsWith(`<@!${this.client.user.id}>`)) args.shift();
 
