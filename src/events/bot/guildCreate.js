@@ -3,14 +3,24 @@ const { MessageEmbed, MessageAttachment } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
-module.exports = class GuildCreate extends Event {
+/**
+ * Guild create event
+ * @event Egglord#GuildCreate
+ * @extends {Event}
+*/
+class GuildCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Guild} guild The guild that added the bot
+	 * @readonly
+	*/
 	async run(bot, guild) {
 		// LOG server Join
 		bot.logger.log(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot.`);
@@ -71,4 +81,6 @@ module.exports = class GuildCreate extends Event {
 			bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 		}
 	}
-};
+}
+
+module.exports = GuildCreate;

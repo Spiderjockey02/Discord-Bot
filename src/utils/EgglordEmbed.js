@@ -1,6 +1,15 @@
 const { MessageEmbed } = require('discord.js');
 
-module.exports = class EgglordEmbed extends MessageEmbed {
+/**
+ * EgglordEmbed
+ * @extends {MessageEmbed}
+*/
+class EgglordEmbed extends MessageEmbed {
+	/**
+	 * @param {Client} client The instantiating client
+	 * @param {?guild} guild The guild of which the embed will be sent to
+	 * @param {CommandData} data The data of the embed
+	*/
 	constructor(bot, guild, data = {}) {
 		super(data);
 		this.bot = bot;
@@ -32,4 +41,6 @@ module.exports = class EgglordEmbed extends MessageEmbed {
 		}
 		return this;
 	}
-};
+}
+
+module.exports = EgglordEmbed;

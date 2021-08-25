@@ -4,13 +4,24 @@ const { Embed } = require('../../utils'),
 	cooldowns = new Collection(),
 	Event = require('../../structures/Event');
 
-module.exports = class clickButton extends Event {
+/**
+ * Click button event
+ * @event Egglord#ClickButton
+ * @extends {Event}
+*/
+class ClickButton extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {ButtonInteraction} button The button that was pressed
+	 * @readonly
+	*/
 	async run(bot, button) {
 		const { customId: ID, guildId, channelId, member } = button,
 			guild = bot.guilds.cache.get(guildId),
@@ -88,4 +99,6 @@ module.exports = class clickButton extends Event {
 			setTimeout(() => cooldowns.delete(member.user.id), cooldownAmount);
 		}
 	}
-};
+}
+
+module.exports = ClickButton;

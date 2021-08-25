@@ -1,14 +1,24 @@
 // Dependencies
 const Event = require('../../structures/Event');
 
-module.exports = class interactionCreate extends Event {
+/**
+ * Interaction create event
+ * @event Egglord#InteractionCreate
+ * @extends {Event}
+*/
+class InteractionCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Interaction} interaction The interaction recieved (slash, button, context menu & select menu etc)
+	 * @readonly
+	*/
 	async run(bot, interaction) {
 		// The interaction is a slash command
 		if (interaction.isCommand()) return bot.emit('slashCreate', interaction);
@@ -16,4 +26,6 @@ module.exports = class interactionCreate extends Event {
 		// The interaction is a button
 		if (interaction.isButton()) return bot.emit('clickButton', interaction);
 	}
-};
+}
+
+module.exports = InteractionCreate;

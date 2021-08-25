@@ -12,7 +12,7 @@ const { Client, Collection } = require('discord.js'),
  * Egglord custom client
  * @extends {Client}
 */
-module.exports = class Egglord extends Client {
+class Egglord extends Client {
 	constructor() {
 		super({
 			partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION'],
@@ -303,4 +303,6 @@ module.exports = class Egglord extends Client {
 			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
 		}
 	}
-};
+}
+
+module.exports = Egglord;

@@ -2,14 +2,24 @@
 const unavailableGuilds = [],
 	Event = require('../../structures/Event');
 
-module.exports = class guildUnavailable extends Event {
+/**
+ * Guild unavailable event
+ * @event Egglord#GuildUnavailable
+ * @extends {Event}
+*/
+class GuildUnavailable extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Guild} guild The guild that has become unavailable
+	 * @readonly
+	*/
 	async run(bot, guild) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Guild: ${guild.name} has become unavailable.`);
@@ -26,4 +36,6 @@ module.exports = class guildUnavailable extends Event {
 			unavailableGuilds.push(guild.id);
 		}
 	}
-};
+}
+
+module.exports = GuildUnavailable;

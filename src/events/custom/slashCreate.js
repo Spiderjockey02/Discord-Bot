@@ -2,13 +2,24 @@
 const { Collection } = require('discord.js'),
 	Event = require('../../structures/Event');
 
-module.exports = class slashCreate extends Event {
+/**
+ * Slash create event
+ * @event Egglord#SlashCreate
+ * @extends {Event}
+*/
+class SlashCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {CommandInteraction} interaction The slash command used
+	 * @readonly
+	*/
 	async run(bot, interaction) {
 		const guild = bot.guilds.cache.get(interaction.guildId),
 			cmd = bot.commands.get(interaction.commandName),
@@ -80,4 +91,6 @@ module.exports = class slashCreate extends Event {
 		timestamps.set(interaction.user.id, now);
 		this.commandsUsed++;
 	}
-};
+}
+
+module.exports = SlashCreate;

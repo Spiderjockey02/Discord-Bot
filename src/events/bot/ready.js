@@ -1,7 +1,12 @@
 const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
-module.exports = class Ready extends Event {
+/**
+ * Ready event
+ * @event Egglord#Ready
+ * @extends {Event}
+*/
+class Ready extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
@@ -9,7 +14,11 @@ module.exports = class Ready extends Event {
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @readonly
+	*/
 	async run(bot) {
 		// Load up audio player
 		try {
@@ -97,4 +106,6 @@ module.exports = class Ready extends Event {
 		bot.logger.log(`${bot.user.tag}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`, 'ready');
 		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
 	}
-};
+}
+
+module.exports = Ready;

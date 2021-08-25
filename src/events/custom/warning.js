@@ -3,13 +3,25 @@ const { MessageEmbed } = require('discord.js'),
 	{ WarningSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
-module.exports = class Warning extends Event {
+/**
+ * Warning event
+ * @event Egglord#Warning
+ * @extends {Event}
+*/
+class Warning extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildMember} member The member that was warned
+	 * @param {WarningSchema} warning The warning
+	 * @readonly
+	*/
 	async run(bot, member, warning) {
 		// get settings
 		const settings = member.guild.settings;
@@ -50,4 +62,6 @@ module.exports = class Warning extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = Warning;

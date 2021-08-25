@@ -4,14 +4,24 @@ const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = requir
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildDelete extends Event {
+/**
+ * Guild delete event
+ * @event Egglord#GuildDelete
+ * @extends {Event}
+*/
+class GuildDelete extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Guild} guild The guild that kicked the bot
+	 * @readonly
+	*/
 	async run(bot, guild) {
 		bot.logger.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`);
 		await bot.DeleteGuild(guild);
@@ -84,4 +94,6 @@ module.exports = class guildDelete extends Event {
 		// update bot's activity
 		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 	}
-};
+}
+
+module.exports = GuildDelete;

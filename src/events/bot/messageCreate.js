@@ -5,14 +5,24 @@ const { Collection } = require('discord.js'),
 	{ TagsSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageCreate extends Event {
+/**
+ * Message create event
+ * @event Egglord#MessageCreate
+ * @extends {Event}
+*/
+class MessageCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Message} message The message that ran the command
+	 * @readonly
+	*/
 	async run(bot, message) {
 		// record how many messages the bot see
 		bot.messagesSent++;
@@ -176,4 +186,6 @@ module.exports = class messageCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageCreate;

@@ -2,13 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class ticketCreate extends Event {
+/**
+ * Ticket create event
+ * @event Egglord#TicketCreate
+ * @extends {Event}
+*/
+class TicketCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {TextChannel} channel The ticket channel that opened
+	 * @param {MessageEmbed} ticket The ticket that made the channel
+	 * @readonly
+	*/
 	async run(bot, channel, ticket) {
 		// Get server settings / if no settings then return
 		const settings = channel.guild.settings;
@@ -33,4 +45,6 @@ module.exports = class ticketCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = TicketCreate;

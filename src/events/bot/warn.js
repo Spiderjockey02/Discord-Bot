@@ -1,16 +1,28 @@
 // Dependencies
 const	Event = require('../../structures/Event');
 
-module.exports = class Warn extends Event {
+/**
+ * Warn event
+ * @event Egglord#Warn
+ * @extends {Event}
+*/
+class Warn extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {string} info The warning
+	 * @readonly
+	*/
 	async run(bot, info) {
 		console.log('warn:');
 		console.log(info);
 	}
-};
+}
+
+module.exports = Warn;
