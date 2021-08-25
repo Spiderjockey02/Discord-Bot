@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildBanAdd extends Event {
+/**
+ * Guild ban add event
+ * @event Egglord#GuildBanAdd
+ * @extends {Event}
+	*/
+class GuildBanAdd extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildBan} ban The ban that occurred
+	 * @readonly
+	*/
 	async run(bot, guildBan) {
 		// Make sure all relevant data is fetched
 		try {
@@ -49,4 +59,6 @@ module.exports = class guildBanAdd extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = GuildBanAdd;

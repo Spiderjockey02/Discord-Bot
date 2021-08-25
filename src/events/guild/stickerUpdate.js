@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class stickerUpdate extends Event {
+/**
+ * Sticker update event
+ * @event Egglord#StickerUpdate
+ * @extends {Event}
+*/
+class StickerUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Sticker} oldSticker The sticker before the update
+	 * @param {Sticker} newSticker The sticker after the update
+	 * @readonly
+	*/
 	async run(bot, oldSticker, newSticker) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Sticker: ${newSticker.name} has been updated in guild: ${newSticker.guildId}. (${newSticker.type})`);
@@ -63,4 +74,6 @@ module.exports = class stickerUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = StickerUpdate;

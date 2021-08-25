@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildMemberAdd extends Event {
+/**
+ * Guild member add event
+ * @event Egglord#GuildMemberAdd
+ * @extends {Event}
+*/
+class GuildMemberAdd extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildMember} member The member that has joined a guild
+	 * @readonly
+	*/
 	async run(bot, member) {
 	// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been joined guild: ${member.guild.id}.`);
@@ -64,4 +74,6 @@ module.exports = class guildMemberAdd extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = GuildMemberAdd;

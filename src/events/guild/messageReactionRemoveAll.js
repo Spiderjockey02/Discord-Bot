@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageReactionRemoveAll extends Event {
+/**
+ * Message reaction remove all event
+ * @event Egglord#MessageReactionRemoveAll
+ * @extends {Event}
+*/
+class MessageReactionRemoveAll extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Message} message The message the reactions were removed from
+	 * @readonly
+	*/
 	async run(bot, message) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message all reactions removed ${!message.guild ? '' : ` in guild: ${message.guild.id}`}`);
@@ -41,4 +51,6 @@ module.exports = class messageReactionRemoveAll extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageReactionRemoveAll;

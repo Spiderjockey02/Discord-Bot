@@ -4,14 +4,24 @@ const dateFormat = require('dateformat'),
 	{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageDeleteBulk extends Event {
+/**
+ * Message delete bulk event
+ * @event Egglord#MessageDeleteBulk
+ * @extends {Event}
+*/
+class MessageDeleteBulk extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Collection<Snowflake, Message>} message The deleted message
+	 * @readonly
+	*/
 	async run(bot, messages) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in guild: ${messages.first().guild.id}`);
@@ -48,4 +58,6 @@ module.exports = class messageDeleteBulk extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageDeleteBulk;

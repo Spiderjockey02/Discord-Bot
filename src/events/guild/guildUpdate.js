@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildUpdate extends Event {
+/**
+ * Guild update event
+ * @event Egglord#GuildUpdate
+ * @extends {Event}
+*/
+class GuildUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Guild} oldGuild The guild before the update
+	 * @param {Guild} newGuild The guild after the update
+	 * @readonly
+	*/
 	async run(bot, oldGuild, newGuild) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Guild: ${newGuild.name} has been updated.`);
@@ -90,4 +101,6 @@ module.exports = class guildUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = GuildUpdate;

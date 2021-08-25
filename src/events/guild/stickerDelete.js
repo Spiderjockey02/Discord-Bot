@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class stickerDelete extends Event {
+/**
+ * Sticker delete event
+ * @event Egglord#StickerDelete
+ * @extends {Event}
+*/
+class StickerDelete extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Sticker} sticker The sticker that was deleted
+	 * @readonly
+	*/
 	async run(bot, sticker) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Sticker: ${sticker.name} has been deleted in guild: ${sticker.guildId}. (${sticker.type})`);
@@ -37,4 +47,6 @@ module.exports = class stickerDelete extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = StickerDelete;

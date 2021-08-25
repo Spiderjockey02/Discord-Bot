@@ -3,14 +3,24 @@ const { Embed } = require('../../utils'),
 	{ ReactionRoleSchema, GiveawaySchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageDelete extends Event {
+/**
+ * Message delete event
+ * @event Egglord#MessageDelete
+ * @extends {Event}
+*/
+class MessageDelete extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Message} message The deleted message
+	 * @readonly
+	*/
 	async run(bot, message) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
@@ -70,8 +80,6 @@ module.exports = class messageDelete extends Event {
 			embed.setTimestamp();
 			// check for attachment deletion
 			if (message.attachments.size > 0) {
-				console.log(message.attachments.map(file => `${file.url} \n`));
-				console.log(message.attachments);
 				embed.fields.push({
 					'name': 'Attachments:',
 					'value': message.attachments.map(file => file.url).join('\n'),
@@ -87,4 +95,6 @@ module.exports = class messageDelete extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageDelete;

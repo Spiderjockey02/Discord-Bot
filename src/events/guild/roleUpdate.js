@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class roleUpdate extends Event {
+/**
+ * Role update event
+ * @event Egglord#RoleUpdate
+ * @extends {Event}
+*/
+class RoleUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Role} oldRole The role before the update
+	 * @param {Role} newRole The role after the update
+	 * @readonly
+	*/
 	async run(bot, oldRole, newRole) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Role: ${newRole.name} has been updated in guild: ${newRole.guild.id}.`);
@@ -72,4 +83,6 @@ module.exports = class roleUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = RoleUpdate;

@@ -4,14 +4,24 @@ const { Embed } = require('../../utils'),
 	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildMemberRemove extends Event {
+/**
+ * Guild member remove event
+ * @event Egglord#GuildMemberRemove
+ * @extends {Event}
+*/
+class GuildMemberRemove extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildMember} member The member that has left/been kicked from a guild
+	 * @readonly
+	*/
 	async run(bot, member) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has left guild: ${member.guild.id}.`);
@@ -55,4 +65,6 @@ module.exports = class guildMemberRemove extends Event {
 			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 	}
-};
+}
+
+module.exports = GuildMemberRemove;

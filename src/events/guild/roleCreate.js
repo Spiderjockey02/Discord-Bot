@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class roleCreate extends Event {
+/**
+ * Role create event
+ * @event Egglord#RoleCreate
+ * @extends {Event}
+*/
+class RoleCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Role} role The role that was created
+	 * @readonly
+	*/
 	async run(bot, role) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Role: ${role.name} has been created in guild: ${role.guild.id}.`);
@@ -36,4 +46,6 @@ module.exports = class roleCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = RoleCreate;

@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageUpdate extends Event {
+/**
+ * Message update event
+ * @event Egglord#MessageUpdate
+ * @extends {Event}
+*/
+class MessageUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Message} oldMessage The message before the update
+	 * @param {Message} newMessage The message after the update
+	 * @readonly
+	*/
 	async run(bot, oldMessage, newMessage) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message updated${!newMessage.guild ? '' : ` in guild: ${newMessage.guild.id}`}`);
@@ -66,4 +77,6 @@ module.exports = class messageUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageUpdate;

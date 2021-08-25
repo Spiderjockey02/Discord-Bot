@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class threadDelete extends Event {
+/**
+ * Thread delete event
+ * @event Egglord#ThreadDelete
+ * @extends {Event}
+*/
+class ThreadDelete extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {ThreadChannel} thread The thread that was deleted
+	 * @readonly
+	*/
 	async run(bot, thread) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Thread: ${thread.name} has been deleted in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
@@ -40,4 +50,6 @@ module.exports = class threadDelete extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ThreadDelete;

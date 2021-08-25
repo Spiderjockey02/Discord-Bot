@@ -3,14 +3,24 @@ const { Embed } = require('../../utils'),
 	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
 
-module.exports = class inviteCreate extends Event {
+/**
+ * Invite create event
+ * @event Egglord#InviteCreate
+ * @extends {Event}
+*/
+class InviteCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Invite} invite The invite that was created
+	 * @readonly
+	*/
 	async run(bot, invite) {
 		// Get server settings / if no settings then return
 		const settings = invite.guild.settings;
@@ -40,4 +50,6 @@ module.exports = class inviteCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = InviteCreate;

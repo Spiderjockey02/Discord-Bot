@@ -1,14 +1,24 @@
 // Dependencies
 const	Event = require('../../structures/Event');
 
-module.exports = class threadListSync extends Event {
+/**
+ * Thread list sync event
+ * @event Egglord#ThreadListSync
+ * @extends {Event}
+*/
+class ThreadListSync extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Collection<Snowflake, ThreadChannel>} threads The threads that were synced
+	 * @readonly
+	*/
 	async run(bot, threads) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`${threads.size} thread(s) have now been synced in guild: ${threads.first().guildId}`);
@@ -21,4 +31,6 @@ module.exports = class threadListSync extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ThreadListSync;

@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class emojiUpdate extends Event {
+/**
+ * Emoji update event
+ * @event Egglord#EmojiUpdate
+ * @extends {Event}
+*/
+class EmojiUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildEmoji} oldEmoji The emoji before the update
+	 * @param {GuildEmoji} newEmoji The emoji after the update
+	 * @readonly
+	*/
 	async run(bot, oldEmoji, newEmoji) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Emoji: ${newEmoji.name} has been updated in guild: ${newEmoji.guild.id}.`);
@@ -74,4 +85,6 @@ module.exports = class emojiUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = EmojiUpdate;

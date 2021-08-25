@@ -1,24 +1,33 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	types = {
+		GUILD_TEXT: 'Text',
+		GUILD_VOICE: 'Voice',
+		GUILD_CATEGORY: 'Category',
+		GUILD_STAGE_VOICE: 'Stage',
+		GUILD_NEWS: 'Annoucement',
+		GUILD_STORE: 'Store',
+	},
 	Event = require('../../structures/Event');
 
-const types = {
-	GUILD_TEXT: 'Text',
-	GUILD_VOICE: 'Voice',
-	GUILD_CATEGORY: 'Category',
-	GUILD_STAGE_VOICE: 'Stage',
-	GUILD_NEWS: 'Annoucement',
-	GUILD_STORE: 'Store',
-};
-
-module.exports = class channelCreate extends Event {
+/**
+ * Channel create event
+ * @event Egglord#ChannelCreate
+ * @extends {Event}
+*/
+class ChannelCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildChannel} channel The channel that was created
+	 * @readonly
+	*/
 	async run(bot, channel) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == 'dm' ? channel.recipient.tag : channel.name} has been created${channel.type == 'dm' ? '' : ` in guild: ${channel.guild.id}`}. (${types[channel.type]})`);
@@ -52,4 +61,6 @@ module.exports = class channelCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ChannelCreate;

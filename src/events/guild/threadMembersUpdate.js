@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class threadMembersUpdate extends Event {
+/**
+ * Thread members update event
+ * @event Egglord#ThreadMembersUpdate
+ * @extends {Event}
+*/
+class ThreadMembersUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Collection<Snowflake, ThreadMember>} oldMembers The members before the update
+	 * @param {Collection<Snowflake, ThreadMember>} newMembers The members after the update
+	 * @readonly
+	*/
 	async run(bot, oldMembers, newMembers) {
 		// Get thread
 		const thread = oldMembers.first()?.thread ?? newMembers.first().thread;
@@ -59,4 +70,6 @@ module.exports = class threadMembersUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ThreadMembersUpdate;

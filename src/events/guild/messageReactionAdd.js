@@ -3,14 +3,25 @@ const { Embed } = require('../../utils'),
 	{ ReactionRoleSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
-module.exports = class messageReactionAdd extends Event {
+/**
+ * Message reaction add event
+ * @event Egglord#MessageReactionAdd
+ * @extends {Event}
+*/
+class MessageReactionAdd extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {MessageReaction} reaction The reaction object
+	 * @param {User} user The user that added the reaction
+	 * @readonly
+	*/
 	async run(bot, reaction, user) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Message reaction added${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
@@ -82,4 +93,6 @@ module.exports = class messageReactionAdd extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = MessageReactionAdd;

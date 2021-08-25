@@ -2,14 +2,24 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class threadCreate extends Event {
+/**
+ * Thread create event
+ * @event Egglord#ThreadCreate
+ * @extends {Event}
+*/
+class ThreadCreate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {ThreadChannel} thread The thread that was created
+	 * @readonly
+	*/
 	async run(bot, thread) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Thread: ${thread.name} has been created in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
@@ -47,4 +57,6 @@ module.exports = class threadCreate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ThreadCreate;

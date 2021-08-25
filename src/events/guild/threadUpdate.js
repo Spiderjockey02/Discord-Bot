@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class threadUpdate extends Event {
+/**
+ * Thread update event
+ * @event Egglord#ThreadUpdate
+ * @extends {Event}
+*/
+class ThreadUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {ThreadChannel} oldThread The thread before the update
+	 * @param {ThreadChannel} newThread The thread after the update
+	 * @readonly
+	*/
 	async run(bot, oldThread, newThread) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type.split('_')[1]})`);
@@ -63,4 +74,6 @@ module.exports = class threadUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ThreadUpdate;

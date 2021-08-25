@@ -1,24 +1,35 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	types = {
+		GUILD_TEXT: 'Text',
+		GUILD_VOICE: 'Voice',
+		GUILD_CATEGORY: 'Category',
+		GUILD_STAGE_VOICE: 'Stage',
+		GUILD_NEWS: 'Annoucement',
+		GUILD_STORE: 'Store',
+	},
 	Event = require('../../structures/Event');
 
-const types = {
-	GUILD_TEXT: 'Text',
-	GUILD_VOICE: 'Voice',
-	GUILD_CATEGORY: 'Category',
-	GUILD_STAGE_VOICE: 'Stage',
-	GUILD_NEWS: 'Annoucement',
-	GUILD_STORE: 'Store',
-};
 
-module.exports = class channelUpdate extends Event {
+/**
+ * Channel update event
+ * @event Egglord#ChannelDelete
+ * @extends {Event}
+*/
+class ChannelUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildChannel|DMChannel} oldChannel The channel before the update
+	 * @param {GuildChannel|DMChannel} newChannel The channel after the update
+	 * @readonly
+	*/
 	async run(bot, oldChannel, newChannel) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${types[newChannel.type]})`);
@@ -145,4 +156,6 @@ module.exports = class channelUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = ChannelUpdate;

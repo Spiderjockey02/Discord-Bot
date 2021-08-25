@@ -1,16 +1,26 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	delay = ms => new Promise(res => setTimeout(res, ms)),
 	Event = require('../../structures/Event');
 
-module.exports = class voiceStateUpdate extends Event {
+/**
+ * Voice state update event
+ * @event Egglord#VoiceStateUpdate
+ * @extends {Event}
+*/
+class VoiceStateUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+ * Function for recieving event.
+ * @param {bot} bot The instantiating client
+ * @param {VoiceState} oldState The voice state before the update
+ * @param {VoiceState} newState The voice state after the update
+ * @readonly
+*/
 	async run(bot, oldState, newState) {
 		// variables for easier coding
 		const newMember = newState.guild.members.cache.get(newState.id);
@@ -99,7 +109,7 @@ module.exports = class voiceStateUpdate extends Event {
 		if (oldState.guild.members.cache.get(bot.user.id).voice.channelId === oldState.channelId) {
 			if (oldState.guild.me.voice?.channel && oldState.guild.me.voice.channel.members.filter(m => !m.user.bot).size === 0) {
 				const vcName = oldState.guild.me.voice.channel.name;
-				await delay(180000);
+				await bot.delay(180000);
 
 				// times up check if bot is still by themselves in VC (exluding bots)
 				const vcMembers = oldState.guild.me.voice.channel.members.size;
@@ -119,4 +129,6 @@ module.exports = class voiceStateUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = VoiceStateUpdate;

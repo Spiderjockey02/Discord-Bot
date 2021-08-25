@@ -2,14 +2,25 @@
 const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
-module.exports = class guildMemberUpdate extends Event {
+/**
+ * Guild member update event
+ * @event Egglord#GuildMemberUpdate
+ * @extends {Event}
+*/
+class GuildMemberUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
-	// run event
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {GuildMember} oldMember The member before the update
+	 * @param {GuildMember} newMember The member after the update
+	 * @readonly
+	*/
 	async run(bot, oldMember, newMember) {
 		// For debugging
 		if (bot.config.debug) bot.logger.debug(`Member: ${newMember.user.tag} has been updated in guild: ${newMember.guild.id}.`);
@@ -60,7 +71,7 @@ module.exports = class guildMemberUpdate extends Event {
 				updated = true;
 			}
 
-			// Look to see if user has changed their surname
+			// Look to see if user has changed their username
 			if (oldMember.username !== newMember.username) {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**username changed of ${newMember.toString()}**`)
@@ -119,4 +130,6 @@ module.exports = class guildMemberUpdate extends Event {
 			}
 		}
 	}
-};
+}
+
+module.exports = GuildMemberUpdate;
