@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * NowPlaying command
  * @extends {Command}
 */
-module.exports = class NowPlaying extends Command {
+class NowPlaying extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -102,4 +102,6 @@ module.exports = class NowPlaying extends Command {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: null }, true)] });
 		}
 	}
-};
+}
+
+module.exports = NowPlaying;

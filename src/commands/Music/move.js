@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * Move command
  * @extends {Command}
 */
-module.exports = class Move extends Command {
+class Move extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -111,4 +111,6 @@ module.exports = class Move extends Command {
 			return interaction.reply(guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
 		}
 	}
-};
+}
+
+module.exports = Move;

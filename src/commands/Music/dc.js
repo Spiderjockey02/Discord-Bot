@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * Disconnect command
  * @extends {Command}
 */
-module.exports = class Disconnect extends Command {
+class Disconnect extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -62,4 +62,6 @@ module.exports = class Disconnect extends Command {
 		player.destroy();
 		return interaction.reply({ embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
 	}
-};
+}
+
+module.exports = Disconnect;

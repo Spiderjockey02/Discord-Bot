@@ -8,7 +8,7 @@ const { paginate } = require('../../utils'),
  * previous command
  * @extends {Command}
 */
-module.exports = class Previous extends Command {
+class Previous extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -87,4 +87,6 @@ module.exports = class Previous extends Command {
 			return message.channel.send({ embeds: [pages[pageNum]] });
 		}
 	}
-};
+}
+
+module.exports = Previous;

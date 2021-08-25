@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Flip command
  * @extends {Command}
 */
-module.exports = class Flip extends Command {
+class Flip extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -53,4 +53,6 @@ module.exports = class Flip extends Command {
 		// send result
 		return interaction.reply({ content: `${emoji} ${result}` });
 	}
-};
+}
+
+module.exports = Flip;

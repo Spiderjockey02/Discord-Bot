@@ -3,10 +3,10 @@ const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
- * setplugin command
+ * set plugin command
  * @extends {Command}
 */
-module.exports = class SetPlugin extends Command {
+class SetPlugin extends Command {
 	/**
  * @param {Client} client The instantiating client
  * @param {CommandData} data The data for the command
@@ -99,6 +99,7 @@ module.exports = class SetPlugin extends Command {
 		} else {
 			return message.channel.send(message.translate('plugins/set-plugin:INVALID'));
 		}
-
 	}
-};
+}
+
+module.exports = SetPlugin;

@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Emoji-list command
  * @extends {Command}
 */
-module.exports = class EmojiList extends Command {
+class EmojiList extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -44,4 +44,6 @@ module.exports = class EmojiList extends Command {
 	async callback(bot, interaction, guild) {
 		interaction.reply({ content: guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
 	}
-};
+}
+
+module.exports = EmojiList;

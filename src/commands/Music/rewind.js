@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * rewind command
  * @extends {Command}
 */
-module.exports = class Rewind extends Command {
+class Rewind extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -96,4 +96,6 @@ module.exports = class Rewind extends Command {
 			interaction.reply(embed);
 		}
 	}
-};
+}
+
+module.exports = Rewind;

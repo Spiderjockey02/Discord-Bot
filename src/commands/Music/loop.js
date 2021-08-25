@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * Loop command
  * @extends {Command}
 */
-module.exports = class Loop extends Command {
+class Loop extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -100,4 +100,6 @@ module.exports = class Loop extends Command {
 			return interaction.reply({ content: bot.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
 		}
 	}
-};
+}
+
+module.exports = Loop;

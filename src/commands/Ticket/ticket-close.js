@@ -2,10 +2,10 @@
 const Command = require('../../structures/Command.js');
 
 /**
- * TicketClose command
+ * Ticket close command
  * @extends {Command}
 */
-module.exports = class TicketClose extends Command {
+class TicketClose extends Command {
 	/**
  * @param {Client} client The instantiating client
  * @param {CommandData} data The data for the command
@@ -51,4 +51,6 @@ module.exports = class TicketClose extends Command {
 			message.channel.error('ticket/ticket-close:NOT_TICKET').then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = TicketClose;

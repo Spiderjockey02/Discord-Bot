@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js'),
  * Privacy command
  * @extends {Command}
 */
-module.exports = class Privacy extends Command {
+class Privacy extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -49,4 +49,6 @@ module.exports = class Privacy extends Command {
 			.setDescription(guild.translate('misc/privacy:LINK', { LINK: 'https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md' }));
 		return interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Privacy;

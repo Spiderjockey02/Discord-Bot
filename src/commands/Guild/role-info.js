@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Role-info command
  * @extends {Command}
 */
-module.exports = class RoleInfo extends Command {
+class RoleInfo extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -102,4 +102,6 @@ module.exports = class RoleInfo extends Command {
 			.setTimestamp()
 			.setFooter('guild/role-info:FOOTER', { MEMBER: user.tag, ID: role.id });
 	}
-};
+}
+
+module.exports = RoleInfo;

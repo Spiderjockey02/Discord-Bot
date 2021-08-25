@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Warn command
  * @extends {Command}
 */
-module.exports = class Warn extends Command {
+class Warn extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -65,4 +65,6 @@ module.exports = class Warn extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Warn;

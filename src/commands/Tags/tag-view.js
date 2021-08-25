@@ -4,10 +4,10 @@ const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
- * TagView command
+ * Tag view command
  * @extends {Command}
 */
-module.exports = class TagView extends Command {
+class TagView extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -61,4 +61,6 @@ module.exports = class TagView extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = TagView;

@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Poll command
  * @extends {Command}
 */
-module.exports = class Poll extends Command {
+class Poll extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -48,4 +48,6 @@ module.exports = class Poll extends Command {
 			await msg.react('❌');
 		});
 	}
-};
+}
+
+module.exports = Poll;

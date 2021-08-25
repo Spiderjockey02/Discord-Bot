@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * search command
  * @extends {Command}
 */
-module.exports = class Search extends Command {
+class Search extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -219,4 +219,6 @@ module.exports = class Search extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = Search;

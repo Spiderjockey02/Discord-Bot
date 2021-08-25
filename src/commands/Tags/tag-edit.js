@@ -3,10 +3,10 @@ const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * TagEdit command
+ * Tag edit command
  * @extends {Command}
 */
-module.exports = class TagEdit extends Command {
+class TagEdit extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -74,4 +74,6 @@ module.exports = class TagEdit extends Command {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tag-edit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = TagEdit;

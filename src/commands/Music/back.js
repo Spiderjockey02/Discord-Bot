@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * Back command
  * @extends {Command}
 */
-module.exports = class Back extends Command {
+class Back extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -68,4 +68,6 @@ module.exports = class Back extends Command {
 		player.queue.unshift(player.queue.previous);
 		player.stop();
 	}
-};
+}
+
+module.exports = Back;

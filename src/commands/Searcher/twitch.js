@@ -10,7 +10,7 @@ let access_token = null;
  * Twitch command
  * @extends {Command}
 */
-module.exports = class Twitch extends Command {
+class Twitch extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -183,4 +183,6 @@ module.exports = class Twitch extends Command {
 			access_token = data.access_token;
 		}).catch(e => console.log(e));
 	}
-};
+}
+
+module.exports = Twitch;

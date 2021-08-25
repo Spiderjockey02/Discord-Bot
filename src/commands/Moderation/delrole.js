@@ -5,7 +5,7 @@ const Command = require('../../structures/Command.js');
  * Delrole command
  * @extends {Command}
 */
-module.exports = class DelRole extends Command {
+class DelRole extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -54,4 +54,6 @@ module.exports = class DelRole extends Command {
 			return message.channel.error('moderation/delrole:FAIL').then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = DelRole;

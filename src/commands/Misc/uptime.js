@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Uptime command
  * @extends {Command}
 */
-module.exports = class Uptime extends Command {
+class Uptime extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -48,4 +48,6 @@ module.exports = class Uptime extends Command {
 			.setDescription(guild.translate('misc/uptime:DESC', { TIME: getReadableTime(bot.uptime) }));
 		return interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Uptime;

@@ -3,10 +3,10 @@ const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models');
 
 /**
- * ReactionRoleRemove command
+ * Reaction role remove command
  * @extends {Command}
 */
-module.exports = class ReactionRoleRemove extends Command {
+class ReactionRoleRemove extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -67,4 +67,6 @@ module.exports = class ReactionRoleRemove extends Command {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = ReactionRoleRemove;

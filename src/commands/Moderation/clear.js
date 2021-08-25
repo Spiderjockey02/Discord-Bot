@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Clear command
  * @extends {Command}
 */
-module.exports = class Clear extends Command {
+class Clear extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -139,4 +139,6 @@ module.exports = class Clear extends Command {
 			});
 		}
 	}
-};
+}
+
+module.exports = Clear;

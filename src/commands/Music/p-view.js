@@ -9,7 +9,7 @@ const	{ Embed } = require('../../utils'),
  * playlist view command
  * @extends {Command}
 */
-module.exports = class PView extends Command {
+class PView extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -88,4 +88,6 @@ module.exports = class PView extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = PView;

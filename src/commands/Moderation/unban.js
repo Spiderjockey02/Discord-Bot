@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Unban command
  * @extends {Command}
 */
-module.exports = class Unban extends Command {
+class Unban extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -55,4 +55,6 @@ module.exports = class Unban extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Unban;

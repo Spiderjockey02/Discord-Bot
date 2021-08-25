@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * TwentyFourSeven command
  * @extends {Command}
 */
-module.exports = class TwentyFourSeven extends Command {
+class TwentyFourSeven extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -62,4 +62,6 @@ module.exports = class TwentyFourSeven extends Command {
 		player.twentyFourSeven = !player.twentyFourSeven;
 		await interaction.reply({ content: bot.translate('music/247:RESP', { TOGGLE: player.twentyFourSeven }) });
 	}
-};
+}
+
+module.exports = TwentyFourSeven;

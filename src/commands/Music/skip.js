@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * skip command
  * @extends {Command}
 */
-module.exports = class Skip extends Command {
+class Skip extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -76,4 +76,6 @@ module.exports = class Skip extends Command {
 			player.stop();
 		}
 	}
-};
+}
+
+module.exports = Skip;

@@ -8,7 +8,7 @@ const { status } = require('minecraft-server-util'),
  * MC command
  * @extends {Command}
 */
-module.exports = class MC extends Command {
+class Minecraft extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -131,4 +131,6 @@ module.exports = class MC extends Command {
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
-};
+}
+
+module.exports = Minecraft;

@@ -7,7 +7,7 @@ const { timeEventSchema } = require('../../database/models'),
  * Mute command
  * @extends {Command}
 */
-module.exports = class Mute extends Command {
+class Mute extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -131,4 +131,6 @@ module.exports = class Mute extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Mute;

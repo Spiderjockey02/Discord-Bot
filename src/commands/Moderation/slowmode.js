@@ -6,7 +6,7 @@ const { time: { getTotalTime, getReadableTime } } = require('../../utils'),
  * Slowmode command
  * @extends {Command}
 */
-module.exports = class Slowmode extends Command {
+class Slowmode extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -57,4 +57,6 @@ module.exports = class Slowmode extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Slowmode;

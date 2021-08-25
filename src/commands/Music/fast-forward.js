@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Addrole command
  * @extends {Command}
 */
-module.exports = class FastForward extends Command {
+class FastForward extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -95,4 +95,6 @@ module.exports = class FastForward extends Command {
 			interaction.reply({ embeds: [embed] });
 		}
 	}
-};
+}
+
+module.exports = FastForward;

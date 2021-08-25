@@ -7,7 +7,7 @@ const	{ MessageAttachment } = require('discord.js'),
  * QRCode command
  * @extends {Command}
 */
-module.exports = class QRcode extends Command {
+class QRcode extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -85,4 +85,6 @@ module.exports = class QRcode extends Command {
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = QRcode;

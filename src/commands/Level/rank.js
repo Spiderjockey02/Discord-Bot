@@ -7,7 +7,7 @@ const { MessageAttachment } = require('discord.js'),
  * Rank command
  * @extends {Command}
 */
-module.exports = class Rank extends Command {
+class Rank extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -127,4 +127,6 @@ module.exports = class Rank extends Command {
 		const buffer = await rankcard.build();
 		return new MessageAttachment(buffer, 'RankCard.png');
 	}
-};
+}
+
+module.exports = Rank;

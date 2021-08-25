@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Report command
  * @extends {Command}
 */
-module.exports = class Report extends Command {
+class Report extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -73,4 +73,6 @@ module.exports = class Report extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Report;

@@ -7,7 +7,7 @@ const fs = require('fs'),
  * Fact command
  * @extends {Command}
 */
-module.exports = class Fact extends Command {
+class Fact extends Command {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {CommandData} data The data for the command
@@ -74,4 +74,6 @@ module.exports = class Fact extends Command {
 			await interaction.reply({ embeds: [embed] });
 		});
 	}
-};
+}
+
+module.exports = Fact;

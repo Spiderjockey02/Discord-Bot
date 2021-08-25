@@ -3,10 +3,10 @@ const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
- * TicketSetup command
+ * Ticket setup command
  * @extends {Command}
 */
-module.exports = class TicketSetup extends Command {
+class TicketSetup extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -70,4 +70,6 @@ module.exports = class TicketSetup extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = TicketSetup;

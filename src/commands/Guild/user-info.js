@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * User-info command
  * @extends {Command}
 */
-module.exports = class UserInfo extends Command {
+class UserInfo extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -90,4 +90,6 @@ module.exports = class UserInfo extends Command {
 				{ name: guild.translate('guild/user-info:ROLES'), value: member.roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
 			);
 	}
-};
+}
+
+module.exports = UserInfo;

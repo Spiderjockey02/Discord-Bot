@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * pitch command
  * @extends {Command}
 */
-module.exports = class Pitch extends Command {
+class Pitch extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -103,6 +103,7 @@ module.exports = class Pitch extends Command {
 			await bot.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
-
 	}
-};
+}
+
+module.exports = Pitch;

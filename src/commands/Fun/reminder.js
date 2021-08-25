@@ -6,10 +6,10 @@ const ms = require('ms'),
 	Command = require('../../structures/Command.js');
 
 /**
-	* Reminder command
-	* @extends {Command}
+ * Reminder command
+ * @extends {Command}
 */
-module.exports = class Reminder extends Command {
+class Reminder extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -80,4 +80,6 @@ module.exports = class Reminder extends Command {
 			}, time);
 		});
 	}
-};
+}
+
+module.exports = Reminder;

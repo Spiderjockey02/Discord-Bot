@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Blurpify command
  * @extends {Command}
 */
-module.exports = class Blurpify extends Command {
+class Blurpify extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -88,4 +88,6 @@ module.exports = class Blurpify extends Command {
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Blurpify;

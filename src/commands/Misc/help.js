@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Help command
  * @extends {Command}
 */
-module.exports = class Help extends Command {
+class Help extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -124,4 +124,6 @@ module.exports = class Help extends Command {
 			return channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('giveaway/g-start:USAGE')) }, true);
 		}
 	}
-};
+}
+
+module.exports = Help;

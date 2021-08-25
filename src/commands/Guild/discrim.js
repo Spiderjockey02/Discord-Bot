@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Discrim command
  * @extends {Command}
 */
-module.exports = class Discrim extends Command {
+class Discrim extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -69,4 +69,6 @@ module.exports = class Discrim extends Command {
 			.setDescription(`${members}`);
 		interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Discrim;

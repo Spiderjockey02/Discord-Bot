@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Kick command
  * @extends {Command}
 */
-module.exports = class Kick extends Command {
+class Kick extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -81,4 +81,6 @@ module.exports = class Kick extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Kick;

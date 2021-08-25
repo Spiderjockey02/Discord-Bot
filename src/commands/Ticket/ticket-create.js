@@ -3,10 +3,10 @@ const { Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
- * TicketCreate command
+ * Ticket create command
  * @extends {Command}
 */
-module.exports = class TicketCreate extends Command {
+class TicketCreate extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -77,4 +77,6 @@ module.exports = class TicketCreate extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
 	}
-};
+}
+
+module.exports = TicketCreate;

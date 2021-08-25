@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * Bassboost command
  * @extends {Command}
 */
-module.exports = class Bassboost extends Command {
+class Bassboost extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -109,4 +109,6 @@ module.exports = class Bassboost extends Command {
 		await bot.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
-};
+}
+
+module.exports = Bassboost;

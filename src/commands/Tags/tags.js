@@ -5,7 +5,7 @@ const Command = require('../../structures/Command.js');
  * Tags command
  * @extends {Command}
 */
-module.exports = class Tags extends Command {
+class Tags extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -61,4 +61,6 @@ module.exports = class Tags extends Command {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Tags;

@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Avatar command
  * @extends {Command}
 */
-module.exports = class Avatar extends Command {
+class Avatar extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -79,4 +79,6 @@ module.exports = class Avatar extends Command {
 			].join('\n'))
 			.setImage(`${member.user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
 	}
-};
+}
+
+module.exports = Avatar;

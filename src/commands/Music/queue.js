@@ -8,7 +8,7 @@ const { paginate } = require('../../utils'),
  * queue command
  * @extends {Command}
 */
-module.exports = class Queue extends Command {
+class Queue extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -174,4 +174,6 @@ module.exports = class Queue extends Command {
 			return interaction.reply(pages[pageNum]);
 		}
 	}
-};
+}
+
+module.exports = Queue;

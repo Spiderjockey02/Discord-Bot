@@ -7,7 +7,7 @@ const { find } = require('weather-js'),
  * Weather command
  * @extends {Command}
 */
-module.exports = class Weather extends Command {
+class Weather extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -97,4 +97,6 @@ module.exports = class Weather extends Command {
 			interaction.reply({ embeds: [embed] });
 		});
 	}
-};
+}
+
+module.exports = Weather;

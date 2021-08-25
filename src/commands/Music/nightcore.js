@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * Nightcore command
  * @extends {Command}
 */
-module.exports = class Nightcore extends Command {
+class Nightcore extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -73,4 +73,6 @@ module.exports = class Nightcore extends Command {
 		if (player.nightcore) player.speed = 1.2;
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
-};
+}
+
+module.exports = Nightcore;

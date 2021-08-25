@@ -8,7 +8,7 @@ const Puppeteer = require('puppeteer'),
  * Screenshot command
  * @extends {Command}
 */
-module.exports = class Screenshot extends Command {
+class Screenshot extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -129,4 +129,6 @@ module.exports = class Screenshot extends Command {
 		}
 		return data;
 	}
-};
+}
+
+module.exports = Screenshot;

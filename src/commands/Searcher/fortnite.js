@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Fortnite command
  * @extends {Command}
 */
-module.exports = class Fortnite extends Command {
+class Fortnite extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -115,4 +115,6 @@ module.exports = class Fortnite extends Command {
 			.addField(guild.translate('searcher/fortnite:KILLS'), `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, true)
 			.addField(guild.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
 	}
-};
+}
+
+module.exports = Fortnite;

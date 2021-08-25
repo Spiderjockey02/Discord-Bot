@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Status command
  * @extends {Command}
 */
-module.exports = class Status extends Command {
+class Status extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -57,4 +57,6 @@ module.exports = class Status extends Command {
 			.setTimestamp();
 		return interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Status;

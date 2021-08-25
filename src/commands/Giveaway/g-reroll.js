@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Giveaway reroll command
  * @extends {Command}
 */
-module.exports = class G_reroll extends Command {
+class G_reroll extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -56,4 +56,6 @@ module.exports = class G_reroll extends Command {
 			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		});
 	}
-};
+}
+
+module.exports = G_reroll;

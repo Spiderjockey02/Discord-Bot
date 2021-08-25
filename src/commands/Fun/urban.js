@@ -7,7 +7,7 @@ const { define } = require('urban-dictionary'),
  * Urban command
  * @extends {Command}
 */
-module.exports = class Urban extends Command {
+class Urban extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -99,4 +99,6 @@ module.exports = class Urban extends Command {
 			return channel.error('fun/urban:INCORRECT_URBAN', { PHRASE: phrase }, true);
 		}
 	}
-};
+}
+
+module.exports = Urban;

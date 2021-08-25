@@ -7,7 +7,7 @@ const { get } = require('axios'),
  * 4k command
  * @extends {Command}
 */
-module.exports = class K4 extends Command {
+class K4 extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -73,4 +73,6 @@ module.exports = class K4 extends Command {
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = K4;

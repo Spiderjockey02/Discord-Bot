@@ -8,7 +8,7 @@ const { version } = require('discord.js'),
  * About command
  * @extends {Command}
 */
-module.exports = class About extends Command {
+class About extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -70,4 +70,6 @@ module.exports = class About extends Command {
 			.addField(guild.translate('misc/about:MESSAGES'), bot.translate('misc/about:MESSAGES_DESC', { MESSAGES: bot.messagesSent, MSGSEC: (bot.messagesSent / (bot.uptime / 1000)).toFixed(2) }), true)
 			.addField(guild.translate('misc/about:UPTIME'), getReadableTime(bot.uptime), true);
 	}
-};
+}
+
+module.exports = About;

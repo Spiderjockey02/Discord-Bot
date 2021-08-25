@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Pokemon command
  * @extends {Command}
 */
-module.exports = class Pokemon extends Command {
+class Pokemon extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -101,4 +101,6 @@ module.exports = class Pokemon extends Command {
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Pokemon;

@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Warnings command
  * @extends {Command}
 */
-module.exports = class Warnings extends Command {
+class Warnings extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -76,4 +76,6 @@ module.exports = class Warnings extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = Warnings;

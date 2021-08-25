@@ -6,7 +6,7 @@ const { shorten } = require('tinyurl'),
  * ShortURL command
  * @extends {Command}
 */
-module.exports = class ShortURL extends Command {
+class ShortURL extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -78,4 +78,6 @@ module.exports = class ShortURL extends Command {
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = ShortURL;

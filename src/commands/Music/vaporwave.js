@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * vaporwave command
  * @extends {Command}
 */
-module.exports = class Vaporwave extends Command {
+class Vaporwave extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -71,4 +71,6 @@ module.exports = class Vaporwave extends Command {
 		await bot.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
-};
+}
+
+module.exports = Vaporwave;

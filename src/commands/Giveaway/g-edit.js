@@ -6,7 +6,7 @@ const { time: { getTotalTime } } = require('../../utils'),
  * Giveaway edit command
  * @extends {Command}
 */
-module.exports = class G_edit extends Command {
+class G_edit extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -63,4 +63,6 @@ module.exports = class G_edit extends Command {
 			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: message.args[0] }));
 		});
 	}
-};
+}
+
+module.exports = G_edit;

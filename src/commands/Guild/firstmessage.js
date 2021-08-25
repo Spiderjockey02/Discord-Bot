@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Firstmessage command
  * @extends {Command}
 */
-module.exports = class Firstmessage extends Command {
+class Firstmessage extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -96,4 +96,6 @@ module.exports = class Firstmessage extends Command {
 			.setFooter('misc:ID', { ID: fMessage.id })
 			.setTimestamp(fMessage.createdAt);
 	}
-};
+}
+
+module.exports = Firstmessage;

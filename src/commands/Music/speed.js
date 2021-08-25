@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * speed command
  * @extends {Command}
 */
-module.exports = class Speed extends Command {
+class Speed extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -102,4 +102,6 @@ module.exports = class Speed extends Command {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
-};
+}
+
+module.exports = Speed;

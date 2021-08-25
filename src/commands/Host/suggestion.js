@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Docs command
  * @extends {Command}
 */
-module.exports = class Suggestion extends Command {
+class Suggestion extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -61,4 +61,6 @@ module.exports = class Suggestion extends Command {
 			message.channel.send('Please fill out your config SupportServer information.');
 		}
 	}
-};
+}
+
+module.exports = Suggestion;

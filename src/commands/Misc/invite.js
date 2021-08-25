@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * Invite command
  * @extends {Command}
 */
-module.exports = class Invite extends Command {
+class Invite extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -47,4 +47,6 @@ module.exports = class Invite extends Command {
 	async callback(bot, interaction, guild) {
 		return interaction.reply({ embeds: [{ description:guild.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }) }] });
 	}
-};
+}
+
+module.exports = Invite;

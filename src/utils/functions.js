@@ -10,11 +10,8 @@ module.exports.checkMusic = (member, bot) => {
 	const player = bot.manager?.players.get(member.guild.id);
 	if (!player) return member.guild.translate('misc:NO_QUEUE');
 
-	// make sure user is in a voice channel
-	if (!member.voice.channel) return member.guild.translate('music/play:NOT_VC');
-
 	// Check that user is in the same voice channel
-	if (member.voice.channel.id !== player.voiceChannel) return member.guild.translate('misc:NOT_VOICE');
+	if (member.voice?.channel?.id !== player.voiceChannel) return member.guild.translate('misc:NOT_VOICE');
 
 	return true;
 };

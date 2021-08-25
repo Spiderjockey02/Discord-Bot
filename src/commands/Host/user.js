@@ -9,7 +9,7 @@ const { MessageEmbed } = require('discord.js'),
  * User command
  * @extends {Command}
 */
-module.exports = class UserData extends Command {
+class User extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -152,4 +152,6 @@ module.exports = class UserData extends Command {
 			break;
 		}
 	}
-};
+}
+
+module.exports = User;

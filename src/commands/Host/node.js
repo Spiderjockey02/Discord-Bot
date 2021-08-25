@@ -6,7 +6,7 @@ const { Node } = require('erela.js'),
  * Node command
  * @extends {Command}
 */
-module.exports = class MusicNode extends Command {
+class MusicNode extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -67,4 +67,6 @@ module.exports = class MusicNode extends Command {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/node:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = MusicNode;

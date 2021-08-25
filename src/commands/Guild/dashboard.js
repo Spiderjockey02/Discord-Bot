@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Dashboard command
  * @extends {Command}
 */
-module.exports = class Dashboard extends Command {
+class Dashboard extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -44,4 +44,6 @@ module.exports = class Dashboard extends Command {
 	async callback(bot, interaction, guild) {
 		interaction.reply({ content: `${bot.config.websiteURL}/dashboard/${guild.id}` });
 	}
-};
+}
+
+module.exports = Dashboard;

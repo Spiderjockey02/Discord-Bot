@@ -8,7 +8,7 @@ const { Embed } = require('../../utils'),
  * Lyrics command
  * @extends {Command}
 */
-module.exports = class Lyrics extends Command {
+class Lyrics extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -146,4 +146,6 @@ module.exports = class Lyrics extends Command {
 		// show paginator
 		return pages;
 	}
-};
+}
+
+module.exports = Lyrics;

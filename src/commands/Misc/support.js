@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Support command
  * @extends {Command}
 */
-module.exports = class Support extends Command {
+class Support extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -50,4 +50,6 @@ module.exports = class Support extends Command {
 			.setDescription(guild.translate('misc/support:DESC', 	{ SUPPORT: bot.config.SupportServer.link, WEBSITE: bot.config.websiteURL }));
 		return interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Support;

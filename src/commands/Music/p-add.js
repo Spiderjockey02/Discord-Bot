@@ -7,7 +7,7 @@ const { PlaylistSchema } = require('../../database/models'),
  * playlist add command
  * @extends {Command}
 */
-module.exports = class PAdd extends Command {
+class PAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -114,4 +114,6 @@ module.exports = class PAdd extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = PAdd;

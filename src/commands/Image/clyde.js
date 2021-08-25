@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Clyde command
  * @extends {Command}
 */
-module.exports = class Clyde extends Command {
+class Clyde extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -96,4 +96,6 @@ module.exports = class Clyde extends Command {
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Clyde;

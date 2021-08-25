@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Captcha command
  * @extends {Command}
 */
-module.exports = class Captcha extends Command {
+class Captcha extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -86,4 +86,6 @@ module.exports = class Captcha extends Command {
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Captcha;

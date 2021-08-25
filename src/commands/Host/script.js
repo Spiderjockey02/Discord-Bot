@@ -8,7 +8,7 @@ const { MessageEmbed } = require('discord.js'),
  * Script command
  * @extends {Command}
 */
-module.exports = class Script extends Command {
+class Script extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -58,4 +58,6 @@ module.exports = class Script extends Command {
 			message.channel.error('Invalid script name.');
 		}
 	}
-};
+}
+
+module.exports = Script;

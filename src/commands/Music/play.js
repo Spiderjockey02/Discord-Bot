@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * play command
  * @extends {Command}
 */
-module.exports = class Play extends Command {
+class Play extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -223,4 +223,6 @@ module.exports = class Play extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = Play;

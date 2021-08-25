@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Guildicon command
  * @extends {Command}
 */
-module.exports = class Guildicon extends Command {
+class Guildicon extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -63,4 +63,6 @@ module.exports = class Guildicon extends Command {
 			interaction.reply({ embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Guildicon;

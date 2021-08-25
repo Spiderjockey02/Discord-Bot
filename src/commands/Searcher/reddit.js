@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Reddit command
  * @extends {Command}
 */
-module.exports = class Reddit extends Command {
+class Reddit extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -111,4 +111,6 @@ module.exports = class Reddit extends Command {
 				.setDescription('Meme failed to load');
 		}
 	}
-};
+}
+
+module.exports = Reddit;

@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * remove command
  * @extends {Command}
 */
-module.exports = class Remove extends Command {
+class Remove extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -107,4 +107,6 @@ module.exports = class Remove extends Command {
 			return interaction.reply(bot.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }));
 		}
 	}
-};
+}
+
+module.exports = Remove;

@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * seek command
  * @extends {Command}
 */
-module.exports = class Seek extends Command {
+class Seek extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -94,4 +94,6 @@ module.exports = class Seek extends Command {
 			interaction.reply({ embeds: [embed] });
 		}
 	}
-};
+}
+
+module.exports = Seek;

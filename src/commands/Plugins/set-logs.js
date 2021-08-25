@@ -10,10 +10,10 @@ const features = ['CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREAT
 	'STICKERCREATE', 'STICKERDELETE', 'STICKERUPDATE'];
 
 /**
- * Setlog command
+ * Set logs command
  * @extends {Command}
 */
-module.exports = class SetLog extends Command {
+class SetLog extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -119,4 +119,6 @@ module.exports = class SetLog extends Command {
 			message.channel.send({ embeds: [embed] });
 		}
 	}
-};
+}
+
+module.exports = SetLog;

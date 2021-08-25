@@ -6,7 +6,7 @@ const { WarningSchema } = require('../../database/models'),
  * ClearWarning command
  * @extends {Command}
 */
-module.exports = class ClearWarning extends Command {
+class ClearWarning extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -69,4 +69,6 @@ module.exports = class ClearWarning extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = ClearWarning;

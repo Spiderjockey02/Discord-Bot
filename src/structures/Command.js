@@ -5,7 +5,7 @@ const path = require('path');
  * Command structure
  * @abstract
  */
-module.exports = class Command {
+class Command {
 	constructor(bot, {
 		name = null,
 		guildOnly = false,
@@ -28,8 +28,26 @@ module.exports = class Command {
 		this.help = { name, category, aliases, description, usage, examples };
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	async run(...args) {
+	/**
+	 * Function for recieving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
+	*/
+	async run() {
 		throw new Error(`Command: ${this.help.name} does not have a run method`);
 	}
-};
+
+	/**
+	 * Function for recieving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback() {
+		throw new Error(`Command: ${this.help.name} does not have a callback method`);
+	}
+}
+
+module.exports = Command;

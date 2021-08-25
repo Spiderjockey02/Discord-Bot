@@ -8,7 +8,7 @@ const { Embed } = require('../../utils'),
  * radio command
  * @extends {Command}
 */
-module.exports = class Radio extends Command {
+class Radio extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -242,4 +242,6 @@ module.exports = class Radio extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = Radio;

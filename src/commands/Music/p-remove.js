@@ -6,7 +6,7 @@ const { PlaylistSchema } = require('../../database/models'),
  * playlist remove command
  * @extends {Command}
 */
-module.exports = class PRemove extends Command {
+class PRemove extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -68,4 +68,6 @@ module.exports = class PRemove extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = PRemove;

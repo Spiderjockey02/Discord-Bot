@@ -6,7 +6,7 @@ const { functions: { checkMusic } } = require('../../utils'),
  * resume command
  * @extends {Command}
 */
-module.exports = class Resume extends Command {
+class Resume extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -68,4 +68,6 @@ module.exports = class Resume extends Command {
 		player.pause(false);
 		return interaction.reply({ embeds: [channel.error('music/resume:SUCCESS', {}, true)] });
 	}
-};
+}
+
+module.exports = Resume;

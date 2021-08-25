@@ -8,7 +8,7 @@ const	{ Embed } = require('../../utils'),
  * playlist create command
  * @extends {Command}
 */
-module.exports = class PCreate extends Command {
+class PCreate extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -152,4 +152,6 @@ module.exports = class PCreate extends Command {
 			return message.channel.error('music/p-create:NO_SONG');
 		}
 	}
-};
+}
+
+module.exports = PCreate;

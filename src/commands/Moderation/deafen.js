@@ -5,7 +5,7 @@ const Command = require('../../structures/Command.js');
  * Deafen command
  * @extends {Command}
 */
-module.exports = class Deafen extends Command {
+class Deafen extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -68,4 +68,6 @@ module.exports = class Deafen extends Command {
 			message.channel.error('moderation/deafen:NOT_VC');
 		}
 	}
-};
+}
+
+module.exports = Deafen;

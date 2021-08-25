@@ -6,7 +6,7 @@ const	{ Embed } = require('../../utils'),
  * Lavalink command
  * @extends {Command}
 */
-module.exports = class Lavalink extends Command {
+class Lavalink extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -91,4 +91,6 @@ module.exports = class Lavalink extends Command {
 
 		return str;
 	}
-};
+}
+
+module.exports = Lavalink;

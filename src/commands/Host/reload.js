@@ -8,7 +8,7 @@ const { promisify } = require('util'),
  * Reload command
  * @extends {Command}
 */
-module.exports = class Reload extends Command {
+class Reload extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -85,4 +85,6 @@ module.exports = class Reload extends Command {
 			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName }).then(m => m.timedDelete({ timeout: 10000 }));
 		}
 	}
-};
+}
+
+module.exports = Reload;

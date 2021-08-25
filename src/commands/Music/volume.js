@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * back command
  * @extends {Command}
 */
-module.exports = class Back extends Command {
+class Back extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -101,4 +101,6 @@ module.exports = class Back extends Command {
 			.setDescription(guild.translate('music/volume:UPDATED', { NUM: player.volume }));
 		return interaction.reply(embed);
 	}
-};
+}
+
+module.exports = Back;

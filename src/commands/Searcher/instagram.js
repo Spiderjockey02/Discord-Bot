@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Instagram command
  * @extends {Command}
 */
-module.exports = class Instagram extends Command {
+class Instagram extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -114,4 +114,6 @@ module.exports = class Instagram extends Command {
 			.addField(guild.translate('searcher/instagram:PRIVATE'), account.is_private ? 'Yes 🔒' : 'No 🔓', true)
 			.addField(guild.translate('searcher/instagram:VERIFIED'), account.is_verified ? 'Yes ✅' : 'No ❌', true);
 	}
-};
+}
+
+module.exports = Instagram;

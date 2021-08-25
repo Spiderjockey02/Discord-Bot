@@ -8,7 +8,7 @@ const	{ Embed } = require('../../utils'),
  * playlist load command
  * @extends {Command}
 */
-module.exports = class PLoad extends Command {
+class PLoad extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -113,4 +113,6 @@ module.exports = class PLoad extends Command {
 			}
 		});
 	}
-};
+}
+
+module.exports = PLoad;

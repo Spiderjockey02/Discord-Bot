@@ -8,10 +8,10 @@ const flags = {
 	'fr-FR': '🇫🇷',
 };
 /**
- * Setlang command
+ * Set lang command
  * @extends {Command}
 */
-module.exports = class Setlang extends Command {
+class Setlang extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -88,6 +88,7 @@ module.exports = class Setlang extends Command {
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		}
-
 	}
-};
+}
+
+module.exports = Setlang;

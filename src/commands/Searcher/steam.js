@@ -8,7 +8,7 @@ const fetch = require('node-fetch'),
  * Steam command
  * @extends {Command}
 */
-module.exports = class Steam extends Command {
+class Steam extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -123,4 +123,6 @@ module.exports = class Steam extends Command {
 			}))
 			.setTimestamp();
 	}
-};
+}
+
+module.exports = Steam;

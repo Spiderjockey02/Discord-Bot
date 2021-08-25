@@ -6,7 +6,7 @@ const fs = require('fs'),
  * Editrole command
  * @extends {Command}
 */
-module.exports = class EditRole extends Command {
+class EditRole extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -83,4 +83,6 @@ module.exports = class EditRole extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = EditRole;

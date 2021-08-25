@@ -11,7 +11,7 @@ const ordinal = (num) => `${num.toLocaleString('en-US')}${[, 'st', 'nd', 'rd'][(
  * Leaderboard command
  * @extends {Command}
 */
-module.exports = class Leaderboard extends Command {
+class Leaderboard extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -133,4 +133,6 @@ module.exports = class Leaderboard extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = Leaderboard;

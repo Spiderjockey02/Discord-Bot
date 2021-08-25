@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js'),
  * shuffle command
  * @extends {Command}
 */
-module.exports = class Shuffle extends Command {
+class Shuffle extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -68,4 +68,6 @@ module.exports = class Shuffle extends Command {
 			.setDescription(guild.translate('music/shuffle:DESC'));
 		interaction.reply({ embeds: [embed] });
 	}
-};
+}
+
+module.exports = Shuffle;

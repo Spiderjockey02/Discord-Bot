@@ -12,7 +12,7 @@ const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
  * R6 command
  * @extends {Command}
 */
-module.exports = class R6 extends Command {
+class Rainbow6Siege extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -191,4 +191,6 @@ module.exports = class R6 extends Command {
 			}))
 			.setTimestamp();
 	}
-};
+}
+
+module.exports = Rainbow6Siege;

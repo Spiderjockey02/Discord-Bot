@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Threats command
  * @extends {Command}
 */
-module.exports = class Threats extends Command {
+class Threats extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -86,4 +86,6 @@ module.exports = class Threats extends Command {
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Threats;

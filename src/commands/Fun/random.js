@@ -5,9 +5,9 @@ const max = 100000,
 
 /**
  * Random command
- * @extends {Command} [src/structures/Command]
+ * @extends {Command}
 */
-module.exports = class Random extends Command {
+class Random extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -92,4 +92,6 @@ module.exports = class Random extends Command {
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
 		return interaction.reply({ embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
-};
+}
+
+module.exports = Random;

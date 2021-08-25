@@ -4,10 +4,10 @@ const Command = require('../../structures/Command.js'),
 	{ Embed } = require('../../utils');
 
 /**
- * ReactionRoleAdd command
+ * Reaction role add command
  * @extends {Command}
 */
-module.exports = class ReactionRoleAdd extends Command {
+class ReactionRoleAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -220,4 +220,6 @@ module.exports = class ReactionRoleAdd extends Command {
 
 		return [...new Set(content)];
 	}
-};
+}
+
+module.exports = ReactionRoleAdd;

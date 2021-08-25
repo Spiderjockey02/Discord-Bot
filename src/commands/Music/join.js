@@ -6,7 +6,7 @@ const { MessageEmbed } = require('discord.js'),
  * Join command
  * @extends {Command}
 */
-module.exports = class Join extends Command {
+class Join extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -144,4 +144,6 @@ module.exports = class Join extends Command {
 			}
 		}
 	}
-};
+}
+
+module.exports = Join;

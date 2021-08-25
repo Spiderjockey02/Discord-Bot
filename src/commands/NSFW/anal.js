@@ -7,7 +7,7 @@ const { get } = require('axios'),
  * Anal command
  * @extends {Command}
 */
-module.exports = class Anal extends Command {
+class Anal extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -73,4 +73,6 @@ module.exports = class Anal extends Command {
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Anal;

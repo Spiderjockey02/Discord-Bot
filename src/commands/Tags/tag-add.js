@@ -3,10 +3,10 @@ const	{ TagsSchema } = require('../../database/models/index.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * TagAdd command
+ * Tag add command
  * @extends {Command}
 */
-module.exports = class TagAdd extends Command {
+class TagAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -72,4 +72,6 @@ module.exports = class TagAdd extends Command {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
-};
+}
+
+module.exports = TagAdd;

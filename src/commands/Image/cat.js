@@ -7,7 +7,7 @@ const { Embed } = require('../../utils'),
  * Cat command
  * @extends {Command}
 */
-module.exports = class Cat extends Command {
+class Cat extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -77,4 +77,6 @@ module.exports = class Cat extends Command {
 			return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
-};
+}
+
+module.exports = Cat;

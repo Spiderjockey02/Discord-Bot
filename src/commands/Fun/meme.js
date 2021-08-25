@@ -6,7 +6,7 @@ const { Embed } = require('../../utils'),
  * Meme command
  * @extends {Command}
 */
-module.exports = class Meme extends Command {
+class Meme extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -83,4 +83,6 @@ module.exports = class Meme extends Command {
 				.setDescription('Meme failed to load');
 		}
 	}
-};
+}
+
+module.exports = Meme;
