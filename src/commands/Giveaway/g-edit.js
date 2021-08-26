@@ -6,7 +6,7 @@ const { time: { getTotalTime } } = require('../../utils'),
  * Giveaway edit command
  * @extends {Command}
 */
-class G_edit extends Command {
+class GiveawayEdit extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -65,4 +65,4 @@ class G_edit extends Command {
 	}
 }
 
-module.exports = G_edit;
+module.exports = GiveawayEdit;

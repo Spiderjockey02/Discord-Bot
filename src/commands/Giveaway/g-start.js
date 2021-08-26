@@ -6,7 +6,7 @@ const { time: { getTotalTime } } = require('../../utils'),
  * Giveaway start command
  * @extends {Command}
 */
-class G_start extends Command {
+class GiveawayStart extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -84,4 +84,4 @@ class G_start extends Command {
 	}
 }
 
-module.exports = G_start;
+module.exports = GiveawayStart;

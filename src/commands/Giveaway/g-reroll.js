@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Giveaway reroll command
  * @extends {Command}
 */
-class G_reroll extends Command {
+class GiveawayReroll extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -58,4 +58,4 @@ class G_reroll extends Command {
 	}
 }
 
-module.exports = G_reroll;
+module.exports = GiveawayReroll;

@@ -5,7 +5,7 @@ const	Command = require('../../structures/Command.js');
  * Giveaway delete command
  * @extends {Command}
 */
-class G_delete extends Command {
+class GiveawayDelete extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
@@ -52,4 +52,4 @@ class G_delete extends Command {
 	}
 }
 
-module.exports = G_delete;
+module.exports = GiveawayDelete;

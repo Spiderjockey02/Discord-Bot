@@ -2,13 +2,25 @@
 const { MessageEmbed } = require('discord.js'),
 	Event = require('../../structures/Event');
 
-module.exports = class ticketClose extends Event {
+/**
+ * Giveaway rerolled event
+ * @event GiveawaysManager#GiveawayRerolled
+ * @extends {Event}
+*/
+class GiveawayRerolled extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
 		});
 	}
 
+	/**
+	 * Function for recieving event.
+	 * @param {bot} bot The instantiating client
+	 * @param {Giveaway} giveaway The giveaway object
+	 * @param {Array<GuildMember>} winners The member that added the reaction
+	 * @readonly
+	*/
 	async run(bot, giveaway, winners) {
 		if (bot.config.debug) bot.logger.log('giveaway has rerolled');
 
@@ -28,4 +40,6 @@ module.exports = class ticketClose extends Event {
 			}
 		});
 	}
-};
+}
+
+module.exports = GiveawayRerolled;

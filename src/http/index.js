@@ -27,6 +27,7 @@ module.exports = async bot => {
 	// Create web server
 	app
 		.use(cors())
+		.disable('x-powered-by')
 		.get('/', (req, res) => {
 			res
 				.type('text/plain')
