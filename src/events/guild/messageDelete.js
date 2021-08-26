@@ -54,7 +54,7 @@ class MessageDelete extends Event {
 		if (message.author.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return
-		const settings = message.guild.settings;
+		const settings = message.guild?.settings ?? [];
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if ModLog plugin is active
