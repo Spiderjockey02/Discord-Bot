@@ -1,5 +1,5 @@
 {
-  "prefix": "*",
+  "prefix": "e!",
   "Language": "en-US",
   "plugins": ["Fun", "Guild", "Image", "Level", "Misc", "Moderation", "Music", "NSFW", "Plugins", "Searcher"],
   "LevelOption": 1,
