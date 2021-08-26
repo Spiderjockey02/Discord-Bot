@@ -41,7 +41,8 @@ class MessageCreate extends Event {
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
 					message.translate('events/message:INTRO', { USER: bot.user.username }),
-					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.users.cache.size, CMDS: bot.commands.size }),
+					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString(), CMDS: bot.commands.size }),
+					message.translate('events/message:PREFIX', { PREFIX: settings.prefix }),
 				].join('\n\n'))
 				.addField(message.translate('events/message:LINKS'), [
 					message.translate('events/message:ADD', { INVITE: genInviteLink(bot) }),
