@@ -57,7 +57,7 @@
     "weather-js": "^2.0.0"
   },
   "devDependencies": {
-    "clean-jsdoc-theme": "^3.2.7",
+    "clean-jsdoc-theme": "^3.2.8",
     "eslint": "^7.29.0",
     "jsdoc": "^3.6.7"
   }
