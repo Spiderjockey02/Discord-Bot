@@ -29,7 +29,7 @@ class Ready extends Event {
 
 		// set up webserver
 		try {
-			require('../../http')(bot);
+			await require('../../http')(bot);
 		} catch (err) {
 			console.log(err.message);
 		}
