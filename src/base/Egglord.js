@@ -83,14 +83,6 @@ class Egglord extends Client {
 		this.PresenceType = 'PLAYING';
 
 		/**
-		 * The manager for interacting with Ksoft API
-		 * @type {Manager}
-		*/
-		if (this.config.api_keys.ksoft) {
-			this.Ksoft = new KSoftClient(this.config.api_keys.ksoft);
-		}
-
-		/**
 		 * The manager for interacting with Fortnite API
 		 * @type {Manager}
 		*/
@@ -115,6 +107,7 @@ class Egglord extends Client {
 		/**
 		 * The collection of embeds for the webhook manager. (Stops API abuse)
 		 * @type {Collection}
+		 * @external Collection
 		*/
 		this.embedCollection = new Collection();
 

@@ -10,8 +10,6 @@ const config = {
 		},
 		// https://fortnitetracker.com/site-api
 		fortnite: 'fortniteAPI-Key',
-		// https://api.ksoft.si/
-		ksoft: 'ksoftAPI-Key',
 		// https://steamcommunity.com/dev
 		steam: 'steamAPI-Key',
 		// https://developer.spotify.com/documentation/web-api/

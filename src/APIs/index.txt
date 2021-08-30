@@ -1,0 +1,10 @@
+This will replace the following packages:
+ - ksoft
+ - duckduckgo-images-api
+ - fortnite
+ - genius-lyrics-api
+ - minecraft-server-util
+ - r6api.js
+ - radio-browser
+ - urban-dictionary
+ - weather-js

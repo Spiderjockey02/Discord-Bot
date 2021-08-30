@@ -75,7 +75,6 @@ class Reddit extends Command {
 			const resp = await this.fetchPost(bot, channel, subreddit);
 			await interaction.reply({ embeds: [resp] });
 		} catch (err) {
-			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
@@ -94,21 +93,20 @@ class Reddit extends Command {
 			// Check if its a NSFW channel or not
 			if (channel.nsfw || channel.type == 'DM') {
 				// NSFW content can be shown
-				reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: false });
+				reddit = await (new (require('../../APIs/reddit.js'))).fetchSubreddit(subreddit, { removeNSFW: false });
 			} else {
-				reddit = await bot.Ksoft.images.reddit(subreddit, { removeNSFW: true });
+				reddit = await (new (require('../../APIs/reddit.js'))).fetchSubreddit(subreddit, { removeNSFW: true });
 			}
 			// Send message to channel
 			return new Embed(bot, channel.guild)
-				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.post.subreddit })
-				.setURL(reddit.post.link)
-				.setImage(reddit.url)
-				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.post.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.post.downvotes.toLocaleString(channel.guild.settings.Language) });
+				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.subreddit })
+				.setURL(reddit.link)
+				.setImage(reddit.imageURL)
+				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) });
 		} catch (err) {
 			bot.logger.error(err.message);
 			bot.commands.delete('reddit');
-			return new Embed(bot, channel.guild)
-				.setDescription('Meme failed to load');
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 }

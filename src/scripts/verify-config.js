@@ -76,18 +76,6 @@ module.exports.run = async (config) => {
 		});
 	}
 
-	// Check Ksoft API
-	if (!config.api_keys.ksoft) {
-		logger.log(`${chalk.red('✗')} Ksoft API key is missing.`);
-	} else {
-		const ksoft = new KSoftClient(config.api_keys.ksoft);
-		const resp = await ksoft.images.meme();
-		if (!resp.url) {
-			logger.log(`${chalk.red('✗')} Ksoft API key is incorrect.`);
-			return true;
-		}
-	}
-
 	// Check Steam API
 	if (!config.api_keys.steam) {
 		logger.log(`${chalk.red('✗')} Steam API key is missing.`);

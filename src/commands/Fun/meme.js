@@ -65,16 +65,16 @@ class Meme extends Command {
 	*/
 	async fetchMeme(bot, guild, settings) {
 		try {
-			const meme = await bot.Ksoft.images.meme();
-			if (!meme.url) {
+			const meme = await (new (require('../../APIs/reddit.js'))).fetchMeme({ removeNSFW: true });
+			if (!meme.imageURL) {
 				return this.fetchMeme(bot, guild, settings);
 			} else {
 				return new Embed(bot, guild)
-					.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.post.subreddit })
+					.setTitle('fun/meme:TITLE', { SUBREDDIT: meme.subreddit })
 					.setColor(16333359)
-					.setURL(meme.post.link)
-					.setImage(meme.url)
-					.setFooter('fun/meme:FOOTER', { UPVOTES: meme.post.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.post.downvotes.toLocaleString(settings.Language) });
+					.setURL(meme.link)
+					.setImage(meme.imageURL)
+					.setFooter('fun/meme:FOOTER', { UPVOTES: meme.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.downvotes.toLocaleString(settings.Language) });
 			}
 		} catch (err) {
 			bot.logger.error(err.message);
