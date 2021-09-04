@@ -2,9 +2,7 @@
 const { logger } = require('../utils'),
 	chalk = require('chalk'),
 	fetch = require('node-fetch'),
-	Discord = require('discord.js'),
-	Fortnite = require('fortnite'),
-	{ KSoftClient } = require('@ksoft/api');
+	Discord = require('discord.js');
 
 module.exports.run = async (config) => {
 	// This will check if the config is correct
@@ -67,7 +65,8 @@ module.exports.run = async (config) => {
 	if (!config.api_keys.fortnite) {
 		logger.log(`${chalk.red('✗')} Fortnite API key is missing.`);
 	} else {
-		const stats = new Fortnite(config.api_keys.fortnite);
+		// const stats = new Fortnite(config.api_keys.fortnite);
+		const stats = await (new (require('../../APIs/fortnite.js'))(config.api_keys.fortnite)).user('Ninja', 'pc');
 		await stats.user('Ninja', 'pc').catch(err => {
 			console.log(err);
 			if (err.message == 'Invalid authentication credentials') {

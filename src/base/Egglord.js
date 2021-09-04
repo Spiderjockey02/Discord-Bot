@@ -2,8 +2,6 @@
 const { Client, Collection } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	GiveawaysManager = require('./giveaway/Manager'),
-	Fortnite = require('fortnite'),
-	{ KSoftClient } = require('@ksoft/api'),
 	path = require('path'),
 	{ promisify } = require('util'),
 	readdir = promisify(require('fs').readdir);
@@ -81,14 +79,6 @@ class Egglord extends Client {
 		*/
 		this.Activity = [];
 		this.PresenceType = 'PLAYING';
-
-		/**
-		 * The manager for interacting with Fortnite API
-		 * @type {Manager}
-		*/
-		if (this.config.api_keys.fortnite) {
-			this.Fortnite = new Fortnite(this.config.api_keys.fortnite);
-		}
 
 		/**
 		 * Basic statistics for the bot

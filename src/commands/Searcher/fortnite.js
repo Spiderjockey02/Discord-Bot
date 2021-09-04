@@ -63,6 +63,7 @@ class Fortnite extends Command {
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			msg.delete();
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -101,7 +102,7 @@ class Fortnite extends Command {
  	 * @returns {embed}
 	*/
 	async createEmbed(bot, guild, username, platform) {
-		const data = await bot.Fortnite.user(username, platform);
+		const data = await (new (require('../../APIs/fortnite.js'))(bot.config.api_keys.fortnite)).user(username, platform);
 		return new Embed(bot, guild)
 			.setColor(0xffffff)
 			.setTitle('searcher/fortnite:TITLE', { USER: data.username })

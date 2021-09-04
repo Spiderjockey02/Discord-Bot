@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
-    "@ksoft/api": "^3.1.9",
     "axios": "^0.21.1",
     "canvacord": "^5.2.3",
     "chalk": "^4.1.0",
@@ -37,7 +36,6 @@
     "erela.js-facebook": "^1.0.2",
     "erela.js-spotify": "^1.2.0",
     "express": "^4.17.1",
-    "fortnite": "^4.3.2",
     "genius-lyrics-api": "^3.0.6",
     "i18next": "^20.2.4",
     "i18next-node-fs-backend": "^2.1.3",
