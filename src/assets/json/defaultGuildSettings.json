@@ -4,5 +4,15 @@
   "plugins": ["Fun", "Guild", "Image", "Level", "Misc", "Moderation", "Music", "NSFW", "Plugins", "Searcher"],
   "LevelOption": 1,
   "LevelMessage": "GG {user}, you have leveled up to {level}!",
-  "LevelMultiplier": 1
+  "LevelMultiplier": 1,
+  "Auto_Moderation": {
+    "IgnoreBot": true,
+    "Badwords": {
+      "option": 1,
+      "list": ["badword"],
+      "filter": "levDev",
+      "IgnoreChannel": ["761612724370931722"],
+      "IgnoreRole": ["766029837017153576"]
+    }
+  }
 }

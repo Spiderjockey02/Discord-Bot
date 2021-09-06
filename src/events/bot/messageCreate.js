@@ -176,10 +176,11 @@ class MessageCreate extends Event {
 		} else if (message.guild) {
 			if (settings.plugins.includes('Moderation')) {
 				try {
-					const check = require('../../helpers/autoModeration').run(bot, message, settings);
+					const moderated = await (new (require('../../helpers/autoModeration'))(bot, message)).check();
 					// This makes sure that if the auto-mod punished member, level plugin would not give XP
-					if (settings.plugins.includes('Level') && check) return require('../../helpers/levelSystem').run(bot, message, settings);
+					if (settings.plugins.includes('Level') && moderated) return require('../../helpers/levelSystem').run(bot, message, settings);
 				} catch (err) {
+					console.log(err);
 					bot.logger.error(`Event: 'message' has error: ${err.message}.`);
 				}
 			} else if (settings.plugins.includes('Level')) {

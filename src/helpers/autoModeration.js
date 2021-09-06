@@ -1,160 +1,128 @@
-// if option is 2, then just warn member
-async function warnMember(bot, message, wReason, settings) {
-	const wUser = message.guild.members.cache.get(message.author);
-	try {
-		await require('./warning-system').run(bot, message, wUser, wReason, settings);
-	} catch (err) {
-		bot.logger.error(`${err.message} when trying to warn user`);
-		message.channel.error(settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 10000 }));
+/**
+ * Auto moderation
+*/
+class AutoModeration {
+	constructor(bot, message) {
+		this.bot = bot;
+		this.message = message;
+	}
+
+	/**
+	 * Function for checking the message with AutoModeration
+	 * @returns {void}
+	*/
+	async check() {
+		const { settings, settings: { Auto_Moderation } } = this.message.guild;
+		const message = this.message;
+
+		// Make sure it's not a bot
+		if (Auto_Moderation.IgnoreBot & message.author.bot) return;
+
+		// Get all words in message + author's roles
+		const words = message.content.split(/ +/),
+			roles = message.guild.members.cache.get(message.author.id)._roles;
+
+		// Check for Badwords
+		if (Auto_Moderation.Badwords.option >= 1) {
+
+			// The type of bad word filter
+			let found;
+			if (Auto_Moderation.Badwords.filter == 'ExactMatch') {
+				// Exact match bad word detection
+				found = words.some(word => Auto_Moderation.Badwords.list.includes(word));
+
+				// for debugging what triggered the Auto moderation
+				if (found && this.bot.config.debug) this.bot.logger.debug(`Auto moderation detected: ${words.find(word => Auto_Moderation.Badwords.list.includes(word))} via 'ExactMatch'.`);
+
+			} else if (Auto_Moderation.Badwords.filter == 'Regex') {
+				// Regex bad word detection
+				found = words.some(word => {
+					for (const badWord of Auto_Moderation.Badwords.list) {
+						return (word.indexOf(badWord) !== -1) ? true : false;
+					}
+				});
+
+				// for debugging what triggered the Auto moderation
+				if (found && this.bot.config.debug) {
+					this.bot.logger.debug(`Auto moderation detected: ${words.find(word => {
+						for (const badWord of Auto_Moderation.Badwords.list) {
+							return (word.indexOf(badWord) !== -1) ? true : false;
+						}
+					})} via 'Regex'.`);
+				}
+
+			} else {
+				found = words.some(word => {
+					for (const badWord of Auto_Moderation.Badwords.list) {
+						const distance = require('../utils/functions').CalcLevenDist(word, badWord);
+						return (distance <= 2) ? true : false;
+					}
+				});
+
+				// for debugging what triggered the Auto moderation
+				if (found && this.bot.config.debug) {
+					this.bot.logger.debug(`Auto moderation detected: ${words.find(word => {
+						for (const badWord of Auto_Moderation.Badwords.list) {
+							const distance = require('../utils/functions').CalcLevenDist(word, badWord);
+							return (distance <= 2) ? true : false;
+						}
+					})} via 'levDistance'.`);
+				}
+			}
+
+			// Bad word found
+			if (found) {
+				console.log('found');
+				if (!Auto_Moderation.Badwords.IgnoreChannel.includes(message.channel.id)) {
+					// message was sent in a channel that isn't ignored
+					console.log('In a protected channel. punish them');
+					if (!Auto_Moderation.Badwords.IgnoreRole.some(role => roles.includes(role))) {
+						// message author should be punished as they don't have a role to bypass automoderation
+						console.log('Punish user as they dont have ignore role');
+						if (Auto_Moderation.Badwords.option == 1) await this.deleteMessage();
+						if (Auto_Moderation.Badwords.option == 2) await this.warnMember('Bad word usage.');
+						if (Auto_Moderation.Badwords.option == 3) await this.warnDelete('Bad word usage.');
+					}
+				}
+				return false;
+			}
+		}
+
+		// Check for Repeated Text
+	}
+
+	/**
+	 * Function for deleting offending message
+	 * @returns {void}
+	*/
+	async deleteMessage() {
+		if (this.bot.config.debug) this.bot.logger.debug('Deleted message due to auto-moderation.');
+		if (this.message.deletable) this.message.delete();
+	}
+
+	/**
+	 * Function for warning member who sent offending message
+	 * @returns {void}
+	*/
+	async warnMember(reason) {
+		if (this.bot.config.debug) this.bot.logger.debug('Warning member due to auto-moderation.');
+		try {
+			await require('./warning-system').run(this.bot, this.message, this.message.member, reason, this.message.guild.settings);
+		} catch (err) {
+			this.bot.logger.error(`${err.message} when trying to warn user`);
+			this.message.channel.error(this.message.guild.settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 10000 }));
+		}
+	}
+
+	/**
+	 * Function for warning member and deleting message
+	 * @returns {void}
+	*/
+	async warnMemberAndDeleteMessage(reason) {
+		if (this.bot.config.debug) this.bot.logger.debug('Warning member and deleting message due to auto-moderation.');
+		if (this.message.deletable) this.message.delete();
+		await this.warnMember(reason);
 	}
 }
 
-// if option is 3, then delete message and warn member
-function warnDelete(bot, message, wReason, settings) {
-	if (message.deletable) message.delete();
-	warnMember(bot, message, wReason, settings);
-}
-
-// if option is 1, then just delete message
-function deleteMessage(message) {
-	if (message.deletable) message.delete();
-}
-
-module.exports.run = (bot, message, settings) => {
-	// Make sure it's not a bot
-	if (settings.ModerationIgnoreBotToggle & message.author.bot) return;
-	// Get the words
-	const words = message.content.split(' ');
-	// get roles
-	const roles = message.guild.members.cache.get(message.author.id)._roles;
-	// Check for Badwords
-	if (settings.ModerationBadwords >= 1) {
-		const found = words.some(word => settings.ModerationBadwordList.includes(word));
-		// add role check
-		if (found) {
-			console.log('found');
-			if (!settings.ModerationBadwordChannel.includes(message.channel.id)) {
-				console.log('In a protected channel. punish them');
-				if (!settings.ModerationBadwordRole.some(role => roles.includes(role))) {
-					// punish user
-					console.log('Punish user as they dont have ignore role');
-					if (settings.ModerationBadwords == 1) deleteMessage(message);
-					if (settings.ModerationBadwords == 2) warnMember(bot, message, 'Bad word usage.', settings);
-					if (settings.ModerationBadwords == 3) warnDelete(bot, message, 'Bad word usage.', settings);
-				}
-			}
-			return false;
-		}
-	}
-	// Check for Repeated Text
-
-	// Duplicated text
-
-	// check for server invites
-	if (settings.ModerationServerInvites >= 1) {
-		const found = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|club)|discordapp\.com\/invite|discord\.com\/invite)\/.+[a-z]/gi.test(message.content);
-		if (found) {
-			console.log('found');
-			if (!settings.ModerationServerInvitesChannel.includes(message.channel.id)) {
-				console.log('In a protected channel. punish them');
-				if (!settings.ModerationServerInvitesRole.some(role => roles.includes(role))) {
-					// punish user
-					console.log('Punish user as they dont have ignore role');
-					if (settings.ModerationServerInvites == 1) deleteMessage(message);
-					if (settings.ModerationServerInvites == 2) warnMember(bot, message, 'Posted an invite.', settings);
-					if (settings.ModerationServerInvites == 3) warnDelete(bot, message, 'Posted an invite.', settings);
-				}
-			}
-			return false;
-		}
-	}
-
-	// check for external links
-	if (settings.ModerationExternalLinks >= 1) {
-		const expression = /^((?:https?:)?\/\/)?((?:www|m)\.)/g;
-		const found = expression.test(message.content.toLowerCase());
-		if (found) {
-			console.log('found');
-			if (!settings.ModerationExternalLinksChannel.includes(message.channel.id)) {
-				console.log('In a protected channel. punish them');
-				if (!settings.ModerationExternalLinksRole.some(role => roles.includes(role))) {
-					// punish user
-					console.log('Punish user as they dont have ignore role');
-					if (settings.ModerationExternalLinks == 1) deleteMessage(message);
-					if (settings.ModerationExternalLinks == 2) warnMember(bot, message, 'External links.', settings);
-					if (settings.ModerationExternalLinks == 3) warnDelete(bot, message, 'External links.', settings);
-				}
-			}
-			return false;
-		}
-	}
-
-	// check for spammed caps
-	if (settings.ModerationSpammedCaps >= 1) {
-		const caps = message.content.replace(/[^A-Z]/g, '').length;
-		const total = (caps / message.content.length) * 100;
-		if (total >= settings.ModerationSpammedCapsPercentage && message.content.length >= 10) {
-			console.log('found');
-			if (!settings.ModerationSpammedCapsChannel.includes(message.channel.id)) {
-				console.log('In a protected channel. punish them');
-				if (!settings.ModerationSpammedCapsRole.some(role => roles.includes(role))) {
-					// punish user
-					console.log('Punish user as they dont have ignore role');
-					if (settings.ModerationSpammedCaps == 1) deleteMessage(message);
-					if (settings.ModerationSpammedCaps == 2) warnMember(bot, message, 'External links.', settings);
-					if (settings.ModerationSpammedCaps == 3) warnDelete(bot, message, 'External links.', settings);
-				}
-			}
-			return false;
-		}
-	}
-
-	// check for excessive emojis
-	if (settings.ModerationExcessiveEmojis >= 1) {
-		const found = false;
-		if (found) {
-			console.log(found);
-			return false;
-			// Mass emoji
-		}
-	}
-
-	// check for mass spoilers
-	if (settings.ModerationMassSpoilers >= 1) {
-		const found = false;
-		if (found) {
-			console.log(found);
-			return false;
-		}
-	}
-
-	// check for mass mentions
-	if (settings.ModerationMassMention >= 1) {
-		const mentionNumber = ((message.mentions.users) ? message.mentions.users.size : 0) + ((message.mentions.roles) ? message.mentions.roles.size : 0);
-		if (mentionNumber >= settings.ModerationMassMentionNumber) {
-			console.log('found');
-			if (!settings.ModerationMassMentionChannel.includes(message.channel.id)) {
-				console.log('In a protected channel. punish them');
-				if (!settings.ModerationMassMentionRole.some(role => roles.includes(role))) {
-					// punish user
-					console.log('Punish user as they dont have ignore role');
-					if (settings.ModerationMassMention == 1) deleteMessage(message);
-					if (settings.ModerationMassMention == 2) warnMember(bot, message, 'Mass mentions.', settings);
-					if (settings.ModerationMassMention == 3) warnDelete(bot, message, 'Mass mentions.', settings);
-				}
-			}
-			return false;
-		}
-	}
-
-	// check for zalgo
-	if (settings.ModerationZalgo >= 1) {
-		const found = false;
-		if (found) {
-			console.log(found);
-			return false;
-		}
-	}
-	// keep at very bottom (This is done if user broke no auto-mod rules)
-	return true;
-};
+module.exports = AutoModeration;
