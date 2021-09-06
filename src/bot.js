@@ -18,13 +18,6 @@ const bot = new Client(),
 	// load translations
 	bot.translations = await require('./helpers/LanguageManager')();
 
-	// Audio player
-	try {
-		require('./base/Audio-Manager')(bot);
-	} catch (e) {
-		bot.logger.error(e);
-	}
-
 	// Connect bot to database
 	bot.mongoose.init(bot);
 
@@ -71,6 +64,8 @@ async function loadEvents() {
 				bot.logger.log(`Loading Event: ${name}`);
 				if (folder == 'giveaway') {
 					bot.giveawaysManager.on(name, (...args) => event.run(bot, ...args));
+				} else if (folder == 'audio') {
+					bot.manager.on(name, (...args) => event.run(bot, ...args));
 				} else {
 					bot.on(name, (...args) => event.run(bot, ...args));
 				}

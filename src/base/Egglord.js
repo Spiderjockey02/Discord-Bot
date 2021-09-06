@@ -4,6 +4,7 @@ const { Client, Collection } = require('discord.js'),
 	GiveawaysManager = require('./giveaway/Manager'),
 	path = require('path'),
 	{ promisify } = require('util'),
+	AudioManager = require('./Audio-Manager'),
 	readdir = promisify(require('fs').readdir);
 
 /**
@@ -119,6 +120,12 @@ class Egglord extends Client {
 		 * @type {function}
 		*/
 		this.delay = ms => new Promise(res => setTimeout(res, ms));
+
+		/**
+		 * The Audio manager
+		 * @type {Class}
+		*/
+		this.manager = new AudioManager(this);
 	}
 
 	/**
