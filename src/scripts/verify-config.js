@@ -65,14 +65,14 @@ module.exports.run = async (config) => {
 	if (!config.api_keys.fortnite) {
 		logger.log(`${chalk.red('✗')} Fortnite API key is missing.`);
 	} else {
-		// const stats = new Fortnite(config.api_keys.fortnite);
-		const stats = await (new (require('../../APIs/fortnite.js'))(config.api_keys.fortnite)).user('Ninja', 'pc');
-		await stats.user('Ninja', 'pc').catch(err => {
-			console.log(err);
+		try {
+			await (new (require('../APIs/fortnite.js'))(config.api_keys.fortnite)).user('Ninja', 'pc');
+		} catch (err) {
 			if (err.message == 'Invalid authentication credentials') {
 				logger.log(`${chalk.red('✗')} Fortnite API key is incorrect.`);
+				return true;
 			}
-		});
+		}
 	}
 
 	// Check Steam API
