@@ -3,6 +3,8 @@ const { Collection } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models'),
+	AutoModeration = require('../../helpers/autoModeration'),
+	LevelManager = require('../../helpers/levelSystem'),
 	Event = require('../../structures/Event');
 
 /**
@@ -176,15 +178,15 @@ class MessageCreate extends Event {
 		} else if (message.guild) {
 			if (settings.plugins.includes('Moderation')) {
 				try {
-					const moderated = await (new (require('../../helpers/autoModeration'))(bot, message)).check();
+					const moderated = await new AutoModeration(bot, message).check();
 					// This makes sure that if the auto-mod punished member, level plugin would not give XP
-					if (settings.plugins.includes('Level') && moderated) return require('../../helpers/levelSystem').run(bot, message, settings);
+					if (settings.plugins.includes('Level') && !moderated) return new LevelManager(bot, message).check();
 				} catch (err) {
 					console.log(err);
 					bot.logger.error(`Event: 'message' has error: ${err.message}.`);
 				}
 			} else if (settings.plugins.includes('Level')) {
-				require('../../helpers/levelSystem').run(bot, message, settings);
+				new LevelManager(bot, message).check();
 			}
 		}
 	}

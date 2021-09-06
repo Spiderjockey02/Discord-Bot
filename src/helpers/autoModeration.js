@@ -84,11 +84,14 @@ class AutoModeration {
 						if (Auto_Moderation.Badwords.option == 3) await this.warnDelete('Bad word usage.');
 					}
 				}
-				return false;
+				return true;
 			}
 		}
 
 		// Check for Repeated Text
+
+		// Keep at very bottom
+		return false;
 	}
 
 	/**
