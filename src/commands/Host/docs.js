@@ -30,7 +30,10 @@ class Docs extends Command {
  	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(bot, message, settings) {
+		// Make sure something is entered to search on djs website
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/docs:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+
 		// Get docs information
 		get(`https://djsdocs.sorta.moe/v2/embed?src=stable&q=${encodeURIComponent(message.args.join(' '))}`)
 			.then(({ data }) => {
