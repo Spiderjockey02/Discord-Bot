@@ -24,7 +24,7 @@
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
     "@vitalets/google-translate-api": "^7.0.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "canvacord": "^5.2.3",
     "chalk": "^4.1.0",
     "cors": "^2.8.5",
