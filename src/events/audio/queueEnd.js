@@ -17,7 +17,7 @@ class QueueEnd extends Event {
 	/**
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {Node} node The node that was connected
+	 * @param {Player} player The player that's queue ended
 	 * @readonly
 	*/
 	async run(bot, player) {
@@ -30,7 +30,7 @@ class QueueEnd extends Event {
 			const embed = new MessageEmbed()
 				.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:INACTIVE', { VC: vcName }));
 
-			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
+			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
 			player.destroy();
 		}, 180000);
 	}

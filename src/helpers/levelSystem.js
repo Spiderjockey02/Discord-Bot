@@ -24,7 +24,7 @@ class LevelManager {
 			// find user
 			try {
 				const res = await RankSchema.findOne({ userID: member.id, guildID: guild.id });
-				console.log(res);
+
 				// no account was found (this is user's first message with level plugin on)
 				if (!res) {
 					const newXp = new RankSchema({

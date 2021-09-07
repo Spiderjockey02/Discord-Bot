@@ -16,7 +16,8 @@ class TrackEnd extends Event {
 	/**
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {Node} node The node that was connected
+	 * @param {Player} player The player that's track ended
+	 * @param {Track} track The track that ended
 	 * @readonly
 	*/
 	async run(bot, player, track) {

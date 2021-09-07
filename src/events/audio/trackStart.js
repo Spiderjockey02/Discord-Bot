@@ -15,9 +15,10 @@ class TrackStart extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+   * Function for recieving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {Node} node The node that was connected
+	 * @param {Player} player The player that's track started
+	 * @param {Track} track The track that started
 	 * @readonly
 	*/
 	async run(bot, player, track) {

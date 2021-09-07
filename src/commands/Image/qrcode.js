@@ -48,7 +48,7 @@ class QRcode extends Command {
 
 		// Try and convert image
 		try {
-			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
+			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(/ /g, '%20')}`, 'QRCODE.png');
 			// send image in embed
 			const embed = new Embed(bot, message.guild)
 				.setImage('attachment://QRCODE.png');
@@ -76,7 +76,7 @@ class QRcode extends Command {
 			EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
-			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(new RegExp(' ', 'g'), '%20')}`, 'QRCODE.png');
+			const attachment = new MessageAttachment(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(/ /g, '%20')}`, 'QRCODE.png');
 			const embed = new Embed(bot, guild)
 				.setImage('attachment://QRCODE.png');
 			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });

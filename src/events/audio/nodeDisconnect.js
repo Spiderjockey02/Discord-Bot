@@ -17,6 +17,7 @@ class NodeDisconnect extends Event {
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Node} node The node that was connected
+	 * @param {Object} reason The reason for the node disconnect
 	 * @readonly
 	*/
 	async run(bot, node, reason) {

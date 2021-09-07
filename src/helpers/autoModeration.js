@@ -12,11 +12,11 @@ class AutoModeration {
 	 * @returns {void}
 	*/
 	async check() {
-		const { settings, settings: { Auto_Moderation } } = this.message.guild;
+		const { settings: { Auto_Moderation } } = this.message.guild;
 		const message = this.message;
 
 		// Make sure it's not a bot
-		if (Auto_Moderation.IgnoreBot & message.author.bot) return;
+		if (Auto_Moderation.IgnoreBot && message.author.bot) return;
 
 		// Get all words in message + author's roles
 		const words = message.content.split(/ +/),

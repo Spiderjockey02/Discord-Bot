@@ -17,7 +17,9 @@ class TrackError extends Event {
 	/**
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {Node} node The node that was connected
+	 * @param {Player} player The player that's track errored
+	 * @param {Track} track The track that errored
+	 * @param {Object} payload The information about the error
 	 * @readonly
 	*/
 	async run(bot, player, track, payload) {

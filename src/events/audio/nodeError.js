@@ -17,6 +17,7 @@ class NodeError extends Event {
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Node} node The node that was connected
+	 * @param {Error} error The error that occured on the node
 	 * @readonly
 	*/
 	async run(bot, node, error) {

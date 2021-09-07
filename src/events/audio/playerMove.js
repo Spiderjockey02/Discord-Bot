@@ -17,7 +17,9 @@ class PlayerMove extends Event {
 	/**
 	 * Function for recieving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {Node} node The node that was connected
+	 * @param {Player} player The player that moved Voice channels
+	 * @param {VoiceChannel} currentChannel The player before the move
+	 * @param {VoiceChannel} newChannel The player after the move
 	 * @readonly
 	*/
 	async run(bot, player, currentChannel, newChannel) {
@@ -25,8 +27,7 @@ class PlayerMove extends Event {
 		if (!newChannel) {
 			const embed = new MessageEmbed()
 				.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:KICKED'));
-			const channel = bot.channels.cache.get(player.textChannel);
-			if (channel) channel.send({ embeds: [embed] });
+			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
 			player.destroy();
 		} else {
 			await player.setVoiceChannel(newChannel);
