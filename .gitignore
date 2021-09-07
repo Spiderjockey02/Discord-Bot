@@ -4,3 +4,4 @@ Lavalink/logs
 src/commands/Host/test.js
 src/utils/logs/roll-????.??.??.log
 jsdocs/
+*.traineddata

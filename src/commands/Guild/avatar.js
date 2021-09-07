@@ -48,7 +48,7 @@ class Avatar extends Command {
 	}
 
 	/**
- 	 * Function for recieving interaction.
+ 	 * Function for recieving slash command.
  	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
@@ -58,6 +58,22 @@ class Avatar extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 		const embed = this.avatarEmbed(bot, guild, member);
+
+		// send embed
+		return interaction.reply({ embeds: [embed] });
+	}
+
+	/**
+	 * Function for recieving context menu
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	reply(bot, interaction, channel, userID) {
+		const member = channel.guild.members.cache.get(userID);
+		const embed = this.avatarEmbed(bot, channel.guild, member);
 
 		// send embed
 		return interaction.reply({ embeds: [embed] });

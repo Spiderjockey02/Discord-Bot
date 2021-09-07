@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
+    "@vitalets/google-translate-api": "^7.0.0",
     "axios": "^0.21.1",
     "canvacord": "^5.2.3",
     "chalk": "^4.1.0",
@@ -43,6 +44,7 @@
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
     "mongoose": "^5.11.15",
+    "optiic": "^0.0.14",
     "puppeteer": "^10.1.0",
     "r6api.js": "^2.0.2",
     "radio-browser": "^2.1.6",

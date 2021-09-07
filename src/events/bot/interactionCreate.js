@@ -25,6 +25,9 @@ class InteractionCreate extends Event {
 
 		// The interaction is a button
 		if (interaction.isButton()) return bot.emit('clickButton', interaction);
+
+		// the interaction is a context menu
+		if (interaction.isContextMenu()) return bot.emit('clickMenu', interaction);
 	}
 }
 

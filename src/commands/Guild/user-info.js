@@ -64,6 +64,21 @@ class UserInfo extends Command {
 		interaction.reply({ embeds: [embed] });
 	}
 
+	/**
+	 * Function for recieving slash command.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	reply(bot, interaction, channel, userID) {
+		const member = channel.guild.members.cache.get(userID);
+		const embed = this.createEmbed(bot, channel.guild, member);
+
+		// send embed
+		return interaction.reply({ embeds: [embed] });
+	}
 
 	/**
 	 * Function for creating embed of user information
