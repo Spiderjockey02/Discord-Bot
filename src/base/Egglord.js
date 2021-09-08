@@ -5,6 +5,7 @@ const { Client, Collection } = require('discord.js'),
 	path = require('path'),
 	{ promisify } = require('util'),
 	AudioManager = require('./Audio-Manager'),
+	Reddit = require('../APIs/reddit.js'),
 	readdir = promisify(require('fs').readdir);
 
 /**
@@ -126,6 +127,8 @@ class Egglord extends Client {
 		 * @type {Class}
 		*/
 		this.manager = new AudioManager(this);
+
+		this.reddit = new Reddit();
 	}
 
 	/**

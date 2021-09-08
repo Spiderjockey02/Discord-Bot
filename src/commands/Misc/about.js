@@ -62,7 +62,7 @@ class About extends Command {
 		return new Embed(bot, guild)
 			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
 			.setTitle('misc/about:TITLE')
-			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: genInviteLink(bot), SERVER: bot.config.websiteURL, USERNAME: bot.user.username }))
+			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: genInviteLink(bot), SERVER: bot.config.SupportServer.link, USERNAME: bot.user.username }))
 			.addField(guild.translate('misc/about:MEMBERS', { MEMBERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString() }), bot.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size.toLocaleString(settings.Language), BOTS: bot.users.cache.filter(user => user.bot).size.toLocaleString(settings.Language), HUMANS: bot.users.cache.filter(user => !user.bot).size.toLocaleString(settings.Language) }), true)
 			.addField(guild.translate('misc/about:CHANNELS'), bot.translate('misc/about:CHANNELS_DESC', { CHANNELS: bot.channels.cache.size.toLocaleString(settings.Language), TEXT: bot.channels.cache.filter(channel => channel.isText() && channel.type !== 'DM').size.toLocaleString(settings.Language), VOICE: bot.channels.cache.filter(channel => channel.type === 'GUILD_VOICE').size.toLocaleString(settings.Language), DM: bot.channels.cache.filter(channel => channel.type === 'DM').size.toLocaleString(settings.Language) }), true)
 			.addField(guild.translate('misc/about:PROCESS'),	bot.translate('misc/about:PROCESS_DESC', { RAM: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), NODE: process.version.slice(1).split('.')[0], DISCORD: version }), true)

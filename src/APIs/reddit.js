@@ -1,15 +1,30 @@
-const fetch = require('node-fetch'),
-	{ Collection } = require('discord.js');
+const { Collection } = require('discord.js'),
+	fetch = require('node-fetch');
 
-// Interact with Reddit API
-module.exports = class RedditAPI {
+/**
+ * Reddit API
+*/
+class RedditAPI {
 	constructor() {
+		/**
+		 * An array of 'meme' subreddits
+		 * @type {array}
+		*/
 		this.memeSubreddits = ['funny', 'jokes', 'comedy', 'notfunny', 'bonehurtingjuice',
 			'ComedyCemetery', 'comedyheaven', 'dankmemes', 'meme'];
+
+		/**
+		 * ALlows for subreddit caching (No reddit API abuse)
+		 * @type {Collection}
+		*/
 		this.cachedSubreddits = new Collection();
 	}
 
-	// Fetch post from a 'meme' subreddit.
+	/**
+	 * Function for fetching a meme post from reddit
+	 * @param {object} options The options for post filtering
+	 * @returns {RedditPost}
+	*/
 	async fetchMeme(options = {}) {
 		// choose a subreddit to get meme from
 		const subreddit = this.memeSubreddits[Math.floor(Math.random() * this.memeSubreddits.length)];
@@ -23,7 +38,12 @@ module.exports = class RedditAPI {
 		}
 	}
 
-	// Fetch post from chosen subreddit.
+	/**
+	 * Function for fetching subreddit post from reddit
+	 * @param {string} subreddit The subreddit to search for
+	 * @param {object} options The options for post filtering
+	 * @returns {RedditPost}
+	*/
 	async fetchSubreddit(subreddit, options = {}) {
 		// check cache system before requesting reddit
 		if (this.cachedSubreddits.has(subreddit)) {
@@ -36,7 +56,13 @@ module.exports = class RedditAPI {
 		}
 	}
 
-	// Turns RAW API data to a 'RedditPost'.
+	/**
+	 * Function for turning raw reddit data to RedditPost for bot
+	 * @param {object} data The raw JSON data from reddit API
+	 * @param {object} options The options for post filtering
+	 * @returns {RedditPost}
+	 * @private
+	*/
 	_fetchPost({ data }, options) {
 		// Check if NSFW posts needs to be filtered out
 		if (options.removeNSFW) data.children = data.children.filter(post => !post.data.over_18);
@@ -49,27 +75,81 @@ module.exports = class RedditAPI {
 		return new RedditPost(post);
 	}
 
-	// Delete the cached subreddit
+	/**
+	 * Function for removing subreddit from cache after 5 minutes.
+	 * @param {string} subreddit The subreddit
+	 * @param {Object} resp The raw JSON data from reddit API
+	 * @returns {void}
+	 * @private
+	*/
 	_handleCache(subreddit, resp) {
 		this.cachedSubreddits.set(subreddit, resp);
 		setTimeout(() => {
 			this.cachedSubreddits.delete(subreddit);
-			// 5 minute and then delete from cache
+		// 5 minute and then delete from cache
 		}, 5 * 60 * 1000);
 	}
-};
+}
 
-// The reddit post
+/**
+ * Reddit post
+*/
 class RedditPost {
 	constructor({ title, subreddit, permalink, url, ups, downs, author, num_comments, over_18, media }) {
+		/**
+		 * The title of the subreddit
+		 * @type {string}
+		*/
 		this.title = title;
+
+		/**
+		 * The subreddit the post is from
+		 * @type {string}
+		*/
 		this.subreddit = subreddit;
+
+		/**
+		 * The link to the post
+		 * @type {string}
+		*/
 		this.link = `https://www.reddit.com${permalink}`;
+
+		/**
+		 * The image from the post
+		 * @type {string}
+		*/
 		this.imageURL = media ? media.oembed.thumbnail_url : url;
+
+		/**
+		 * The upvotes of the post
+		 * @type {number}
+		*/
 		this.upvotes = ups ?? 0;
+
+		/**
+		 * The downvotes of the post
+		 * @type {number}
+		*/
 		this.downvotes = downs ?? 0;
-		this.author = author ;
+
+		/**
+		 * The user who posted the post
+		 * @type {string}
+		*/
+		this.author = author;
+
+		/**
+		 * The number of comments
+		 * @type {number}
+		*/
 		this.comments = num_comments ?? 0;
+
+		/**
+		 * Whether of not it's NSFW or not
+		 * @type {boolean}
+		*/
 		this.nsfw = over_18;
 	}
 }
+
+module.exports = RedditAPI;

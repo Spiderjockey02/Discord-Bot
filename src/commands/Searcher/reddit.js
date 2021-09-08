@@ -93,9 +93,9 @@ class Reddit extends Command {
 			// Check if its a NSFW channel or not
 			if (channel.nsfw || channel.type == 'DM') {
 				// NSFW content can be shown
-				reddit = await (new (require('../../APIs/reddit.js'))).fetchSubreddit(subreddit, { removeNSFW: false });
+				reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: false });
 			} else {
-				reddit = await (new (require('../../APIs/reddit.js'))).fetchSubreddit(subreddit, { removeNSFW: true });
+				reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: true });
 			}
 			// Send message to channel
 			return new Embed(bot, channel.guild)

@@ -65,7 +65,7 @@ class Meme extends Command {
 	*/
 	async fetchMeme(bot, guild, settings) {
 		try {
-			const meme = await (new (require('../../APIs/reddit.js'))).fetchMeme({ removeNSFW: true });
+			const meme = await bot.reddit.fetchMeme({ removeNSFW: true });
 			if (!meme.imageURL) {
 				return this.fetchMeme(bot, guild, settings);
 			} else {
