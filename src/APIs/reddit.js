@@ -30,7 +30,7 @@ class RedditAPI {
 		const subreddit = this.memeSubreddits[Math.floor(Math.random() * this.memeSubreddits.length)];
 		// check cache system before requesting reddit
 		if (this.cachedSubreddits.has(subreddit)) {
-			return this._fetchPost(this.cachedSubreddits.get(subreddit));
+			return this._fetchPost(this.cachedSubreddits.get(subreddit), options);
 		} else {
 			const resp = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json`).then(res => res.json());
 			this._handleCache(subreddit, resp);
@@ -47,7 +47,7 @@ class RedditAPI {
 	async fetchSubreddit(subreddit, options = {}) {
 		// check cache system before requesting reddit
 		if (this.cachedSubreddits.has(subreddit)) {
-			return this._fetchPost(this.cachedSubreddits.get(subreddit));
+			return this._fetchPost(this.cachedSubreddits.get(subreddit), options);
 		} else {
 			const resp = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?`).then(res => res.json());
 			if (resp.error) throw new Error(`Error: '${resp.message}' when searching for that subreddit.`);

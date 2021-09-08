@@ -78,7 +78,6 @@ class Meme extends Command {
 			}
 		} catch (err) {
 			bot.logger.error(err.message);
-			bot.commands.delete('meme');
 			return new Embed(bot, guild)
 				.setDescription('Meme failed to load');
 		}

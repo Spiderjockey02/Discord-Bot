@@ -105,7 +105,6 @@ class Reddit extends Command {
 				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) });
 		} catch (err) {
 			bot.logger.error(err.message);
-			bot.commands.delete('reddit');
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
