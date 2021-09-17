@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "˙puɐɯɯoɔ ɐ spɐolǝɹ",
+  "USAGE": "reload <ʇuǝʌǝ / puɐɯɯoɔ>",
+  "SUCCESS": "˙pǝpɐolǝɹ uǝǝq sɐɥ `{{NAME}}` :puɐɯɯoƆ",
+  "SUCCESS_EVENT": "˙pǝpɐolǝɹ uǝǝq sɐɥ `{{NAME}}` :ʇuǝʌƎ",
+  "INCORRECT_DETAILS": "˙ʇuǝʌǝ ɹou puɐɯɯoɔ ɐ ʇ,usᴉ {{NAME}}"
+}

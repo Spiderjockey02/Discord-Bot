@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Renvoi un meme aléatoire.",
+  "DESCRIPTION": "Renvoi un `meme` aléatoire.",
   "USAGE": "meme",
   "TITLE": "Depuis {{SUBREDDIT}}",
-  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}} | Fourni par KSOFT.API"
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
 }

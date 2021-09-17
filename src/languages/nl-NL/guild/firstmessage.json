@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Haalt het eerste bericht op van het kanaal.",
+  "USAGE": "eerste bericht [channel]",
+  "JUMP": "❯ Springen"
+}

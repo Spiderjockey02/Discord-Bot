@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Een weggeefactie verwijderen",
+  "USAGE": "g-delete <messageID>",
+  "SUCCESS_GIVEAWAY": "Gelukt! Gekozen verwijderd!",
+  "UNKNOWN_GIVEAWAY": "Geen weggiveaway gevonden met Message ID: `{{ID}}`, controleer en probeer het opnieuw."
+}

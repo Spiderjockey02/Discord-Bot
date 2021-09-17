@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Maak een nep Twitter tweet.",
+  "USAGE": "twitter [user] <text>",
+  "TOO_LONG": "Je bericht mag niet meer dan 60 tekens bevatten."
+}

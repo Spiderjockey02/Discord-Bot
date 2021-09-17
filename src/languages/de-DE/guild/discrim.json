@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Discriminator",
+  "USAGE": "discriminator <discriminator>",
+  "TITLE": "Mitglieder mit Discriminator: {{DISCRIM}}"
+}

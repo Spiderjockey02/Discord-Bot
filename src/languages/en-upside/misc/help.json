@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "˙op uɐɔ I ʇɐɥʇ spuɐɯɯoɔ ǝɥʇ llɐ ʇnoqɐ uoᴉʇɐɯɹoɟuᴉ spuǝS",
+  "USAGE": "help [puɐɯɯoɔ]",
+  "AUTHOR": "spuɐɯɯoɔ ǝlqɐlᴉɐʌ∀",
+  "PREFIX_DESC": "(xᴉɟǝɹd ɐ sɐ <@!{{ID}}> ǝsn oslɐ uɐɔ no⅄) `{{PREFIX}}` **:xᴉɟǝɹԀ**",
+  "INFO_DESC": "**˙uoᴉʇɐɯɹoɟuᴉ ɔᴉɟᴉɔǝds puɐɯɯoɔ ɹoɟ `{{PREFIX}}{{USAGE}}` ǝdʎ┴**",
+  "TITLE": "`Command: {{COMMAND}}`",
+  "DESC": "**Description:** {{DESC}}",
+  "ALIAS": "**Aliases:** {{ALIAS}}",
+  "COOLDOWN": "**Cooldown:** {{CD}} seconds",
+  "USE": "**Usage:** {{USAGE}}",
+  "EXAMPLE": "**Example:** {{EX}}",
+  "LAYOUT": "\n**Layout**: `<> = required, [] = optional`",
+  "NO_COMMAND": "˙puɐɯɯoɔ ɐ ʇou sᴉ ʇɐɥ┴"
+}

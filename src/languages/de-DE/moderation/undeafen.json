@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Undeafen a user.",
+  "USAGE": "undeafen <user>",
+  "NOT_VC": "I can't deafen someone not in a voice channel.",
+  "SUCCESS": "*<@{{USER}}> was successfully undeafened*."
+}

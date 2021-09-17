@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Maak een poll aan voor gebruikers om te antwoorden.",
+  "USAGE": "poll <question>",
+  "TITLE": "🗳️ Poll gemaakt door {{USER}}",
+  "FOOTER": "Reageren om te stemmen..."
+}

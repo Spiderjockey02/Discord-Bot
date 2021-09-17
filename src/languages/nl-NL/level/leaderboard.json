@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Geeft het level scorebord van de Servers weer.",
+  "USAGE": "scorebord",
+  "TITLE": "Scorebord",
+  "EMPTY_TITLE": "Geen gegevens beschikbaar",
+  "EMPTY_DESC": "Typ in chat om ervaring op te doen.",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "**XP:** {{XP}} × **Level:** {{LEVEL}}"
+}

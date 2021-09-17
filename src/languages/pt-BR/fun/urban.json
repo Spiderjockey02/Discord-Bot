@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Veja o significado de uma palavra no dicionário urbano.",
+  "USAGE": "urban <word>",
+  "INCORRECT_URBAN": "Frase: `{{PHRASE}}` não foi encontrado no dicionário urbano.",
+  "TITLE": "Definição de {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Exemplo:**\n{{EXAMPLES}}"
+}

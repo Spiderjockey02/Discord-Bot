@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Muestra el avatar de un usuario",
+  "USAGE": "avatar [user]",
+  "AVATAR_TITLE": "🖼 Avatar para {{USER}}",
+  "AVATAR_DESCRIPTION": "**link**"
+}

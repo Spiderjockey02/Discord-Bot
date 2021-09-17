@@ -1,0 +1,14 @@
+{
+  "INTRO": "Hello, my name is {{USER}}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.",
+  "INFO": "I've been online for {{UPTIME}}, helping {{GUILDS}} servers and {{USERS}} users with {{CMDS}} commands.",
+  "PREFIX": "My prefix for this server is: `{{PREFIX}}`.",
+  "LINKS": "Useful Links:",
+  "ADD": "[Add to server]({{INVITE}})",
+  "SUPPORT": "[Join support server]({{LINK}})",
+  "WEBSITE": "[Website]({{URL}})",
+  "GUILD_ONLY": "This command can only be run on a server.",
+  "COMMAND_COOLDOWN": "Devi attendere {{NUM}} secondi tra ogni comando.",
+  "BANNED_USER": "Sei bandito dall'uso dei comandi.",
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, quel comando è disabilitato in questo canale.",
+  "NOT_NSFW_CHANNEL": "That command is only allowed in `NSFW` channels."
+}

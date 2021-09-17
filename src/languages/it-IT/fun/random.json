@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Rispondi con un numero casuale.",
+  "USAGE": "casuale <LowNum> <HighNum>",
+  "RESPONSE": "🎲 Numero casuale: {{NUMBER}}"
+}

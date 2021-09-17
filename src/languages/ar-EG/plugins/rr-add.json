@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Create a reaction role",
+  "USAGE": "rr-add [channelID]",
+  "NEED_PREMIUM": "You need premium to create more reaction roles. Premium servers get up to `10` reaction role",
+  "MAX_RR": "There is a max of 10 reactions roles per a server even with premium.",
+  "INCORRECT_EMOJIS": "An incorrect number of emojis were entered",
+  "SEND_ROLES": "Please send a list of roles below (ID's or mentions), separate with a space. Type **cancel** to end this.",
+  "SEND_EMOJIS": "Please send your emojis below. The order will match with the order of the roles, separate with a space. Type **cancel** to end this",
+  "TITLE": "Reaction Roles:",
+  "REACT_BELOW": "React below to get a role!"
+}

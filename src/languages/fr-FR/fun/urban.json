@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Définition d'un mot/phrase d'Argot.",
-  "USAGE": "urban <word>",
-  "INCORRECT_URBAN": "Phrase: `{{PHRASE}}` n'a pas été trouvé dans le dictionnaire d'Argot.",
-  "TITLE": "Definition de {{WORD}}",
-  "DESC": "{{DEFINTION}}\n**Example:**\n{{EXAMPLES}}"
+  "DESCRIPTION": "Obtenir la définition d'un mot/phrase d'Argot.",
+  "USAGE": "urban <mot>",
+  "INCORRECT_URBAN": "La phrase: `{{PHRASE}}` n'a pas été trouvée dans le dictionnaire d'Argot.",
+  "TITLE": "Définition de {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Exemple :**\n{{EXAMPLES}}"
 }

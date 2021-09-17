@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Vindt een afbeelding gebaseerd op het onderwerp.",
+  "USAGE": "afbeelding <topic>"
+}

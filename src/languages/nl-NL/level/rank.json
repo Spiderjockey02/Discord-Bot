@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Toont je rang/Level.",
+  "USAGE": "niveau [username]",
+  "NO_MESSAGES": "Je bent nog niet gerangschikt. Stuur eerst enkele berichten en probeer het opnieuw."
+}

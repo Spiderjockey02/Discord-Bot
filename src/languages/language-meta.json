@@ -1,34 +1,122 @@
 [
-    {
-        "name": "en-US",
-        "nativeName": "English",
-        "moment": "en",
-        "defaultMomentFormat": "MMMM Do YYYY",
-        "default": true,
-        "aliases": [
-            "English",
-            "english",
-            "en",
-            "en-us",
-            "en_us",
-            "en_US"
-        ]
-    },
-    {
-        "name": "fr-FR",
-        "nativeName": "French",
-        "moment": "fr",
-        "defaultMomentFormat": "Do MMMM YYYY",
-        "default": false,
-        "aliases": [
-		    "Français",
-            "français",
-            "French",
-            "french",
-            "fr",
-            "fr-fr",
-            "fr_fr",
-            "fr_FR"
-        ]
-    }
+  {
+    "name":"en-US",
+    "nativeName":"English",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":true,
+    "aliases":[
+      "English",
+      "english",
+      "en",
+      "en-us",
+      "en_us",
+      "en_US"
+    ]
+  },
+  {
+    "name":"fr-FR",
+    "nativeName":"French",
+    "moment":"fr",
+    "defaultMomentFormat":"Do MMMM YYYY",
+    "default":false,
+    "aliases":[
+      "Français",
+      "français",
+      "French",
+      "french",
+      "fr",
+      "fr-fr",
+      "fr_fr",
+      "fr_FR"
+    ]
+  },
+  {
+    "name":"ar-EG",
+    "nativeName":"Arabic (U.A.E.)",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "arabic",
+      "عربي"
+    ]
+  },
+  {
+    "name":"de-DE",
+    "nativeName":"German",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "Deutsch"
+    ]
+  },
+  {
+    "name":"en-upside",
+    "nativeName":"English (Upside down)",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "upside-down",
+      "upside"
+    ]
+  },
+  {
+    "name":"es-ES",
+    "nativeName":"Spanish",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "española",
+      "español"
+    ]
+  },
+  {
+    "name":"it-IT",
+    "nativeName":"Italian (Italy)",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "italian",
+      "Italy",
+      "italiana",
+      "italiano"
+    ]
+  },
+  {
+    "name":"nl-NL",
+    "nativeName":"Netherlands (Dutch)",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "netherlands",
+      "dutch"
+    ]
+  },
+  {
+    "name":"pt-BR",
+    "nativeName":"Brazilian Portuguese",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "Brazilian",
+      "Portuguese"
+    ]
+  },
+  {
+    "name":"ru-RU",
+    "nativeName":"Russian",
+    "moment":"en",
+    "defaultMomentFormat":"MMMM Do YYYY",
+    "default":false,
+    "aliases":[
+      "русский"
+    ]
+  }
 ]

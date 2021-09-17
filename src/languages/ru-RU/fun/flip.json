@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Бросить монетку.",
+  "USAGE": "flip",
+  "HEADS": "Орёл",
+  "TAILS": "Решка"
+}

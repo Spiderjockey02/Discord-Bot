@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "ʇsᴉlʎɐld ɐ ǝʇǝlǝp",
+  "USAGE": "p-delete <ǝɯɐu ʇsᴉlʎɐld>",
+  "MISSING": "˙{{TITLE}} :ǝɯɐu ǝɥʇ ʎq ʇsᴉlʎɐld ɐ puᴉɟ ʇ,uplnoƆ",
+  "SUCCESS": "Successfully deleted {{TITLE}}."
+}

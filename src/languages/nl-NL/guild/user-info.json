@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Verkrijg informatie over dit item.",
+  "USAGE": "gebruiker-info [user]",
+  "USERNAME": "✍ Gebruikersnaam",
+  "DISCRIM": "#️⃣ Discriminator",
+  "ROBOT": "🤖 Robot",
+  "CREATE": "Aanmaak",
+  "STATUS": "📶 Status",
+  "ROLE": "🔼 Hoogste rol",
+  "JOIN": "Deelnemen",
+  "NICK": "📝 Bijnaam",
+  "ROLES": "Rollen"
+}

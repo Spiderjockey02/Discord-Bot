@@ -1,0 +1,14 @@
+{
+  "INTRO": "Hola, mi nombre es {{USER}}, y soy un bot de Discord multi-proposito, construido para ayudarte con todos los problemas y necesidades de tu servidor.",
+  "INFO": "He estado online durante {{UPTIME}}, ayudando a servidores de {{GUILDS}} y usuarios de {{USERS}} con comandos {{CMDS}}.",
+  "PREFIX": "My prefix for this server is: `{{PREFIX}}`.",
+  "LINKS": "Links Útiles:",
+  "ADD": "[Añadir al servidor]({{INVITE}})",
+  "SUPPORT": "[Únete al servidor de ayuda]({{LINK}})",
+  "WEBSITE": "[Website]({{URL}})",
+  "GUILD_ONLY": "Este comando solo puede ser utilizado en un servidor.",
+  "COMMAND_COOLDOWN": "Tienes que esperar {{NUM}} segundos para ejecutar cada comando.",
+  "BANNED_USER": "Fuiste baneado de usar los comandos.",
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, ese comando está deshabilitado en este canal.",
+  "NOT_NSFW_CHANNEL": "Este comando solo está permitido en los canales `NSFW`."
+}

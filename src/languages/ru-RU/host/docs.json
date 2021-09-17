@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Отображает документацию Discord.js.",
+  "USAGE": "docs <query>",
+  "MISSING": "Не удалось найти эту документацию."
+}

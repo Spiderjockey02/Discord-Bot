@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Wijzig de bijnaam van een gebruiker.",
+  "USAGE": "bijnaam <user> <name>",
+  "TOO_POWERFUL": "Ik ben niet in staat om de bijnaam van die gebruiker te wijzigen vanwege zijn kracht.",
+  "ENTER_NICKNAME": "Voer een bijnaam in.",
+  "LONG_NICKNAME": "Bijnaam moet korter zijn dan 32 tekens.",
+  "SUCCESS": "*Gebruikersnaam veranderd van <@{{USER}}>.*"
+}

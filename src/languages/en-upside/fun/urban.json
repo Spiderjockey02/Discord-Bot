@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "˙pɹoʍ ɐ ɟo ʎɹɐuoᴉʇɔᴉp uɐqɹn ǝɥʇ ʇǝפ",
+  "USAGE": "urban <pɹoʍ>",
+  "INCORRECT_URBAN": "˙ʎɹɐuoᴉʇɔᴉp uɐqɹn ǝɥʇ uo punoɟ ʇou sɐʍ `{{PHRASE}}` :ǝsɐɹɥԀ",
+  "TITLE": "{{WORD}} ɟo uoᴉʇᴉuᴉɟǝp",
+  "DESC": "{{DEFINTION}}\n**:ǝldɯɐxƎ**\n{{EXAMPLES}}"
+}

@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "˙ʇunoɔɔ∀ 9 ʍoquᴉɐɹ ɐ uo sɔᴉʇsᴉʇɐʇs sʇǝפ",
+  "USAGE": "r6 <ɹǝsn> [ㄣsd / xoqx / ɔd] [sɐ / ɐu / nǝ]",
+  "UNKNOWN_USER": "˙punoɟ ǝq oʇ ǝlqɐun sɐʍ ǝɯɐuɹǝsn sᴉɥ┴",
+  "DESC": "**{{PLATFORM}}** uo uoᴉƃǝɹ **{{REGION}}** ǝɥʇ ɹoɟ sʇɐʇS",
+  "GENERAL": "General: ",
+  "GEN_DATA": "**Level:** {{LVL}} ({{XP}} xp) \n**Rank:** {{NAME}} (Max: {{MAX_NAME}}) \n**MMR:** {{MMR}}",
+  "STATS": "Statistics: ",
+  "STAT_DATA": "**Wins:** {{WIN}} \n**Losses:** {{LOSS}} \n**Win/Loss ratio:** {{WL}} \n**Kills** {{KILL}} \n**Deaths:** {{DEATH}} \n**K/D Ratio** {{KD}} \n**Playtime:** {{TIME}} hours",
+  "TERRORIST": "Terrorist Hunt: "
+}

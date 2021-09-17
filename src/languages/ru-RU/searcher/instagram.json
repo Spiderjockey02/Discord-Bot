@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Получить информацию об аккаунте Instagram.",
+  "USAGE": "instagram <user>",
+  "UNKNOWN_USER": "Это имя пользователя не найдено.",
+  "USERNAME": "Имя пользователя: ",
+  "FULL_NAME": "Полное имя: ",
+  "BIOGRAPHY": "Биография: ",
+  "POSTS": "Постов: ",
+  "FOLLOWERS": "Подписчиков: ",
+  "FOLLOWING": "Подписок: ",
+  "PRIVATE": "Приватный аккаунт: ",
+  "VERIFIED": "Подтверждённый аккаунт: "
+}

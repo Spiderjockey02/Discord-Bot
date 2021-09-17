@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Ottieni uno screenshot di un sito web.",
+  "USAGE": "screenshot <url>",
+  "INVALID_URL": "Quest'URL è errato.",
+  "BLACKLIST_WEBSITE": "Non puoi vedere questi siti web in un canale non NSFW."
+}

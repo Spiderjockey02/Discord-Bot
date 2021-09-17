@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Edit a tag from this server",
+  "USAGE": "tag-edit <rename / edit> <name> <newName / newResponse>",
+  "INVALID_NAME": "Please specify a name for the tag.",
+  "INVALID_NEW_NAME": "Please specify a new name for the tag.",
+  "UPDATED_NAME": "Updated tag with the new name: `{{NAME}}`.",
+  "INVALID_NEW_RESP": "Please specify the new response for the tag",
+  "UPDATED_RESP": "Updated tag with the new response: `{{RESP}}`."
+}

@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Editar dados do usuário",
+  "USAGE": "user <id> [premium / banned] [true / false]",
+  "SUCCESS_PREM": "Assinatura premium do usuário atualizada com sucesso.",
+  "SUCCESS_BAN": "Banimento global do usuário atualizado com sucesso.",
+  "SUCCESS_RANK": "Plano de fundo de rank do usuário atualizado com sucesso.",
+  "SUCCESS_RESET": "Dados do usuário redefinidos com sucesso."
+}

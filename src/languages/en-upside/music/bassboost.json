@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "ƃuos ǝɥʇ ʇsooqssɐq",
+  "USAGE": "bassboost [ǝnlɐʌ]",
+  "ON_BB": "˙˙˙spuoɔǝs ʍǝɟ ɐ ǝʞɐʇ ʎɐɯ sᴉɥ┴ ˙**ʇsooqssɐq** uo ƃuᴉuɹn┴",
+  "DESC_1": "**ʇsooqssɐq** uo pǝuɹn┴",
+  "OFF_BB": "˙˙˙spuoɔǝs ʍǝɟ ɐ ǝʞɐʇ ʎɐɯ sᴉɥ┴ ˙**ʇsooqssɐq** ɟɟo ƃuᴉuɹn┴",
+  "DESC_2": "**ʇsooqssɐq** ɟɟo pǝuɹn┴",
+  "INVALID": "˙ɹǝqɯnu lɐǝɹ ɐ ǝq ʇsnɯ ʇunoɯ∀",
+  "SET_BB": "˙˙˙spuoɔǝs ʍǝɟ ɐ ǝʞɐʇ ʎɐɯ sᴉɥ┴ ˙**qp{{DB}}** oʇ ʇsooqssɐq ƃuᴉʇʇǝS",
+  "DESC_3": "**{{DB}}** :oʇ ʇǝs ʇsooqssɐq"
+}

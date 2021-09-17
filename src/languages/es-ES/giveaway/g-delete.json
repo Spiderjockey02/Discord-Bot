@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Elimina un sorteo",
+  "USAGE": "g-borrar <messageID>",
+  "SUCCESS_GIVEAWAY": "¡Hecho! ¡Sorteo eliminado!",
+  "UNKNOWN_GIVEAWAY": "No se ha encontrado ningún sorteo con el ID de mensaje: `{{ID}}`, por favor compruébalo e inténtalo de nuevo."
+}

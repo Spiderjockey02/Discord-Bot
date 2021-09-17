@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Verkrijg informatie over dit item",
+  "USAGE": "serverinformatie",
+  "AUTHOR": "Serverinformatie van {{NAME}}",
+  "NAME": "Servernaam:",
+  "OWNER": "Servereigenaar:",
+  "ID": "Server-ID:",
+  "CREATED": "Server gemaakt op {}:",
+  "REGION": "Server regio:",
+  "VERIFICATION": "Verificatie level:",
+  "MEMBER": "Aantal leden [{{NUM}}]:",
+  "MEMBER_DESC": "`{{ONLINE}} online, {{IDLE}} inactief en {{DND}} DnD \n{{BOTS}} bots, {{HUMANS}} mens`",
+  "FEATURES": "Kenmerk:",
+  "ROLES": "Rol { {{NUM}}]:",
+  "FOOTER": "Aangevraagd door: {0}"
+}

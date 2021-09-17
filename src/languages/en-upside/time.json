@@ -1,0 +1,14 @@
+{
+    "ONE_DAY": "ʎɐp 1",
+    "DAYS": "sʎɐp {{amount}}",
+    "ONE_HOUR": "ɹnoɥ 1",
+    "HOURS": "sɹnoɥ {{amount}}",
+    "ONE_MINUTE": "ǝʇnuᴉɯ 1",
+    "MINUTES": "sǝʇnuᴉɯ {{amount}}",
+    "ONE_SECOND": "puoɔǝs 1",
+    "SECONDS": "spuoɔǝs {{amount}}",
+    "NOT_NUMBER": "˙ɹǝqɯnu ɐ ǝq ʇsnW",
+    "INCORRECT_DELIMITERS": "˙,s, ',ɯ,  ',ɥ,  ',p, :sɹǝʇᴉɯᴉlǝp ǝɯᴉʇ ƃuᴉʍolloɟ ǝɥʇ ɟo ǝuo ǝsn ǝsɐǝlԀ",
+    "MAX_TIME": "˙sʎɐp 10 uɐɥʇ ɹǝƃuol ǝq ʇ,uɐƆ",
+    "INVALID_TIME": "(16h ɹo 1m :ǝldɯɐxƎ) ˙pǝɹǝʇuǝ sɐʍ ɹǝqɯnu pᴉlɐʌuᴉ u∀"
+}

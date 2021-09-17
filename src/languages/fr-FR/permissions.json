@@ -10,7 +10,7 @@
 	"CREATE_INSTANT_INVITE": "Créer une invitation",
 	"CHANGE_NICKNAME": "Changer le pseudo",
 	"MANAGE_NICKNAMES": "Gérer les pseudos",
-	"MANAGE_EMOJIS": "Gérer les émojis",
+	"MANAGE_EMOJIS_AND_STICKERS": "Gérer les émojis et les autocollants",
 	"MANAGE_WEBHOOKS": "Gérer les webhooks",
 	"VIEW_CHANNEL": "Voir les salons",
 	"SEND_MESSAGES": "Envoyer des messages",

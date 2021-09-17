@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Ottieni informazioni su un pokemon.",
+  "USAGE": "pokemon <pokemon>"
+}

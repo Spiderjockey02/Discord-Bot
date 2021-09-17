@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Создаёт картинку скрещивания.",
+  "USAGE": "ship <user1> [user2]"
+}

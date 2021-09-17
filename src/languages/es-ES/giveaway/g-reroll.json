@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Recomienza el sorteo",
+  "USAGE": "g-borrar <messageID>",
+  "SUCCESS_GIVEAWAY": "¡Hecho! ¡Sorteo recomenzado!",
+  "UNKNOWN_GIVEAWAY": "No se ha encontrado ningún sorteo con el ID de mensaje: `{{ID}}`, por favor compruébalo e inténtalo de nuevo.",
+  "CONGRAT": "¡Nuevo ganador(es): {winners}! ¡Felicidades!",
+  "ERROR": "No hay entradas válidas, ningún ganador puede ser elegido!"
+}

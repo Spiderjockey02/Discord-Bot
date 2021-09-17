@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Herlaadt een commando.",
+  "USAGE": "reload <command / event>",
+  "SUCCESS": "Commando: `{{NAME}}` is herladen.",
+  "SUCCESS_EVENT": "Evenement:{{NAME}}` is herladen.",
+  "INCORRECT_DETAILS": "{{NAME}} is geen commando of evenement."
+}

@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Генерирует QR-код.",
+  "USAGE": "qrcode <text / file>"
+}

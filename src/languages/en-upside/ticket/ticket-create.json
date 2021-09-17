@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "ʇǝʞɔᴉʇ ɐ sǝʇɐǝɹƆ",
+  "USAGE": "ticket-create [uosɐǝɹ]",
+  "TICKET_EXISTS": "lǝuuɐɥɔ ʇǝʞɔᴉʇ ɐ ǝʌɐɥ ʎpɐǝɹlɐ no⅄",
+  "NO_SUPPORT_ROLE": "˙ʇǝʎ ɹǝʌɹǝs sᴉɥʇ uo pǝʇɐǝɹɔ uǝǝq sɐɥ ǝloɹ ʇɹoddns oN",
+  "NO_CATEGORY": "˙pI lǝuuɐɥɔ ʎɹoƃǝʇɐɔ ǝɥʇ ǝʇɐpdn ǝsɐǝlԀ",
+  "TITLE": "¡ssǝɔɔnS ✅",
+  "DESC": "<#{{CHANNEL}}> :pǝʇɐǝɹɔ uǝǝq sɐɥ ʇǝʞɔᴉʇ ɹno⅄",
+  "FIELD1": "¡ {{USERNAME}} ʎǝH",
+  "FIELDT": "˙ǝlqᴉssod sɐ uoos sɐ noʎ ʇɔɐʇuoɔ llᴉʍ ɯɐǝʇ ʇɹoddns ɹnO",
+  "FIELD2": ":uosɐǝɹ ",
+  "TICKET": "Ticket: ",
+  "USER": "User: ",
+  "LOG_TITLE": "¡pǝuǝdO ʇǝʞɔᴉ┴",
+  "COOLDOWN": "˙sǝʇnuᴉɯ {{NUM}} uᴉ ʇǝʞɔᴉʇ ɐ uǝdo uɐɔ no⅄"
+}

@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Создаёт картинку кто должен победить.",
+  "USAGE": "whowouldwin <user1> [user2]"
+}

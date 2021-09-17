@@ -1,13 +1,14 @@
 {
   "DESCRIPTION": "Affiche des informations concernant le node Lavalink",
   "USAGE": "lavalink",
-  "AUTHOR": "Lavalink Statistiques : {{NAME}}",
-  "PLAYERS": "Lecture Lectures/Lecteurs",
-  "PLAYER_STATS": "```{{PLAYING}} lectures / {{PLAYERS}} lecteurs```",
+  "FETCHING": "Récupération des statistiques de lavalink...",
+  "AUTHOR": "Statistiques Lavalink : {{NAME}}",
+  "PLAYERS": "Lecteurs actifs/Lecteurs",
+  "PLAYER_STATS": "```{{PLAYING}} lecteurs actifs / {{PLAYERS}} lecteurs```",
   "MEMORY": "Mémoire",
-  "MEMORY_STATS": "```Allouée : {{ALL}} MB\nUtilisée : {{USED}} MB\nLibre : {{FREE}} MB\nRéservable: {{RESERVE}} MB```",
+  "MEMORY_STATS": "```Allocation : {{ALL}} Mo\nUtilisé : {{USED}} Mo\nLibre : {{FREE}} Mo\nRéservé : {{RESERVE}} MB```",
   "CPU": "CPU",
-  "CPU_STATS": "```Cores: {{CORES}}\nCharge système : {{SYSLOAD}}%\nCharge Lavalink : {{LVLLOAD}}%```",
-  "UPTIME": "Durée de fonctionnement",
+  "CPU_STATS": "```Coeurs : {{CORES}}\nCharge système : {{SYSLOAD}}%\nCharge de Lavalink : {{LVLLOAD}}%```",
+  "UPTIME": "En service",
   "UPTIME_STATS": "```{{NUM}}```"
 }

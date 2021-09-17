@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Gebruiker melden.",
+  "USAGE": "rapporteer <user> [reason]",
+  "AUTHOR": "~Lid Gerapporteerd~",
+  "MEMBER": "Leden:",
+  "BY": "Gerapporteerd door:",
+  "IN": "Reported in:",
+  "REASON": "Reason:",
+  "SUCCESS": "*<@{{USER}}> has been successfully reported*."
+}

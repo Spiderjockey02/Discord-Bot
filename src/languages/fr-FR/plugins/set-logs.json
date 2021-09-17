@@ -8,5 +8,5 @@
   "REM_LOG": "Audit enlevé : {{LOG}}.",
   "CHANNEL": "Les logs des Audits actifs apparaitront dans le salon : <#{{ID}}>",
   "TITLE_2": "Informations sur les Audits",
-  "DESC_2": "**Salon :** <#{{ID}}>\n**Actif :** {{TOGGLE}}\n\n**Fonctionnalités actives :** `{{FEAT}}`."
+  "DESC_2": "**Salon :** <#{{ID}}>\n**Actif :** {{TOGGLE}}\n\n**Audit disponibles :** `{{FEAT}}`."
 }

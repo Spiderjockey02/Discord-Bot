@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "˙ɹǝʌɹǝs ǝɥʇ uo uoᴉʇɐɯɹoɟuᴉ ʇǝפ",
+  "USAGE": "server-info",
+  "AUTHOR": "oɟuᴉ ɹǝʌɹǝs s,{{NAME}}",
+  "NAME": ":ǝɯɐu ɹǝʌɹǝS",
+  "OWNER": ":ɹǝuʍo ɹǝʌɹǝS",
+  "ID": ":pI ɹǝʌɹǝS",
+  "CREATED": ":ǝʇɐp pǝʇɐǝɹɔ ɹǝʌɹǝS",
+  "REGION": ":uoᴉƃǝɹ ɹǝʌɹǝS",
+  "VERIFICATION": ":lǝʌǝl uoᴉʇɐɔᴉɟᴉɹǝΛ",
+  "MEMBER": ":[{{NUM}}] ʇunoɔ ɹǝqɯǝW",
+  "MEMBER_DESC": "`suɐɯnɥ {{HUMANS}} 'sʇoq {{BOTS}}\n pup {{DND}} puɐ ǝlpᴉ {{IDLE}}'ǝuᴉluo {{ONLINE}}`",
+  "FEATURES": ":sǝɹnʇɐǝℲ",
+  "ROLES": ":[{{NUM}}] sǝloɹ",
+  "FOOTER": "{{USER}} :ʎq pǝʇsǝnbǝɹ"
+}

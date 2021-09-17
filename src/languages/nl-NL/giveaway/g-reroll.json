@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "herleid een cadeautje.",
+  "USAGE": "g-reroll <messageID>",
+  "SUCCESS_GIVEAWAY": "Succes! Giveaway opnieuw gerold!",
+  "UNKNOWN_GIVEAWAY": "Geen weggiveaway gevonden met Message ID: `{{ID}}`, controleer en probeer het opnieuw.",
+  "CONGRAT": "🎉 Nieuwe winnaar(s): {winners}! Gefeliciteerd!",
+  "ERROR": "Geen geldige invoer, geen winnaars kunnen worden gekozen!"
+}

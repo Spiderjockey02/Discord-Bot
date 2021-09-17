@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Displays the Servers's level leaderboard.",
+  "USAGE": "leaderboard",
+  "TITLE": "Leaderboard",
+  "EMPTY_TITLE": "No data found",
+  "EMPTY_DESC": "Please type in chat to gain experience.",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "**XP:** {{XP}} | **Level:** {{LEVEL}}"
+}

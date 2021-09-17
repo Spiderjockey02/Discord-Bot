@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Link naar bericht:",
+  "USAGE": "herinnering <time> <information>",
+  "MESSAGE": "Ik zal je herinneren over `{{INFO}}` over {{TIME}}.",
+  "TITLE": "Herinnering",
+  "FOOTER": "Herinnering van {{TIME}} geleden.",
+  "RESPONSE": "\n**REMINDER:**\n {USER} uw herinnering: {{INFO}}",
+  "MSG_LINK": "Link naar bericht"
+}

@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "˙ɐǝɹɐ uᴉɐʇɹǝɔ ɐ uᴉ ɹǝɥʇɐǝʍ ǝɥʇ dn ʞoo˥",
+  "USAGE": "weather <uoᴉʇɐɔol>",
+  "TITLE": "{{LOC}} - ɹǝɥʇɐǝM",
+  "DESC": "ǝɯᴉʇ ǝɯos ɹǝɟɟᴉp ǝq ʎɐɯ uɐɔ sʇᴉun ǝɹnʇɐɹǝdɯǝ┴",
+  "TEMP": "Temperature:",
+  "SKY": "Sky Text:",
+  "HUMIDITY": "Humidity:",
+  "SPEED": "Wind speed:",
+  "TIME": "Observation Time:",
+  "DISPLAY": "Wind Display:"
+}

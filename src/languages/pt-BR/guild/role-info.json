@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Obtenha informações sobre um cargo.",
+  "USAGE": "role-info <role>",
+  "NAME": "Cargo | {{NAME}}",
+  "MEMBERS": "Membros:",
+  "COLOR": "Cor:",
+  "POSITION": "Posição:",
+  "MENTION": "Menção:",
+  "HOISTED": "Içado:",
+  "MENTIONABLE": "Mencionável:",
+  "PERMISSION": "Permissões:",
+  "CREATED": "Criado em:",
+  "FOOTER": "Solicitado por {{MEMBER}} ID do Cargo: {{ID}}"
+}

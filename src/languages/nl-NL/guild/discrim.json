@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Discriminatie",
+  "USAGE": "discriminatie <discriminator>",
+  "TITLE": "Leden met discrime: {{DISCRIM}}"
+}

@@ -5,11 +5,12 @@
   "NO_SUPPORT_ROLE": "Aucun rôle de support n'a encore été créé sur ce serveur.",
   "NO_CATEGORY": "Merci de configurer l'ID d'une catégorie pour les salons réservés aux tickets.",
   "TITLE": "✅ Succès !",
-  "DESC": "Ton ticket a été créé : {channel}",
-  "FIELD1": "{username} !",
+  "DESC": "Ton ticket a été créé : <#{{CHANNEL}}>",
+  "FIELD1": "{{USERNAME}} !",
   "FIELDT": "Notre équipe d'assistance te contactera dans les plus brefs délais.",
   "FIELD2": "Motif : ",
   "TICKET": "Ticket : ",
-  "USER": "Utilisateur : ",
-  "LOG_TITLE": "Ticket Ouvert !"
+  "USER": "Membre : ",
+  "LOG_TITLE": "Le ticket est ouvert !",
+  "COOLDOWN": "Tu pourra ouvrir un ticket dans {{NUM}} minutes."
 }

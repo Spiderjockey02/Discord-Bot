@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "ɹǝʌɹǝs ǝɥʇ oʇ ƃɐʇ ʍǝu ɐ pp∀",
+  "USAGE": "tag-add <ǝɯɐu> <ǝsuodsǝɹ>",
+  "INVALID_NAME": "˙ƃɐʇ ǝɥʇ ɹoɟ ǝɯɐu ɐ ʎɟᴉɔǝds ǝsɐǝlԀ",
+  "NAME_TOO_LONG": "˙ƃɐʇ ǝɥʇ ɟo ǝɯɐu ǝɥʇ uǝʇɹoɥs ǝsɐǝlԀ",
+  "INVALID_RESP": "ƃɐʇ ǝɥʇ ɹoɟ ǝsuodsǝɹ ɐ ʎɟᴉɔǝds ǝsɐǝlԀ",
+  "NEED_PREMIUM": "sƃɐʇ `50` oʇ dn ʇǝƃ sɹǝʌɹǝs ɯnᴉɯǝɹԀ ˙sƃɐʇ ǝɹoɯ ǝʇɐǝɹɔ oʇ ɯnᴉɯǝɹd pǝǝu no⅄",
+  "MAX_TAGS": "˙sƃɐʇ ɯnᴉɯᴉxɐɯ ǝɥʇ pǝpǝǝɔxǝ ǝʌɐɥ no⅄",
+  "SAME_NAME": "˙pǝʇɐǝɹɔ uǝǝq ʎpɐǝɹlɐ sɐɥ ƃɐʇ sᴉɥ┴",
+  "TAGS_SAVED": "˙`{{TAG}}` :ǝɯɐu ɥʇᴉʍ pǝʌɐs uǝǝq sɐɥ ƃɐ┴"
+}

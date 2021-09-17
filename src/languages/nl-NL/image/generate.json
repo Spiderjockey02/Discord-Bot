@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Een aangepaste afbeelding genereren.",
+  "USAGE": "genereer <option> [image]",
+  "DESC": "**1 Afbeelding is nodig**:\n`{{IMG_1}}`. \n**2 afbeeldingen zijn nodig**:\n`{{IMG_2}}`.",
+  "NEED_2IMG": "Voer 2 invoergegevens in. (mages en/of vermeldingen)"
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Maak een nep Clyde-bericht aan.",
+  "USAGE": "clyde <text>",
+  "TOO_LONG": "Je bericht mag niet meer dan 70 tekens bevatten."
+}

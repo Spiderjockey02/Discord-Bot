@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Добавить новую роль на сервер",
+  "USAGE": "addrole <role name> [hex color] [hoist]",
+  "MAX_NAME": "The role name is greater than the character limit of `100`.",
+  "BOOLEAN": "Hoist must be either: `true` or `false`.",
+  "INVALID": "Invalid colour.",
+  "MAX_ROLES": "There are already the max number of roles in this guild (250).",
+  "SUCCESS": "Role: <@&{{ROLE}}> successfully created."
+}

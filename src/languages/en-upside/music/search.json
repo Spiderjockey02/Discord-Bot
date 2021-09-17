@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "˙ƃuos ɐ ɹoɟ sǝɥɔɹɐǝS",
+  "USAGE": "search <ǝɯɐu ƃuos / ʞuᴉl>",
+  "NOT_VC": "˙oʇ ʇɔǝuuoɔ uɐɔ I ʇɐɥʇ lǝuuɐɥɔ ǝɔᴉoʌ ɐ uᴉ ʇou ǝɹ,no⅄",
+  "NO_INPUT": "lɹn/ǝɯɐu ƃuos ɐ ɹǝʇuǝ ǝsɐǝlԀ",
+  "ERROR": "`{{ERROR}}` :ƃuᴉɥɔɹɐǝs ǝlᴉɥʍ ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ┴",
+  "NO_SONG": "˙ƃuos ʇɐɥʇ puᴉɟ ʇ,uɐɔ I",
+  "TITLE": "{{TITLE}} ɹoɟ sʇlnsǝɹ",
+  "DESC": "{{RESULTS}}\n\n\tPick a number from 1-10 or cancel.\n",
+  "INVALID": "The number you provided was too small or too big (1-{{NUM}}).",
+  "ADDED": "Added to queue: [{{TITLE}}]"
+}

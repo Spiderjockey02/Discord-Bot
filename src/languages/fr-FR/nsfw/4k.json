@@ -1,5 +1,5 @@
 {
   "DESCRIPTION": "Recherche une image NSFW.",
   "USAGE": "4k",
-  "FETCHING": "{{EMOJI}} Fetching {{ITEM}} image..."
+  "FETCHING": "{{EMOJI}} Récupère l'image {{ITEM}}..."
 }

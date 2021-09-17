@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Informationen über mich.",
+  "USAGE": "about",
+  "TITLE": "About",
+  "DESC": "- [Dashboard]({{URL}})\n- [Invite Link]({{INVITE}})\n- [Commands]({{URL}}/commands)\n- [Bot Support Server]({{SERVER}})\n    {{USERNAME}} ist ein vollständig anpassbarer Discord Bot. Dieser Bot ist voll gepackt mit einer breiten Palette von Befehlen, einem fortgeschrittenen Moderationssystem und einem umfangreichen Logging-System. Diese Funktionen sind hochgradig anpassbar und leicht einzurichten. Es macht aber keinen Sinn, wenn ich dir einfach nur davon erzähle, also komm und schau selbst.",
+  "MEMBERS": "Members: [{{MEMBERS}}]",
+  "MEMBERS_DESC": "{{USERS}} insgesamt\n{{BOTS}} Bots, {{HUMANS}} Menschen",
+  "CHANNELS": "Kanäle:",
+  "CHANNELS_DESC": "{{CHANNELS}} insgesamt\n{{TEXT}} Text, {{VOICE}} Stimme\n{{DM}} PN",
+  "PROCESS": "Prozess:",
+  "PROCESS_DESC": "{{RAM}} MB\nNode.js: {{NODE}}v\nDiscord.js: {{DISCORD}}v",
+  "SERVERS": "Server:",
+  "SERVERS_DESC": "{{SERVERS}}\n{{SHARDS}} shards",
+  "MESSAGES": "Gesehene Nachrichten:",
+  "MESSAGES_DESC": "{{MESSAGES}} messages\n {{MSGSEC}} msg/sec",
+  "UPTIME": "Laufzeit:"
+}

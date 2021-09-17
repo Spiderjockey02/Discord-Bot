@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Gebruiker eruit schoppen.",
+  "USAGE": "kick <user> [reason]",
+  "TITLE": "GESCHOP",
+  "TOO_POWERFUL": "Ik kan deze gebruiker niet kicken vanwege zijn kracht.",
+  "DESC": "Je bent uit {{NAME}} geschopt.",
+  "KICKED": "Gekicked door:",
+  "SUCCESS": "*<@{{USER}}> is succesvol uit de server geschopt*."
+}

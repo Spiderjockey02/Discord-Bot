@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Stuurt een willekeurige meme.",
+  "USAGE": "memes",
+  "TITLE": "Van {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Erstelle eine Umfrage für Benutzer zu beantworten.",
+  "USAGE": "poll <question>",
+  "TITLE": "🗳️ Umfrage erstellt von {{USER}}",
+  "FOOTER": "Auf Abstimmungen reagieren..."
+}

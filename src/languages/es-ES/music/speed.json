@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Sets the player's playback speed.",
+  "USAGE": "speed <Number>",
+  "LIVESTREAM": "You can't change the time in a livestream.",
+  "INVALID": "Amount must be a real number between 1 and 10.",
+  "ON_SPD": "Updating playback speed. This may take a few seconds...",
+  "UPDATED": "Speed is {{NUM}}."
+}

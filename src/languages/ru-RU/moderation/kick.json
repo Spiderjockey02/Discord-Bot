@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Kick a user.",
+  "USAGE": "kick <user> [reason]",
+  "TITLE": "ВЫГНАН",
+  "TOO_POWERFUL": "Я не могу выгнать этого пользователя из-за его власти.",
+  "DESC": "Вы были выгнаны из {{NAME}}.",
+  "KICKED": "Выгнал:",
+  "SUCCESS": "*<@{{USER}}> был успешно выгнан*."
+}

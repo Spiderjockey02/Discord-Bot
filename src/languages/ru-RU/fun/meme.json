@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Отправляет случайный мем.",
+  "USAGE": "meme",
+  "TITLE": "От {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

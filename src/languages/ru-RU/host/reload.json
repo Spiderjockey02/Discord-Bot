@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Перезагружает команду.",
+  "USAGE": "reload <command / event>",
+  "SUCCESS": "Команда: `{{NAME}}` была перезагружена.",
+  "SUCCESS_EVENT": "Событие: `{{NAME}}` был перезагружен.",
+  "INCORRECT_DETAILS": "{{NAME}} не является командой или событием."
+}

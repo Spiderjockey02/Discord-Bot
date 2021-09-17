@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Haal het stedelijke woordenboek van een woord op.",
+  "USAGE": "stedelijke <word>",
+  "INCORRECT_URBAN": "Zins:{{PHRASE}} is niet gevonden in het stedelijke woordenboek.",
+  "TITLE": "Definitie van {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Voorbeeld:**\n{{EXAMPLES}}"
+}

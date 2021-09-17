@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Получить толковый словарь слова.",
+  "USAGE": "urban <word>",
+  "INCORRECT_URBAN": "Фраза `{{PHRASE}}` не была найдена в толковом словаре.",
+  "TITLE": "Определение понятия {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Пример:**\n{{EXAMPLES}}"
+}

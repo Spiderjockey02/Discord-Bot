@@ -6,6 +6,13 @@ const { MessageActionRow, MessageSelectMenu } = require('discord.js'),
 const flags = {
 	'en-US': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
 	'fr-FR': '🇫🇷',
+	'ar-EG': '🇪🇬',
+	'de-DE': '🇩🇪',
+	'es-ES': '🇪🇸',
+	'it-IT': '🇮🇹',
+	'nl-NL': '🇳🇱',
+	'pt-BR': '🇧🇷',
+	'ru-RU': '🇷🇺',
 };
 /**
  * Set lang command

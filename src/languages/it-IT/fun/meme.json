@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Invia un meme casuale.",
+  "USAGE": "meme",
+  "TITLE": "Da {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

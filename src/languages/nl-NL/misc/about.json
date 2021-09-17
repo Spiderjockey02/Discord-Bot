@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Informatie over mij.",
+  "USAGE": "over",
+  "TITLE": "Over",
+  "DESC": "- [Dashboard]({{URL}})\n- [Invite Link]({{INVITE}})\n- [Commands]({{URL}}/commands)\n- [Bot Support Server]({{SERVER}})\n    {{USERNAME}} is een volledig aanpasbare Discord Bot. Deze bot zit volledig vol met een breed bereik van commando's, een geavanceerd modereerd systeem en een uitgebreid logsysteem. Deze functies zijn zeer aanpasbaar en eenvoudig te installeren, maar het heeft geen zin om je dit te vertellen en er zelf achter te komen.",
+  "MEMBERS": "Leden: [{{MEMBERS}}]",
+  "MEMBERS_DESC": "{{USERS}} totaal\n{{BOTS}} bots, {{HUMANS}} mensen",
+  "CHANNELS": "Kanaal:",
+  "CHANNELS_DESC": "{{CHANNELS}} totaal\n{{TEXT}} tekst, {{VOICE}} spraak\n{{DM}} DM",
+  "PROCESS": "Proces:",
+  "PROCESS_DESC": "{{RAM}} MB\nNode.js: {{NODE}}v\nDiscord.js: {{DISCORD}}v",
+  "SERVERS": "Servers:",
+  "SERVERS_DESC": "{{SERVERS}}\n{{SHARDS}} scherven",
+  "MESSAGES": "Berichten gezien:",
+  "MESSAGES_DESC": "{{MESSAGES}} berichten\n {{MSGSEC}} msg/sec",
+  "UPTIME": "Uptijd:"
+}

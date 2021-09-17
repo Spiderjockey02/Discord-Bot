@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Krijg informatie over een rol.",
+  "USAGE": "rol-info <role>",
+  "NAME": "Rol { {{NAME}}",
+  "MEMBERS": "Leden:",
+  "COLOR": "Kleur:",
+  "POSITION": "Positie:",
+  "MENTION": "Vermelden:",
+  "HOISTED": "Gehoist:",
+  "MENTIONABLE": "Noembaar:",
+  "PERMISSION": "Sleutel machtigingen:",
+  "CREATED": "Aangemaakt op:",
+  "FOOTER": "Aangevraagd door {{MEMBER}} ×Rol ID: {{ID}}"
+}

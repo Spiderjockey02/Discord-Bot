@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Добавить/удалить узел для lavalink.",
+  "USAGE": "node <add / remove> [host] [password] [port]",
+  "ADDED_NODE": "Успешно добавлен новый узел",
+  "REMOVED_NODE": "Успешно удален узел"
+}

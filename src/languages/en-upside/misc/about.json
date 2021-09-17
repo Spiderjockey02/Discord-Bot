@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "˙ǝɯ ʇnoqɐ uoᴉʇɐɯɹoɟuI",
+  "USAGE": "about",
+  "TITLE": "ʇnoq∀",
+  "DESC": "- [pɹɐoqɥsɐp]({{URL}})\n- [ʞuᴉ˥ ǝʇᴉʌuI]({{INVITE}})\n- [spuɐɯɯoƆ]({{URL}}/commands)\n- [ɹǝʌɹǝS ʇɹoddnS ʇoq]({{SERVER}})\n    ˙ɟlǝsɹnoʎ ɹoɟ ʇno puᴉɟ puɐ ǝɯoɔ os noʎ ƃuᴉllǝʇ ʇsnɾ ǝɯ ʇuᴉod ou s,ǝɹǝɥʇ ʇnq dnʇǝs oʇ ʎsɐǝ puɐ ǝlqɐzᴉɯoʇsnɔ ʎlɥƃᴉɥ ǝɹɐ sǝɹnʇɐǝɟ ǝsǝɥ┴ ˙ɯǝʇsʎs ƃuᴉƃƃol ǝʌᴉsuǝʇxǝ uɐ puɐ ɯǝʇsʎs uoᴉʇɐɹǝpoɯ pǝɔuɐʌpɐ uɐ 'spuɐɯɯoɔ ɟo ǝƃuɐɹ ǝpᴉʍ ɐ ɥʇᴉʍ pǝʞɔɐd ʎllnɟ sǝɯoɔ ʇoq sᴉɥ┴ ˙ʇoq pɹoɔsᴉp ǝlqɐzᴉɯoʇsnɔ ʎllnɟ ɐ sᴉ {{USERNAME}}",
+  "MEMBERS": "Members: [{{MEMBERS}}]",
+  "MEMBERS_DESC": "{{USERS}} total\n{{BOTS}} bots, {{HUMANS}} humans",
+  "CHANNELS": ":slǝuuɐɥƆ",
+  "CHANNELS_DESC": "{{CHANNELS}} total\n{{TEXT}} text, {{VOICE}} voice\n{{DM}} DM",
+  "PROCESS": ":ssǝɔoɹԀ",
+  "PROCESS_DESC": "{{RAM}} MB\nNode.js: {{NODE}}v\nDiscord.js: {{DISCORD}}v",
+  "SERVERS": ":sɹǝʌɹǝS",
+  "SERVERS_DESC": "{{SERVERS}}\n{{SHARDS}} shards",
+  "MESSAGES": ":uǝǝs sǝƃɐssǝW",
+  "MESSAGES_DESC": "{{MESSAGES}} messages\n {{MSGSEC}} msg/sec",
+  "UPTIME": ":ǝɯᴉʇd∩"
+}

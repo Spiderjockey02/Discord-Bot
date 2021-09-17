@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Получить скриншот веб-сайта.",
+  "USAGE": "screenshot <url>",
+  "INVALID_URL": "Это неправильный URL.",
+  "BLACKLIST_WEBSITE": "Эту команду нельзя использовать вне NSFW каналов."
+}

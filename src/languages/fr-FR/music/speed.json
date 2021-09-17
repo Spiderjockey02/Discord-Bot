@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Définie la vitesse de lecture.",
+  "DESCRIPTION": "Défini la vitesse de lecture.",
   "USAGE": "speed <Nombre>",
   "LIVESTREAM": "Flux audio en direct, impossible de modifier la vitesse de lecture sur un Stream.",
   "INVALID": "La valeur doit être un entier entre 1 et 10.",

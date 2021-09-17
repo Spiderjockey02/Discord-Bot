@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Obtém informações sobre o servidor.",
+  "USAGE": "user-info [user]",
+  "USERNAME": "✍ Usuário",
+  "DISCRIM": "#️⃣ Tag",
+  "ROBOT": "🤖 Robô",
+  "CREATE": "Criado em",
+  "STATUS": "📶 Status",
+  "ROLE": "🔼 Cargo mais alto",
+  "JOIN": "Juntou-se em",
+  "NICK": "📝 Apelido",
+  "ROLES": "Cargos"
+}

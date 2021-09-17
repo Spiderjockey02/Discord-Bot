@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Получить информацию о роле.",
+  "USAGE": "role-info <role>",
+  "NAME": "Роль | {{NAME}}",
+  "MEMBERS": "Пользователей:",
+  "COLOR": "Цвет:",
+  "POSITION": "Позиция:",
+  "MENTION": "Упоминание:",
+  "HOISTED": "Поднял:",
+  "MENTIONABLE": "Можно упомянуть:",
+  "PERMISSION": "Ключевые разрешения:",
+  "CREATED": "Создано в:",
+  "FOOTER": "Запрошено {{MEMBER}} | ID роли: {{ID}}"
+}

@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "Définir un rappel.",
+  "DESCRIPTION": "Lien vers le message :",
   "USAGE": "reminder <durée> <information>",
   "MESSAGE": "Je te rappellerai à propos de `{{INFO}}` dans {{TIME}}.",
-  "DESC": "Lien vers le message",
   "TITLE": "Rappel",
   "FOOTER": "Rappel il y a {{TIME}}.",
-  "RESPONSE": "\n**REMINDER:**\n {USER} ton rappel : {{INFO}}"
+  "RESPONSE": "\n**REMINDER:**\n {USER} ton rappel : {{INFO}}",
+  "MSG_LINK": "Lien du message"
 }

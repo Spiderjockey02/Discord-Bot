@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Load a playlist",
+  "USAGE": "p-load <playlist name>",
+  "QUEUE": "Queued **{{NUM}} songs** from **{{TITLE}}**.",
+  "NO_PLAYLIST": "No playlist found"
+}

@@ -1,8 +1,8 @@
 {
   "DESCRIPTION": "Envoyer un avertissement à un membre.",
-  "USAGE": "warn <membre> [durée] [motif]
+  "USAGE": "warn <user> [durée] [motif]",
   "TOO_POWERFUL": "Je ne suis pas en mesure d'envoyer un avertissement à ce membre en raison de ses droits.",
-  "SUCCESS": "{{USER}} a reçu un avertissement.",
+  "SUCCESS": "{{USER}} a reçu un avertissement",
   "REASON": "**Motif :** {{REASON}}",
   "TITLE": "Avertissement",
   "WARN_BY": "Averti par :",

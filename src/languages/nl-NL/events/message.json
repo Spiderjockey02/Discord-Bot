@@ -1,0 +1,14 @@
+{
+  "INTRO": "Hallo, mijn naam is {{USER}}, en ik ben een multifunctionele Discord bot, gebouwd om je te helpen met al je server problemen en behoeften.",
+  "INFO": "Ik ben online geweest voor {{UPTIME}}, {{GUILDS}} servers en {{USERS}} gebruikers met {{CMDS}} commando's te helpen.",
+  "PREFIX": "Mijn prefix voor deze server is: `{{PREFIX}}`.",
+  "LINKS": "Handige links:",
+  "ADD": "[Toevoegen aan server]({{INVITE}})",
+  "SUPPORT": "[Join support server]({{LINK}})",
+  "WEBSITE": "[Website]({{URL}})",
+  "GUILD_ONLY": "Dit commando kan alleen in servers worden gebruikt.",
+  "COMMAND_COOLDOWN": "Je moet {{NUM}} seconden wachten tussen elke opdracht.",
+  "BANNED_USER": "Je bent verbannen van het gebruik van commando's.",
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, die opdracht is uitgeschakeld in dit kanaal.",
+  "NOT_NSFW_CHANNEL": "Dit commando kan alleen gebruikt worden in NSFW kanalen."
+}

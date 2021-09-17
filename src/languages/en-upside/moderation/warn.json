@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "˙ɹǝsn ɐ uɹɐM",
+  "USAGE": "warn <ɹǝsn> [ǝɯᴉʇ] [uosɐǝɹ]",
+  "TOO_POWERFUL": "˙ɹǝʍod ɹᴉǝɥʇ oʇ ǝnp ɹǝsn sᴉɥʇ uɹɐʍ oʇ ǝlqɐun ɯɐ I",
+  "SUCCESS": "pǝuɹɐʍ uǝǝq sɐɥ {{USER}}",
+  "REASON": "{{REASON}} **:uosɐǝɹ**",
+  "TITLE": "פNINɹ∀M",
+  "WARN_BY": ":ʎq pǝuɹɐM",
+  "WARN_IN": "˙{{NAME}} uᴉ pǝuɹɐʍ uǝǝq ǝʌɐɥ no⅄",
+  "WARN_CNTR": ":sƃuᴉuɹɐM",
+  "KICKED": "˙*sƃuᴉuɹɐʍ ʎuɐɯ ooʇ ƃuᴉʌɐɥ ɹoɟ pǝʞɔᴉʞ ʎllnɟssǝɔɔns sɐʍ {{USER}}*"
+}

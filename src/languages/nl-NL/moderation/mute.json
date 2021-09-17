@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Demp een gebruiker.",
+  "USAGE": "demp <user> [time]",
+  "SUCCESS": "*<@{{USER}}> is succesvol gedempt*."
+}

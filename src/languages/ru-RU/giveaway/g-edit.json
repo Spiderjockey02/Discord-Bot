@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Редактировать розыгрыш.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "Количество победителей должно быть не больше чем 10.",
+  "EDIT_GIVEAWAY": "Успешно! Розыгрышь будет обнавлён через {{TIME}} секунд.",
+  "UNKNOWN_GIVEAWAY": "Не найдено розигрышей с ID сооьщения: `{{ID}}`, пожалуйста, проверьте и повторите попытку."
+}

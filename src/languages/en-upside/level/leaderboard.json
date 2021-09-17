@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "˙pɹɐoqɹǝpɐǝl lǝʌǝl s,sɹǝʌɹǝS ǝɥʇ sʎɐldsᴉp",
+  "USAGE": "leaderboard",
+  "TITLE": "pɹɐoqɹǝpɐǝ˥",
+  "EMPTY_TITLE": "punoɟ ɐʇɐp oN",
+  "EMPTY_DESC": "˙ǝɔuǝᴉɹǝdxǝ uᴉɐƃ oʇ ʇɐɥɔ uᴉ ǝdʎʇ ǝsɐǝlԀ",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "{{LEVEL}} **:lǝʌǝ˥** | {{XP}} **:ԀX**"
+}

@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "ʇsᴉlʎɐld ǝɥʇ oʇ ƃuos ɐ pp∀",
+  "USAGE": "p-add <ǝɯɐu ʇsᴉlʎɐld> <ƃuos>",
+  "ERROR": "`{{ERROR}}` :ƃuᴉɥɔɹɐǝs ǝlᴉɥʍ ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ┴",
+  "NO_PLAYLIST": "˙`{{NAME}}` :ǝɯɐu ɥʇᴉʍ punoɟ ʇsᴉlʎɐld oN",
+  "NO_SONG": "˙ƃuos ʇɐɥʇ puᴉɟ ʇ,uplnoɔ I",
+  "SUCCESS": "˙`{{TITLE}}` :ʇsᴉlʎɐld oʇ (s)ƃuos ʍǝu {{NUM}} pǝpp∀"
+}

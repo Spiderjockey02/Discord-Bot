@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "˙ʇunoɔɔɐ ɯɐǝʇS ɐ uo uoᴉʇɐɯɹoɟuᴉ ʇǝפ",
+  "USAGE": "steam <ɹǝsn>",
+  "AUTHOR": "{{NAME}} | sǝɔᴉʌɹǝS ɯɐǝʇS",
+  "STATE": [
+    "ǝuᴉlɟɟO",
+    "ǝuᴉluO",
+    "ʎsnq",
+    "ʎɐʍ∀",
+    "ǝzoouS",
+    "ǝpɐɹʇ oʇ ƃuᴉʞoo˥",
+    "ʎɐld oʇ ƃuᴉʞoo˥"
+  ],
+  "DESC": "**Real name:** {{NAME}}\n**Status:** {{STATUS}}\n**Country:** :flag_{{FLAG}}:\n**Account Created:** {{TIME}}\n**Bans:** Vac: {{VAC_BANS}}, Game: {{GAME_BANS}}\n**Link:** [Link to profile]({{URL}})"
+}

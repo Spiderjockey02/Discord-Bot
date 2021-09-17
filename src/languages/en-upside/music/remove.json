@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "ǝnǝnb ǝɥʇ ɯoɹɟ ƃuos ɐ sǝʌoɯǝɹ",
+  "USAGE": "remove <uoᴉʇᴉsod> [uoᴉʇᴉsod]",
+  "NAN": "˙ɹǝqɯnu pᴉlɐʌuI",
+  "PLAYING": "`{{PREFIX}}skip` :ǝdʎʇ ƃuos ǝɥʇ dᴉʞs o┴ ˙ƃuᴉʎɐld ʎpɐǝɹlɐ sᴉ ʇɐɥʇ ƃuos ɐ ǝʌoɯǝɹ ʇouuɐƆ",
+  "MISSING": "˙punoɟ ʇou ƃuoS",
+  "REMOVED": "ǝnǝnb ǝɥʇ ɯoɹɟ **{{TITLE}}** pǝʌoɯǝɹ",
+  "INVALID": "˙puǝ uɐɥʇ ɹǝƃƃᴉq ǝq ʇsnɯ ʇunoɯɐ ʇɹɐʇS",
+  "REMOVED_MULTI": "ǝnǝnb ǝɥʇ ɯoɹɟ sƃuos **{{NUM}}** pǝʌoɯǝɹ"
+}

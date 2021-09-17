@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "ʇsᴉlʎɐld ɐ ǝʇɐǝɹƆ",
+  "USAGE": "p-create <ǝɯɐu ʇsᴉlʎɐld> <ʞuᴉl/ʎɹǝnb ɥɔɹɐǝs>",
+  "TOO_LONG": "¡sɹǝʇɔɐɹɐɥɔ 32 uɐɥʇ ssǝl ǝq ʇsnɯ ǝlʇᴉʇ ʇsᴉlʎɐlԀ",
+  "WAITING": "˙˙˙spuoɔǝs ʍǝɟ ɐ ǝʞɐʇ ʇɥƃᴉɯ sᴉɥ┴ ˙ʇsᴉlʎɐld ɹnoʎ oʇ (s)ƃuos ƃuᴉpp∀",
+  "NO_PREM": "˙1 ɟo pɐǝʇsuᴉ sʇsᴉlʎɐld 3 oʇ dn ǝʌɐs oʇ noʎ sʍollɐ ɯnᴉɯǝɹԀ",
+  "MAX_PLAYLISTS": "3 :xɐW ˙sʇsᴉlʎɐld ǝɹoɯʎuɐ ǝʌɐs oʇ ǝlqɐun ǝɹɐ no⅄",
+  "EXISTS": "˙ǝɯɐu ʇɐɥʇ ɥʇᴉʍ sʇsᴉxǝ ʎpɐǝɹlɐ ʇsᴉlʎɐld ∀",
+  "DESC_1": "˙**{{TITLE}}** :ǝɯɐu ɥʇᴉʍ ʇsᴉlʎɐld ɐ pǝʇɐǝɹƆ",
+  "DESC_2": "˙{{NUM}} :uoᴉʇɐɹnp ʇsᴉlʎɐlԀ",
+  "DESC_3": "Added **{{NAME}}** ({{NUM}} tracks) to **{{TITLE}}**.",
+  "FOOTER": "ID: {{ID}} • Songs: {{NUM}}/{{PREM}}",
+  "NO_SONG": "˙ƃuos ʇɐɥʇ puᴉɟ ʇ,uplnoɔ I"
+}

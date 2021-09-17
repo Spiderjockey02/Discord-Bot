@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Message Link:",
+  "USAGE": "recordatorio <time> <information>",
+  "MESSAGE": "Te recordaré de `{{INFO}}` en {{TIME}} aproximadamente.",
+  "TITLE": "Recordatorio",
+  "FOOTER": "Recordatorio de hace {{TIME}}.",
+  "RESPONSE": "\n**RECUERDA:**\n {USER} tu recordatorio: {{INFO}}",
+  "MSG_LINK": "Message link"
+}

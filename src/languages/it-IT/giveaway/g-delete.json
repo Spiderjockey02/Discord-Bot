@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Elimina un giveaway",
+  "USAGE": "g-delete <messageID>",
+  "SUCCESS_GIVEAWAY": "Successo! Giveaway eliminato!",
+  "UNKNOWN_GIVEAWAY": "Nessun giveaway con ID del Messaggio trovato: `{{ID}}`, sei pregato di controllare e riprovare."
+}

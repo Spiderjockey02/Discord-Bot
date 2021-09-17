@@ -11,5 +11,5 @@
   "NO_WINNER": "Le concours a été annulé, aucune participation valide.",
   "WINNERS": "gagnant(s)",
   "END_AT": "Terminé",
-  "HOSTED": "Organisateur : {user}"
+  "HOSTED": "Organisé par : {user}"
 }

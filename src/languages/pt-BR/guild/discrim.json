@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Discrim",
+  "USAGE": "discrim <discriminator>",
+  "TITLE": "Membros com discrim: {{DISCRIM}}"
+}

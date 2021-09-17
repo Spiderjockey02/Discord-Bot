@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Ruft die erste Nachricht aus dem Kanal ab.",
+  "USAGE": "erstenachricht [channel]",
+  "JUMP": "❯ Springe"
+}

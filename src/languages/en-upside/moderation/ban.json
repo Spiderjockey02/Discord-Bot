@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "˙ɹǝsn ɐ uɐq",
+  "USAGE": "ban <ɹǝsn> [uosɐǝɹ] [ǝɯᴉʇ]",
+  "TITLE": "pƎNN∀q",
+  "MISSING_USER": "I can't punish someone not in this server.",
+  "TOO_POWERFUL": "˙ɹǝʍod ɹᴉǝɥʇ oʇ ǝnp ɹǝsn sᴉɥʇ uɐq oʇ ǝlqɐun ɯɐ I",
+  "DESC": "˙{{NAME}} ɯoɹɟ pǝuuɐq uǝǝq ǝʌɐɥ no⅄",
+  "BAN_BY": ":ʎq pǝuuɐq",
+  "SUCCESS": "˙*pǝuuɐq ʎllnɟssǝɔɔns sɐʍ <@{{USER}}>*"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Krijg een screenshot van een website.",
+  "USAGE": "schermafbeelding <url>",
+  "INVALID_URL": "Dat is een onjuiste URL.",
+  "BLACKLIST_WEBSITE": "Je kunt deze websites niet in een niet-NSFW-kanaal bekijken."
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Дискриминация",
+  "USAGE": "discrim <discriminator>",
+  "TITLE": "Участники с дискриминацией: {{DISCRIM}}"
+}

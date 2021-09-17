@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Editar un sorteo.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "El número de ganadores debe ser inferior a 10.",
+  "EDIT_GIVEAWAY": "¡Éxito! El sorteo se actualizará en menos de {{TIME}} segundos.",
+  "UNKNOWN_GIVEAWAY": "No se ha encontrado ningún sorteo con el ID de mensaje: `{{ID}}`, por favor compruébalo e inténtalo de nuevo."
+}

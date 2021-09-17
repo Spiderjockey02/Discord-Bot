@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "ɹǝʌɹǝs sᴉɥʇ ɯoɹɟ ƃɐʇ ɐ ʇᴉpƎ",
+  "USAGE": "tag-edit <ʇᴉpǝ / ǝɯɐuǝɹ> <ǝɯɐu> <ǝsuodsǝɹʍǝu / ǝɯɐNʍǝu>",
+  "INVALID_NAME": "˙ƃɐʇ ǝɥʇ ɹoɟ ǝɯɐu ɐ ʎɟᴉɔǝds ǝsɐǝlԀ",
+  "INVALID_NEW_NAME": "˙ƃɐʇ ǝɥʇ ɹoɟ ǝɯɐu ʍǝu ɐ ʎɟᴉɔǝds ǝsɐǝlԀ",
+  "UPDATED_NAME": "˙`{{NAME}}` :ǝɯɐu ʍǝu ǝɥʇ ɥʇᴉʍ ƃɐʇ pǝʇɐpd∩",
+  "INVALID_NEW_RESP": "ƃɐʇ ǝɥʇ ɹoɟ ǝsuodsǝɹ ʍǝu ǝɥʇ ʎɟᴉɔǝds ǝsɐǝlԀ",
+  "UPDATED_RESP": "˙`{{RESP}}` :ǝsuodsǝɹ ʍǝu ǝɥʇ ɥʇᴉʍ ƃɐʇ pǝʇɐpd∩"
+}

@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Message Link:",
+  "USAGE": "reminder <ǝɯᴉʇ> <uoᴉʇɐɯɹoɟuᴉ>",
+  "MESSAGE": "˙{{TIME}} ʇnoqɐ uᴉ `{{INFO}}` ʇnoqɐ noʎ puᴉɯǝɹ ll,I",
+  "TITLE": "ɹǝpuᴉɯǝɹ",
+  "FOOTER": "˙oƃɐ {{TIME}} ɯoɹɟ ɹǝpuᴉɯǝɹ",
+  "RESPONSE": "\n**:ɹƎpNIWƎɹ**\n {{INFO}} :ɹǝpuᴉɯǝɹ ɹnoʎ {USER}",
+  "MSG_LINK": "Message link"
+}

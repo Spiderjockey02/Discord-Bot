@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Runs a script file.",
+  "USAGE": "script <file name> [...params]"
+}

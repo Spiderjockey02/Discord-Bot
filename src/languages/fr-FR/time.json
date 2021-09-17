@@ -9,6 +9,6 @@
     "SECONDS": "{{amount}} secondes",
     "NOT_NUMBER": "Doit correspondre à un nombre.",
     "INCORRECT_DELIMITERS": "Merci d'utiliser une des bases de temps suivantes : `d`,  `h`,  `m`, `s`.",
-    "MAX_TIME": "Ne peut pas être suppérieur à 10 jours.",
+    "MAX_TIME": "Ne peut pas être supérieur à 10 jours.",
     "INVALID_TIME": "Une durée non valide a été saisie. (Exemple: 1m ou 16h)"
 }

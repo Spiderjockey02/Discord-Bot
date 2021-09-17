@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Liste les membres possédant un tag spécifique",
+  "DESCRIPTION": "Liste les membres possédant le même tag que toi ou un tag spécifique",
   "USAGE": "discrim <tag>",
   "TITLE": "Membres avec le tag : {{DISCRIM}}"
 }

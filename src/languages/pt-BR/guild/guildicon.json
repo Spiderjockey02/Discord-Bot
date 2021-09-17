@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Obtenha o ícone do servidor.",
+  "USAGE": "guildicon",
+  "ICON": "[Baixar]({{URL}})",
+  "NO_GUILD_ICON": "Este servidor não possui um ícone!"
+}

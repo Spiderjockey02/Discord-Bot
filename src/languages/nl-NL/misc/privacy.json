@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Stuurt een link naar het privacybeleid.",
+  "USAGE": "vertrouwelijkheid",
+  "LINK": "[📝 Privacy Policy]({{LINK}})"
+}

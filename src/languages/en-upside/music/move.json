@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "˙uoᴉʇᴉsod pǝᴉɟᴉɔǝds ǝɥʇ oʇ ƃuos pǝᴉɟᴉɔǝds ǝɥʇ sǝʌoW",
+  "USAGE": "move <uoᴉʇᴉsod> <uoᴉʇᴉsod ʍǝu>",
+  "INVALID": "˙ɹǝqɯnu pᴉlɐʌuI",
+  "IS_PLAYING": "`{{PREFIX}}skip` :ǝdʎʇ ƃuos ƃuᴉʎɐld ʇuǝɹɹnɔ ǝɥʇ dᴉʞs o┴ ˙ƃuᴉʎɐld ʎpɐǝɹlɐ sᴉ ʇɐɥʇ ƃuos ɐ ǝʌoɯ ʇouuɐƆ",
+  "NOT_FOUND": "punoɟ ʇou ƃuoS",
+  "MOVED_1": "˙ǝnǝnb ǝɥʇ ɟo ƃuᴉuuᴉƃǝq ǝɥʇ oʇ **{{TITLE}}** pǝʌoW",
+  "MOVED_2": "˙{{POS}} uoᴉʇᴉsod ǝɥʇ oʇ **{{TITLE}}** pǝʌoW"
+}

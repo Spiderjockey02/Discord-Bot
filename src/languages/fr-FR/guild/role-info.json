@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Informations sur un rôle.",
+  "DESCRIPTION": "Obtenir des information sur un rôle.",
   "USAGE": "role-info <rôle>",
   "NAME": "Rôle | {{NAME}}",
   "MEMBERS": "Membres :",
@@ -7,7 +7,7 @@
   "POSITION": "Position :",
   "MENTION": "Mention :",
   "HOISTED": "Visible :",
-  "MENTIONABLE": "Mention :",
+  "MENTIONABLE": "Mentionnable :",
   "PERMISSION": "Permissions :",
   "CREATED": "Date de création :",
   "FOOTER": "Requête : {{MEMBER}} | Role ID: {{ID}}"

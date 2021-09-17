@@ -5,5 +5,5 @@
   "EMPTY_TITLE": "Pas de classement",
   "EMPTY_DESC": "Merci d'envoyer des messages pour obtenir de l'expérience.",
   "FIELD_TITLE": "{{POS}}. {{NAME}}",
-  "FIELD_DATA": "**XP:** {{XP}} | **Level:** {{LEVEL}}"
+  "FIELD_DATA": "**XP:** {{XP}} | **Niveau :** {{LEVEL}}"
 }

@@ -1,7 +1,6 @@
 {
-  "DESCRIPTION": "Obtenir la méteo.",
+  "DESCRIPTION": "Obtenir la météo.",
   "USAGE": "weather <emplacement>",
-  "INVALID": "Lieu inconnu",
   "TITLE": "Météo - {{LOC}}",
   "DESC": "Les unités de température peuvent parfois être différentes.",
   "TEMP": "Température :",

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Bewerk een cadeau.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "De tol van de winnaar moet minder dan tien zijn.",
+  "EDIT_GIVEAWAY": "Gelukt! Giveaway zal binnen {{TIME}} seconden worden bijgewerkt.",
+  "UNKNOWN_GIVEAWAY": "Geen weggiveaway gevonden met Message ID: `{{ID}}`, controleer en probeer het opnieuw."
+}

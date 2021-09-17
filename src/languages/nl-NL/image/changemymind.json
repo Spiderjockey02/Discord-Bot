@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Maak een verandering van mijn beeld.",
+  "USAGE": "wijzigt de mymind <text>",
+  "TOO_LONG": "Je bericht mag niet meer dan 80 tekens bevatten."
+}

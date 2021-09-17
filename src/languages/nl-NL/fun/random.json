@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Antwoorden met een willekeurig getal.",
+  "USAGE": "willekeurig <LowNum> <HighNum>",
+  "RESPONSE": "🎲 Willekeurig getal: {{NUMBER}}"
+}

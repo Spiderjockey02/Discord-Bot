@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "˙uᴉƃnld ƃol ǝɥʇ ǝʇɐpd∩",
+  "USAGE": "set-logs <uoᴉʇdo> [ɐʇɐp]",
+  "TOGGLE": "˙`{{TOGGLE}}` oʇ ʇǝs uǝǝq sɐɥ uᴉƃnld ƃuᴉƃƃo˥",
+  "TITLE": ":sǝɹnʇɐǝɟ ƃuᴉƃƃo˥",
+  "DESC": "˙`{{CUR_FEAT}}` :sǝɹnʇɐǝɟ ʇuǝɹɹnƆ\n\n˙`{{FEAT}}` :sǝɹnʇɐǝɟ ǝlqɐlᴉɐʌ∀",
+  "ADD_LOG": "˙ƃuᴉƃƃol oʇ {{LOG}} :pǝpp∀",
+  "REM_LOG": "˙ƃuᴉƃƃol oʇ {{LOG}} :pǝʌoɯǝɹ",
+  "CHANNEL": "<#{{ID}}> :oʇ pǝʇɐpdn lǝuuɐɥɔ ƃuᴉƃƃo˥",
+  "TITLE_2": "uoᴉʇɐɯɹoɟuᴉ ƃuᴉƃƃo˥",
+  "DESC_2": "˙`{{FEAT}}` **:ƃuᴉƃƃol ǝɹnʇɐǝℲ**\n\n{{TOGGLE}} **:pǝlqɐuƎ**\n<#{{ID}}> **:lǝuuɐɥƆ**"
+}

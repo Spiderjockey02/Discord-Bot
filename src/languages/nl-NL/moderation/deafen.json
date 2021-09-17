@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Gebruiker Gedoofd.",
+  "USAGE": "deafen <user> [time]",
+  "NOT_VC": "Ik kan iemand die niet in een spraakkanaal is niet doof houden.",
+  "SUCCESS": "*<@{{USER}}> is met succes gedempt*."
+}

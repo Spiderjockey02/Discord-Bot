@@ -2,5 +2,5 @@
   "DESCRIPTION": "Récupère une image aléatoire depuis Reddit.",
   "USAGE": "reddit <subreddit>",
   "TITLE": "De /{{TITLE}}",
-  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}} | Fournis par KSOFT.API"
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
 }

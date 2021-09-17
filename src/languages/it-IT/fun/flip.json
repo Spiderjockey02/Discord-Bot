@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Lancia una moneta.",
+  "USAGE": "lancia",
+  "HEADS": "Testa",
+  "TAILS": "Croce"
+}

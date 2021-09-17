@@ -5,9 +5,9 @@
   "USERNAME": "Nom d'utilisateur : ",
   "FULL_NAME": "Nom complet : ",
   "BIOGRAPHY": "Bio : ",
-  "POSTS": "Posts : ",
-  "FOLLOWERS": "Followers : ",
-  "FOLLOWING": "Following : ",
+  "POSTS": "Messages : ",
+  "FOLLOWERS": "Abonnés : ",
+  "FOLLOWING": "Suit : ",
   "PRIVATE": "Compte privé : ",
   "VERIFIED": "Compte vérifié : "
 }

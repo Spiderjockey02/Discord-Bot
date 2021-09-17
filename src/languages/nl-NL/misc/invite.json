@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Stuur een uitnodigingslink zodat mensen mij aan hun server kunnen toevoegen.",
+  "USAGE": "uitnodigen",
+  "LINK": "🤖 [Nodig me uit op jouw server]({{LINK}} 'Je weet dat je wil')"
+}

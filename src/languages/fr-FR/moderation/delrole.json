@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Supprime un rôle du serveur.",
+  "USAGE": "delrole <nom du rôle>",
+  "MISSING": "Aucun rôle trouvé !",
+  "SUCCESS": "Rôle supprimé avec succès : {{ROLE}}.",
+  "FAIL": "Impossible de supprimer le rôle possible en raison des autorisations."
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Haal het pictogram van de server.",
+  "USAGE": "guildicon",
+  "ICON": "[Download]({{URL}})",
+  "NO_GUILD_ICON": "Deze server heeft geen pictogram."
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Получить первое сообщение канала.",
+  "USAGE": "firstmessage [channel]",
+  "JUMP": "❯ Прыгай"
+}

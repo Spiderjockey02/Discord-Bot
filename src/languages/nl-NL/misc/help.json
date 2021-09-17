@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Stuurt informatie over alle commando's die ik kan doen.",
+  "USAGE": "help [command]",
+  "AUTHOR": "Beschikbare commando's",
+  "PREFIX_DESC": "**Prefix:** `{{PREFIX}}` (Je kunt ook <@!{{ID}}> als voorvoegsel gebruiken)",
+  "INFO_DESC": "**Type `{{PREFIX}}{{USAGE}}` voor commando specifieke informatie.**",
+  "TITLE": "`Command: {{COMMAND}}`",
+  "DESC": "**Beschrijving:** {{DESC}}",
+  "ALIAS": "**Aliassen:** {{ALIAS}}",
+  "COOLDOWN": "**Afkoeltijd:** {{CD}} seconden",
+  "USE": "**Gebruik:** {{USAGE}}",
+  "EXAMPLE": "**Voorbeeld:** {{EX}}",
+  "LAYOUT": "\n**Lay-out**: `<> = required [] = optioneel`",
+  "NO_COMMAND": "Dat is geen opdracht."
+}

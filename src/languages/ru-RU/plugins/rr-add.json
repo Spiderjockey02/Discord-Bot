@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Создать роли за реакции",
+  "USAGE": "rr-add [channelID]",
+  "NEED_PREMIUM": "Тебе нужен премиум для создания больше ролей за реакции. Премиум серверы получают до `10` роли за реакции",
+  "MAX_RR": "Существует максимум 10 ролей реакций на сервер даже с премиумом.",
+  "INCORRECT_EMOJIS": "Введено неверное количество эмодзи",
+  "SEND_ROLES": "Please send a list of roles below (ID's or mentions), separate with a space. Type **cancel** to end this.",
+  "SEND_EMOJIS": "Please send your emojis below. The order will match with the order of the roles, separate with a space. Type **cancel** to end this",
+  "TITLE": "Reaction Roles:",
+  "REACT_BELOW": "React below to get a role!"
+}

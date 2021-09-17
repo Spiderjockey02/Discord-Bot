@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Aanmaken QR Codes.",
+  "USAGE": "qrcode <text / file>"
+}

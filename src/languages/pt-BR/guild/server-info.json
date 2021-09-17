@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Obtém informações sobre o servidor.",
+  "USAGE": "server-info",
+  "AUTHOR": "Informações do servidor {{NAME}}",
+  "NAME": "Nome do servidor:",
+  "OWNER": "Proprietário do servidor:",
+  "ID": "ID do servidor:",
+  "CREATED": "Data de criação do servidor:",
+  "REGION": "Região do servidor:",
+  "VERIFICATION": "Nível de Verificação:",
+  "MEMBER": "Contagem de membros [{{NUM}}]:",
+  "MEMBER_DESC": "`{{ONLINE}} online, {{IDLE}} ausente e {{DND}} ocupado \n{{BOTS}} bots, {{HUMANS}} humanos`",
+  "FEATURES": "Recursos:",
+  "ROLES": "Cargos [{{NUM}}]:",
+  "FOOTER": "Solicitado por: {{USER}}"
+}

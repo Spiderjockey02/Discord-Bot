@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": " Discriminar",
+  "USAGE": "describir <discriminator>",
+  "TITLE": "Miembros con descrimen: {{DISCRIM}}"
+}

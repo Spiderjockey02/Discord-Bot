@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Starte ein Gewinnspiel",
+  "USAGE": "g-start <time> <Number of winners> <prize>",
+  "PRIZE_TOO_LONG": "De prijs moet minder dan 256 tekens lang zijn.",
+  "TITLE": "🎉🎉 **GIVEAWAY ENDED** 🎉🎉",
+  "ENDED": "🎉🎉 **GIVEAWAY ENDED** 🎉🎉",
+  "TIME_REMAINING": "Resterende tijd: **{duration}**!",
+  "INVITE_PARTICIPATE": "Reageer met 🎉 om mee te doen!",
+  "WIN_MESSAGE": "Gefeliciteerd, {winners}! Je hebt **{prize}** gewonnen!",
+  "FOOTER": "Giveaways",
+  "NO_WINNER": "Giveaway geannuleerd, geen geldige deelnames.",
+  "WINNERS": "winnaar(s)",
+  "END_AT": "Eindig op",
+  "HOSTED": "Gehost door: {user}"
+}
