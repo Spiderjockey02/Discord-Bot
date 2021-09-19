@@ -88,7 +88,7 @@ class PAdd extends Command {
 					message.channel.send({ embeds: [embed] });
 
 					try {
-						collected = await message.channel.awaitMessages(filter, { max: 1, time: 30e3, errors: ['time'] });
+						collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
 					} catch (e) {
 						return message.reply(message.translate('misc:WAITED_TOO_LONG'));
 					}
