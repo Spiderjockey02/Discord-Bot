@@ -48,7 +48,7 @@
     "puppeteer": "^10.1.0",
     "r6api.js": "^2.0.2",
     "radio-browser": "^2.1.6",
-    "simple-node-logger": "^18.12.24",
+    "simple-node-logger": "^21.8.12",
     "string-progressbar": "^1.0.3",
     "string-similarity": "^4.0.4",
     "tinyurl": "^1.1.7",
