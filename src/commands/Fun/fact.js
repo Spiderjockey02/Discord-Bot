@@ -33,7 +33,7 @@ class Fact extends Command {
   */
 	async run(bot, message) {
 		// Get the random facts file
-		fs.readFile('./src/assets/json/random-facts.jsn', (err, data) => {
+		fs.readFile('./src/assets/json/random-facts.json', (err, data) => {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
