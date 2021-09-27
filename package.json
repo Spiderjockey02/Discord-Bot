@@ -60,5 +60,11 @@
     "clean-jsdoc-theme": "^3.2.7",
     "eslint": "^7.29.0",
     "jsdoc": "^3.6.7"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.4",
+    "erlpack": "github:discord/erlpack",
+    "utf-8-validate": "^5.0.6",
+    "zlib-sync": "^0.1.7"
   }
 }
