@@ -1,6 +1,7 @@
 // Dependencies
 const { Message } = require('discord.js'),
 	{ findBestMatch } = require('string-similarity');
+const axios = require('axios');
 
 module.exports = Object.defineProperties(Message.prototype, {
 	args: {
@@ -19,6 +20,20 @@ module.exports = Object.defineProperties(Message.prototype, {
 			return args;
 		},
 	},
+
+	// Function to Get Members(s) banner from message (via ID, mention or username).
+	getBanner: {
+		value: async function(userId) {
+			const user = await this.client.api.users(userId).get();
+			if (!user.banner) return null;
+
+			const extension = user.banner.startsWith('a_') ? '.gif' : '.png'
+			const baseUrl = `https://cdn.discordapp.com/banners/${userId}/${user.banner}${extension}?size=4096`;
+
+			return baseUrl;
+		},
+	},
+
 	// Get member(s) from message (via ID, mention or username)
 	getMember: {
 		value: async function(fallback = true) {
