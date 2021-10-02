@@ -83,7 +83,7 @@ class Lavalink extends Command {
 			minute: Math.floor((time / (1000 * 60)) % 60),
 			second: Math.floor((time / 1000) % 60),
 		};
-
+		if (calculations.week >= 1) calculations.days -= calculations.week * 7;
 		let str = '';
 		for (const [key, val] of Object.entries(calculations)) {
 			if (val > 0) str += `${val} ${key}${val > 1 ? 's' : ''} `;
