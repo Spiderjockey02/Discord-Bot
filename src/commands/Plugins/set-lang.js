@@ -4,7 +4,7 @@ const { MessageActionRow, MessageSelectMenu } = require('discord.js'),
 
 
 const flags = {
-	'en-US': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+	'en-US': '🇺󠁧󠁢󠁥󠁮󠁧󠁿🇸󠁧󠁢󠁥󠁮󠁧󠁿',
 	'fr-FR': '🇫🇷',
 	'ar-EG': '🇪🇬',
 	'de-DE': '🇩🇪',
