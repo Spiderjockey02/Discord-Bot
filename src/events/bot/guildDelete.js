@@ -32,7 +32,7 @@ class GuildDelete extends Event {
 			const embed = new MessageEmbed()
 				.setTitle(`[GUILD LEAVE] ${guild.name}`);
 			if (guild.icon == null) {
-				const icon = await Canvas.guildIcon(guild.name, 128);
+				const icon = await Canvas.guildIcon(guild.name ?? 'undefined', 128);
 				attachment = new MessageAttachment(icon, 'guildicon.png');
 				embed.setImage('attachment://guildicon.png');
 			} else {
