@@ -43,7 +43,7 @@
     "marked": "^2.0.0",
     "minecraft-server-util": "^3.4.2",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.15",
+    "mongoose": "^6.0.14",
     "optiic": "^0.0.14",
     "puppeteer": "^10.1.0",
     "r6api.js": "^2.0.2",
