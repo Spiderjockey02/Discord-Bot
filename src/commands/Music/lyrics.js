@@ -48,7 +48,7 @@ class Lyrics extends Command {
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: player.queue.current.title,
-				artist: '',
+				artist: '‎',
 				optimizeQuery: true,
 			};
 		} else {
@@ -56,7 +56,7 @@ class Lyrics extends Command {
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: message.args.join(' '),
-				artist: '',
+				artist: '‎',
 				optimizeQuery: true,
 			};
 		}
@@ -66,12 +66,17 @@ class Lyrics extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// display lyrics
-		const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
-		msg.delete();
-		if (Array.isArray(lyrics)) {
-			paginate(bot, message.channel, lyrics);
-		} else {
-			message.channel.send({ content: lyrics });
+		try {
+			const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
+			msg.delete();
+			if (Array.isArray(lyrics)) {
+				paginate(bot, message.channel, lyrics);
+			} else {
+				message.channel.send({ content: lyrics });
+			}
+		} catch (err) {
+			msg.delete();
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 
@@ -97,7 +102,7 @@ class Lyrics extends Command {
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: player.queue.current.title,
-				artist: '',
+				artist: '‎',
 				optimizeQuery: true,
 			};
 		} else {
@@ -105,17 +110,21 @@ class Lyrics extends Command {
 			options = {
 				apiKey: bot.config.api_keys.genuis,
 				title: song,
-				artist: '',
+				artist: '‎',
 				optimizeQuery: true,
 			};
 		}
 
 		// display lyrics
-		const lyrics = await this.searchLyrics(bot, guild, options, member.user);
-		if (Array.isArray(lyrics)) {
-			paginate(bot, channel, lyrics);
-		} else {
-			interaction.reply({ content: lyrics });
+		try {
+			const lyrics = await this.searchLyrics(bot, guild, options, member.user);
+			if (Array.isArray(lyrics)) {
+				paginate(bot, channel, lyrics);
+			} else {
+				interaction.reply({ content: lyrics });
+			}
+		} catch (err) {
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err }, true)], ephemeral: true });
 		}
 	}
 
