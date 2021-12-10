@@ -15,6 +15,8 @@ class AutoModeration {
 		const { settings: { Auto_Moderation } } = this.message.guild;
 		const message = this.message;
 
+		if (!Auto_Moderation) return;
+
 		// Make sure it's not a bot
 		if (Auto_Moderation.IgnoreBot && message.author.bot) return;
 
