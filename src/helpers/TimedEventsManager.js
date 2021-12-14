@@ -1,5 +1,5 @@
 // Dependencies
-const { timeEventSchema, WarningSchema, MutedMemberSchema } = require('../database/models'),
+const { timeEventSchema, WarningSchema } = require('../database/models'),
 	ms = require('ms'),
 	{ Embed, time: { getTotalTime } } = require('../utils'),
 	{ MessageAttachment } = require('discord.js');
@@ -54,32 +54,6 @@ module.exports = async (bot) => {
 					} catch (err) {
 						bot.logger.error(`Error: ${err.message} when sending reminder to user. (timed event)`);
 						bot.channels.cache.get(event.channelID)?.send(guild.translate('fun/reminder:RESPONSE', { USER: user.id, INFO: event.message }));
-					}
-					break;
-				}
-				case 'mute': {
-					bot.logger.debug(`Unmuting ${user.tag} in guild: ${guild.id}.`);
-
-					// get muted role
-					const muteRole = guild.roles.cache.get(guild.settings.MutedRole);
-					if (!muteRole) return bot.logger.error(`Muted role is missing in guild: ${guild.id}.`);
-
-					// get member to unmute
-					const member = await guild.members.fetch(user.id);
-
-					// delete muted member from database (even if they not in guild anymore)
-					await MutedMemberSchema.findOneAndRemove({ userID: member.user.id,	guildID: event.guildID });
-					if (!member) return bot.logger.error(`Member is no longer in guild: ${bot.guilds.cache.get(event.guildID).id}.`);
-
-					// update member
-					try {
-						await member.roles.remove(muteRole);
-						// if in a VC unmute them
-						if (member.voice.channelID) member.voice.setMute(false);
-						bot.channels.cache.get(event.channelID)?.success('MODERATION/SUCCESSFULL_UNMUTE', member.user).then(m => m.timedDelete({ timeout: 3000 }));
-					} catch (err) {
-						bot.logger.error(`Error: ${err.message} when trying to unmute user. (timed event)`);
-						bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 					}
 					break;
 				}
