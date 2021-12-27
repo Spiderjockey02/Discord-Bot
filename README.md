@@ -70,10 +70,12 @@ Egglord also comes packed with a variety of features, such as:
 
 ## 📝 To-Do
 
-Egglord is in a continuous state of development. New features/updates may come at any time. Some pending ideas are:
+Egglord is pretty much at the end of development now, it will only be updated for the following things:
   
-  * Auto-moderation.
-  * Advanced statistics of a server.
+  * Bug fixes
+  * Code optimisation
+  * New discord features
+  * Suggestions I deem very good.
 
 ## 🖥️ My other projects
  * [Auto poster](https://github.com/Spiderjockey02/auto-poster-and-notifications) - Allows your users to get notified when you post on another social media. (Youtube, twitch, twitter, reddit etc)
@@ -88,6 +90,3 @@ Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discor
 * **Josh_V2#9733** - Slash Commands & Tags System.
 * **XBouBou#0856** - French Translation.
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
-
-## ❗ Disclaimer
-* There is a [dev](https://github.com/Spiderjockey02/Discord-Bot/tree/dev) branch that contains all up-coming features. The dev branch can be used but be weary there may bugs/ errors that could easily break your bot so use with caution. You can still look through the dev branch to see what will be added and give ideas on what to improve before the public use.
