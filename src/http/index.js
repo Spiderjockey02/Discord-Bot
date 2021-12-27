@@ -1,18 +1,27 @@
 const express = require('express'),
 	app = express(),
-	port = 3000,
+	{ API } = require('../config'),
 	{ promisify } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	cors = require('cors');
 
 module.exports = async bot => {
-	const routes = (await readdir('./src/http/routes')).filter((v, i, a) => a.indexOf(v) === i);
-	const endpoints = [];
+	const routes = (await readdir('./src/http/routes')).filter((v, i, a) => a.indexOf(v) === i),
+		endpoints = [];
 
 	// IP logger
 	app.use(function(req, res, next) {
-		if (req.originalUrl == '/favicon.ico' || !bot.config.debug) return;
-		bot.logger.log(`IP: ${req.connection.remoteAddress.slice(7)} -> ${req.originalUrl}`);
+		if (req.originalUrl !== '/favicon.ico' || bot.config.debug) {
+			bot.logger.log(`IP: ${req.connection.remoteAddress.slice(7)} -> ${req.originalUrl}`);
+		}
+		next();
+	});
+
+	// Token system
+	app.use((req, res, next) => {
+		if (API.secure && API.token !== req.query.token) {
+			return res.json({ error: 'Invalid API token' });
+		}
 		next();
 	});
 
@@ -47,8 +56,8 @@ module.exports = async bot => {
 			res.send('No data here. Go away!');
 		})
 		// Run the server
-		.listen(port, () => {
-			bot.logger.ready(`Statistics API has loaded on port:${port}`);
+		.listen(API.port, () => {
+			bot.logger.ready(`Statistics API has loaded on port:${API.port}`);
 		})
 		.on('error', (err) => {
 			bot.logger.error(`Error with starting HTTP API: ${err.message}`);

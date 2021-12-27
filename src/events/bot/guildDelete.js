@@ -23,6 +23,7 @@ class GuildDelete extends Event {
 	 * @readonly
 	*/
 	async run(bot, guild) {
+		if (!bot.isReady() && !guild.available) return;
 		bot.logger.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`);
 		await bot.DeleteGuild(guild);
 

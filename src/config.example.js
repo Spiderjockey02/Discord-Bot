@@ -44,6 +44,11 @@ const config = {
 		// Where the bot will send Guild join/leave messages to
 		GuildChannel: '761619652009787392',
 	},
+	API: {
+		port: 3000,
+		secure: true,
+		token: '123456789',
+	},
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
 	// embed colour
