@@ -87,7 +87,7 @@ class Clear extends Command {
 						return msg.edit({ embeds: [embed], components: [] });
 					} else {
 						// Delete the messages
-						await message.channel.send(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
+						await i.reply(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
 						await bot.delay(5000);
 
 						let x = 0, y = 0;
@@ -116,6 +116,7 @@ class Clear extends Command {
 
 				// user did not react in time
 				collector.on('end', async () => {
+					if (msg.deleted) return;
 					if (embed.description == message.translate('moderation/clear:CON_CNC')) {
 						await msg.delete();
 					} else {
