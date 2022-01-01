@@ -28,6 +28,9 @@ class InteractionCreate extends Event {
 
 		// the interaction is a context menu
 		if (interaction.isContextMenu()) return bot.emit('clickMenu', interaction);
+
+		// the interaction is an autocomplete field
+		if (interaction.isAutocomplete()) return bot.emit('autoComplete', interaction);
 	}
 }
 

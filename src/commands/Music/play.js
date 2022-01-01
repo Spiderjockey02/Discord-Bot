@@ -28,6 +28,7 @@ class Play extends Command {
 				description: 'The link or name of the track.',
 				type: 'STRING',
 				required: true,
+				autocomplete: true,
 			}],
 		});
 	}

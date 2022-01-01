@@ -27,6 +27,7 @@ class Search extends Command {
 				description: 'track to search for.',
 				type: 'STRING',
 				required: true,
+				autocomplete: true,
 			}],
 		});
 	}
@@ -41,16 +42,16 @@ class Search extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.delete({ timeout: 10000 }));
+		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Check that user is in the same voice channel
 		if (bot.manager?.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.delete({ timeout: 10000 }));
+			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
@@ -149,6 +150,26 @@ class Search extends Command {
 			member = guild.members.cache.get(interaction.user.id),
 			search = args.get('track').value;
 
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { }, true)] });
+			}
+		}
+
+		// make sure user is in a voice channel
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { }, true)] });
+
+		// Check that user is in the same voice channel
+		if (bot.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { }, true)] });
+		}
+
+		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.me).has('MOVE_MEMBERS')) {
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:VC_FULL', { }, true)] });
+		}
+
 		// Create player
 		let player;
 		try {
@@ -159,6 +180,7 @@ class Search extends Command {
 				selfDeafen: true,
 			});
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
