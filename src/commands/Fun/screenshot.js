@@ -117,7 +117,7 @@ class Screenshot extends Command {
 		// try and create screenshot
 		let data;
 		try {
-			const browser = await Puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+			const browser = await Puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 			const page = await browser.newPage();
 			await page.setViewport({ width: 1280, height: 720 });
 			await page.goto(URL);
