@@ -50,7 +50,7 @@ class NowPlaying extends Command {
 		// Display current song information
 		try {
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(message.translate('music/np:AUTHOR'))
+				.setAuthor({ name: message.translate('music/np:AUTHOR') })
 				.setColor(message.member.displayHexColor)
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester.id)}]`)
@@ -91,7 +91,7 @@ class NowPlaying extends Command {
 		// Display current song information
 		try {
 			const embed = new Embed(bot, guild)
-				.setAuthor(bot.translate('music/np:AUTHOR'))
+				.setAuthor({ name: bot.translate('music/np:AUTHOR') })
 				.setColor(member.displayHexColor)
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${guild.members.cache.get(requester.id)}]`)

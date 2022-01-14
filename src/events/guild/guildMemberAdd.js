@@ -37,7 +37,7 @@ class GuildMemberAdd extends Event {
 				.setColor(3066993)
 				.setFooter(`ID: ${member.id}`)
 				.setThumbnail(member.user.displayAvatarURL())
-				.setAuthor('User joined:', member.user.displayAvatarURL())
+				.setAuthor({ name: 'User joined:', iconURL: member.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

@@ -57,7 +57,7 @@ class Pokemon extends Command {
 
 			// Send response to channel
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
+				.setAuthor({ name: res.name, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}` })
 				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
@@ -90,7 +90,7 @@ class Pokemon extends Command {
 
 			// Send response to channel
 			const embed = new Embed(bot, guild)
-				.setAuthor(res.name, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}`)
+				.setAuthor({ name: res.name, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}` })
 				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
 				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);

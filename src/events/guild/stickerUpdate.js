@@ -39,7 +39,7 @@ class StickerUpdate extends Event {
 					.setDescription(`Sticker name changed of ${newSticker.name}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newSticker.id}`)
-					.setAuthor(newSticker.guild.name, newSticker.guild.iconURL())
+					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldSticker.name}`, inline: true },
 						{ name: 'New:', value: `${newSticker.name}`, inline: true },
@@ -54,7 +54,7 @@ class StickerUpdate extends Event {
 					.setDescription(`Sticker description changed of ${newSticker.name}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newSticker.id}`)
-					.setAuthor(newSticker.guild.name, newSticker.guild.iconURL())
+					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldSticker.description}`, inline: true },
 						{ name: 'New:', value: `${newSticker.description}`, inline: true },

@@ -48,7 +48,7 @@ class ChannelUpdate extends Event {
 					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
-					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldChannel.name}`, inline: true },
 						{ name: 'New:', value: `${newChannel.name}`, inline: true },
@@ -63,7 +63,7 @@ class ChannelUpdate extends Event {
 					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
-					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldChannel.topic ? oldChannel.topic : '*empty topic*'}`, inline: true },
 						{ name: 'New:', value: `${newChannel.topic ? newChannel.topic : '*empty topic*'}`, inline: true },
@@ -77,7 +77,7 @@ class ChannelUpdate extends Event {
 					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
-					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldChannel.rtcRegion}`, inline: true },
 						{ name: 'New:', value: `${newChannel.rtcRegion}`, inline: true },
@@ -104,7 +104,7 @@ class ChannelUpdate extends Event {
 					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newChannel.id}`)
-					.setAuthor(newChannel.guild.name, newChannel.guild.iconURL())
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 					.setTimestamp();
 				for (const permID of permDiff.keys()) {
 					// load both overwrites into variables

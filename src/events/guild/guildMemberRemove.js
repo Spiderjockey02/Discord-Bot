@@ -39,7 +39,7 @@ class GuildMemberRemove extends Event {
 				.setColor(15158332)
 				.setFooter(`ID: ${member.id}`)
 				.setThumbnail(member.user.displayAvatarURL())
-				.setAuthor('User left:', member.user.displayAvatarURL())
+				.setAuthor({ name: 'User left:', iconURL: member.user.displayAvatarURL() })
 				.addField('Joined at:', member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
 				.setTimestamp();
 

@@ -56,7 +56,7 @@ class Report extends Command {
 
 			// Send messages to ModLog channel
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(message.translate('moderation/report:AUTHOR'), members[0].user.displayAvatarURL)
+				.setAuthor({ name: message.translate('moderation/report:AUTHOR'), iconURL: members[0].user.displayAvatarURL })
 				.setColor(15158332)
 				.addField(message.translate('moderation/report:MEMBER'), members[0], true)
 				.addField(message.translate('moderation/report:BY'), message.member, true)

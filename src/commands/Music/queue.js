@@ -82,7 +82,7 @@ class Queue extends Command {
 		for (let i = 0; i < pagesNum; i++) {
 			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(`Queue - ${message.guild.name}`, message.guild.iconURL())
+				.setAuthor({ name: `Queue - ${message.guild.name}`, iconURL: message.guild.iconURL() })
 				.setDescription(`**Now Playing**: [${title}](${uri}) \`[${parsedDuration}]\` • ${user}.\n\n**Up Next**:${str == '' ? '  Nothing' : '\n' + str }`)
 				.setFooter(`Page ${i + 1}/${pagesNum} | ${player.queue.length} song(s) | ${parsedQueueDuration} total duration`);
 			pages.push(embed);
@@ -154,7 +154,7 @@ class Queue extends Command {
 		for (let i = 0; i < pagesNum; i++) {
 			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
 			const embed = new Embed(bot, guild)
-				.setAuthor(`Queue - ${guild.name}`, guild.iconURL())
+				.setAuthor({ name: `Queue - ${guild.name}`, iconURL: guild.iconURL() })
 				.setDescription(`**Now Playing**: [${title}](${uri}) \`[${parsedDuration}]\` • ${user}.\n\n**Up Next**:${str == '' ? '  Nothing' : '\n' + str }`)
 				.setFooter(`Page ${i + 1}/${pagesNum} | ${player.queue.length} song(s) | ${parsedQueueDuration} total duration`);
 			pages.push(embed);

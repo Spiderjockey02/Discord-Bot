@@ -38,7 +38,7 @@ class InviteCreate extends Event {
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter(`ID: ${invite.inviter.id}`)
-				.setAuthor('Invite created:', invite.inviter.displayAvatarURL())
+				.setAuthor({name: 'Invite created:', iconURL: invite.inviter.displayAvatarURL(}))
 				.setTimestamp();
 
 			// Find channel and send message

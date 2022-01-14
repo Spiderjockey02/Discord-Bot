@@ -28,7 +28,7 @@ class GiveawayEnded extends Event {
 		winners.forEach(async (member) => {
 			try {
 				const embed = new MessageEmbed()
-					.setAuthor('Giveaway winner', member.user.displayAvatarURL())
+					.setAuthor({ name: 'Giveaway winner', iconURL: member.user.displayAvatarURL() })
 					.setThumbnail(bot.guilds.cache.get(giveaway.guildID).iconURL())
 					.setDescription([
 						`Prize: \`${giveaway.prize}\`.`,

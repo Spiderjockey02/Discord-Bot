@@ -39,7 +39,7 @@ class MessageCreate extends Event {
 		// Check if bot was mentioned
 		if (message.content == `<@!${bot.user.id}>`) {
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(bot.user.username, bot.user.displayAvatarURL({ format: 'png' }))
+				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
 					message.translate('events/message:INTRO', { USER: bot.user.username }),

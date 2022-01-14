@@ -49,7 +49,7 @@ class User extends Command {
 		if (!message.args[1]) {
 			const embed = new MessageEmbed()
 				.setTitle('User Information:')
-				.setAuthor(user.tag, user.displayAvatarURL({ dynamic: true, size: 1024 }))
+				.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
 				.setThumbnail(user.displayAvatarURL({ dynamic: true, size: 1024 }))
 				.setDescription([
 					`Username: \`${user.tag}\``,

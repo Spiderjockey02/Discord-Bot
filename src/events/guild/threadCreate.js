@@ -45,7 +45,7 @@ class ThreadCreate extends Event {
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter('misc:ID', { ID: thread.id })
-				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

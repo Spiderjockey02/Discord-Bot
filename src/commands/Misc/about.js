@@ -60,7 +60,7 @@ class About extends Command {
 	*/
 	createEmbed(bot, guild, settings) {
 		return new Embed(bot, guild)
-			.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+			.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 			.setTitle('misc/about:TITLE')
 			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: genInviteLink(bot), SERVER: bot.config.SupportServer.link, USERNAME: bot.user.username }))
 			.addField(guild.translate('misc/about:MEMBERS', { MEMBERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString() }), bot.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size.toLocaleString(settings.Language), BOTS: bot.users.cache.filter(user => user.bot).size.toLocaleString(settings.Language), HUMANS: bot.users.cache.filter(user => !user.bot).size.toLocaleString(settings.Language) }), true)

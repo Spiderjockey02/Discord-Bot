@@ -87,7 +87,7 @@ class RoleInfo extends Command {
 		// Send information to channel
 		return new Embed(bot, guild)
 			.setColor(role.color)
-			.setAuthor(user.tag, user.displayAvatarURL())
+			.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
 			.setDescription(guild.translate('guild/role-info:NAME', { NAME: role.name }))
 			.addFields(
 				{ name: guild.translate('guild/role-info:MEMBERS'), value: role.members.size.toLocaleString(guild.settings.Language), inline: true },

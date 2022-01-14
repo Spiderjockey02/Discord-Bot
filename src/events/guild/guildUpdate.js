@@ -37,7 +37,7 @@ class GuildUpdate extends Event {
 			if (oldGuild.name != newGuild.name) {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server name changed**')
-					.setAuthor(newGuild.name, newGuild.iconURL())
+					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addField('Before:', oldGuild.name)
 					.addField('After:', newGuild.name)
 					.setTimestamp();
@@ -50,7 +50,7 @@ class GuildUpdate extends Event {
 			if (oldGuild.premiumTier != newGuild.premiumTier) {
 				embed = new Embed(bot, newGuild)
 					.setDescription(`**Server boost ${oldGuild.premiumTier < newGuild.premiumTier ? 'increased' : 'decreased'}**`)
-					.setAuthor(newGuild.name, newGuild.iconURL())
+					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addField('Before:', oldGuild.premiumTier)
 					.addField('After:', newGuild.premiumTier)
 					.setTimestamp();
@@ -61,7 +61,7 @@ class GuildUpdate extends Event {
 			if (!oldGuild.banner && newGuild.banner) {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server banner changed**')
-					.setAuthor(newGuild.name, newGuild.iconURL())
+					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addField('Before:', oldGuild.banner)
 					.addField('After:', newGuild.banner)
 					.setTimestamp();
@@ -72,7 +72,7 @@ class GuildUpdate extends Event {
 			if (!oldGuild.afkChannel && newGuild.afkChannel) {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server AFK channel changed**')
-					.setAuthor(newGuild.name, newGuild.iconURL())
+					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addField('Before:', oldGuild.afkChannel)
 					.addField('After:', newGuild.afkChannel)
 					.setTimestamp();
@@ -83,7 +83,7 @@ class GuildUpdate extends Event {
 			if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server Vanity URL changed**')
-					.setAuthor(newGuild.name, newGuild.iconURL())
+					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addField('Before:', oldGuild.vanityURLCode)
 					.addField('After:', newGuild.vanityURLCode)
 					.setTimestamp();

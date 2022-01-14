@@ -34,7 +34,7 @@ class RoleDelete extends Event {
 				.setDescription(`**Role: ${role} (${role.name}) was deleted**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${role.id}`)
-				.setAuthor(role.guild.name, role.guild.iconURL())
+				.setAuthor({ name: role.guild.name, iconURL: role.guild.iconURL() })
 				.setTimestamp();
 
 			// Find channel and send message

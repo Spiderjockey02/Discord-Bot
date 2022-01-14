@@ -179,7 +179,7 @@ class Rainbow6Siege extends Command {
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
 		return new Embed(bot, guild)
-			.setAuthor(player.username, bot.user.displayAvatarURL)
+			.setAuthor({ name: player.username, iconURL: bot.user.displayAvatarURL })
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.icon)
 			.addField(guild.translate('searcher/r6:GENERAL'), guild.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(guild.settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(guild.settings.Language) }))

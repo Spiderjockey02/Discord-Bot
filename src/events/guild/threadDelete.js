@@ -38,7 +38,7 @@ class ThreadDelete extends Event {
 				].join('\n'))
 				.setColor(15158332)
 				.setFooter('misc:ID', { ID: thread.id })
-				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

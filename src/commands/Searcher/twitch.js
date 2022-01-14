@@ -59,7 +59,7 @@ class Twitch extends Command {
 					.setTitle(twitchUser.display_name)
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
 					.setThumbnail(twitchUser.profile_image_url)
-					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
+					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
 					.addField(message.translate('searcher/twitch:BIO'), twitchUser.description || message.translate('searcher/twitch:NO_BIO'), true)
 					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(settings.Language), true)
 					.addField(message.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(settings.Language)), true);
@@ -101,7 +101,7 @@ class Twitch extends Command {
 					.setTitle(twitchUser.display_name)
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
 					.setThumbnail(twitchUser.profile_image_url)
-					.setAuthor('Twitch', 'https://i.imgur.com/4b9X738.png')
+					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
 					.addField(guild.translate('searcher/twitch:BIO'), twitchUser.description || guild.translate('searcher/twitch:NO_BIO'), true)
 					.addField(guild.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(guild.settings.Language), true)
 					.addField(guild.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(guild.settings.Language)), true);

@@ -49,7 +49,7 @@ class ChannelCreate extends Event {
 				.setDescription(`**${types[channel.type]} channel created: ${channel.toString()}**`)
 				.setColor(3066993)
 				.setFooter('misc:ID', { ID: channel.id })
-				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

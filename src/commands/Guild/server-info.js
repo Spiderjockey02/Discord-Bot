@@ -69,7 +69,7 @@ class ServerInfo extends Command {
 		// Send server information
 		const member = guild.members.cache;
 		return new Embed(bot, guild)
-			.setAuthor(guild.translate('guild/server-info:AUTHOR', { NAME: guild.name }), guild.iconURL())
+			.setAuthor({ name: guild.translate('guild/server-info:AUTHOR', { NAME: guild.name }), iconURL: guild.iconURL() })
 			.setColor(3447003)
 			.setThumbnail(guild.iconURL())
 			.addFields(

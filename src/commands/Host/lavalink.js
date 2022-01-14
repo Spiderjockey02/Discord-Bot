@@ -61,7 +61,7 @@ class Lavalink extends Command {
 		const botUptime = this.uptime(uptime);
 
 		const embed = new Embed(bot, message.guild)
-			.setAuthor(message.translate('host/lavalink:AUTHOR', { NAME: bot.manager.nodes.get(message.args[0])?.options.host ?? bot.manager.nodes.first().options.host }))
+			.setAuthor({ name: message.translate('host/lavalink:AUTHOR', { NAME: bot.manager.nodes.get(message.args[0])?.options.host ?? bot.manager.nodes.first().options.host }) })
 			.addField(message.translate('host/lavalink:PLAYERS'), message.translate('host/lavalink:PLAYER_STATS', { PLAYING: playingPlayers, PLAYERS: players }))
 			.addField(message.translate('host/lavalink:MEMORY'), message.translate('host/lavalink:MEMORY_STATS', { ALL: allocated, USED: used, FREE: free, RESERVE: reservable }))
 			.addField(message.translate('host/lavalink:CPU'), message.translate('host/lavalink:CPU_STATS', { CORES: cpu.cores, SYSLOAD: systemLoad, LVLLOAD: lavalinkLoad }))

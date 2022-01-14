@@ -90,7 +90,7 @@ class UserInfo extends Command {
 	createEmbed(bot, guild, member) {
 		const status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
 		return new Embed(bot, guild)
-			.setAuthor(member.user.tag, member.user.displayAvatarURL())
+			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(

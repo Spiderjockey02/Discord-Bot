@@ -70,7 +70,7 @@ class Help extends Command {
 		if (!command) {
 			// Show default help page
 			const embed = new Embed(bot)
-				.setAuthor(bot.translate('misc/help:AUTHOR'), bot.user.displayAvatarURL({ format: 'png' }))
+				.setAuthor({ name: bot.translate('misc/help:AUTHOR'), iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setDescription([
 					bot.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
 					bot.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: bot.translate('misc/help:USAGE') }),

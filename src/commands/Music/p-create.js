@@ -138,7 +138,7 @@ class PCreate extends Command {
 
 			// Show that playlist has been saved
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(newPlaylist.name, message.author.displayAvatarURL())
+				.setAuthor({ name: newPlaylist.name, iconURL: message.author.displayAvatarURL() })
 				.setDescription([
 					message.translate('music/p-create:DESC_1', { TITLE: message.args[0] }),
 					message.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),

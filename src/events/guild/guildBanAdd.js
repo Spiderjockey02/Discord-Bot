@@ -44,7 +44,7 @@ class GuildBanAdd extends Event {
 			const embed = new Embed(bot, guild)
 				.setDescription(`User: ${user.toString()}`)
 				.setColor(15158332)
-				.setAuthor('User banned:', user.displayAvatarURL())
+				.setAuthor({ name: 'User banned:', iconURL: user.displayAvatarURL() })
 				.setThumbnail(user.displayAvatarURL())
 				.addField('Reason:', guildBan.reason ?? 'No reason given')
 				.setTimestamp()

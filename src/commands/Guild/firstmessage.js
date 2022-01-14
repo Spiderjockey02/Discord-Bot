@@ -90,7 +90,7 @@ class Firstmessage extends Command {
 		return new Embed(bot, guild)
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-			.setAuthor(fMessage.author.tag, fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
+			.setAuthor({ name: fMessage.author.tag, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
 			.setDescription(fMessage.content)
 			.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
 			.setFooter('misc:ID', { ID: fMessage.id })

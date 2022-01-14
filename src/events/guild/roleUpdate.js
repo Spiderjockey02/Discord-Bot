@@ -39,7 +39,7 @@ class RoleUpdate extends Event {
 					.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
-					.setAuthor(newRole.guild.name, newRole.guild.iconURL())
+					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
 					.addField('Before:', oldRole.name)
 					.addField('After:', newRole.name)
 					.setTimestamp();
@@ -52,7 +52,7 @@ class RoleUpdate extends Event {
 					.setDescription(`**Role name of ${newRole} (${newRole.name}) changed**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
-					.setAuthor(newRole.guild.name, newRole.guild.iconURL())
+					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
 					.addField('Before:', `${oldRole.color} ([${oldRole.hexColor}](https://www.color-hex.com/color/${oldRole.hexColor.slice(1)}))`)
 					.addField('After:', `${newRole.color} ([${newRole.hexColor}](https://www.color-hex.com/color/${newRole.hexColor.slice(1)}))`)
 					.setTimestamp();
@@ -65,7 +65,7 @@ class RoleUpdate extends Event {
 					.setDescription(`**Role permissions of ${newRole} (${newRole.name}) changed**\n[What those numbers mean](https://discordapi.com/permissions.html#${oldRole.permissions.bitfield})`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newRole.id}`)
-					.setAuthor(newRole.guild.name, newRole.guild.iconURL())
+					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
 					.addField('Before:', `${oldRole.permissions.bitfield}`)
 					.addField('After:', `${newRole.permissions.bitfield}`)
 					.setTimestamp();

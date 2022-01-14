@@ -44,7 +44,7 @@ class GuildBanRemove extends Event {
 			const embed = new Embed(bot, guild)
 				.setDescription(`User: ${user.toString()}`)
 				.setColor(15158332)
-				.setAuthor('User unbanned:', user.displayAvatarURL())
+				.setAuthor({ name: 'User unbanned:', iconURL: user.displayAvatarURL() })
 				.setThumbnail(user.displayAvatarURL())
 				.setTimestamp()
 				.setFooter(`ID: ${user.id}`);

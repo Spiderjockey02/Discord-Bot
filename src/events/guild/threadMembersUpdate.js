@@ -53,7 +53,7 @@ class ThreadMembersUpdate extends Event {
 						.setDescription(`**Thread members updated in ${thread.toString()}**`)
 						.setColor(15105570)
 						.setFooter(`ID: ${thread.id}`)
-						.setAuthor(thread.guild.name, thread.guild.iconURL())
+						.setAuthor({ name: thread.guild.name, iconURL: thread.guild.iconURL() })
 						.addFields(
 							{ name: `Added members [${memberAdded.size}]:`, value: `${memberAddedString.length == 0 ? '*None*' : memberAddedString.join('\n ')}`, inline: true },
 							{ name: `Removed member [${memberRemoved.size}]:`, value: `${memberRemovedString.length == 0 ? '*None*' : memberRemovedString.join('\n ')}`, inline: true })

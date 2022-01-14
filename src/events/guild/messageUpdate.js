@@ -62,7 +62,7 @@ class MessageUpdate extends Event {
 			const embed = new Embed(bot, newMessage.guild)
 				.setDescription(`**Message of ${newMessage.author.toString()} edited in ${newMessage.channel.toString()}** [Jump to Message](${newMessage.url})`)
 				.setFooter(`Author: ${newMessage.author.id} | Message: ${newMessage.id}`)
-				.setAuthor(newMessage.author.tag, newMessage.author.displayAvatarURL())
+				.setAuthor({ name: newMessage.author.tag, iconURL: newMessage.author.displayAvatarURL() })
 				.addFields(
 					{ name: `Before ${(oldShortened ? ' (shortened)' : '')}:`, value: `${oldMessage.content.length > 0 ? oldContent : '*empty message*'}`, inline: true },
 					{ name: `After ${(newShortened ? ' (shortened)' : '')}:`, value: `${newMessage.content.length > 0 ? newContent : '*empty message*'}`, inline: true })

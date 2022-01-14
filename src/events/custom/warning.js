@@ -39,9 +39,9 @@ class Warning extends Event {
 			const embed = new MessageEmbed()
 				.setColor(15158332);
 			if (warns.length == 3) {
-				embed.setAuthor(`[KICK] ${member.user.tag}`, member.user.displayAvatarURL());
+				embed.setAuthor({ name: `[KICK] ${member.user.tag}`, iconURL:  member.user.displayAvatarURL() });
 			} else {
-				embed.setAuthor(`[WARN] ${member.user.tag}`, member.user.displayAvatarURL());
+				embed.setAuthor({ name: `[WARN] ${member.user.tag}`, iconURL: member.user.displayAvatarURL() });
 			}
 			embed.addField('User:', `${member}`, true);
 			embed.addField('Moderator:', `${member.guild.members.cache.get(warning.Moderater).user.tag}`, true);

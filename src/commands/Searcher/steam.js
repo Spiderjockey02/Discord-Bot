@@ -116,7 +116,7 @@ class Steam extends Command {
 		// display data
 		return new Embed(bot, guild)
 			.setColor(0x0099ff)
-			.setAuthor(guild.translate('searcher/steam:AUTHOR', { NAME: resp[0].personaname }), resp[0].avatarfull)
+			.setAuthor({ name: guild.translate('searcher/steam:AUTHOR', { NAME: resp[0].personaname }), iconURL: resp[0].avatarfull })
 			.setThumbnail(resp[0].avatarfull)
 			.setDescription(guild.translate('searcher/steam:DESC', {
 				NAME: resp[0].realname || 'Unknown', STATUS: guild.translate('searcher/steam:STATE', { returnObjects: true })[resp[0].personastate], FLAG: resp[0].loccountrycode ? resp[0].loccountrycode.toLowerCase() : 'white', TIME: dateFormat(resp[0].timecreated * 1000, 'd/mm/yyyy (h:MM:ss TT)'), GAME_BANS: bans[0].NumberOfGameBans, VAC_BANS: bans[0].NumberOfVACBans, URL: resp[0].profileurl,

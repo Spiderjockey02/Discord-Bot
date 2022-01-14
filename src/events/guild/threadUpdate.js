@@ -39,7 +39,7 @@ class ThreadUpdate extends Event {
 					.setDescription(`**Thread name changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newThread.id}`)
-					.setAuthor(newThread.guild.name, newThread.guild.iconURL())
+					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.name}`, inline: true },
 						{ name: 'New:', value: `${newThread.name}`, inline: true },
@@ -54,7 +54,7 @@ class ThreadUpdate extends Event {
 					.setDescription(`**Thread archive state changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newThread.id}`)
-					.setAuthor(newThread.guild.name, newThread.guild.iconURL())
+					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.archived}`, inline: true },
 						{ name: 'New:', value: `${newThread.archived}`, inline: true },

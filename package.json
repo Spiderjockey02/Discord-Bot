@@ -60,7 +60,7 @@
   "devDependencies": {
     "clean-jsdoc-theme": "^3.2.7",
     "eslint": "^7.29.0",
-    "jsdoc": "^3.6.7"
+    "jsdoc": "^3.5.5"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.4",

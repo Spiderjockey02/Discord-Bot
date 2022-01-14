@@ -45,7 +45,7 @@ class StickerCreate extends Event {
 				.setColor(3066993)
 				.setImage(`https://cdn.discordapp.com/stickers/${sticker.id}.png`)
 				.setFooter('misc:ID', { ID: sticker.id })
-				.setAuthor(bot.user.username, bot.user.displayAvatarURL())
+				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

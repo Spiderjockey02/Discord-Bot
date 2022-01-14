@@ -34,7 +34,7 @@ class EmojiDelete extends Event {
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was deleted**`)
 				.setColor(15158332)
 				.setFooter(`ID: ${emoji.id}`)
-				.setAuthor(emoji.guild.name, emoji.guild.iconURL())
+				.setAuthor({ name: emoji.guild.name, iconURL: emoji.guild.iconURL() })
 				.setTimestamp();
 
 			// Find channel and send message

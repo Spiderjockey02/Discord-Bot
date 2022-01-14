@@ -43,7 +43,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} nickname changed**`)
 					.setFooter(`ID: ${newMember.id}`)
-					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: 'Before:', value: `${oldMember.nickname ? oldMember.nickname : '*None*'}`, inline: true },
 						{ name: 'After:', value: `${newMember.nickname ? newMember.nickname : '*None*'}`, inline: true })
@@ -56,7 +56,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has boosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
-					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
 			}
@@ -66,7 +66,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has unboosted the server**`)
 					.setFooter(`ID: ${newMember.id}`)
-					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
 			}
@@ -77,7 +77,7 @@ class GuildMemberUpdate extends Event {
 					.setDescription(`**username changed of ${newMember.toString()}**`)
 					.setColor(15105570)
 					.setFooter(`ID: ${newMember.id}`)
-					.setAuthor(newMember.guild.name, newMember.guild.iconURL())
+					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldMember.name}`, inline: true },
 						{ name: 'New:', value: `${newMember.name}`, inline: true },
@@ -101,7 +101,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} roles changed**`)
 					.setFooter(`ID: ${newMember.id}`)
-					.setAuthor(newMember.user.tag, newMember.user.displayAvatarURL())
+					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },
 						{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString.join('\n ')}`, inline: true })

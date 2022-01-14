@@ -71,7 +71,7 @@ class PView extends Command {
 					for (let i = 0; i < pagesNum; i++) {
 						const str = `${p.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 						const embed = new Embed(bot, message.guild)
-							.setAuthor(message.author.tag, message.author.displayAvatarURL())
+							.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
 							.setThumbnail(p.thumbnail)
 							.setTitle(p.name)
 							.setDescription(str)

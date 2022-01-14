@@ -51,7 +51,7 @@ class GiveawaysManager extends EventEmitter {
 	generateMainEmbed(giveaway) {
 		const embed = new Discord.MessageEmbed();
 		embed
-			.setAuthor(giveaway.prize)
+			.setAuthor({ name: giveaway.prize })
 			.setColor(giveaway.embedColor)
 			.setFooter(`${giveaway.winnerCount} ${giveaway.messages.winners}`)
 			.setDescription(
@@ -80,7 +80,7 @@ class GiveawaysManager extends EventEmitter {
             formattedWinners;
 		const embed = new Discord.MessageEmbed();
 		embed
-			.setAuthor(giveaway.prize)
+			.setAuthor({ name: giveaway.prize })
 			.setColor(giveaway.embedColorEnd)
 			.setFooter(giveaway.messages.endedAt)
 			.setDescription(
@@ -100,7 +100,7 @@ class GiveawaysManager extends EventEmitter {
 	generateNoValidParticipantsEndEmbed(giveaway) {
 		const embed = new Discord.MessageEmbed();
 		embed
-			.setAuthor(giveaway.prize)
+			.setAuthor({ name: giveaway.prize })
 			.setColor(giveaway.embedColorEnd)
 			.setFooter(giveaway.messages.endedAt)
 			.setDescription(
