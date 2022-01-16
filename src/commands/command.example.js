@@ -22,6 +22,10 @@ module.exports = class CustomCommand extends Command {
 			usage: 'HOW SHOULD THE USER USE THIS COMMAND (excluding prefix)',
 			cooldown: 2000,
 			examples: ['AN', 'ARRAY', 'OF', 'EXAMPLES'],
+			// set to false if u don't want it a slash command VV
+			slash: true,
+			// The options for slash command https://discord.js.org/#/docs/discord.js/stable/typedef/CommandInteractionOption
+			options: [],
 		});
 	}
 
@@ -35,5 +39,16 @@ module.exports = class CustomCommand extends Command {
 	async run(bot, message, settings) {
 		// A VERY COOL COMMAND
 		console.log(settings);
+	}
+
+	/**
+	 * Function for recieving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild) {
+		console.log(guild);
 	}
 };
