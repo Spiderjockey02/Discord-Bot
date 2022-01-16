@@ -39,8 +39,6 @@ const guildSchema = Schema({
 	PrefixTags: { type: Boolean, default: false },
 	// Moderation plugin
 	ModeratorRoles: { type: Array },
-	MutedRole: { type: String },
-	MutedMembers: { type: Array },
 	// How many warnings till the user is kicked from server
 	ModerationWarningCounter: { type: Number, default: 3 },
 	// If moderation commands should be deleted after.

@@ -64,15 +64,6 @@ class GuildMemberAdd extends Event {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
-
-		// Check if member is trying to mute evade
-		if (settings.MutedMembers.includes(member.user.id)) {
-			try {
-				await member.roles.add(settings.MutedRole);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
-		}
 	}
 }
 

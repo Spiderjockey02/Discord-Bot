@@ -51,16 +51,7 @@ class Unmute extends Command {
 
 		// Remove mutedRole from user
 		try {
-			const muteRole = message.guild.roles.cache.get(settings.MutedRole);
-			members[0].roles.remove(muteRole);
-
-			// delete muted member from database
-			await message.guild.updateGuild({ MutedMembers: settings.MutedMembers.filter(user => user != members[0].user.id) });
-			settings.MutedMembers.filter(user => user != members[0].user.id);
-
-			// if in a VC unmute them
-			if (members[0].voice.channelID) await members[0].voice.setMute(false);
-
+			await members[0].timeout(null, `${message.author.id} put user out of timeout`);
 			message.channel.success('moderation/unmute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();

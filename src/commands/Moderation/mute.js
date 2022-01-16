@@ -1,6 +1,5 @@
 // Dependencies
-const { timeEventSchema } = require('../../database/models'),
-	{ time: { getTotalTime } } = require('../../utils'),
+const { time: { getTotalTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,9 +16,10 @@ class Mute extends Command {
 			name: 'mute',
 			guildOnly: true,
 			dirname: __dirname,
+			aliases: ['timeout'],
 			userPermissions: ['MUTE_MEMBERS'],
 			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
-			description: 'Mute a user.',
+			description: 'Put a user in timeout.',
 			usage: 'mute <user> [time]',
 			cooldown: 2000,
 			examples: ['mute username', 'mute username 5m'],
@@ -59,72 +59,11 @@ class Mute extends Command {
 		// Make sure user isn't trying to punish themselves
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
-		// get mute role
-		let muteRole = message.guild.roles.cache.get(settings.MutedRole);
-		// If role not found then make role
-		if (!muteRole) {
-			try {
-				muteRole = await message.guild.roles.create({
-					name: 'Muted',
-					color: '#514f48',
-					permissions: ['READ_MESSAGE_HISTORY'],
-				});
-				// update server with no muted role
-				await message.guild.updateGuild({ MutedRole: muteRole.id });
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-		}
-
-
-		// add role to user
+		// put user in timeout
 		try {
-			members[0].roles.add(muteRole).then(async () => {
-				// Make sure that the user is in a voice channel
-				if (members[0].voice.channelID) {
-					try {
-						await members[0].voice.setMute(true);
-					} catch (err) {
-						if (bot.config.debug) bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					}
-				}
-
-				// update server with no muted role
-				if (!settings.MutedMembers.includes(members[0].user.id)) {
-					await message.guild.updateGuild({ MutedMembers: [...settings.MutedMembers, members[0].user.id] });
-				}
-
-				// reply to user
-				message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
-				// see if it was a tempmute
-				if (message.args[1]) {
-					const time = getTotalTime(message.args[1], message);
-					if (!time) return;
-
-					// connect to database
-					const newEvent = await new timeEventSchema({
-						userID: members[0].user.id,
-						guildID: message.guild.id,
-						time: new Date(new Date().getTime() + time),
-						channelID: message.channel.id,
-						roleID: muteRole.id,
-						type: 'mute',
-					});
-					await newEvent.save();
-
-					// remove mute role from user
-					setTimeout(async () => {
-						bot.commands.get('unmute').run(bot, message, settings);
-
-						// Delete item from database as bot didn't crash
-						await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
-							if (err) console.log(err);
-						});
-					}, time);
-				}
-			});
+			// default time is 7 days
+			await members[0].timeout(getTotalTime(message.args[1], message) ?? 604800000, `${message.author.id} put user in timeout`);
+			message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
