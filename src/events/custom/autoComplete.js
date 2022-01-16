@@ -33,18 +33,14 @@ class AutoComplete extends Event {
 		let fetched = false;
 		const res = await axios.get(`https://www.youtube.com/results?q=${rfc3986EncodeURIComponent(searchQuery)}&hl=en`);
 		let html = res.data;
-		if (!html) return console.log(res);
+
 		// try to parse html
 		try {
-			const data = html.split('ytInitialData = \'')[1].split('\';</script>')[0];
-			html = data.replace(/\\x([0-9A-F]{2})/ig, (...items) => {
-				return String.fromCharCode(parseInt(items[1], 16));
-			});
+			const data = html.split('ytInitialData = \'')[1]?.split('\';</script>')[0];
+			html = data.replace(/\\x([0-9A-F]{2})/ig, (...items) => String.fromCharCode(parseInt(items[1], 16)));
 			html = html.replaceAll('\\\\"', '');
 			html = JSON.parse(html);
-		} catch(e) {
-			console.log(e);
-		}
+		} catch(e) { null; }
 
 		let videos;
 		if (html?.contents?.sectionListRenderer?.contents?.length > 0 && html.contents.sectionListRenderer.contents[0]?.itemSectionRenderer?.contents?.length > 0) {
@@ -57,13 +53,13 @@ class AutoComplete extends Event {
 			try {
 				videos = JSON.parse(html.split('{"itemSectionRenderer":{"contents":')[html.split('{"itemSectionRenderer":{"contents":').length - 1].split(',"continuations":[{')[0]);
 				fetched = true;
-			} catch (e) { null;}
+			} catch (e) { null; }
 		}
 		if (!fetched) {
 			try {
 				videos = JSON.parse(html.split('{"itemSectionRenderer":')[html.split('{"itemSectionRenderer":').length - 1].split('},{"continuationItemRenderer":{')[0]).contents;
 				fetched = true;
-			} catch(e) {null;}
+			} catch(e) { null; }
 		}
 
 		const results = [];
