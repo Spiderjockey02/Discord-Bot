@@ -89,4 +89,5 @@ Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discor
 * **[Tovade#6617](https://github.com/tovade)** - Initial Reaction Role System.
 * **Josh_V2#9733** - Slash Commands & Tags System.
 * **XBouBou#0856** - French Translation.
+* **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin/tree/1.1.2) (TTS, reddit etc).
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
