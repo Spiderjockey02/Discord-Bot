@@ -49,7 +49,7 @@ class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(bot, message.guild, members[0], message.channel);
+			const res = await this.createRankCard(bot, message.guild, message.author, members[0], message.channel);
 			msg.delete();
 			if (typeof (res) == 'object' && !res.description) {
 				await message.channel.send({ files: [res] });
@@ -78,7 +78,7 @@ class Rank extends Command {
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(bot, guild, member, channel);
+			const res = await this.createRankCard(bot, guild, interaction.user, member, channel);
 			if (typeof (res) == 'object') {
 				await interaction.reply({ files: [res] });
 			} else {
@@ -94,34 +94,42 @@ class Rank extends Command {
  	 * Function for fetching meme embed.
  	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command ran in
- 	 * @param {member} guildMember The settings of the guild
+	 * @param {author} User The user who ran the command
+ 	 * @param {target} guildMember The member who's rank is being checked
  	 * @param {channel} channel The channel the command ran in
  	 * @returns {embed}
 	*/
-	async createRankCard(bot, guild, member, channel) {
-		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
+	async createRankCard(bot, guild, author, target, channel) {
+		// make sure it's not a bot
+		if (target.user.bot) return channel.error('level/rank:NO_BOTS', { ERROR:null }, true);
 
-		const user = res.find(doc => doc.userID == member.user.id);
+		// sort and find user
+		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
+		const user = res.find(doc => doc.userID == target.user.id);
+
 		// if they haven't send any messages
-		if (!user) return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
+		if (!user) {
+			if (author.id == target.user.id) return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
+			return channel.error('level/rank:MEMBER_MESSAGE', { ERROR: null }, true);
+		}
 
 		let rankScore;
 		for (let i = 0; i < res.length; i++) {
-			if (res[i].userID == member.user.id) rankScore = i;
+			if (res[i].userID == target.user.id) rankScore = i;
 		}
 
 		// create rank card
 		const rankcard = new rank()
-			.setAvatar(member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+			.setAvatar(target.user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
 			.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setLevel(user.Level)
 			.setRank(rankScore + 1)
 			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (user.Level == 1 ? 0 : (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
-			.setStatus(member.presence?.status ?? 'dnd')
+			.setStatus(target.presence?.status ?? 'dnd')
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-			.setUsername(member.user.username)
-			.setDiscriminator(member.user.discriminator);
-		if (member.user.rankImage && member.user.premium) rankcard.setBackground('IMAGE', member.user.rankImage);
+			.setUsername(target.user.username)
+			.setDiscriminator(target.user.discriminator);
+		if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
 
 		// create rank card
 		const buffer = await rankcard.build();
