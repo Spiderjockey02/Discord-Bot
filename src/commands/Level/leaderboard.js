@@ -114,8 +114,7 @@ class Leaderboard extends Command {
 					.setURL(`${bot.config.websiteURL}/leaderboard/${guild.id}`);
 				for (let j = 0; j < 10; j++) {
 					if (res[(i * 10) + j]) {
-						// eslint-disable-next-line no-empty-function
-						const name = await guild.members.fetch(res[(i * 10) + j].userID).catch(() => {}) || 'User left';
+						const name = await guild.members.fetch(res[(i * 10) + j].userID).catch(() => null) || 'User left';
 						if (name == 'User left') {
 							embed2.addField(guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
 								guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }));
