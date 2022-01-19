@@ -21,6 +21,7 @@ class Gonewild extends Command {
 			description: 'Look at NSFW images.',
 			usage: 'gonewild',
 			cooldown: 2000,
+			slash: true,
 		});
 	}
 
