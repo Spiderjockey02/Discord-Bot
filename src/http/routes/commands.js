@@ -3,9 +3,9 @@ const express = require('express'),
 	router = express.Router();
 
 // Command page
-module.exports = function(bot) {
+module.exports = (bot) => {
 	// List of all commands
-	router.get('/', function(req, res) {
+	router.get('/', (req, res) => {
 
 		// show list of commands
 		const categories = bot.commands
@@ -22,13 +22,13 @@ module.exports = function(bot) {
 	});
 
 	// JSON view of all commands
-	router.get('/json', function(req, res) {
+	router.get('/json', (req, res) => {
 
 		res.status(200).json([...bot.commands]);
 	});
 
 	// Show information on a particular command
-	router.get('/:command', function(req, res) {
+	router.get('/:command', (req, res) => {
 
 		// check if command exists
 		if (bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command))) {

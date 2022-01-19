@@ -4,7 +4,7 @@ const express = require('express'),
 
 module.exports = (bot) => {
 	// statistics page
-	router.get('/', async function(req, res) {
+	router.get('/', async (req, res) => {
 
 		res.status(200).json({
 			guildCount: bot.guilds.cache.size,

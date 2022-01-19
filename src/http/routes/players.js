@@ -4,7 +4,7 @@ const express = require('express'),
 	router = express.Router();
 
 // Guild page
-module.exports = function(bot) {
+module.exports = (bot) => {
 	// Get information of the player
 	router.get('/:guildId', async (req, res) => {
 		const player = bot.manager?.players.get(req.params.guildId);

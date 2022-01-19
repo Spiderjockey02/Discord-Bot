@@ -4,7 +4,7 @@ const express = require('express'),
 
 module.exports = (bot) => {
 	// statistics page
-	router.get('/', async function(req, res) {
+	router.get('/', async (req, res) => {
 
 		// check for ID query
 		if (req.query.ID && req.query.guilds) {
