@@ -48,7 +48,7 @@ class GuildBanAdd extends Event {
 				.setThumbnail(user.displayAvatarURL())
 				.addField('Reason:', guildBan.reason ?? 'No reason given')
 				.setTimestamp()
-				.setFooter(`ID: ${user.id}`);
+				.setFooter({ text: `ID: ${user.id}` });
 
 			// Find channel and send message
 			try {

@@ -90,19 +90,15 @@ class Reddit extends Command {
 	async fetchPost(bot, channel, subreddit) {
 		let reddit;
 		try {
-			// Check if its a NSFW channel or not
-			if (channel.nsfw || channel.type == 'DM') {
-				// NSFW content can be shown
-				reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: false });
-			} else {
-				reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: true });
-			}
+			// Whether or not to remove NSFW content
+			reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: !(channel.nsfw || channel.type == 'DM') });
+
 			// Send message to channel
 			return new Embed(bot, channel.guild)
 				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.subreddit })
 				.setURL(reddit.link)
 				.setImage(reddit.imageURL)
-				.setFooter('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) });
+				.setFooter({ text: channel.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) }) });
 		} catch (err) {
 			bot.logger.error(err.message);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);

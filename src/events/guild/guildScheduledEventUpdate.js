@@ -61,7 +61,7 @@ class GuildScheduledEventUpdate extends Event {
 			}
 
 			embed.setDescription(`**Event: ${newGuildEvent.name} has been updated.**`)
-				.setFooter('misc:ID', { ID: newGuildEvent.guild.id })
+				.setFooter({ text: newGuildEvent.guild.translate('misc:ID', { ID: newGuildEvent.guild.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

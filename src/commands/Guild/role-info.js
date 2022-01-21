@@ -100,7 +100,7 @@ class RoleInfo extends Command {
 				{ name: guild.translate('guild/role-info:CREATED'), value: moment(role.createdAt).format('lll') },
 			)
 			.setTimestamp()
-			.setFooter('guild/role-info:FOOTER', { MEMBER: user.tag, ID: role.id });
+			.setFooter({ text: guild.translate('guild/role-info:FOOTER', { MEMBER: user.tag, ID: role.id }) });
 	}
 }
 

@@ -37,7 +37,7 @@ class GuildMemberRemove extends Event {
 			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(15158332)
-				.setFooter(`ID: ${member.id}`)
+				.setFooter({ text: `ID: ${member.id}` })
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor({ name: 'User left:', iconURL: member.user.displayAvatarURL() })
 				.addField('Joined at:', member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)

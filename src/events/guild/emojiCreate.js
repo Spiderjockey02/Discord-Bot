@@ -33,7 +33,7 @@ class EmojiCreate extends Event {
 			const embed = new Embed(bot, emoji.guild)
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
 				.setColor(3066993)
-				.setFooter(`ID: ${emoji.id}`)
+				.setFooter({ text: `ID: ${emoji.id}` })
 				.setAuthor({ name: emoji.guild.name, iconURL: emoji.guild.iconURL() })
 				.setTimestamp();
 

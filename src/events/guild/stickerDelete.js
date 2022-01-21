@@ -34,7 +34,7 @@ class StickerDelete extends Event {
 				.setDescription(`**Sticker deleted: ${sticker.name}**`)
 				.setColor(15158332)
 				.setImage(`https://cdn.discordapp.com/stickers/${sticker.id}.png`)
-				.setFooter('misc:ID', { ID: sticker.id })
+				.setFooter({ text: sticker.guild.translate('misc:ID', { ID: sticker.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

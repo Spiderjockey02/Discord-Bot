@@ -48,7 +48,7 @@ class ChannelDelete extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${types[channel.type]} channel deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
-				.setFooter(`ID: ${channel.id}`)
+				.setFooter({ text: `ID: ${channel.id}` })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

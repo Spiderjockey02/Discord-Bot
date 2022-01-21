@@ -44,7 +44,7 @@ class ThreadCreate extends Event {
 					`Owner: ${bot.users.cache.get(thread.ownerId)?.tag}`,
 				].join('\n'))
 				.setColor(3066993)
-				.setFooter('misc:ID', { ID: thread.id })
+				.setFooter({ text: thread.guild.translate('misc:ID', { ID: thread.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

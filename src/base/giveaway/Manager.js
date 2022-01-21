@@ -53,7 +53,7 @@ class GiveawaysManager extends EventEmitter {
 		embed
 			.setAuthor({ name: giveaway.prize })
 			.setColor(giveaway.embedColor)
-			.setFooter(`${giveaway.winnerCount} ${giveaway.messages.winners}`)
+			.setFooter({ text: `${giveaway.winnerCount} ${giveaway.messages.winners}` })
 			.setDescription(
 				giveaway.messages.inviteToParticipate +
                     '\n' +

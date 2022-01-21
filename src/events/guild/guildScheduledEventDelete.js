@@ -33,7 +33,7 @@ class GuildScheduledEventDelete extends Event {
 			const embed = new Embed(bot, guildEvent.guild)
 				.setDescription(`**Event: ${guildEvent.name} has been deleted.**`)
 				.setColor(15158332)
-				.setFooter('misc:ID', { ID: guildEvent.guild.id })
+				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

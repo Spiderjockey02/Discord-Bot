@@ -38,7 +38,7 @@ class EmojiUpdate extends Event {
 				embed = new Embed(bot, newEmoji.guild)
 					.setDescription('**Emoji name update**')
 					.setColor(15105570)
-					.setFooter(`ID: ${newEmoji.id}`)
+					.setFooter({ text: `ID: ${newEmoji.id}` })
 					.setAuthor({ name: newEmoji.guild.name, iconURL: newEmoji.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldEmoji.name}`, inline: true },
@@ -64,7 +64,7 @@ class EmojiUpdate extends Event {
 					embed = new Embed(bot, newEmoji.guild)
 						.setDescription('**Emoji roles updated**')
 						.setColor(15105570)
-						.setFooter(`ID: ${newEmoji.id}`)
+						.setFooter({ text: `ID: ${newEmoji.id}` })
 						.setAuthor({ name: newEmoji.guild.name, iconURL: newEmoji.guild.iconURL() })
 						.addFields(
 							{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },

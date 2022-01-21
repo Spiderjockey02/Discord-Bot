@@ -72,7 +72,7 @@ class Previous extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor({ name: `Previous Tracks - ${message.guild.name}`, iconURL: message.guild.iconURL() })
 				.setDescription(`**Last Track**: ${str == '' ? '  Nothing' : '\n\n' + str }`)
-				.setFooter(`Page ${i + 1}/${pagesNum} | ${player.previousTracks.length} song(s)`);
+				.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${player.previousTracks.length} song(s)` });
 			pages.push(embed);
 		}
 

@@ -24,23 +24,6 @@ class EgglordEmbed extends MessageEmbed {
 		this.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
 		return this;
 	}
-
-	// Language translator for footer
-	setFooter(key, args, icon) {
-		if (typeof args === 'object') {
-			const language = this.guild?.settings.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
-			this.footer = {
-				text: this.bot.translate(key, args, language),
-				iconURL: icon,
-			};
-		} else {
-			this.footer = {
-				text: key,
-				iconURL: args,
-			};
-		}
-		return this;
-	}
 }
 
 module.exports = EgglordEmbed;

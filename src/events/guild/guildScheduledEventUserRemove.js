@@ -38,7 +38,7 @@ class GuildScheduledEventUserRemove extends Event {
 					`There are still ${guildEvent.userCount ?? 0} users subscribed to the event.`,
 				].join('\n'))
 				.setColor(15158332)
-				.setFooter('misc:ID', { ID: guildEvent.guild.id })
+				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

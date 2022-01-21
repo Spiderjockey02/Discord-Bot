@@ -41,7 +41,7 @@ class GuildScheduledEventUserAdd extends Event {
 					`There are now ${guildEvent.userCount ?? 0} users subscribed to the event.`,
 				].join('\n'))
 				.setColor(3066993)
-				.setFooter('misc:ID', { ID: guildEvent.guild.id })
+				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

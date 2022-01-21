@@ -48,7 +48,7 @@ class MessageReactionRemove extends Event {
 			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(15158332)
-				.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
+				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
 				.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
 				.setTimestamp();
 

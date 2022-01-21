@@ -75,9 +75,8 @@ class PView extends Command {
 							.setThumbnail(p.thumbnail)
 							.setTitle(p.name)
 							.setDescription(str)
-							.setFooter(`ID: ${p._id}`)
 							.setTimestamp()
-							.setFooter(`Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration`);
+							.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${p.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration` });
 						pages.push(embed);
 						if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message.channel, pages);
 						else if (pagesNum == 1) message.channel.send({ embeds: [embed] });

@@ -33,7 +33,7 @@ class RoleDelete extends Event {
 			const embed = new Embed(bot, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was deleted**`)
 				.setColor(15158332)
-				.setFooter(`ID: ${role.id}`)
+				.setFooter({ text: `ID: ${role.id}` })
 				.setAuthor({ name: role.guild.name, iconURL: role.guild.iconURL() })
 				.setTimestamp();
 

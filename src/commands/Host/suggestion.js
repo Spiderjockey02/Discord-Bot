@@ -51,7 +51,7 @@ class Suggestion extends Command {
 				.setDescription(description)
 				.addField('Category', plugin)
 				.setTimestamp()
-				.setFooter(`${bot.user.username} suggestions`, bot.user.displayAvatarURL());
+				.setFooter({ text: `${bot.user.username} suggestions`, iconURL: bot.user.displayAvatarURL() });
 
 			channel.send({ embeds: [embed] }).then(async (msg) => {
 				await msg.react('👍');

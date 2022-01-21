@@ -48,7 +48,7 @@ class ChannelCreate extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setDescription(`**${types[channel.type]} channel created: ${channel.toString()}**`)
 				.setColor(3066993)
-				.setFooter('misc:ID', { ID: channel.id })
+				.setFooter({ text: channel.guild.translate('misc:ID', { ID: channel.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 

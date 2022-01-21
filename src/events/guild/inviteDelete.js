@@ -30,7 +30,7 @@ class InviteDelete extends Event {
 			const embed = new Embed(bot, invite.guild)
 				.setDescription('**Invite Deleted**')
 				.setColor(15158332)
-				.setFooter(`Guild ID: ${invite.guild.id}`)
+				.setFooter({ text: `Guild ID: ${invite.guild.id}` })
 				.setTimestamp();
 
 			// Find channel and send message

@@ -47,7 +47,7 @@ class GuildBanRemove extends Event {
 				.setAuthor({ name: 'User unbanned:', iconURL: user.displayAvatarURL() })
 				.setThumbnail(user.displayAvatarURL())
 				.setTimestamp()
-				.setFooter(`ID: ${user.id}`);
+				.setFooter({ text: `ID: ${user.id}` });
 
 			// Find channel and send message
 			try {

@@ -41,7 +41,7 @@ class Poll extends Command {
 		const embed = new Embed(bot, message.guild)
 			.setTitle('guild/poll:TITLE', { USER: message.author.tag })
 			.setDescription(message.args.join(' '))
-			.setFooter('guild/poll:FOOTER', {});
+			.setFooter({ text: message.guild.translate('guild/poll:FOOTER') });
 		message.channel.send({ embeds: [embed] }).then(async (msg) => {
 			// Add reactions to message
 			await msg.react('✅');

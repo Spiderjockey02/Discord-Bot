@@ -38,7 +38,7 @@ class StickerUpdate extends Event {
 				embed = new Embed(bot, newSticker.guild)
 					.setDescription(`Sticker name changed of ${newSticker.name}**`)
 					.setColor(15105570)
-					.setFooter(`ID: ${newSticker.id}`)
+					.setFooter({ text: `ID: ${newSticker.id}` })
 					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldSticker.name}`, inline: true },
@@ -53,7 +53,7 @@ class StickerUpdate extends Event {
 				embed = new Embed(bot, newSticker.guild)
 					.setDescription(`Sticker description changed of ${newSticker.name}**`)
 					.setColor(15105570)
-					.setFooter(`ID: ${newSticker.id}`)
+					.setFooter({ text: `ID: ${newSticker.id}` })
 					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldSticker.description}`, inline: true },

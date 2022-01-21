@@ -48,7 +48,7 @@ module.exports = async (bot) => {
 						.setTitle('fun/reminder:TITLE')
 						.setThumbnail('attachment://Timer.png')
 						.setDescription(`${event.message}\n[${guild.translate('fun/reminder:DESC')}](https://discord.com/channels/${event.guildID}/${event.channelID}})`)
-						.setFooter('fun/reminder:FOOTER', { TIME: ms(event.time, { long: true }) });
+						.setFooter({ text: guild.translate('fun/reminder:FOOTER', { TIME: ms(event.time, { long: true }) }) });
 					try {
 						await bot.users.cache.get(event.userID).send({ embeds: [embed], files: [attachment] });
 					} catch (err) {

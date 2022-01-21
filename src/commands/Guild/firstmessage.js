@@ -93,7 +93,7 @@ class Firstmessage extends Command {
 			.setAuthor({ name: fMessage.author.tag, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
 			.setDescription(fMessage.content)
 			.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
-			.setFooter('misc:ID', { ID: fMessage.id })
+			.setFooter({ text: guild.translate('misc:ID', { ID: fMessage.id }) })
 			.setTimestamp(fMessage.createdAt);
 	}
 }

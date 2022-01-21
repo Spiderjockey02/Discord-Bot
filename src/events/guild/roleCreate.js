@@ -33,7 +33,7 @@ class RoleCreate extends Event {
 			const embed = new Embed(bot, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was created**`)
 				.setColor(3066993)
-				.setFooter(`ID: ${role.id}`)
+				.setFooter({ text: `ID: ${role.id}` })
 				.setAuthor({ name: role.guild.name, iconURL: role.guild.iconURL() })
 				.setTimestamp();
 

@@ -60,7 +60,7 @@ class Pokemon extends Command {
 				.setAuthor({ name: res.name, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}` })
 				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
-				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
+				.setFooter({ text: `Weakness of pokemon - ${res.info.weakness}`, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}` });
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
@@ -93,7 +93,7 @@ class Pokemon extends Command {
 				.setAuthor({ name: res.name, iconURL: `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.typeIcon}` })
 				.setDescription(`Type of this pokemon is **${res.info.type}**. ${res.info.description}`)
 				.setThumbnail(`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.photo}`)
-				.setFooter(`Weakness of pokemon - ${res.info.weakness}`, `https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}`);
+				.setFooter({ text:`Weakness of pokemon - ${res.info.weakness}`, iconURL:`https://courses.cs.washington.edu/courses/cse154/webservices/pokedex/${res.images.weaknessIcon}` });
 			return interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			// An error occured when looking for account

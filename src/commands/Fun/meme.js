@@ -74,7 +74,7 @@ class Meme extends Command {
 					.setColor(16333359)
 					.setURL(meme.link)
 					.setImage(meme.imageURL)
-					.setFooter('fun/meme:FOOTER', { UPVOTES: meme.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.downvotes.toLocaleString(settings.Language) });
+					.setFooter({ text: guild.translate('fun/meme:FOOTER', { UPVOTES: meme.upvotes.toLocaleString(settings.Language), DOWNVOTES: meme.downvotes.toLocaleString(settings.Language) }) });
 			}
 		} catch (err) {
 			bot.logger.error(err.message);

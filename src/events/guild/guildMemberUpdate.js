@@ -42,7 +42,7 @@ class GuildMemberUpdate extends Event {
 			if (oldMember.nickname != newMember.nickname) {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} nickname changed**`)
-					.setFooter(`ID: ${newMember.id}`)
+					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: 'Before:', value: `${oldMember.nickname ? oldMember.nickname : '*None*'}`, inline: true },
@@ -55,7 +55,7 @@ class GuildMemberUpdate extends Event {
 			if (!oldMember.premiumSince && newMember.premiumSince) {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has boosted the server**`)
-					.setFooter(`ID: ${newMember.id}`)
+					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
@@ -65,7 +65,7 @@ class GuildMemberUpdate extends Event {
 			if (oldMember.premiumSince && !newMember.premiumSince) {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has unboosted the server**`)
-					.setFooter(`ID: ${newMember.id}`)
+					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
@@ -76,7 +76,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**username changed of ${newMember.toString()}**`)
 					.setColor(15105570)
-					.setFooter(`ID: ${newMember.id}`)
+					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldMember.name}`, inline: true },
@@ -100,7 +100,7 @@ class GuildMemberUpdate extends Event {
 				}
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} roles changed**`)
-					.setFooter(`ID: ${newMember.id}`)
+					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },

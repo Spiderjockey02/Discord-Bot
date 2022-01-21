@@ -80,7 +80,7 @@ class MessageReactionAdd extends Event {
 			const embed = new Embed(bot, reaction.message.guild)
 				.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(3066993)
-				.setFooter(`User: ${user.id} | Message: ${reaction.message.id} `)
+				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
 				.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
 				.setTimestamp();
 

@@ -74,7 +74,7 @@ class MessageDelete extends Event {
 			const embed = new Embed(bot, message.guild)
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
-				.setFooter(`Author: ${message.author.id} | Message: ${message.id}`)
+				.setFooter({ text: `Author: ${message.author.id} | Message: ${message.id}` })
 				.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() });
 			if (message.content.length > 0) embed.addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${content}`);
 			embed.setTimestamp();

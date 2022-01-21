@@ -37,7 +37,7 @@ class InviteCreate extends Event {
 					`Temporary: \`${invite.temporary}\``,
 				].join('\n'))
 				.setColor(3066993)
-				.setFooter(`ID: ${invite.inviter.id}`)
+				.setFooter({ text: `ID: ${invite.inviter.id}` })
 				.setAuthor({ name: 'Invite created:', iconURL: invite.inviter.displayAvatarURL() })
 				.setTimestamp();
 

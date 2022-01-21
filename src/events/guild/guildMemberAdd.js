@@ -35,7 +35,7 @@ class GuildMemberAdd extends Event {
 			const embed = new Embed(bot, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(3066993)
-				.setFooter(`ID: ${member.id}`)
+				.setFooter({ text: `ID: ${member.id}` })
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor({ name: 'User joined:', iconURL: member.user.displayAvatarURL() })
 				.setTimestamp();

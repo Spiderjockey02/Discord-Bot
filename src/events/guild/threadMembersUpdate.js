@@ -52,7 +52,7 @@ class ThreadMembersUpdate extends Event {
 					const embed = new Embed(bot, thread.guild)
 						.setDescription(`**Thread members updated in ${thread.toString()}**`)
 						.setColor(15105570)
-						.setFooter(`ID: ${thread.id}`)
+						.setFooter({ text: `ID: ${thread.id}` })
 						.setAuthor({ name: thread.guild.name, iconURL: thread.guild.iconURL() })
 						.addFields(
 							{ name: `Added members [${memberAdded.size}]:`, value: `${memberAddedString.length == 0 ? '*None*' : memberAddedString.join('\n ')}`, inline: true },

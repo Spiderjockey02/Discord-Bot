@@ -38,7 +38,7 @@ class ThreadUpdate extends Event {
 				embed = new Embed(bot, newThread.guild)
 					.setDescription(`**Thread name changed of ${newThread.toString()}**`)
 					.setColor(15105570)
-					.setFooter(`ID: ${newThread.id}`)
+					.setFooter({ text: `ID: ${newThread.id}` })
 					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.name}`, inline: true },
@@ -53,7 +53,7 @@ class ThreadUpdate extends Event {
 				embed = new Embed(bot, newThread.guild)
 					.setDescription(`**Thread archive state changed of ${newThread.toString()}**`)
 					.setColor(15105570)
-					.setFooter(`ID: ${newThread.id}`)
+					.setFooter({ text: `ID: ${newThread.id}` })
 					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.archived}`, inline: true },

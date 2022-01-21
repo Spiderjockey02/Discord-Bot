@@ -86,7 +86,7 @@ class ServerInfo extends Command {
 				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
 			)
 			.setTimestamp()
-			.setFooter('guild/server-info:FOOTER', { USER: user.tag });
+			.setFooter({ text: guild.translate('guild/server-info:FOOTER', { USER: user.tag }) });
 	}
 }
 

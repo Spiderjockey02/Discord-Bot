@@ -37,7 +37,7 @@ class GuildScheduledEventCreate extends Event {
 					`Ends at ${guildEvent.scheduledEndAt}`,
 				].join('\n'))
 				.setColor(3066993)
-				.setFooter('misc:ID', { ID: guildEvent.guild.id })
+				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
