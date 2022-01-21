@@ -62,7 +62,7 @@ class Egglord extends Client {
 		this.commands = new Collection();
 		this.interactions = new Collection();
 		this.cooldowns = new Collection();
-
+		this.requests = {};
 		/**
 		 * ALlows connection to database
 		 * @type {function}

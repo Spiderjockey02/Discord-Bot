@@ -43,6 +43,8 @@ const config = {
 		SuggestionChannel: '761619652009787392',
 		// Where the bot will send Guild join/leave messages to
 		GuildChannel: '761619652009787392',
+		// Where rate limits will be sent to, for investigation
+		rateLimitChannelID: '761612724370931722',
 	},
 	API: {
 		port: 3000,

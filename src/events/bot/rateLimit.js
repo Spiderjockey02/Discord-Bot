@@ -1,5 +1,6 @@
 // Dependencies
-const	Event = require('../../structures/Event');
+const	Event = require('../../structures/Event'),
+	{ MessageEmbed } = require('discord.js');
 
 /**
  * Ratelimit event
@@ -21,8 +22,19 @@ class RateLimit extends Event {
 	 * @param {number} RateLimitData.timeout Time until this rate limit ends, in ms
 	 * @readonly
 	*/
-	async run(bot, { route, timeout }) {
-		if (bot.config.debug) bot.logger.error(`Rate limit: ${route} (Cooldown: ${timeout}ms)`);
+	async run(bot, { route, timeout, limit }) {
+		bot.logger.error(`Rate limit: ${route} (Cooldown: ${timeout}ms)`);
+
+		const embed = new MessageEmbed()
+			.setTitle('RateLimit hit')
+			.setColor('RED')
+			.addField('Path', route)
+			.addField('Limit', `${limit}`, true)
+			.addField('Cooldown', `${timeout}ms`, true)
+			.setTimestamp();
+
+		const modChannel = await bot.channels.fetch(bot.config.SupportServer.rateLimitChannelID).catch(() => bot.logger.error('Error fetching rate limit logging channel'));
+		if (modChannel) bot.addEmbed(modChannel.id, [embed]);
 	}
 }
 
