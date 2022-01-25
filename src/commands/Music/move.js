@@ -69,7 +69,7 @@ class Move extends Command {
 			const song = player.queue[message.args[0] - 1];
 			player.queue.splice(message.args[0] - 1, 1);
 			player.queue.splice(message.args[1] - 1, 0, song);
-			return message.channel.send(message.translate('music/move:MOVED_1', { TITLE: song.title, POS: message.args[1] }));
+			return message.channel.send(message.translate('music/move:MOVED_2', { TITLE: song.title, POS: message.args[1] }));
 		}
 	}
 
@@ -108,7 +108,7 @@ class Move extends Command {
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(pos2 - 1, 0, song);
-			return interaction.reply(guild.translate('music/move:MOVED_1', { TITLE: song.title, POS: pos2 }));
+			return interaction.reply(guild.translate('music/move:MOVED_2', { TITLE: song.title, POS: pos2 }));
 		}
 	}
 }
