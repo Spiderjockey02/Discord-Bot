@@ -46,11 +46,10 @@ class Twitter extends Command {
 	async run(bot, message, settings) {
 		// Get user
 		const members = await message.getMember();
-		if (message.args.join(' ').replace(/<@.?[0-9]*?>/g, '').length == message.args.length) message.args.shift();
+		if (message.args.join(' ').replace(/<@.?\d*?>/g, '').length == message.args.length) message.args.shift();
 
 		// Get text
-		let text = message.args.join(' ');
-		text = text.replace(/<@.?[0-9]*?>/g, '');
+		const text = message.args.join(' ').replace(/<@.?\d*?>/g, '');
 
 		// make sure text was entered
 		if (message.args.length == 0) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/twitter:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));

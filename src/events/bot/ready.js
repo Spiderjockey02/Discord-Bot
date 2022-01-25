@@ -84,15 +84,14 @@ class Ready extends Event {
 
 		// check for premium users
 		const users = await userSchema.find({});
-		for (let i = 0; i < users.length; i++) {
-			const user = await bot.users.fetch(users[i].userID);
-			// const userData = users[i];
-			// user = { ...user, ...userData };
-			user.premium = users[i].premium;
-			user.premiumSince = users[i].premiumSince ?? 0;
-			user.cmdBanned = users[i].cmdBanned;
-			user.rankImage = users[i].rankImage ? Buffer.from(users[i].rankImage ?? '', 'base64') : '';
+		for (const { userID, premium, premiumSince, cmdBanned, rankImage } of users) {
+			const user = await bot.users.fetch(userID);
+			user.premium = premium;
+			user.premiumSince = premiumSince ?? 0;
+			user.cmdBanned = cmdBanned;
+			user.rankImage = rankImage ? Buffer.from(rankImage ?? '', 'base64') : '';
 		}
+
 
 		// enable time event handler (in case of bot restart)
 		try {

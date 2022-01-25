@@ -49,8 +49,7 @@ class PHcomment extends Command {
 		const members = await message.getMember();
 
 		// Get text
-		let text = message.args.join(' ');
-		text = text.replace(/<@.?[0-9]*?>/g, '');
+		const text = message.args.join(' ').replace(/<@.?\d*?>/g, '');
 
 		// Make sure text was entered
 		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/phcomment:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
