@@ -41,7 +41,7 @@ class Unlock extends Command {
 			await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
 				SEND_MESSAGES: true,
 			});
-			for (const role of settings.welcomeRoleGive) {
+			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
 					SEND_MESSAGES: true,
 				});

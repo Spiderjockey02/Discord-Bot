@@ -42,7 +42,7 @@ class Lock extends Command {
 			await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
 				SEND_MESSAGES: false,
 			});
-			for (const role of settings.welcomeRoleGive) {
+			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
 					SEND_MESSAGES: false,
 				});
