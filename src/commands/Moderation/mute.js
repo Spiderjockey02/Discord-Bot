@@ -61,8 +61,8 @@ class Mute extends Command {
 
 		// put user in timeout
 		try {
-			// default time is 7 days
-			await members[0].timeout(getTotalTime(message.args[1], message) ?? 604800000, `${message.author.id} put user in timeout`);
+			// default time is 28 days
+			await members[0].timeout(getTotalTime(message.args[1], message) ?? (28 * 86400000), `${message.author.id} put user in timeout`);
 			message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
