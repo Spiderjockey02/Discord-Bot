@@ -86,7 +86,7 @@ class Play extends Command {
 				}
 				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			} else {
-				return message.channel.error('music/play:NO_INPUT').then(m => m.delete({ timeout: 10000 }));
+				return message.channel.error('music/play:NO_INPUT').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 		}
 
