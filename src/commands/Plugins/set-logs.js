@@ -86,7 +86,7 @@ class SetLog extends Command {
 					}
 
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
-					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase()}\`` });
+					message.channel.success('plugins/set-logs:REMOVED', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase()}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
