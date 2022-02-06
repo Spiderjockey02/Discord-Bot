@@ -90,7 +90,7 @@ class Queue extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message.channel, pages);
+			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message.channel, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			if (isNaN(message.args[0])) return message.channel.send(message.translate('music/queue:NAN'));
@@ -163,7 +163,7 @@ class Queue extends Command {
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
 			if (pages.length == pagesNum && player.queue.length > 10) {
-				paginate(bot, channel, pages);
+				paginate(bot, channel, pages, member.id);
 				return interaction.reply('Loaded Queue');
 			} else {
 				return interaction.reply(pages[0]);

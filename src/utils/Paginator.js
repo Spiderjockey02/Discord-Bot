@@ -1,44 +1,57 @@
 // variables
-const emojiList = ['⏮', '◀️', '▶️', '⏭'],
+const	{ MessageActionRow, MessageButton } = require('discord.js'),
 	timeout = 120000;
 
-module.exports = async (bot, channel, pages) => {
+module.exports = async (bot, channel, pages, userID) => {
 	let page = 0;
-	const curPage = await channel.send({ embeds: [pages[page]] });
 
-	// react to embed with all emojis
-	for (const emoji of emojiList) {
-		await curPage.react(emoji);
-		await bot.delay(750);
-	}
+	const row = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('1')
+				.setLabel('⏮')
+				.setStyle('SECONDARY'),
+			new MessageButton()
+				.setCustomId('2')
+				.setLabel('◀️')
+				.setStyle('SECONDARY'),
+			new MessageButton()
+				.setCustomId('3')
+				.setLabel('▶️')
+				.setStyle('SECONDARY'),
+			new MessageButton()
+				.setCustomId('4')
+				.setLabel('⏭')
+				.setStyle('SECONDARY'),
+		);
 
-	// create reactionCollector to update page in embed
-	const filter = (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot;
-	const reactionCollector = await curPage.createReactionCollector({ filter, time: timeout });
+	const curPage = await channel.send({ embeds: [pages[page]], components: [row] });
+
+	const buttonCollector = await curPage.createMessageComponentCollector({ componentType: 'BUTTON', time: timeout });
 
 	// find out what emoji was reacted on to update pages
-	reactionCollector.on('collect', (reaction, user) => {
-		if (!user.bot && channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) reaction.users.remove(user.id);
-		switch (reaction.emoji.name) {
-		case emojiList[0]:
+	buttonCollector.on('collect', (i) => {
+		if (i.user.id !== userID) return;
+		switch (Number(i.customId)) {
+		case 1:
 			page = 0;
 			break;
-		case emojiList[1]:
+		case 2:
 			page = page > 0 ? --page : 0;
 			break;
-		case emojiList[2]:
+		case 3:
 			page = page + 1 < pages.length ? ++page : (pages.length - 1);
 			break;
-		case emojiList[3]:
+		case 4:
 			page = pages.length - 1;
 			break;
 		default:
 			break;
 		}
-		curPage.edit({ embeds: [pages[page]] });
+		i.update({ embeds: [pages[page]] });
 	});
 
 	// when timer runs out remove all reactions to show end of pageinator
-	reactionCollector.on('end', () => curPage.reactions.removeAll());
+	buttonCollector.on('end', () => curPage.edit({ embeds: [pages[page]], components: [] }));
 	return curPage;
 };

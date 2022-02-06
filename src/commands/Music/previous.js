@@ -78,7 +78,7 @@ class Previous extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, message, pages);
+			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, message, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			if (isNaN(message.args[0])) return message.channel.send('Page must be a number.');

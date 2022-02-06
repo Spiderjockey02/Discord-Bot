@@ -45,7 +45,7 @@ class Leaderboard extends Command {
 			const res = await this.createLeaderboard(bot, message.guild);
 			msg.delete();
 			if (Array.isArray(res)) {
-				paginate(bot, message.channel, res);
+				paginate(bot, message.channel, res, message.author.id);
 			} else if (typeof (res) == 'object') {
 				message.channel.send({ embeds: [res] });
 			} else {
@@ -72,7 +72,7 @@ class Leaderboard extends Command {
 		try {
 			const res = await this.createLeaderboard(bot, guild);
 			if (Array.isArray(res)) {
-				paginate(bot, channel, res);
+				paginate(bot, channel, res, interaction.user.id);
 			} else if (typeof (res) == 'object') {
 				interaction.reply({ embeds: [res] });
 			} else {

@@ -70,7 +70,7 @@ class Lyrics extends Command {
 			const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
 			msg.delete();
 			if (Array.isArray(lyrics)) {
-				paginate(bot, message.channel, lyrics);
+				paginate(bot, message.channel, lyrics, message.author.id);
 			} else {
 				message.channel.send({ content: lyrics });
 			}
@@ -119,7 +119,7 @@ class Lyrics extends Command {
 		try {
 			const lyrics = await this.searchLyrics(bot, guild, options, member.user);
 			if (Array.isArray(lyrics)) {
-				paginate(bot, channel, lyrics);
+				paginate(bot, channel, lyrics, member.id);
 			} else {
 				interaction.reply({ content: lyrics });
 			}
