@@ -97,7 +97,33 @@ class Screenshot extends Command {
 		}
 
 		// display phrases' definition
-		await interaction.defer();
+		await interaction.deferReply();
+		const data = await this.fetchScreenshot(bot, url);
+		if (!data) {
+			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
+		} else {
+			const attachment = new MessageAttachment(data, 'website.png');
+			interaction.editReply({ files: [attachment] });
+		}
+	}
+
+	async reply(bot, interaction, channel, message) {
+		const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+		if (!message.content.match(urlRegex)) return interaction.reply({ embeds: [channel.error('That is not a website', {}, true)], ephermal: true });
+		const url = message.content.match(urlRegex)[0];
+
+		// make sure URl is valid
+		if (!validUrl.isUri(url)) {
+			return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
+		}
+
+		// Make sure website is not NSFW in a non-NSFW channel
+		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) {
+			return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
+		}
+
+		// display phrases' definition
+		await interaction.deferReply();
 		const data = await this.fetchScreenshot(bot, url);
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });

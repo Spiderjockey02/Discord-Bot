@@ -48,7 +48,9 @@ class Docs extends Command {
 				{ name: 'Translate', type: 'MESSAGE' },
 				{ name: 'OCR', type: 'MESSAGE' },
 				{ name: 'Avatar', type: 'USER' },
-				{ name: 'Userinfo', type: 'USER' });
+				{ name: 'Userinfo', type: 'USER' },
+				{ name: 'Screenshot', type: 'MESSAGE' },
+			);
 
 			try {
 				await bot.guilds.cache.get(guild.id)?.commands.set(data);

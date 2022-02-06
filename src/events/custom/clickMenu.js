@@ -97,6 +97,14 @@ class ClickMenu extends Event {
 			bot.commands.get('play').callback(bot, interaction, guild, args);
 			break;
 		}
+		case 'Screenshot': {
+			// fetch message and check if message has content
+			const message = await channel.messages.fetch(interaction.targetId);
+			if (!message.content) return interaction.reply({ embeds: [channel.error('There is no content on this message for me to translate.', {}, true)], ephemeral: true });
+
+			bot.commands.get('screenshot').reply(bot, interaction, channel, message);
+			break;
+		}
 		default:
 			interaction.reply({ content: 'Something went wrong' });
 		}
