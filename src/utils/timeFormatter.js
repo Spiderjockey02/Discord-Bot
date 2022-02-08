@@ -3,7 +3,7 @@ module.exports.read24hrFormat = (text) => {
 	let j, k, ms;
 	j = k = ms = 0;
 
-	if (!text) return ms = 0;
+	if (!text) return 0;
 	const result = text.split(/:/);
 
 	// if time is xx:xx:xx instead of xx:xx

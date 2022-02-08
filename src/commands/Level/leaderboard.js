@@ -108,13 +108,14 @@ class Leaderboard extends Command {
 
 			// generate pages
 			const pages = [];
+			await guild.members.fetch();
 			for (let i = 0; i < pagesNum; i++) {
 				const embed2 = new Embed(bot, guild)
 					.setTitle('level/leaderboard:TITLE')
 					.setURL(`${bot.config.websiteURL}/leaderboard/${guild.id}`);
 				for (let j = 0; j < 10; j++) {
 					if (res[(i * 10) + j]) {
-						const name = await guild.members.fetch(res[(i * 10) + j].userID).catch(() => null) || 'User left';
+						const name = guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
 						if (name == 'User left') {
 							embed2.addField(guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
 								guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }));
@@ -128,7 +129,9 @@ class Leaderboard extends Command {
 				pages.push(embed2);
 				if (i == pagesNum - 1 && pagesNum > 1) {
 					return pages;
-				} else if (pagesNum == 1) {return embed2;}
+				} else if (pagesNum == 1) {
+					return embed2;
+				}
 			}
 		}
 	}
