@@ -48,6 +48,12 @@ class Egglord extends Client {
 				exemptPermissions: [],
 				embedColor: '#FF0000',
 				reaction: '🎉',
+				lastChance: {
+					enabled: true,
+					content: '⚠️ **LAST CHANCE TO ENTER !** ⚠️',
+					threshold: 5000,
+					embedColor: '#FF0000',
+				},
 			},
 		});
 

@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose');
 
 const giveawaySchema = Schema({
-	messageID: String,
-	channelID: String,
-	guildID: String,
+	messageId: String,
+	channelId: String,
+	guildId: String,
 	startAt: Number,
 	endAt: Number,
 	ended: Boolean,

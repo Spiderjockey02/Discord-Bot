@@ -6,10 +6,10 @@
   "ENDED": "🎉🎉 **GIVEAWAY ENDED** 🎉🎉",
   "TIME_REMAINING": "Time remaining: **{duration}**!",
   "INVITE_PARTICIPATE": "React with 🎉 to participate!",
-  "WIN_MESSAGE": "Congratulations, {winners}! You won **{prize}**!",
-  "FOOTER": "Giveaways",
+  "WIN_MESSAGE": "Congratulations, {winners}! You won **{this.prize}**!",
+  "FOOTER": "{this.winnerCount} winner(s)",
   "NO_WINNER": "Giveaway cancelled, no valid participations.",
   "WINNERS": "winner(s)",
   "END_AT": "End at",
-  "HOSTED": "Hosted by: {user}"
+  "HOSTED": "Hosted by: {this.hostedBy}"
 }

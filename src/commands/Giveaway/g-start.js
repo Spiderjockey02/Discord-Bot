@@ -52,7 +52,7 @@ class GiveawayStart extends Command {
 
 		// Start the giveaway
 		bot.giveawaysManager.start(message.channel, {
-			time: time,
+			duration: time,
 			prize: message.args.slice(2).join(' '),
 			winnerCount: parseInt(message.args[1]),
 			hostedBy: message.member,
@@ -78,6 +78,7 @@ class GiveawayStart extends Command {
 		}).then(() => {
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 		}).catch(err => {
+			console.log(err);
 			bot.logger.error(`Command: 'g-start' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 		});

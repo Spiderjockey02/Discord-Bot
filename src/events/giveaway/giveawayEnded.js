@@ -29,10 +29,10 @@ class GiveawayEnded extends Event {
 			try {
 				const embed = new MessageEmbed()
 					.setAuthor({ name: 'Giveaway winner', iconURL: member.user.displayAvatarURL() })
-					.setThumbnail(bot.guilds.cache.get(giveaway.guildID).iconURL())
+					.setThumbnail(bot.guilds.cache.get(giveaway.guildId).iconURL())
 					.setDescription([
 						`Prize: \`${giveaway.prize}\`.`,
-						`Message link: [link](https://discord.com/channels/${giveaway.guildID}/${giveaway.channelID}/${giveaway.messageID}).`,
+						`Message link: [link](https://discord.com/channels/${giveaway.guildId}/${giveaway.channelId}/${giveaway.messageId}).`,
 					].join('\n'));
 				await member.send({ embeds: [embed] });
 			} catch (err) {
