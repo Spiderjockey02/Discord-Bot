@@ -51,6 +51,9 @@ const config = {
 		secure: true,
 		token: '123456789',
 	},
+	LavalinkNodes: [
+		{ host: 'localhost', port: 5000, password: 'youshallnotpass' },
+	],
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
 	// embed colour
