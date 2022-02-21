@@ -51,10 +51,10 @@ class Status extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		await interaction.reply(guild.translate('misc/status:PONG'));
+		const msg = await interaction.reply({ content: guild.translate('misc/status:PONG'), fetchReply: true });
 
 		const embed = new Embed(bot, guild)
-			.addField(bot.translate('misc/status:PING'), `\`${(await interaction.fetchReply()).createdTimestamp - interaction.createdTimestamp}ms\``, true)
+			.addField(bot.translate('misc/status:PING'), `\`${msg.createdTimestamp - interaction.createdTimestamp}ms\``, true)
 			.addField(guild.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
 			.addField(guild.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
 			.setTimestamp();

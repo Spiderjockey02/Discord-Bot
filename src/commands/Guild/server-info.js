@@ -77,7 +77,6 @@ class ServerInfo extends Command {
 				{ name: guild.translate('guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.tag)}\``, inline: true },
 				{ name: guild.translate('guild/server-info:ID'), value: `\`${guild.id}\``, inline: true },
 				{ name: guild.translate('guild/server-info:CREATED'), value: `\`${moment(guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
-				{ name: guild.translate('guild/server-info:REGION'), value: `\`${guild.region}\``, inline: true },
 				{ name: guild.translate('guild/server-info:VERIFICATION'), value: `\`${guild.verificationLevel}\``, inline: true },
 				{ name: guild.translate('guild/server-info:MEMBER', { NUM: guild.memberCount }), value: guild.translate('guild/server-info:MEMBER_DESC', {
 					ONLINE: member.filter(m => m.presence?.status === 'online').size.toLocaleString(guild.settings.Language), IDLE: member.filter(m => m.presence?.status === 'idle').size.toLocaleString(guild.settings.Language), DND: member.filter(m => m.presence?.status === 'dnd').size.toLocaleString(guild.settings.Language), BOTS: member.filter(m => m.user.bot).size.toLocaleString(guild.settings.Language), HUMANS: member.filter(m => !m.user.bot).size.toLocaleString(guild.settings.Language),
