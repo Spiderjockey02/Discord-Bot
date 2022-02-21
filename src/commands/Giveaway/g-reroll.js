@@ -52,7 +52,7 @@ class GiveawayReroll extends Command {
 		}).then(() => {
 			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
 		}).catch((err) => {
-			bot.logger.error(`Command: 'g-reroll' has error: ${err.message}.`);
+			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		});
 	}

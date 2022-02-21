@@ -2,7 +2,7 @@ const { EventEmitter } = require('node:events'),
 	{ setTimeout } = require('node:timers'),
 	merge = require('deepmerge'),
 	serialize = require('serialize-javascript'),
-	{ Util, MessageEmbed, Intents } = require('discord.js'),
+	{ Util, MessageEmbed } = require('discord.js'),
 	{ GiveawayRerollOptions, PauseOptions, DEFAULT_CHECK_INTERVAL } = require('./Constants.js'),
 	{ validateEmbedColor } = require('./utils.js');
 
@@ -88,16 +88,6 @@ class Giveaway extends EventEmitter {
          */
 		this.messages = options.messages;
 		/**
-         * The URL appearing as the thumbnail on the giveaway embed.
-         * @type {string}
-         */
-		this.thumbnail = options.thumbnail;
-		/**
-         * Extra data concerning this giveaway.
-         * @type {any}
-         */
-		this.extraData = options.extraData;
-		/**
          * Which mentions should be parsed from the giveaway messages content.
          * @type {Discord.MessageMentionOptions}
          */
@@ -176,29 +166,11 @@ class Giveaway extends EventEmitter {
 	}
 
 	/**
-     * If bots can win the giveaway.
-     * @type {Boolean}
-     */
-	get botsCanWin() {
-		return typeof this.options.botsCanWin === 'boolean'
-			? this.options.botsCanWin
-			: this.manager.options.default.botsCanWin;
-	}
-
-	/**
-     * Members with any of these permissions will not be able to win a giveaway.
-     * @type {Discord.PermissionResolvable[]}
-     */
-	get exemptPermissions() {
-		return this.options.exemptPermissions ?? this.manager.options.default.exemptPermissions;
-	}
-
-	/**
      * The options for the last chance system.
      * @type {LastChanceOptions}
      */
 	get lastChance() {
-		return merge(this.manager.options.default.lastChance, this.options.lastChance ?? {});
+		return this.manager.options.default.lastChance;
 	}
 
 	/**
@@ -207,57 +179,6 @@ class Giveaway extends EventEmitter {
      */
 	get pauseOptions() {
 		return merge(PauseOptions, this.options.pauseOptions ?? {});
-	}
-
-	/**
-     * The array of BonusEntry objects for the giveaway.
-     * @type {BonusEntry[]}
-     */
-	get bonusEntries() {
-		return eval(this.options.bonusEntries) ?? [];
-	}
-
-	/**
-     * If the giveaway is a drop, or not.
-     * Drop means that if the amount of reactions to the giveaway is the same as "winnerCount" then it immediately ends.
-     * @type {Boolean}
-     */
-	get isDrop() {
-		return this.options.isDrop ?? false;
-	}
-
-	/**
-     * The exemptMembers function of the giveaway.
-     * @type {?Function}
-     */
-	get exemptMembersFunction() {
-		return this.options.exemptMembers
-			? typeof this.options.exemptMembers === 'string' &&
-              this.options.exemptMembers.includes('function anonymous')
-				? eval(`(${this.options.exemptMembers})`)
-				: eval(this.options.exemptMembers)
-			: null;
-	}
-
-	/**
-     * Function to filter members. If true is returned, the member won't be able to win the giveaway.
-     * @property {Discord.GuildMember} member The member to check
-     * @returns {Promise<boolean>} Whether the member should get exempted
-     */
-	async exemptMembers(member) {
-		if (typeof this.exemptMembersFunction === 'function') {
-			try {
-				const result = await this.exemptMembersFunction(member);
-				return result;
-			} catch (err) {
-				console.error(`Giveaway message Id: ${this.messageId}\n${serialize(this.exemptMembersFunction)}\n${err}`);
-				return false;
-			}
-		}
-		if (typeof this.manager.options.default.exemptMembers === 'function') {
-			return await this.manager.options.default.exemptMembers(member);
-		}
-		return false;
 	}
 
 	/**
@@ -279,13 +200,10 @@ class Giveaway extends EventEmitter {
 			hostedBy: this.options.hostedBy,
 			embedColor: this.options.embedColor,
 			embedColorEnd: this.options.embedColorEnd,
-			botsCanWin: this.options.botsCanWin,
 			reaction: this.options.reaction,
 			winnerIds: this.winnerIds.length ? this.winnerIds : undefined,
-			extraData: this.extraData,
 			lastChance: this.options.lastChance,
 			pauseOptions: this.options.pauseOptions,
-			isDrop: this.options.isDrop || undefined,
 			allowedMentions: this.allowedMentions,
 		};
 	}
@@ -354,23 +272,17 @@ class Giveaway extends EventEmitter {
      * @returns {Promise<Discord.Message>} The Discord message
      */
 	async fetchMessage() {
-		return new Promise(async (resolve, reject) => {
-			let tryLater = true;
-			const channel = await this.client.channels.fetch(this.channelId).catch((err) => {
-				if (err.code === 10003) tryLater = false;
-			});
-			const message = await channel?.messages.fetch(this.messageId).catch((err) => {
-				if (err.code === 10008) tryLater = false;
-			});
-			if (!message) {
-				if (!tryLater) {
-					this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageId !== this.messageId);
-					await this.manager.deleteGiveaway(this.messageId);
-				}
-				return reject(`Unable to fetch message with Id ${this.messageId}. ${(tryLater ? ' Try later!' : '')}`);
-			}
-			resolve(message);
-		});
+		try {
+			const channel = await this.client.channels.fetch(this.channelId);
+			const message = await channel?.messages.fetch(this.messageId);
+
+			this.manager.giveaways = this.manager.giveaways.filter((g) => g.messageId !== this.messageId);
+			await this.manager.deleteGiveaway(this.messageId);
+			return message;
+		} catch (err) {
+			const tryLater = ([10008, 10003].includes(err.code)) ? true : false;
+			throw `Unable to fetch message with Id ${this.messageId}. ${(tryLater ? ' Try later!' : '')}`;
+		}
 	}
 
 	/**
@@ -380,47 +292,19 @@ class Giveaway extends EventEmitter {
      * @returns {Promise<boolean>} If the entry was valid.
      */
 	async checkWinnerEntry(user) {
-		if (this.winnerIds.includes(user.id)) return false;
-		this.message ??= await this.fetchMessage().catch(() => null);
-		const member = await this.message?.guild.members.fetch(user.id).catch(() => null);
-		if (!member) return false;
-		const exemptMember = await this.exemptMembers(member);
-		if (exemptMember) return false;
-		const hasPermission = this.exemptPermissions.some((permission) => member.permissions.has(permission));
-		if (hasPermission) return false;
-		return true;
-	}
-
-	/**
-     * Checks if a user gets any additional entries for the giveaway.
-     * @param {Discord.User} user The user to check.
-     * @returns {Promise<number>} The highest bonus entries the user should get.
-     */
-	async checkBonusEntries(user) {
-		this.message ??= await this.fetchMessage().catch(() => null);
-		const member = await this.message?.guild.members.fetch(user.id).catch(() => null);
-		if (!member) return 0;
-		const entries = [0];
-		const cumulativeEntries = [];
-
-		if (this.bonusEntries.length) {
-			for (const obj of this.bonusEntries) {
-				if (typeof obj.bonus === 'function') {
-					try {
-						const result = await obj.bonus.apply(this, [member]);
-						if (Number.isInteger(result) && result > 0) {
-							if (obj.cumulative) cumulativeEntries.push(result);
-							else entries.push(result);
-						}
-					} catch (err) {
-						console.error(`Giveaway message Id: ${this.messageId}\n${serialize(obj.bonus)}\n${err}`);
-					}
-				}
-			}
+		try {
+			if (this.winnerIds.includes(user.id)) return false;
+			this.message ??= await this.fetchMessage().catch(() => null);
+			const member = await this.message?.guild.members.fetch(user.id).catch(() => null);
+			if (!member) return false;
+			const exemptMember = await this.exemptMembers(member);
+			if (exemptMember) return false;
+			const hasPermission = this.exemptPermissions.some((permission) => member.permissions.has(permission));
+			if (hasPermission) return false;
+			return true;
+		} catch {
+			return false;
 		}
-
-		if (cumulativeEntries.length) entries.push(cumulativeEntries.reduce((a, b) => a + b));
-		return Math.max(...entries);
 	}
 
 	/**
@@ -510,8 +394,8 @@ class Giveaway extends EventEmitter {
      * @param {GiveawayEditOptions} options The edit options.
      * @returns {Promise<Giveaway>} The edited giveaway.
      */
-	edit(options = {}) {
-		return new Promise(async (resolve, reject) => {
+	async edit(options = {}) {
+		try {
 			if (this.ended) return reject('Giveaway with message Id ' + this.messageId + ' is already ended.');
 			this.message ??= await this.fetchMessage().catch(() => null);
 			if (!this.message) return reject('Unable to fetch message with Id ' + this.messageId + '.');
@@ -551,7 +435,9 @@ class Giveaway extends EventEmitter {
 					.catch(() => null);
 			}
 			resolve(this);
-		});
+		} catch (e) {
+
+		}
 	}
 
 	/**

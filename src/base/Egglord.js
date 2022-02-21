@@ -40,12 +40,10 @@ class Egglord extends Client {
 		*/
 		this.giveawaysManager = new GiveawaysManager(this, {
 			storage: false,
-			updateCountdownEvery: 10000,
+			forceUpdateEvery: 15000,
 			// giveaways are deleted 1 week after end
 			endedGiveawaysLifetime: 604800000,
 			default: {
-				botsCanWin: false,
-				exemptPermissions: [],
 				embedColor: '#FF0000',
 				reaction: '🎉',
 				lastChance: {

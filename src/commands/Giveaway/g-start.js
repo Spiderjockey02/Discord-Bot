@@ -79,8 +79,8 @@ class GiveawayStart extends Command {
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
 		}).catch(err => {
 			console.log(err);
-			bot.logger.error(`Command: 'g-start' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err }).then(m => m.timedDelete({ timeout: 5000 }));
 		});
 	}
 }

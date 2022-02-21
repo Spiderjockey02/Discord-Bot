@@ -1,5 +1,3 @@
-exports.DEFAULT_CHECK_INTERVAL = 15_000;
-
 exports.LastChanceOptions = {
 	enabled: false,
 	content: '⚠️ **LAST CHANCE TO ENTER !** ⚠️',

@@ -59,7 +59,7 @@ class GiveawayEdit extends Command {
 		}).then(() => {
 			message.channel.send(bot.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }));
 		}).catch((err) => {
-			bot.logger.error(`Command: 'g-edit' has error: ${err.message}.`);
+			bot.logger.error(`Command: 'g-edit' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: message.args[0] }));
 		});
 	}
