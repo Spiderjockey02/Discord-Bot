@@ -104,7 +104,7 @@ class Minecraft extends Command {
 	*/
 	async createEmbed(bot, guild, channel, IP, port) {
 		try {
-			const response = await status(IP, { port: parseInt(port) });
+			const response = await status(IP, parseInt(port));
 			// turn favicon to thumbnail
 			let attachment;
 			if (response.favicon) {
@@ -117,10 +117,11 @@ class Minecraft extends Command {
 				.setTitle('searcher/mc:TITLE');
 			if (response.favicon) embed.setThumbnail('attachment://favicon.png');
 			embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`);
-			embed.addField(guild.translate('searcher/mc:IP'), response.host);
-			embed.addField(guild.translate('searcher/mc:VERSION'), response.version);
-			embed.addField(guild.translate('searcher/mc:DESC'), response.description.descriptionText.replace(/§[a-zA-Z0-9]/g, ''));
-			embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.onlinePlayers.toLocaleString(guild.settings.Language)}/${response.maxPlayers.toLocaleString(guild.settings.Language)}`);
+			embed.addField(guild.translate('searcher/mc:PING'), `${response.roundTripLatency}ms`);
+			embed.addField(guild.translate('searcher/mc:VERSION'), response.version.name);
+			embed.addField(guild.translate('searcher/mc:DESC'), response.motd.clean);
+			embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.players.online.toLocaleString(guild.settings.Language)}/${response.players.max.toLocaleString(guild.settings.Language)}`);
+
 			if (response.favicon) {
 				return [embed, attachment];
 			} else {

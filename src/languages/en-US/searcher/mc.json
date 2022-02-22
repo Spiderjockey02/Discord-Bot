@@ -3,7 +3,7 @@
   "USAGE": "mc <IP> [Port]",
   "FETCHING": "{{EMOJI}} Fetching {{ITEM}} server info...",
   "TITLE": "Server Status",
-  "IP": "Server IP:",
+  "PING": "Server ping:",
   "VERSION": "Server Version:",
   "DESC": "Description:",
   "PLAYERS": "Online Players"
