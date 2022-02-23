@@ -37,7 +37,7 @@
     "erela.js-deezer": "^1.0.5",
     "erela.js-facebook": "^1.0.2",
     "erela.js-spotify": "^1.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "genius-lyrics-api": "^3.0.6",
     "i18next": "^21.6.10",
     "i18next-node-fs-backend": "^2.1.3",
