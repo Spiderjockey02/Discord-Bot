@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
+	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
 
 /**
@@ -39,8 +40,9 @@ class GuildMemberRemove extends Event {
 				.setFooter({ text: `ID: ${member.id}` })
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor({ name: 'User left:', iconURL: member.user.displayAvatarURL() })
-				.addField('Joined at:', member.partial ? 'Unknown' : `${new Date(member.joinedAt).toDateString()} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
+				.addField('Joined at:', member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
 				.setTimestamp();
+
 			// Find channel and send message
 			try {
 				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
