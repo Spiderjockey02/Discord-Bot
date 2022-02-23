@@ -29,7 +29,6 @@
     "canvacord": "^5.2.3",
     "chalk": "^4.1.0",
     "cors": "^2.8.5",
-    "dateformat": "^4.5.1",
     "deepmerge": "^4.2.2",
     "discord.js": "^13.0.0",
     "duckduckgo-images-api": "^1.0.5",
