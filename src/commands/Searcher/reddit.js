@@ -98,7 +98,7 @@ class Reddit extends Command {
 				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.subreddit })
 				.setURL(reddit.link)
 				.setImage(reddit.imageURL)
-				.setFooter({ text: channel.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) }) });
+				.setFooter({ text: channel.guild.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) }) });
 		} catch (err) {
 			bot.logger.error(err.message);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
