@@ -60,12 +60,12 @@ class ClickMenu extends Event {
 		case 'Translate': {
 			// fetch message and check if message has content
 			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.content) return interaction.reply({ embeds: [channel.error('There is no content on this message for me to translate.', {}, true)], ephemeral: true });
+			if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_CONTENT', {}, true)], ephemeral: true });
 
 			// translate message to server language
 			try {
 				const bar = await translate(message.content, { to: guild.settings.Language.split('-')[0] });
-				interaction.reply({ content: `Translated to \`English\`: ${bar.text}` });
+				interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}` });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
@@ -75,7 +75,7 @@ class ClickMenu extends Event {
 		case 'OCR': {
 			// fetch message and check if message has attachments
 			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.attachments.first()?.url) return interaction.reply({ embeds: [channel.error('That message had no attachments', {}, true)], ephemeral: true });
+			if (!message.attachments.first()?.url) return interaction.reply({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
 
 			// Get text from image
 			const res = await optiic.process({
@@ -85,7 +85,7 @@ class ClickMenu extends Event {
 
 			// Make sure text was actually retrieved
 			if (!res.text) {
-				interaction.reply({ embeds: [channel.error('No text was found from the attachment.', {}, true)], ephemeral: true });
+				interaction.reply({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
 			} else {
 				interaction.reply({ content: `Text from image: ${res.text}` });
 			}
@@ -100,7 +100,7 @@ class ClickMenu extends Event {
 		case 'Screenshot': {
 			// fetch message and check if message has content
 			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.content) return interaction.reply({ embeds: [channel.error('There is no content on this message for me to translate.', {}, true)], ephemeral: true });
+			if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_TRANS', {}, true)], ephemeral: true });
 
 			bot.commands.get('screenshot').reply(bot, interaction, channel, message);
 			break;
