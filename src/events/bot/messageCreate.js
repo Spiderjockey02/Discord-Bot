@@ -37,7 +37,7 @@ class MessageCreate extends Event {
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if bot was mentioned
-		if (message.content == `<@!${bot.user.id}>`) {
+		if (new RegExp(`/<@(!?)${bot.user.id}>/g`).test(message.content)) {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
