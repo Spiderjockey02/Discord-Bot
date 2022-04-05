@@ -56,7 +56,11 @@ class Update extends Command {
 			break;
 		}
 		default:
+<<<<<<< HEAD
 			message.channel.send({ content: 'incorrect input' });
+=======
+
+>>>>>>> e2d5dc6b349979fb13b886af0d8f06913d3b6ad6
 		}
 	}
 }
