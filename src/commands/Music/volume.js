@@ -88,7 +88,7 @@ class Back extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/volume:CURRENT', { NUM: player.volume }));
-			return interaction.reply(embed);
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		// make sure volume is between 0 and 1000
@@ -99,7 +99,7 @@ class Back extends Command {
 		const embed = new Embed(bot, guild)
 			.setColor(member.displayHexColor)
 			.setDescription(guild.translate('music/volume:UPDATED', { NUM: player.volume }));
-		return interaction.reply(embed);
+		return interaction.reply({ embeds: [embed] });
 	}
 }
 
