@@ -17,7 +17,7 @@ class ClickButton extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {ButtonInteraction} button The button that was pressed
 	 * @readonly

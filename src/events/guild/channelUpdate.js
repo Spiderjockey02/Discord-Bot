@@ -24,7 +24,7 @@ class ChannelUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildChannel|DMChannel} oldChannel The channel before the update
 	 * @param {GuildChannel|DMChannel} newChannel The channel after the update

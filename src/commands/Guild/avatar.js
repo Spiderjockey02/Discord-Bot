@@ -33,7 +33,7 @@ class Avatar extends Command {
 	}
 
 	/**
-	 * Function for recieving message.
+	 * Function for receiving message.
 	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
@@ -48,7 +48,7 @@ class Avatar extends Command {
 	}
 
 	/**
- 	 * Function for recieving slash command.
+ 	 * Function for receiving slash command.
  	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
@@ -64,7 +64,7 @@ class Avatar extends Command {
 	}
 
 	/**
-	 * Function for recieving context menu
+	 * Function for receiving context menu
 	 * @param {bot} bot The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in

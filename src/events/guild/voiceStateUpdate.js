@@ -15,7 +15,7 @@ class VoiceStateUpdate extends Event {
 	}
 
 	/**
- * Function for recieving event.
+ * Function for receiving event.
  * @param {bot} bot The instantiating client
  * @param {VoiceState} oldState The voice state before the update
  * @param {VoiceState} newState The voice state after the update

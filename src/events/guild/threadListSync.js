@@ -14,7 +14,7 @@ class ThreadListSync extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Collection<Snowflake, ThreadChannel>} threads The threads that were synced
 	 * @readonly

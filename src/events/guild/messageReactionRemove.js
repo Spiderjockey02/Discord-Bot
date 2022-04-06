@@ -15,7 +15,7 @@ class MessageReactionRemove extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {MessageReaction} reaction The reaction object
 	 * @param {User} user The user that removed the reaction

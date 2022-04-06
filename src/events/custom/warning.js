@@ -16,7 +16,7 @@ class Warning extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildMember} member The member that was warned
 	 * @param {WarningSchema} warning The warning

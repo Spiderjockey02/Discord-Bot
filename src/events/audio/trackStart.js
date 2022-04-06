@@ -15,7 +15,7 @@ class TrackStart extends Event {
 	}
 
 	/**
-   * Function for recieving event.
+   * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Player} player The player that's track started
 	 * @param {Track} track The track that started

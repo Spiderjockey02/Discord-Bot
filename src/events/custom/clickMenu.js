@@ -17,7 +17,7 @@ class ClickMenu extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {CommandInteraction} interaction The context menu clicked
 	 * @readonly

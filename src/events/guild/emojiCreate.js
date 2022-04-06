@@ -15,7 +15,7 @@ class EmojiCreate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildEmoji} emoji The emoji that was created
 	 * @readonly

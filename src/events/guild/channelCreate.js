@@ -23,7 +23,7 @@ class ChannelCreate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildChannel} channel The channel that was created
 	 * @readonly

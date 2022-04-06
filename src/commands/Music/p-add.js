@@ -27,7 +27,7 @@ class PAdd extends Command {
 	}
 
 	/**
- 	 * Function for recieving message.
+ 	 * Function for receiving message.
  	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly

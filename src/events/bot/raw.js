@@ -14,7 +14,7 @@ class Raw extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {data} data The raw data from discord itself
 	 * @readonly

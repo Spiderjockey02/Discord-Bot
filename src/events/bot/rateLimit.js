@@ -15,7 +15,7 @@ class RateLimit extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {object} RateLimitData Object containing the rate limit info
 	 * @param {string} RateLimitData.route The route of the request relative to the HTTP endpoint

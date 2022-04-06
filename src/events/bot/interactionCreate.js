@@ -14,7 +14,7 @@ class InteractionCreate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Interaction} interaction The interaction recieved (slash, button, context menu & select menu etc)
 	 * @readonly

@@ -15,7 +15,7 @@ class ThreadUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {ThreadChannel} oldThread The thread before the update
 	 * @param {ThreadChannel} newThread The thread after the update

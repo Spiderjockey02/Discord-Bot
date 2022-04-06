@@ -15,7 +15,7 @@ class ThreadMembersUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Collection<Snowflake, ThreadMember>} oldMembers The members before the update
 	 * @param {Collection<Snowflake, ThreadMember>} newMembers The members after the update

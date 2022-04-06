@@ -15,7 +15,7 @@ class TicketClose extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {TextChannel} channel The ticket channel that closed
 	 * @readonly

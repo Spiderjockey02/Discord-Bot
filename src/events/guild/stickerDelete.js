@@ -15,7 +15,7 @@ class StickerDelete extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Sticker} sticker The sticker that was deleted
 	 * @readonly

@@ -15,7 +15,7 @@ class RoleUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Role} oldRole The role before the update
 	 * @param {Role} newRole The role after the update

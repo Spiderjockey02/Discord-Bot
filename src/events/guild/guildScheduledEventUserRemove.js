@@ -15,7 +15,7 @@ class GuildScheduledEventUserRemove extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {guildScheduledEvent} guildEvent The guild event the user left
 	 * @param {User} user The user who left the event

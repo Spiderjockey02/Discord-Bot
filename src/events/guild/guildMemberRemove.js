@@ -17,7 +17,7 @@ class GuildMemberRemove extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildMember} member The member that has left/been kicked from a guild
 	 * @readonly

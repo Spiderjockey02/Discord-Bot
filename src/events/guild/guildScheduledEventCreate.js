@@ -15,7 +15,7 @@ class GuildScheduledEventCreate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {guildScheduledEvent} guildEvent The guild event that was created
 	 * @readonly

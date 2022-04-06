@@ -16,7 +16,7 @@ class MessageDelete extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Message} message The deleted message
 	 * @readonly

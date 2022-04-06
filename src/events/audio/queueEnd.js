@@ -16,7 +16,7 @@ class QueueEnd extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Player} player The player that's queue ended
 	 * @param {Track} track The track that just ended causing the queue to end aswell.

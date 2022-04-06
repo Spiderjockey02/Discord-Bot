@@ -23,7 +23,7 @@ class ChannelDelete extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildChannel|DMChannel} channel The channel that was deleted
 	 * @readonly

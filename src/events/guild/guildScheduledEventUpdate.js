@@ -15,7 +15,7 @@ class GuildScheduledEventUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {guildScheduledEvent} oldGuildEvent The guild event before update
 	 * @param {guildScheduledEvent} newGuildEvent The guild event after update

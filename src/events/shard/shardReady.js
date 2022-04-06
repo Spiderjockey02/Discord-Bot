@@ -13,7 +13,7 @@ class ShardReady extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @event Egglord#shardReady
 	 * @param {bot} bot The instantiating client
 	 * @param {?Set<Snowflake>} unavailableGuilds Set of unavailable guild ids, if any

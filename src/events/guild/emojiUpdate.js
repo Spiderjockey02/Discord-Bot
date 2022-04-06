@@ -15,7 +15,7 @@ class EmojiUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildEmoji} oldEmoji The emoji before the update
 	 * @param {GuildEmoji} newEmoji The emoji after the update

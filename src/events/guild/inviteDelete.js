@@ -15,7 +15,7 @@ class InviteDelete extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Invite} invite The invite that was deleted
 	 * @readonly

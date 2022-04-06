@@ -17,7 +17,7 @@ class MessageDeleteBulk extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Collection<Snowflake, Message>} message The deleted message
 	 * @readonly

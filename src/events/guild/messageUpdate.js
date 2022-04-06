@@ -15,7 +15,7 @@ class MessageUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Message} oldMessage The message before the update
 	 * @param {Message} newMessage The message after the update

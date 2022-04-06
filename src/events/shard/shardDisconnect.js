@@ -14,7 +14,7 @@ class ShardDisconnect extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {CloseEvent} event The WebSocket close event
 	 * @param {number} shardID The shard id that disconnected

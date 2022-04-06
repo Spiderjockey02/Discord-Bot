@@ -20,7 +20,7 @@ class MessageCreate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Message} message The message that ran the command
 	 * @readonly

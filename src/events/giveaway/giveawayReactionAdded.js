@@ -14,7 +14,7 @@ class GiveawayReactionAdded extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Giveaway} giveaway The giveaway object
 	 * @param {GuildMember} member The member that added the reaction

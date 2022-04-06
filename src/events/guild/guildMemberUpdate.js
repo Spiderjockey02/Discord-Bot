@@ -15,7 +15,7 @@ class GuildMemberUpdate extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {GuildMember} oldMember The member before the update
 	 * @param {GuildMember} newMember The member after the update

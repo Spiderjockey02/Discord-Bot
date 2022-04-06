@@ -14,7 +14,7 @@ class ShardError extends Event {
 	}
 
 	/**
-	 * Function for recieving event.
+	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
 	 * @param {Error} error The error encountered
 	 * @param {number} shardID The shard id that disconnected

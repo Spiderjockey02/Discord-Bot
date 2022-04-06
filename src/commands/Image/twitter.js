@@ -38,7 +38,7 @@ class Twitter extends Command {
 	}
 
 	/**
-	 * Function for recieving message.
+	 * Function for receiving message.
 	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
@@ -78,7 +78,7 @@ class Twitter extends Command {
 	}
 
 	/**
- 	 * Function for recieving interaction.
+ 	 * Function for receiving interaction.
  	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
