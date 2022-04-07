@@ -28,12 +28,13 @@ class Radio extends Command {
 				description: 'Radio station name',
 				type: 'STRING',
 				required: true,
+				autocomplete: true,
 			}],
 		});
 	}
 
 	/**
- 	 * Function for recieving message.
+ 	 * Function for receiving message.
  	 * @param {bot} bot The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
@@ -63,7 +64,7 @@ class Radio extends Command {
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/radio:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Search for radio station
-		await getStations({
+		const data = await getStations({
 			limit: 10,
 			order: 'topclick',
 			hidebroken: true,
@@ -71,75 +72,75 @@ class Radio extends Command {
 			language: bot.languages.find((l) => l.name.includes(settings.Language)).nativeName,
 			by: 'name',
 			searchterm: message.args.join(' '),
-		}).then(async data => {
-			if (!data[0]) return message.channel.send('No radio found with that name').then(m => m.timedDelete({ timeout: 10000 }));
-
-			const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-			let embed = new Embed(bot, message.guild)
-				.setTitle(`Results for ${message.args.join(' ')}`)
-				.setColor(message.member.displayHexColor)
-				.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
-			message.channel.send({ embeds: [embed] });
-
-			const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-			const max = data.length;
-
-			let collected;
-			try {
-				collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
-			} catch (e) {
-				return message.reply('You didn\'t choose a song in time.');
-			}
-
-			const first = collected.first().content;
-
-			if (first.toLowerCase() === 'cancel') {
-				if (!player.queue.current) player.destroy();
-				return message.channel.send('Cancelled selection.');
-			}
-
-			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return message.reply(`The number you provided was too small or too big (1-${max}).`);
-
-			let player;
-			try {
-				player = bot.manager.create({
-					guild: message.guild.id,
-					voiceChannel: message.member.voice.channel.id,
-					textChannel: message.channel.id,
-					selfDeafen: true,
-				});
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-
-			const res = await player.search(data[index].url, message.author);
-
-			if (res.loadType == 'NO_MATCHES') {
-				// An error occured or couldn't find the track
-				if (!player.queue.current) player.destroy();
-				return message.channel.error('music/play:NO_SONG');
-			} else {
-				// add track to queue and play
-				if (player.state !== 'CONNECTED') player.connect();
-				player.queue.add(res.tracks[0]);
-				if (!player.playing && !player.paused && !player.queue.size) {
-					player.play();
-				} else {
-					embed = new MessageEmbed()
-						.setColor(message.member.displayHexColor)
-						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
-					message.channel.send({ embeds: [embed] });
-				}
-			}
 		});
+
+		if (!data[0]) return message.channel.send('No radio found with that name').then(m => m.timedDelete({ timeout: 10000 }));
+
+		const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
+		let embed = new Embed(bot, message.guild)
+			.setTitle(`Results for ${message.args.join(' ')}`)
+			.setColor(message.member.displayHexColor)
+			.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
+		message.channel.send({ embeds: [embed] });
+
+		const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
+		const max = data.length;
+
+		let collected;
+		try {
+			collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
+		} catch (e) {
+			return message.reply('You didn\'t choose a song in time.');
+		}
+
+		const first = collected.first().content;
+
+		if (first.toLowerCase() === 'cancel') {
+			if (!player.queue.current) player.destroy();
+			return message.channel.send('Cancelled selection.');
+		}
+
+		const index = Number(first) - 1;
+		if (index < 0 || index > max - 1) return message.reply(`The number you provided was too small or too big (1-${max}).`);
+
+		let player;
+		try {
+			player = bot.manager.create({
+				guild: message.guild.id,
+				voiceChannel: message.member.voice.channel.id,
+				textChannel: message.channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+
+		const res = await player.search(data[index].url, message.author);
+
+		if (res.loadType == 'NO_MATCHES') {
+			// An error occured or couldn't find the track
+			if (!player.queue.current) player.destroy();
+			return message.channel.error('music/play:NO_SONG');
+		} else {
+			// add track to queue and play
+			if (player.state !== 'CONNECTED') player.connect();
+			player.queue.add(res.tracks[0]);
+			if (!player.playing && !player.paused && !player.queue.size) {
+				player.play();
+			} else {
+				embed = new MessageEmbed()
+					.setColor(message.member.displayHexColor)
+					.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
+				message.channel.send({ embeds: [embed] });
+			}
+		}
 
 	}
 
 	/**
-	 * Function for recieving interaction.
+	 * Function for receiving interaction.
 	 * @param {bot} bot The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
@@ -147,7 +148,8 @@ class Radio extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelId);
+			channel = guild.channels.cache.get(interaction.channelId),
+			input = args.get('station').value;
 
 		// Check if the member has role to interact with music plugin
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
@@ -169,78 +171,64 @@ class Radio extends Command {
 			return interaction.reply({ embeds: [channel.error('music/play:VC_FULL', {}, true)], ephemeral: true });
 		}
 
-		// Search for radio station
-		await getStations({
-			limit: 10,
-			order: 'topclick',
-			hidebroken: true,
-			countrycodeexact: guild.settings.language,
-			language: bot.languages.find((l) => l.name.includes(guild.settings.Language)).nativeName,
-			by: 'name',
-			searchterm: args.get('station').value,
-		}).then(async data => {
-			if (!data[0]) return interaction.reply({ embeds: [channel.error('music/radio:MISSING_RADIO', {}, true)], ephemeral: true });
+		// Create player
+		let player, res;
+		try {
+			player = bot.manager.create({
+				guild: guild.id,
+				voiceChannel: member.voice.channel.id,
+				textChannel: channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+		}
 
-			const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-			let embed = new Embed(bot, guild)
-				.setTitle(`Results for ${args.get('station').value}`)
+		// Search for track
+		try {
+			res = await player.search(input, member);
+			if (res.loadType === 'LOAD_FAILED') {
+				if (!player.queue.current) player.destroy();
+				throw res.exception;
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+		}
+		// Workout what to do with the results
+		if (res.loadType == 'NO_MATCHES') {
+			// An error occured or couldn't find the track
+			if (!player.queue.current) player.destroy();
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] });
+
+		} else if (res.loadType == 'PLAYLIST_LOADED') {
+			// Connect to voice channel if not already
+			if (player.state !== 'CONNECTED') player.connect();
+			// Show how many songs have been added
+			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
-			interaction.reply({ embeds: [embed] });
+				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 
-			const filter = (m) => m.author.id === member.user.id && /^(\d+|cancel)$/i.test(m.content);
-			const max = data.length;
+			// Add songs to queue and then play the song(s) if not already
+			player.queue.add(res.tracks);
+			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 
-			let collected;
-			try {
-				collected = await channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
-			} catch {
-				return interaction.reply({ embeds: [channel.error('misc:WAITED_TOO_LONG', {}, true)], ephemeral: true });
-			}
-
-			const first = collected.first().content;
-
-			if (first.toLowerCase() === 'cancel') {
-				if (!player.queue.current) player.destroy();
-				return interaction.editReply({ embeds: [channel.error('misc:CANCELLED', {}, true)], ephemeral: true });
-			}
-
-			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return interaction.editReply({ embeds: [channel.error(`The number you provided was too small or too big (1-${max}).`, {}, true)], ephemeral: true });
-
-			let player;
-			try {
-				player = bot.manager.create({
-					guild: guild.id,
-					voiceChannel: member.voice.channel.id,
-					textChannel: channel.id,
-					selfDeafen: true,
-				});
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
-			}
-
-			const res = await player.search(data[index].url, member.user);
-
-			if (res.loadType == 'NO_MATCHES') {
-				// An error occured or couldn't find the track
-				if (!player.queue.current) player.destroy();
-				return interaction.editReply({ embeds: [channel.error('music/play:NO_SONG', { }, true)], ephemeral: true });
+			return interaction.reply({ embeds: [embed] });
+		} else {
+			// add track to queue and play
+			if (player.state !== 'CONNECTED') player.connect();
+			player.queue.add(res.tracks[0]);
+			if (!player.playing && !player.paused && !player.queue.size) {
+				player.play();
+				return interaction.reply({ content: 'Successfully started queue.' });
 			} else {
-				// add track to queue and play
-				if (player.state !== 'CONNECTED') player.connect();
-				player.queue.add(res.tracks[0]);
-				if (!player.playing && !player.paused && !player.queue.size) {
-					player.play();
-				} else {
-					embed = new MessageEmbed()
-						.setColor(member.displayHexColor)
-						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
-					interaction.editReply({ embeds: [embed] });
-				}
+				const embed = new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+				return interaction.reply({ embeds: [embed] });
 			}
-		});
+		}
 	}
 }
 
