@@ -35,8 +35,8 @@ class RandomCaps extends Command {
  	 * @readonly
   */
 	async run(bot, message) {
-		const text = message.args.join(' ');
-		const rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
+		const text = message.args.join(' '),
+			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 		message.channel.send(rndCaps);
 	}
 
@@ -48,8 +48,8 @@ class RandomCaps extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const text = args.get('text').value;
-		const rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
+		const text = args.get('text').value,
+			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 
 		// send result
 		return interaction.reply({ content: `${rndCaps}` });

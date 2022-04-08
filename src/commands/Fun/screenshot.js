@@ -87,14 +87,10 @@ class Screenshot extends Command {
 			url = args.get('url').value;
 
 		// make sure URl is valid
-		if (!validUrl.isUri(url)) {
-			return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
-		}
+		if (!validUrl.isUri(url)) return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) {
-			return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
-		}
+		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
 
 		// display phrases' definition
 		await interaction.deferReply();
@@ -118,9 +114,7 @@ class Screenshot extends Command {
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) {
-			return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
-		}
+		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
 
 		// display phrases' definition
 		await interaction.deferReply();
