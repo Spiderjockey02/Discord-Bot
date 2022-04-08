@@ -21,6 +21,15 @@ class Poll extends Command {
 			usage: 'poll <question>',
 			cooldown: 2000,
 			examples: ['poll Is this a good bot?'],
+			slash: true,
+			options: [
+				{
+					name: 'poll',
+					description: 'What to poll.',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -43,6 +52,29 @@ class Poll extends Command {
 			.setDescription(message.args.join(' '))
 			.setFooter({ text: message.guild.translate('guild/poll:FOOTER') });
 		message.channel.send({ embeds: [embed] }).then(async (msg) => {
+			// Add reactions to message
+			await msg.react('✅');
+			await msg.react('❌');
+		});
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const text = args.get('poll').value;
+
+		// Send poll to channel
+		const embed = new Embed(bot, guild)
+			.setTitle('guild/poll:TITLE', { USER: interaction.user.tag })
+			.setDescription(text)
+			.setFooter({ text: guild.translate('guild/poll:FOOTER') });
+		interaction.reply({ embeds: [embed],	fetchReply: true }).then(async (msg) => {
 			// Add reactions to message
 			await msg.react('✅');
 			await msg.react('❌');
