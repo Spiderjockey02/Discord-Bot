@@ -74,37 +74,36 @@ class GiveawayStart extends Command {
 		if (message.args.slice(2).join(' ').length >= 256) return message.channel.error('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Start the giveaway
-		bot.giveawaysManager.start(message.channel, {
-			duration: time,
-			prize: message.args.slice(2).join(' '),
-			winnerCount: parseInt(message.args[1]),
-			hostedBy: message.member,
-			messages: {
-				giveaway: message.translate('giveaway/g-start:TITLE'),
-				giveawayEnded: message.translate('giveaway/g-start:ENDED'),
-				timeRemaining: message.translate('giveaway/g-start:TIME_REMAINING'),
-				inviteToParticipate: message.translate('giveaway/g-start:INVITE_PARTICIPATE'),
-				winMessage: message.translate('giveaway/g-start:WIN_MESSAGE'),
-				embedFooter: message.translate('giveaway/g-start:FOOTER'),
-				noWinner: message.translate('giveaway/g-start:NO_WINNER'),
-				winners: message.translate('giveaway/g-start:WINNERS'),
-				endedAt: message.translate('giveaway/g-start:END_AT'),
-				hostedBy: message.translate('giveaway/g-start:HOSTED'),
-				units: {
-					seconds: message.translate('time:SECONDS', { amount: '' }).trim(),
-					minutes: message.translate('time:MINUTES', { amount: '' }).trim(),
-					hours: message.translate('time:HOURS', { amount: '' }).trim(),
-					days: message.translate('time:DAYS', { amount: '' }).trim(),
+		try {
+			await bot.giveawaysManager.start(message.channel, {
+				duration: time,
+				prize: message.args.slice(2).join(' '),
+				winnerCount: parseInt(message.args[1]),
+				hostedBy: message.member,
+				messages: {
+					giveaway: message.translate('giveaway/g-start:TITLE'),
+					giveawayEnded: message.translate('giveaway/g-start:ENDED'),
+					timeRemaining: message.translate('giveaway/g-start:TIME_REMAINING'),
+					inviteToParticipate: message.translate('giveaway/g-start:INVITE_PARTICIPATE'),
+					winMessage: message.translate('giveaway/g-start:WIN_MESSAGE'),
+					embedFooter: message.translate('giveaway/g-start:FOOTER'),
+					noWinner: message.translate('giveaway/g-start:NO_WINNER'),
+					winners: message.translate('giveaway/g-start:WINNERS'),
+					endedAt: message.translate('giveaway/g-start:END_AT'),
+					hostedBy: message.translate('giveaway/g-start:HOSTED'),
+					units: {
+						seconds: message.translate('time:SECONDS', { amount: '' }).trim(),
+						minutes: message.translate('time:MINUTES', { amount: '' }).trim(),
+						hours: message.translate('time:HOURS', { amount: '' }).trim(),
+						days: message.translate('time:DAYS', { amount: '' }).trim(),
+					},
 				},
-			},
-			// language settings
-		}).then(() => {
+			});
 			bot.logger.log(`${message.author.tag} started a giveaway in server: [${message.guild.id}].`);
-		}).catch(err => {
-			console.log(err);
+		} catch (err) {
 			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err }).then(m => m.timedDelete({ timeout: 5000 }));
-		});
+		}
 	}
 
 	/**
@@ -116,10 +115,10 @@ class GiveawayStart extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const time = args.get('time').value,
-			winners = args.get('winners').value,
-			member = guild.members.cache.get(interaction.user.id),
+		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
+			time = args.get('time').value,
+			winners = args.get('winners').value,
 			prize = args.get('prize').value;
 
 		// Get time
@@ -127,7 +126,7 @@ class GiveawayStart extends Command {
 		if (!newTime) return;
 
 		// Make sure prize is less than 256 characters
-		if (prize.length >= 256) return interaction.reply('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
+		if (prize.length >= 256) return interaction.reply({ embeds: [channel.error('giveaway/g-start:PRIZE_TOO_LONG', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Start the giveaway
 		try {

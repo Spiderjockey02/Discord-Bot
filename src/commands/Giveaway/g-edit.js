@@ -99,19 +99,23 @@ class GiveawayEdit extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const id = args.get('id').value,
+		const channel = guild.channels.cache.get(interaction.channelId),
+			id = args.get('id').value,
 			time = args.get('time')?.value,
 			winners = args.get('winners')?.value,
 			prize = args.get('prize')?.value;
 
+		// Make sure a time, winner or prize was inputted or no point editing the file.
+		if (!time && !winners && !prize) return interaction.reply({ embeds: [channel.error('giveaway/g-edit:NOTHING_TO_EDIT')], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
+
 		// Update giveaway
 		try {
 			await bot.giveawaysManager.edit(id, {
-				newWinnerCount: winners,
-				newPrize: prize,
-				addTime: time,
+				newWinnerCount: winners ?? bot.giveawaysManager.giveaways.find(g => g.messageID == id).winnerCount,
+				newPrize: prize ?? bot.giveawaysManager.giveaways.find(g => g.messageID == id).prize,
+				addTime: time ?? 0,
 			});
-			interaction.reply(bot.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }));
+			interaction.reply({ embeds: [channel.success('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-edit' has error: ${err}.`);
 			interaction.reply(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: id }));

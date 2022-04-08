@@ -54,9 +54,7 @@ class GiveawayReroll extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (!message.args[0]) {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-		}
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-reroll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// re-roll the giveaway
 		const messageID = message.args[0];
@@ -84,7 +82,8 @@ class GiveawayReroll extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const messageID = args.get('messageID').value,
+		const channel = guild.channels.cache.get(interaction.channelId),
+			messageID = args.get('messageID').value,
 			winners = args.get('winner')?.value;
 
 		// re-roll the giveaway
@@ -96,7 +95,7 @@ class GiveawayReroll extends Command {
 					error: guild.translate('giveaway/g-reroll:ERROR'),
 				},
 			});
-			interaction.reply(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
+			interaction.reply({ embeds: [channel.success('giveaway/g-reroll:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
 			interaction.reply(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));

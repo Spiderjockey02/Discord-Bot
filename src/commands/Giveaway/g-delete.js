@@ -69,16 +69,16 @@ class GiveawayDelete extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const messageID = args.get('messageID').value;
+		const channel = guild.channels.cache.get(interaction.channelId),
+			messageID = args.get('messageID').value;
 
 		// Delete the giveaway
 		try {
-			await bot.giveawaysManager.delete(messageID).then(() => {
-				interaction.reply(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
-			});
+			await bot.giveawaysManager.delete(messageID);
+			interaction.reply({ embeds: [channel.success('giveaway/g-delete:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			interaction.replyd(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			interaction.reply(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		}
 	}
 }

@@ -46,9 +46,7 @@ class GiveawayPause extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (!message.args[0]) {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-pause:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-		}
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-pause:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Pause the giveaway
 		const messageID = message.args[0];
@@ -70,12 +68,13 @@ class GiveawayPause extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const messageID = args.get('messageID').value;
+		const channel = guild.channels.cache.get(interaction.channelId),
+			messageID = args.get('id').value;
 
 		// Pause the giveaway
 		try {
 			await bot.giveawaysManager.pause(messageID);
-			interaction.reply(bot.translate('giveaway/g-pause:SUCCESS_GIVEAWAY'));
+			interaction.reply({ embeds: [channel.success('giveaway/g-pause:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
 			interaction.reply(bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
