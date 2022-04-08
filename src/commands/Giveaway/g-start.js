@@ -23,6 +23,29 @@ class GiveawayStart extends Command {
 			usage: 'g-start <time> <Number of winners> <prize>',
 			cooldown: 30000,
 			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
+			slash: true,
+			options: [
+				{
+					name: 'time',
+					description: 'Extra time added to the giveaway.',
+					type: 'STRING',
+					required: true,
+				},
+				{
+					name: 'winners',
+					description: 'New winner count.',
+					type: 'NUMBER',
+					minValue: 1,
+					maxValue: 10,
+					required: true,
+				},
+				{
+					name: 'prize',
+					description: 'New prize',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -82,6 +105,61 @@ class GiveawayStart extends Command {
 			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err }).then(m => m.timedDelete({ timeout: 5000 }));
 		});
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const time = args.get('time').value,
+			winners = args.get('winners').value,
+			member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId),
+			prize = args.get('prize').value;
+
+		// Get time
+		const newTime = getTotalTime(time);
+		if (!newTime) return;
+
+		// Make sure prize is less than 256 characters
+		if (prize.length >= 256) return interaction.reply('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
+
+		// Start the giveaway
+		try {
+			await bot.giveawaysManager.start(channel, {
+				duration: newTime,
+				prize: prize,
+				winnerCount: winners,
+				hostedBy: member,
+				messages: {
+					giveaway: guild.translate('giveaway/g-start:TITLE'),
+					giveawayEnded: guild.translate('giveaway/g-start:ENDED'),
+					timeRemaining: guild.translate('giveaway/g-start:TIME_REMAINING'),
+					inviteToParticipate: guild.translate('giveaway/g-start:INVITE_PARTICIPATE'),
+					winMessage: guild.translate('giveaway/g-start:WIN_MESSAGE'),
+					embedFooter: guild.translate('giveaway/g-start:FOOTER'),
+					noWinner: guild.translate('giveaway/g-start:NO_WINNER'),
+					winners: guild.translate('giveaway/g-start:WINNERS'),
+					endedAt: guild.translate('giveaway/g-start:END_AT'),
+					hostedBy: guild.translate('giveaway/g-start:HOSTED'),
+					units: {
+						seconds: guild.translate('time:SECONDS', { amount: '' }).trim(),
+						minutes: guild.translate('time:MINUTES', { amount: '' }).trim(),
+						hours: guild.translate('time:HOURS', { amount: '' }).trim(),
+						days: guild.translate('time:DAYS', { amount: '' }).trim(),
+					},
+				},
+			});
+			bot.logger.log(`${member.user.tag} started a giveaway in server: [${guild.id}].`);
+		} catch (err) {
+			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
+			interaction.reply('misc:ERROR_MESSAGE', { ERROR: err }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
 	}
 }
 

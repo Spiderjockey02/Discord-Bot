@@ -22,6 +22,15 @@ class GiveawayDelete extends Command {
 			usage: 'g-delete <messageID>',
 			cooldown: 2000,
 			examples: ['g-delete 818821436255895612'],
+			slash: true,
+			options: [
+				{
+					name: 'id',
+					description: 'Message ID of the giveaway.',
+					type: 'NUMBER',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -37,18 +46,40 @@ class GiveawayDelete extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (!message.args[0]) {
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-delete:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-		}
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-delete:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Delete the giveaway
 		const messageID = message.args[0];
-		bot.giveawaysManager.delete(messageID).then(() => {
-			message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
-		}).catch((err) => {
+		try {
+			await bot.giveawaysManager.delete(messageID).then(() => {
+				message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
+			});
+		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
-		});
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const messageID = args.get('messageID').value;
+
+		// Delete the giveaway
+		try {
+			await bot.giveawaysManager.delete(messageID).then(() => {
+				interaction.reply(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
+			});
+		} catch (err) {
+			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			interaction.replyd(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
+		}
 	}
 }
 

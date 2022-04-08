@@ -22,6 +22,15 @@ class GiveawayPause extends Command {
 			usage: 'g-pause <messageID>',
 			cooldown: 2000,
 			examples: ['g-pause 818821436255895612'],
+			slash: true,
+			options: [
+				{
+					name: 'id',
+					description: 'Message ID of the giveaway.',
+					type: 'NUMBER',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -41,14 +50,36 @@ class GiveawayPause extends Command {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-pause:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 
-		// Delete the giveaway
+		// Pause the giveaway
 		const messageID = message.args[0];
-		bot.giveawaysManager.pause(messageID).then(() => {
+		try {
+			await bot.giveawaysManager.pause(messageID);
 			message.channel.send(bot.translate('giveaway/g-pause:SUCCESS_GIVEAWAY'));
-		}).catch((err) => {
+		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
-		});
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const messageID = args.get('messageID').value;
+
+		// Pause the giveaway
+		try {
+			await bot.giveawaysManager.pause(messageID);
+			interaction.reply(bot.translate('giveaway/g-pause:SUCCESS_GIVEAWAY'));
+		} catch (err) {
+			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			interaction.reply(bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
+		}
 	}
 }
 

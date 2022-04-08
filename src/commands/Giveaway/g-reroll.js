@@ -22,6 +22,23 @@ class GiveawayReroll extends Command {
 			usage: 'g-reroll <messageID> [winners]',
 			cooldown: 2000,
 			examples: ['g-reroll 818821436255895612'],
+			slash: true,
+			options: [
+				{
+					name: 'id',
+					description: 'Message ID of the giveaway.',
+					type: 'NUMBER',
+					required: true,
+				},
+				{
+					name: 'winner',
+					description: 'How many winners to reroll.',
+					type: 'NUMBER',
+					minValue: 1,
+					maxValue: 10,
+					required: false,
+				},
+			],
 		});
 	}
 
@@ -43,18 +60,47 @@ class GiveawayReroll extends Command {
 
 		// re-roll the giveaway
 		const messageID = message.args[0];
-		bot.giveawaysManager.reroll(messageID, {
-			winnerCount: !parseInt(message.args[1]) ? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount : parseInt(message.args[1]),
-			messages: {
-				congrat: message.translate('giveaway/g-reroll:CONGRAT'),
-				error: message.translate('giveaway/g-reroll:ERROR'),
-			},
-		}).then(() => {
+		try {
+			await bot.giveawaysManager.reroll(messageID, {
+				winnerCount: !parseInt(message.args[1]) ? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount : parseInt(message.args[1]),
+				messages: {
+					congrat: message.translate('giveaway/g-reroll:CONGRAT'),
+					error: message.translate('giveaway/g-reroll:ERROR'),
+				},
+			});
 			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
-		}).catch((err) => {
+		} catch (err) {
 			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
-		});
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const messageID = args.get('messageID').value,
+			winners = args.get('winner')?.value;
+
+		// re-roll the giveaway
+		try {
+			await bot.giveawaysManager.reroll(messageID, {
+				winnerCount: winners ?? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount,
+				messages: {
+					congrat: guild.translate('giveaway/g-reroll:CONGRAT'),
+					error: guild.translate('giveaway/g-reroll:ERROR'),
+				},
+			});
+			interaction.reply(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
+		} catch (err) {
+			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
+			interaction.reply(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
+		}
 	}
 }
 
