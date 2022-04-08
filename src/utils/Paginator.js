@@ -1,8 +1,8 @@
 // variables
-const	{ MessageActionRow, MessageButton } = require('discord.js'),
+const	{ MessageActionRow, MessageButton, CommandInteraction } = require('discord.js'),
 	timeout = 120000;
 
-module.exports = async (bot, channel, pages, userID) => {
+module.exports = async (bot, type, pages, userID) => {
 	let page = 0;
 
 	const row = new MessageActionRow()
@@ -25,7 +25,12 @@ module.exports = async (bot, channel, pages, userID) => {
 				.setStyle('SECONDARY'),
 		);
 
-	const curPage = await channel.send({ embeds: [pages[page]], components: [row] });
+	let curPage;
+	if (type instanceof CommandInteraction) {
+		curPage = await type.reply({ embeds: [pages[page]], components: [row], fetchReply: true });
+	} else {
+		curPage = await type.send({ embeds: [pages[page]], components: [row] });
+	}
 
 	const buttonCollector = await curPage.createMessageComponentCollector({ componentType: 'BUTTON', time: timeout });
 

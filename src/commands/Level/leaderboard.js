@@ -72,7 +72,7 @@ class Leaderboard extends Command {
 		try {
 			const res = await this.createLeaderboard(bot, guild);
 			if (Array.isArray(res)) {
-				paginate(bot, channel, res, interaction.user.id);
+				paginate(bot, interaction, res, interaction.user.id);
 			} else if (typeof (res) == 'object') {
 				interaction.reply({ embeds: [res] });
 			} else {

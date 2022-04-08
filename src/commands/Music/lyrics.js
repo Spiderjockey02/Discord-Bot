@@ -119,7 +119,7 @@ class Lyrics extends Command {
 		try {
 			const lyrics = await this.searchLyrics(bot, guild, options, member.user);
 			if (Array.isArray(lyrics)) {
-				paginate(bot, channel, lyrics, member.id);
+				paginate(bot, interaction, lyrics, member.id);
 			} else {
 				interaction.reply({ content: lyrics });
 			}
