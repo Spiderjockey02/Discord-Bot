@@ -3,6 +3,7 @@ const axios = require('axios'),
 	{ parseVideo } = require('../../structures'),
 	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
 	radioStations = require('../../assets/json/radio_streams_yuck.json'),
+	{ colourNames } = require('../../assets/json/colours.json'),
 	Event = require('../../structures/Event');
 
 /**
@@ -79,10 +80,14 @@ class AutoComplete extends Event {
 		}
 		case 'radio': {
 			const input = interaction.options.getFocused(true).value;
-			console.log(input);
 			const stations = radioStations.map(i => i.name).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
-			console.log(stations);
 			interaction.respond(stations.map(i => ({ name: i, value: radioStations.find(rad => rad.name == i).audio })));
+			break;
+		}
+		case 'addrole': {
+			const input = interaction.options.getFocused(true).value;
+			const colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+			interaction.respond(colour.map(i => ({ name: i, value: Object.entries(colourNames).find(c => c[0] == i)[1] })));
 			break;
 		}
 		default:
