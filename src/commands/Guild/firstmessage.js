@@ -26,7 +26,8 @@ class Firstmessage extends Command {
 				name: 'channel',
 				description: 'The specified channel to grab the first message of.',
 				type: 'CHANNEL',
-				required: true,
+				channelTypes: ['GUILD_TEXT', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD', 'GUILD_NEWS'],
+				required: false,
 			}],
 		});
 	}
@@ -64,7 +65,7 @@ class Firstmessage extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(args.get('channel').value);
+		const channel = guild.channels.cache.get(args.get('channel')?.value ?? interaction.channelId);
 
 		try {
 			// get first message in channel

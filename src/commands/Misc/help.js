@@ -26,6 +26,7 @@ class Help extends Command {
 				description: 'Name of command to look up.',
 				type: 'STRING',
 				required: false,
+				autocomplete: true,
 			}],
 		});
 	}

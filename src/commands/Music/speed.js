@@ -27,6 +27,8 @@ class Speed extends Command {
 				name: 'speed',
 				description: 'The speed at what you want the song to go.',
 				type: 'INTEGER',
+				minValue: 0,
+				maxValue: 10,
 				required: true,
 			}],
 		});

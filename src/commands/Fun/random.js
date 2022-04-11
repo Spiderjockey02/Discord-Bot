@@ -26,12 +26,16 @@ class Random extends Command {
 				name: 'min',
 				description: 'The minimum number',
 				type: 'INTEGER',
+				minValue: 0,
+				maxValue: 2147483647,
 				required: true,
 			},
 			{
 				name: 'max',
 				description: 'The maximum number',
 				type: 'INTEGER',
+				minValue: 0,
+				maxValue: 2147483647,
 				required: true,
 			}],
 		});

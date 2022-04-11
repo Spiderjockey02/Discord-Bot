@@ -28,6 +28,8 @@ class Back extends Command {
 				name: 'volume',
 				description: 'The volume you want the song to play at.',
 				type: 'INTEGER',
+				minValue: 0,
+				maxValue: 1000,
 				required: true,
 			}],
 		});

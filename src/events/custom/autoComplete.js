@@ -79,15 +79,27 @@ class AutoComplete extends Event {
 			break;
 		}
 		case 'radio': {
-			const input = interaction.options.getFocused(true).value;
-			const stations = radioStations.map(i => i.name).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+			const input = interaction.options.getFocused(true).value,
+				stations = radioStations.map(i => i.name).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+
+			// Send back the responses
 			interaction.respond(stations.map(i => ({ name: i, value: radioStations.find(rad => rad.name == i).audio })));
 			break;
 		}
 		case 'addrole': {
-			const input = interaction.options.getFocused(true).value;
-			const colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+			const input = interaction.options.getFocused(true).value,
+				colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+
+			// Send back the responses
 			interaction.respond(colour.map(i => ({ name: i, value: Object.entries(colourNames).find(c => c[0] == i)[1] })));
+			break;
+		}
+		case 'help': {
+			const input = interaction.options.getFocused(true).value,
+				commands = [...bot.commands.keys()].filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+
+			// Send back the responses
+			interaction.respond(commands.map(i => ({ name: i, value: i })));
 			break;
 		}
 		default:
