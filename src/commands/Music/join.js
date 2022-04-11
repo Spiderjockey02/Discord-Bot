@@ -32,13 +32,6 @@ class Join extends Command {
  	 * @readonly
   */
 	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
-			}
-		}
-
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
 
@@ -48,6 +41,13 @@ class Join extends Command {
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
 			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
+		}
+
+		// Check if the member has role to interact with music plugin
+		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
+				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
+			}
 		}
 
 		// If no player (no song playing) create one and join channel
@@ -96,11 +96,6 @@ class Join extends Command {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId);
 
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)], ephemeral: true });
-			}
-		}
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
 
@@ -110,6 +105,13 @@ class Join extends Command {
 		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.me).has('MOVE_MEMBERS')) {
 			return interaction.reply({ embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)], ephemeral: true });
+		}
+
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ embeds: [channel.error('misc:MISSING_ROLE', { }, true)], ephemeral: true });
+			}
 		}
 
 		// If no player (no song playing) create one and join channel
