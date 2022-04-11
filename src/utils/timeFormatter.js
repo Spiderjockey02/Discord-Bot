@@ -36,7 +36,7 @@ module.exports.getReadableTime = (ms) => {
 };
 
 module.exports.getTimeObject = (ms) => {
-	if (!ms || typeof ms !== 'number' || !isFinite(ms)) {throw new TypeError('Final value is greater than Number can hold or you provided invalid argument.');}
+	if (!ms || typeof ms !== 'number' || !isFinite(ms)) throw new TypeError('Final value is greater than Number can hold or you provided invalid argument.');
 	const result = {
 		years: 0,
 		months: 0,
@@ -99,24 +99,20 @@ module.exports.getTimeObject = (ms) => {
 
 
 // comvert time format (1m) to ms - for timed commands
-module.exports.getTotalTime = (timeFormat, message) => {
+module.exports.getTotalTime = (timeFormat) => {
 	// Make sure it ends with the correct time delimiter
 	if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
-		message.channel.error('time:INCORRECT_DELIMITERS').then(m => m.timedDelete({ timeout:5000 }));
-		return false;
+		return { error: 'time:INCORRECT_DELIMITERS' };
 	}
 	// make sure its a number infront of the time delimiter
-	if (isNaN(timeFormat.slice(0, -1))) {
-		message.channel.error('time:INVALID_TIME').then(m => m.timedDelete({ timeout:5000 }));
-		return false;
-	}
+	if (isNaN(timeFormat.slice(0, -1))) return { error: 'time:INVALID_TIME' };
+
 	// convert timeFormat to milliseconds
 	const time = require('ms')(timeFormat);
+
 	// Make sure time isn't over 10 days
-	if (time >= 864000000) {
-		message.channel.error('time:MAX_TIME').then(m => m.timedDelete({ timeout: 5000 }));
-		return false;
-	}
+	if (time >= 864000000) return { error: 'time:MAX_TIME' };
+
 	// return time to requested command
-	return time;
+	return { success: time };
 };

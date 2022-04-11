@@ -57,8 +57,8 @@ class Reminder extends Command {
 		}
 
 		// Get time
-		const time = getTotalTime(message.args[0], message, settings.Language);
-		if (!time) return;
+		const { error, success: time } = getTotalTime(message.args[0]);
+		if (error) return message.channel.error(error);
 		message.args.shift();
 
 		// send reminder
@@ -107,12 +107,11 @@ class Reminder extends Command {
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
-			time = args.get('time').value,
 			text = args.get('text').value;
 
 		// Get time
-		const newTime = time;
-		if (!newTime) return;
+		const { error, success: time } = getTotalTime(args.get('time').value);
+		if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
 
 		// send reminder
 		try {
@@ -125,7 +124,7 @@ class Reminder extends Command {
 				userID: interaction.user.id,
 				guildID: guild.id,
 				channelID: channel.id,
-				time: new Date(new Date().getTime() + newTime),
+				time: new Date(new Date().getTime() + time),
 				message: text,
 				type: 'reminder',
 			});
@@ -149,7 +148,7 @@ class Reminder extends Command {
 				await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
 					if (err) console.log(err);
 				});
-			}, newTime);
+			}, time);
 		} catch (err) {
 			console.log(err);
 		}

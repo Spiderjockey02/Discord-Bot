@@ -51,8 +51,9 @@ class Slowmode extends Command {
 		if (message.args[0] == 'off') {
 			time = 0;
 		} else if (message.args[0]) {
-			time = getTotalTime(message.args[0], message);
-			if (!time) return;
+			const { error, success } = getTotalTime(message.args[0]);
+			if (error) return message.channel.error(error);
+			time = success;
 		} else {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/slowmode:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
@@ -84,8 +85,9 @@ class Slowmode extends Command {
 		if (input == 'off') {
 			time = 0;
 		} else if (input) {
-			time = getTotalTime(input);
-			if (!time) return;
+			const { error, success } = getTotalTime(args.get('input').value);
+			if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
+			time = success;
 		}
 
 		// Activate slowmode

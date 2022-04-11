@@ -101,8 +101,8 @@ class Ban extends Command {
 			// Check to see if this ban is a tempban
 			const possibleTime = message.args[message.args.length - 1];
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-				const time = getTotalTime(possibleTime, message);
-				if (!time) return;
+				const { error, success: time } = getTotalTime(possibleTime);
+				if (error) return message.channel.error(error);
 
 				// connect to database
 				const newEvent = new timeEventSchema({
@@ -143,8 +143,7 @@ class Ban extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user').value),
 			channel = guild.channels.cache.get(interaction.channelId),
-			reason = args.get('reason')?.value,
-			time = args.get('time')?.value;
+			reason = args.get('reason')?.value;
 
 		// Make sure user isn't trying to punish themselves
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -174,16 +173,16 @@ class Ban extends Command {
 			interaction.reply({ embeds: [channel.success('moderation/ban:SUCCESS', { USER: member.user }, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 8000 }));
 
 			// Check to see if this ban is a tempban
-			const possibleTime = time;
+			const possibleTime = args.get('time')?.value;
 			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
-				const newTime = getTotalTime(possibleTime);
-				if (!newTime) return;
+				const { error, success: time } = getTotalTime(possibleTime);
+				if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
 
 				// connect to database
 				const newEvent = new timeEventSchema({
 					userID: member.user.id,
 					guildID: guild.id,
-					time: new Date(new Date().getTime() + newTime),
+					time: new Date(new Date().getTime() + time),
 					channelID: channel.id,
 					type: 'ban',
 				});
@@ -197,7 +196,7 @@ class Ban extends Command {
 					await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
 						if (err) console.log(err);
 					});
-				}, newTime);
+				}, time);
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

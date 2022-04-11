@@ -76,8 +76,11 @@ class Mute extends Command {
 
 		// put user in timeout
 		try {
+			const { error, success: time } = getTotalTime(message.args[1] ?? (28 * 86400000));
+			if (error) return message.channel.error(error);
+
 			// default time is 28 days
-			await members[0].timeout(getTotalTime(message.args[1], message) ?? (28 * 86400000), `${message.author.id} put user in timeout`);
+			await members[0].timeout(time, `${message.author.id} put user in timeout`);
 			message.channel.success('moderation/mute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			if (message.deletable) message.delete();
@@ -95,8 +98,7 @@ class Mute extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user').value),
-			time = args.get('time')?.value;
+		const member = guild.members.cache.get(args.get('user').value);
 
 		// Get the channel the member is in
 		const channel = guild.channels.cache.get(member.voice.channelID);
@@ -114,7 +116,10 @@ class Mute extends Command {
 		// put user in timeout
 		try {
 			// default time is 28 days
-			await member.timeout(getTotalTime(time) ?? (28 * 86400000), `${interaction.user.id} put user in timeout`);
+			const { error, success: time } = getTotalTime(args.get('time').value ?? (28 * 86400000));
+			if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
+
+			await member.timeout(time, `${interaction.user.id} put user in timeout`);
 			interaction.reply({ embeds: [channel.success('moderation/mute:SUCCESS', { USER: member.user }, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

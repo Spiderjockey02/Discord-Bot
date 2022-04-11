@@ -64,8 +64,8 @@ class GiveawayStart extends Command {
 		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Get time
-		const time = getTotalTime(message.args[0], message);
-		if (!time) return;
+		const { error, success: time } = getTotalTime(message.args[0]);
+		if (error) return message.channel.error(error);
 
 		// Make sure that number of winners is a number
 		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.timedDelete({ timeout: 5000 }));
@@ -117,13 +117,12 @@ class GiveawayStart extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
-			time = args.get('time').value,
 			winners = args.get('winners').value,
 			prize = args.get('prize').value;
 
 		// Get time
-		const newTime = getTotalTime(time);
-		if (!newTime) return;
+		const { error, success: time } = getTotalTime(args.get('time').value);
+		if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
 
 		// Make sure prize is less than 256 characters
 		if (prize.length >= 256) return interaction.reply({ embeds: [channel.error('giveaway/g-start:PRIZE_TOO_LONG', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
@@ -131,7 +130,7 @@ class GiveawayStart extends Command {
 		// Start the giveaway
 		try {
 			await bot.giveawaysManager.start(channel, {
-				duration: newTime,
+				duration: time,
 				prize: prize,
 				winnerCount: winners,
 				hostedBy: member,
