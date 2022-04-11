@@ -26,6 +26,7 @@ class Fortnite extends Command {
 				name: 'device',
 				description: 'Device type',
 				type: 'STRING',
+				choices: [...['kbm', 'gamepad', 'touch'].map(i => ({ name: i, value: i }))],
 				required: true,
 			},
 			{

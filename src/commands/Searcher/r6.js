@@ -37,12 +37,14 @@ class Rainbow6Siege extends Command {
 				name: 'platform',
 				description: 'Device of user.',
 				type: 'STRING',
+				choices: [...['pc', 'xbox', 'ps4'].map(i => ({ name: i, value: i }))],
 				required: false,
 			},
 			{
 				name: 'region',
 				description: 'Region of user.',
 				type: 'STRING',
+				choices: [...['eu', 'na', 'as'].map(i => ({ name: i, value: i }))],
 				required: false,
 			}],
 		});
