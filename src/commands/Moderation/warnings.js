@@ -23,6 +23,15 @@ class Warnings extends Command {
 			usage: 'warnings [user]',
 			cooldown: 2000,
 			examples: ['warnings username'],
+			slash: true,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to mute.',
+					type: 'USER',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -42,38 +51,72 @@ class Warnings extends Command {
 
 		// get warnings of user
 		try {
-			await WarningSchema.find({
+			const warnings = await 	await WarningSchema.find({
 				userID: members[0].id,
 				guildID: message.guild.id,
-			}, (err, warn) => {
-				// if an error occured
-				if (err) {
-					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-				}
-
-				if (!warn[0]) {
-					// There are no warnings with this user
-					message.channel.error('moderation/warnings:NO_WARNINGS').then(m => m.timedDelete({ timeout: 3500 }));
-				} else {
-					// Warnings have been found
-					let list = `Warnings (${warn.length}):\n`;
-					for (let i = 0; i < warn.length; i++) {
-						list += `${i + 1}.) ${warn[i].Reason} | ${(message.guild.members.cache.get(warn[i].Moderater)) ? message.guild.members.cache.get(warn[i].Moderater) : 'User left'} (Issue date: ${warn[i].IssueDate})\n`;
-					}
-
-					const embed = new Embed(bot, message.guild)
-						.setTitle('moderation/warnings:TITLE', { USER: members[0].user.username })
-						.setDescription(list)
-						.setTimestamp();
-					message.channel.send({ embeds: [embed] });
-				}
 			});
+
+			if (!warnings[0]) {
+				// There are no warnings with this user
+				message.channel.error('moderation/warnings:NO_WARNINGS').then(m => m.timedDelete({ timeout: 3500 }));
+			} else {
+				// Warnings have been found
+				let list = `Warnings (${warnings.length}):\n`;
+				for (let i = 0; i < warnings.length; i++) {
+					list += `${i + 1}.) ${warnings[i].Reason} | ${(message.guild.members.cache.get(warnings[i].Moderater)) ? message.guild.members.cache.get(warnings[i].Moderater) : 'User left'} (Issue date: ${warnings[i].IssueDate})\n`;
+				}
+
+				const embed = new Embed(bot, message.guild)
+					.setTitle('moderation/warnings:TITLE', { USER: members[0].user.username })
+					.setDescription(list)
+					.setTimestamp();
+				message.channel.send({ embeds: [embed] });
+			}
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		// get warnings of user
+		try {
+			const warnings = await 	await WarningSchema.find({
+				userID: member.id,
+				guildID: guild.id,
+			});
+
+			if (!warnings[0]) {
+				// There are no warnings with this user
+				interaction.reply({ embeds: [channel.error('moderation/warnings:NO_WARNINGS', { }, true)] });
+			} else {
+				// Warnings have been found
+				let list = `Warnings (${warnings.length}):\n`;
+				for (let i = 0; i < warnings.length; i++) {
+					list += `${i + 1}.) ${warnings[i].Reason} | ${(guild.members.cache.get(warnings[i].Moderater)) ? guild.members.cache.get(warnings[i].Moderater) : 'User left'} (Issue date: ${warnings[i].IssueDate})\n`;
+				}
+
+				const embed = new Embed(bot, guild)
+					.setTitle('moderation/warnings:TITLE', { USER: member.user.username })
+					.setDescription(list)
+					.setTimestamp();
+				interaction.reply({ embeds: [embed] });
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

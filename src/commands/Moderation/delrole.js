@@ -22,6 +22,15 @@ class DelRole extends Command {
 			usage: 'delrole <role>',
 			cooldown: 5000,
 			examples: ['delrole Test'],
+			slash: false,
+			options: [
+				{
+					name: 'role',
+					description: 'The role to delete.',
+					type: 'ROLE',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -52,6 +61,28 @@ class DelRole extends Command {
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('moderation/delrole:FAIL').then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const role = guild.roles.cache.get(args.get('role').value),
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		// delete role
+		try {
+			const delRole = await role.delete();
+			interaction.reply({ embeds: [channel.success('moderation/delrole:SUCCESS', { ROLE: delRole.name }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 3000 }));
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('moderation/delrole:FAIL', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 }

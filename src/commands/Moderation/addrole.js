@@ -23,6 +23,28 @@ class AddRole extends Command {
 			usage: 'addrole <role name> [hex color] [hoist]',
 			cooldown: 5000,
 			examples: ['addrole Test #FF0000 true'],
+			slash: false,
+			options: [
+				{
+					name: 'name',
+					description: 'Name of the new roll.',
+					type: 'STRING',
+					required: true,
+				},
+				{
+					name: 'colour',
+					description: 'colour of the new role',
+					type: 'STRING',
+					required: true,
+					autocomplete: true,
+				},
+				{
+					name: 'hoist',
+					description: 'Should the role show seperately.',
+					type: 'BOOLEAN',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -60,13 +82,42 @@ class AddRole extends Command {
 			const { colourNames } = JSON.parse(data);
 			const colour = (message.args[1]?.toLowerCase())?.replace(/\s/g, '');
 			if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[1])) {
-				const role = await message.guild.roles.create({ name: message.args[0], reason: 'Created a new role with the bot', color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
+				const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
 				message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
 			} else {
-				const role = await message.guild.roles.create({ name: message.args[0], reason: 'Created a new role with the bot', hoist: message.args[2] ?? false });
+				const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, hoist: message.args[2] ?? false });
 				message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		});
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId),
+			name = args.get('name').value,
+			color = args.get('colour').value,
+			hoist = args.get('hoist').value;
+
+		// Max character length of 100 for role name
+		if (name >= 100) return interaction.reply({ embeds: [channel.success('moderation/addrole:MAX_NAME', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
+
+		// Make sure there isn't already the max number of roles in the guilds
+		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.success('moderation/addrole:MAX_ROLES', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
+
+		try {
+			const role = await guild.roles.create({ name: name, reason: `Created by ${interaction.user.tag}`, color, hoist });
+			interaction.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
+		} catch (err) {
+			bot.logger.error(`Command: 'addrole' has error: ${err}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
 	}
 }
 

@@ -22,6 +22,21 @@ class Nick extends Command {
 			usage: 'nick <user> <name>',
 			cooldown: 3000,
 			examples: ['nick username Not a nice name'],
+			slash: false,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to change nickname.',
+					type: 'USER',
+					required: false,
+				},
+				{
+					name: 'name',
+					description: 'The nickname to give the user.',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -66,6 +81,37 @@ class Nick extends Command {
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId),
+			nickname = args.get('nickname').value;
+
+		// Make sure user user does not have ADMINISTRATOR permissions
+		if (member.permissions.has('ADMINISTRATOR') || (member.roles.highest.comparePositionTo(guild.me.roles.highest) > 0)) {
+			interaction.reply({ embeds: [channel.error('moderation/nick:TOO_POWERFUL', null, true)] });
+		}
+
+		// Make sure nickname is NOT longer than 32 characters
+		if (nickname.length >= 32) return interaction.reply({ embeds: [channel.error('moderation/nick:LONG_NICKNAME', null, true)] });
+
+		// Change nickname and tell user (send error message if dosen't work)
+		try {
+			await member.setNickname(nickname);
+			interaction.reply({ embeds: [channel.error('moderation/nick:SUCCESS', { USER: member.user }, true)] });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

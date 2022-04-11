@@ -23,6 +23,21 @@ class DM extends Command {
 			usage: 'dm <user> <message>',
 			cooldown: 3000,
 			examples: ['dm username Hello'],
+			slash: true,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to direct message.',
+					type: 'USER',
+					required: true,
+				},
+				{
+					name: 'message',
+					description: 'The message to send the user.',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -57,6 +72,35 @@ class DM extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId),
+			text = args.get('message').value;
+
+		// send message
+		try {
+			const embed = new Embed(bot, guild)
+				.setTitle('moderation/dm:TITLE', { NAME: guild.name })
+				.setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
+				.setDescription(text)
+				.setTimestamp()
+				.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ format: 'png', size: 1024 }));
+			await member.user.send({ embeds: [embed] });
+			interaction.reply({ embeds: [channel.success('moderation/dm:SUCCESS', { TAG: member.user.tag }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
 		}
 	}
 }

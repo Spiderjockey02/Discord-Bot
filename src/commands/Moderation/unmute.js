@@ -22,6 +22,15 @@ class Unmute extends Command {
 			usage: 'unmute <user>',
 			cooldown: 2000,
 			examples: ['unmute username'],
+			slash: true,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to mute.',
+					type: 'USER',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -57,6 +66,37 @@ class Unmute extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value);
+
+		// Get the channel the member is in
+		const channel = guild.channels.cache.get(member.voice.channelID);
+		if (channel) {
+			// Make sure bot can deafen members
+			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
+				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${guild.id}].`);
+				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:MUTE_MEMBERS') }, true)] });
+			}
+		}
+
+		// Remove mutedRole from user
+		try {
+			await member.timeout(null, `${interaction.user.id} put user out of timeout`);
+			interaction.reply({ embeds: [channel.error('moderation/unmute:SUCCESS', { USER: member.user }, true)] });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

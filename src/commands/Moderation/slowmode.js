@@ -23,6 +23,15 @@ class Slowmode extends Command {
 			usage: 'slowmode <time / off>',
 			cooldown: 5000,
 			examples: ['slowmode off', 'slowmode 1m'],
+			slash: false,
+			options: [
+				{
+					name: 'input',
+					description: 'How long for slowmode',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -55,6 +64,37 @@ class Slowmode extends Command {
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const input = args.get('input'),
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		// get time
+		let time;
+		if (input == 'off') {
+			time = 0;
+		} else if (input) {
+			time = getTotalTime(input);
+			if (!time) return;
+		}
+
+		// Activate slowmode
+		try {
+			await channel.setRateLimitPerUser(time / 1000);
+			interaction.reply({ embeds: [channel.error('moderation/slowmode:SUCCESS', { TIME: time == 0 ? guild.translate('misc:OFF') : getReadableTime(time) }, true)] });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

@@ -24,6 +24,27 @@ class Ban extends Command {
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,
 			examples: ['ban username spamming chat 4d', 'ban username raiding'],
+			slash: false,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to ban.',
+					type: 'USER',
+					required: true,
+				},
+				{
+					name: 'reason',
+					description: 'The reason for the ban.',
+					type: 'STRING',
+					required: false,
+				},
+				{
+					name: 'time',
+					description: 'The time till they are unbanned.',
+					type: 'STRING',
+					required: false,
+				},
+			],
 		});
 	}
 
@@ -84,7 +105,7 @@ class Ban extends Command {
 				if (!time) return;
 
 				// connect to database
-				const newEvent = await new timeEventSchema({
+				const newEvent = new timeEventSchema({
 					userID: members[0].user.id,
 					guildID: message.guild.id,
 					time: new Date(new Date().getTime() + time),
@@ -108,6 +129,79 @@ class Ban extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId),
+			reason = args.get('reason')?.value,
+			time = args.get('time')?.value;
+
+		// Make sure user isn't trying to punish themselves
+		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
+
+		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+			return interaction.reply({ embeds: [channel.error('moderation/ban:TOO_POWERFUL', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 10000 }));
+		}
+
+		// Ban user with reason and check if timed ban
+		try {
+			// send DM to user
+			try {
+				const embed = new Embed(bot, guild)
+					.setTitle('moderation/ban:TITLE')
+					.setColor(15158332)
+					.setThumbnail(guild.iconURL())
+					.setDescription(guild.translate('moderation/ban:DESC', { NAME: guild.name }))
+					.addField(guild.translate('moderation/ban:BAN_BY'), interaction.user.tag, true)
+					.addField(guild.translate('misc:REASON'), reason, true);
+				await member.send({ embeds: [embed] });
+				// eslint-disable-next-line no-empty
+			} catch (e) {}
+
+			// Ban user from guild
+			await member.ban({ reason: reason });
+			interaction.reply({ embeds: [channel.success('moderation/ban:SUCCESS', { USER: member.user }, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 8000 }));
+
+			// Check to see if this ban is a tempban
+			const possibleTime = time;
+			if (possibleTime.endsWith('d') || possibleTime.endsWith('h') || possibleTime.endsWith('m') || possibleTime.endsWith('s')) {
+				const newTime = getTotalTime(possibleTime);
+				if (!newTime) return;
+
+				// connect to database
+				const newEvent = new timeEventSchema({
+					userID: member.user.id,
+					guildID: guild.id,
+					time: new Date(new Date().getTime() + newTime),
+					channelID: channel.id,
+					type: 'ban',
+				});
+				await newEvent.save();
+
+				// unban user
+				setTimeout(async () => {
+					await guild.members.unban(member.user);
+
+					// Delete item from database as bot didn't crash
+					await timeEventSchema.findByIdAndRemove(newEvent._id, (err) => {
+						if (err) console.log(err);
+					});
+				}, newTime);
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 }

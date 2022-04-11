@@ -22,6 +22,21 @@ class Report extends Command {
 			usage: 'report <user> [reason]',
 			cooldown: 3000,
 			examples: ['report username', 'report username swearing'],
+			slash: false,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to report.',
+					type: 'USER',
+					required: true,
+				},
+				{
+					name: 'reason',
+					description: 'The reason to report the user.',
+					type: 'STRING',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -71,6 +86,46 @@ class Report extends Command {
 			}
 		} else {
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId),
+			reason = args.get('reason').value,
+			{ settings } = guild;
+
+		// Make sure that REPORT is in the mod logs
+		if (settings.ModLogEvents?.includes('REPORT')) {
+
+			// Make sure user isn't trying to punish themselves
+			if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', null, true)] });
+
+			// Send messages to ModLog channel
+			const embed = new Embed(bot, guild)
+				.setAuthor({ name: guild.translate('moderation/report:AUTHOR'), iconURL: member.user.displayAvatarURL() })
+				.setColor(15158332)
+				.addField(guild.translate('moderation/report:MEMBER'), member, true)
+				.addField(guild.translate('moderation/report:BY'), interaction.member, true)
+				.addField(guild.translate('moderation/report:IN'), interaction.channel)
+				.addField(guild.translate('moderation/report:REASON'), reason)
+				.setTimestamp()
+				.setFooter(guild.name);
+			const repChannel = guild.channels.cache.get(settings.ModLogChannel);
+			if (repChannel) {
+				repChannel.send({ embeds: [embed] });
+				interaction.reply({ embeds: [channel.error('moderation/report:SUCCESS', { USER: member.user }, true)] });
+			}
+		} else {
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }, true)] });
 		}
 	}
 }

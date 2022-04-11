@@ -22,6 +22,21 @@ class Kick extends Command {
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,
 			examples: ['kick username spamming chat'],
+			slash: false,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to kick.',
+					type: 'USER',
+					required: true,
+				},
+				{
+					name: 'reason',
+					description: 'The reason to kick user.',
+					type: 'STRING',
+					required: false,
+				},
+			],
 		});
 	}
 
@@ -49,7 +64,6 @@ class Kick extends Command {
 		const	reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
-
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
@@ -79,6 +93,51 @@ class Kick extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId),
+			reason = args.get('reason')?.value;
+
+		// Make sure user isn't trying to punish themselves
+		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', null, true)] });
+
+		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+			return interaction.reply({ embeds: [channel.error('moderation/kick:TOO_POWERFUL', null, true)] });
+		}
+
+		// Kick user with reason
+		try {
+			// send DM to user
+			try {
+				const embed = new Embed(bot, guild)
+					.setTitle('moderation/kick:TITLE')
+					.setColor(15158332)
+					.setThumbnail(guild.iconURL())
+					.setDescription(guild.translate('moderation/kick:DESC', { NAME: guild.name }))
+					.addField(guild.translate('moderation/kick:KICKED'), interaction.user.tag, true)
+					.addField(guild.translate('misc:REASON'), reason, true);
+				await member.send({ embeds: [embed] });
+				// eslint-disable-next-line no-empty
+			} catch (e) {}
+
+			// kick user from guild
+			await member.kick({ reason: reason });
+			interaction.reply({ embeds: [channel.success('moderation/kick:SUCCESS', { USER: member.user }, true)] });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

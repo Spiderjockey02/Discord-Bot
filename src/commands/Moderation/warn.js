@@ -22,6 +22,27 @@ class Warn extends Command {
 			usage: 'warn <user> [time] [reason]',
 			cooldown: 5000,
 			examples: ['warn username', 'warn username 3m bad'],
+			slash: true,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to mute.',
+					type: 'USER',
+					required: true,
+				},
+				{
+					name: 'time',
+					description: 'The time till they are unmuted.',
+					type: 'STRING',
+					required: false,
+				},
+				{
+					name: 'reason',
+					description: 'The time till they are unmuted.',
+					type: 'STRING',
+					required: false,
+				},
+			],
 		});
 	}
 
@@ -63,6 +84,40 @@ class Warn extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const member = guild.members.cache.get(args.get('user').value),
+			channel = guild.channels.cache.get(interaction.channelId),
+			reason = args.get('reason').value,
+			{ settings } = guild;
+
+		// Make sure user isn't trying to punish themselves
+		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', { }, true)] });
+
+		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+			return interaction.reply({ embeds: [channel.error('moderation/warn:TOO_POWERFUL', { }, true)] });
+		}
+
+		// Get reason for warning
+		const wReason = reason ?? guild.translate('misc:NO_REASON');
+
+		// Warning is sent to warning manager
+		try {
+			require('../../helpers/warningSystem').run(bot, null, member, wReason, settings);
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

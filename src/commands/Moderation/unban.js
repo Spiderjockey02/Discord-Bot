@@ -22,6 +22,15 @@ class Unban extends Command {
 			usage: 'unban <userID> [reason]',
 			cooldown: 5000,
 			examples: ['unban 184376969016639488'],
+			slash: false,
+			options: [
+				{
+					name: 'user',
+					description: 'The user to deafen.',
+					type: 'USER',
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -53,6 +62,36 @@ class Unban extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const userID = args.get('user').value,
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		// Unban user
+		try {
+			await guild.bans.fetch().then(async bans => {
+				if (bans.size == 0) return interaction.reply({ embeds: [channel.error('moderation/unban:NO_ONE', null, true)] });
+				const bUser = bans.get(userID);
+				if (bUser) {
+					await guild.members.unban(bUser.user);
+					interaction.reply({ embeds: [channel.error('moderation/unban:SUCCESS', { USER: bUser.user }, true)] });
+				} else {
+					interaction.reply({ embeds: [channel.error('moderation/unban:MISSING', { ID: userID }, true)] });
+				}
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }
