@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const { MessageActionRow, MessageButton } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Dashboard command
@@ -31,7 +32,14 @@ class Dashboard extends Command {
  	 * @readonly
 	*/
 	async run(bot, message) {
-		message.channel.send(`${bot.config.websiteURL}/dashboard/${message.guild.id}`);
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setLabel('Access the dashboard')
+					.setStyle('LINK')
+					.setURL(`${bot.config.websiteURL}/dashboard/${message.guild.id}`),
+			);
+		message.channel.send({ content: 'There you go.', components: [row] });
 	}
 
 	/**
@@ -42,7 +50,14 @@ class Dashboard extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		interaction.reply({ content: `${bot.config.websiteURL}/dashboard/${guild.id}` });
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setLabel('Access the dashboard')
+					.setStyle('LINK')
+					.setURL(`${bot.config.websiteURL}/dashboard/${guild.id}`),
+			);
+		interaction.reply({ content: 'There you go.', components: [row] });
 	}
 }
 
