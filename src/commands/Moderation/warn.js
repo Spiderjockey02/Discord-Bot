@@ -75,11 +75,11 @@ class Warn extends Command {
 		}
 
 		// Get reason for warning
-		const wReason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
+		const reason = message.args[1] ? message.args.splice(1, message.args.length).join(' ') : message.translate('misc:NO_REASON');
 
 		// Warning is sent to warning manager
 		try {
-			require('../../helpers/warningSystem').run(bot, message, members[0], wReason, settings);
+			require('../../helpers/warningSystem').run(bot, message.channel, message.guild, members[0], message.author, reason);
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

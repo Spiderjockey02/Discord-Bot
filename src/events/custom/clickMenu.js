@@ -51,62 +51,62 @@ class ClickMenu extends Event {
 
 
 		switch (interaction.commandName) {
-		case 'Avatar':
-			bot.commands.get('avatar').reply(bot, interaction, channel, interaction.targetId);
-			break;
-		case 'Userinfo':
-			if (interaction.commandName == 'Userinfo') bot.commands.get('user-info').reply(bot, interaction, channel, interaction.targetId);
-			break;
-		case 'Translate': {
+			case 'Avatar':
+				bot.commands.get('avatar').reply(bot, interaction, channel, interaction.targetId);
+				break;
+			case 'Userinfo':
+				if (interaction.commandName == 'Userinfo') bot.commands.get('user-info').reply(bot, interaction, channel, interaction.targetId);
+				break;
+			case 'Translate': {
 			// fetch message and check if message has content
-			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_CONTENT', {}, true)], ephemeral: true });
+				const message = await channel.messages.fetch(interaction.targetId);
+				if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_CONTENT', {}, true)], ephemeral: true });
 
-			// translate message to server language
-			try {
-				const bar = await translate(message.content, { to: guild.settings.Language.split('-')[0] });
-				interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}` });
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+				// translate message to server language
+				try {
+					const bar = await translate(message.content, { to: guild.settings.Language.split('-')[0] });
+					interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}` });
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+				}
+				break;
 			}
-			break;
-		}
-		case 'OCR': {
+			case 'OCR': {
 			// fetch message and check if message has attachments
-			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.attachments.first()?.url) return interaction.reply({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
+				const message = await channel.messages.fetch(interaction.targetId);
+				if (!message.attachments.first()?.url) return interaction.reply({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
 
-			// Get text from image
-			const res = await optiic.process({
-				image: message.attachments.first().url,
-				mode: 'ocr',
-			});
+				// Get text from image
+				const res = await optiic.process({
+					image: message.attachments.first().url,
+					mode: 'ocr',
+				});
 
-			// Make sure text was actually retrieved
-			if (!res.text) {
-				interaction.reply({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
-			} else {
-				interaction.reply({ content: `Text from image: ${res.text}` });
+				// Make sure text was actually retrieved
+				if (!res.text) {
+					interaction.reply({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
+				} else {
+					interaction.reply({ content: `Text from image: ${res.text}` });
+				}
+				break;
 			}
-			break;
-		}
-		case 'Add to Queue': {
-			const message = await channel.messages.fetch(interaction.targetId);
-			const args = new Map().set('track', { value: message.content });
-			bot.commands.get('play').callback(bot, interaction, guild, args);
-			break;
-		}
-		case 'Screenshot': {
+			case 'Add to Queue': {
+				const message = await channel.messages.fetch(interaction.targetId);
+				const args = new Map().set('track', { value: message.content });
+				bot.commands.get('play').callback(bot, interaction, guild, args);
+				break;
+			}
+			case 'Screenshot': {
 			// fetch message and check if message has content
-			const message = await channel.messages.fetch(interaction.targetId);
-			if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_TRANS', {}, true)], ephemeral: true });
+				const message = await channel.messages.fetch(interaction.targetId);
+				if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_TRANS', {}, true)], ephemeral: true });
 
-			bot.commands.get('screenshot').reply(bot, interaction, channel, message);
-			break;
-		}
-		default:
-			interaction.reply({ content: 'Something went wrong' });
+				bot.commands.get('screenshot').reply(bot, interaction, channel, message);
+				break;
+			}
+			default:
+				interaction.reply({ content: 'Something went wrong' });
 		}
 		timestamps.set(member.id, now);
 	}

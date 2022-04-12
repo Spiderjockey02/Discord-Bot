@@ -38,20 +38,20 @@ module.exports = async (bot, type, pages, userID) => {
 	buttonCollector.on('collect', (i) => {
 		if (i.user.id !== userID) return;
 		switch (Number(i.customId)) {
-		case 1:
-			page = 0;
-			break;
-		case 2:
-			page = page > 0 ? --page : 0;
-			break;
-		case 3:
-			page = page + 1 < pages.length ? ++page : (pages.length - 1);
-			break;
-		case 4:
-			page = pages.length - 1;
-			break;
-		default:
-			break;
+			case 1:
+				page = 0;
+				break;
+			case 2:
+				page = page > 0 ? --page : 0;
+				break;
+			case 3:
+				page = page + 1 < pages.length ? ++page : (pages.length - 1);
+				break;
+			case 4:
+				page = pages.length - 1;
+				break;
+			default:
+				break;
 		}
 		i.update({ embeds: [pages[page]] });
 	});

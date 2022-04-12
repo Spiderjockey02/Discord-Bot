@@ -43,22 +43,22 @@ class Tags extends Command {
 		const option = message.args[0].toLowerCase();
 		message.args.shift();
 		switch (option) {
-		case 'add':
-			await bot.commands.get('tag-add').run(bot, message, settings);
-			break;
-		case 'delete':
-		case 'del':
-			await bot.commands.get('tag-delete').run(bot, message, settings);
-			break;
-		case 'edit':
-			await bot.commands.get('tag-edit').run(bot, message, settings);
-			break;
-		case 'view':
-			await bot.commands.get('tag-view').run(bot, message, settings);
-			break;
-		default:
+			case 'add':
+				await bot.commands.get('tag-add').run(bot, message, settings);
+				break;
+			case 'delete':
+			case 'del':
+				await bot.commands.get('tag-delete').run(bot, message, settings);
+				break;
+			case 'edit':
+				await bot.commands.get('tag-edit').run(bot, message, settings);
+				break;
+			case 'view':
+				await bot.commands.get('tag-view').run(bot, message, settings);
+				break;
+			default:
 			// delete message
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('tags/tags:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
 }

@@ -70,38 +70,38 @@ class EditRole extends Command {
 
 		if (message.member.permissions.has('ADMINISTRATOR') || role[0].comparePositionTo(message.guild.me.roles.highest) >= 0) {
 			switch (message.args[1].toLowerCase()) {
-			case 'colour':
-			case 'color':
-				fs.readFile('./src/assets/json/colours.json', async (err, data) => {
-					if (err) {
-						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-					}
+				case 'colour':
+				case 'color':
+					fs.readFile('./src/assets/json/colours.json', async (err, data) => {
+						if (err) {
+							bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+							return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+						}
 
-					// Retrieve the names of colours
-					const { colourNames } = JSON.parse(data);
-					const colour = (message.args[2].toLowerCase()).replace(/\s/g, '');
-					if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[2])) {
-						role[0].edit({ color: colourNames[colour] ?? message.args[2] });
-						message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
-					} else {
-						return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Colour not found' }).then(m => m.timedDelete({ timeout: 5000 }));
-					}
-				});
-				break;
-			case 'hoist':
-				if (!['true', 'false'].includes(message.args[2])) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Please provide the boolean as a value' }).then(m => m.timedDelete({ timeout: 5000 }));
-				role[0].edit({ hoist: message.args[2] });
-				message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
-				break;
-			case 'name':
-			case 'rename':
-				if (message.args[2].length >= 100) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'The role name is greater than the character limit of (100)' }).then(m => m.timedDelete({ timeout: 5000 }));
-				role[0].edit({ name: message.args[2] });
-				message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
-				break;
-			default:
-				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/editrole:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+						// Retrieve the names of colours
+						const { colourNames } = JSON.parse(data);
+						const colour = (message.args[2].toLowerCase()).replace(/\s/g, '');
+						if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[2])) {
+							role[0].edit({ color: colourNames[colour] ?? message.args[2] });
+							message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
+						} else {
+							return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Colour not found' }).then(m => m.timedDelete({ timeout: 5000 }));
+						}
+					});
+					break;
+				case 'hoist':
+					if (!['true', 'false'].includes(message.args[2])) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Please provide the boolean as a value' }).then(m => m.timedDelete({ timeout: 5000 }));
+					role[0].edit({ hoist: message.args[2] });
+					message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
+					break;
+				case 'name':
+				case 'rename':
+					if (message.args[2].length >= 100) return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'The role name is greater than the character limit of (100)' }).then(m => m.timedDelete({ timeout: 5000 }));
+					role[0].edit({ name: message.args[2] });
+					message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
+					break;
+				default:
+					message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/editrole:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
 		}
 	}
@@ -124,38 +124,38 @@ class EditRole extends Command {
 
 		if (member.permissions.has('ADMINISTRATOR') || role.comparePositionTo(guild.me.roles.highest) >= 0) {
 			switch (key) {
-			case 'colour':
-			case 'color':
-				fs.readFile('./src/assets/json/colours.json', async (err, data) => {
-					if (err) {
-						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
-					}
+				case 'colour':
+				case 'color':
+					fs.readFile('./src/assets/json/colours.json', async (err, data) => {
+						if (err) {
+							bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+							return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+						}
 
-					// Retrieve the names of colours
-					const { colourNames } = JSON.parse(data);
-					const colour = (value).replace(/\s/g, '');
-					if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(value)) {
-						await role.edit({ color: colourNames[colour] ?? value });
-						interaction.reply({ embeds: [channel.error('moderation/editrole:SUCCESS', null, true)] });
-					} else {
-						return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Colour not found' }, true)] });
-					}
-				});
-				break;
-			case 'hoist':
-				if (!['true', 'false'].includes(value)) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Please provide the boolean as a value' }, true)] });
-				await role.edit({ hoist: value });
-				interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
-				break;
-			case 'name':
-			case 'rename':
-				if (value.length >= 100) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'The role name is greater than the character limit of (100)' }, true)] });
-				await role.edit({ name: value });
-				interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
-				break;
-			default:
-				interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(guild.translate('moderation/editrole:USAGE')) }, true)] });
+						// Retrieve the names of colours
+						const { colourNames } = JSON.parse(data);
+						const colour = (value).replace(/\s/g, '');
+						if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(value)) {
+							await role.edit({ color: colourNames[colour] ?? value });
+							interaction.reply({ embeds: [channel.error('moderation/editrole:SUCCESS', null, true)] });
+						} else {
+							return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Colour not found' }, true)] });
+						}
+					});
+					break;
+				case 'hoist':
+					if (!['true', 'false'].includes(value)) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Please provide the boolean as a value' }, true)] });
+					await role.edit({ hoist: value });
+					interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
+					break;
+				case 'name':
+				case 'rename':
+					if (value.length >= 100) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'The role name is greater than the character limit of (100)' }, true)] });
+					await role.edit({ name: value });
+					interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
+					break;
+				default:
+					interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(guild.translate('moderation/editrole:USAGE')) }, true)] });
 			}
 		}
 	}
