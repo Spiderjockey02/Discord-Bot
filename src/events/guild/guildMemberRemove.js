@@ -2,6 +2,7 @@
 const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
 	dateFormat = require('dateformat'),
+	varSetter = require('../../helpers/variableSetter'),
 	Event = require('../../structures/Event');
 
 /**
@@ -55,7 +56,7 @@ class GuildMemberRemove extends Event {
 		// Welcome plugin (give roles and message)
 		if (settings.welcomePlugin) {
 			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
-			if (channel && settings.welcomeGoodbyeToggle) channel.send(settings.welcomeGoodbyeText.replace('{user}', member.user)).catch(e => bot.logger.error(e.message));
+			if (channel && settings.welcomeGoodbyeToggle) channel.send(varSetter(settings.welcomeGoodbyeText, member, channel, member.guild)).catch(e => bot.logger.error(e.message));
 		}
 
 		// Remove member's rank

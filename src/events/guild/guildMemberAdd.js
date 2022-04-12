@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	varSetter = require('../../helpers/variableSetter'),
 	Event = require('../../structures/Event');
 
 /**
@@ -52,7 +53,7 @@ class GuildMemberAdd extends Event {
 		// Welcome plugin (give roles and message)
 		if (settings.welcomePlugin) {
 			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
-			if (channel) channel.send(settings.welcomeMessageText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
+			if (channel) channel.send(varSetter(settings.welcomeMessageText, member, channel, member.guild)).catch(e => bot.logger.error(e.message));
 			// Send private message to user
 			if (settings.welcomePrivateToggle) member.send(settings.welcomePrivateText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => bot.logger.error(e.message));
 

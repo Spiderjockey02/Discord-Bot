@@ -1,5 +1,6 @@
 // Dependencies
 const { RankSchema } = require('../database/models'),
+	varSetter = require('./variableSetter'),
 	levelcd = new Set();
 
 class LevelManager {
@@ -43,7 +44,7 @@ class LevelManager {
 						// now check how to send message
 						res.Level = res.Level + 1;
 						if (settings.LevelOption == 1) {
-							channel.send(settings.LevelMessage.replace('{user}', this.message.author).replace('{level}', res.Level));
+							channel.send(varSetter(settings.LevelMessage, member, channel, member.guild).replace('{level}', res.Level));
 						} else if (settings.LevelOption == 2) {
 							const lvlChannel = guild.channels.cache.get(settings.LevelChannel);
 							if (lvlChannel) lvlChannel.send(settings.LevelMessage.replace('{user}', this.message.author).replace('{level}', res.Level));
