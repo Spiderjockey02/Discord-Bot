@@ -79,7 +79,10 @@ class Warn extends Command {
 
 		// Warning is sent to warning manager
 		try {
-			require('../../helpers/warningSystem').run(bot, message.channel, message.guild, members[0], message.author, reason);
+			// bot, message, member, wReason, settings
+			const res = await require('../../helpers/warningSystem').run(bot, message, members[0], reason);
+			if (res.error) message.channel.error(res.error);
+			else message.channel.send({ embeds: [res] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -98,8 +101,7 @@ class Warn extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user').value),
 			channel = guild.channels.cache.get(interaction.channelId),
-			reason = args.get('reason').value,
-			{ settings } = guild;
+			reason = args.get('reason')?.value ?? guild.translate('misc:NO_REASON');
 
 		// Make sure user isn't trying to punish themselves
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', { }, true)] });
@@ -109,12 +111,11 @@ class Warn extends Command {
 			return interaction.reply({ embeds: [channel.error('moderation/warn:TOO_POWERFUL', { }, true)] });
 		}
 
-		// Get reason for warning
-		const wReason = reason ?? guild.translate('misc:NO_REASON');
 
-		// Warning is sent to warning manager
 		try {
-			require('../../helpers/warningSystem').run(bot, null, member, wReason, settings);
+			const res = await require('../../helpers/warningSystem').run(bot, interaction, member, reason);
+			if (res.error) interaction.reply({ embeds: [channel.error(res.error, true)] });
+			else interaction.reply({ embeds: [res] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
