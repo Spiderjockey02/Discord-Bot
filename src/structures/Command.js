@@ -48,6 +48,37 @@ class Command {
 	async callback() {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
+
+	validate({ content, guild }) {
+		const args = content.split(' ');
+
+		if (this.options.length >= 1) {
+			for (const option of this.options) {
+				const index = this.options.indexOf(option);
+				switch (option.type) {
+					case 'STRING':
+
+						break;
+					case 'INTEGER':
+					case 'NUMBER':
+						// Make sure, if there is a boundary it's respected.
+						if (option.minValue && option.minValue > args[index]) return true;
+						if (option.maxValue && option.maxValue > args[index]) return true;
+						return false;
+					case 'CHANNEL':
+					// Check for channel ID or channel mention
+						return (guild.channels.cache.get(args[index]) || /^<#[0-9]{18}>/g.match(args[index]));
+					case 'ROLE':
+					// Check for role ID or channel mention
+						return (guild.roles.cache.get(args[index]) || /^<@&[0-9]{18}>/g.match(args[index]));
+					default:
+						return true;
+				}
+			}
+		} else {
+			return true;
+		}
+	}
 }
 
 module.exports = Command;

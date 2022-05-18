@@ -29,11 +29,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 				const embed = new MessageEmbed()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
-				if (returnValue) {
-					return embed;
-				} else {
-					return this.send({ embeds: [embed] });
-				}
+				return returnValue ? embed : this.send({ embeds: [embed] });
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}
@@ -47,11 +43,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 				const embed = new MessageEmbed()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
-				if (returnValue) {
-					return embed;
-				} else {
-					return this.send({ embeds: [embed] });
-				}
+				return returnValue ? embed : this.send({ embeds: [embed] });
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}
