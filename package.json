@@ -44,7 +44,7 @@
     "minecraft-server-util": "^5.2.9",
     "moment": "^2.29.1",
     "mongoose": "^6.2.0",
-    "optiic": "^0.0.15",
+    "optiic": "^0.0.17",
     "puppeteer": "^13.3.0",
     "r6api.js": "^4.0.0",
     "radio-browser": "^2.1.6",
