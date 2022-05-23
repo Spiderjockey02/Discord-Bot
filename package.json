@@ -26,7 +26,7 @@
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
     "axios": "^0.26.1",
-    "canvacord": "^5.2.3",
+    "canvacord": "^5.3.0",
     "chalk": "^4.1.0",
     "cors": "^2.8.5",
     "dateformat": "^4.6.3",
