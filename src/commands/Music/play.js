@@ -29,6 +29,12 @@ class Play extends Command {
 				type: 'STRING',
 				required: true,
 				autocomplete: true,
+			},
+			{
+				name: 'flag',
+				description: '(R)andom, (S)huffle or (N)ext to queue',
+				type: 'STRING',
+				choices: ['-r', '-n', '-s'].map(i => ({ name: i, value: i })),
 			}],
 		});
 	}
@@ -149,6 +155,7 @@ class Play extends Command {
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
+			flag = args.get('flag').value,
 			search = args.get('track').value;
 
 		// make sure user is in a voice channel
@@ -204,15 +211,41 @@ class Play extends Command {
 				.setColor(member.displayHexColor)
 				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 
-			// Add songs to queue and then play the song(s) if not already
-			player.queue.add(res.tracks);
-			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+			// Add songs to queue depending on flag (if any)
+			switch (flag) {
+				case '-r':
+					// Reverse the added tracks
+					player.queue.add(res.tracks.reverse());
+					break;
+				case '-n':
+					// Add the tracks to the front of the queue
+					player.queue.unshift(...res.tracks);
+					break;
+				case '-s':
+					// Shuffle the added songs
+					player.queue.add(res.tracks.sort(() => Math.random() - 0.5));
+					break;
+				default:
+					player.queue.add(res.tracks);
+			}
 
+			// Play the tracks
+			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 			return interaction.reply({ embeds: [embed] });
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
-			player.queue.add(res.tracks[0]);
+
+			// Add songs to queue depending on flag (if any)
+			switch (flag) {
+				case '-n':
+					// Add the tracks to the front of the queue
+					player.queue.unshift(res.tracks[0]);
+					break;
+				default:
+					player.queue.add(res.tracks[0]);
+			}
+
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 				return interaction.reply({ content: 'Successfully started queue.' });
