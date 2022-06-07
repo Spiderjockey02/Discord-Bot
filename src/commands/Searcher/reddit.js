@@ -26,6 +26,12 @@ class Reddit extends Command {
 				description: 'Name of subreddit.',
 				type: 'STRING',
 				required: true,
+			},
+			{
+				name: 'flag',
+				description: '(H)ot, (N)ew or (T)op',
+				type: 'STRING',
+				choices: ['-h', '-n', '-t'].map(i => ({ name: i, value: i })),
 			}],
 		});
 	}
@@ -68,11 +74,24 @@ class Reddit extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
-			subreddit = args.get('subreddit').value;
+			subreddit = args.get('subreddit').value,
+			flag = args.get('flag')?.value;
 
+		let type;
+		switch (flag) {
+			case '-h':
+				type = 'hot';
+				break;
+			case '-n':
+				type = 'new';
+				break;
+			case '-t':
+				type = 'top';
+				break;
+		}
 		// send subreddit post
 		try {
-			const resp = await this.fetchPost(bot, channel, subreddit);
+			const resp = await this.fetchPost(bot, channel, subreddit, { type });
 			await interaction.reply({ embeds: [resp] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -87,11 +106,11 @@ class Reddit extends Command {
 	 * @param {string} subreddit The subreddit to get a post from
 	 * @returns {embed}
 	*/
-	async fetchPost(bot, channel, subreddit) {
+	async fetchPost(bot, channel, subreddit, { type }) {
 		let reddit;
 		try {
 			// Whether or not to remove NSFW content
-			reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: !(channel.nsfw || channel.type == 'DM') });
+			reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: !(channel.nsfw || channel.type == 'DM'), type });
 
 			// Send message to channel
 			return new Embed(bot, channel.guild)

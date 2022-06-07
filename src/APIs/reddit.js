@@ -46,12 +46,12 @@ class RedditAPI {
 	*/
 	async fetchSubreddit(subreddit, options = {}) {
 		// check cache system before requesting reddit
-		if (this.cachedSubreddits.has(subreddit)) {
-			return this._fetchPost(this.cachedSubreddits.get(subreddit), options);
+		if (this.cachedSubreddits.has(`${subreddit}_${options.type}`)) {
+			return this._fetchPost(this.cachedSubreddits.get(`${subreddit}_${options.type}`), options);
 		} else {
-			const resp = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?`).then(res => res.json());
+			const resp = await fetch(`https://www.reddit.com/r/${subreddit}/${options.type ?? 'hot'}.json`).then(res => res.json());
 			if (resp.error) throw new Error(`Error: '${resp.message}' when searching for that subreddit.`);
-			this._handleCache(subreddit, resp);
+			this._handleCache(`${subreddit}_${options.type ?? 'hot'}`, resp);
 			return this._fetchPost(resp, options);
 		}
 	}
@@ -86,7 +86,6 @@ class RedditAPI {
 		this.cachedSubreddits.set(subreddit, resp);
 		setTimeout(() => {
 			this.cachedSubreddits.delete(subreddit);
-		// 5 minute and then delete from cache
 		}, 5 * 60 * 1000);
 	}
 }
