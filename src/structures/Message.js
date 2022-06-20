@@ -128,7 +128,7 @@ module.exports = Object.defineProperties(Message.prototype, {
 				}
 
 				// no file with the correct format was found
-				if (!file.length[0]) return this.channel.error('misc:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
+				if (file.length === 0) return this.channel.error('misc:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			}
 
 			// check for message link
