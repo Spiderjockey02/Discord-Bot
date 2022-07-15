@@ -23,7 +23,7 @@ const config = {
 			password: 'password',
 		},
 		// https://genius.com/developers
-		genuis: 'genuisAPI-KEY',
+		genius: 'genuisAPI-KEY',
 		// https://api.amethyste.moe/
 		amethyste: 'amethysteAPI-Key',
 	},

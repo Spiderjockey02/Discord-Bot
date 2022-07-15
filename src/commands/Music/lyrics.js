@@ -100,7 +100,7 @@ class Lyrics extends Command {
 			const player = bot.manager?.players.get(guild.id);
 			if (!player) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
 			options = {
-				apiKey: bot.config.api_keys.genuis,
+				apiKey: bot.config.api_keys.genius,
 				title: player.queue.current.title,
 				artist: '‎',
 				optimizeQuery: true,
@@ -108,7 +108,7 @@ class Lyrics extends Command {
 		} else {
 			// Use the message.args for song search
 			options = {
-				apiKey: bot.config.api_keys.genuis,
+				apiKey: bot.config.api_keys.genius,
 				title: song,
 				artist: '‎',
 				optimizeQuery: true,
