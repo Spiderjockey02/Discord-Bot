@@ -88,7 +88,7 @@ class Play extends Command {
 			if (message.attachments.size > 0) {
 				const url = message.attachments.first().url;
 				for (const type of fileTypes) {
-					if (url.endsWith(fileTypes[type])) message.args.push(url);
+					if (url.endsWith(type)) message.args.push(url);
 				}
 				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
 			} else {
