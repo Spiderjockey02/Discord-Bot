@@ -33,9 +33,9 @@ plugins:
     ttsLanguage: "en-US" # language of the TTS engine
     sources:
       # true = source enabled, false = source disabled
-      getyarn: false # www.getyarn.io
-      clypit: false # www.clyp.it
-      tts: false # speak:Words to speak
+      getyarn: true # www.getyarn.io
+      clypit: true # www.clyp.it
+      tts: true # speak:text to speak
       pornhub: true # should be self-explanatory
       reddit: true # should be self-explanatory
       ocremix: true # www.ocremix.org
