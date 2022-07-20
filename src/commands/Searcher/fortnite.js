@@ -60,7 +60,7 @@ class Fortnite extends Command {
 
 		// Fetch fornite account information
 		try {
-			const embed = await this.createEmbed(bot, message.guild, username, platform);
+			const embed = await this.createEmbed(bot, message.guild, message.channel, username, platform);
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
@@ -76,6 +76,7 @@ class Fortnite extends Command {
  	 * @param {bot} bot The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
+ 	 * @param {TextChannel} channel The channel the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
@@ -86,9 +87,10 @@ class Fortnite extends Command {
 
 		// send embed
 		try {
-			const embed = await this.createEmbed(bot, guild, username, platform);
+			const embed = await this.createEmbed(bot, guild, channel, username, platform);
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
@@ -98,24 +100,30 @@ class Fortnite extends Command {
 	 * Function for fetching/creating fornite embed.
 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command was ran in
+	 * @param {channel} channel The channel the command was ran in
 	 * @param {string} username The username to search
 	 * @param {string} platform The platform to search the user on
  	 * @returns {embed}
 	*/
-	async createEmbed(bot, guild, username, platform) {
+	async createEmbed(bot, guild, channel, username, platform) {
 		const data = await (new (require('../../APIs/fortnite.js'))(bot.config.api_keys.fortnite)).user(username, platform);
-		return new Embed(bot, guild)
-			.setColor(0xffffff)
-			.setTitle('searcher/fortnite:TITLE', { USER: data.username })
-			.setURL(data.url)
-			.setDescription(guild.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3.toLocaleString(guild.settings.Language), TOP_5: data.stats.lifetime.top_5.toLocaleString(guild.settings.Language), TOP_6: data.stats.lifetime.top_6.toLocaleString(guild.settings.Language), TOP_12: data.stats.lifetime.top_12.toLocaleString(guild.settings.Language), TOP_25: data.stats.lifetime.top_25.toLocaleString(guild.settings.Language) }))
-			.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
-			.addField(guild.translate('searcher/fortnite:TOTAL'), (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(guild.settings.Language), true)
-			.addField(guild.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches.toLocaleString(guild.settings.Language), true)
-			.addField(guild.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins.toLocaleString(guild.settings.Language), true)
-			.addField(guild.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
-			.addField(guild.translate('searcher/fortnite:KILLS'), `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, true)
-			.addField(guild.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
+		// Check for error
+		if (data.error) {
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: data.error }, true);
+		} else {
+			return new Embed(bot, guild)
+				.setColor(0xffffff)
+				.setTitle('searcher/fortnite:TITLE', { USER: data.username })
+				.setURL(data.url)
+				.setDescription(guild.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3.toLocaleString(guild.settings.Language), TOP_5: data.stats.lifetime.top_5.toLocaleString(guild.settings.Language), TOP_6: data.stats.lifetime.top_6.toLocaleString(guild.settings.Language), TOP_12: data.stats.lifetime.top_12.toLocaleString(guild.settings.Language), TOP_25: data.stats.lifetime.top_25.toLocaleString(guild.settings.Language) }))
+				.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
+				.addField(guild.translate('searcher/fortnite:TOTAL'), (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(guild.settings.Language), true)
+				.addField(guild.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches.toLocaleString(guild.settings.Language), true)
+				.addField(guild.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins.toLocaleString(guild.settings.Language), true)
+				.addField(guild.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
+				.addField(guild.translate('searcher/fortnite:KILLS'), `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, true)
+				.addField(guild.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
+		}
 	}
 }
 
