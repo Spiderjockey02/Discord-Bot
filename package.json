@@ -45,7 +45,7 @@
     "moment": "^2.29.1",
     "mongoose": "^6.2.0",
     "optiic": "^0.0.15",
-    "puppeteer": "^13.3.0",
+    "puppeteer": "^17.1.1",
     "r6api.js": "^4.0.0",
     "radio-browser": "^2.1.6",
     "serialize-javascript": "^6.0.0",
