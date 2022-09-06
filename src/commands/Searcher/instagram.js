@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +27,7 @@ class Instagram extends Command {
 			options: [{
 				name: 'username',
 				description: 'account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});

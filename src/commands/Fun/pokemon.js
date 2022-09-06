@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -24,8 +25,10 @@ class Pokemon extends Command {
 			slash: true,
 			options: [{
 				name: 'pokemon',
+				nameLocalized: 'en-US',
+				// nameLocalizations: bot.languages.map(({ name }) => ({ [name]: bot.translate(`${this.help.category.toLowerCase()}/${this.help.name}:USAGE`, {}, name) }), bot.commands.get('pokemon')),
 				description: 'The specified pokemon to gather information on.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});

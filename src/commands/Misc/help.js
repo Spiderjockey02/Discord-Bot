@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -24,7 +25,7 @@ class Help extends Command {
 			options: [{
 				name: 'command',
 				description: 'Name of command to look up.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 				autocomplete: true,
 			}],

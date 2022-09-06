@@ -34,7 +34,7 @@ class Flip extends Command {
 			result = message.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
 		// send result
-		message.channel.send(`${emoji} ${result}`);
+		message.channel.send({ content: `${emoji} ${result}` });
 	}
 
 	/**

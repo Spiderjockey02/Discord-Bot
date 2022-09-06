@@ -62,8 +62,8 @@ class Dog extends Command {
 	*/
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
+
 		try {
 			const res = await fetch('https://nekos.life/api/v2/img/woof').then(info => info.json());
 			// send image

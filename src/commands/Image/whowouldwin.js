@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,12 +27,12 @@ class WhoWouldWin extends Command {
 			options: [{
 				name: 'user',
 				description: 'first user.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: true,
 			}, {
 				name: 'user2',
 				description: 'second user',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});
@@ -79,13 +80,12 @@ class WhoWouldWin extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user').value);
-		const member2 = guild.members.cache.get(args.get('user2')?.value ?? interaction.user.id);
+		const member = guild.members.cache.get(args.get('user').value),
+			member2 = guild.members.cache.get(args.get('user2')?.value ?? interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId);
 
-		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=whowouldwin&user1=${member.user.displayAvatarURL({ format: 'png', size: 512 })}&user2=${member2.user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)

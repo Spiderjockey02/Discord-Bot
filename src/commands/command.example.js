@@ -24,7 +24,7 @@ module.exports = class CustomCommand extends Command {
 			examples: ['AN', 'ARRAY', 'OF', 'EXAMPLES'],
 			// set to false if u don't want it a slash command VV
 			slash: true,
-			// The options for slash command https://discord.js.org/#/docs/discord.js/stable/typedef/CommandInteractionOption
+			// The options for slash command https://discord.js.org/#/docs/discord.js/main/typedef/ApplicationCommandOption
 			options: [],
 		});
 	}

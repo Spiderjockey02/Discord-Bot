@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -26,7 +26,7 @@ class Pitch extends Command {
 			options: [{
 				name: 'amount',
 				description: 'The amount you want to pitch the song.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 			}],
 		});
@@ -48,7 +48,7 @@ class Pitch extends Command {
 		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
 			player.resetFilter();
 			const msg = await message.channel.send(message.translate('music/pitch:PITCH_OFF'));
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setDescription(message.translate('music/pitch:DESC_1'));
 			await bot.delay(5000);
 			return msg.edit({ content: '​​ ', embeds: [embed] });
@@ -61,7 +61,7 @@ class Pitch extends Command {
 			timescale: { pitch: message.args[0] },
 		});
 		const msg = await message.channel.send(message.translate('music/pitch:PITCH_ON', { NUM: message.args[0] }));
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(message.translate('music/pitch:DESC_2', { NUM: message.args[0] }));
 		await bot.delay(5000);
 		return msg.edit({ content: '​​ ', embeds: [embed] });
@@ -89,7 +89,7 @@ class Pitch extends Command {
 		if (amount && ['reset', 'off'].includes(amount.toLowerCase())) {
 			player.resetFilter();
 			await interaction.reply(bot.translate('music/pitch:PITCH_OFF'));
-			const embed = new MessageEmbed(bot, guild)
+			const embed = new EmbedBuilder()
 				.setDescription(bot.translate('music/pitch:DESC_1'));
 			await bot.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
@@ -98,7 +98,7 @@ class Pitch extends Command {
 				timescale: { pitch: amount },
 			});
 			await interaction.reply(guild.translate('music/pitch:PITCH_ON', { NUM: amount }));
-			const embed = new MessageEmbed(bot, guild)
+			const embed = new EmbedBuilder()
 				.setDescription(bot.translate('music/pitch:DESC_2', { NUM: amount }));
 			await bot.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });

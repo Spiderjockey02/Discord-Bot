@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -27,7 +28,7 @@ class RoleInfo extends Command {
 			options: [{
 				name: 'role',
 				description: 'Get information of the role.',
-				type: 'ROLE',
+				type: ApplicationCommandOptionType.Role,
 				required: true,
 			}],
 		});

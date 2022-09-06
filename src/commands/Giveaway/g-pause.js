@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Giveaway pause command
@@ -27,7 +28,7 @@ class GiveawayPause extends Command {
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 			],

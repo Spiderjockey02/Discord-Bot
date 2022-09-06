@@ -62,7 +62,6 @@ class ReactionRoleAdd extends Command {
 				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
 				let channel, msgLink;
 				if (patt.test(message.args[0])) {
-					console.log('test');
 					const stuff = message.args[0].split('/');
 					msgLink = await bot.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
 					if (!msgLink) return message.channel.error('Incorrect message link.');
@@ -110,7 +109,7 @@ class ReactionRoleAdd extends Command {
 				let roles =	roleMsgs.first().getRole();
 				// Check role hierarchy to make sure bot can give user those roles or if the role is managed by integration (a bot role etc)
 				roles = roles.filter(r => {
-					return !(r.comparePositionTo(message.guild.me.roles.highest) >= 0 || r.managed);
+					return !(r.comparePositionTo(message.guild.members.me.roles.highest) >= 0 || r.managed);
 				});
 				// if no roles then stop reaction role creation
 				if (!roles[0]) return message.channel.send('No roles entered');

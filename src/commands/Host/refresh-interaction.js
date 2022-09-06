@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandType } = require('discord-api-types/v10'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Docs command
@@ -20,6 +21,7 @@ class Docs extends Command {
 			usage: 'refresh-interaction',
 			cooldown: 3000,
 			examples: ['refresh-interaction'],
+			slash: true,
 		});
 	}
 
@@ -43,13 +45,14 @@ class Docs extends Command {
 				if (Array.isArray(g)) data.push(...g);
 			}
 
+
 			// get context menus
-			data.push({ name: 'Add to Queue', type: 'MESSAGE' },
-				{ name: 'Translate', type: 'MESSAGE' },
-				{ name: 'OCR', type: 'MESSAGE' },
-				{ name: 'Avatar', type: 'USER' },
-				{ name: 'Userinfo', type: 'USER' },
-				{ name: 'Screenshot', type: 'MESSAGE' },
+			data.push({ name: 'Add to Queue', type: ApplicationCommandType.Message },
+				{ name: 'Translate', type: ApplicationCommandType.Message },
+				{ name: 'OCR', type: ApplicationCommandType.Message },
+				{ name: 'Avatar', type: ApplicationCommandType.User },
+				{ name: 'Userinfo', type: ApplicationCommandType.User },
+				{ name: 'Screenshot', type: ApplicationCommandType.Message },
 			);
 
 			try {

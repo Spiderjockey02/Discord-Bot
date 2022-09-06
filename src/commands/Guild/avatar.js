@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +27,7 @@ class Avatar extends Command {
 			options: [{
 				name: 'user',
 				description: 'The user you want the avatar of',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});

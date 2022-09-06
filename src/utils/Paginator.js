@@ -1,28 +1,28 @@
 // variables
-const	{ MessageActionRow, MessageButton, CommandInteraction } = require('discord.js'),
+const	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } = require('discord.js'),
 	timeout = 120000;
 
 module.exports = async (bot, type, pages, userID) => {
 	let page = 0;
 
-	const row = new MessageActionRow()
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new MessageButton()
+			new ButtonBuilder()
 				.setCustomId('1')
 				.setLabel('⏮')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('2')
 				.setLabel('◀️')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('3')
 				.setLabel('▶️')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('4')
 				.setLabel('⏭')
-				.setStyle('SECONDARY'),
+				.setStyle(ButtonStyle.Secondary),
 		);
 
 	let curPage;

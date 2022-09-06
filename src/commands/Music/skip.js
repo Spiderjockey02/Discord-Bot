@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,8 @@ class Skip extends Command {
 			options: [{
 				name: 'amount',
 				description: 'position in queue to skip to',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
 				required: false,
 			}],
 		});

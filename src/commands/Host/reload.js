@@ -2,6 +2,7 @@
 const { promisify } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	path = require('path'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -23,6 +24,14 @@ class Reload extends Command {
 			usage: 'reload <command / event>',
 			cooldown: 3000,
 			examples: ['reload help', 'reload channelCreate'],
+			slash: true,
+			options: [{
+				name: 'cmd/event',
+				description: 'command or event to reload',
+				type: ApplicationCommandOptionType.String,
+				// choices: [...[...bot.commands.keys()].map(i => ({ name: i, value: i })), ...Object.keys(bot._events).map(i => ({ name: i, value: i }))],
+				required: true,
+			}],
 		});
 	}
 
@@ -84,6 +93,17 @@ class Reload extends Command {
 		} else {
 			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName }).then(m => m.timedDelete({ timeout: 10000 }));
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 

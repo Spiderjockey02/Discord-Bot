@@ -1,13 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	types = {
-		GUILD_TEXT: 'Text',
-		GUILD_VOICE: 'Voice',
-		GUILD_CATEGORY: 'Category',
-		GUILD_STAGE_VOICE: 'Stage',
-		GUILD_NEWS: 'Annoucement',
-		GUILD_STORE: 'Store',
-	},
 	Event = require('../../structures/Event');
 
 
@@ -35,7 +27,7 @@ class ChannelUpdate extends Event {
 		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${types[newChannel.type]})`);
 
 		// Get server settings / if no settings then return
-		const settings = newChannel.guild.settings;
+		const settings = newChannel.guild?.settings;
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event channelDelete is for logging

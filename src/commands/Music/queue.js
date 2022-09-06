@@ -1,7 +1,6 @@
 // Dependencies
-const { paginate } = require('../../utils'),
-	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime } } = require('../../utils'),
+const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,7 +27,7 @@ class Queue extends Command {
 			options: [{
 				name: 'page',
 				description: 'The page number.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				required: false,
 			}],
 		});

@@ -1,7 +1,7 @@
 // Dependencies
-const { Client, Collection } = require('discord.js'),
+const { Client, Collection, GatewayIntentBits: FLAGS, Partials } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	GiveawaysManager = require('./giveaway/Manager'),
+	// GiveawaysManager = require('./giveaway/Manager'),
 	path = require('path'),
 	{ promisify } = require('util'),
 	AudioManager = require('./Audio-Manager'),
@@ -15,9 +15,10 @@ const { Client, Collection } = require('discord.js'),
 class Egglord extends Client {
 	constructor() {
 		super({
-			partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_SCHEDULED_EVENT'],
-			intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_MESSAGES',
-				'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_VOICE_STATES', 'GUILD_INVITES', 'GUILD_SCHEDULED_EVENTS'],
+			partials: [Partials.GUILD_MEMBER, Partials.USER, Partials.MESSAGE, Partials.CHANNEL, Partials.REACTION, Partials.GUILD_SCHEDULED_EVENT],
+			intents: [FLAGS.Guilds, FLAGS.GuildMembers, FLAGS.GuildBans, FLAGS.GuildEmojisAndStickers,
+				FLAGS.GuildMessages, FLAGS.GuildMessageReactions, FLAGS.DirectMessages, FLAGS.GuildVoiceStates, FLAGS.GuildInvites,
+				FLAGS.GuildScheduledEvents, FLAGS.MessageContent],
 			presence: {
 				status: 'online',
 				activities: [{
@@ -38,6 +39,7 @@ class Egglord extends Client {
 		 * The Giveaway manager
 		 * @type {GiveawaysManager}
 		*/
+		/*
 		this.giveawaysManager = new GiveawaysManager(this, {
 			storage: false,
 			forceUpdateEvery: 15000,
@@ -54,7 +56,7 @@ class Egglord extends Client {
 				},
 			},
 		});
-
+		*/
 		/**
 		 * The command data
 		 * @type {Collection}

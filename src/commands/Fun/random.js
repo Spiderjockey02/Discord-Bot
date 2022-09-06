@@ -1,6 +1,7 @@
 // Dependencies
 const max = 100000,
-	{ MessageEmbed } = require('discord.js'),
+	{ EmbedBuilder, Colors } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,7 @@ class Random extends Command {
 			options: [{
 				name: 'min',
 				description: 'The minimum number',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 2147483647,
 				required: true,
@@ -33,7 +34,7 @@ class Random extends Command {
 			{
 				name: 'max',
 				description: 'The maximum number',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 2147483647,
 				required: true,
@@ -68,8 +69,8 @@ class Random extends Command {
 
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		const embed = new MessageEmbed()
-			.setColor('RANDOM')
+		const embed = new EmbedBuilder()
+			.setColor(Colors.Random)
 			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
 		message.channel.send({ embeds: [embed] });
 	}

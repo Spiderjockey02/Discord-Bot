@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Giveaway reroll command
@@ -27,13 +28,13 @@ class GiveawayReroll extends Command {
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 				{
 					name: 'winner',
 					description: 'How many winners to reroll.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 10,
 					required: false,

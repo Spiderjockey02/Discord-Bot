@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,19 +29,19 @@ class GiveawayEdit extends Command {
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 				{
 					name: 'time',
 					description: 'Extra time added to the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: false,
 				},
 				{
 					name: 'winners',
 					description: 'New winner count.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 10,
 					required: false,
@@ -48,7 +49,7 @@ class GiveawayEdit extends Command {
 				{
 					name: 'prize',
 					description: 'New prize',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: false,
 				},
 			],

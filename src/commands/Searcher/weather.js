@@ -1,6 +1,7 @@
 // Dependencies
 const { find } = require('weather-js'),
 	{ Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,7 @@ class Weather extends Command {
 			options: [{
 				name: 'location',
 				description: 'The location to gather the weather of.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -54,12 +55,14 @@ class Weather extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setTitle(message.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
 				.setDescription(message.translate('searcher/weather:DESC'))
-				.addField(message.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
-				.addField(message.translate('searcher/weather:SKY'), result[0].current.skytext, true)
-				.addField(message.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
-				.addField(message.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
-				.addField(message.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
-				.addField(message.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
+				.addFields(
+					{ name: message.translate('searcher/weather:TEMP'), value: `${result[0].current.temperature}°C`, inline: true },
+					{ name: message.translate('searcher/weather:SKY'), value: result[0].current.skytext, inline: true },
+					{ name: message.translate('searcher/weather:HUMIDITY'), value: `${result[0].current.humidity}%`, inline: true },
+					{ name: message.translate('searcher/weather:SPEED'), value: result[0].current.windspeed, inline: true },
+					{ name: message.translate('searcher/weather:TIME'), value: result[0].current.observationtime, inline: true },
+					{ name: message.translate('searcher/weather:DISPLAY'), value: result[0].current.winddisplay, inline: true },
+				)
 				.setThumbnail(result[0].current.imageUrl);
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
@@ -87,12 +90,14 @@ class Weather extends Command {
 			const embed = new Embed(bot, guild)
 				.setTitle(guild.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
 				.setDescription(guild.translate('searcher/weather:DESC'))
-				.addField(guild.translate('searcher/weather:TEMP'), `${result[0].current.temperature}°C`, true)
-				.addField(guild.translate('searcher/weather:SKY'), result[0].current.skytext, true)
-				.addField(guild.translate('searcher/weather:HUMIDITY'), `${result[0].current.humidity}%`, true)
-				.addField(guild.translate('searcher/weather:SPEED'), result[0].current.windspeed, true)
-				.addField(guild.translate('searcher/weather:TIME'), result[0].current.observationtime, true)
-				.addField(guild.translate('searcher/weather:DISPLAY'), result[0].current.winddisplay, true)
+				.addFields(
+					{ name: guild.translate('searcher/weather:TEMP'), value: `${result[0].current.temperature}°C`, inline: true },
+					{ name: guild.translate('searcher/weather:SKY'), value: result[0].current.skytext, inline: true },
+					{ name: guild.translate('searcher/weather:HUMIDITY'), value: `${result[0].current.humidity}%`, inline: true },
+					{ name: guild.translate('searcher/weather:SPEED'), value: result[0].current.windspeed, inline: true },
+					{ name: guild.translate('searcher/weather:TIME'), value: result[0].current.observationtime, inline: true },
+					{ name: guild.translate('searcher/weather:DISPLAY'), value: result[0].current.winddisplay, inline: true },
+				)
 				.setThumbnail(result[0].current.imageUrl);
 			interaction.reply({ embeds: [embed] });
 		});

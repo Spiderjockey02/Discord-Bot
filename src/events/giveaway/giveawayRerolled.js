@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	Event = require('../../structures/Event');
 
 /**
@@ -25,20 +25,20 @@ class GiveawayRerolled extends Event {
 		if (bot.config.debug) bot.logger.log('giveaway has rerolled');
 
 		// DM members that they have won
-		winners.forEach(async (member) => {
+		for (const winner of winners) {
 			try {
-				const embed = new MessageEmbed()
-					.setAuthor({ name: 'Giveaway winner', iconURL: member.user.displayAvatarURL() })
+				const embed = new EmbedBuilder()
+					.setAuthor({ name: 'Giveaway winner', iconURL: winner.user.displayAvatarURL() })
 					.setThumbnail(bot.guilds.cache.get(giveaway.guildID).iconURL())
 					.setDescription([
 						`Prize: \`${giveaway.prize}\`.`,
 						`Message link: [link](https://discord.com/channels/${giveaway.guildID}/${giveaway.channelID}/${giveaway.messageID}).`,
 					].join('\n'));
-				await member.send({ embeds: [embed] });
+				await winner.send({ embeds: [embed] });
 			} catch (err) {
 				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
-		});
+		}
 	}
 }
 

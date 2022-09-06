@@ -18,9 +18,10 @@ class Git extends Command {
 			dirname: __dirname,
 			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
 			description: 'Displays git information',
-			usage: 'git>',
+			usage: 'git',
 			cooldown: 3000,
 			examples: ['git'],
+			slash: true,
 		});
 	}
 
@@ -33,6 +34,17 @@ class Git extends Command {
 	async run(bot, message) {
 		const t = await execSync('git status').toString();
 		message.channel.send({ content: `\`\`\`css\n${t}\n\`\`\`` });
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		const t = await execSync('git status').toString();
+		interaction.reply({ content: `\`\`\`css\n${t}\n\`\`\`` });
 	}
 }
 

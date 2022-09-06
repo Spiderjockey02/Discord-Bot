@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MessageActionRow, MessageButton } = require('discord.js'),
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -41,12 +41,12 @@ class Ticket extends Command {
 					.setTitle('ticket/ticket:TITLE_REACT')
 					.setDescription(message.translate('ticket/ticket:REACT_DESC', { PREFIX: settings.prefix }));
 				// Create button
-				const row = new MessageActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new MessageButton()
+						new ButtonBuilder()
 							.setCustomId('crt_ticket')
 							.setLabel('Create ticket')
-							.setStyle('SECONDARY')
+							.setStyle(ButtonStyle.Secondary)
 							.setEmoji('📩'),
 					);
 

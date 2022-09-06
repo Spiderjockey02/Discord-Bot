@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ WarningSchema } = require('../../database/models'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,7 +29,7 @@ class Warnings extends Command {
 				{
 					name: 'user',
 					description: 'The user to mute.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 			],

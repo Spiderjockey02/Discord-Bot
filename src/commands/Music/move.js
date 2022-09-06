@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,13 +26,15 @@ class Move extends Command {
 			options: [{
 				name: 'position',
 				description: 'The initial position of the song.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 1,
 				required: true,
 			},
 			{
 				name: 'newposition',
 				description: 'The new position of the song.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 2,
 				required: false,
 			}],
 		});
@@ -92,8 +95,6 @@ class Move extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		const player = bot.manager?.players.get(member.guild.id);
-
-		if (pos1 === 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 
 		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 

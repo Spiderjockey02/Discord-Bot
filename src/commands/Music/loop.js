@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,7 @@ class Loop extends Command {
 			slash: true,
 			options: [{
 				name: 'type',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				description: 'The entity you want to loop',
 				required: false,
 				choices: [

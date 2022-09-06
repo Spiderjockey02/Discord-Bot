@@ -32,7 +32,7 @@ class Invite extends Command {
  	 * @readonly
 	*/
 	async run(bot, message) {
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(message.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }));
 		message.channel.send({ embeds: [embed] });
 	}

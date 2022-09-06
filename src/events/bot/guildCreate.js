@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed, MessageAttachment } = require('discord.js'),
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
@@ -35,12 +35,12 @@ class GuildCreate extends Event {
 
 		// Send message to channel that bot has joined a server
 		const owner = await guild.members.fetch(guild.ownerId);
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(`[GUILD JOIN] ${guild.name}`);
 		let attachment;
 		if (guild.icon == null) {
 			const icon = await Canvas.guildIcon(guild.name, 128);
-			attachment = new MessageAttachment(icon, 'guildicon.png');
+			attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
 			embed.setImage('attachment://guildicon.png');
 		} else {
 			embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));

@@ -1,5 +1,7 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Lock command
@@ -27,8 +29,8 @@ class Lock extends Command {
 				{
 					name: 'channel',
 					description: 'The channel to lock.',
-					type: 'CHANNEL',
-					channelTypes: ['GUILD_TEXT', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD', 'GUILD_NEWS'],
+					type: ApplicationCommandOptionType.Channel,
+					channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.PrivateThread, ChannelType.GuildNews],
 					required: true,
 				},
 			],

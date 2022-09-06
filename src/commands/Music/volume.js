@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ functions: { checkMusic } } = require('../../utils'),
+const { Embed, functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -27,7 +27,7 @@ class Back extends Command {
 			options: [{
 				name: 'volume',
 				description: 'The volume you want the song to play at.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 1000,
 				required: true,
@@ -92,9 +92,6 @@ class Back extends Command {
 				.setDescription(guild.translate('music/volume:CURRENT', { NUM: player.volume }));
 			return interaction.reply({ embeds: [embed] });
 		}
-
-		// make sure volume is between 0 and 1000
-		if (volume <= 0 || volume > 1000) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/volume:TOO_HIGH', { ERROR: null }, true)] });
 
 		// Update volume
 		player.setVolume(volume);

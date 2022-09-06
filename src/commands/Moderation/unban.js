@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Unban command
@@ -27,7 +28,7 @@ class Unban extends Command {
 				{
 					name: 'user',
 					description: 'The user to deafen.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 			],

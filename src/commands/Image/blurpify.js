@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +27,7 @@ class Blurpify extends Command {
 			options: [{
 				name: 'user',
 				description: 'User\'s avatar to blurpify.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});

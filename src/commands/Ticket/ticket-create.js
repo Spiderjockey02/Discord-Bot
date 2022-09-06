@@ -50,32 +50,35 @@ class TicketCreate extends Command {
 		if (message.guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] });
 
 		// create channel
-		message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
-			reason: reason,
-			parent: settings.TicketCategory,
-			permissionOverwrites: perms })
-			.then(async channel => {
+		try {
+			const channel = await message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
+				reason: reason,
+				parent: settings.TicketCategory,
+				permissionOverwrites: perms });
+
 			// reply to user saying that channel has been created
-				const successEmbed = new Embed(bot, message.guild)
-					.setTitle('ticket/ticket-create:TITLE')
-					.setDescription(message.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
-				message.channel.send({ embeds: [successEmbed] }).then(m => m.timedDelete({ timeout:10000 }));
+			const successEmbed = new Embed(bot, message.guild)
+				.setTitle('ticket/ticket-create:TITLE')
+				.setDescription(message.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
+			message.channel.send({ embeds: [successEmbed] }).then(m => m.timedDelete({ timeout:10000 }));
 
-				// Add message to ticket channel
-				const embed = new Embed(bot, message.guild)
-					.setColor(0xFF5555)
-					.addField(message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.tag }), message.translate('ticket/ticket-create:FIELDT'))
-					.addField(message.translate('ticket/ticket-create:FIELD2'), reason)
-					.setTimestamp();
-				channel.send({ content: `${message.author}${message.guild.roles.cache.get(settings.TicketSupportRole) ? `, <@&${settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
+			// Add message to ticket channel
+			const embed = new Embed(bot, message.guild)
+				.setColor(0xFF5555)
+				.addFields(
+					{ name: message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.tag }), value: message.translate('ticket/ticket-create:FIELDT') },
+					{ name: message.translate('ticket/ticket-create:FIELD2'), value: reason },
+				)
+				.setTimestamp();
+			channel.send({ content: `${message.author}${message.guild.roles.cache.get(settings.TicketSupportRole) ? `, <@&${settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
-				// run ticketcreate event
-				await bot.emit('ticketCreate', channel, embed);
-			}).catch(err => {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			});
+			// run ticketcreate event
+			bot.emit('ticketCreate', channel, embed);
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
 	}
 }
 

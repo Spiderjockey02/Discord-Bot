@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Warn command
@@ -27,19 +28,19 @@ class Warn extends Command {
 				{
 					name: 'user',
 					description: 'The user to mute.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'time',
 					description: 'The time till they are unmuted.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 				{
 					name: 'reason',
 					description: 'The time till they are unmuted.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 			],
@@ -70,7 +71,7 @@ class Warn extends Command {
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			return message.channel.error('moderation/warn:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
@@ -107,7 +108,7 @@ class Warn extends Command {
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', { }, true)] });
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			return interaction.reply({ embeds: [channel.error('moderation/warn:TOO_POWERFUL', { }, true)] });
 		}
 

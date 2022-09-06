@@ -3,6 +3,7 @@ const { Embed } = require('../../utils'),
 	R6API = require('r6api.js').default,
 	config = require('../../config.js'),
 	{ findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys.rainbow.email, password: config.api_keys.rainbow.password }),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
@@ -30,20 +31,20 @@ class Rainbow6Siege extends Command {
 			options: [{
 				name: 'username',
 				description: 'account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 			{
 				name: 'platform',
 				description: 'Device of user.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: [...['pc', 'xbox', 'ps4'].map(i => ({ name: i, value: i }))],
 				required: false,
 			},
 			{
 				name: 'region',
 				description: 'Region of user.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: [...['eu', 'na', 'as'].map(i => ({ name: i, value: i }))],
 				required: false,
 			}],

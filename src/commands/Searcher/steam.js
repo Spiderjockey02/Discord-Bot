@@ -2,6 +2,7 @@
 const fetch = require('node-fetch'),
 	dateFormat = require('dateformat'),
 	{ Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +27,7 @@ class Steam extends Command {
 			options: [{
 				name: 'username',
 				description: 'Account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});

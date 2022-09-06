@@ -30,8 +30,10 @@ class TicketClose extends Event {
 			const embed = new Embed(bot, channel.guild)
 				.setTitle('ticket/ticket-close:TITLE')
 				.setColor(15158332)
-				.addField(channel.guild.translate('ticket/ticket-close:TICKET'), `${channel}`)
-				.addField(channel.guild.translate('ticket/ticket-close:USER'), `${bot.users.cache.get(channel.name.split('-')[1])}`)
+				.addFields(
+					{ name: channel.guild.translate('ticket/ticket-close:TICKET'), value: channel.toString() },
+					{ name: channel.guild.translate('ticket/ticket-close:USER'), value: `${bot.users.cache.get(channel.name.split('-')[1])}` },
+				)
 				.setTimestamp();
 
 			// Find channel and send message

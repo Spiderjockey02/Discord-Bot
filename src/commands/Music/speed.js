@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ functions: { checkMusic } } = require('../../utils'),
+const { Embed, functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +26,7 @@ class Speed extends Command {
 			options: [{
 				name: 'speed',
 				description: 'The speed at what you want the song to go.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 10,
 				required: true,

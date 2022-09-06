@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -26,7 +26,7 @@ class Seek extends Command {
 			options: [{
 				name: 'time',
 				description: 'The time you want to seek to.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -57,7 +57,7 @@ class Seek extends Command {
 			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
 			player.seek(time);
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			message.channel.send({ embeds: [embed] });
@@ -88,7 +88,7 @@ class Seek extends Command {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
 		} else {
 			player.seek(time);
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor(member.displayHexColor)
 				.setDescription(bot.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			interaction.reply({ embeds: [embed] });

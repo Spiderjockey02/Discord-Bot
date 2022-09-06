@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,7 @@ class Threats extends Command {
 			options: [{
 				name: 'user',
 				description: 'User\'s avatar to threat.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});
@@ -71,10 +72,11 @@ class Threats extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelId);
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
+
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=threats&url=${member.user.displayAvatarURL({ format: 'png', size: 1024 })}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)

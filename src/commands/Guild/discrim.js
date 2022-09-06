@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -26,7 +27,7 @@ class Discrim extends Command {
 			options: [{
 				name: 'discrim',
 				description: 'The discriminator you want to search for.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.Integer,
 				required: false,
 			}],
 		});

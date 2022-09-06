@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 /**
  * EgglordEmbed
  * @extends {MessageEmbed}
 */
-class EgglordEmbed extends MessageEmbed {
+class EgglordEmbed extends EmbedBuilder {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {?guild} guild The guild of which the embed will be sent to

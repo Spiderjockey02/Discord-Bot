@@ -19,6 +19,7 @@ class Shutdown extends Command {
 			description: 'Shutdowns the bot.',
 			usage: 'shutdown',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
@@ -39,6 +40,26 @@ class Shutdown extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild) {
+		const channel = guild.channels.cache.get(interaction.channelId);
+		try {
+			await interaction.reply({ embeds: [channel.success('host/shutdown:success', null, true)] });
+			await bot.logger.log(`Bot was shutdown by ${interaction.user.tag} in server: [${guild.id}]`);
+			await bot.destroy();
+			process.exit();
+		} catch(err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }

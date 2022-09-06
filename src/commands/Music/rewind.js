@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
+const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -27,7 +27,7 @@ class Rewind extends Command {
 			options: [{
 				name: 'time',
 				description: 'The time you want to rewind to.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 			}],
 		});

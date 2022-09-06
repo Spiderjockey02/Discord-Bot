@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,13 +29,14 @@ class DM extends Command {
 				{
 					name: 'user',
 					description: 'The user to direct message.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'message',
 					description: 'The message to send the user.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 4096,
 					required: true,
 				},
 			],

@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime, getReadableTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,7 +29,7 @@ class Slowmode extends Command {
 				{
 					name: 'input',
 					description: 'How long for slowmode',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],

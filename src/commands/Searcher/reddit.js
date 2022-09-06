@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -24,13 +25,13 @@ class Reddit extends Command {
 			options: [{
 				name: 'subreddit',
 				description: 'Name of subreddit.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 			{
 				name: 'flag',
 				description: '(H)ot, (N)ew or (T)op',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: ['-h', '-n', '-t'].map(i => ({ name: i, value: i })),
 			}],
 		});

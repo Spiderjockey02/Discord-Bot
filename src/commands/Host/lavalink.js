@@ -1,6 +1,7 @@
 // Dependencies
 const	{ Embed } = require('../../utils'),
 	{ Node } = require('erela.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -21,6 +22,14 @@ class Lavalink extends Command {
 			description: 'Interact with the Lavalink nodes',
 			usage: 'lavalink [list | add | remove] <information>',
 			cooldown: 3000,
+			slash: true,
+			options: [{
+				name: 'track',
+				description: 'The link or name of the track.',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				autocomplete: true,
+			}],
 		});
 	}
 
@@ -34,72 +43,85 @@ class Lavalink extends Command {
 		let msg, memory,	cpu,	uptime,	playingPlayers,	players;
 
 		switch (message.args[0]) {
-		case 'list': {
-		// show list of available nodes
-			const embed = new Embed(bot, message.guild)
-				.setTitle('Lavalink nodes:')
-				.setDescription(bot.manager.nodes.map((node, index, array) => {
-					return `${array.map(({ options }) => options.host).indexOf(index) + 1}.) **${node.options.host}** (Uptime: ${this.uptime(node.stats.uptime ?? 0)})`;
-				}).join('\n'));
-			return message.channel.send({ embeds: [embed] });
-		}
-		case 'add':
-			try {
-			// Connect to new node
-				await (new Node({
-					host: message.args[1] ?? 'localhost',
-					password: message.args[2] ?? 'youshallnotpass',
-					port: parseInt(message.args[3]) ?? 5000,
-				})).connect();
-				message.channel.success('host/node:ADDED_NODE');
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		case 'remove':
-			try {
-				await (new Node({
-					host: message.args[1] ?? 'localhost',
-					password: message.args[2] ?? 'youshallnotpass',
-					port: parseInt(message.args[3]) ?? 5000,
-				})).destroy();
-				message.channel.success('host/node:REMOVED_NODE');
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		default:
-			if (bot.manager.nodes.get(message.args[0])) {
-				msg = await message.channel.send(message.translate('host/lavalink:FETCHING')),
-				{	memory,	cpu,	uptime,	playingPlayers,	players } = bot.manager.nodes.get(message.args[0]).stats;
-
-				// RAM usage
-				const allocated = Math.floor(memory.allocated / 1024 / 1024),
-					used = Math.floor(memory.used / 1024 / 1024),
-					free = Math.floor(memory.free / 1024 / 1024),
-					reservable = Math.floor(memory.reservable / 1024 / 1024);
-
-				// CPU usage
-				const systemLoad = (cpu.systemLoad * 100).toFixed(2),
-					lavalinkLoad = (cpu.lavalinkLoad * 100).toFixed(2);
-
-				// Lavalink uptime
-				const botUptime = this.uptime(uptime);
-
+			case 'list': {
+				// show list of available nodes
 				const embed = new Embed(bot, message.guild)
-					.setAuthor({ name: message.translate('host/lavalink:AUTHOR', { NAME: bot.manager.nodes.get(message.args[0])?.options.host ?? bot.manager.nodes.first().options.host }) })
-					.addField(message.translate('host/lavalink:PLAYERS'), message.translate('host/lavalink:PLAYER_STATS', { PLAYING: playingPlayers, PLAYERS: players }))
-					.addField(message.translate('host/lavalink:MEMORY'), message.translate('host/lavalink:MEMORY_STATS', { ALL: allocated, USED: used, FREE: free, RESERVE: reservable }))
-					.addField(message.translate('host/lavalink:CPU'), message.translate('host/lavalink:CPU_STATS', { CORES: cpu.cores, SYSLOAD: systemLoad, LVLLOAD: lavalinkLoad }))
-					.addField(message.translate('host/lavalink:UPTIME'), message.translate('host/lavalink:UPTIME_STATS', { NUM: botUptime }))
-					.setTimestamp(Date.now());
-				return msg.edit({ content: ' ', embeds: [embed] });
-			} else {
-				return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/lavalink:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+					.setTitle('Lavalink nodes:')
+					.setDescription(bot.manager.nodes.map((node, index, array) => {
+						return `${array.map(({ options }) => options.host).indexOf(index) + 1}.) **${node.options.host}** (Uptime: ${this.uptime(node.stats.uptime ?? 0)})`;
+					}).join('\n'));
+				return message.channel.send({ embeds: [embed] });
 			}
+			case 'add':
+				try {
+					// Connect to new node
+					await (new Node({
+						host: message.args[1] ?? 'localhost',
+						password: message.args[2] ?? 'youshallnotpass',
+						port: parseInt(message.args[3]) ?? 5000,
+					})).connect();
+					message.channel.success('host/node:ADDED_NODE');
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
+				break;
+			case 'remove':
+				try {
+					await (new Node({
+						host: message.args[1] ?? 'localhost',
+						password: message.args[2] ?? 'youshallnotpass',
+						port: parseInt(message.args[3]) ?? 5000,
+					})).destroy();
+					message.channel.success('host/node:REMOVED_NODE');
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
+				break;
+			default:
+				if (bot.manager.nodes.get(message.args[0])) {
+					msg = await message.channel.send(message.translate('host/lavalink:FETCHING')),
+					{	memory,	cpu,	uptime,	playingPlayers,	players } = bot.manager.nodes.get(message.args[0]).stats;
+
+					// RAM usage
+					const allocated = Math.floor(memory.allocated / 1024 / 1024),
+						used = Math.floor(memory.used / 1024 / 1024),
+						free = Math.floor(memory.free / 1024 / 1024),
+						reservable = Math.floor(memory.reservable / 1024 / 1024);
+
+					// CPU usage
+					const systemLoad = (cpu.systemLoad * 100).toFixed(2),
+						lavalinkLoad = (cpu.lavalinkLoad * 100).toFixed(2);
+
+					// Lavalink uptime
+					const botUptime = this.uptime(uptime);
+
+					const embed = new Embed(bot, message.guild)
+						.setAuthor({ name: message.translate('host/lavalink:AUTHOR', { NAME: bot.manager.nodes.get(message.args[0])?.options.host ?? bot.manager.nodes.first().options.host }) })
+						.addFields(
+							{ name: message.translate('host/lavalink:PLAYERS'), value: message.translate('host/lavalink:PLAYER_STATS', { PLAYING: playingPlayers, PLAYERS: players }) },
+							{ name: message.translate('host/lavalink:MEMORY'), value: message.translate('host/lavalink:MEMORY_STATS', { ALL: allocated, USED: used, FREE: free, RESERVE: reservable }) },
+							{ name: message.translate('host/lavalink:CPU'), value: message.translate('host/lavalink:CPU_STATS', { CORES: cpu.cores, SYSLOAD: systemLoad, LVLLOAD: lavalinkLoad }) },
+							{ name: message.translate('host/lavalink:UPTIME'), value: message.translate('host/lavalink:UPTIME_STATS', { NUM: botUptime }) },
+						)
+						.setTimestamp(Date.now());
+					return msg.edit({ content: ' ', embeds: [embed] });
+				} else {
+					return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/lavalink:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 
 	/**

@@ -1,5 +1,6 @@
 // Dependencies
 const { get } = require('axios'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -21,6 +22,14 @@ class Docs extends Command {
 			usage: 'docs <query>',
 			cooldown: 3000,
 			examples: ['docs channel#create'],
+			slash: true,
+			options: [{
+				name: 'input',
+				description: 'Search in the discordjs docs',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				autocomplete: true,
+			}],
 		});
 	}
 
@@ -48,6 +57,17 @@ class Docs extends Command {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			});
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 

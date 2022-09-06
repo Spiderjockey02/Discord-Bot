@@ -41,10 +41,10 @@ class SlashCreate extends Event {
 		cmd.conf.botPermissions.forEach((perm) => {
 			if (['SPEAK', 'CONNECT'].includes(perm)) {
 				if (!member.voice.channel) return;
-				if (!member.voice.channel.permissionsFor(guild.me).has(perm)) {
+				if (!member.voice.channel.permissionsFor(bot.user).has(perm)) {
 					neededPermissions.push(perm);
 				}
-			} else if (!channel.permissionsFor(guild.me).has(perm)) {
+			} else if (!channel.permissionsFor(bot.user)?.has(perm)) {
 				neededPermissions.push(perm);
 			}
 		});

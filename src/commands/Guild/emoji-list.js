@@ -31,7 +31,8 @@ class EmojiList extends Command {
  	 * @readonly
 	*/
 	async run(bot, message) {
-		message.channel.send(message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') }));
+		const emojiList = message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') });
+		message.channel.send({ content:  emojiList });
 	}
 
 	/**
@@ -42,7 +43,8 @@ class EmojiList extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		interaction.reply({ content: guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
+		const emojiList = guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') });
+		interaction.reply({ content: emojiList });
 	}
 }
 

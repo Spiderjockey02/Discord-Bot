@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,14 +26,14 @@ class Fortnite extends Command {
 			options: [{
 				name: 'device',
 				description: 'Device type',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: [...['kbm', 'gamepad', 'touch'].map(i => ({ name: i, value: i }))],
 				required: true,
 			},
 			{
 				name: 'username',
 				description: 'username of fortnite account.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -117,12 +118,14 @@ class Fortnite extends Command {
 				.setURL(data.url)
 				.setDescription(guild.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3.toLocaleString(guild.settings.Language), TOP_5: data.stats.lifetime.top_5.toLocaleString(guild.settings.Language), TOP_6: data.stats.lifetime.top_6.toLocaleString(guild.settings.Language), TOP_12: data.stats.lifetime.top_12.toLocaleString(guild.settings.Language), TOP_25: data.stats.lifetime.top_25.toLocaleString(guild.settings.Language) }))
 				.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
-				.addField(guild.translate('searcher/fortnite:TOTAL'), (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(guild.settings.Language), true)
-				.addField(guild.translate('searcher/fortnite:PLAYED'), data.stats.lifetime.matches.toLocaleString(guild.settings.Language), true)
-				.addField(guild.translate('searcher/fortnite:WINS'), data.stats.lifetime.wins.toLocaleString(guild.settings.Language), true)
-				.addField(guild.translate('searcher/fortnite:WINS_PRE'), `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, true)
-				.addField(guild.translate('searcher/fortnite:KILLS'), `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, true)
-				.addField(guild.translate('searcher/fortnite:K/D'), `${data.stats.lifetime.kd}`, true);
+				.addFields(
+					{ name: guild.translate('searcher/fortnite:TOTAL'), value: (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(guild.settings.Language), inline: true },
+					{ name: guild.translate('searcher/fortnite:PLAYED'), value: data.stats.lifetime.matches.toLocaleString(guild.settings.Language), inline: true },
+					{ name: guild.translate('searcher/fortnite:WINS'), value: data.stats.lifetime.wins.toLocaleString(guild.settings.Language), inline: true },
+					{ name: guild.translate('searcher/fortnite:WINS_PRE'), value: `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, inline: true },
+					{ name: guild.translate('searcher/fortnite:KILLS'), value: `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, inline: true },
+					{ name: guild.translate('searcher/fortnite:K/D'), value: `${data.stats.lifetime.kd}`, inline: true },
+				);
 		}
 	}
 }

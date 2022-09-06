@@ -2,7 +2,7 @@
 const { timeEventSchema, WarningSchema } = require('../database/models'),
 	ms = require('ms'),
 	{ Embed, time: { getTotalTime } } = require('../utils'),
-	{ MessageAttachment } = require('discord.js');
+	{ AttachmentBuilder } = require('discord.js');
 
 module.exports = async (bot) => {
 	const events = await timeEventSchema.find({});
@@ -43,7 +43,7 @@ module.exports = async (bot) => {
 						bot.logger.debug(`Reminding ${bot.users.cache.get(event.userID).tag}`);
 
 						// Message user about reminder
-						const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+						const attachment = new AttachmentBuilder('./src/assets/imgs/Timer.png', { name: 'Timer.png' });
 						const embed = new Embed(bot, guild)
 							.setTitle('fun/reminder:TITLE')
 							.setThumbnail('attachment://Timer.png')

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { MessageEmbed, ApplicationCommandOptionType } = require('discord.js'),
 	{ userSchema } = require('../../database/models'),
 	moment = require('moment'),
 	axios = require('axios'),
@@ -24,6 +24,14 @@ class User extends Command {
 			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
+			slash: true,
+			options: [{
+				name: 'track',
+				description: 'The link or name of the track.',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				autocomplete: true,
+			}],
 		});
 	}
 
@@ -47,7 +55,7 @@ class User extends Command {
 
 		// Display user information
 		if (!message.args[1]) {
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle('User Information:')
 				.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
 				.setThumbnail(user.displayAvatarURL({ dynamic: true, size: 1024 }))
@@ -65,92 +73,103 @@ class User extends Command {
 
 		// find input
 		switch (message.args[1].toLowerCase()) {
-		case 'premium':
+			case 'premium':
 			// Update the user's premium
-			try {
-				if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-				const resp = await userSchema.findOne({ userID: user.id	});
-				if (!resp) {
-					await (new userSchema({
-						userID: user.id,
-						premium: message.args[2],
-						premiumSince: Date.now(),
-					})).save();
-				} else {
-					await userSchema.findOneAndUpdate({ userID: user.id }, { premium: message.args[2], premiumSince: Date.now() });
-				}
-				user.premium = message.args[2];
-				message.channel.success('host/user:SUCCESS_PREM').then(m => m.timedDelete({ timeout: 10000 }));
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		case 'banned':
-			// Update the user's global ban
-			try {
-				if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-				const resp = await userSchema.findOne({ userID: user.id	});
-				if (!resp) {
-					await (new userSchema({
-						userID: user.id,
-						cmdBanned: message.args[2],
-					})).save();
-				} else {
-					await userSchema.findOneAndUpdate({ userID: user.id }, { cmdBanned: message.args[2] });
-				}
-				user.cmdBanned = message.args[2];
-				message.channel.success('host/user:SUCCESS_BAN').then(m => m.timedDelete({ timeout: 10000 }));
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		case 'rank':
-			// Update user's rank card
-			if (message.attachments.first().url) {
 				try {
-					const response = await axios.get(message.attachments.first().url, { responseType: 'arraybuffer' });
-					if (!['png', 'jpeg'].includes(response.headers['content-type'].replace('image/', ''))) return message.channel.error(`File type must be \`PNG\` or \`JPEG\`, this file type was: ${response.headers['content-type'].replace('image/', '')}`).then(m => m.timedDelete({ timeout: 5000 }));
+					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 					const resp = await userSchema.findOne({ userID: user.id	});
 					if (!resp) {
 						await (new userSchema({
 							userID: user.id,
-							rankImage: Buffer.from(response.data, 'utf-8'),
+							premium: message.args[2],
+							premiumSince: Date.now(),
 						})).save();
 					} else {
-						await userSchema.findOneAndUpdate({ userID: user.id }, { rankImage: Buffer.from(response.data, 'utf-8') });
+						await userSchema.findOneAndUpdate({ userID: user.id }, { premium: message.args[2], premiumSince: Date.now() });
 					}
-					user.rankImage = Buffer.from(response.data, 'utf-8');
-					message.channel.success('host/user:SUCCESS_RANK').then(m => m.timedDelete({ timeout: 10000 }));
+					user.premium = message.args[2];
+					message.channel.success('host/user:SUCCESS_PREM').then(m => m.timedDelete({ timeout: 10000 }));
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 				}
-			} else {
-				return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		case 'reset':
-			try {
-				await userSchema.findOneAndRemove({ userID: user.id });
-				user.premium = false;
-				user.cmdBanned = false;
-				user.rankImage = '';
-				message.channel.success('host/user:SUCCESS_RESET').then(m => m.timedDelete({ timeout: 10000 }));
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-			break;
-		default:
-			message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
-			break;
+				break;
+			case 'banned':
+			// Update the user's global ban
+				try {
+					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+					const resp = await userSchema.findOne({ userID: user.id	});
+					if (!resp) {
+						await (new userSchema({
+							userID: user.id,
+							cmdBanned: message.args[2],
+						})).save();
+					} else {
+						await userSchema.findOneAndUpdate({ userID: user.id }, { cmdBanned: message.args[2] });
+					}
+					user.cmdBanned = message.args[2];
+					message.channel.success('host/user:SUCCESS_BAN').then(m => m.timedDelete({ timeout: 10000 }));
+				} catch (err) {
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
+				break;
+			case 'rank':
+			// Update user's rank card
+				if (message.attachments.first().url) {
+					try {
+						const response = await axios.get(message.attachments.first().url, { responseType: 'arraybuffer' });
+						if (!['png', 'jpeg'].includes(response.headers['content-type'].replace('image/', ''))) return message.channel.error(`File type must be \`PNG\` or \`JPEG\`, this file type was: ${response.headers['content-type'].replace('image/', '')}`).then(m => m.timedDelete({ timeout: 5000 }));
+						const resp = await userSchema.findOne({ userID: user.id	});
+						if (!resp) {
+							await (new userSchema({
+								userID: user.id,
+								rankImage: Buffer.from(response.data, 'utf-8'),
+							})).save();
+						} else {
+							await userSchema.findOneAndUpdate({ userID: user.id }, { rankImage: Buffer.from(response.data, 'utf-8') });
+						}
+						user.rankImage = Buffer.from(response.data, 'utf-8');
+						message.channel.success('host/user:SUCCESS_RANK').then(m => m.timedDelete({ timeout: 10000 }));
+					} catch (err) {
+						if (message.deletable) message.delete();
+						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					}
+				} else {
+					return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
+				}
+				break;
+			case 'reset':
+				try {
+					await userSchema.findOneAndRemove({ userID: user.id });
+					user.premium = false;
+					user.cmdBanned = false;
+					user.rankImage = '';
+					message.channel.success('host/user:SUCCESS_RESET').then(m => m.timedDelete({ timeout: 10000 }));
+				} catch (err) {
+					if (message.deletable) message.delete();
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				}
+				break;
+			default:
+				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+				break;
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 

@@ -22,8 +22,6 @@ class GiveawayDeleted extends Event {
 	*/
 	async run(bot, giveaway) {
 		if (bot.config.debug) bot.logger.debug(`Giveaway was deleted in ${giveaway.guild.id}.`);
-
-
 	}
 }
 

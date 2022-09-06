@@ -1,5 +1,6 @@
 // Dependencies
 const { define } = require('urban-dictionary'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -26,7 +27,7 @@ class Urban extends Command {
 			options: [{
 				name: 'phrase',
 				description: 'Phrase to look up.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -92,8 +93,10 @@ class Urban extends Command {
 				.setURL(resp[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
 				.setDescription(guild.translate('fun/urban:DESC', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
-				.addField('👍', `${resp[0].thumbs_up}`, true)
-				.addField('👎', `${resp[0].thumbs_down}`, true);
+				.addFields(
+					{ name: '👍', value: `${resp[0].thumbs_up}`, inline: true },
+					{ name: '👎', value: `${resp[0].thumbs_down}`, inline: true },
+				);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return channel.error('fun/urban:INCORRECT_URBAN', { PHRASE: phrase }, true);

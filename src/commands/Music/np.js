@@ -54,7 +54,9 @@ class NowPlaying extends Command {
 				.setColor(message.member.displayHexColor)
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester.id)}]`)
-				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
+				.addFields(
+					{ name: '\u200b', value: new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end },
+				);
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();

@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,13 +29,13 @@ class Mute extends Command {
 				{
 					name: 'user',
 					description: 'The user to mute.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'time',
 					description: 'The time till they are unmuted.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 			],

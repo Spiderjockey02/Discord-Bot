@@ -1,6 +1,6 @@
 // Dependencies
 const { status } = require('minecraft-server-util'),
-	{ MessageAttachment } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -27,13 +27,13 @@ class Minecraft extends Command {
 			options: [{
 				name: 'ip',
 				description: 'IP of the Minecraft server.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 			{
 				name: 'port',
 				description: 'Port of the Minecraft server.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 			}],
 		});
@@ -109,18 +109,20 @@ class Minecraft extends Command {
 			let attachment;
 			if (response.favicon) {
 				const imageStream = Buffer.from(response.favicon.split(',').slice(1).join(','), 'base64');
-				attachment = new MessageAttachment(imageStream, 'favicon.png');
+				attachment = new AttachmentBuilder(imageStream, { name: 'favicon.png' });
 			}
 
 			const embed = new Embed(bot, guild)
 				.setColor(0x0099ff)
 				.setTitle('searcher/mc:TITLE');
 			if (response.favicon) embed.setThumbnail('attachment://favicon.png');
-			embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`);
-			embed.addField(guild.translate('searcher/mc:PING'), `${response.roundTripLatency}ms`);
-			embed.addField(guild.translate('searcher/mc:VERSION'), response.version.name);
-			embed.addField(guild.translate('searcher/mc:DESC'), response.motd.clean);
-			embed.addField(guild.translate('searcher/mc:PLAYERS'), `${response.players.online.toLocaleString(guild.settings.Language)}/${response.players.max.toLocaleString(guild.settings.Language)}`);
+			embed.setURL(`https://mcsrvstat.us/server/${IP}:${port}`)
+				.addFields(
+					{ name: guild.translate('searcher/mc:PING'), value: `${response.roundTripLatency}ms` },
+					{ name: guild.translate('searcher/mc:VERSION'), value: response.version.name },
+					{ name: guild.translate('searcher/mc:DESC'), value: response.motd.clean },
+					{ name: guild.translate('searcher/mc:PLAYERS'), value: `${response.players.online.toLocaleString(guild.settings.Language)}/${response.players.max.toLocaleString(guild.settings.Language)}` },
+				);
 
 			if (response.favicon) {
 				return [embed, attachment];

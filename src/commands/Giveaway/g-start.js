@@ -1,5 +1,7 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,13 +30,13 @@ class GiveawayStart extends Command {
 				{
 					name: 'time',
 					description: 'Extra time added to the giveaway.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 				{
 					name: 'winners',
 					description: 'New winner count.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 10,
 					required: true,
@@ -42,8 +44,15 @@ class GiveawayStart extends Command {
 				{
 					name: 'prize',
 					description: 'New prize',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
+				},
+				{
+					name: 'channel',
+					description: 'Channel to post the giveaway in.',
+					type: ApplicationCommandOptionType.Channel,
+					channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.GuildPrivateThread, ChannelType.GuildNews],
+					required: false,
 				},
 			],
 		});

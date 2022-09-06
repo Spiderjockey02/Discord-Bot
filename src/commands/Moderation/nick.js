@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Nick command
@@ -27,13 +28,14 @@ class Nick extends Command {
 				{
 					name: 'user',
 					description: 'The user to change nickname.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: false,
 				},
 				{
 					name: 'name',
 					description: 'The nickname to give the user.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 32,
 					required: true,
 				},
 			],
@@ -61,7 +63,7 @@ class Nick extends Command {
 		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (members[0].permissions.has('ADMINISTRATOR') || (members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) > 0)) {
+		if (members[0].permissions.has('ADMINISTRATOR') || (members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) > 0)) {
 			return message.channel.error('moderation/nick:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
@@ -98,12 +100,10 @@ class Nick extends Command {
 			nickname = args.get('nickname').value;
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (member.permissions.has('ADMINISTRATOR') || (member.roles.highest.comparePositionTo(guild.me.roles.highest) > 0)) {
+		if (member.permissions.has('ADMINISTRATOR') || (member.roles.highest.comparePositionTo(guild.members.me.roles.highest) > 0)) {
 			interaction.reply({ embeds: [channel.error('moderation/nick:TOO_POWERFUL', null, true)] });
 		}
 
-		// Make sure nickname is NOT longer than 32 characters
-		if (nickname.length >= 32) return interaction.reply({ embeds: [channel.error('moderation/nick:LONG_NICKNAME', null, true)] });
 
 		// Change nickname and tell user (send error message if dosen't work)
 		try {

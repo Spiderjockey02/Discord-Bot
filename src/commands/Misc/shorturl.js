@@ -1,5 +1,6 @@
 // Dependencies
 const { shorten } = require('tinyurl'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,7 +26,7 @@ class ShortURL extends Command {
 			options: [{
 				name: 'url',
 				description: 'The specified URL to shorten.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -66,11 +67,11 @@ class ShortURL extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId);
-		const link = args.get('url').value;
+		const channel = guild.channels.cache.get(interaction.channelId),
+			link = args.get('url').value;
 
 		try {
-			await shorten(link, async function(res) {
+			await shorten(link, function(res) {
 				return interaction.reply({ content: res });
 			});
 		} catch (err) {

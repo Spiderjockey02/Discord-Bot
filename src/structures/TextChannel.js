@@ -1,5 +1,5 @@
 // Dependecies
-const { MessageEmbed, TextChannel } = require('discord.js');
+const { EmbedBuilder, TextChannel } = require('discord.js');
 
 // override send method
 const oriSend = TextChannel.prototype.send;
@@ -26,7 +26,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 		value: function(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				return returnValue ? embed : this.send({ embeds: [embed] });
@@ -40,7 +40,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 		value: function(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				return returnValue ? embed : this.send({ embeds: [embed] });

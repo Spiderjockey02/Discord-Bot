@@ -1,5 +1,6 @@
 // Dependencies
 const { WarningSchema } = require('../../database/models'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -28,13 +29,13 @@ class ClearWarning extends Command {
 				{
 					name: 'user',
 					description: 'The user to clear warning from.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'warn-num',
 					description: 'The warning number.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: false,
 				},
 			],

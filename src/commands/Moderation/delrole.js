@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Delrole command
@@ -27,7 +28,7 @@ class DelRole extends Command {
 				{
 					name: 'role',
 					description: 'The role to delete.',
-					type: 'ROLE',
+					type: ApplicationCommandOptionType.Role,
 					required: true,
 				},
 			],

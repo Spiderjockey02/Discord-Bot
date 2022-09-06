@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -25,13 +26,15 @@ class Remove extends Command {
 			options: [{
 				name: 'position',
 				description: 'The position of the queue.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
 				required: true,
 			},
 			{
 				name: 'newposition',
 				description: 'The 2nd position of the queue.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
 				required: false,
 			}],
 		});

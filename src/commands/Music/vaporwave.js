@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -41,7 +41,7 @@ class Vaporwave extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 		player.setVaporwave(!player.vaporwave);
 		const msg = await message.channel.send(message.translate(`music/vaporwave:${player.vaporwave ? 'ON' : 'OFF'}_VW`));
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(message.translate(`music/vaporwave:DESC_${player.vaporwave ? '1' : '2'}`));
 		await bot.delay(5000);
 		return msg.edit({ content: '​​ ', embeds: [embed] });
@@ -66,7 +66,7 @@ class Vaporwave extends Command {
 		const player = bot.manager?.players.get(member.guild.id);
 		player.setVaporwave(!player.vaporwave);
 		await interaction.reply({ content: guild.translate(`music/vaporwave:${player.vaporwave ? 'ON' : 'OFF'}_VW`) });
-		const embed = new MessageEmbed(bot, guild)
+		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/vaporwave:DESC_${player.vaporwave ? '1' : '2'}`));
 		await bot.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
