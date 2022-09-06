@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
 
 
@@ -24,7 +25,7 @@ class ChannelUpdate extends Event {
 	*/
 	async run(bot, oldChannel, newChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == 'dm' ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == 'dm' ? '' : ` in guild: ${newChannel.guild.id}`}. (${types[newChannel.type]})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == ChannelType.DM ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == ChannelType.DM ? '' : ` in guild: ${newChannel.guild.id}`}. (${ChannelType[newChannel.type]})`);
 
 		// Get server settings / if no settings then return
 		const settings = newChannel.guild?.settings;
@@ -37,7 +38,7 @@ class ChannelUpdate extends Event {
 			// Channel name change
 			if (oldChannel.name != newChannel.name) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
 					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
@@ -52,7 +53,7 @@ class ChannelUpdate extends Event {
 			// channel topic (description) change
 			if (oldChannel.topic != newChannel.topic) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
 					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
@@ -66,7 +67,7 @@ class ChannelUpdate extends Event {
 
 			if (oldChannel.rtcRegion != newChannel.rtcRegion) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
+					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
 					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
@@ -93,7 +94,7 @@ class ChannelUpdate extends Event {
 
 			if (permDiff.size) {
 				embed = new Embed(bot, newChannel.guild)
-					.setDescription(`**${newChannel.type === 'GUILD_CATEGORY' ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
+					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
 					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })

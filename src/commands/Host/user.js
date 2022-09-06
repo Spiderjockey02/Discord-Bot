@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed, ApplicationCommandOptionType } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ userSchema } = require('../../database/models'),
 	moment = require('moment'),
 	axios = require('axios'),

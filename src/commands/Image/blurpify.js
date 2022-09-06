@@ -76,8 +76,9 @@ class Blurpify extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
+
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=blurpify&image=${member.user.displayAvatarURL({ format: 'png', size: 1024 })}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)

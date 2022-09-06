@@ -38,8 +38,8 @@ class GuildUpdate extends Event {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server name changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
-					.addField('Before:', oldGuild.name)
-					.addField('After:', newGuild.name)
+					.addFields({ name: 'Before:', value: oldGuild.name })
+					.addFields({ name: 'After:', value: newGuild.name })
 					.setTimestamp();
 				await newGuild.updateGuild({ guildName: newGuild.name });
 				settings.guildName = newGuild.name;
@@ -51,8 +51,8 @@ class GuildUpdate extends Event {
 				embed = new Embed(bot, newGuild)
 					.setDescription(`**Server boost ${oldGuild.premiumTier < newGuild.premiumTier ? 'increased' : 'decreased'}**`)
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
-					.addField('Before:', oldGuild.premiumTier)
-					.addField('After:', newGuild.premiumTier)
+					.addFields({ name: 'Before:', value: oldGuild.premiumTier })
+					.addFields({ name: 'After:', value: newGuild.premiumTier })
 					.setTimestamp();
 				updated = true;
 			}
@@ -62,8 +62,8 @@ class GuildUpdate extends Event {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server banner changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
-					.addField('Before:', oldGuild.banner)
-					.addField('After:', newGuild.banner)
+					.addFields({ name: 'Before:', value: oldGuild.banner })
+					.addFields({ name: 'After:', value: newGuild.banner })
 					.setTimestamp();
 				updated = true;
 			}
@@ -73,8 +73,8 @@ class GuildUpdate extends Event {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server AFK channel changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
-					.addField('Before:', oldGuild.afkChannel)
-					.addField('After:', newGuild.afkChannel)
+					.addFields({ name: 'Before:', value: oldGuild.afkChannel })
+					.addFields({ name: 'After:', value: newGuild.afkChannel })
 					.setTimestamp();
 				updated = true;
 			}
@@ -84,8 +84,8 @@ class GuildUpdate extends Event {
 				embed = new Embed(bot, newGuild)
 					.setDescription('**Server Vanity URL changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
-					.addField('Before:', oldGuild.vanityURLCode)
-					.addField('After:', newGuild.vanityURLCode)
+					.addFields({ name: 'Before:', value: oldGuild.vanityURLCode })
+					.addFields({ name: 'After:', value: newGuild.vanityURLCode })
 					.setTimestamp();
 				updated = true;
 			}

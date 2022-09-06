@@ -45,8 +45,8 @@ class GuildMemberUpdate extends Event {
 					.setFooter({ text: `ID: ${newMember.id}` })
 					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
-						{ name: 'Before:', value: `${oldMember.nickname ? oldMember.nickname : '*None*'}`, inline: true },
-						{ name: 'After:', value: `${newMember.nickname ? newMember.nickname : '*None*'}`, inline: true })
+						{ name: 'Before:', value: `${oldMember.nickname || '*None*'}`, inline: true },
+						{ name: 'After:', value: `${newMember.nickname || '*None*'}`, inline: true })
 					.setTimestamp();
 				updated = true;
 			}

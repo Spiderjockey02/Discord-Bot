@@ -34,7 +34,7 @@ class GuildMemberAdd extends Event {
 		// Check if event guildMemberAdd is for logging
 		if (settings.ModLogEvents?.includes('GUILDMEMBERADD') && settings.ModLog) {
 			const embed = new Embed(bot, member.guild)
-				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
+				.setDescription(`${member}\nMember count: ${member.guild.memberCount}`)
 				.setColor(3066993)
 				.setFooter({ text: `ID: ${member.id}` })
 				.setThumbnail(member.user.displayAvatarURL())

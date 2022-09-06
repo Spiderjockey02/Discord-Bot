@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed, ApplicationCommandOptionType } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ promisify, inspect } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	Command = require('../../structures/Command.js');

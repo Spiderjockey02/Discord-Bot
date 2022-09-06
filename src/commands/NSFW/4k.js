@@ -61,12 +61,14 @@ class K4 extends Command {
 	*/
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:FETCHING', {	EMOJI: bot.customEmojis['loading'], ITEM: 'Image' }) });
+
 		try {
 			get('https://nekobot.xyz/api/image?type=4k')
 				.then(res => {
 					const embed = new Embed(bot, guild)
 						.setImage(res.data.message);
-					interaction.reply({ embeds: [embed], ephemeral: true });
+					interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
 				});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
 
 /**
@@ -23,7 +24,7 @@ class ChannelCreate extends Event {
 	async run(bot, channel) {
 		const { type, guild, name } = channel;
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${type == 'dm' ? channel.recipient.tag : name} has been created${type == 'dm' ? '' : ` in guild: ${guild.id}`}. (${type})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${type == ChannelType.DM ? channel.recipient.tag : name} has been created${type == ChannelType.DM ? '' : ` in guild: ${guild.id}`}. (${type})`);
 
 		// Make sure the channel isn't a DM
 		if (type == 'dm') return;
