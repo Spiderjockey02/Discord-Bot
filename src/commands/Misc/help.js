@@ -95,7 +95,7 @@ class Help extends Command {
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
 					if (category == 'NSFW' && !channel.nsfw) return;
-					embed.addField(`${category} [**${length}**]`, `${commands}.`);
+					embed.addFields({ name: `${category} [**${length}**]`, value: `${commands}.` });
 				});
 			// send message
 			return embed;
