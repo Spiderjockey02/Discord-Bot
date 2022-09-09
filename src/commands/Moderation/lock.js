@@ -80,11 +80,11 @@ class Lock extends Command {
 		// Get channel and update permissions
 		try {
 			await channel.permissionOverwrites.edit(guild.roles.everyone, {
-				Flags.SendMessages: false,
+				SendMessages: false,
 			});
 			for (const role of (guild.settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					Flags.SendMessages: false,
+					SendMessages: false,
 				});
 			}
 		} catch (err) {

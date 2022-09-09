@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }} = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 

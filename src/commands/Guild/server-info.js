@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
-	{ PermissionsBitField: { Flags }} = require('discord.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**

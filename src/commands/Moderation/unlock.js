@@ -80,11 +80,11 @@ class Unlock extends Command {
 		// Get channel and update permissions
 		try {
 			await channel.permissionOverwrites.edit(guild.roles.everyone, {
-				Flags.SendMessages: true,
+				SendMessages: true,
 			});
 			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					Flags.SendMessages: true,
+					SendMessages: true,
 				});
 			}
 		} catch (err) {
