@@ -20,7 +20,7 @@ class ReactionRoleAdd extends Command {
 			dirname: __dirname,
 			aliases: ['reactionroles-add'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions, 'MANAGE_ROLES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions, Flags.ManageRoles],
 			description: 'Create a reaction role',
 			usage: 'rr-add [channelID / message link]',
 			cooldown: 5000,

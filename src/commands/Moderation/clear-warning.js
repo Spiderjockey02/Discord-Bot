@@ -18,7 +18,7 @@ class ClearWarning extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['cl-warning', 'cl-warnings', 'clear-warnings'],
-			userPermissions: ['KICK_MEMBERS'],
+			userPermissions: [Flags.KickMembers],
 			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user> [warning number]',

@@ -17,8 +17,8 @@ class Unmute extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['un-mute'],
-			userPermissions: ['MUTE_MEMBERS'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MUTE_MEMBERS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.MuteMembers],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
 			description: 'Unmute a user.',
 			usage: 'unmute <user>',
 			cooldown: 2000,
@@ -53,7 +53,7 @@ class Unmute extends Command {
 		const channel = message.guild.channels.cache.get(members[0].voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
-			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
+			if (!channel.permissionsFor(bot.user).has(Flags.MuteMembers)) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
 				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
@@ -85,7 +85,7 @@ class Unmute extends Command {
 		const channel = guild.channels.cache.get(member.voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
-			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
+			if (!channel.permissionsFor(bot.user).has(Flags.MuteMembers)) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${guild.id}].`);
 				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:MUTE_MEMBERS') }, true)] });
 			}

@@ -16,8 +16,8 @@ class Deafen extends Command {
 			name: 'deafen',
 			guildOnly: true,
 			dirname: __dirname,
-			userPermissions: ['DEAFEN_MEMBERS'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'DEAFEN_MEMBERS'],
+			userPermissions: [Flags.DeafenMembers],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.DeafenMembers],
 			description: 'Deafen a user.',
 			usage: 'deafen <user>',
 			cooldown: 2000,
@@ -58,7 +58,7 @@ class Deafen extends Command {
 		// Make sure that the user is in a voice channel
 		if (members[0]?.voice.channel) {
 			// Make sure bot can deafen members
-			if (!members[0].voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
+			if (!members[0].voice.channel.permissionsFor(bot.user).has(Flags.DeafenMembers)) {
 				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${message.guild.id}].`);
 				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:DEAFEN_MEMBERS') }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
@@ -94,7 +94,7 @@ class Deafen extends Command {
 		// Make sure that the user is in a voice channel
 		if (member.voice.channel) {
 			// Make sure bot can deafen members
-			if (!member.voice.channel.permissionsFor(bot.user).has('DEAFEN_MEMBERS')) {
+			if (!member.voice.channel.permissionsFor(bot.user).has(Flags.DeafenMembers)) {
 				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${guild.id}].`);
 				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:DEAFEN_MEMBERS') }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
