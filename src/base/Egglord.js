@@ -189,13 +189,13 @@ class Egglord extends Client {
 	/**
 	 * Function for fetching slash command data.
 	 * @param {string} category The command category to get data from
-	 * @returns {?array}
+	 * @returns {array}
 	*/
 	async loadInteractionGroup(category) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
 			const arr = [];
-			commands.forEach((cmd) => {
+			for (const cmd of commands) {
 				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
 					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
 					if (command.conf.slash) {
@@ -203,14 +203,14 @@ class Egglord extends Client {
 							name: command.help.name,
 							description: command.help.description,
 							defaultPermission: command.conf.defaultPermission,
+							dmPermission: command.conf.guildOnly ?? false,
+							defaultMemberPermissions: command.conf.userPermissions,
 						};
-						if (command.conf.options[0]) {
-							item.options = command.conf.options;
-						}
+						if (command.conf.options[0]) item.options = command.conf.options;
 						arr.push(item);
 					}
 				}
-			});
+			}
 			return arr;
 		} catch (err) {
 			return `Unable to load category ${category}: ${err}`;

@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType } = require('discord.js'),
-
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -20,7 +19,7 @@ class Clear extends Command {
 			dirname: __dirname,
 			aliases: ['cl', 'purge'],
 			userPermissions: ['MANAGE_MESSAGES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,

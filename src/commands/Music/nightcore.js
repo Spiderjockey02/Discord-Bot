@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Nightcore extends Command {
 			name: 'nightcore',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Toggles nightcore mode.',
 			usage: 'nightcore',
 			cooldown: 3000,

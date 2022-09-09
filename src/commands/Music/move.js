@@ -1,6 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Move extends Command {
 			name: 'move',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Moves the specified song to the specified position.',
 			usage: 'move <position> <new position>',
 			cooldown: 3000,

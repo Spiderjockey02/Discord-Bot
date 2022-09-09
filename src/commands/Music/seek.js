@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Seek extends Command {
 			name: 'seek',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Sets the playing track\'s position to the specified position.',
 			usage: 'seek <time>',
 			cooldown: 3000,

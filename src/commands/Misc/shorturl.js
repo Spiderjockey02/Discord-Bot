@@ -1,6 +1,6 @@
 // Dependencies
 const { shorten } = require('tinyurl'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class ShortURL extends Command {
 			name: 'shorturl',
 			dirname: __dirname,
 			aliases: ['surl', 'short-url'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Creates a shorturl on the URL you sent.',
 			usage: 'shorturl',
 			cooldown: 3000,

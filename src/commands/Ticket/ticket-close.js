@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Ticket close command
@@ -16,8 +17,8 @@ class TicketClose extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-close'],
-			userPermissions: ['MANAGE_CHANNELS'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			userPermissions: [Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Closes the current ticket channel',
 			usage: 'ticket-close',
 			cooldown: 3000,
@@ -36,7 +37,7 @@ class TicketClose extends Command {
 		const regEx = /ticket-\d{18}/g;
 		if (regEx.test(message.channel.name)) {
 			try {
-				if (message.member.roles.cache.get(settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has('MANAGE_CHANNELS')) {
+				if (message.member.roles.cache.get(settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has(Flags.ManageChannels)) {
 					// delete channel
 					await message.channel.delete();
 				} else {

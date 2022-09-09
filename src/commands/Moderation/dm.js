@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,8 +18,8 @@ class DM extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['direct-message', 'dmsg'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'DM a user',
 			usage: 'dm <user> <message>',
 			cooldown: 3000,

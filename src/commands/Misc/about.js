@@ -1,5 +1,5 @@
 // Dependencies
-const { version, ChannelType } = require('discord.js'),
+const { version, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class About extends Command {
 			name: 'about',
 			dirname: __dirname,
 			aliases: ['bio', 'botinfo'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Information about me.',
 			usage: 'about',
 			cooldown: 2000,

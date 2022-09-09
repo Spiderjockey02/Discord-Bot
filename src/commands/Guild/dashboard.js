@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageActionRow, MessageButton } = require('discord.js'),
+const { MessageActionRow, MessageButton, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Dashboard extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['db'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends a link to your Server\'s dashboard.',
 			usage: 'dashboard',
 			cooldown: 2000,

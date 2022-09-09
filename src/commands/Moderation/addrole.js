@@ -1,6 +1,6 @@
 // Dependencies
 const fs = require('fs'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,7 @@ class AddRole extends Command {
 			dirname: __dirname,
 			aliases: ['createrole'],
 			userPermissions: ['MANAGE_ROLES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MANAGE_ROLES'],
 			description: 'Adds a new role to the server',
 			usage: 'addrole <role name> [hex color] [hoist]',
 			cooldown: 5000,

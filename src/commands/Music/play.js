@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Play extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['p'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
 			description: 'Play a song.',
 			usage: 'play <link / song name>',
 			cooldown: 3000,
@@ -55,7 +55,7 @@ class Play extends Command {
 			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
 			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
 		}

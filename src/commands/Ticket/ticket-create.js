@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class TicketCreate extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-create', 't-open'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Creates a ticket',
 			usage: 'ticket-create [reason]',
 			cooldown: 3000,
@@ -43,11 +44,11 @@ class TicketCreate extends Command {
 
 		// create perm array
 		const perms = [
-			{ id: message.author, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-			{ id: message.guild.roles.everyone, deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'] },
-			{ id: bot.user, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'] },
+			{ id: message.author, allow: [Flags.SendMessages, 'VIEW_CHANNEL'] },
+			{ id: message.guild.roles.everyone, deny: [Flags.SendMessages, 'VIEW_CHANNEL'] },
+			{ id: bot.user, allow: [Flags.SendMessages, 'VIEW_CHANNEL', Flags.EmbedLinks] },
 		];
-		if (message.guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'] });
+		if (message.guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: [Flags.SendMessages, 'VIEW_CHANNEL'] });
 
 		// create channel
 		try {

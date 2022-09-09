@@ -1,6 +1,6 @@
 // Dependencies
 const Puppeteer = require('puppeteer'),
-	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	validUrl = require('valid-url'),
 	Command = require('../../structures/Command.js');
 
@@ -18,7 +18,7 @@ class Screenshot extends Command {
 			name: 'screenshot',
 			dirname: __dirname,
 			aliases: ['ss'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Get a screenshot of a website.',
 			usage: 'screenshot <url>',
 			cooldown: 5000,

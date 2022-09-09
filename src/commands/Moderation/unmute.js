@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Unmute extends Command {
 			dirname: __dirname,
 			aliases: ['un-mute'],
 			userPermissions: ['MUTE_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MUTE_MEMBERS', 'MANAGE_ROLES'],
 			description: 'Unmute a user.',
 			usage: 'unmute <user>',
 			cooldown: 2000,

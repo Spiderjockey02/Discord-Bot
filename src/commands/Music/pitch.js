@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Pitch extends Command {
 			name: 'pitch',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Sets the player\'s pitch. If you input "reset", it will set the pitch back to default.',
 			usage: 'pitch',
 			cooldown: 3000,

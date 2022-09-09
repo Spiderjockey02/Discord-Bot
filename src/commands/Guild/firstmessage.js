@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }} = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -19,7 +19,7 @@ class Firstmessage extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['firstmsg', 'first-msg'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the first message from the channel.',
 			usage: 'firstmessage [channel]',
 			cooldown: 2000,

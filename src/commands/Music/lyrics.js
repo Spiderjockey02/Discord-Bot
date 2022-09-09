@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed, paginate } = require('../../utils'),
 	{ getSong } = require('genius-lyrics-api'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Lyrics extends Command {
 			name: 'lyrics',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get lyrics on a song.',
 			usage: 'lyrics [song]',
 			cooldown: 3000,

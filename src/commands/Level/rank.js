@@ -1,5 +1,5 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Rank: rank } = require('canvacord'),
 	axios = require('axios'),
 	Command = require('../../structures/Command.js');
@@ -19,7 +19,7 @@ class Rank extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lvl', 'level'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Shows your rank/Level.',
 			usage: 'level [username]',
 			cooldown: 3000,

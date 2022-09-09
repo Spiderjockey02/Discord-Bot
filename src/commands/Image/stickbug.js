@@ -1,5 +1,5 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Stickbug extends Command {
 			name: 'stickbug',
 			dirname: __dirname,
 			aliases: ['stick-bug'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Create a stickbug meme.',
 			usage: 'stickbug [file]',
 			cooldown: 5000,

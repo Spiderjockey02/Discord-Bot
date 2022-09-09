@@ -1,6 +1,6 @@
 // Dependencies
 const fs = require('fs'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,7 @@ class EditRole extends Command {
 			dirname: __dirname,
 			aliases: ['modifyrole'],
 			userPermissions: ['MANAGE_ROLES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MANAGE_ROLES'],
 			description: 'Edit a role\'s data in the server',
 			usage: 'editrole <role name> <option> <value>',
 			cooldown: 5000,

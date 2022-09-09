@@ -1,6 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,7 @@ class Mute extends Command {
 			dirname: __dirname,
 			aliases: ['timeout'],
 			userPermissions: ['MUTE_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MUTE_MEMBERS', 'MANAGE_ROLES'],
 			description: 'Put a user in timeout.',
 			usage: 'mute <user> [time]',
 			cooldown: 2000,

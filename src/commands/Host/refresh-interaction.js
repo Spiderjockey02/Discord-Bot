@@ -1,5 +1,6 @@
 // Dependencies
 const { ApplicationCommandType } = require('discord-api-types/v10'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Docs extends Command {
 			name: 'refresh-interaction',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update all the servers interaction',
 			usage: 'refresh-interaction',
 			cooldown: 3000,
@@ -44,8 +45,6 @@ class Docs extends Command {
 				const g = await bot.loadInteractionGroup(plugin, guild);
 				if (Array.isArray(g)) data.push(...g);
 			}
-
-
 			// get context menus
 			data.push({ name: 'Add to Queue', type: ApplicationCommandType.Message },
 				{ name: 'Translate', type: ApplicationCommandType.Message },
@@ -54,7 +53,6 @@ class Docs extends Command {
 				{ name: 'Userinfo', type: ApplicationCommandType.User },
 				{ name: 'Screenshot', type: ApplicationCommandType.Message },
 			);
-
 			try {
 				await bot.guilds.cache.get(guild.id)?.commands.set(data);
 				bot.logger.log('Loaded interactions for guild: ' + guild.name);
@@ -62,6 +60,7 @@ class Docs extends Command {
 			} catch (err) {
 				bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 			}
+
 		}
 		message.channel.send(`Successfully updated ${successCount}/${bot.guilds.cache.size} servers' interactions.`);
 	}

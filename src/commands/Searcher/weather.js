@@ -1,7 +1,7 @@
 // Dependencies
 const { find } = require('weather-js'),
 	{ Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Weather extends Command {
 		super(bot, {
 			name: 'weather',
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look up the weather in a certain area.',
 			usage: 'weather <location>',
 			cooldown: 3000,

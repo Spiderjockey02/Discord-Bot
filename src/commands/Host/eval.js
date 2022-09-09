@@ -1,6 +1,6 @@
 // Dependencies
 const { inspect } = require('util'),
-	{ EmbedBuilder, ApplicationCommandOptionType } = require ('discord.js'),
+	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require ('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Eval extends Command {
 			name: 'eval',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Evaluates JS code.',
 			usage: 'eval <code>',
 			cooldown: 3000,

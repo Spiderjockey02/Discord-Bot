@@ -1,5 +1,5 @@
 // Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -15,7 +15,7 @@ class RandomCaps extends Command {
 		super(bot, {
 			name: 'random-caps',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Generate a random caps',
 			usage: 'random-caps <string>',
 			cooldown: 1000,

@@ -1,6 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Skip extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['next', 'skipto'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Skips the current song.',
 			usage: 'skip',
 			cooldown: 3000,

@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Rewind extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rw'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Rewinds the player by your specified amount.',
 			usage: 'rewind <time>',
 			cooldown: 3000,

@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js'),
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,8 +18,8 @@ class Ticket extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['ticket'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
 			description: 'Information on ticket plugin.',
 			usage: 'ticket',
 			cooldown: 3000,
@@ -35,7 +35,7 @@ class Ticket extends Command {
 	*/
 	async run(bot, message, settings) {
 		// Add ticket reaction embed
-		if (message.member.permissions.has('MANAGE_GUILD')) {
+		if (message.member.permissions.has(Flags.ManageGuild)) {
 			if (message.args[0] == 'reaction') {
 				const embed = new Embed(bot, message.guild)
 					.setTitle('ticket/ticket:TITLE_REACT')

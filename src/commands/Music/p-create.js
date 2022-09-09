@@ -2,6 +2,7 @@
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ time: { getReadableTime } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +20,7 @@ class PCreate extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-create'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a playlist',
 			usage: 'p-create <playlist name> <search query/link>',
 			cooldown: 3000,

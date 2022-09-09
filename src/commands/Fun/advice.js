@@ -1,6 +1,6 @@
 // Dependencies
 const fetch = require('node-fetch'),
-	{ EmbedBuilder } = require('discord.js'),
+	{ EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class Advice extends Command {
 		super(bot, {
 			name: 'advice',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get some random advice',
 			usage: 'advice',
 			cooldown: 1000,

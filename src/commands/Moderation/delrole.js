@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class DelRole extends Command {
 			dirname: __dirname,
 			aliases: ['removerole', 'deleterole'],
 			userPermissions: ['MANAGE_ROLES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MANAGE_ROLES'],
 			description: 'Delete a role from the server.',
 			usage: 'delrole <role>',
 			cooldown: 5000,

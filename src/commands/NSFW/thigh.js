@@ -1,6 +1,7 @@
 // Dependencies
 const { get } = require('axios'),
 	{ Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Thigh extends Command {
 			name: 'thigh',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'thigh',
 			cooldown: 2000,

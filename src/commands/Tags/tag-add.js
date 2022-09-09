@@ -1,5 +1,6 @@
 // Dependencies
 const	{ TagsSchema } = require('../../database/models/index.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class TagAdd extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-add'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Add a new tag to the server',
 			usage: 'tag-add <name> <response>',
 			cooldown: 2000,

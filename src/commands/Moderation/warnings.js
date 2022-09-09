@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ WarningSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,7 @@ class Warnings extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['warns'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Display number of warnings a user has.',
 			usage: 'warnings [user]',
 			cooldown: 2000,

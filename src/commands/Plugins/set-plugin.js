@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class SetPlugin extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setplugin'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Toggle plugins on and off',
 			usage: 'set-plugin <option>',
 			cooldown: 5000,

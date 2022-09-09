@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class TwentyFourSeven extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['stay', '24/7'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Stays in the voice channel even if no one is in it.',
 			usage: '24/7',
 			cooldown: 3000,

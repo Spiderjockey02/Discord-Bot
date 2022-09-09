@@ -1,7 +1,6 @@
 // Dependencies
 const max = 100000,
-	{ EmbedBuilder, Colors } = require('discord.js'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ EmbedBuilder, Colors, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +16,7 @@ class Random extends Command {
 		super(bot, {
 			name: 'random',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Replies with a random number.',
 			usage: 'random <LowNum> <HighNum>',
 			cooldown: 1000,

@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Fortnite extends Command {
 			name: 'fortnite',
 			dirname: __dirname,
 			aliases: ['fort', 'fortnight'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a Fortnite account.',
 			usage: 'fortnite <kbm / gamepad / touch> <user>',
 			cooldown: 3000,

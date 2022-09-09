@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Kick extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: ['KICK_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'KICK_MEMBERS'],
 			description: 'Kick a user.',
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,

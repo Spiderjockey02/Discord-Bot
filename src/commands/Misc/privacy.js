@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class Privacy extends Command {
 			name: 'privacy',
 			dirname: __dirname,
 			aliases: ['priv'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends a link to the privacy policy.',
 			usage: 'privacy',
 			cooldown: 2000,

@@ -1,13 +1,13 @@
 // Dependecies
-const { EmbedBuilder, TextChannel } = require('discord.js');
+const { EmbedBuilder, TextChannel, PermissionsBitField: { Flags } } = require('discord.js');
 
 // override send method
 const oriSend = TextChannel.prototype.send;
 TextChannel.prototype.send = function(...args) {
 	const send = oriSend.bind(this);
 	// check permissions
-	if (!this.permissionsFor(this.client.user).has('SEND_MESSAGES')) return;
-	if (!this.permissionsFor(this.client.user).has('EMBED_LINKS')) {
+	if (!this.permissionsFor(this.client.user).has(Flags.SendMessages)) return;
+	if (!this.permissionsFor(this.client.user).has(Flags.EmbedLinks)) {
 		return send(this.client.translate('misc:MISSING_PERMISSION', { PERMISSIONS: this.client.translate('permissions:EMBED_LINKS', {}, this.guild.settings.Language) }, this.guild.settings.Language));
 	}
 
@@ -23,7 +23,7 @@ TextChannel.prototype.send = function(...args) {
 module.exports = Object.defineProperties(TextChannel.prototype, {
 	// Send custom 'error' message
 	error: {
-		value: function(key, args, returnValue) {
+		value: async function(key, args, returnValue) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				const embed = new EmbedBuilder()

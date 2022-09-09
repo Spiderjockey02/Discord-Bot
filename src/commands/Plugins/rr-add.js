@@ -1,6 +1,7 @@
 // Dependencies
 const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils');
 
 /**
@@ -18,8 +19,8 @@ class ReactionRoleAdd extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['reactionroles-add'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions, 'MANAGE_ROLES'],
 			description: 'Create a reaction role',
 			usage: 'rr-add [channelID / message link]',
 			cooldown: 5000,
@@ -73,11 +74,11 @@ class ReactionRoleAdd extends Command {
 				// Make sure channel is a text channel and permission
 				if (!(channel || channel.isText() || channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))) {
 					return message.channel.error('misc:MISSING_CHANNEL');
-				} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:SEND_MESSAGES') }).then(m => m.timedDelete({ timeout: 10000 }));
-				} else if (!channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
+				} else if (!channel.permissionsFor(bot.user).has(Flags.SendMessages)) {
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:Flags.SendMessages') }).then(m => m.timedDelete({ timeout: 10000 }));
+				} else if (!channel.permissionsFor(bot.user).has(Flags.EmbedLinks)) {
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:EMBED_LINKS') }).then(m => m.timedDelete({ timeout: 10000 }));
-				} else if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
+				} else if (!channel.permissionsFor(bot.user).has(Flags.AddReactions)) {
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:ADD_REACTIONS') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 

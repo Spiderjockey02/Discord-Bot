@@ -1,6 +1,5 @@
 // Dependecies
-const { EmbedBuilder } = require('discord.js'),
-	{ DMChannel } = require('discord.js');
+const { EmbedBuilder, DMChannel } = require('discord.js');
 
 module.exports = Object.defineProperties(DMChannel.prototype, {
 	// Send custom 'error' message

@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class FastForward extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['ffw', 'fastforward'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Fast forwards the player by your specified amount.',
 			usage: 'fast-forward <time>',
 			cooldown: 3000,

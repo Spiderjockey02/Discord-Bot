@@ -1,5 +1,5 @@
 // Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Undeafen extends Command {
 			dirname: __dirname,
 			aliases: ['undeaf', 'un-deafen'],
 			userPermissions: ['DEAFEN_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'DEAFEN_MEMBERS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'DEAFEN_MEMBERS'],
 			description: 'Undeafen a user.',
 			usage: 'undeafen <user>',
 			cooldown: 2000,

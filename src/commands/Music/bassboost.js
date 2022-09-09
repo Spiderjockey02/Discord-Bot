@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -18,7 +18,7 @@ class Bassboost extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['bb'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
 			description: 'Bassboost the song',
 			usage: 'bassboost [value]',
 			cooldown: 3000,

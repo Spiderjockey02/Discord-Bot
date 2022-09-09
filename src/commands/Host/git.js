@@ -1,5 +1,6 @@
 // Dependencies
 const { execSync } = require('child_process'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Git extends Command {
 			name: 'git',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays git information',
 			usage: 'git',
 			cooldown: 3000,

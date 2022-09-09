@@ -3,6 +3,7 @@ const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	{ paginate } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -20,7 +21,7 @@ class PView extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-view'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'View a playlist',
 			usage: 'p-view <playlist name>',
 			cooldown: 3000,

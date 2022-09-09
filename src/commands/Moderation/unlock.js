@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -17,8 +17,8 @@ class Unlock extends Command {
 			name: 'unlock',
 			guildOnly: true,
 			dirname: __dirname,
-			userPermissions: ['MANAGE_CHANNELS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			userPermissions: [Flags.ManageChannels],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'unlock a channel',
 			usage: 'unlock [channel]',
 			cooldown: 5000,
@@ -51,11 +51,11 @@ class Unlock extends Command {
 		const channel = message.getChannel()[0];
 		try {
 			await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
-				SEND_MESSAGES: true,
+				SendMessages: true,
 			});
 			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					SEND_MESSAGES: true,
+					SendMessages: true,
 				});
 			}
 		} catch (err) {
@@ -80,11 +80,11 @@ class Unlock extends Command {
 		// Get channel and update permissions
 		try {
 			await channel.permissionOverwrites.edit(guild.roles.everyone, {
-				SEND_MESSAGES: true,
+				Flags.SendMessages: true,
 			});
 			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					SEND_MESSAGES: true,
+					Flags.SendMessages: true,
 				});
 			}
 		} catch (err) {

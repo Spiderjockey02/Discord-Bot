@@ -2,7 +2,7 @@
 const { logger } = require('../utils'),
 	chalk = require('chalk'),
 	fetch = require('node-fetch'),
-	Discord = require('discord.js');
+	{ Client, GatewayIntentBits: FLAGS } = require('discord.js');
 
 module.exports.run = async (config) => {
 	// This will check if the config is correct
@@ -35,16 +35,25 @@ module.exports.run = async (config) => {
 		return true;
 	} else {
 		logger.log('Checking client details..');
-		const client = new Discord.Client({ intents: ['GUILD_MEMBERS'] });
-		await client.login(config.token).catch(e => {
-			if (e.message == 'An invalid token was provided.') {
-				logger.error(`${chalk.red('✗')} Bot token is incorrect.`);
-				return true;
-			} else if (e.message == 'Privileged intent provided is not enabled or whitelisted.') {
-				logger.error(`${chalk.red('✗')} You need to enable privileged intents on the discord developer page.`);
-				return true;
+		const client = new Client({ intents: [FLAGS.Guilds] });
+
+		// Check for a discord error, if any
+		try {
+			await client.login(config.token);
+			client.destroy();
+		} catch (e) {
+			switch (e.message) {
+				case 'An invalid token was provided.':
+					logger.error(`${chalk.red('✗')} Bot token is incorrect.`);
+					return true;
+				case 'Privileged intent provided is not enabled or whitelisted.':
+					logger.error(`${chalk.red('✗')} You need to enable privileged intents on the discord developer page.`);
+					return true;
+				default:
+					logger.error(`${JSON.stringify(e.message)}`);
+					return true;
 			}
-		});
+		}
 	}
 
 	// Check twitch API

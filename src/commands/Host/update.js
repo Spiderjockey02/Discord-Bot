@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class Update extends Command {
 			name: 'update',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Updates the bots username + avatar',
 			usage: 'update <username | avatar> <input>',
 			cooldown: 600000,

@@ -1,5 +1,6 @@
 // Dependencies
 const Command = require('../../structures/Command.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ReactionRoleSchema } = require('../../database/models');
 
 /**
@@ -17,8 +18,8 @@ class ReactionRoleRemove extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['reactionroles-remove', 'rr-delete'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Make reaction roles',
 			usage: 'reactionroles <messagelink>',
 			cooldown: 5000,

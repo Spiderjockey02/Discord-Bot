@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Poll extends Command {
 			name:  'poll',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
 			description: 'Create a poll for users to answer.',
 			usage: 'poll <question>',
 			cooldown: 2000,

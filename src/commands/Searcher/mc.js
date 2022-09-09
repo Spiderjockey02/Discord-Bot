@@ -1,6 +1,6 @@
 // Dependencies
 const { status } = require('minecraft-server-util'),
-	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -18,7 +18,7 @@ class Minecraft extends Command {
 			name: 'mc',
 			dirname: __dirname,
 			aliases: ['minecraft'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',
 			cooldown: 3000,

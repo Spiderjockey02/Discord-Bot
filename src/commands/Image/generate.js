@@ -1,5 +1,5 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ post } = require('axios'),
 	Command = require('../../structures/Command.js');
@@ -24,7 +24,7 @@ class Generate extends Command {
 			name: 'generate',
 			dirname: __dirname,
 			aliases: ['gen'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
 			cooldown: 5000,

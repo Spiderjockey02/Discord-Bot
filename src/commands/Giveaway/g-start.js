@@ -1,6 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -19,13 +19,13 @@ class GiveawayStart extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['gstart', 'g-create'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
 			description: 'Start a giveaway',
 			usage: 'g-start <time> <Number of winners> <prize>',
 			cooldown: 30000,
 			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'time',

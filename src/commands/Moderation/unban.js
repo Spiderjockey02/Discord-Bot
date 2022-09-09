@@ -1,5 +1,5 @@
 // Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Unban extends Command {
 			dirname: __dirname,
 			aliases: ['un-ban'],
 			userPermissions: ['BAN_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'BAN_MEMBERS'],
 			description: 'Unban a user.',
 			usage: 'unban <userID> [reason]',
 			cooldown: 5000,

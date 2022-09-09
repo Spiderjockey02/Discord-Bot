@@ -1,5 +1,5 @@
 // Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Warn extends Command {
 			dirname: __dirname,
 			aliases: ['warning'],
 			userPermissions: ['KICK_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'KICK_MEMBERS'],
 			description: 'Warn a user.',
 			usage: 'warn <user> [time] [reason]',
 			cooldown: 5000,

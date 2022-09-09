@@ -1,5 +1,6 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Tags command
@@ -16,8 +17,8 @@ class Tags extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['modifytags', 'tag'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit server\'s tags',
 			usage: 'tag <add/del/edit/view> <required paramters>',
 			cooldown: 5000,

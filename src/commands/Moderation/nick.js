@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Nick extends Command {
 			dirname: __dirname,
 			aliases: ['nickname', 'setnick'],
 			userPermissions: ['CHANGE_NICKNAME', 'MANAGE_NICKNAMES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_NICKNAMES'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'MANAGE_NICKNAMES'],
 			description: 'Change the nickname of a user.',
 			usage: 'nick <user> <name>',
 			cooldown: 3000,

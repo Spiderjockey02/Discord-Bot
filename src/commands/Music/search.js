@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Search extends Command {
 			name: 'search',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
 			description: 'Searches for a song.',
 			usage: 'search <link / song name>',
 			cooldown: 3000,
@@ -48,7 +48,7 @@ class Search extends Command {
 			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
 			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
@@ -159,7 +159,7 @@ class Search extends Command {
 			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { }, true)] });
 		}
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has('MOVE_MEMBERS')) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:VC_FULL', { }, true)] });
 		}

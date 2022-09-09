@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed, time: { getTotalTime } } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,7 @@ class Ban extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: ['BAN_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
+			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, 'BAN_MEMBERS'],
 			description: 'Ban a user.',
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,

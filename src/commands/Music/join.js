@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Join extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['movehere'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
 			description: 'Makes the bot join your voice channel.',
 			usage: 'join',
 			cooldown: 3000,
@@ -38,7 +38,7 @@ class Join extends Command {
 		// Make sure the user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/join:NO_VC');
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
 			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
@@ -102,7 +102,7 @@ class Join extends Command {
 		// Make sure the user is in a voice channel
 		if (!member.voice.channel) return interaction.reply({ embeds: [channel.error('music/join:NO_VC', { ERROR: null }, true)], ephemeral: true });
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has('MOVE_MEMBERS')) {
 			return interaction.reply({ embeds: [channel.error('music/join:VC_FULL', { ERROR: null }, true)], ephemeral: true });
 		}

@@ -1,6 +1,7 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
 	{ Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +19,7 @@ class PAdd extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-add'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Add a song to the playlist',
 			usage: 'p-add <playlist name> <song>',
 			cooldown: 3000,

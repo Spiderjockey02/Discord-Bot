@@ -1,5 +1,5 @@
 // Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,13 +17,13 @@ class GiveawayReroll extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-reroll', 'greroll'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'reroll a giveaway.',
 			usage: 'g-reroll <messageID> [winners]',
 			cooldown: 2000,
 			examples: ['g-reroll 818821436255895612'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'id',
