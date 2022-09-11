@@ -17,7 +17,7 @@ class Invite extends Command {
 			name: 'invite',
 			dirname: __dirname,
 			aliases: ['inv'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Send an invite link so people can add me to their server.',
 			usage: 'invite',
 			cooldown: 2000,

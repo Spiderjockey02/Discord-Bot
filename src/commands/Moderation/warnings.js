@@ -19,7 +19,7 @@ class Warnings extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['warns'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Display number of warnings a user has.',
 			usage: 'warnings [user]',
 			cooldown: 2000,

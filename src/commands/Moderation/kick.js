@@ -18,7 +18,7 @@ class Kick extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: [Flags.KickMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.KickMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.KickMembers],
 			description: 'Kick a user.',
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,

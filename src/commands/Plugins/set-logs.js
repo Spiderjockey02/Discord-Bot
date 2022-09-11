@@ -27,7 +27,7 @@ class SetLog extends Command {
 			dirname: __dirname,
 			aliases: ['setlogs'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update the log plugin.',
 			usage: 'set-logs <option> [data]',
 			cooldown: 5000,

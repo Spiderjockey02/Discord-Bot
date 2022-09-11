@@ -18,7 +18,7 @@ class Pussy extends Command {
 			name: 'pussy',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'pussy',
 			cooldown: 2000,

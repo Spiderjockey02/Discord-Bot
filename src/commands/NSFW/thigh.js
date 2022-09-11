@@ -18,7 +18,7 @@ class Thigh extends Command {
 			name: 'thigh',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'thigh',
 			cooldown: 2000,

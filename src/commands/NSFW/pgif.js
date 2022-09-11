@@ -18,7 +18,7 @@ class Pgif extends Command {
 			name: 'pgif',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'pgif',
 			cooldown: 2000,

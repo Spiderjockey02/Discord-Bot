@@ -16,7 +16,7 @@ class Reddit extends Command {
 		super(bot, {
 			name: 'reddit',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Send a random image from a chosen subreddit.',
 			usage: 'reddit <subreddit>',
 			cooldown: 3000,

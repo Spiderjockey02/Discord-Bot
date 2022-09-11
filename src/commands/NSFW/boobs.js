@@ -19,7 +19,7 @@ class Boobs extends Command {
 			nsfw: true,
 			dirname: __dirname,
 			aliases: ['boob'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'boobs',
 			cooldown: 2000,

@@ -17,7 +17,7 @@ class Fortnite extends Command {
 			name: 'fortnite',
 			dirname: __dirname,
 			aliases: ['fort', 'fortnight'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a Fortnite account.',
 			usage: 'fortnite <kbm / gamepad / touch> <user>',
 			cooldown: 3000,

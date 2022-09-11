@@ -17,7 +17,7 @@ class ShortURL extends Command {
 			name: 'shorturl',
 			dirname: __dirname,
 			aliases: ['surl', 'short-url'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Creates a shorturl on the URL you sent.',
 			usage: 'shorturl',
 			cooldown: 3000,

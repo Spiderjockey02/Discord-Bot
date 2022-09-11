@@ -17,7 +17,7 @@ class Uptime extends Command {
 		super(bot, {
 			name: 'uptime',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the uptime of the bot.',
 			usage: 'uptime',
 			cooldown: 2000,

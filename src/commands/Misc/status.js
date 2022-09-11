@@ -17,7 +17,7 @@ class Status extends Command {
 			name: 'status',
 			dirname: __dirname,
 			aliases: ['stat', 'ping'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the status of the bot.',
 			usage: 'status',
 			cooldown: 2000,

@@ -18,7 +18,7 @@ class Unban extends Command {
 			dirname: __dirname,
 			aliases: ['un-ban'],
 			userPermissions: [Flags.BanMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.BanMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.BanMembers],
 			description: 'Unban a user.',
 			usage: 'unban <userID> [reason]',
 			cooldown: 5000,

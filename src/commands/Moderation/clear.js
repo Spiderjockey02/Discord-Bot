@@ -19,7 +19,7 @@ class Clear extends Command {
 			dirname: __dirname,
 			aliases: ['cl', 'purge'],
 			userPermissions: [Flags.ManageMessages],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ReadMessageHistory, Flags.ManageMessages],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ReadMessageHistory, Flags.ManageMessages],
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,

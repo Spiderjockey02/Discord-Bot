@@ -18,7 +18,7 @@ class Instagram extends Command {
 			name: 'instagram',
 			dirname: __dirname,
 			aliases: ['insta'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on an Instagram account.',
 			usage: 'instagram <user>',
 			cooldown: 3000,

@@ -18,7 +18,7 @@ class Nick extends Command {
 			dirname: __dirname,
 			aliases: ['nickname', 'setnick'],
 			userPermissions: [Flags.ChangeNickname, Flags.ManageNicknames],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageNicknames],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageNicknames],
 			description: 'Change the nickname of a user.',
 			usage: 'nick <user> <name>',
 			cooldown: 3000,

@@ -18,7 +18,7 @@ class Unlock extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: [Flags.ManageChannels],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'unlock a channel',
 			usage: 'unlock [channel]',
 			cooldown: 5000,

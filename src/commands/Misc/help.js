@@ -16,7 +16,7 @@ class Help extends Command {
 		super(bot, {
 			name: 'help',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends information about all the commands that I can do.',
 			usage: 'help [command]',
 			cooldown: 2000,

@@ -19,7 +19,7 @@ class Rank extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lvl', 'level'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Shows your rank/Level.',
 			usage: 'level [username]',
 			cooldown: 3000,

@@ -22,7 +22,7 @@ class Rainbow6Siege extends Command {
 		super(bot, {
 			name: 'r6',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets statistics on a Rainbow 6 Account.',
 			usage: 'r6 <user> [pc / xbox / ps4] [eu / na / as]',
 			cooldown: 3000,

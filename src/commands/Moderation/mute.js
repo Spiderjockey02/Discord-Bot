@@ -19,7 +19,7 @@ class Mute extends Command {
 			dirname: __dirname,
 			aliases: ['timeout'],
 			userPermissions: [Flags.MuteMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
 			description: 'Put a user in timeout.',
 			usage: 'mute <user> [time]',
 			cooldown: 2000,

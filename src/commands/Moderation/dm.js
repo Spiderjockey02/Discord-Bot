@@ -19,7 +19,7 @@ class DM extends Command {
 			dirname: __dirname,
 			aliases: ['direct-message', 'dmsg'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'DM a user',
 			usage: 'dm <user> <message>',
 			cooldown: 3000,

@@ -18,7 +18,7 @@ class Report extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rep'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Report a user.',
 			usage: 'report <user> [reason]',
 			cooldown: 3000,

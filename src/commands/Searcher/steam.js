@@ -18,7 +18,7 @@ class Steam extends Command {
 		super(bot, {
 			name: 'steam',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a Steam account.',
 			usage: 'steam <user>',
 			cooldown: 3000,

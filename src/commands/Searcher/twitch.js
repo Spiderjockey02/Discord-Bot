@@ -20,7 +20,7 @@ class Twitch extends Command {
 		super(bot, {
 			name: 'twitch',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a twitch account.',
 			usage: 'twitch <user>',
 			cooldown: 3000,

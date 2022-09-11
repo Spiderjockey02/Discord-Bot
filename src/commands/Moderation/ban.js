@@ -19,7 +19,7 @@ class Ban extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: [Flags.BanMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.BanMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.BanMembers],
 			description: 'Ban a user.',
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,

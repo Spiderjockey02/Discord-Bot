@@ -19,7 +19,7 @@ class SetPlugin extends Command {
 			dirname: __dirname,
 			aliases: ['setplugin'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Toggle plugins on and off',
 			usage: 'set-plugin <option>',
 			cooldown: 5000,

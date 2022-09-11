@@ -18,7 +18,7 @@ class Minecraft extends Command {
 			name: 'mc',
 			dirname: __dirname,
 			aliases: ['minecraft'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',
 			cooldown: 3000,

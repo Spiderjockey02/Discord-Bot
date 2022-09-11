@@ -19,7 +19,7 @@ class EditRole extends Command {
 			dirname: __dirname,
 			aliases: ['modifyrole'],
 			userPermissions: [Flags.ManageRoles],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
 			description: 'Edit a role\'s data in the server',
 			usage: 'editrole <role name> <option> <value>',
 			cooldown: 5000,

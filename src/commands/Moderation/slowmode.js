@@ -19,7 +19,7 @@ class Slowmode extends Command {
 			dirname: __dirname,
 			aliases: ['slow-mode'],
 			userPermissions: [Flags.ManageChannels],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Activate slowmode on a channel.',
 			usage: 'slowmode <time / off>',
 			cooldown: 5000,

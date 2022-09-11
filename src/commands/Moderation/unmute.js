@@ -18,7 +18,7 @@ class Unmute extends Command {
 			dirname: __dirname,
 			aliases: ['un-mute'],
 			userPermissions: [Flags.MuteMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
 			description: 'Unmute a user.',
 			usage: 'unmute <user>',
 			cooldown: 2000,

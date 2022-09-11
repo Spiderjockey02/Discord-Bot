@@ -17,7 +17,7 @@ class Weather extends Command {
 		super(bot, {
 			name: 'weather',
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look up the weather in a certain area.',
 			usage: 'weather <location>',
 			cooldown: 3000,

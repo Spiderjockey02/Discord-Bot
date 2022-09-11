@@ -18,7 +18,7 @@ class DelRole extends Command {
 			dirname: __dirname,
 			aliases: ['removerole', 'deleterole'],
 			userPermissions: [Flags.ManageRoles],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
 			description: 'Delete a role from the server.',
 			usage: 'delrole <role>',
 			cooldown: 5000,

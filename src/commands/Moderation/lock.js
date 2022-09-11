@@ -19,7 +19,7 @@ class Lock extends Command {
 			dirname: __dirname,
 			aliases: ['lockdown'],
 			userPermissions: [Flags.ManageChannels],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Lockdown a channel',
 			usage: 'lock [channel]',
 			cooldown: 5000,

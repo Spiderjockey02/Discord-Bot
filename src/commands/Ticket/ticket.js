@@ -19,7 +19,7 @@ class Ticket extends Command {
 			dirname: __dirname,
 			aliases: ['ticket'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
 			description: 'Information on ticket plugin.',
 			usage: 'ticket',
 			cooldown: 3000,

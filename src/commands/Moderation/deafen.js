@@ -17,7 +17,7 @@ class Deafen extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			userPermissions: [Flags.DeafenMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.DeafenMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.DeafenMembers],
 			description: 'Deafen a user.',
 			usage: 'deafen <user>',
 			cooldown: 2000,

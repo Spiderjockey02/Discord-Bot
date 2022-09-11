@@ -18,7 +18,7 @@ class Undeafen extends Command {
 			dirname: __dirname,
 			aliases: ['undeaf', 'un-deafen'],
 			userPermissions: [Flags.DeafenMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.DeafenMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.DeafenMembers],
 			description: 'Undeafen a user.',
 			usage: 'undeafen <user>',
 			cooldown: 2000,

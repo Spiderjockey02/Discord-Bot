@@ -17,7 +17,7 @@ class Support extends Command {
 			name: 'support',
 			dirname: __dirname,
 			aliases: ['sup'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get support on the bot.',
 			usage: 'support',
 			cooldown: 2000,

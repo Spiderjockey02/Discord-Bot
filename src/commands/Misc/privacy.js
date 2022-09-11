@@ -16,7 +16,7 @@ class Privacy extends Command {
 			name: 'privacy',
 			dirname: __dirname,
 			aliases: ['priv'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends a link to the privacy policy.',
 			usage: 'privacy',
 			cooldown: 2000,

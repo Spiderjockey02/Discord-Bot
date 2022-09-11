@@ -18,7 +18,7 @@ class Anal extends Command {
 			name: 'anal',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'anal',
 			cooldown: 2000,

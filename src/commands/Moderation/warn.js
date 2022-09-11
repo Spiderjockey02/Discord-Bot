@@ -18,7 +18,7 @@ class Warn extends Command {
 			dirname: __dirname,
 			aliases: ['warning'],
 			userPermissions: [Flags.KickMembers],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.KickMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.KickMembers],
 			description: 'Warn a user.',
 			usage: 'warn <user> [time] [reason]',
 			cooldown: 5000,

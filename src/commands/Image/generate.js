@@ -24,7 +24,7 @@ class Generate extends Command {
 			name: 'generate',
 			dirname: __dirname,
 			aliases: ['gen'],
-			botPermissions: [ Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
 			cooldown: 5000,
