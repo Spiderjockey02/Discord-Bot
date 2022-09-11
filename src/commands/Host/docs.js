@@ -22,7 +22,7 @@ class Docs extends Command {
 			usage: 'docs <query>',
 			cooldown: 3000,
 			examples: ['docs channel#create'],
-			slash: true,
+			slash: false,
 			options: [{
 				name: 'input',
 				description: 'Search in the discordjs docs',

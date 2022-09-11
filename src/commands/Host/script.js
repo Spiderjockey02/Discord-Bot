@@ -24,7 +24,7 @@ class Script extends Command {
 			usage: 'script <file name> [...params]',
 			cooldown: 3000,
 			examples: ['script updateGuildSlashCommands bot'],
-			slash: true,
+			slash: false,
 			options: [{
 				name: 'track',
 				description: 'The link or name of the track.',

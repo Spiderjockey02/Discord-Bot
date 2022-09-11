@@ -20,7 +20,7 @@ class Shutdown extends Command {
 			description: 'Shutdowns the bot.',
 			usage: 'shutdown',
 			cooldown: 3000,
-			slash: true,
+			slash: false,
 		});
 	}
 

@@ -21,7 +21,7 @@ class Update extends Command {
 			usage: 'update <username | avatar> <input>',
 			cooldown: 600000,
 			examples: ['update username Egglordv2'],
-			slash: true,
+			slash: false,
 			options: [{
 				name: 'option',
 				description: 'What to edit.',

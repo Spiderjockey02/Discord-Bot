@@ -14,9 +14,10 @@ class Docs extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'refresh-interaction',
+			name: 'refresh',
 			ownerOnly: true,
 			dirname: __dirname,
+			aliases: ['refresh-interaction'],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update all the servers interaction',
 			usage: 'refresh-interaction',
@@ -44,7 +45,18 @@ class Docs extends Command {
 			for (const plugin of enabledPlugins) {
 				const g = await bot.loadInteractionGroup(plugin, guild);
 				if (Array.isArray(g)) data.push(...g);
+
 			}
+
+			// For the "Host" commands
+			if (guild.id == bot.config.SupportServer.GuildID) {
+				const cmds = await bot.loadInteractionGroup('Host', guild);
+				for (const cmd of cmds) {
+					cmd.defaultMemberPermissions = [Flags.Administrator];
+				}
+				if (Array.isArray(cmds)) data.push(...cmds);
+			}
+
 			// get context menus
 			data.push({ name: 'Add to Queue', type: ApplicationCommandType.Message },
 				{ name: 'Translate', type: ApplicationCommandType.Message },

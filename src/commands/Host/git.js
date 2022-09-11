@@ -22,7 +22,7 @@ class Git extends Command {
 			usage: 'git',
 			cooldown: 3000,
 			examples: ['git'],
-			slash: true,
+			slash: false,
 		});
 	}
 

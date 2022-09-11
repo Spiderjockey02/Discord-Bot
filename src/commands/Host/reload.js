@@ -26,7 +26,7 @@ class Reload extends Command {
 			examples: ['reload help', 'reload channelCreate'],
 			slash: true,
 			options: [{
-				name: 'cmd/event',
+				name: 'name',
 				description: 'command or event to reload',
 				type: ApplicationCommandOptionType.String,
 				// choices: [...[...bot.commands.keys()].map(i => ({ name: i, value: i })), ...Object.keys(bot._events).map(i => ({ name: i, value: i }))],
