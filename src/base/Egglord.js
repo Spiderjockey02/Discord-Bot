@@ -1,5 +1,5 @@
 // Dependencies
-const { Client, Collection, GatewayIntentBits: FLAGS, Partials } = require('discord.js'),
+const { Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	// GiveawaysManager = require('./giveaway/Manager'),
 	path = require('path'),
@@ -202,9 +202,7 @@ class Egglord extends Client {
 						const item = {
 							name: command.help.name,
 							description: command.help.description,
-							defaultPermission: command.conf.defaultPermission,
-							dmPermission: command.conf.guildOnly ?? false,
-							defaultMemberPermissions: command.conf.userPermissions,
+							defaultMemberPermissions: command.conf.userPermissions.length >= 1 ? command.conf.userPermissions : PermissionFlag.SendMessages,
 						};
 						if (command.conf.options[0]) item.options = command.conf.options;
 						arr.push(item);
@@ -213,6 +211,7 @@ class Egglord extends Client {
 			}
 			return arr;
 		} catch (err) {
+			console.log(err);
 			return `Unable to load category ${category}: ${err}`;
 		}
 	}
