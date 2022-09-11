@@ -1,5 +1,5 @@
 // Dependencies
-const { Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
+const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
 	// GiveawaysManager = require('./giveaway/Manager'),
 	path = require('path'),
@@ -23,7 +23,7 @@ class Egglord extends Client {
 				status: 'online',
 				activities: [{
 					name: 'my mention',
-					type: 'LISTENING',
+					type: ActivityType.Listening,
 					url: 'https://www.twitch.tv/ram5s5',
 				}],
 			},
