@@ -23,7 +23,7 @@ class Giveaway extends Command {
 			cooldown: 30000,
 			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.category == 'Giveaway').map(c => ({
+			options: bot.commands.filter(c => c.help.category == 'Giveaway' && c.help.name !== 'giveaway').map(c => ({
 				name: c.help.name,
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
