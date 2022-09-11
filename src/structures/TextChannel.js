@@ -23,9 +23,9 @@ TextChannel.prototype.send = function(...args) {
 module.exports = Object.defineProperties(TextChannel.prototype, {
 	// Send custom 'error' message
 	error: {
-		value: async function(key, args, returnValue) {
+		value: function(key, args, returnValue) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
+				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
@@ -39,7 +39,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 	success: {
 		value: function(key, args, returnValue) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
+				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
 				const embed = new EmbedBuilder()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);

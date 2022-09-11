@@ -24,6 +24,7 @@ class RandomCaps extends Command {
 				name: 'text',
 				description: 'Text for random caps',
 				type: ApplicationCommandOptionType.String,
+				maxLength: 2000,
 				required: true,
 			}],
 		});

@@ -36,6 +36,7 @@ class Reminder extends Command {
 					name: 'text',
 					description: 'What should I remind you off.',
 					type: ApplicationCommandOptionType.String,
+					maxLength: 2000,
 					required: true,
 				},
 			],

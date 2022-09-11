@@ -49,7 +49,8 @@ class GiveawayEdit extends Command {
 				{
 					name: 'prize',
 					description: 'New prize',
-					type: ApplicationCommandOptionType.Integer,
+					type: ApplicationCommandOptionType.String,
+					maxLength: 256,
 					required: false,
 				},
 			],

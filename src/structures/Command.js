@@ -21,10 +21,9 @@ class Command {
 		usage = '',
 		slash = false,
 		options = new Array(),
-		defaultPermission = true,
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
-		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, options, defaultPermission };
+		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, options };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
 

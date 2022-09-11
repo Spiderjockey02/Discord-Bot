@@ -34,7 +34,7 @@ class Random extends Command {
 				name: 'max',
 				description: 'The maximum number',
 				type: ApplicationCommandOptionType.Integer,
-				minValue: 0,
+				minValue: 1,
 				maxValue: 2147483647,
 				required: true,
 			}],
