@@ -17,7 +17,7 @@ class Pitch extends Command {
 			name: 'pitch',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Sets the player\'s pitch. If you input "reset", it will set the pitch back to default.',
 			usage: 'pitch',
 			cooldown: 3000,

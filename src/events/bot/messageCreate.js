@@ -1,7 +1,6 @@
 // Dependencies
-const { Collection } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
+const { Collection, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models'),
 	AutoModeration = require('../../helpers/autoModeration'),
 	LevelManager = require('../../helpers/levelSystem'),
@@ -123,7 +122,7 @@ class MessageCreate extends Event {
 				// check bot permissions
 				let neededPermissions = [];
 				cmd.conf.botPermissions.forEach((perm) => {
-					if (['SPEAK', 'CONNECT'].includes(perm)) {
+					if ([Flags.Speak, Flags.Connect].includes(perm)) {
 						if (!message.member.voice.channel) return;
 						if (!message.member.voice.channel.permissionsFor(bot.user).has(perm)) {
 							neededPermissions.push(perm);

@@ -17,7 +17,7 @@ class Seek extends Command {
 			name: 'seek',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Sets the playing track\'s position to the specified position.',
 			usage: 'seek <time>',
 			cooldown: 3000,

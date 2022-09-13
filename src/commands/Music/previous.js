@@ -20,7 +20,7 @@ class Previous extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['played'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK', Flags.AddReactions],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak, Flags.AddReactions],
 			description: 'Displays the previous tracks that have been played.',
 			usage: 'previous [pageNumber]',
 			cooldown: 3000,

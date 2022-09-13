@@ -17,7 +17,7 @@ class TTS extends Command {
 			name: 'tts',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Text-to-speech to a voice channel.',
 			usage: 'tts <some text>',
 			cooldown: 3000,

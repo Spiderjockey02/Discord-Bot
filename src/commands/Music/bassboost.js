@@ -18,7 +18,7 @@ class Bassboost extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['bb'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Bassboost the song',
 			usage: 'bassboost [value]',
 			cooldown: 3000,

@@ -17,7 +17,7 @@ class Join extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['movehere'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Makes the bot join your voice channel.',
 			usage: 'join',
 			cooldown: 3000,

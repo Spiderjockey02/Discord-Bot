@@ -17,7 +17,7 @@ class Vaporwave extends Command {
 			name: 'vaporwave',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Toggles vaporwave mode.',
 			usage: 'vaporwave',
 			cooldown: 3000,

@@ -39,21 +39,13 @@ class ClickButton extends Event {
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000 / 60;
-					return button.reply({ embeds: [channel.error('ticket/ticket-create:COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)] }).then(() => {
-						setTimeout(function() {
-							button.deleteReply();
-						}, 5000);
-					});
+					return button.reply({ embeds: [channel.error('ticket/ticket-create:COOLDOWN', { NUM: timeLeft.toFixed(1) }, true)], ephemeral: true });
 				}
 			}
 
 			// Make sure ticket dosen't already exist
 			if (guild.channels.cache.find(c => c.name == `ticket-${member.user.id}`)) {
-				return button.reply({ embeds: [channel.error('ticket/ticket-create:TICKET_EXISTS', {}, true)] }).then(() => {
-					setTimeout(function() {
-						button.deleteReply();
-					}, 5000);
-				});
+				return button.reply({ embeds: [channel.error('ticket/ticket-create:TICKET_EXISTS', {}, true)], ephemeral: true });
 			}
 
 			// create perm array

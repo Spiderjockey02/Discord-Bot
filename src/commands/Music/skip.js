@@ -18,7 +18,7 @@ class Skip extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['next', 'skipto'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Skips the current song.',
 			usage: 'skip',
 			cooldown: 3000,

@@ -17,7 +17,7 @@ class Nightcore extends Command {
 			name: 'nightcore',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Toggles nightcore mode.',
 			usage: 'nightcore',
 			cooldown: 3000,

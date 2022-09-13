@@ -18,7 +18,7 @@ class Loop extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['repeat'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Loops the song or queue.',
 			usage: 'loop [queue / song]',
 			cooldown: 3000,

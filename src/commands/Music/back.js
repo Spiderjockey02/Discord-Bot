@@ -18,7 +18,7 @@ class Back extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['previous', 'prev'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Plays the previous song in the queue.',
 			usage: 'back',
 			cooldown: 3000,

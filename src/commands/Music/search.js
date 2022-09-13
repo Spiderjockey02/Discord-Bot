@@ -17,7 +17,7 @@ class Search extends Command {
 			name: 'search',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Searches for a song.',
 			usage: 'search <link / song name>',
 			cooldown: 3000,

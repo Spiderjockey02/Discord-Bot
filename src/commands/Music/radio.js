@@ -18,7 +18,7 @@ class Radio extends Command {
 			name: 'radio',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Listen to the radio',
 			usage: 'radio <query>',
 			cooldown: 3000,

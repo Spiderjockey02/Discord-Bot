@@ -20,7 +20,7 @@ class PLoad extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-load'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Load a playlist',
 			usage: 'p-load <playlist name>',
 			cooldown: 3000,

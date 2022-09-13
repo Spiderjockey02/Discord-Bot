@@ -18,7 +18,7 @@ class Play extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['p'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Play a song.',
 			usage: 'play <link / song name>',
 			cooldown: 3000,

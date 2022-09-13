@@ -18,7 +18,7 @@ class TwentyFourSeven extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['stay', '24/7'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Stays in the voice channel even if no one is in it.',
 			usage: '24/7',
 			cooldown: 3000,

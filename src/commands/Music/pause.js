@@ -17,7 +17,7 @@ class Pause extends Command {
 			name: 'pause',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Pauses the music.',
 			usage: 'pause',
 			cooldown: 3000,

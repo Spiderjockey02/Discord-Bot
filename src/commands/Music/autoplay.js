@@ -18,7 +18,7 @@ class Autoplay extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['auto-play'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Toggles autoplay mode.',
 			usage: 'autoplay',
 			cooldown: 3000,

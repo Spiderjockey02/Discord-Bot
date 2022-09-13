@@ -18,7 +18,7 @@ class FastForward extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['ffw', 'fastforward'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Fast forwards the player by your specified amount.',
 			usage: 'fast-forward <time>',
 			cooldown: 3000,

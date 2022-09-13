@@ -18,7 +18,7 @@ class Rewind extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rw'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Rewinds the player by your specified amount.',
 			usage: 'rewind <time>',
 			cooldown: 3000,
