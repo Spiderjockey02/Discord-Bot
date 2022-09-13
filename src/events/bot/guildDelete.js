@@ -1,6 +1,6 @@
 // Dependencies
 const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = require('../../database/models'),
-	{ EmbedBuilder, AttachmentBuilder } = require('discord.js'),
+	{ ActivityType, EmbedBuilder, AttachmentBuilder } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
@@ -93,7 +93,7 @@ class GuildDelete extends Event {
 		}
 
 		// update bot's activity
-		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
+		bot.SetActivity(ActivityType.Watching, [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 	}
 }
 

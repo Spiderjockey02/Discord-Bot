@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, AttachmentBuilder } = require('discord.js'),
+const { EmbedBuilder, AttachmentBuilder, ActivityType } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
@@ -63,7 +63,7 @@ class GuildCreate extends Event {
 		if (modChannel) bot.addEmbed(modChannel.id, [embed, attachment]);
 
 		// update bot's activity
-		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
+		bot.SetActivity(ActivityType.Watching, [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 
 		// get slash commands for category
 		const enabledPlugins = guild.settings.plugins;
