@@ -1,5 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +19,7 @@ class Firstmessage extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['firstmsg', 'first-msg'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the first message from the channel.',
 			usage: 'firstmessage [channel]',
 			cooldown: 2000,
@@ -25,8 +27,8 @@ class Firstmessage extends Command {
 			options: [{
 				name: 'channel',
 				description: 'The specified channel to grab the first message of.',
-				type: 'CHANNEL',
-				channelTypes: ['GUILD_TEXT', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD', 'GUILD_NEWS'],
+				type: ApplicationCommandOptionType.Channel,
+				channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.GuildPrivateThread, ChannelType.GuildNews],
 				required: false,
 			}],
 		});
@@ -93,7 +95,9 @@ class Firstmessage extends Command {
 			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 			.setAuthor({ name: fMessage.author.tag, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
 			.setDescription(fMessage.content)
-			.addField(bot.translate('guild/firstmessage:JUMP'), fMessage.url)
+			.addFields(
+				{ name: bot.translate('guild/firstmessage:JUMP'), value: fMessage.url },
+			)
 			.setFooter({ text: guild.translate('misc:ID', { ID: fMessage.id }) })
 			.setTimestamp(fMessage.createdAt);
 	}

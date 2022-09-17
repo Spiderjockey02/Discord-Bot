@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class ChangeMyMind extends Command {
 			name: 'changemymind',
 			dirname: __dirname,
 			aliases: ['cmm'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a change my mind image.',
 			usage: 'changemymind <text>',
 			cooldown: 5000,
@@ -26,7 +27,8 @@ class ChangeMyMind extends Command {
 			options: [{
 				name: 'text',
 				description: 'Phrase to use',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
+				maxLength: 81,
 				required: true,
 			}],
 		});
@@ -79,14 +81,11 @@ class ChangeMyMind extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const text = args.get('text').value;
-		const channel = guild.channels.cache.get(interaction.channelId);
+		const text = args.get('text').value,
+			channel = guild.channels.cache.get(interaction.channelId);
 
-		// make sure the text isn't longer than 80 characters
-		if (text.length >= 81) return interaction.reply({ embeds: [channel.error('image/changemymind:TOO_LONG', {}, true)], ephemeral: true });
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=changemymind&text=${text}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)

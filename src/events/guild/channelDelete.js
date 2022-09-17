@@ -1,13 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	types = {
-		GUILD_TEXT: 'Text',
-		GUILD_VOICE: 'Voice',
-		GUILD_CATEGORY: 'Category',
-		GUILD_STAGE_VOICE: 'Stage',
-		GUILD_NEWS: 'Annoucement',
-		GUILD_STORE: 'Store',
-	},
+	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
 
 /**
@@ -30,7 +23,7 @@ class ChannelDelete extends Event {
 	*/
 	async run(bot, channel) {
 	// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == 'dm' ? channel.recipient.tag : channel.name} has been deleted${channel.type == 'dm' ? '' : ` in guild: ${channel.guild.id}`}. (${types[channel.type]})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == ChannelType.DM ? channel.recipient.tag : channel.name} has been deleted${channel.type == ChannelType.DM ? '' : ` in guild: ${channel.guild.id}`}. (${ChannelType[channel.type]})`);
 
 		// Don't really know but a check for DM must be made
 		if (channel.type == 'dm') return;
@@ -46,7 +39,7 @@ class ChannelDelete extends Event {
 		// Check if event channelDelete is for logging
 		if (settings.ModLogEvents?.includes('CHANNELDELETE') && settings.ModLog) {
 			const embed = new Embed(bot, channel.guild)
-				.setDescription(`**${types[channel.type]} channel deleted: ${'#' + channel.name}**`)
+				.setDescription(`**${ChannelType[channel.type]} channel deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
 				.setFooter({ text: `ID: ${channel.id}` })
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })

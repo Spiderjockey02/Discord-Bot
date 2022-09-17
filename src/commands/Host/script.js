@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ promisify, inspect } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	Command = require('../../structures/Command.js');
@@ -19,11 +19,19 @@ class Script extends Command {
 			ownerOnly: true,
 			dirname: __dirname,
 			aliases: ['scripts'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Runs a script file.',
 			usage: 'script <file name> [...params]',
 			cooldown: 3000,
 			examples: ['script updateGuildSlashCommands bot'],
+			slash: false,
+			options: [{
+				name: 'track',
+				description: 'The link or name of the track.',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				autocomplete: true,
+			}],
 		});
 	}
 
@@ -38,7 +46,7 @@ class Script extends Command {
 
 		// No script was entered
 		if (!message.args[0]) {
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle('Available scripts:')
 				.setDescription(scripts.map((c, i) => `${i + 1}.) ${c.replace('.js', '')}`).join('\n'));
 			return message.channel.send({ embeds: [embed] });
@@ -57,6 +65,17 @@ class Script extends Command {
 		} else {
 			message.channel.error('Invalid script name.');
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 

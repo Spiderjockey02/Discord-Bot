@@ -1,5 +1,7 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandType } = require('discord-api-types/v10'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Docs command
@@ -12,14 +14,16 @@ class Docs extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'refresh-interaction',
+			name: 'refresh',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			aliases: ['refresh-interaction'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update all the servers interaction',
 			usage: 'refresh-interaction',
 			cooldown: 3000,
 			examples: ['refresh-interaction'],
+			slash: true,
 		});
 	}
 
@@ -41,17 +45,26 @@ class Docs extends Command {
 			for (const plugin of enabledPlugins) {
 				const g = await bot.loadInteractionGroup(plugin, guild);
 				if (Array.isArray(g)) data.push(...g);
+
+			}
+
+			// For the "Host" commands
+			if (guild.id == bot.config.SupportServer.GuildID) {
+				const cmds = await bot.loadInteractionGroup('Host', guild);
+				for (const cmd of cmds) {
+					cmd.defaultMemberPermissions = [Flags.Administrator];
+				}
+				if (Array.isArray(cmds)) data.push(...cmds);
 			}
 
 			// get context menus
-			data.push({ name: 'Add to Queue', type: 'MESSAGE' },
-				{ name: 'Translate', type: 'MESSAGE' },
-				{ name: 'OCR', type: 'MESSAGE' },
-				{ name: 'Avatar', type: 'USER' },
-				{ name: 'Userinfo', type: 'USER' },
-				{ name: 'Screenshot', type: 'MESSAGE' },
+			data.push({ name: 'Add to Queue', type: ApplicationCommandType.Message },
+				{ name: 'Translate', type: ApplicationCommandType.Message },
+				{ name: 'OCR', type: ApplicationCommandType.Message },
+				{ name: 'Avatar', type: ApplicationCommandType.User },
+				{ name: 'Userinfo', type: ApplicationCommandType.User },
+				{ name: 'Screenshot', type: ApplicationCommandType.Message },
 			);
-
 			try {
 				await bot.guilds.cache.get(guild.id)?.commands.set(data);
 				bot.logger.log('Loaded interactions for guild: ' + guild.name);
@@ -59,6 +72,7 @@ class Docs extends Command {
 			} catch (err) {
 				bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 			}
+
 		}
 		message.channel.send(`Successfully updated ${successCount}/${bot.guilds.cache.size} servers' interactions.`);
 	}

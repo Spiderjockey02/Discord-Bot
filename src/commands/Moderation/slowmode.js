@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime, getReadableTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class Slowmode extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['slow-mode'],
-			userPermissions: ['MANAGE_CHANNELS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			userPermissions: [Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Activate slowmode on a channel.',
 			usage: 'slowmode <time / off>',
 			cooldown: 5000,
@@ -28,7 +29,7 @@ class Slowmode extends Command {
 				{
 					name: 'input',
 					description: 'How long for slowmode',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],

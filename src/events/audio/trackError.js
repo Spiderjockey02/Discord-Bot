@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	Event = require('../../structures/Event');
 
 /**
@@ -30,7 +30,7 @@ class TrackError extends Event {
 		player.resetFilter();
 
 		// send embed
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(15158332)
 			.setDescription(`An error has occured on playback: \`${payload.error}\``);
 		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));

@@ -1,5 +1,6 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class PDelete extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-delete'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Delete a playlist',
 			usage: 'p-delete <playlist name>',
 			cooldown: 3000,

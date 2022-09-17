@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Flip command
@@ -14,7 +15,7 @@ class Flip extends Command {
 		super(bot, {
 			name: 'flip',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Flip a coin.',
 			usage: 'flip',
 			cooldown: 1000,
@@ -34,7 +35,7 @@ class Flip extends Command {
 			result = message.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
 		// send result
-		message.channel.send(`${emoji} ${result}`);
+		message.channel.send({ content: `${emoji} ${result}` });
 	}
 
 	/**

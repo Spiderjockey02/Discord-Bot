@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 // List of events
@@ -25,8 +26,8 @@ class SetLog extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setlogs'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update the log plugin.',
 			usage: 'set-logs <option> [data]',
 			cooldown: 5000,

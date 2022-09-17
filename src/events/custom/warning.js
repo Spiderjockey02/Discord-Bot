@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	{ WarningSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
@@ -36,22 +36,16 @@ class Warning extends Event {
 			});
 
 			// For debugging
-			const embed = new MessageEmbed()
-				.setColor(15158332);
-			if (warns.length == 3) {
-				embed.setAuthor({ name: `[KICK] ${member.user.tag}`, iconURL:  member.user.displayAvatarURL() });
-			} else {
-				embed.setAuthor({ name: `[WARN] ${member.user.tag}`, iconURL: member.user.displayAvatarURL() });
-			}
-			embed.addField('User:', `${member}`, true);
-			embed.addField('Moderator:', `${member.guild.members.cache.get(warning.Moderater).user.tag}`, true);
-			if (warns.length != 3) {
-				embed.addField('Warnings:', `${warns.length}`, true);
-			} else {
-				embed.addField('Warnings:', '1', true);
-			}
-			embed.addField('Reason:', warning.Reason);
-			embed.setTimestamp();
+			const embed = new EmbedBuilder()
+				.setColor(15158332)
+				.setAuthor({ name: `${warns.length == 3 ? '[KICK]' : '[WARN]'}`, iconURL: member.user.displayAvatarURL() })
+				.addFields(
+					{ name: 'User', value: member.toString(), inline: true },
+					{ name: 'Moderator', value: `${member.guild.members.cache.get(warning.Moderater).user.tag}`, inline: true },
+					{ name: 'Warnings', value: `${warns.length != 3 ? warns.length : '1'}`, inline: true },
+					{ name: 'Reason:', value: warning.reason },
+				)
+				.setTimestamp();
 
 			// Find channel and send message
 			try {

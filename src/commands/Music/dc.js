@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Disconnect extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['stop', 'disconnect'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Disconnects the bot from the voice channel.',
 			usage: 'dc',
 			cooldown: 3000,

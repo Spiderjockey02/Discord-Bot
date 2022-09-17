@@ -1,6 +1,6 @@
 // Dependencies
 const	Event = require('../../structures/Event'),
-	{ MessageEmbed } = require('discord.js');
+	{ EmbedBuilder } = require('discord.js');
 
 /**
  * Ratelimit event
@@ -25,7 +25,7 @@ class RateLimit extends Event {
 	async run(bot, { route, timeout, limit }) {
 		bot.logger.error(`Rate limit: ${route} (Cooldown: ${timeout}ms)`);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('RateLimit hit')
 			.setColor('RED')
 			.addField('Path', route)

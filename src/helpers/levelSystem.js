@@ -57,6 +57,7 @@ class LevelManager {
 					this.UpdateCooldown(member.id);
 				}
 			} catch (err) {
+				console.log(err);
 				this.bot.logger.error(err.message);
 			}
 		}

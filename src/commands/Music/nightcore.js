@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Nightcore extends Command {
 			name: 'nightcore',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Toggles nightcore mode.',
 			usage: 'nightcore',
 			cooldown: 3000,
@@ -41,7 +41,7 @@ class Nightcore extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 		player.setNightcore(!player.nightcore);
 		const msg = await message.channel.send(message.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`));
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(message.translate(`music/nightcore:DESC_${player.nightcore ? '1' : '2'}`));
 		await bot.delay(5000);
 		if (player.nightcore) player.speed = 1.2;
@@ -67,7 +67,7 @@ class Nightcore extends Command {
 		const player = bot.manager?.players.get(member.guild.id);
 		player.setNightcore(!player.nightcore);
 		await interaction.reply({ content: guild.translate(`music/nightcore:${player.nightcore ? 'ON' : 'OFF'}_NC`) });
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/nightcore:DESC_${player.nightcore ? '1' : '2'}`));
 		await bot.delay(5000);
 		if (player.nightcore) player.speed = 1.2;

@@ -2,6 +2,7 @@
 const { paginate } = require('../../utils'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +20,7 @@ class Previous extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['played'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK', 'ADD_REACTIONS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak, Flags.AddReactions],
 			description: 'Displays the previous tracks that have been played.',
 			usage: 'previous [pageNumber]',
 			cooldown: 3000,

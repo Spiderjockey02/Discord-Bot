@@ -1,6 +1,6 @@
 // Dependencies
 const max = 100000,
-	{ MessageEmbed } = require('discord.js'),
+	{ EmbedBuilder, Colors, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class Random extends Command {
 		super(bot, {
 			name: 'random',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Replies with a random number.',
 			usage: 'random <LowNum> <HighNum>',
 			cooldown: 1000,
@@ -25,7 +25,7 @@ class Random extends Command {
 			options: [{
 				name: 'min',
 				description: 'The minimum number',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 2147483647,
 				required: true,
@@ -33,8 +33,8 @@ class Random extends Command {
 			{
 				name: 'max',
 				description: 'The maximum number',
-				type: 'INTEGER',
-				minValue: 0,
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 1,
 				maxValue: 2147483647,
 				required: true,
 			}],
@@ -68,8 +68,8 @@ class Random extends Command {
 
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		const embed = new MessageEmbed()
-			.setColor('RANDOM')
+		const embed = new EmbedBuilder()
+			.setColor(Colors.Random)
 			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
 		message.channel.send({ embeds: [embed] });
 	}

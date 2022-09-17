@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Remove extends Command {
 			name: 'remove',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Removes a song from the queue',
 			usage: 'remove <position> [position]',
 			cooldown: 3000,
@@ -25,13 +26,15 @@ class Remove extends Command {
 			options: [{
 				name: 'position',
 				description: 'The position of the queue.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
 				required: true,
 			},
 			{
 				name: 'newposition',
 				description: 'The 2nd position of the queue.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
 				required: false,
 			}],
 		});

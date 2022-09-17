@@ -1,5 +1,6 @@
 // Dependencies
 const { WarningSchema } = require('../../database/models'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class ClearWarning extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['cl-warning', 'cl-warnings', 'clear-warnings'],
-			userPermissions: ['KICK_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.KickMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user> [warning number]',
 			cooldown: 5000,
@@ -28,13 +29,13 @@ class ClearWarning extends Command {
 				{
 					name: 'user',
 					description: 'The user to clear warning from.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'warn-num',
 					description: 'The warning number.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: false,
 				},
 			],

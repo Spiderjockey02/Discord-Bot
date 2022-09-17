@@ -1,7 +1,7 @@
 // Dependencies
-const { Embed } = require('../../utils'),
+const { Embed, paginate } = require('../../utils'),
 	{ getSong } = require('genius-lyrics-api'),
-	{ paginate } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,7 @@ class Lyrics extends Command {
 			name: 'lyrics',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get lyrics on a song.',
 			usage: 'lyrics [song]',
 			cooldown: 3000,
@@ -26,7 +26,7 @@ class Lyrics extends Command {
 			options: [{
 				name: 'track',
 				description: 'The link or name of the track.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 			}],
 		});
@@ -46,7 +46,7 @@ class Lyrics extends Command {
 			const player = bot.manager?.players.get(message.guild.id);
 			if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
 			options = {
-				apiKey: bot.config.api_keys.genuis,
+				apiKey: bot.config.api_keys.genius,
 				title: player.queue.current.title,
 				artist: '‎',
 				optimizeQuery: true,
@@ -54,7 +54,7 @@ class Lyrics extends Command {
 		} else {
 			// Use the message.args for song search
 			options = {
-				apiKey: bot.config.api_keys.genuis,
+				apiKey: bot.config.api_keys.genius,
 				title: message.args.join(' '),
 				artist: '‎',
 				optimizeQuery: true,

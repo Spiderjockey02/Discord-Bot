@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models/index.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,8 +19,8 @@ class TagView extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-view'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'View the server\'s tag(s)',
 			usage: 'tag-view [name]',
 			cooldown: 2000,

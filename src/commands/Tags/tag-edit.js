@@ -1,5 +1,6 @@
 // Dependencies
 const	{ TagsSchema } = require('../../database/models/index.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class TagEdit extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-edit'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit a tag from this server',
 			usage: 'tag-edit <rename / edit> <name> <newName / newResponse>',
 			cooldown: 2000,

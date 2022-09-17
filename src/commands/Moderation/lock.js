@@ -1,5 +1,7 @@
 // Dependencies
-const Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Lock command
@@ -16,8 +18,8 @@ class Lock extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lockdown'],
-			userPermissions: ['MANAGE_CHANNELS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			userPermissions: [Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Lockdown a channel',
 			usage: 'lock [channel]',
 			cooldown: 5000,
@@ -27,8 +29,8 @@ class Lock extends Command {
 				{
 					name: 'channel',
 					description: 'The channel to lock.',
-					type: 'CHANNEL',
-					channelTypes: ['GUILD_TEXT', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD', 'GUILD_NEWS'],
+					type: ApplicationCommandOptionType.Channel,
+					channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.PrivateThread, ChannelType.GuildNews],
 					required: true,
 				},
 			],
@@ -50,11 +52,11 @@ class Lock extends Command {
 		const channel = message.getChannel()[0];
 		try {
 			await channel.permissionOverwrites.edit(message.guild.roles.everyone, {
-				SEND_MESSAGES: false,
+				SendMessages: false,
 			});
 			for (const role of (settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					SEND_MESSAGES: false,
+					SendMessages: false,
 				});
 			}
 		} catch (err) {
@@ -78,11 +80,11 @@ class Lock extends Command {
 		// Get channel and update permissions
 		try {
 			await channel.permissionOverwrites.edit(guild.roles.everyone, {
-				SEND_MESSAGES: false,
+				SendMessages: false,
 			});
 			for (const role of (guild.settings.welcomeRoleGive ?? [])) {
 				await channel.permissionOverwrites.edit(role, {
-					SEND_MESSAGES: false,
+					SendMessages: false,
 				});
 			}
 		} catch (err) {

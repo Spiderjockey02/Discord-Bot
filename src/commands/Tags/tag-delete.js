@@ -1,5 +1,6 @@
 // Dependencies
 const	{ TagsSchema } = require('../../database/models/index.js'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class TagDelete extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-delete', 't-remove', 'tag-del'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Remove a tag from the server',
 			usage: 'tag-delete <name>',
 			cooldown: 2000,

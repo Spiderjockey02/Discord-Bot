@@ -42,7 +42,7 @@ class GuildBanRemove extends Event {
 		// Check if event guildBanRemove is for logging
 		if (settings.ModLogEvents?.includes('GUILDBANREMOVE') && settings.ModLog) {
 			const embed = new Embed(bot, guild)
-				.setDescription(`User: ${user.toString()}`)
+				.setDescription(`User: ${user}`)
 				.setColor(15158332)
 				.setAuthor({ name: 'User unbanned:', iconURL: user.displayAvatarURL() })
 				.setThumbnail(user.displayAvatarURL())

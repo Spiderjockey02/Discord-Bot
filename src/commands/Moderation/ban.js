@@ -1,7 +1,7 @@
 // Dependencies
-const { Embed } = require('../../utils'),
+const { Embed, time: { getTotalTime } } = require('../../utils'),
 	{ timeEventSchema } = require('../../database/models'),
-	{ time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,8 +18,8 @@ class Ban extends Command {
 			name: 'ban',
 			guildOnly: true,
 			dirname: __dirname,
-			userPermissions: ['BAN_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'BAN_MEMBERS'],
+			userPermissions: [Flags.BanMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.BanMembers],
 			description: 'Ban a user.',
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,
@@ -29,19 +29,19 @@ class Ban extends Command {
 				{
 					name: 'user',
 					description: 'The user to ban.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'reason',
 					description: 'The reason for the ban.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 				{
 					name: 'time',
 					description: 'The time till they are unbanned.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 			],
@@ -75,7 +75,7 @@ class Ban extends Command {
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			return message.channel.error('moderation/ban:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
@@ -149,7 +149,7 @@ class Ban extends Command {
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			return interaction.reply({ embeds: [channel.error('moderation/ban:TOO_POWERFUL', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 10000 }));
 		}
 

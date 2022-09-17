@@ -1,6 +1,6 @@
 // Dependencies
 const dateFormat = require('dateformat'),
-	{ MessageAttachment } = require('discord.js'),
+	{ AttachmentBuilder } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
@@ -38,7 +38,7 @@ class MessageDeleteBulk extends Event {
 				humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author?.tag ?? 'Unknown'} (${message.id})`;
 				humanLog += ' : ' + message.content;
 			}
-			const attachment = new MessageAttachment(Buffer.from(humanLog, 'utf-8'), 'DeletedMessages.txt');
+			const attachment = new AttachmentBuilder(Buffer.from(humanLog, 'utf-8'), { name: 'DeletedMessages.txt' });
 			// Get modlog channel
 			const modChannel = messages.first().guild.channels.cache.get(settings.ModLogChannel);
 			if (modChannel) {
@@ -50,8 +50,10 @@ class MessageDeleteBulk extends Event {
 					.setColor(15158332)
 					.setFooter({ text: `Channel: ${messages.first().channel.id}` })
 					.setAuthor({ name: messages.first().channel.name, iconURL: messages.first().guild.iconURL })
-					.addField('Message count:', `${messages.size}`, true)
-					.addField('Deleted Messages:', `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, true)
+					.addFields(
+						{ name: 'Message count:', value: `${messages.size}`, inline: true },
+						{ name: 'Deleted Messages:', value: `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, inline: true },
+					)
 					.setTimestamp();
 
 				bot.addEmbed(modChannel.id, [embed]);

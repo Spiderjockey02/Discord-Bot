@@ -1,5 +1,6 @@
 // Dependencies
 const fs = require('fs'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class EditRole extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['modifyrole'],
-			userPermissions: ['MANAGE_ROLES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
 			description: 'Edit a role\'s data in the server',
 			usage: 'editrole <role name> <option> <value>',
 			cooldown: 5000,
@@ -28,20 +29,21 @@ class EditRole extends Command {
 				{
 					name: 'role',
 					description: 'The role to edit.',
-					type: 'ROLE',
+					type: ApplicationCommandOptionType.Role,
 					required: true,
 				},
 				{
 					name: 'key',
 					description: 'The key to edit.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					choices: [...['name', 'colour', 'hoist'].map(i => ({ name: i, value: i }))],
 					required: true,
 				},
 				{
 					name: 'value',
 					description: 'The value to edit.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 100,
 					required: true,
 				},
 			],
@@ -68,7 +70,7 @@ class EditRole extends Command {
 		// No role was found
 		if (!role[0]) return message.channel.error('moderation/delrole:MISSING').then(m => m.timedDelete({ timeout: 5000 }));
 
-		if (message.member.permissions.has('ADMINISTRATOR') || role[0].comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (message.member.permissions.has('ADMINISTRATOR') || role[0].comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			switch (message.args[1].toLowerCase()) {
 				case 'colour':
 				case 'color':
@@ -122,7 +124,7 @@ class EditRole extends Command {
 			key = args.get('key').value,
 			value = args.get('value').value;
 
-		if (member.permissions.has('ADMINISTRATOR') || role.comparePositionTo(guild.me.roles.highest) >= 0) {
+		if (member.permissions.has('ADMINISTRATOR') || role.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			switch (key) {
 				case 'colour':
 				case 'color':

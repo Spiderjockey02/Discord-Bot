@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Resume extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['previous', 'prev'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Resumes the music.',
 			usage: 'resume',
 			cooldown: 3000,

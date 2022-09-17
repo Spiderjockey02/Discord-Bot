@@ -1,13 +1,13 @@
 // Dependecies
-const { MessageEmbed, TextChannel } = require('discord.js');
+const { EmbedBuilder, TextChannel, PermissionsBitField: { Flags } } = require('discord.js');
 
 // override send method
 const oriSend = TextChannel.prototype.send;
 TextChannel.prototype.send = function(...args) {
 	const send = oriSend.bind(this);
 	// check permissions
-	if (!this.permissionsFor(this.client.user).has('SEND_MESSAGES')) return;
-	if (!this.permissionsFor(this.client.user).has('EMBED_LINKS')) {
+	if (!this.permissionsFor(this.client.user).has(Flags.SendMessages)) return;
+	if (!this.permissionsFor(this.client.user).has(Flags.EmbedLinks)) {
 		return send(this.client.translate('misc:MISSING_PERMISSION', { PERMISSIONS: this.client.translate('permissions:EMBED_LINKS', {}, this.guild.settings.Language) }, this.guild.settings.Language));
 	}
 
@@ -25,8 +25,8 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 	error: {
 		value: function(key, args, returnValue) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
-				const embed = new MessageEmbed()
+				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
+				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				return returnValue ? embed : this.send({ embeds: [embed] });
@@ -39,8 +39,8 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 	success: {
 		value: function(key, args, returnValue) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has('USE_EXTERNAL_EMOJIS') ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
-				const embed = new MessageEmbed()
+				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
+				const embed = new EmbedBuilder()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
 				return returnValue ? embed : this.send({ embeds: [embed] });

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Invite extends Command {
 			name: 'invite',
 			dirname: __dirname,
 			aliases: ['inv'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Send an invite link so people can add me to their server.',
 			usage: 'invite',
 			cooldown: 2000,
@@ -32,7 +32,7 @@ class Invite extends Command {
  	 * @readonly
 	*/
 	async run(bot, message) {
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setDescription(message.translate('misc/invite:LINK', { LINK: genInviteLink(bot) }));
 		message.channel.send({ embeds: [embed] });
 	}

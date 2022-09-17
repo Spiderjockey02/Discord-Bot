@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class Mute extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['timeout'],
-			userPermissions: ['MUTE_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MUTE_MEMBERS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.MuteMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.MuteMembers, Flags.ManageRoles],
 			description: 'Put a user in timeout.',
 			usage: 'mute <user> [time]',
 			cooldown: 2000,
@@ -28,13 +29,13 @@ class Mute extends Command {
 				{
 					name: 'user',
 					description: 'The user to mute.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'time',
 					description: 'The time till they are unmuted.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 			],
@@ -65,7 +66,7 @@ class Mute extends Command {
 		const channel = message.guild.channels.cache.get(members[0].voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
-			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
+			if (!channel.permissionsFor(bot.user).has(Flags.MuteMembers)) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
 				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
@@ -104,7 +105,7 @@ class Mute extends Command {
 		const channel = guild.channels.cache.get(member.voice.channelID);
 		if (channel) {
 			// Make sure bot can deafen members
-			if (!channel.permissionsFor(bot.user).has('MUTE_MEMBERS')) {
+			if (!channel.permissionsFor(bot.user).has(Flags.MuteMembers)) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${guild.id}].`);
 				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:MUTE_MEMBERS') }, true)] });
 			}

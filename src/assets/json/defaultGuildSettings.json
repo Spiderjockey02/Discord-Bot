@@ -5,6 +5,8 @@
   "LevelOption": 1,
   "LevelMessage": "GG {user}, you have leveled up to {level}!",
   "LevelMultiplier": 1,
+  "LevelPublicBoard": true,
+  "LevelJoinViaBoard": false,
   "Auto_Moderation": {
     "IgnoreBot": true,
     "Badwords": {

@@ -1,5 +1,6 @@
 // Dependencies
 const { execSync } = require('child_process'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,11 +17,12 @@ class Git extends Command {
 			name: 'git',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays git information',
-			usage: 'git>',
+			usage: 'git',
 			cooldown: 3000,
 			examples: ['git'],
+			slash: false,
 		});
 	}
 
@@ -33,6 +35,17 @@ class Git extends Command {
 	async run(bot, message) {
 		const t = await execSync('git status').toString();
 		message.channel.send({ content: `\`\`\`css\n${t}\n\`\`\`` });
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		const t = await execSync('git status').toString();
+		interaction.reply({ content: `\`\`\`css\n${t}\n\`\`\`` });
 	}
 }
 

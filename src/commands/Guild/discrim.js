@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Discrim extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['discriminator'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Discrim',
 			usage: 'discrim [discriminator]',
 			cooldown: 2000,
@@ -26,7 +27,7 @@ class Discrim extends Command {
 			options: [{
 				name: 'discrim',
 				description: 'The discriminator you want to search for.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.Integer,
 				required: false,
 			}],
 		});

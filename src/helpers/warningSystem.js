@@ -41,11 +41,15 @@ module.exports.run = async (bot, userInput, member, reason) => {
 					.setColor(15158332)
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/warn:WARN_IN', { NAME: guild.name }))
-					.addField(guild.translate('moderation/warn:WARN_BY'), userInput.member.user.tag, true)
-					.addField(guild.translate('misc:REASON'), reason, true)
-					.addField(guild.translate('moderation/warn:WARN_CNTR'), '1/3');
+					.addFields(
+						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.tag, inline: true },
+						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
+						{ name: guild.translate('moderation/warn:WARN_CNTR'), value: '1/3', inline: true },
+					);
+
 				// eslint-disable-next-line no-empty-function
 				member.send({ embeds: [embed2] }).catch(() => {});
+
 				// Check if the warning was only temporary
 				checkTimedWarning(bot, reason, member, userInput, newWarn);
 				return embed1;
@@ -84,9 +88,11 @@ module.exports.run = async (bot, userInput, member, reason) => {
 					.setColor(15158332)
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/warn:WARN_IN', { NAME: guild.name }))
-					.addField(guild.translate('moderation/warn:WARN_BY'), userInput.member.user.tag, true)
-					.addField(guild.translate('misc:REASON'), reason, true)
-					.addField(guild.translate('moderation/warn:WARN_CNTR'), '2/3');
+					.addFields(
+						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.tag, inline: true },
+						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
+						{ name: guild.translate('moderation/warn:WARN_CNTR'), value: '2/3', inline: true },
+					);
 				// eslint-disable-next-line no-empty-function
 				member.send({ embeds: [embed2] }).catch(() => {});
 				// Check if the warning was only temporary

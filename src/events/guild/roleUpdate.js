@@ -40,8 +40,10 @@ class RoleUpdate extends Event {
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newRole.id}` })
 					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
-					.addField('Before:', oldRole.name)
-					.addField('After:', newRole.name)
+					.addFields(
+						{ name: 'Before:', value: oldRole.name },
+						{ name: 'After:', value: newRole.name },
+					)
 					.setTimestamp();
 				updated = true;
 			}
@@ -53,8 +55,10 @@ class RoleUpdate extends Event {
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newRole.id}` })
 					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
-					.addField('Before:', `${oldRole.color} ([${oldRole.hexColor}](https://www.color-hex.com/color/${oldRole.hexColor.slice(1)}))`)
-					.addField('After:', `${newRole.color} ([${newRole.hexColor}](https://www.color-hex.com/color/${newRole.hexColor.slice(1)}))`)
+					.addFields(
+						{ name: 'Before:', value: `${oldRole.color} ([${oldRole.hexColor}](https://www.color-hex.com/color/${oldRole.hexColor.slice(1)}))` },
+						{ name: 'After:', value: `${newRole.color} ([${newRole.hexColor}](https://www.color-hex.com/color/${newRole.hexColor.slice(1)}))` },
+					)
 					.setTimestamp();
 				updated = true;
 			}
@@ -66,8 +70,10 @@ class RoleUpdate extends Event {
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newRole.id}` })
 					.setAuthor({ name: newRole.guild.name, iconURL: newRole.guild.iconURL() })
-					.addField('Before:', `${oldRole.permissions.bitfield}`)
-					.addField('After:', `${newRole.permissions.bitfield}`)
+					.addFields(
+						{ name: 'Before:', value:`${oldRole.permissions.bitfield}` },
+						{ name: 'After:', value: `${newRole.permissions.bitfield}` },
+					)
 					.setTimestamp();
 				updated = true;
 			}

@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Status extends Command {
 			name: 'status',
 			dirname: __dirname,
 			aliases: ['stat', 'ping'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the status of the bot.',
 			usage: 'status',
 			cooldown: 2000,
@@ -35,9 +36,11 @@ class Status extends Command {
 		const m = await message.channel.send(message.translate('misc/status:PONG'));
 
 		const embed = new Embed(bot, message.guild)
-			.addField(bot.translate('misc/status:PING'), `\`${m.createdTimestamp - message.createdTimestamp}ms\``, true)
-			.addField(bot.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
-			.addField(bot.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+			.addFields(
+				{ name: bot.translate('misc/status:PING'), value: `\`${m.createdTimestamp - message.createdTimestamp}ms\``, inline: true },
+				{ name: bot.translate('misc/status:CLIENT'), value: `\`${Math.round(bot.ws.ping)}ms\``, inline: true },
+				{ name: bot.translate('misc/status:MONGO'), value:  `\`${Math.round(await bot.mongoose.ping())}ms\``, inline: true },
+			)
 			.setTimestamp();
 		await message.channel.send({ embeds: [embed] });
 		m.delete();
@@ -54,9 +57,11 @@ class Status extends Command {
 		const msg = await interaction.reply({ content: guild.translate('misc/status:PONG'), fetchReply: true });
 
 		const embed = new Embed(bot, guild)
-			.addField(bot.translate('misc/status:PING'), `\`${msg.createdTimestamp - interaction.createdTimestamp}ms\``, true)
-			.addField(guild.translate('misc/status:CLIENT'), `\`${Math.round(bot.ws.ping)}ms\``, true)
-			.addField(guild.translate('misc/status:MONGO'), `\`${Math.round(await bot.mongoose.ping())}ms\``, true)
+			.addFields(
+				{ name: bot.translate('misc/status:PING'), value: `\`${msg.createdTimestamp - interaction.createdTimestamp}ms\``, inline: true },
+				{ name: bot.translate('misc/status:CLIENT'), value: `\`${Math.round(bot.ws.ping)}ms\``, inline: true },
+				{ name: bot.translate('misc/status:MONGO'), value:  `\`${Math.round(await bot.mongoose.ping())}ms\``, inline: true },
+			)
 			.setTimestamp();
 		await interaction.editReply({ content: '‎', embeds: [embed] });
 	}

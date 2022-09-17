@@ -1,6 +1,6 @@
 // Dependencies
 const fetch = require('node-fetch'),
-	{ MessageEmbed } = require('discord.js'),
+	{ EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class Advice extends Command {
 		super(bot, {
 			name: 'advice',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get some random advice',
 			usage: 'advice',
 			cooldown: 1000,
@@ -39,7 +39,7 @@ class Advice extends Command {
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
 			msg.delete();
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setDescription(`💡 ${data.slip.advice}`);
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {

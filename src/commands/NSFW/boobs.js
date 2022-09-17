@@ -1,6 +1,7 @@
 // Dependencies
 const { get } = require('axios'),
 	{ Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +19,7 @@ class Boobs extends Command {
 			nsfw: true,
 			dirname: __dirname,
 			aliases: ['boob'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: 'boobs',
 			cooldown: 2000,
@@ -62,12 +63,14 @@ class Boobs extends Command {
 	*/
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
+		await interaction.reply({ content: guild.translate('misc:FETCHING', {	EMOJI: bot.customEmojis['loading'], ITEM: 'Image' }) });
+
 		try {
 			get('https://nekobot.xyz/api/image?type=boobs')
 				.then(res => {
 					const embed = new Embed(bot, guild)
 						.setImage(res.data.message);
-					interaction.reply({ embeds: [embed], ephemeral: true });
+					interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
 				});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

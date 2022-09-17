@@ -1,6 +1,6 @@
 // Dependencies
 const ms = require('ms'),
-	{ MessageAttachment } = require('discord.js'),
+	{ MessageAttachment, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ timeEventSchema } = require('../../database/models'),
 	{ time: { getTotalTime }, Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
@@ -19,7 +19,7 @@ class Reminder extends Command {
 			name: 'reminder',
 			dirname: __dirname,
 			aliases: ['remindme'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Set a reminder.',
 			usage: 'reminder <time> <information>',
 			cooldown: 1000,
@@ -29,13 +29,14 @@ class Reminder extends Command {
 				{
 					name: 'time',
 					description: 'How long till I remind you.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 				{
 					name: 'text',
 					description: 'What should I remind you off.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 2000,
 					required: true,
 				},
 			],

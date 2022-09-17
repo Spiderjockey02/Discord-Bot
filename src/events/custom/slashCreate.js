@@ -1,5 +1,5 @@
 // Dependencies
-const { Collection } = require('discord.js'),
+const { Collection, PermissionsBitField: { Flags } } = require('discord.js'),
 	Event = require('../../structures/Event');
 
 /**
@@ -39,12 +39,12 @@ class SlashCreate extends Event {
 		// Check for bot permissions
 		let neededPermissions = [];
 		cmd.conf.botPermissions.forEach((perm) => {
-			if (['SPEAK', 'CONNECT'].includes(perm)) {
+			if ([Flags.Speak, Flags.Connect].includes(perm)) {
 				if (!member.voice.channel) return;
-				if (!member.voice.channel.permissionsFor(guild.me).has(perm)) {
+				if (!member.voice.channel.permissionsFor(bot.user).has(perm)) {
 					neededPermissions.push(perm);
 				}
-			} else if (!channel.permissionsFor(guild.me).has(perm)) {
+			} else if (!channel.permissionsFor(bot.user)?.has(perm)) {
 				neededPermissions.push(perm);
 			}
 		});

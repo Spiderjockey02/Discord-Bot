@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Giveaway delete command
@@ -16,18 +17,18 @@ class GiveawayDelete extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-delete', 'gdelete'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Delete a giveaway',
 			usage: 'g-delete <messageID>',
 			cooldown: 2000,
 			examples: ['g-delete 818821436255895612'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 			],

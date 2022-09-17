@@ -1,6 +1,6 @@
 // Dependencies
 const Puppeteer = require('puppeteer'),
-	{ MessageAttachment } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	validUrl = require('valid-url'),
 	Command = require('../../structures/Command.js');
 
@@ -18,7 +18,7 @@ class Screenshot extends Command {
 			name: 'screenshot',
 			dirname: __dirname,
 			aliases: ['ss'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Get a screenshot of a website.',
 			usage: 'screenshot <url>',
 			cooldown: 5000,
@@ -27,7 +27,7 @@ class Screenshot extends Command {
 			options: [{
 				name: 'url',
 				description: 'url of website to screenshot.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -68,7 +68,7 @@ class Screenshot extends Command {
 		if (!data) {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }).then(m => m.timedDelete({ timeout: 5000 }));
 		} else {
-			const attachment = new MessageAttachment(data, 'website.png');
+			const attachment = new AttachmentBuilder(data, { name: 'website.png' });
 			await message.channel.send({ files: [attachment] });
 		}
 		msg.delete();
@@ -98,7 +98,7 @@ class Screenshot extends Command {
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
 		} else {
-			const attachment = new MessageAttachment(data, 'website.png');
+			const attachment = new AttachmentBuilder(data, { name: 'website.png' });
 			interaction.editReply({ files: [attachment] });
 		}
 	}
@@ -122,7 +122,7 @@ class Screenshot extends Command {
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
 		} else {
-			const attachment = new MessageAttachment(data, 'website.png');
+			const attachment = new AttachmentBuilder(data, { name: 'website.png' });
 			interaction.editReply({ files: [attachment] });
 		}
 	}

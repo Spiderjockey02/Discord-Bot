@@ -1,28 +1,27 @@
 // variables
-const	{ MessageActionRow, MessageButton, CommandInteraction } = require('discord.js'),
-	timeout = 120000;
+const	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType } = require('discord.js');
 
 module.exports = async (bot, type, pages, userID) => {
 	let page = 0;
 
-	const row = new MessageActionRow()
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new MessageButton()
+			new ButtonBuilder()
 				.setCustomId('1')
 				.setLabel('⏮')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('2')
 				.setLabel('◀️')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('3')
 				.setLabel('▶️')
-				.setStyle('SECONDARY'),
-			new MessageButton()
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('4')
 				.setLabel('⏭')
-				.setStyle('SECONDARY'),
+				.setStyle(ButtonStyle.Secondary),
 		);
 
 	let curPage;
@@ -32,7 +31,7 @@ module.exports = async (bot, type, pages, userID) => {
 		curPage = await type.send({ embeds: [pages[page]], components: [row] });
 	}
 
-	const buttonCollector = await curPage.createMessageComponentCollector({ componentType: 'BUTTON', time: timeout });
+	const buttonCollector = await curPage.createMessageComponentCollector({ componentType: ComponentType.Button });
 
 	// find out what emoji was reacted on to update pages
 	buttonCollector.on('collect', (i) => {

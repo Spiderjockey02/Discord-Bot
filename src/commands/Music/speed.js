@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ functions: { checkMusic } } = require('../../utils'),
+const { Embed, functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,7 @@ class Speed extends Command {
 			name: 'speed',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Sets the player\'s playback speed.',
 			usage: 'speed <Number>',
 			cooldown: 3000,
@@ -26,7 +26,7 @@ class Speed extends Command {
 			options: [{
 				name: 'speed',
 				description: 'The speed at what you want the song to go.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				minValue: 0,
 				maxValue: 10,
 				required: true,

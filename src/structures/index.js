@@ -4,5 +4,6 @@ module.exports = {
 	Message: require('./Message'),
 	TextChannel: require('./TextChannel'),
 	DMChannel: require('./DMChannel'),
+	VoiceChannel: require('./VoiceChannel'),
 	parseVideo: require('./YoutubeVideo').parseVideo,
 };

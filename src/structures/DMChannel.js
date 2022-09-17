@@ -1,6 +1,5 @@
 // Dependecies
-const { MessageEmbed } = require('discord.js'),
-	{ DMChannel } = require('discord.js');
+const { EmbedBuilder, DMChannel } = require('discord.js');
 
 module.exports = Object.defineProperties(DMChannel.prototype, {
 	// Send custom 'error' message
@@ -8,7 +7,7 @@ module.exports = Object.defineProperties(DMChannel.prototype, {
 		value: function(key, args) {
 			try {
 				const emoji = this.client.customEmojis['cross'];
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, require('../assets/json/defaultGuildSettings.json').Language) ?? key}`);
 				return this.send({ embeds: [embed] });
@@ -22,7 +21,7 @@ module.exports = Object.defineProperties(DMChannel.prototype, {
 		value: function(key, args) {
 			try {
 				const emoji = this.client.customEmojis['checkmark'];
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, require('../assets/json/defaultGuildSettings.json').Language) ?? key}`);
 				return this.send({ embeds: [embed] });

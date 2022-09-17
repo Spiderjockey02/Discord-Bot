@@ -4,6 +4,7 @@ const axios = require('axios'),
 	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
 	radioStations = require('../../assets/json/radio_streams_yuck.json'),
 	{ colourNames } = require('../../assets/json/colours.json'),
+	{ PlaylistSchema } = require('../../database/models'),
 	Event = require('../../structures/Event');
 
 /**
@@ -43,7 +44,7 @@ class AutoComplete extends Event {
 					html = data.replace(/\\x([0-9A-F]{2})/ig, (...items) => String.fromCharCode(parseInt(items[1], 16)));
 					html = html.replaceAll('\\\\"', '');
 					html = JSON.parse(html);
-				} catch(e) { null; }
+				} catch { null; }
 
 				let videos;
 				if (html?.contents?.sectionListRenderer?.contents?.length > 0 && html.contents.sectionListRenderer.contents[0]?.itemSectionRenderer?.contents?.length > 0) {
@@ -56,13 +57,13 @@ class AutoComplete extends Event {
 					try {
 						videos = JSON.parse(html.split('{"itemSectionRenderer":{"contents":')[html.split('{"itemSectionRenderer":{"contents":').length - 1].split(',"continuations":[{')[0]);
 						fetched = true;
-					} catch (e) { null; }
+					} catch { null; }
 				}
 				if (!fetched) {
 					try {
 						videos = JSON.parse(html.split('{"itemSectionRenderer":')[html.split('{"itemSectionRenderer":').length - 1].split('},{"continuationItemRenderer":{')[0]).contents;
 						fetched = true;
-					} catch(e) { null; }
+					} catch { null; }
 				}
 
 				const results = [];
@@ -103,6 +104,13 @@ class AutoComplete extends Event {
 				break;
 			}
 			case 'docs': {
+				break;
+			}
+			case 'playlist': {
+				// Handle autocomplete for finding playlist name
+				const playlists = await PlaylistSchema.find({ creator: interaction.user.id });
+
+				if (playlists) interaction.respond(playlists.map(i => ({ name: i.name, value: i.name }))); else interaction.respond([]);
 				break;
 			}
 			default:

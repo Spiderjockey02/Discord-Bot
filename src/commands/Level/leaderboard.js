@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ paginate } = require('../../utils'),
+const { Embed, paginate } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
@@ -22,7 +22,7 @@ class Leaderboard extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lb', 'levels', 'ranks'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays the Servers\'s level leaderboard.',
 			usage: 'leaderboard',
 			cooldown: 3000,
@@ -99,7 +99,7 @@ class Leaderboard extends Command {
 			.setURL(`${bot.config.websiteURL}/leaderboard/${guild.id}`);
 		if (!res[0]) {
 			// If there no results
-			embed.addField(guild.translate('level/leaderboard:EMPTY_TITLE'), guild.translate('level/leaderboard:EMPTY_DESC'));
+			embed.addFields({ name: guild.translate('level/leaderboard:EMPTY_TITLE'), value: guild.translate('level/leaderboard:EMPTY_DESC') });
 			return embed;
 		} else {
 			// Get number of pages to generate
@@ -117,11 +117,11 @@ class Leaderboard extends Command {
 					if (res[(i * 10) + j]) {
 						const name = guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
 						if (name == 'User left') {
-							embed2.addField(guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
-								guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }));
+							embed2.fields.push({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
+								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
 						} else {
-							embed2.addField(guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
-								guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }));
+							embed2.fields.push({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
+								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
 						}
 					}
 				}

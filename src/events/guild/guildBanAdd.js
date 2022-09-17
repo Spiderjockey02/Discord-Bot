@@ -46,7 +46,7 @@ class GuildBanAdd extends Event {
 				.setColor(15158332)
 				.setAuthor({ name: 'User banned:', iconURL: user.displayAvatarURL() })
 				.setThumbnail(user.displayAvatarURL())
-				.addField('Reason:', guildBan.reason ?? 'No reason given')
+				.addFields({ name: 'Reason:', value: guildBan.reason ?? 'No reason given' })
 				.setTimestamp()
 				.setFooter({ text: `ID: ${user.id}` });
 

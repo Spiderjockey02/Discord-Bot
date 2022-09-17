@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Emoji-list command
@@ -16,7 +17,7 @@ class EmojiList extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['emojilist', 'emotes'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays the server\'s emojis',
 			usage: 'emojilist',
 			cooldown: 2000,
@@ -31,7 +32,8 @@ class EmojiList extends Command {
  	 * @readonly
 	*/
 	async run(bot, message) {
-		message.channel.send(message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') }));
+		const emojiList = message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') });
+		message.channel.send({ content:  emojiList });
 	}
 
 	/**
@@ -42,7 +44,8 @@ class EmojiList extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		interaction.reply({ content: guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') }) });
+		const emojiList = guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') });
+		interaction.reply({ content: emojiList });
 	}
 }
 

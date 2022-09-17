@@ -1,7 +1,6 @@
 // Dependencies
-const { version } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
+const { version, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +17,7 @@ class About extends Command {
 			name: 'about',
 			dirname: __dirname,
 			aliases: ['bio', 'botinfo'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Information about me.',
 			usage: 'about',
 			cooldown: 2000,
@@ -59,16 +58,21 @@ class About extends Command {
  	 * @returns {embed}
 	*/
 	createEmbed(bot, guild, settings) {
+		const textBasedChannelSize = bot.channels.cache.filter(c => [ChannelType.GuildAnnouncement, ChannelType.GuildText].includes(c.type)).size,
+			voiceBasedChannelSize = bot.channels.cache.filter(c => [ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(c.type)).size;
+
 		return new Embed(bot, guild)
 			.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL() })
 			.setTitle('misc/about:TITLE')
 			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: genInviteLink(bot), SERVER: bot.config.SupportServer.link, USERNAME: bot.user.username }))
-			.addField(guild.translate('misc/about:MEMBERS', { MEMBERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString() }), bot.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size.toLocaleString(settings.Language), BOTS: bot.users.cache.filter(user => user.bot).size.toLocaleString(settings.Language), HUMANS: bot.users.cache.filter(user => !user.bot).size.toLocaleString(settings.Language) }), true)
-			.addField(guild.translate('misc/about:CHANNELS'), bot.translate('misc/about:CHANNELS_DESC', { CHANNELS: bot.channels.cache.size.toLocaleString(settings.Language), TEXT: bot.channels.cache.filter(channel => channel.isText() && channel.type !== 'DM').size.toLocaleString(settings.Language), VOICE: bot.channels.cache.filter(channel => channel.type === 'GUILD_VOICE').size.toLocaleString(settings.Language), DM: bot.channels.cache.filter(channel => channel.type === 'DM').size.toLocaleString(settings.Language) }), true)
-			.addField(guild.translate('misc/about:PROCESS'),	bot.translate('misc/about:PROCESS_DESC', { RAM: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), NODE: process.version.slice(1).split('.')[0], DISCORD: version }), true)
-			.addField(guild.translate('misc/about:SERVERS'), bot.translate('misc/about:SERVERS_DESC', { SERVERS: bot.guilds.cache.size, SHARDS: bot.ws.totalShards }), true)
-			.addField(guild.translate('misc/about:MESSAGES'), bot.translate('misc/about:MESSAGES_DESC', { MESSAGES: bot.messagesSent, MSGSEC: (bot.messagesSent / (bot.uptime / 1000)).toFixed(2) }), true)
-			.addField(guild.translate('misc/about:UPTIME'), getReadableTime(bot.uptime), true);
+			.addFields(
+				{ name: guild.translate('misc/about:MEMBERS', { MEMBERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString() }), value:  bot.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size.toLocaleString(settings.Language), BOTS: bot.users.cache.filter(user => user.bot).size.toLocaleString(settings.Language), HUMANS: bot.users.cache.filter(user => !user.bot).size.toLocaleString(settings.Language) }), inline: true },
+				{ name: guild.translate('misc/about:CHANNELS'), value: bot.translate('misc/about:CHANNELS_DESC', { CHANNELS: bot.channels.cache.size.toLocaleString(settings.Language), TEXT: textBasedChannelSize.toLocaleString(settings.Language), VOICE: voiceBasedChannelSize.toLocaleString(settings.Language), DM: bot.channels.cache.filter(channel => channel.type === 'DM').size.toLocaleString(settings.Language) }), inline: true },
+				{ name: guild.translate('misc/about:PROCESS'), value:	bot.translate('misc/about:PROCESS_DESC', { RAM: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), NODE: process.version.slice(1).split('.')[0], DISCORD: version }), inline: true },
+				{ name: guild.translate('misc/about:SERVERS'), value: bot.translate('misc/about:SERVERS_DESC', { SERVERS: bot.guilds.cache.size, SHARDS: bot.ws.totalShards }), inline: true },
+				{ name: guild.translate('misc/about:MESSAGES'), value: bot.translate('misc/about:MESSAGES_DESC', { MESSAGES: bot.messagesSent, MSGSEC: (bot.messagesSent / (bot.uptime / 1000)).toFixed(2) }), inline: true },
+				{ name: guild.translate('misc/about:UPTIME'), value: getReadableTime(bot.uptime), inline: true },
+			);
 	}
 }
 

@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageAttachment } = require('discord.js'),
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	{ post } = require('axios'),
 	Command = require('../../structures/Command.js');
@@ -24,7 +24,7 @@ class Generate extends Command {
 			name: 'generate',
 			dirname: __dirname,
 			aliases: ['gen'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Generate a custom image.',
 			usage: 'generate <option> [image]',
 			cooldown: 5000,
@@ -33,18 +33,18 @@ class Generate extends Command {
 			options: [{
 				name: 'option',
 				description: 'Option',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 				choices: [{ name: 'list', value: 'list' }, ...image_1.map(item => ({ name: item, value: item })), ...image_2.map(item => ({ name: item, value: item }))].slice(0, 24),
 			}, {
 				name: 'user',
 				description: 'User\'s avatar to manipulate.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}, {
 				name: 'user2',
 				description: 'Second user\'s avatar to manipulate.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});
@@ -95,7 +95,7 @@ class Generate extends Command {
 		// send embed
 		try {
 			if (!image || !image.data) return;
-			const attachment = new MessageAttachment(image.data, `${choice}.${choice == 'triggered' ? 'gif' : 'png'}`);
+			const attachment = new AttachmentBuilder(image.data, { name: `${choice}.${choice == 'triggered' ? 'gif' : 'png'}` });
 			msg.delete();
 			message.channel.send({ files: [attachment] });
 		} catch (err) {
@@ -139,7 +139,7 @@ class Generate extends Command {
 
 			// display image
 			if (!image || !image.data) return;
-			const attachment = new MessageAttachment(image.data, `${option}.${option == 'triggered' ? 'gif' : 'png'}`);
+			const attachment = new AttachmentBuilder(image.data, { name: `${option}.${option == 'triggered' ? 'gif' : 'png'}` });
 			interaction.editReply({ content: ' ', files: [attachment] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

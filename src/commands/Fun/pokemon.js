@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Pokemon extends Command {
 		super(bot, {
 			name: 'pokemon',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a pokemon.',
 			usage: 'pokemon <pokemon>',
 			cooldown: 1000,
@@ -24,8 +25,12 @@ class Pokemon extends Command {
 			slash: true,
 			options: [{
 				name: 'pokemon',
+				nameLocalized: 'en-US',
+				// nameLocalizations: bot.languages.map(({ name }) => ({ [name]: bot.translate(`${this.help.category.toLowerCase()}/${this.help.name}:USAGE`, {}, name) }), bot.commands.get('pokemon')),
 				description: 'The specified pokemon to gather information on.',
-				type: 'STRING',
+				// descriptionLocalized: 'en-Us',
+				//	descriptionLocalizations:bot.languages.map(({ name }) => ({ [name]: bot.translate(`${this.help.category.toLowerCase()}/${this.help.name}:USAGE`, {}, name) }), bot.commands.get('pokemon')),
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});

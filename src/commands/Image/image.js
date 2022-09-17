@@ -1,6 +1,7 @@
 // Dependencies
 const { image_search } = require('duckduckgo-images-api'),
 	{ Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Image extends Command {
 			name: 'image',
 			dirname: __dirname,
 			aliases: ['img'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Finds an image based on the topic.',
 			usage: 'image <topic>',
 			cooldown: 2000,
@@ -26,7 +27,7 @@ class Image extends Command {
 			options: [{
 				name: 'topic',
 				description: 'Topic for image search',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -52,7 +53,7 @@ class Image extends Command {
 
 		// get results (image links etc)
 		try {
-			const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+			const results = await image_search({ query: message.args.join(' '), moderate: (message.channel.nsfw || message.channel.type == ChannelType.DM) ? false : true, iterations: 2, retries: 2 });
 
 			// send image
 			const embed = new Embed(bot, message.guild)
@@ -75,13 +76,13 @@ class Image extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const topic = args.get('topic').value;
-		const channel = guild.channels.cache.get(interaction.channelId);
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+		const topic = args.get('topic').value,
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {	EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
-			const results = await image_search({ query: topic, moderate: (channel.nsfw || channel.type == 'dm') ? false : true, iterations: 2, retries: 2 });
+			const results = await image_search({ query: topic, moderate: (channel.nsfw || channel.type == ChannelType.DM) ? false : true, iterations: 2, retries: 2 });
 			const embed = new Embed(bot, guild)
 				.setImage(results[Math.floor(Math.random() * results.length)].image);
 			interaction.editReply({ content: ' ', embeds: [embed] });

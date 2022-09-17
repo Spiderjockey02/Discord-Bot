@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ MessageButton, MessageActionRow } = require('discord.js'),
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,8 +18,8 @@ class Clear extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['cl', 'purge'],
-			userPermissions: ['MANAGE_MESSAGES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
+			userPermissions: [Flags.ManageMessages],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ReadMessageHistory, Flags.ManageMessages],
 			description: 'Clear a certain amount of messages.',
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,
@@ -29,16 +29,22 @@ class Clear extends Command {
 				{
 					name: 'number',
 					description: 'The number of messages to delete.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 1000,
 					required: true,
 				},
 				{
 					name: 'user',
-					description: 'The delete messages only from this user.',
-					type: 'STRING',
+					description: 'Only delete messages from this user.',
+					type: ApplicationCommandOptionType.User,
 					required: false,
+				},
+				{
+					name: 'flag',
+					description: 'Show how many messages were deleted.',
+					type: ApplicationCommandOptionType.String,
+					choices: ['-show'].map(i => ({ name: i, value: i })),
 				},
 			],
 		});
@@ -74,19 +80,19 @@ class Clear extends Command {
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
 			// create the buttons
-			const row = new MessageActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new MessageButton()
+					new ButtonBuilder()
 						.setCustomId('success')
 						.setLabel('Confirm')
-						.setStyle('SUCCESS')
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
 				)
 				.addComponents(
-					new MessageButton()
+					new ButtonBuilder()
 						.setCustomId('cancel')
 						.setLabel('Cancel')
-						.setStyle('DANGER')
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
 				);
 
@@ -181,19 +187,19 @@ class Clear extends Command {
 				.setDescription(guild.translate('moderation/clear:DESC', { NUM: amount }));
 
 			// create the buttons
-			const row = new MessageActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new MessageButton()
+					new ButtonBuilder()
 						.setCustomId('success')
 						.setLabel('Confirm')
-						.setStyle('SUCCESS')
+						.setStyle(ButtonStyle.Success)
 						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
 				)
 				.addComponents(
-					new MessageButton()
+					new ButtonBuilder()
 						.setCustomId('cancel')
 						.setLabel('Cancel')
-						.setStyle('DANGER')
+						.setStyle(ButtonStyle.Danger)
 						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
 				);
 
@@ -252,9 +258,7 @@ class Clear extends Command {
 			// Delete messages (less than 100)
 			await channel.messages.fetch({ limit: amount }).then(async messages => {
 				// Delete user messages
-				if (member) {
-					messages = messages.filter((m) => m.author.id == member[0].user.id);
-				}
+				if (member) messages = messages.filter((m) => m.author.id == member[0].user.id);
 
 				// delete the message
 				await channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));

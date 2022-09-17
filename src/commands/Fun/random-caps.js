@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Flip command
@@ -14,7 +15,7 @@ class RandomCaps extends Command {
 		super(bot, {
 			name: 'random-caps',
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Generate a random caps',
 			usage: 'random-caps <string>',
 			cooldown: 1000,
@@ -22,7 +23,8 @@ class RandomCaps extends Command {
 			options: [{
 				name: 'text',
 				description: 'Text for random caps',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
+				maxLength: 2000,
 				required: true,
 			}],
 		});
@@ -37,7 +39,7 @@ class RandomCaps extends Command {
 	async run(bot, message) {
 		const text = message.args.join(' '),
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
-		message.channel.send(rndCaps);
+		message.channel.send({ content: rndCaps });
 	}
 
 	/**
@@ -52,7 +54,7 @@ class RandomCaps extends Command {
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 
 		// send result
-		return interaction.reply({ content: `${rndCaps}` });
+		return interaction.reply({ content: rndCaps });
 	}
 }
 

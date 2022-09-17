@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
@@ -38,37 +38,39 @@ class QueueEnd extends Event {
 			} catch (err) {
 				return channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 10000 }));
 			}
-			// Workout what to do with the results
-			if (res.loadType == 'NO_MATCHES') {
+
+			switch (res.loadType) {
+				case 'NO_MATCHES':
 				// An error occured or couldn't find the track
-				if (!player.queue.current) player.destroy();
-				return channel.error('music/play:NO_SONG');
-
-			} else if (res.loadType == 'PLAYLIST_LOADED') {
+					if (!player.queue.current) player.destroy();
+					return channel.error('music/play:NO_SONG');
+				case 'PLAYLIST_LOADED': {
 				// Connect to voice channel if not already
-				if (player.state !== 'CONNECTED') player.connect();
+					if (player.state !== 'CONNECTED') player.connect();
 
-				// Show how many songs have been added
-				const embed = new Embed(bot, guild)
-					.setColor(guild.members.cache.get(requester.id)?.displayHexColor)
-					.setDescription(guild.translate('music/play:QUEUED', { NUM: res.tracks.length }));
-				channel.send({ embeds: [embed] });
-
-				// Add songs to queue and then pLay the song(s) if not already
-				player.queue.add(res.tracks);
-				if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-			} else {
-				// add track to queue and play
-				if (player.state !== 'CONNECTED') player.connect();
-				player.queue.add(res.tracks[0]);
-				if (!player.playing && !player.paused && !player.queue.size) {
-					player.play();
-				} else {
+					// Show how many songs have been added
 					const embed = new Embed(bot, guild)
 						.setColor(guild.members.cache.get(requester.id)?.displayHexColor)
-						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+						.setDescription(guild.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 					channel.send({ embeds: [embed] });
+
+					// Add songs to queue and then pLay the song(s) if not already
+					player.queue.add(res.tracks);
+					if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+					break;
 				}
+				default:
+				// add track to queue and play
+					if (player.state !== 'CONNECTED') player.connect();
+					player.queue.add(res.tracks[0]);
+					if (!player.playing && !player.paused && !player.queue.size) {
+						player.play();
+					} else {
+						const embed = new Embed(bot, guild)
+							.setColor(guild.members.cache.get(requester.id)?.displayHexColor)
+							.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+						channel.send({ embeds: [embed] });
+					}
 			}
 		} else {
 			// When the queue has finished
@@ -77,7 +79,7 @@ class QueueEnd extends Event {
 				// Don't leave channel if 24/7 mode is active
 				if (player.twentyFourSeven) return;
 				const vcName = bot.channels.cache.get(player.voiceChannel)?.name ?? 'unknown';
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:INACTIVE', { VC: vcName }));
 
 				bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));

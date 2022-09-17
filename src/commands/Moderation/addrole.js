@@ -1,5 +1,6 @@
 // Dependencies
 const fs = require('fs'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class AddRole extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['createrole'],
-			userPermissions: ['MANAGE_ROLES'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.ManageRoles],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageRoles],
 			description: 'Adds a new role to the server',
 			usage: 'addrole <role name> [hex color] [hoist]',
 			cooldown: 5000,
@@ -28,20 +29,21 @@ class AddRole extends Command {
 				{
 					name: 'name',
 					description: 'Name of the new roll.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 100,
 					required: true,
 				},
 				{
 					name: 'colour',
 					description: 'colour of the new role',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 					autocomplete: true,
 				},
 				{
 					name: 'hoist',
 					description: 'Should the role show seperately.',
-					type: 'BOOLEAN',
+					type: ApplicationCommandOptionType.Boolean,
 					required: true,
 				},
 			],
@@ -104,9 +106,6 @@ class AddRole extends Command {
 			name = args.get('name').value,
 			color = args.get('colour').value,
 			hoist = args.get('hoist').value;
-
-		// Max character length of 100 for role name
-		if (name >= 100) return interaction.reply({ embeds: [channel.success('moderation/addrole:MAX_NAME', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
 
 		// Make sure there isn't already the max number of roles in the guilds
 		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.success('moderation/addrole:MAX_ROLES', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));

@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class Instagram extends Command {
 			name: 'instagram',
 			dirname: __dirname,
 			aliases: ['insta'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on an Instagram account.',
 			usage: 'instagram <user>',
 			cooldown: 3000,
@@ -26,7 +27,7 @@ class Instagram extends Command {
 			options: [{
 				name: 'username',
 				description: 'account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});

@@ -2,6 +2,7 @@
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ time: { getReadableTime } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +20,7 @@ class PCreate extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-create'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a playlist',
 			usage: 'p-create <playlist name> <search query/link>',
 			cooldown: 3000,
@@ -34,7 +35,6 @@ class PCreate extends Command {
  	 * @readonly
   */
 	async run(bot, message, settings) {
-
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
 		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
@@ -151,6 +151,18 @@ class PCreate extends Command {
 			msg.delete();
 			return message.channel.error('music/p-create:NO_SONG');
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 

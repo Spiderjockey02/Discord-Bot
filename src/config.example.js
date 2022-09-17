@@ -1,3 +1,5 @@
+const { Colors } = require('discord.js');
+
 const config = {
 	ownerID: ['YourAccountID'],
 	token: 'YourBotToken',
@@ -57,7 +59,7 @@ const config = {
 	// URL to mongodb
 	MongoDBURl: 'mongodb://link',
 	// embed colour
-	embedColor: 'RANDOM',
+	embedColor: Colors.Default,
 	// This will spam your console if you enable this but will help with bug fixing
 	debug: false,
 };

@@ -1,6 +1,7 @@
 // Dependencies
 const	{ Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class PHcomment extends Command {
 			name: 'phcomment',
 			dirname: __dirname,
 			aliases: ['ph', 'ph-comment'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a fake Pornhub comment.',
 			usage: 'phcomment [user] <text>',
 			cooldown: 5000,
@@ -26,12 +27,13 @@ class PHcomment extends Command {
 			options: [{
 				name: 'user',
 				description: 'User who made comment',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: true,
 			}, {
 				name: 'text',
 				description: 'comment content',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
+				maxLength: 71,
 				required: true,
 			}],
 		});
@@ -86,15 +88,12 @@ class PHcomment extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user').value);
-		const text = args.get('text').value;
-		const channel = guild.channels.cache.get(interaction.channelId);
+		const member = guild.members.cache.get(args.get('user').value),
+			text = args.get('text').value,
+			channel = guild.channels.cache.get(interaction.channelId);
 
-		// make sure the text isn't longer than 80 characters
-		if (text.length >= 71) return interaction.reply({ embeds: [channel.error('image/phcomment:TOO_LONG', {}, true)], ephemeral: true });
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=phcomment&username=${member.user.username}&image=${member.user.displayAvatarURL({ format: 'png', size: 512 })}&text=${text}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)

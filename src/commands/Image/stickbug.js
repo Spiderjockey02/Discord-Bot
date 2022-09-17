@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageAttachment } = require('discord.js'),
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	fetch = require('node-fetch'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Stickbug extends Command {
 			name: 'stickbug',
 			dirname: __dirname,
 			aliases: ['stick-bug'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
 			description: 'Create a stickbug meme.',
 			usage: 'stickbug [file]',
 			cooldown: 5000,
@@ -26,7 +26,7 @@ class Stickbug extends Command {
 			options: [{
 				name: 'user',
 				description: 'User\'s avatar to stickbug.',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			}],
 		});
@@ -52,7 +52,7 @@ class Stickbug extends Command {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${files[0]}`)).then(res => res.json());
 
 			// send image in embed
-			const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
+			const attachment = new AttachmentBuilder(json.message, { name: 'stickbug.mp4' });
 			await message.channel.send({ files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
@@ -71,13 +71,13 @@ class Stickbug extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelId);
-		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {	EMOJI: bot.customEmojis['loading'] }) });
 		try {
 			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=stickbug&url=${member.user.displayAvatarURL({ format: 'png', size: 1024 })}`)).then(res => res.json());
-			const attachment = new MessageAttachment(json.message, 'stickbug.mp4');
+			const attachment = new AttachmentBuilder(json.message, { name: 'stickbug.mp4' });
 
 			interaction.editReply({ content: ' ', files: [attachment] });
 		} catch(err) {

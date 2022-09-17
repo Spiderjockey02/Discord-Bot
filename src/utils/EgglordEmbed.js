@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 /**
  * EgglordEmbed
  * @extends {MessageEmbed}
 */
-class EgglordEmbed extends MessageEmbed {
+class EgglordEmbed extends EmbedBuilder {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {?guild} guild The guild of which the embed will be sent to
@@ -21,7 +21,7 @@ class EgglordEmbed extends MessageEmbed {
 	// Language translator for title
 	setTitle(key, args) {
 		const language = this.guild?.settings.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
-		this.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
+		this.data.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
 		return this;
 	}
 }

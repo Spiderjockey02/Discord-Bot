@@ -1,5 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Pause extends Command {
 			name: 'pause',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Pauses the music.',
 			usage: 'pause',
 			cooldown: 3000,

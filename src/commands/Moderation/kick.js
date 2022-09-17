@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,8 +17,8 @@ class Kick extends Command {
 			name: 'kick',
 			guildOnly: true,
 			dirname: __dirname,
-			userPermissions: ['KICK_MEMBERS'],
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS', 'KICK_MEMBERS'],
+			userPermissions: [Flags.KickMembers],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.KickMembers],
 			description: 'Kick a user.',
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,
@@ -27,13 +28,13 @@ class Kick extends Command {
 				{
 					name: 'user',
 					description: 'The user to kick.',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 				{
 					name: 'reason',
 					description: 'The reason to kick user.',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: false,
 				},
 			],
@@ -67,7 +68,7 @@ class Kick extends Command {
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.me.roles.highest) >= 0) {
+		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			return message.channel.error('moderation/kick:TOO_POWERFUL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
@@ -113,7 +114,7 @@ class Kick extends Command {
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', null, true)] });
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.me.roles.highest) >= 0) {
+		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			return interaction.reply({ embeds: [channel.error('moderation/kick:TOO_POWERFUL', null, true)] });
 		}
 

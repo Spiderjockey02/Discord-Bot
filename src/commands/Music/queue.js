@@ -1,7 +1,6 @@
 // Dependencies
-const { paginate } = require('../../utils'),
-	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime } } = require('../../utils'),
+const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +18,7 @@ class Queue extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['que'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
 			description: 'Displays the queue.',
 			usage: 'queue [pageNumber]',
 			cooldown: 3000,
@@ -28,7 +27,7 @@ class Queue extends Command {
 			options: [{
 				name: 'page',
 				description: 'The page number.',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				required: false,
 			}],
 		});

@@ -1,5 +1,6 @@
 // Dependencies
-const	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	Command = require('../../structures/Command.js');
 
 /**
  * Giveaway pause command
@@ -16,18 +17,18 @@ class GiveawayPause extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-pause', 'gpause'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Pause a giveaway',
 			usage: 'g-pause <messageID>',
 			cooldown: 2000,
 			examples: ['g-pause 818821436255895612'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 			],

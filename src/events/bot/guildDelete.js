@@ -1,6 +1,6 @@
 // Dependencies
 const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = require('../../database/models'),
-	{ MessageEmbed, MessageAttachment } = require('discord.js'),
+	{ ActivityType, EmbedBuilder, AttachmentBuilder } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Event = require('../../structures/Event');
 
@@ -30,11 +30,11 @@ class GuildDelete extends Event {
 		// Send message to channel that bot has left a server
 		let attachment;
 		try {
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle(`[GUILD LEAVE] ${guild.name}`);
 			if (guild.icon == null) {
 				const icon = await Canvas.guildIcon(guild.name ?? 'undefined', 128);
-				attachment = new MessageAttachment(icon, 'guildicon.png');
+				attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
 				embed.setImage('attachment://guildicon.png');
 			} else {
 				embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
@@ -93,7 +93,7 @@ class GuildDelete extends Event {
 		}
 
 		// update bot's activity
-		bot.SetActivity('WATCHING', [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
+		bot.SetActivity(ActivityType.Watching, [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 	}
 }
 

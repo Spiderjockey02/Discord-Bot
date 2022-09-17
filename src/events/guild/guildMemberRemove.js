@@ -41,7 +41,7 @@ class GuildMemberRemove extends Event {
 				.setFooter({ text: `ID: ${member.id}` })
 				.setThumbnail(member.user.displayAvatarURL())
 				.setAuthor({ name: 'User left:', iconURL: member.user.displayAvatarURL() })
-				.addField('Joined at:', member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)`)
+				.addFields({ name: 'Joined at:', value: member.partial ? 'Unknown' : `${dateFormat(member.joinedAt, 'ddd dd/mm/yyyy')} (${Math.round((new Date() - member.joinedAt) / 86400000)} day(s) ago)` })
 				.setTimestamp();
 
 			// Find channel and send message

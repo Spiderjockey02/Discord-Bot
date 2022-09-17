@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,8 +18,8 @@ class TicketSetup extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-setup', 'ticket-setup'],
-			userPermissions: ['MANAGE_CHANNELS'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
+			userPermissions: [Flags.ManageChannels],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageChannels],
 			description: 'Setups the ticket plugin',
 			usage: 'ticket-setup',
 			cooldown: 3000,

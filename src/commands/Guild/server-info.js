@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +19,7 @@ class ServerInfo extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['serverinfo', 'guildinfo'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on the server.',
 			usage: 'server-info',
 			cooldown: 2000,

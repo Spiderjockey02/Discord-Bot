@@ -3,6 +3,7 @@ const { Embed } = require('../../utils'),
 	R6API = require('r6api.js').default,
 	config = require('../../config.js'),
 	{ findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys.rainbow.email, password: config.api_keys.rainbow.password }),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
@@ -21,7 +22,7 @@ class Rainbow6Siege extends Command {
 		super(bot, {
 			name: 'r6',
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets statistics on a Rainbow 6 Account.',
 			usage: 'r6 <user> [pc / xbox / ps4] [eu / na / as]',
 			cooldown: 3000,
@@ -30,20 +31,20 @@ class Rainbow6Siege extends Command {
 			options: [{
 				name: 'username',
 				description: 'account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 			{
 				name: 'platform',
 				description: 'Device of user.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: [...['pc', 'xbox', 'ps4'].map(i => ({ name: i, value: i }))],
 				required: false,
 			},
 			{
 				name: 'region',
 				description: 'Region of user.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: [...['eu', 'na', 'as'].map(i => ({ name: i, value: i }))],
 				required: false,
 			}],
@@ -181,7 +182,7 @@ class Rainbow6Siege extends Command {
 		region = Object.keys(regions).find(key => regions[key] === region).toLowerCase();
 
 		return new Embed(bot, guild)
-			.setAuthor({ name: player.username, iconURL: bot.user.displayAvatarURL })
+			.setAuthor({ name: player.username, iconURL: bot.user.displayAvatarURL() })
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.icon)
 			.addField(guild.translate('searcher/r6:GENERAL'), guild.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(guild.settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(guild.settings.Language) }))

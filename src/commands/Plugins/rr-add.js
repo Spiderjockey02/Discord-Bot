@@ -1,6 +1,7 @@
 // Dependencies
 const Command = require('../../structures/Command.js'),
 	{ ReactionRoleSchema } = require('../../database/models'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils');
 
 /**
@@ -18,8 +19,8 @@ class ReactionRoleAdd extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['reactionroles-add'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_ROLES'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions, Flags.ManageRoles],
 			description: 'Create a reaction role',
 			usage: 'rr-add [channelID / message link]',
 			cooldown: 5000,
@@ -62,7 +63,6 @@ class ReactionRoleAdd extends Command {
 				const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
 				let channel, msgLink;
 				if (patt.test(message.args[0])) {
-					console.log('test');
 					const stuff = message.args[0].split('/');
 					msgLink = await bot.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
 					if (!msgLink) return message.channel.error('Incorrect message link.');
@@ -74,11 +74,11 @@ class ReactionRoleAdd extends Command {
 				// Make sure channel is a text channel and permission
 				if (!(channel || channel.isText() || channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))) {
 					return message.channel.error('misc:MISSING_CHANNEL');
-				} else if (!channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:SEND_MESSAGES') }).then(m => m.timedDelete({ timeout: 10000 }));
-				} else if (!channel.permissionsFor(bot.user).has('EMBED_LINKS')) {
+				} else if (!channel.permissionsFor(bot.user).has(Flags.SendMessages)) {
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:Flags.SendMessages') }).then(m => m.timedDelete({ timeout: 10000 }));
+				} else if (!channel.permissionsFor(bot.user).has(Flags.EmbedLinks)) {
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:EMBED_LINKS') }).then(m => m.timedDelete({ timeout: 10000 }));
-				} else if (!channel.permissionsFor(bot.user).has('ADD_REACTIONS')) {
+				} else if (!channel.permissionsFor(bot.user).has(Flags.AddReactions)) {
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:ADD_REACTIONS') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 
@@ -110,7 +110,7 @@ class ReactionRoleAdd extends Command {
 				let roles =	roleMsgs.first().getRole();
 				// Check role hierarchy to make sure bot can give user those roles or if the role is managed by integration (a bot role etc)
 				roles = roles.filter(r => {
-					return !(r.comparePositionTo(message.guild.me.roles.highest) >= 0 || r.managed);
+					return !(r.comparePositionTo(message.guild.members.me.roles.highest) >= 0 || r.managed);
 				});
 				// if no roles then stop reaction role creation
 				if (!roles[0]) return message.channel.send('No roles entered');

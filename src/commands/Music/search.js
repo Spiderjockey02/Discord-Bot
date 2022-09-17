@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +17,7 @@ class Search extends Command {
 			name: 'search',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'CONNECT', 'SPEAK'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Connect, Flags.Speak],
 			description: 'Searches for a song.',
 			usage: 'search <link / song name>',
 			cooldown: 3000,
@@ -25,7 +26,7 @@ class Search extends Command {
 			options: [{
 				name: 'track',
 				description: 'track to search for.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 				autocomplete: true,
 			}],
@@ -47,8 +48,8 @@ class Search extends Command {
 			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
-		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.me).has('MOVE_MEMBERS')) {
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
 			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
 		}
 
@@ -158,8 +159,8 @@ class Search extends Command {
 			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', { }, true)] });
 		}
 
-		// Check if VC is full and bot can't join doesn't have (MANAGE_CHANNELS)
-		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.me).has('MOVE_MEMBERS')) {
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has('MOVE_MEMBERS')) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:VC_FULL', { }, true)] });
 		}
 

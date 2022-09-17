@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 // access token to interact with twitch API
@@ -19,7 +20,7 @@ class Twitch extends Command {
 		super(bot, {
 			name: 'twitch',
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a twitch account.',
 			usage: 'twitch <user>',
 			cooldown: 3000,
@@ -28,7 +29,7 @@ class Twitch extends Command {
 			options: [{
 				name: 'username',
 				description: 'Account name',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
@@ -60,12 +61,16 @@ class Twitch extends Command {
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
 					.setThumbnail(twitchUser.profile_image_url)
 					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
-					.addField(message.translate('searcher/twitch:BIO'), twitchUser.description || message.translate('searcher/twitch:NO_BIO'), true)
-					.addField(message.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(settings.Language), true)
-					.addField(message.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(settings.Language)), true);
+					.addFields(
+						{ name: message.translate('searcher/twitch:BIO'), value: twitchUser.description || message.translate('searcher/twitch:NO_BIO'), inline: true },
+						{ name: message.translate('searcher/twitch:TOTAL'), value: twitchUser.view_count.toLocaleString(settings.Language), inline: true },
+						{ name: message.translate('searcher/twitch:FOLLOWERS'), value: await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(settings.Language)), inline: true },
+					);
 				if (stream) {
 					embed
-						.addField('\u200B', message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
+						.addFields(
+							{ name: '\u200B', value: message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }) },
+						)
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
 				message.channel.send({ embeds: [embed] });
@@ -102,12 +107,16 @@ class Twitch extends Command {
 					.setURL(`https://twitch.tv/${twitchUser.login}`)
 					.setThumbnail(twitchUser.profile_image_url)
 					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
-					.addField(guild.translate('searcher/twitch:BIO'), twitchUser.description || guild.translate('searcher/twitch:NO_BIO'), true)
-					.addField(guild.translate('searcher/twitch:TOTAL'), twitchUser.view_count.toLocaleString(guild.settings.Language), true)
-					.addField(guild.translate('searcher/twitch:FOLLOWERS'), await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(guild.settings.Language)), true);
+					.addFields(
+						{ name: guild.translate('searcher/twitch:BIO'), value: twitchUser.description || guild.translate('searcher/twitch:NO_BIO'), inline: true },
+						{ name: guild.translate('searcher/twitch:TOTAL'), value: twitchUser.view_count.toLocaleString(guild.settings.Language), inline: true },
+						{ name: guild.translate('searcher/twitch:FOLLOWERS'), value: await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(guild.settings.Language)), inline: true },
+					);
 				if (stream) {
 					embed
-						.addField('\u200B', guild.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }))
+						.addFields(
+							{ name: '\u200B', value: guild.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }) },
+						)
 						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 				}
 				interaction.reply({ embeds: [embed] });

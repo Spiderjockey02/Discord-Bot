@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -15,7 +16,7 @@ class Help extends Command {
 		super(bot, {
 			name: 'help',
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends information about all the commands that I can do.',
 			usage: 'help [command]',
 			cooldown: 2000,
@@ -24,7 +25,7 @@ class Help extends Command {
 			options: [{
 				name: 'command',
 				description: 'Name of command to look up.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: false,
 				autocomplete: true,
 			}],
@@ -94,7 +95,7 @@ class Help extends Command {
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
 					if (category == 'NSFW' && !channel.nsfw) return;
-					embed.addField(`${category} [**${length}**]`, `${commands}.`);
+					embed.addFields({ name: `${category} [**${length}**]`, value: `${commands}.` });
 				});
 			// send message
 			return embed;

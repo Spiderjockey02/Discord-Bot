@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageEmbed } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,7 @@ class Shuffle extends Command {
 			name: 'shuffle',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Shuffles the playlist.',
 			usage: 'shuffle',
 			cooldown: 3000,
@@ -39,7 +39,7 @@ class Shuffle extends Command {
 		// shuffle queue
 		const player = bot.manager?.players.get(message.guild.id);
 		player.queue.shuffle();
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(message.member.displayHexColor)
 			.setDescription(message.translate('music/shuffle:DESC'));
 		message.channel.send({ embeds: [embed] });
@@ -63,7 +63,7 @@ class Shuffle extends Command {
 		// shuffle queue
 		const player = bot.manager?.players.get(member.guild.id);
 		player.queue.shuffle();
-		const embed = new MessageEmbed(bot, guild)
+		const embed = new EmbedBuilder()
 			.setColor(member.displayHexColor)
 			.setDescription(guild.translate('music/shuffle:DESC'));
 		interaction.reply({ embeds: [embed] });

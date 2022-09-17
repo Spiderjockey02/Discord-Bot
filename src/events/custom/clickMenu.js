@@ -65,7 +65,8 @@ class ClickMenu extends Event {
 				// translate message to server language
 				try {
 					const bar = await translate(message.content, { to: guild.settings.Language.split('-')[0] });
-					interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}` });
+					interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}`,
+						allowedMentions: { parse: [] } });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });

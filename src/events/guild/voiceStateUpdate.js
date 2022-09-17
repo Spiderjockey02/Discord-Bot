@@ -42,7 +42,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.serverDeaf ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL });
+					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 
@@ -53,7 +53,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.serverMute ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL });
+					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 
@@ -64,7 +64,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.streaming ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL });
+					.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 
@@ -89,7 +89,7 @@ class VoiceStateUpdate extends Event {
 		if (newState.id == bot.user.id && channel?.type == 'GUILD_STAGE_VOICE') {
 			if (!oldState.channelId) {
 				try {
-					await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));
+					await newState.guild.members.me.voice.setSuppressed(false).then(() => console.log(null));
 				} catch (err) {
 					player.pause(true);
 				}
@@ -107,15 +107,15 @@ class VoiceStateUpdate extends Event {
 
 		// Make sure the bot is in the voice channel that 'activated' the event
 		if (oldState.guild.members.cache.get(bot.user.id).voice.channelId === oldState.channelId) {
-			if (oldState.guild.me.voice?.channel && oldState.guild.me.voice.channel.members.filter(m => !m.user.bot).size === 0) {
-				const vcName = oldState.guild.me.voice.channel.name;
+			if (oldState.guild.members.me.voice?.channel && oldState.guild.members.me.voice.channel.members.filter(m => !m.user.bot).size === 0) {
+				const vcName = oldState.guild.members.me.voice.channel.name;
 				await bot.delay(180000);
 
 				// times up check if bot is still by themselves in VC (exluding bots)
-				const vcMembers = oldState.guild.me.voice.channel?.members.size;
+				const vcMembers = oldState.guild.members.me.voice.channel?.members.size;
 				if (!vcMembers || vcMembers === 1) {
 					const newPlayer = bot.manager?.players.get(newState.guild.id);
-					(newPlayer) ? player.destroy() : newState.guild.me.voice.disconnect();
+					(newPlayer) ? player.destroy() : newState.guild.members.me.voice.disconnect();
 					const embed = new Embed(bot, newState.guild)
 					// eslint-disable-next-line no-inline-comments
 						.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);

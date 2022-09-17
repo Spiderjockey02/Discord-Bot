@@ -1,5 +1,6 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +18,7 @@ class PRemove extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-remove'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'remove a song from the playlist',
 			usage: 'p-remove <playlist name> <position> [position]',
 			cooldown: 3000,

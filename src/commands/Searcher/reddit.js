@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -15,7 +16,7 @@ class Reddit extends Command {
 		super(bot, {
 			name: 'reddit',
 			dirname: __dirname,
-			botPermissions: [ 'SEND_MESSAGES', 'EMBED_LINKS'],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Send a random image from a chosen subreddit.',
 			usage: 'reddit <subreddit>',
 			cooldown: 3000,
@@ -24,13 +25,13 @@ class Reddit extends Command {
 			options: [{
 				name: 'subreddit',
 				description: 'Name of subreddit.',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 			{
 				name: 'flag',
 				description: '(H)ot, (N)ew or (T)op',
-				type: 'STRING',
+				type: ApplicationCommandOptionType.String,
 				choices: ['-h', '-n', '-t'].map(i => ({ name: i, value: i })),
 			}],
 		});

@@ -1,5 +1,6 @@
 // Dependencies
 const { time: { getTotalTime } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,30 +18,30 @@ class GiveawayEdit extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-edit', 'gedit'],
-			userPermissions: ['MANAGE_GUILD'],
-			botPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
+			userPermissions: [Flags.ManageGuild],
+			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit a giveaway.',
 			usage: 'g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>',
 			cooldown: 2000,
 			examples: ['g-edit 818821436255895612 2m 2 nitro', 'g-edit 818821436255895612 3h40m 5 nitro classic'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'id',
 					description: 'Message ID of the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: true,
 				},
 				{
 					name: 'time',
 					description: 'Extra time added to the giveaway.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					required: false,
 				},
 				{
 					name: 'winners',
 					description: 'New winner count.',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 10,
 					required: false,
@@ -48,7 +49,8 @@ class GiveawayEdit extends Command {
 				{
 					name: 'prize',
 					description: 'New prize',
-					type: 'NUMBER',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 256,
 					required: false,
 				},
 			],
