@@ -107,7 +107,7 @@ class Reddit extends Command {
 	 * @param {string} subreddit The subreddit to get a post from
 	 * @returns {embed}
 	*/
-	async fetchPost(bot, channel, subreddit, { type }) {
+	async fetchPost(bot, channel, subreddit, { type } = 'hot') {
 		let reddit;
 		try {
 			// Whether or not to remove NSFW content
