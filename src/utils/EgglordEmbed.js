@@ -21,7 +21,7 @@ class EgglordEmbed extends EmbedBuilder {
 	// Language translator for title
 	setTitle(key, args) {
 		const language = this.guild?.settings.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
-		this.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
+		this.data.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
 		return this;
 	}
 }
