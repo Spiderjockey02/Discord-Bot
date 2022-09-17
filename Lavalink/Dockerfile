@@ -1,4 +1,4 @@
-FROM openjdk
+FROM openjdk:oraclelinux8
 
 WORKDIR /opt/Lavalink
 
