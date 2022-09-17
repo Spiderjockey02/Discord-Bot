@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM openjdk
 
 WORKDIR /opt/Lavalink
 
