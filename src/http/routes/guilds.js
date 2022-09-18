@@ -1,6 +1,6 @@
 // Dependencies
 const express = require('express'),
-	{ Permissions } = require('discord.js'),
+	{ PermissionsBitField } = require('discord.js'),
 	router = express.Router();
 
 // Guild page
@@ -57,7 +57,7 @@ module.exports = function(bot) {
 				type: channel.type,
 				id: channel.id,
 				name: channel.name,
-				parentID: channel.parentID || null,
+				parentID: channel.parentId || null,
 			}));
 
 			// check for type query
@@ -65,22 +65,21 @@ module.exports = function(bot) {
 
 			// check for permission query
 			if (req.query.perms) {
-				const perms = new Permissions(BigInt(parseInt(req.query.perms)));
 				channels = channels.filter(channel => {
 					const ch = guild.channels.cache.get(channel.id);
-					return ch.permissionsFor(bot.user).has(perms) ? true : false;
+					return ch.permissionsFor(bot.user).has(BigInt(parseInt(req.query.perms))) ? true : false;
 				});
 			}
-
 
 			// check if any member are left
 			if (!channels[0]) {
 				res.status(400).json({ error: 'No channels found!' });
 			} else {
-				return res.status(200).json({ channels });
+				res.status(200).json({ channels });
 			}
+		} else {
+			res.status(400).json({ error: 'Guild not found!' });
 		}
-		res.status(400).json({ error: 'Guild not found!' });
 	});
 
 	return router;
