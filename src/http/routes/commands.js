@@ -24,7 +24,10 @@ module.exports = (bot) => {
 	// JSON view of all commands
 	router.get('/json', (req, res) => {
 
-		res.status(200).json([...bot.commands]);
+		res.status(200).json([...bot.commands.map(c => Object.assign(c, { conf: {
+			botPermissions: c.conf.botPermissions.map(i => Number(i)),
+			userPermissions: c.conf.userPermissions.map(i => Number(i)),
+		} }))]);
 	});
 
 	// Show information on a particular command
