@@ -101,6 +101,7 @@ class GiveawayStart extends Command {
 					winners: message.translate('giveaway/g-start:WINNERS'),
 					endedAt: message.translate('giveaway/g-start:END_AT'),
 					hostedBy: message.translate('giveaway/g-start:HOSTED'),
+					drawing: 'Drawing: {timestamp}',
 					units: {
 						seconds: message.translate('time:SECONDS', { amount: '' }).trim(),
 						minutes: message.translate('time:MINUTES', { amount: '' }).trim(),
@@ -152,6 +153,7 @@ class GiveawayStart extends Command {
 					winners: guild.translate('giveaway/g-start:WINNERS'),
 					endedAt: guild.translate('giveaway/g-start:END_AT'),
 					hostedBy: guild.translate('giveaway/g-start:HOSTED'),
+					drawing: 'Drawing: {timestamp}',
 					units: {
 						seconds: guild.translate('time:SECONDS', { amount: '' }).trim(),
 						minutes: guild.translate('time:MINUTES', { amount: '' }).trim(),
@@ -166,6 +168,7 @@ class GiveawayStart extends Command {
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
+
 }
 
 module.exports = GiveawayStart;

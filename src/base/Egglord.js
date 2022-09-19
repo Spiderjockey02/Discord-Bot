@@ -1,7 +1,7 @@
 // Dependencies
 const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	// GiveawaysManager = require('./giveaway/Manager'),
+	GiveawaysManager = require('./Manager'),
 	path = require('path'),
 	{ promisify } = require('util'),
 	AudioManager = require('./Audio-Manager'),
@@ -39,7 +39,6 @@ class Egglord extends Client {
 		 * The Giveaway manager
 		 * @type {GiveawaysManager}
 		*/
-		/*
 		this.giveawaysManager = new GiveawaysManager(this, {
 			storage: false,
 			forceUpdateEvery: 15000,
@@ -54,9 +53,14 @@ class Egglord extends Client {
 					threshold: 5000,
 					embedColor: '#FF0000',
 				},
+				pauseOptions: {
+					isPaused: false,
+					content: '⚠️ **THIS GIVEAWAY IS PAUSED !** ⚠️',
+					embedColor: '#FFFF00',
+					infiniteDurationText: '`Never`',
+				},
 			},
 		});
-		*/
 		/**
 		 * The command data
 		 * @type {Collection}

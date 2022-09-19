@@ -52,9 +52,8 @@ class GiveawayDelete extends Command {
 		// Delete the giveaway
 		const messageID = message.args[0];
 		try {
-			await bot.giveawaysManager.delete(messageID).then(() => {
-				message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
-			});
+			await bot.giveawaysManager.delete(messageID);
+			message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
 		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
 			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));

@@ -24,7 +24,7 @@ class Giveaway extends Command {
 			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
 			slash: true,
 			options: bot.commands.filter(c => c.help.category == 'Giveaway' && c.help.name !== 'giveaway').map(c => ({
-				name: c.help.name,
+				name: c.help.name.replace('g-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
 				options: c.conf.options,
