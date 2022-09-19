@@ -1,6 +1,5 @@
 // Dependencies
-const { InteractionType } = require('discord.js'),
-	Event = require('../../structures/Event');
+const Event = require('../../structures/Event');
 
 /**
  * Interaction create event
@@ -22,20 +21,17 @@ class InteractionCreate extends Event {
 	*/
 	async run(bot, interaction) {
 
-		// The interaction is a slash command or 'App'
-		if (interaction.type == InteractionType.ApplicationCommand) {
-			if (interaction.commandType == 1) {
-				return bot.emit('slashCreate', interaction);
-			} else if (interaction.commandType == 2) {
-				return bot.emit('clickMenu', interaction);
-			}
-		}
+		// Check if it's message context menu
+		if (interaction.isMessageContextMenuCommand() || interaction.isUserContextMenuCommand()) return bot.emit('clickMenu', interaction);
 
-		// The interaction is a button
-		if (interaction.type == InteractionType.MessageComponent) return bot.emit('clickButton', interaction);
+		// Check if it's autocomplete
+		if(interaction.isAutocomplete()) return bot.emit('autoComplete', interaction);
 
-		// the interaction is an autocomplete field
-		{if (interaction.type == InteractionType.ApplicationCommandAutocomplete) return bot.emit('autoComplete', interaction);}
+		// Check if it's a button
+		if (interaction.isButton()) return bot.emit('clickButton', interaction);
+
+		// Check if it's a slash command
+		if (interaction.isCommand()) return bot.emit('slashCreate', interaction);
 	}
 }
 

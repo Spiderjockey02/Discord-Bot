@@ -24,11 +24,11 @@ class Lavalink extends Command {
 			cooldown: 3000,
 			slash: true,
 			options: [{
-				name: 'track',
+				name: 'option',
 				description: 'The link or name of the track.',
 				type: ApplicationCommandOptionType.String,
+				choices: [...['list', 'add', 'remove'].map(i => ({ name: i, value: i }))],
 				required: true,
-				autocomplete: true,
 			}],
 		});
 	}
