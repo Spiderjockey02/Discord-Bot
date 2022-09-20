@@ -22,6 +22,7 @@ class TicketClose extends Command {
 			description: 'Closes the current ticket channel',
 			usage: 'ticket-close',
 			cooldown: 3000,
+			slash: false,
 		});
 	}
 
@@ -50,6 +51,35 @@ class TicketClose extends Command {
 			}
 		} else {
 			message.channel.error('ticket/ticket-close:NOT_TICKET').then(m => m.timedDelete({ timeout: 5000 }));
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction, { settings }) {
+		const channel = interaction.guild.channels.cache.get(interaction.channelId);
+
+		// will close the current ticket channel
+		const regEx = /ticket-\d{18}/g;
+		if (regEx.test(channel.name)) {
+			try {
+				if (interaction.member.roles.cache.get(settings.TicketSupportRole) || interaction.member.permissionsIn(channel).has(Flags.ManageChannels)) {
+					// delete channel
+					await interaction.channel.delete();
+				} else {
+					interaction.reply({ embeds: [channel.error('ticket/ticket-close:NOT_SUPPORT', {}, true)] });
+				}
+			} catch (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			}
+		} else {
+			interaction.reply({ embeds: [channel.error('ticket/ticket-close:NOT_TICKET', { }, true)], ephemeral: true });
 		}
 	}
 }

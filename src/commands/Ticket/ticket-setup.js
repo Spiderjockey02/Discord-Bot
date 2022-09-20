@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -24,6 +24,22 @@ class TicketSetup extends Command {
 			usage: 'ticket-setup',
 			cooldown: 3000,
 			examples: ['t-setup category 783024613037703237', 't-setup role 766029837017153576'],
+			slash: false,
+			options: [
+				{
+					name: 'option',
+					description: 'option',
+					type: ApplicationCommandOptionType.String,
+					choices: [...['category', 'role'].map(i => ({ name: i, value: i }))],
+					required: true,
+				},
+				{
+					name: 'id',
+					description: 'id of role or category',
+					type: ApplicationCommandOptionType.Integer,
+					require: true,
+				},
+			],
 		});
 	}
 
@@ -69,6 +85,51 @@ class TicketSetup extends Command {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
 			}
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const option = args.get('option').value,
+			id = args.get('id').value;
+		let channel = guild.channels.cache.get(interaction.channelId);
+
+		switch (option) {
+			case 'category':
+			// update category channel
+				try {
+					channel = guild.channels.cache.get(id);
+					if (!channel || channel.type != 'GUILD_CATEGORY') return interaction.reply({ content: guild.translate('ticket/ticket-setup:NOT_CATEGORY') });
+
+					// update database
+					await guild.updateGuild({ TicketCategory: id });
+					interaction.reply({ content: guild.translate('ticket/ticket-setup:UPDATED_CATEGORY', { NAME: channel.name }) });
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+				}
+				break;
+			case 'role':
+			// update support role
+				try {
+					const supportRole = guild.roles.cache.get(id);
+					if (!supportRole) return interaction.reply({ content:guild.translate('ticket/ticket-setup:NOT_ROLE') });
+
+					// update database
+					await guild.updateGuild({ TicketSupportRole: id });
+					interaction.reply({ content: guild.translate('ticket/ticket-setup:UPDATED_ROLE').replace('{ROLE}', supportRole) });
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+				}
+				break;
 		}
 	}
 }
