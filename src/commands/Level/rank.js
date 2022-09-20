@@ -103,7 +103,7 @@ class Rank extends Command {
 	*/
 	async createRankCard(bot, guild, author, target, channel) {
 		// make sure it's not a bot
-		if (target.user.bot) return channel.error('level/rank:NO_BOTS', { ERROR:null }, true);
+		if (target.user.bot) return channel.error('level/rank:NO_BOTS', { }, true);
 
 		// sort and find user
 		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
@@ -115,19 +115,12 @@ class Rank extends Command {
 			return channel.error('level/rank:MEMBER_MESSAGE', { ERROR: null }, true);
 		}
 
-		let rankScore;
-		for (let i = 0; i < res.length; i++) {
-			if (res[i].userID == target.user.id) rankScore = i;
-		}
-
-		// Fetch setAvatar
-		console.log(target.user.displayAvatarURL({ extension: 'png', forceStatic: true, size: 1024 }));
-		const avatarBuffer = await axios.get(target.user.displayAvatarURL({ extension: 'png', forceStatic: true, size: 1024 }), { responseType: 'arraybuffer' });
-		console.log(avatarBuffer.data);
+		// Get rank
+		const rankScore = res.indexOf(res.find(i => i.userID == target.user.id));
 
 		// create rank card
 		const rankcard = new rank()
-			.setAvatar(avatarBuffer.data)
+			.setAvatar(target.user.displayAvatarURL({ extension: 'png', forceStatic: true, size: 1024 }))
 			.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setLevel(user.Level)
 			.setRank(rankScore + 1)

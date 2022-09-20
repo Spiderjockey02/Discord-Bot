@@ -25,7 +25,7 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 	error: {
 		value: function(key, args, returnValue) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
+				const emoji = this.permissionsFor(this.client.user).has(Flags.UseExternalEmojis) ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
