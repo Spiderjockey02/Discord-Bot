@@ -2,6 +2,7 @@
 const	translate = require('@vitalets/google-translate-api'),
 	optiic = new (require('optiic')),
 	{ Collection } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
 
 /**
@@ -24,8 +25,7 @@ class ClickMenu extends Event {
 	*/
 	async run(bot, interaction) {
 		const guild = bot.guilds.cache.get(interaction.guildId),
-			channel = guild.channels.cache.get(interaction.channelId),
-			member = guild.members.cache.get(interaction.user.id);
+			channel = bot.channels.cache.get(interaction.channelId);
 
 		// Check to see if user is in 'cooldown'
 		if (!bot.cooldowns.has(interaction.commandName)) {
@@ -34,10 +34,10 @@ class ClickMenu extends Event {
 
 		const now = Date.now(),
 			timestamps = bot.cooldowns.get(interaction.commandName),
-			cooldownAmount = (member.user.premium ? 2250 : 3000);
+			cooldownAmount = (interaction.user.premium ? 2250 : 3000);
 
-		if (timestamps.has(member.id)) {
-			const expirationTime = timestamps.get(member.id) + cooldownAmount;
+		if (timestamps.has(interaction.user.id)) {
+			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
@@ -46,9 +46,8 @@ class ClickMenu extends Event {
 		}
 
 		// Run context menu
-		if (bot.config.debug) bot.logger.debug(`Context menu: ${interaction.commandName} was ran by ${member.user.username}.`);
-		setTimeout(() => timestamps.delete(member.id), cooldownAmount);
-
+		if (bot.config.debug) bot.logger.debug(`Context menu: ${interaction.commandName} was ran by ${interaction.user.username}.`);
+		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		switch (interaction.commandName) {
 			case 'Avatar':
@@ -58,7 +57,10 @@ class ClickMenu extends Event {
 				if (interaction.commandName == 'Userinfo') bot.commands.get('user-info').reply(bot, interaction, channel, interaction.targetId);
 				break;
 			case 'Translate': {
-			// fetch message and check if message has content
+				// Only allow this to show in server channels
+				if (channel.type == ChannelType.DM) return interaction.reply({ embeds: [channel.error('events/message:GUILD_ONLY', {}, true)], ephemeral: true });
+
+				// fetch message and check if message has content
 				const message = await channel.messages.fetch(interaction.targetId);
 				if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_CONTENT', {}, true)], ephemeral: true });
 
@@ -93,6 +95,9 @@ class ClickMenu extends Event {
 				break;
 			}
 			case 'Add to Queue': {
+				// Only allow this to show in server channels
+				if (channel.type == ChannelType.DM) return interaction.reply({ embeds: [channel.error('events/message:GUILD_ONLY', {}, true)], ephemeral: true });
+
 				const message = await channel.messages.fetch(interaction.targetId);
 				const args = new Map().set('track', { value: message.content });
 				bot.commands.get('play').callback(bot, interaction, guild, args);
@@ -109,7 +114,7 @@ class ClickMenu extends Event {
 			default:
 				interaction.reply({ content: 'Something went wrong' });
 		}
-		timestamps.set(member.id, now);
+		timestamps.set(interaction.user.id, now);
 	}
 }
 

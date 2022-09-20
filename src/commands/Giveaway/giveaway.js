@@ -18,10 +18,10 @@ class Giveaway extends Command {
 			dirname: __dirname,
 			userPermissions: [Flags.ManageGuild],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
-			description: 'Start a giveaway',
-			usage: 'g-start <time> <Number of winners> <prize>',
+			description: 'Interact with the giveaway commands',
+			usage: 'giveaway start <time> <Number of winners> <prize>',
 			cooldown: 30000,
-			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
+			examples: ['giveaway start 1m 1 nitro', 'giveaway reroll 1021725995901911080'],
 			slash: true,
 			options: bot.commands.filter(c => c.help.category == 'Giveaway' && c.help.name !== 'giveaway').map(c => ({
 				name: c.help.name.replace('g-', ''),

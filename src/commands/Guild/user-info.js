@@ -1,7 +1,8 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -74,10 +75,16 @@ class UserInfo extends Command {
 	 * @readonly
 	*/
 	reply(bot, interaction, channel, userID) {
-		const member = channel.guild.members.cache.get(userID);
-		const embed = this.createEmbed(bot, channel.guild, member);
+		let member;
+		if (channel.type == ChannelType.DM) {
+			member = new GuildMember(bot, bot.users.cache.get(userID));
+			member._patch({ user: bot.users.cache.get(userID) });
+		} else {
+			member = channel.guild.members.cache.get(userID);
+		}
 
 		// send embed
+		const embed = this.createEmbed(bot, false, member);
 		return interaction.reply({ embeds: [embed] });
 	}
 
@@ -89,22 +96,28 @@ class UserInfo extends Command {
 	 * @returns {embed}
 	*/
 	createEmbed(bot, guild, member) {
-		const status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
-		return new Embed(bot, guild)
+		let status = 'None';
+		if (member.guild) {
+			status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
+		}
+		const embed = new Embed(bot, guild)
 			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: guild.translate('guild/user-info:USERNAME'), value: member.user.username, inline: true },
-				{ name: guild.translate('guild/user-info:DISCRIM'), value: `${member.user.discriminator}`, inline: true },
-				{ name: guild.translate('guild/user-info:ROBOT'), value: guild.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`), inline: true },
-				{ name: guild.translate('guild/user-info:CREATE'), value: moment(member.user.createdAt).format('lll'), inline: true },
-				{ name: guild.translate('guild/user-info:STATUS'), value: `\`${status}\``, inline: true },
-				{ name: guild.translate('guild/user-info:ROLE'), value: `${member.roles.highest}`, inline: true },
-				{ name: guild.translate('guild/user-info:JOIN'), value: moment(member.joinedAt).format('lll'), inline: true },
-				{ name: guild.translate('guild/user-info:NICK'), value: member.nickname != null ? member.nickname : guild.translate('misc:NONE'), inline: true },
-				{ name: guild.translate('guild/user-info:ROLES'), value: member.roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) },
+				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.username, inline: true },
+				{ name: bot.translate('guild/user-info:DISCRIM', {}, guild.settings?.Language), value: `${member.user.discriminator}`, inline: true },
+				{ name: bot.translate('guild/user-info:ROBOT', {}, guild.settings?.Language), value: bot.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`, {}, guild.settings?.Language), inline: true },
+				{ name: bot.translate('guild/user-info:CREATE', {}, guild.settings?.Language), value: moment(member.user.createdAt).format('lll'), inline: true },
+				{ name: bot.translate('guild/user-info:STATUS', {}, guild.settings?.Language), value: `\`${status}\``, inline: true },
 			);
+		if (member.guild) {
+			embed.addFields({ name: bot.translate('guild/user-info:ROLE', {}, guild.settings?.Language), value: `${member.roles.highest}`, inline: true },
+				{ name: bot.translate('guild/user-info:JOIN', {}, guild.settings?.Language), value: moment(member.joinedAt).format('lll'), inline: true },
+				{ name: bot.translate('guild/user-info:NICK', {}, guild.settings?.Language), value: member.nickname != null ? member.nickname : bot.translate('misc:NONE', {}, guild.settings?.Language), inline: true },
+				{ name: bot.translate('guild/user-info:ROLES', {}, guild.settings?.Language), value: member.roles.cache.sort((a, b) => b.rawPosition - a.rawPosition).reduce((a, b) => `${a}, ${b}`) });
+		}
+		return embed;
 	}
 }
 

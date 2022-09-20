@@ -15,7 +15,7 @@ const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, Pe
 class Egglord extends Client {
 	constructor() {
 		super({
-			partials: [Partials.GUILD_MEMBER, Partials.USER, Partials.MESSAGE, Partials.CHANNEL, Partials.REACTION, Partials.GUILD_SCHEDULED_EVENT],
+			partials: [Partials.GuildMember, Partials.User, Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildScheduledEvent],
 			intents: [FLAGS.Guilds, FLAGS.GuildMembers, FLAGS.GuildBans, FLAGS.GuildEmojisAndStickers,
 				FLAGS.GuildMessages, FLAGS.GuildMessageReactions, FLAGS.DirectMessages, FLAGS.GuildVoiceStates, FLAGS.GuildInvites,
 				FLAGS.GuildScheduledEvents, FLAGS.MessageContent],
