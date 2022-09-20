@@ -1,5 +1,5 @@
 // Dependencies
-const { Collection, PermissionsBitField: { Flags } } = require('discord.js'),
+const { Collection, PermissionsBitField } = require('discord.js'),
 	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models'),
 	AutoModeration = require('../../helpers/autoModeration'),
@@ -122,7 +122,7 @@ class MessageCreate extends Event {
 				// check bot permissions
 				let neededPermissions = [];
 				cmd.conf.botPermissions.forEach((perm) => {
-					if ([Flags.Speak, Flags.Connect].includes(perm)) {
+					if ([PermissionsBitField.Flags.Speak, PermissionsBitField.Flags.Connect].includes(perm)) {
 						if (!message.member.voice.channel) return;
 						if (!message.member.voice.channel.permissionsFor(bot.user).has(perm)) {
 							neededPermissions.push(perm);
@@ -133,9 +133,11 @@ class MessageCreate extends Event {
 				});
 
 				if (neededPermissions.length > 0) {
-					bot.logger.error(`Missing permission: \`${neededPermissions.join(', ')}\` in [${message.guild.id}].`);
+					const perms = new PermissionsBitField();
+					neededPermissions.forEach((item) => perms.add(BigInt(item)));
+					bot.logger.error(`Missing permission: \`${perms.toArray().join(', ')}\` in [${message.guild.id}].`);
 					if (message.deletable) message.delete();
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 
 				// check user permissions
@@ -147,8 +149,10 @@ class MessageCreate extends Event {
 				});
 
 				if (neededPermissions.length > 0) {
+					const perms = new PermissionsBitField();
+					neededPermissions.forEach((item) => perms.add(BigInt(item)));
 					if (message.deletable) message.delete();
-					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: neededPermissions.map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
 				}
 			}
 
