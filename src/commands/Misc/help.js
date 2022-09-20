@@ -71,7 +71,7 @@ class Help extends Command {
 	createEmbed(bot, settings, channel, command, user) {
 		if (!command) {
 			// Show default help page
-			const embed = new Embed(bot)
+			const embed = new Embed(bot, channel.guild)
 				.setAuthor({ name: bot.translate('misc/help:AUTHOR'), iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setDescription([
 					bot.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
@@ -106,7 +106,7 @@ class Help extends Command {
 				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
 				// Check if the command is allowed on the server
 				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(user.id)) {
-					return new Embed(bot)
+					return new Embed(bot, channel.guild)
 						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
 						.setDescription([
 							channel.guild.translate('misc/help:DESC', { DESC: channel.guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:DESCRIPTION`) }),
