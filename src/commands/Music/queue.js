@@ -165,12 +165,12 @@ class Queue extends Command {
 				paginate(bot, channel, pages, member.id);
 				return interaction.reply('Loaded Queue');
 			} else {
-				return interaction.reply(pages[0]);
+				return interaction.reply({ embeds: [pages[0]] });
 			}
 		} else {
 			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
-			return interaction.reply(pages[pageNum]);
+			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
 	}
 }
