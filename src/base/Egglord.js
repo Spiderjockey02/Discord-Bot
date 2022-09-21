@@ -1,7 +1,7 @@
 // Dependencies
 const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
 	{ GuildSchema } = require('../database/models'),
-	GiveawaysManager = require('./Manager'),
+	GiveawaysManager = require('./Giveaway-Manager'),
 	path = require('path'),
 	{ promisify } = require('util'),
 	AudioManager = require('./Audio-Manager'),
