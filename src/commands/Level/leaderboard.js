@@ -117,14 +117,15 @@ class Leaderboard extends Command {
 					if (res[(i * 10) + j]) {
 						const name = guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
 						if (name == 'User left') {
-							embed2.fields.push({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
+							embed2.addFields({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
 								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
 						} else {
-							embed2.fields.push({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
+							embed2.addFields({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.username }),
 								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
 						}
 					}
 				}
+
 				// interact with paginator
 				pages.push(embed2);
 				if (i == pagesNum - 1 && pagesNum > 1) {

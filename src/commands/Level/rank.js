@@ -1,7 +1,6 @@
 // Dependencies
 const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Rank: rank } = require('canvacord'),
-	axios = require('axios'),
 	Command = require('../../structures/Command.js');
 
 /**
