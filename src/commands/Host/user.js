@@ -49,7 +49,7 @@ class User extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('Invalid user ID.').then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('Invalid user ID.');
 		}
 		if (!user) return;
 
@@ -92,7 +92,7 @@ class User extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
 			case 'banned':
@@ -113,7 +113,7 @@ class User extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
 			case 'rank':
@@ -136,7 +136,7 @@ class User extends Command {
 					} catch (err) {
 						if (message.deletable) message.delete();
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 					}
 				} else {
 					return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
@@ -152,7 +152,7 @@ class User extends Command {
 				} catch (err) {
 					if (message.deletable) message.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
 			default:

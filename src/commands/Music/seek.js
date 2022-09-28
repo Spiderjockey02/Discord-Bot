@@ -41,14 +41,14 @@ class Seek extends Command {
 	async run(bot, message, settings) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
-		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM');
 
 		// Make sure a time was inputted
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) });
 
 		// update the time
 		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');

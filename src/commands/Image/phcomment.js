@@ -54,10 +54,10 @@ class PHcomment extends Command {
 		const text = message.args.join(' ').replace(/<@.?\d*?>/g, '');
 
 		// Make sure text was entered
-		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/phcomment:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/phcomment:USAGE')) });
 
 		// make sure the text isn't longer than 70 characters
-		if (text.length >= 71) return message.channel.error('image/phcomment:TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
+		if (text.length >= 71) return message.channel.error('image/phcomment:TOO_LONG');
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -74,7 +74,7 @@ class PHcomment extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 		msg.delete();
 	}

@@ -69,14 +69,14 @@ class GiveawayEdit extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure the message ID of the giveaway embed is entered
-		if (message.args.length <= 3) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-edit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.args.length <= 3) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-edit:USAGE')) });
 
 		// Get new Time
 		const { error, success: time } = getTotalTime(message.args[0]);
 		if (error) return message.channel.error(error);
 
 		// Get new winner count
-		if (isNaN(message.args[2])) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.timedDelete({ timeout: 5000 }));
+		if (isNaN(message.args[2])) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT');
 
 		// Update giveaway
 		try {

@@ -54,14 +54,14 @@ class ClearWarning extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// check if a user was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear-warning:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/clear-warning:USAGE')) });
 
 
 		// Get members mentioned in message
 		const members = await message.getMember(false);
 
 		// Make sure atleast a guildmember was found
-		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER');
 
 		// get warnings of user
 		try {
@@ -82,7 +82,7 @@ class ClearWarning extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

@@ -50,7 +50,7 @@ class RoleInfo extends Command {
 		if (!roles[0]) {
 			if (message.deletable) message.delete();
 			// Make sure a poll was provided
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/role-info:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/role-info:USAGE')) });
 		}
 
 		const embed = this.createEmbed(bot, message.guild, roles[0], message.author);

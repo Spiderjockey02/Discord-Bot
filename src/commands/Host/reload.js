@@ -47,7 +47,7 @@ class Reload extends Command {
 		if (message.deletable) message.delete();
 
 		// Checks to see if a command was specified
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/reload:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/reload:USAGE')) });
 
 		// checks to make sure command exists
 		const commandName = message.args[0].toLowerCase();
@@ -63,7 +63,7 @@ class Reload extends Command {
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				if (message.deletable) message.delete();
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (Object.keys(bot._events).includes(message.args[0])) {
 			try {
@@ -88,10 +88,10 @@ class Reload extends Command {
 				});
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else {
-			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName }).then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName });
 		}
 	}
 

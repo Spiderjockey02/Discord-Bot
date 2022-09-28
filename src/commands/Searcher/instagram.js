@@ -44,7 +44,7 @@ class Instagram extends Command {
 		const username = message.args.join(' ');
 
 		// Checks to see if a username was provided
-		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!username) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/instagram:USAGE')) });
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {

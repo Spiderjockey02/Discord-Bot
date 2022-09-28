@@ -35,21 +35,21 @@ class TTS extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE');
 			}
 		}
 
 		// make sure user is in a voice channel
-		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
 
 		// Check that user is in the same voice channel
 		if (bot.manager?.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE').then(m => m.timedDelete({ timeout: 10000 }));
+			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
 		}
 
 		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
-			return message.channel.error('music/play:VC_FULL').then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('music/play:VC_FULL');
 		}
 
 		// Create player
@@ -64,7 +64,7 @@ class TTS extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 
 		// Search for track
@@ -76,7 +76,7 @@ class TTS extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('music/play:ERROR', { ERROR: err.message });
 		}
 
 		// Make sure there was results

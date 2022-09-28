@@ -47,7 +47,7 @@ class ReactionRoleAdd extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 
 			// check for number of reaction roles in current server
@@ -190,7 +190,7 @@ class ReactionRoleAdd extends Command {
 					if (message.deletable) message.delete();
 					msg.delete();
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			}
 			// create the description

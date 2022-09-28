@@ -46,7 +46,7 @@ class Reddit extends Command {
 	*/
 	async run(bot, message, settings) {
 		// Get subreddit
-		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/reddit:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/reddit:USAGE')) });
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -61,7 +61,7 @@ class Reddit extends Command {
 			if (message.deletable) message.delete();
 			msg.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

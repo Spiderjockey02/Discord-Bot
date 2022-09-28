@@ -52,13 +52,13 @@ class DM extends Command {
 	*/
 	async run(bot, message, settings) {
 		// Make sure a member was mentioned
-		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/dm:USAGE')) });
 
 		// Get members mentioned in message
 		const members = await message.getMember(false);
 
 		// Make sure atleast a guildmember was found
-		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER');
 
 		// send message
 		try {
@@ -73,7 +73,7 @@ class DM extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

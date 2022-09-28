@@ -37,13 +37,13 @@ class NowPlaying extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE');
 			}
 		}
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player || !player.queue.current) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!player || !player.queue.current) return message.channel.error('misc:NO_QUEUE');
 
 		// Get current song information
 		const { title, requester, thumbnail, uri, duration } = player.queue.current;
@@ -62,7 +62,7 @@ class NowPlaying extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

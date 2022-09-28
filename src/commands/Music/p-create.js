@@ -35,7 +35,7 @@ class PCreate extends Command {
  	 * @readonly
   */
 	async run(bot, message, settings) {
-		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) });
 		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
 		const msg = await message.channel.send(message.translate('music/p-create:WAITING'));
@@ -47,7 +47,7 @@ class PCreate extends Command {
 			if (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 
 			// response from database
@@ -78,7 +78,7 @@ class PCreate extends Command {
 		try {
 			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
 		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('music/play:ERROR', { ERROR: err.message });
 		}
 
 		// Workout what to do with the results

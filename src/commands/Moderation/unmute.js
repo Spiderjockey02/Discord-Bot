@@ -55,18 +55,18 @@ class Unmute extends Command {
 			// Make sure bot can deafen members
 			if (!channel.permissionsFor(bot.user).has(Flags.MuteMembers)) {
 				bot.logger.error(`Missing permission: \`MUTE_MEMBERS\` in [${message.guild.id}].`);
-				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') }).then(m => m.timedDelete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:MUTE_MEMBERS') });
 			}
 		}
 
 		// Remove mutedRole from user
 		try {
 			await members[0].timeout(null, `${message.author.id} put user out of timeout`);
-			message.channel.success('moderation/unmute:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
+			message.channel.success('moderation/unmute:SUCCESS', { USER: members[0].user });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

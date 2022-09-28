@@ -40,7 +40,7 @@ class Weather extends Command {
  	 * @readonly
 	*/
 	async run(bot, message, settings) {
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/weather:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/weather:USAGE')) });
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
@@ -49,7 +49,7 @@ class Weather extends Command {
 		// Display weather
 		await find({ search: message.args.join(' '), degreeType: 'C' }, (err, result) => {
 			// make sure location was valid
-			if (!result[0]) return message.channel.error('search/weather:INVALID').then(m => m.timedDelete({ timeout:5000 }));
+			if (!result[0]) return message.channel.error('search/weather:INVALID');
 
 			// Display weather at location
 			const embed = new Embed(bot, message.guild)

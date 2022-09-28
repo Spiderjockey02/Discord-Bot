@@ -65,7 +65,7 @@ class Rainbow6Siege extends Command {
 		// Checks to make sure a username was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/r6:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/r6:USAGE')) });
 		} else {
 			player = message.args[0];
 		}

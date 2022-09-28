@@ -62,28 +62,28 @@ class TicketSetup extends Command {
 			// update category channel
 			try {
 				const channel = message.guild.channels.cache.get(message.args[1]);
-				if (!channel || channel.type != 'GUILD_CATEGORY') return message.channel.send(message.translate('ticket/ticket-setup:NOT_CATEGORY'));
+				if (!channel || channel.type != 'GUILD_CATEGORY') return message.channel.error('ticket/ticket-setup:NOT_CATEGORY');
 				// update database
 				await message.guild.updateGuild({ TicketCategory: message.args[1] });
 				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_CATEGORY', { NAME: channel.name }));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0] == 'role') {
 
 			// update support role
 			try {
 				const supportRole = message.guild.roles.cache.get(message.args[1]);
-				if (!supportRole) return message.channel.send(message.translate('ticket/ticket-setup:NOT_ROLE'));
+				if (!supportRole) return message.channel.error('ticket/ticket-setup:NOT_ROLE');
 				// update database
 				await message.guild.updateGuild({ TicketSupportRole: message.args[1] });
-				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_ROLE').replace('{ROLE}', supportRole));
+				message.channel.success(message.translate('ticket/ticket-setup:UPDATED_ROLE').replace('{ROLE}', supportRole));
 			} catch (err) {
 				if (message.deletable) message.delete();
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		}
 	}

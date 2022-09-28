@@ -51,10 +51,10 @@ class SetLog extends Command {
 			// Enabled/Disable ModLogs
 			try {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
-				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] }).then(m => m.timedDelete({ timeout:10000 }));
+				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents ?? [];
@@ -76,7 +76,7 @@ class SetLog extends Command {
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events[0] ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			} else if (message.args[0] == 'remove') {
 
@@ -90,7 +90,7 @@ class SetLog extends Command {
 					message.channel.success('plugins/set-logs:REMOVED', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase()}\`` });
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			}
 		} else if (message.args[0] == 'channel') {
@@ -100,7 +100,7 @@ class SetLog extends Command {
 				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID[0].id });
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0] == 'list') {
 			const embed = new Embed(bot, message.guild)

@@ -46,7 +46,7 @@ class TicketCreate extends Command {
 	async run(bot, message, settings) {
 		// Check if a ticket channel is already open
 		if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
-			return message.channel.error('ticket/ticket-create:TICKET_EXISTS').then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('ticket/ticket-create:TICKET_EXISTS');
 		}
 
 		// get reason
@@ -88,7 +88,7 @@ class TicketCreate extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

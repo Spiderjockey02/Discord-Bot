@@ -45,10 +45,10 @@ class Clyde extends Command {
 		const text = message.args.join(' ');
 
 		// make sure text was entered
-		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/clyde:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!text) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('image/clyde:USAGE')) });
 
 		// make sure the text isn't longer than 70 characters
-		if (text.length >= 71) return message.channel.error('image/clyde:TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
+		if (text.length >= 71) return message.channel.error('image/clyde:TOO_LONG');
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
@@ -65,7 +65,7 @@ class Clyde extends Command {
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 		msg.delete();
 	}

@@ -44,7 +44,7 @@ class Lyrics extends Command {
 		if (message.args.length == 0) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(message.guild.id);
-			if (!player) return message.channel.error('misc:NO_QUEUE').then(m => m.timedDelete({ timeout: 10000 }));
+			if (!player) return message.channel.error('misc:NO_QUEUE');
 			options = {
 				apiKey: bot.config.api_keys.genius,
 				title: player.queue.current.title,
@@ -76,7 +76,7 @@ class Lyrics extends Command {
 			}
 		} catch (err) {
 			msg.delete();
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err });
 		}
 	}
 

@@ -44,19 +44,19 @@ class Screenshot extends Command {
 		// make sure a website was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/screenshot:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/screenshot:USAGE')) });
 		}
 
 		// make sure URl is valid
 		if (!validUrl.isUri(message.args[0])) {
 			if (message.deletable) message.delete();
-			return message.channel.error('fun/screenshot:INVALID_URL').then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('fun/screenshot:INVALID_URL');
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
 		if (!bot.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw && message.guild) {
 			if (message.deletable) message.delete();
-			return message.channel.error('fun/screenshot:BLACKLIST_WEBSITE').then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('fun/screenshot:BLACKLIST_WEBSITE');
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -66,7 +66,7 @@ class Screenshot extends Command {
 		// make screenshot
 		const data = await this.fetchScreenshot(bot, message.args[0]);
 		if (!data) {
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' });
 		} else {
 			const attachment = new AttachmentBuilder(data, { name: 'website.png' });
 			await message.channel.send({ files: [attachment] });

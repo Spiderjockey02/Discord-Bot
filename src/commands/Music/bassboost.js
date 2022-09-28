@@ -42,7 +42,7 @@ class Bassboost extends Command {
 	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(message.member, bot);
-		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 
 		// update player's bassboost
@@ -58,7 +58,7 @@ class Bassboost extends Command {
 		}
 
 		// Make sure value is a number
-		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/bassboost:INVALID'));
+		if (isNaN(message.args[0])) return message.channel.error('music/bassboost:INVALID');
 
 		// Turn on bassboost with custom value
 		player.setBassboost(parseInt(message.args[0]) / 10);

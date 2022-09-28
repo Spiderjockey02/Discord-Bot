@@ -49,24 +49,24 @@ class Remove extends Command {
 	async run(bot, message, settings) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
-		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		const player = bot.manager?.players.get(message.guild.id);
 
-		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/remove:NAN')).then(m => m.timedDelete({ timeout: 10000 }));
+		if (isNaN(message.args[0])) return message.channel.error(message.translate('music/remove:NAN'));
 
 		if (!message.args[1]) {
-			if (message.args[0] == 0) return message.channel.send(message.translate('music/remove:PLAYING', { PREFIX: settings.prefix }));
-			if (message.args[0] > player.queue.length) return message.channel.send(message.translate('music/remove:MISSING')).then(m => m.timedDelete({ timeout: 10000 }));
+			if (message.args[0] == 0) return message.channel.error('music/remove:PLAYING', { PREFIX: settings.prefix });
+			if (message.args[0] > player.queue.length) return message.channel.error(message.translate('music/remove:MISSING'));
 
 			const { title } = player.queue[message.args[0] - 1];
 
 			player.queue.splice(message.args[0] - 1, 1);
 			return message.channel.send(message.translate('music/remove:REMOVED', { TITLE: title }));
 		} else {
-			if (message.args[0] == 0 || message.args[1] == 0) return message.channel.send(message.translate('music/remove:PLAYING', { PREFIX: settings.prefix }));
-			if (message.args[0] > player.queue.length || message.args[1] > player.queue.length) return message.channel.send(message.translate('music/remove:MISSING'));
-			if (message.args[0] > message.args[1]) return message.channel.send(message.translate('music/remove:INVALID'));
+			if (message.args[0] == 0 || message.args[1] == 0) return message.channel.error('music/remove:PLAYING', { PREFIX: settings.prefix });
+			if (message.args[0] > player.queue.length || message.args[1] > player.queue.length) return message.channel.error('music/remove:MISSING');
+			if (message.args[0] > message.args[1]) return message.channel.error('music/remove:INVALID');
 
 			const songsToRemove = message.args[1] - message.args[0];
 			player.queue.splice(message.args[0] - 1, songsToRemove + 1);

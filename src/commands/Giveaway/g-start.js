@@ -71,17 +71,17 @@ class GiveawayStart extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure a time, winner count & prize is entered
-		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.args.length <= 2) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('giveaway/g-start:USAGE')) });
 
 		// Get time
 		const { error, success: time } = getTotalTime(message.args[0]);
 		if (error) return message.channel.error(error);
 
 		// Make sure that number of winners is a number
-		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT').then(m => m.timedDelete({ timeout: 5000 }));
+		if (isNaN(message.args[1]) || message.args[1] > 10) return message.channel.error('giveaway/g-edit:INCORRECT_WINNER_COUNT');
 
 		// Make sure prize is less than 256 characters
-		if (message.args.slice(2).join(' ').length >= 256) return message.channel.error('giveaway/g-start:PRIZE_TOO_LONG').then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.args.slice(2).join(' ').length >= 256) return message.channel.error('giveaway/g-start:PRIZE_TOO_LONG');
 
 		// Start the giveaway
 		try {

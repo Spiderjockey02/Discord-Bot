@@ -43,14 +43,14 @@ class Speed extends Command {
 	async run(bot, message) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
-		if (typeof (playable) !== 'boolean') return message.channel.error(playable).then(m => m.timedDelete({ timeout: 10000 }));
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current.isSeekable) return message.channel.error('music/speed:LIVESTREAM').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!player.queue.current.isSeekable) return message.channel.error('music/speed:LIVESTREAM');
 
 		// Make sure Number is a number
-		if (isNaN(message.args[0]) || message.args[0] < 0 || message.args[0] > 10) return message.channel.error('music/speed:INVALID').then(m => m.timedDelete({ timeout: 10000 }));
+		if (isNaN(message.args[0]) || message.args[0] < 0 || message.args[0] > 10) return message.channel.error('music/speed:INVALID');
 
 		// Change speed value
 		try {
@@ -64,7 +64,7 @@ class Speed extends Command {
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

@@ -44,7 +44,7 @@ class Twitch extends Command {
 	*/
 	async run(bot, message, settings) {
 		// Get information on twitch accounts
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/twitch:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/twitch:USAGE')) });
 		const user = message.args[0];
 
 		// send 'waiting' message to show bot has recieved message
@@ -82,7 +82,7 @@ class Twitch extends Command {
 			if (message.deletable) message.delete();
 			msg.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 

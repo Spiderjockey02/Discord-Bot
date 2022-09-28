@@ -63,7 +63,7 @@ class Lavalink extends Command {
 					message.channel.success('host/node:ADDED_NODE');
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
 			case 'remove':
@@ -76,7 +76,7 @@ class Lavalink extends Command {
 					message.channel.success('host/node:REMOVED_NODE');
 				} catch (err) {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
 			default:
@@ -108,7 +108,7 @@ class Lavalink extends Command {
 						.setTimestamp(Date.now());
 					return msg.edit({ content: ' ', embeds: [embed] });
 				} else {
-					return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/lavalink:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+					return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/lavalink:USAGE')) });
 				}
 		}
 	}

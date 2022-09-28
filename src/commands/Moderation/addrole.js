@@ -62,22 +62,22 @@ class AddRole extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure a role name was entered
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/addrole:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/addrole:USAGE')) });
 
 		// Max character length of 100 for role name
-		if (message.args[0].length >= 100) return message.channel.error('moderation/addrole:MAX_NAME').then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.args[0].length >= 100) return message.channel.error('moderation/addrole:MAX_NAME');
 
 		// Make sure 'hoist' is true or false
-		if (message.args[2] && !['true', 'false'].includes(message.args[2])) return message.channel.error('moderation/addrole:BOOLEAN').then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.args[2] && !['true', 'false'].includes(message.args[2])) return message.channel.error('moderation/addrole:BOOLEAN');
 
 		// Make sure there isn't already the max number of roles in the guilds
-		if (message.guild.roles.cache.size == 250) return message.channel.error('moderation/addrole:MAX_ROLES').then(m => m.timedDelete({ timeout: 5000 }));
+		if (message.guild.roles.cache.size == 250) return message.channel.error('moderation/addrole:MAX_ROLES');
 
 		// Check colour name for role
 		fs.readFile('./src/assets/json/colours.json', async (err, data) => {
 			if (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 
 			// Create role

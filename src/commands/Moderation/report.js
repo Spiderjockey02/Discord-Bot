@@ -56,19 +56,19 @@ class Report extends Command {
 			if (message.deletable) message.delete();
 
 			// check if a user was entered
-			if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.timedDelete({ timeout: 10000 }));
+			if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) });
 
 			// Get members mentioned in message
 			const members = await message.getMember(false);
 
 			// Make sure atleast a guildmember was found
-			if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER').then(m => m.timedDelete({ timeout: 10000 }));
+			if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER');
 
 			// Make sure user isn't trying to punish themselves
-			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH').then(m => m.timedDelete({ timeout: 10000 }));
+			if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH');
 
 			// Make sure a reason was added
-			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('moderation/report:USAGE')) });
 
 			// Send messages to ModLog channel
 			const embed = new Embed(bot, message.guild)
@@ -86,7 +86,7 @@ class Report extends Command {
 				message.channel.success('moderation/report:SUCCESS', { USER: members[0].user }).then(m => m.timedDelete({ timeout: 3000 }));
 			}
 		} else {
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' }).then(m => m.timedDelete({ timeout: 5000 }));
+			message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Logging: `REPORTS` has not been setup' });
 		}
 	}
 
