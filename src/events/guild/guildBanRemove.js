@@ -23,7 +23,6 @@ class GuildBanRemove extends Event {
 	async run(bot, guildBan) {
 		// Make sure all relevant data is fetched
 		try {
-			if (guildBan.partial) await guildBan.fetch();
 			if (guildBan.user.partial) await guildBan.user.fetch();
 		} catch (err) {
 			if (['Missing Permissions', 'Missing Access'].includes(err.message)) return;
