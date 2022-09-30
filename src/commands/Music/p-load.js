@@ -54,7 +54,7 @@ class PLoad extends Command {
 		}
 
 		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
-		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has('MOVE_MEMBERS')) {
+		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has(Flags.MoveMembers)) {
 			return message.channel.error('music/play:VC_FULL');
 		}
 
