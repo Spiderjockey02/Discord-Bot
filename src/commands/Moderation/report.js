@@ -74,10 +74,12 @@ class Report extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor({ name: message.translate('moderation/report:AUTHOR'), iconURL: members[0].user.displayAvatarURL() })
 				.setColor(15158332)
-				.addField(message.translate('moderation/report:MEMBER'), members[0], true)
-				.addField(message.translate('moderation/report:BY'), message.member, true)
-				.addField(message.translate('moderation/report:IN'), message.channel)
-				.addField(message.translate('moderation/report:REASON'), message.args.slice(1).join(' '))
+				.addFields(
+					{ name: message.translate('moderation/report:MEMBER'), value: members[0], inline: true },
+					{ name: message.translate('moderation/report:BY'), value: message.member, inline: true },
+					{ name: message.translate('moderation/report:IN'), value: message.channel },
+					{ name: message.translate('moderation/report:REASON'), value: message.args.slice(1).join(' ') },
+				)
 				.setTimestamp()
 				.setFooter(message.guild.name);
 			const repChannel = message.guild.channels.cache.find(channel => channel.id === settings.ModLogChannel);
@@ -114,10 +116,12 @@ class Report extends Command {
 			const embed = new Embed(bot, guild)
 				.setAuthor({ name: guild.translate('moderation/report:AUTHOR'), iconURL: member.user.displayAvatarURL() })
 				.setColor(15158332)
-				.addField(guild.translate('moderation/report:MEMBER'), member, true)
-				.addField(guild.translate('moderation/report:BY'), interaction.member, true)
-				.addField(guild.translate('moderation/report:IN'), interaction.channel)
-				.addField(guild.translate('moderation/report:REASON'), reason)
+				.addFields(
+					{ name: guild.translate('moderation/report:MEMBER'), value: member, inline: true },
+					{ name: guild.translate('moderation/report:BY'), value: interaction.member, inline: true },
+					{ name: guild.translate('moderation/report:IN'), value: interaction.channel },
+					{ name: guild.translate('moderation/report:REASON'), value: reason },
+				)
 				.setTimestamp()
 				.setFooter(guild.name);
 			const repChannel = guild.channels.cache.get(settings.ModLogChannel);

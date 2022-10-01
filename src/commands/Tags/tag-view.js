@@ -54,7 +54,7 @@ class TagView extends Command {
 				const resultEmbed = new Embed(bot, message.guild)
 					.setTitle('tags/tag-view:TITLE', { NAME:message.guild.name });
 				tags.forEach(value => {
-					resultEmbed.addField(message.translate('tags/tag-view:TITLE', { NAME: value.name }), message.translate('tags/tag-view:RESP', { RESP: value.response }));
+					resultEmbed.addFields({ name: message.translate('tags/tag-view:TITLE', { NAME: value.name }), value: message.translate('tags/tag-view:RESP', { RESP: value.response }) });
 				});
 				return message.channel.send({ embeds: [resultEmbed] });
 			} else {

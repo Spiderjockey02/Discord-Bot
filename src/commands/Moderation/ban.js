@@ -88,8 +88,10 @@ class Ban extends Command {
 					.setColor(15158332)
 					.setThumbnail(message.guild.iconURL())
 					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
-					.addField(message.translate('moderation/ban:BAN_BY'), message.author.tag, true)
-					.addField(message.translate('misc:REASON'), reason, true);
+					.addFields(
+						{ name: message.translate('moderation/ban:BAN_BY'), value: message.author.tag, inline: true },
+						{ name: message.translate('misc:REASON'), value: reason, inline: true },
+					);
 				await members[0].send({ embeds: [embed] });
 				// eslint-disable-next-line no-empty
 			} catch (e) {}
@@ -162,8 +164,10 @@ class Ban extends Command {
 					.setColor(15158332)
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/ban:DESC', { NAME: guild.name }))
-					.addField(guild.translate('moderation/ban:BAN_BY'), interaction.user.tag, true)
-					.addField(guild.translate('misc:REASON'), reason, true);
+					.addFields(
+						{ name: guild.translate('moderation/ban:BAN_BY'), value: interaction.user.tag, inline: true },
+						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
+					);
 				await member.send({ embeds: [embed] });
 				// eslint-disable-next-line no-empty
 			} catch (e) {}

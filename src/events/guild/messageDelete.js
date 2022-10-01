@@ -76,7 +76,7 @@ class MessageDelete extends Event {
 				.setColor(15158332)
 				.setFooter({ text: `Author: ${message.author.id} | Message: ${message.id}` })
 				.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() });
-			if (message.content.length > 0) embed.addField(`Content ${shortened ? ' (shortened)' : ''}:`, `${content}`);
+			if (message.content.length > 0) embed.addFields({ name: `Content ${shortened ? ' (shortened)' : ''}:`, value: `${content}` });
 			embed.setTimestamp();
 			// check for attachment deletion
 			if (message.attachments.size > 0) {

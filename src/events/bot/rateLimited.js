@@ -29,9 +29,11 @@ class RateLimit extends Event {
 		const embed = new EmbedBuilder()
 			.setTitle('RateLimit hit')
 			.setColor('RED')
-			.addField('Path', route)
-			.addField('Limit', `${limit}`, true)
-			.addField('Cooldown', `${timeout}ms`, true)
+			.addFields(
+				{ name: 'Path', value: route },
+				{ name: 'Limit', value: `${limit}`, inline: true },
+				{ name: 'Cooldown', value: `${timeout}ms`, inline: true },
+			)
 			.setTimestamp();
 
 		const modChannel = await bot.channels.fetch(bot.config.SupportServer.rateLimitChannelID).catch(() => bot.logger.error('Error fetching rate limit logging channel'));

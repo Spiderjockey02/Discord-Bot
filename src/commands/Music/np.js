@@ -98,7 +98,9 @@ class NowPlaying extends Command {
 				.setColor(member.displayHexColor)
 				.setThumbnail(thumbnail)
 				.setDescription(`[${title}](${uri}) [${guild.members.cache.get(requester.id)}]`)
-				.addField('\u200b', new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end, false);
+				.addFields(
+					{ name: '\u200b', value: new Date(player.position * player.speed).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * player.speed : duration, player.position * player.speed, 15)[0] + '] ' + end },
+				);
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

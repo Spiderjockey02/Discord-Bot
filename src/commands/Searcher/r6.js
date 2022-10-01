@@ -185,13 +185,15 @@ class Rainbow6Siege extends Command {
 			.setAuthor({ name: player.username, iconURL: bot.user.displayAvatarURL() })
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(current.icon)
-			.addField(guild.translate('searcher/r6:GENERAL'), guild.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(guild.settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(guild.settings.Language) }))
-			.addField(guild.translate('searcher/r6:STATS'), guild.translate('searcher/r6:STAT_DATA', {
-				WIN: pvp.general.wins.toLocaleString(guild.settings.Language), LOSS: pvp.general.losses.toLocaleString(guild.settings.Language), WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills.toLocaleString(guild.settings.Language), DEATH: pvp.general.deaths.toLocaleString(guild.settings.Language), KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600).toLocaleString(guild.settings.Language),
-			}))
-			.addField(guild.translate('searcher/r6:TERRORIST'), guild.translate('searcher/r6:STAT_DATA', {
-				WIN: pve.general.wins.toLocaleString(guild.settings.Language), LOSS: pve.general.losses.toLocaleString(guild.settings.Language), WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills.toLocaleString(guild.settings.Language), DEATH: pve.general.deaths.toLocaleString(guild.settings.Language), KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600).toLocaleString(guild.settings.Language),
-			}))
+			.addFields(
+				{ name: guild.translate('searcher/r6:GENERAL'), value: guild.translate('searcher/r6:GEN_DATA', { LVL: level, XP: xp.toLocaleString(guild.settings.Language), NAME: current.name, MAX_NAME: max.name, MMR: current.mmr.toLocaleString(guild.settings.Language) }) },
+				{ name: guild.translate('searcher/r6:STATS'), value: guild.translate('searcher/r6:STAT_DATA', {
+					WIN: pvp.general.wins.toLocaleString(guild.settings.Language), LOSS: pvp.general.losses.toLocaleString(guild.settings.Language), WL: (pvp.general.wins / pvp.general.matches).toFixed(2), KILL: pvp.general.kills.toLocaleString(guild.settings.Language), DEATH: pvp.general.deaths.toLocaleString(guild.settings.Language), KD: (pvp.general.kills / pvp.general.deaths).toFixed(2), TIME: Math.round(pvp.general.playtime / 3600).toLocaleString(guild.settings.Language),
+				}) },
+				{ name: guild.translate('searcher/r6:TERRORIST'), value: guild.translate('searcher/r6:STAT_DATA', {
+					WIN: pve.general.wins.toLocaleString(guild.settings.Language), LOSS: pve.general.losses.toLocaleString(guild.settings.Language), WL: (pve.general.wins / pve.general.matches).toFixed(2), KILL: pve.general.kills.toLocaleString(guild.settings.Language), DEATH: pve.general.deaths.toLocaleString(guild.settings.Language), KD: (pve.general.kills / pve.general.deaths).toFixed(2), TIME: Math.round(pve.general.playtime / 3600).toLocaleString(guild.settings.Language),
+				}) },
+			)
 			.setTimestamp();
 	}
 }
