@@ -23,13 +23,16 @@ TextChannel.prototype.send = function(...args) {
 module.exports = Object.defineProperties(TextChannel.prototype, {
 	// Send custom 'error' message
 	error: {
-		value: function(key, args, returnValue) {
+		value: function(key, args, isForEmbed) {
 			try {
 				const emoji = this.permissionsFor(this.client.user).has(Flags.UseExternalEmojis) ? this.client.customEmojis['cross'] : ':negative_squared_cross_mark:';
 				const embed = new EmbedBuilder()
 					.setColor(15158332)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
-				return returnValue ? embed : this.send({ embeds: [embed] });
+
+				// Either return the error embed or send the error message
+				if (isForEmbed) return embed;
+				this.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 5000 }));
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}
@@ -37,13 +40,13 @@ module.exports = Object.defineProperties(TextChannel.prototype, {
 	},
 	// Send custom 'success' message
 	success: {
-		value: function(key, args, returnValue) {
+		value: function(key, args, isForEmbed) {
 			try {
-				const emoji = this.permissionsFor(this.client.user).has(Flags.useExternalEmojis) ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
+				const emoji = this.permissionsFor(this.client.user).has(Flags.UseExternalEmojis) ? this.client.customEmojis['checkmark'] : ':white_check_mark:';
 				const embed = new EmbedBuilder()
 					.setColor(3066993)
 					.setDescription(`${emoji} ${this.client.translate(key, args, this.guild.settings.Language) ?? key}`);
-				return returnValue ? embed : this.send({ embeds: [embed] });
+				return isForEmbed ? embed : this.send({ embeds: [embed] });
 			} catch (err) {
 				this.client.logger.error(err.message);
 			}
