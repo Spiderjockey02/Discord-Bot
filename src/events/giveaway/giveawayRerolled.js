@@ -11,6 +11,7 @@ class GiveawayRerolled extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
+			child: 'giveawaysManager',
 		});
 	}
 

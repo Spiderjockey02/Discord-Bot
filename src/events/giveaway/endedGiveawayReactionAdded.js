@@ -10,6 +10,7 @@ class EndedGiveawayReactionAdded extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
+			child: 'giveawaysManager',
 		});
 	}
 

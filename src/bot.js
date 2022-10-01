@@ -62,10 +62,10 @@ async function loadEvents() {
 			try {
 				const event = new (require(`./events/${folder}/${file}`))(bot, name);
 				bot.logger.log(`Loading Event: ${name}`);
-				if (folder == 'giveaway') {
-					bot.giveawaysManager.on(name, (...args) => event.run(bot, ...args));
-				} else if (folder == 'audio') {
-					bot.manager.on(name, (...args) => event.run(bot, ...args));
+
+				// Make sure the right manager gets the event
+				if (event.conf.child) {
+					bot[event.conf.child].on(name, (...args) => event.run(bot, ...args));
 				} else {
 					bot.on(name, (...args) => event.run(bot, ...args));
 				}

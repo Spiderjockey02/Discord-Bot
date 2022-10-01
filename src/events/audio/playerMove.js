@@ -11,6 +11,7 @@ class PlayerMove extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
+			child: 'manager',
 		});
 	}
 

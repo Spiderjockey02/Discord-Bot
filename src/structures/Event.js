@@ -8,9 +8,10 @@ const path = require('path');
 class Event {
 	constructor(bot, name, {
 		dirname = false,
+		child = null,
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
-		this.conf = { name, category };
+		this.conf = { name, category, child };
 	}
 
 	/**

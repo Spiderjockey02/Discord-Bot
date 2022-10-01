@@ -11,6 +11,7 @@ class RateLimit extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
+			child: 'manager',
 		});
 	}
 

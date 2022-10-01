@@ -1,6 +1,5 @@
 // Dependencies
 const express = require('express'),
-	{ PermissionsBitField } = require('discord.js'),
 	router = express.Router();
 
 // Guild page

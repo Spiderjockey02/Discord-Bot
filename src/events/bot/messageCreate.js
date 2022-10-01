@@ -1,6 +1,6 @@
 // Dependencies
-const { Collection, PermissionsBitField } = require('discord.js'),
-	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
+const { Collection, PermissionsBitField, EmbedBuilder } = require('discord.js'),
+	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models'),
 	AutoModeration = require('../../helpers/autoModeration'),
 	LevelManager = require('../../helpers/levelSystem'),
@@ -37,7 +37,7 @@ class MessageCreate extends Event {
 
 		// Check if bot was mentioned
 		if (new RegExp(`/<@(!?)${bot.user.id}>/g`).test(message.content)) {
-			const embed = new Embed(bot, message.guild)
+			const embed = new EmbedBuilder()
 				.setAuthor({ name: bot.user.username, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
