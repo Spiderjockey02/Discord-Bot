@@ -130,7 +130,7 @@ class ChannelUpdate extends Event {
 					}
 					if (!value.length) value = 'Overwrite got deleted';
 					// add field to embed
-					embed.fields.push({
+					embed.addFields({
 						'name': role ? role.name + ` (ID: ${role.id}):` : member.user.username + ` (ID: ${member.id}):`,
 						'value': value,
 					});

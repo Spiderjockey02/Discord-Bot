@@ -80,7 +80,7 @@ class MessageDelete extends Event {
 			embed.setTimestamp();
 			// check for attachment deletion
 			if (message.attachments.size > 0) {
-				embed.fields.push({
+				embed.addFields({
 					'name': 'Attachments:',
 					'value': message.attachments.map(file => file.url).join('\n'),
 				});
