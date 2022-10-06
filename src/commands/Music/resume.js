@@ -22,6 +22,7 @@ class Resume extends Command {
 			description: 'Resumes the music.',
 			usage: 'resume',
 			cooldown: 3000,
+			slash: true,
 		});
 	}
 
