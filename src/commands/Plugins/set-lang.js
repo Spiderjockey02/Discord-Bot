@@ -1,6 +1,6 @@
 // Dependencies
-const { MessageActionRow, MessageSelectMenu, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { MessageActionRow, MessageSelectMenu, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 
 const flags = {

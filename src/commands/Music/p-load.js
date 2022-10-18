@@ -1,9 +1,9 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
-	{ PlaylistSchema } = require('../../database/models'),
-	{ TrackUtils } = require('erela.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	{ Embed } = require('../../utils');
+const { PlaylistSchema } = require('../../database/models');
+const { TrackUtils } = require('erela.js');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * playlist load command

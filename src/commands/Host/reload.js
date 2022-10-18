@@ -1,9 +1,9 @@
 // Dependencies
-const { promisify } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	path = require('path'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { promisify } = require('util');
+const readdir = promisify(require('fs').readdir);
+const path = require('path');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Reload command

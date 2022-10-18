@@ -1,8 +1,8 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ promisify, inspect } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	Command = require('../../structures/Command.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { promisify, inspect } = require('util');
+const readdir = promisify(require('fs').readdir);
+const Command = require('../../structures/Command.js');
 
 /**
  * Script command

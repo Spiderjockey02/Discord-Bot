@@ -1,7 +1,7 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * seek command

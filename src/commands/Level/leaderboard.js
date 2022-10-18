@@ -1,7 +1,7 @@
 // Dependencies
-const { Embed, paginate } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed, paginate } = require('../../utils');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
 // eslint-disable-next-line no-sparse-arrays

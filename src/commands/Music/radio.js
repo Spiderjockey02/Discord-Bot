@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ getStations } = require('radio-browser'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { getStations } = require('radio-browser');
+const Command = require('../../structures/Command.js');
 
 /**
  * radio command

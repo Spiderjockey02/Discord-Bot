@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js');
+const { ChannelType } = require('discord-api-types/v10');
+const Command = require('../../structures/Command.js');
 
 /**
  * Avatar command

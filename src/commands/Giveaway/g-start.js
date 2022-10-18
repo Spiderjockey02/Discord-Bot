@@ -1,8 +1,8 @@
 // Dependencies
-const { time: { getTotalTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+const { time: { getTotalTime } } = require('../../utils');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { ChannelType } = require('discord-api-types/v10');
+const Command = require('../../structures/Command.js');
 
 /**
  * Giveaway start command

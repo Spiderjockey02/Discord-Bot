@@ -1,8 +1,8 @@
 // Dependencies
-const { status } = require('minecraft-server-util'),
-	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { status } = require('minecraft-server-util');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * MC command

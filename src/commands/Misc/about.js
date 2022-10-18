@@ -1,7 +1,7 @@
 // Dependencies
-const { version, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { version, ChannelType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed, time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * About command

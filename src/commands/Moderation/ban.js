@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed, time: { getTotalTime } } = require('../../utils'),
-	{ timeEventSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed, time: { getTotalTime } } = require('../../utils');
+const { timeEventSchema } = require('../../database/models');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Ban command

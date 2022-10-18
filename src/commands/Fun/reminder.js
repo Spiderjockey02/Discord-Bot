@@ -1,9 +1,9 @@
 // Dependencies
-const ms = require('ms'),
-	{ MessageAttachment, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ timeEventSchema } = require('../../database/models'),
-	{ time: { getTotalTime }, Embed } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const ms = require('ms');
+const { MessageAttachment, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { timeEventSchema } = require('../../database/models');
+const { time: { getTotalTime }, Embed } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * Reminder command

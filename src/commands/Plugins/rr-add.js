@@ -1,8 +1,8 @@
 // Dependencies
-const Command = require('../../structures/Command.js'),
-	{ ReactionRoleSchema } = require('../../database/models'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed } = require('../../utils');
+const Command = require('../../structures/Command.js');
+const { ReactionRoleSchema } = require('../../database/models');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed } = require('../../utils');
 
 /**
  * Reaction role add command

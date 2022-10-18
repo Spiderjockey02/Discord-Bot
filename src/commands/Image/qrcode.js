@@ -1,7 +1,7 @@
 // Dependencies
-const	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * QRCode command

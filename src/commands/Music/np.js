@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ splitBar } = require('string-progressbar'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { splitBar } = require('string-progressbar');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * NowPlaying command

@@ -1,8 +1,8 @@
 // Dependencies
-const { get } = require('axios'),
-	{ Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { get } = require('axios');
+const { Embed } = require('../../utils');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Ass command

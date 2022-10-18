@@ -1,10 +1,10 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
-	{ PlaylistSchema } = require('../../database/models'),
-	{ time: { getReadableTime } } = require('../../utils'),
-	{ paginate } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { PlaylistSchema } = require('../../database/models');
+const { time: { getReadableTime } } = require('../../utils');
+const { paginate } = require('../../utils');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * playlist view command

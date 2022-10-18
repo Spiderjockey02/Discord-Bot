@@ -1,6 +1,6 @@
 // Dependencies
-const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Privacy command

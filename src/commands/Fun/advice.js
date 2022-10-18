@@ -1,7 +1,7 @@
 // Dependencies
-const fetch = require('node-fetch'),
-	{ EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const fetch = require('node-fetch');
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Advice command

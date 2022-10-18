@@ -1,8 +1,8 @@
 // Dependencies
-const { image_search } = require('duckduckgo-images-api'),
-	{ Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { image_search } = require('duckduckgo-images-api');
+const { Embed } = require('../../utils');
+const { ApplicationCommandOptionType, ChannelType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Image command

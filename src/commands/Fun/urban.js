@@ -1,8 +1,8 @@
 // Dependencies
-const { define } = require('urban-dictionary'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { define } = require('urban-dictionary');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * Urban command

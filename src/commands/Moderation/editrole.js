@@ -1,7 +1,7 @@
 // Dependencies
-const fs = require('fs'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const fs = require('fs');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Editrole command

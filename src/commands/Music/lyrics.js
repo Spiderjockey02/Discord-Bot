@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed, paginate } = require('../../utils'),
-	{ getSong } = require('genius-lyrics-api'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed, paginate } = require('../../utils');
+const { getSong } = require('genius-lyrics-api');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Lyrics command

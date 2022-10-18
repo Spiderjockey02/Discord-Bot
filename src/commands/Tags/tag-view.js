@@ -1,8 +1,8 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ TagsSchema } = require('../../database/models/index.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { TagsSchema } = require('../../database/models/index.js');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Tag view command

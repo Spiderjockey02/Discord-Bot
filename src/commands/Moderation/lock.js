@@ -1,7 +1,7 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { ChannelType } = require('discord-api-types/v10');
+const Command = require('../../structures/Command.js');
 
 /**
  * Lock command

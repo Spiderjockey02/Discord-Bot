@@ -1,7 +1,7 @@
 // Dependencies
-const { ApplicationCommandType } = require('discord-api-types/v10'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandType } = require('discord-api-types/v10');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Docs command
