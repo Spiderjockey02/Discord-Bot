@@ -1,7 +1,7 @@
 // Dependencies
-const { inspect } = require('util'),
-	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require ('discord.js'),
-	Command = require('../../structures/Command.js');
+const { inspect } = require('util');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require ('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Eval command

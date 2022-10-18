@@ -1,10 +1,10 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	R6API = require('r6api.js').default,
-	config = require('../../config.js'),
-	{ findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys.rainbow.email, password: config.api_keys.rainbow.password }),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const R6API = require('r6api.js').default;
+const config = require('../../config.js');
+const { findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys.rainbow.email, password: config.api_keys.rainbow.password });
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
 const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };

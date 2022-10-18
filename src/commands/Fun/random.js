@@ -1,7 +1,7 @@
 // Dependencies
-const max = 100000,
-	{ EmbedBuilder, Colors, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const max = 100000;
+const { EmbedBuilder, Colors, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Random command

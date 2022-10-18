@@ -1,7 +1,7 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	fetch = require('node-fetch'),
-	Command = require('../../structures/Command.js');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const fetch = require('node-fetch');
+const Command = require('../../structures/Command.js');
 
 /**
  * Stickbug command

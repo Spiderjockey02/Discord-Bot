@@ -1,7 +1,7 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Rank: rank } = require('canvacord'),
-	Command = require('../../structures/Command.js');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Rank: rank } = require('canvacord');
+const Command = require('../../structures/Command.js');
 
 /**
  * Rank command

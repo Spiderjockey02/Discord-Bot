@@ -1,8 +1,8 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
-	{ Node } = require('erela.js'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const { Node } = require('erela.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Lavalink command

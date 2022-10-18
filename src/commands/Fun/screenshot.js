@@ -1,8 +1,8 @@
 // Dependencies
-const Puppeteer = require('puppeteer'),
-	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	validUrl = require('valid-url'),
-	Command = require('../../structures/Command.js');
+const Puppeteer = require('puppeteer');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const validUrl = require('valid-url');
+const Command = require('../../structures/Command.js');
 
 /**
  * Screenshot command

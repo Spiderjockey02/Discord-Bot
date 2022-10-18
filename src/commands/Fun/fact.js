@@ -1,8 +1,8 @@
 // Dependencies
-const fs = require('fs'),
-	{ Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const fs = require('fs');
+const { Embed } = require('../../utils');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Fact command

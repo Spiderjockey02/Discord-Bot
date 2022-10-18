@@ -1,9 +1,9 @@
 // Dependencies
-const { paginate } = require('../../utils'),
-	{ Embed } = require('../../utils'),
-	{ time: { getReadableTime } } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { paginate } = require('../../utils');
+const { Embed } = require('../../utils');
+const { time: { getReadableTime } } = require('../../utils');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * previous command

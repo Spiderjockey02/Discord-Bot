@@ -1,9 +1,9 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	moment = require('moment'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const moment = require('moment');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js');
+const { ChannelType } = require('discord-api-types/v10');
+const Command = require('../../structures/Command.js');
 
 /**
  * User-info command

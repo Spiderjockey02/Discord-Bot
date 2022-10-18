@@ -1,8 +1,8 @@
 // Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	{ post } = require('axios'),
-	Command = require('../../structures/Command.js');
+const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { Embed } = require('../../utils');
+const { post } = require('axios');
+const Command = require('../../structures/Command.js');
 
 // image types
 const image_1 = ['3000years', 'approved', 'beautiful', 'brazzers', 'burn', 'challenger', 'circle', 'contrast', 'crush', 'ddungeon', 'dictator', 'distort', 'emboss', 'fire', 'frame', 'gay',

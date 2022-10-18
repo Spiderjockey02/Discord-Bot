@@ -1,7 +1,7 @@
 // Dependencies
-const	{ TagsSchema } = require('../../database/models/index.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { TagsSchema } = require('../../database/models/index.js');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Tag delete command

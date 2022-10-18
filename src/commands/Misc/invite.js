@@ -1,7 +1,7 @@
 // Dependencies
-const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ functions: { genInviteLink } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js');
+const { functions: { genInviteLink } } = require('../../utils');
+const Command = require('../../structures/Command.js');
 
 /**
  * Invite command

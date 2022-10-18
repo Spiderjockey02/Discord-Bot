@@ -1,7 +1,7 @@
 // Dependencies
-const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { paginate, Embed, time: { getReadableTime } } = require('../../utils');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * queue command

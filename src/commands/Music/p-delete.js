@@ -1,7 +1,7 @@
 // Dependencies
-const { PlaylistSchema } = require('../../database/models'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { PlaylistSchema } = require('../../database/models');
+const { PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * playlist delete command

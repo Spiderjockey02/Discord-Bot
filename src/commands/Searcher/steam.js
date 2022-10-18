@@ -1,9 +1,9 @@
 // Dependencies
-const fetch = require('node-fetch'),
-	dateFormat = require('dateformat'),
-	{ Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const fetch = require('node-fetch');
+const dateFormat = require('dateformat');
+const { Embed } = require('../../utils');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Steam command

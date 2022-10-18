@@ -1,9 +1,9 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ userSchema } = require('../../database/models'),
-	moment = require('moment'),
-	axios = require('axios'),
-	Command = require('../../structures/Command.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const { userSchema } = require('../../database/models');
+const moment = require('moment');
+const axios = require('axios');
+const Command = require('../../structures/Command.js');
 
 /**
  * User command

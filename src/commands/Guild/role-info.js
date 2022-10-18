@@ -1,9 +1,8 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	moment = require('moment'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags },
-	} = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { Embed } = require('../../utils');
+const moment = require('moment');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
+const Command = require('../../structures/Command.js');
 
 /**
  * Role-info command
