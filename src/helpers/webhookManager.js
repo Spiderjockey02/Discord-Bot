@@ -10,7 +10,7 @@ module.exports = async (bot) => {
 
             // create webhook if it doesn't exist
             if (!webhook) {
-                webhook = await bot.channels.fetch(channel).then(c => c.createWebhook({ name: bot.user.username, 
+                webhook = await bot.channels.fetch(channel).then(c => c.createWebhook({ name: bot.user.username,
                     avatar: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
                 }));
             }
