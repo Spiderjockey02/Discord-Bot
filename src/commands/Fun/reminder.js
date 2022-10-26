@@ -1,6 +1,6 @@
 // Dependencies
 const ms = require('ms'),
-	{ MessageAttachment, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ timeEventSchema } = require('../../database/models'),
 	{ time: { getTotalTime }, Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
@@ -78,7 +78,7 @@ class Reminder extends Command {
 			// Once time is up send reply
 			setTimeout(async () => {
 				// send embed to author's DM
-				const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+				const attachment = new AttachmentBuilder('./src/assets/imgs/Timer.png', { name: 'Timer.png' });
 				const embed = new Embed(bot, message.guild)
 					.setTitle('fun/reminder:TITLE')
 					.setThumbnail('attachment://Timer.png')
@@ -134,7 +134,7 @@ class Reminder extends Command {
 			// Once time is up send reply
 			setTimeout(async () => {
 				// send embed to author's DM
-				const attachment = new MessageAttachment('./src/assets/imgs/Timer.png', 'Timer.png');
+				const attachment = new AttachmentBuilder('./src/assets/imgs/Timer.png', { name: 'Timer.png' });
 				const embed = new Embed(bot, guild)
 					.setTitle('fun/reminder:TITLE')
 					.setThumbnail('attachment://Timer.png')
