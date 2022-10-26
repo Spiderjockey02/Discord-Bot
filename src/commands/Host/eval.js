@@ -99,7 +99,7 @@ class Eval extends Command {
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			interaction.reply({ embed: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message })] });
+			interaction.reply({ embed: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }
