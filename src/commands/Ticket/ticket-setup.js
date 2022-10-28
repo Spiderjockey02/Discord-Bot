@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -62,7 +63,7 @@ class TicketSetup extends Command {
 			// update category channel
 			try {
 				const channel = message.guild.channels.cache.get(message.args[1]);
-				if (!channel || channel.type != 'GUILD_CATEGORY') return message.channel.error('ticket/ticket-setup:NOT_CATEGORY');
+				if (!channel || channel.type != ChannelType.GuildCategory) return message.channel.error('ticket/ticket-setup:NOT_CATEGORY');
 				// update database
 				await message.guild.updateGuild({ TicketCategory: message.args[1] });
 				message.channel.send(message.translate('ticket/ticket-setup:UPDATED_CATEGORY', { NAME: channel.name }));
