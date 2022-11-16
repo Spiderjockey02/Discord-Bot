@@ -84,7 +84,7 @@ class Weather extends Command {
 		// Display weather
 		await find({ search: location, degreeType: 'C' }, (err, result) => {
 			// make sure location was valid
-			if (!result[0]) return channel.error('search/weather:INVALID').then(m => m.timedDelete({ timeout:5000 }));
+			if (!result[0]) return interaction.reply({ embeds: [channel.error('search/weather:INVALID', null, true)], ephemeral: true });
 
 			// Display weather at location
 			const embed = new Embed(bot, guild)
