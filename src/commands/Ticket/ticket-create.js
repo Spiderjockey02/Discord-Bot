@@ -62,7 +62,7 @@ class TicketCreate extends Command {
 
 		// create channel
 		try {
-			const channel = await message.guild.channels.create(`ticket-${message.author.id}`, { type: 'text',
+			const channel = await message.guild.channels.create({ name: `ticket-${message.author.id}`, type: 'text',
 				reason: reason,
 				parent: settings.TicketCategory,
 				permissionOverwrites: perms });
