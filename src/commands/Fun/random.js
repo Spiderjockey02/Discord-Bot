@@ -1,6 +1,6 @@
 // Dependencies
 const max = 100000,
-	{ EmbedBuilder, Colors, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -69,7 +69,7 @@ class Random extends Command {
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
 		const embed = new EmbedBuilder()
-			.setColor(Colors.Random)
+			.setColor(bot.config.embedColor)
 			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
 		message.channel.send({ embeds: [embed] });
 	}
@@ -94,7 +94,7 @@ class Random extends Command {
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return interaction.reply({ embeds: [{ color: 'RANDOM', description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		return interaction.reply({ embeds: [{ color: bot.config.embedColor, description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 }
 

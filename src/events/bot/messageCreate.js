@@ -60,7 +60,7 @@ class MessageCreate extends Event {
 		if (['@someone', '@person'].includes(message.content)) {
 			if (message.channel.type == 'dm') return message.channel.error('events/message:GUILD_ONLY');
 			await message.guild.members.fetch();
-			return message.channel.send({ embeds: [{ color: 'RANDOM', description:`Random user selected: ${message.guild.members.cache.random().user}.` }] });
+			return message.channel.send({ embeds: [{ color: bot.config.embedColor, description:`Random user selected: ${message.guild.members.cache.random().user}.` }] });
 		}
 
 		// Check if message was a command

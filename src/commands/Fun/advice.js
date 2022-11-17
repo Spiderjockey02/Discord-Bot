@@ -61,7 +61,7 @@ class Advice extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
-			interaction.reply({ embeds: [{ color: 'RANDOM', description: `💡 ${data.slip.advice}` }] });
+			interaction.reply({ embeds: [{ color: bot.config.embedColor, description: `💡 ${data.slip.advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
