@@ -97,7 +97,7 @@ class DM extends Command {
 				.setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(text)
 				.setTimestamp()
-				.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ format: 'png', size: 1024 }));
+				.setFooter({ text: interaction.user.tag, icon_url: interaction.user.displayAvatarURL({ format: 'png', size: 1024 }) });
 			await member.user.send({ embeds: [embed] });
 			interaction.reply({ embeds: [channel.success('moderation/dm:SUCCESS', { TAG: member.user.tag }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
 		} catch (err) {
