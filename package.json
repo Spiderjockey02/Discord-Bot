@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "clean-jsdoc-theme": "^3.2.7",
-    "eslint": "^8.8.0",
+    "eslint": "^8.28.0",
     "jsdoc": "^3.5.5"
   },
   "optionalDependencies": {
