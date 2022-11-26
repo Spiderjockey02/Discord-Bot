@@ -32,6 +32,9 @@ class InteractionCreate extends Event {
 
 		// Check if it's a slash command
 		if (interaction.isCommand()) return bot.emit('slashCreate', interaction);
+
+		// Check if it's a modal submitted
+		if (interaction.isModalSubmit()) return bot.emit('modalSubmit', interaction);
 	}
 }
 

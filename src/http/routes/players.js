@@ -122,7 +122,7 @@ module.exports = (bot) => {
 
 				// Show how many songs have been added
 				const embed = new Embed(bot, guild)
-					.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? 'RANDOM')
+					.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
 					.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }));
 				bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
 
@@ -138,7 +138,7 @@ module.exports = (bot) => {
 					player.play();
 				} else {
 					const embed = new Embed(bot, guild)
-						.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? 'RANDOM')
+						.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
 						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: data.tracks[0].title, URL: data.tracks[0].uri }));
 					bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
 				}

@@ -67,7 +67,7 @@ class DM extends Command {
 				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 1024 }))
 				.setDescription(message.args.join(' ').slice(message.args[0].length))
 				.setTimestamp()
-				.setFooter(message.author.tag, message.author.displayAvatarURL({ format: 'png', size: 1024 }));
+				.setFooter({ text: message.author.tag, iconURL: message.author.displayAvatarURL({ format: 'png', size: 1024 }) });
 			await members[0].user.send({ embeds: [embed] });
 			message.channel.send(message.translate('moderation/dm:SUCCESS', { TAG: members[0].user.tag }));
 		} catch (err) {

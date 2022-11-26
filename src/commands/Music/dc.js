@@ -61,7 +61,7 @@ class Disconnect extends Command {
 		// Destory player (clears queue & leaves channel)
 		const player = bot.manager?.players.get(member.guild.id);
 		player.destroy();
-		return interaction.reply({ embeds: [channel.success('music/dc:LEFT', { ARGS: null }, true)] });
+		interaction.reply({ embeds: [channel.success('music/dc:LEFT', null, true)] });
 	}
 }
 

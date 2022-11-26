@@ -114,7 +114,7 @@ class AutoComplete extends Event {
 				break;
 			}
 			default:
-				interaction.respond({ name: 'error', value: 'error fetching results' });
+				interaction.respond([{ name: 'error', value: 'error fetching results' }]);
 		}
 	}
 }

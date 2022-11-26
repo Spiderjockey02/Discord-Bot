@@ -34,7 +34,7 @@ class Docs extends Command {
  	 * @readonly
 	*/
 	async run(bot, message, settings) {
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/refresh:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/refresh:USAGE')) });
 
 		switch (message.args[0]) {
 			case 'interactions': {
@@ -76,6 +76,8 @@ class Docs extends Command {
 					{ name: 'Avatar', type: ApplicationCommandType.User },
 					{ name: 'Userinfo', type: ApplicationCommandType.User },
 					{ name: 'Screenshot', type: ApplicationCommandType.Message },
+					{ name: 'Report', type: ApplicationCommandType.Message },
+					{ name: 'Report', type: ApplicationCommandType.User },
 				]);
 
 				message.channel.send(`Successfully updated ${successCount}/${bot.guilds.cache.size} servers' interactions.`);
