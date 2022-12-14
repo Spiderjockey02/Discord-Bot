@@ -143,14 +143,19 @@ module.exports.run = async (config) => {
 	// check spotify credentials
 	if (config.api_keys.spotify.iD && config.api_keys.spotify.secret) {
 		logger.log('Checking Spotify credentials');
-		const { data: { access_token } } = await require('axios').post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
-			headers: {
-				Authorization: `Basic ${Buffer.from(`${config.api_keys.spotify.iD}:${config.api_keys.spotify.secret}`).toString('base64')}`,
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-		});
-		if (!access_token) {
-			logger.error(`${chalk.red('✗')} Incorrect spotify credentials.`);
+		try {
+			const { data: { access_token } } = await require('axios').post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
+				headers: {
+					Authorization: `Basic ${Buffer.from(`${config.api_keys.spotify.iD}:${config.api_keys.spotify.secret}`).toString('base64')}`,
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+			});
+			if (!access_token) {
+				logger.error(`${chalk.red('✗')} Incorrect spotify credentials.`);
+				return true;
+			}
+		} catch (err) {
+			logger.error(`${chalk.red('✗')} Error fetching access token: ${err.message}`);
 			return true;
 		}
 	} else {
