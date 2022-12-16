@@ -1,5 +1,5 @@
 // Dependencies
-const fetch = require('node-fetch'),
+const { get } = require('axios'),
 	{ EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -37,10 +37,14 @@ class Advice extends Command {
 
 		// Connect to API and fetch data
 		try {
-			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
+			const { data: { data: advice } } = await get('https://api.egglord.dev/api/misc/advice', {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
 			msg.delete();
 			const embed = new EmbedBuilder()
-				.setDescription(`💡 ${data.slip.advice}`);
+				.setDescription(`💡 ${advice}`);
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
@@ -60,8 +64,12 @@ class Advice extends Command {
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
-			const data = await fetch('https://api.adviceslip.com/advice').then(res => res.json());
-			interaction.reply({ embeds: [{ color: bot.config.embedColor, description: `💡 ${data.slip.advice}` }] });
+			const { data: { data: advice } } = await get('https://api.egglord.dev/api/misc/advice', {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
+			interaction.reply({ embeds: [{ color: bot.config.embedColor, description: `💡 ${advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
