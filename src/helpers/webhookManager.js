@@ -10,8 +10,10 @@ module.exports = async (bot) => {
 
 			// create webhook if it doesn't exist
 			if (!webhook) {
-				webhook = await bot.channels.fetch(channel).then(c => c.createWebhook(bot.user.username, {
+				webhook = await bot.channels.fetch(channel).then(c => c.createWebhook({
 					avatar: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
+					name: bot.user.tag,
+					reason: 'Mod logging',
 				}));
 			}
 
@@ -32,6 +34,7 @@ module.exports = async (bot) => {
 			// delete from collection once sent
 			bot.embedCollection.delete(channel);
 		} catch (err) {
+			console.log(err);
 			// It was likely they didn't have permission to create/send the webhook
 			bot.logger.error(err.message);
 			bot.embedCollection.delete(channel);

@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	dateFormat = require('dateformat'),
 	Event = require('../../structures/Event');
 
 /**
@@ -22,6 +21,9 @@ class InviteCreate extends Event {
 	 * @readonly
 	*/
 	async run(bot, invite) {
+		// For debugging
+		if (bot.config.debug) bot.logger.debug(`Invite has been created in ${invite.channel ? `channel: ${invite.channel.id}` : `guild: ${invite.guild.id}`}.`);
+
 		// Get server settings / if no settings then return
 		const settings = invite.guild.settings;
 		if (Object.keys(settings).length == 0) return;
@@ -32,9 +34,9 @@ class InviteCreate extends Event {
 				.setDescription([
 					`Invite created ${invite.channel ? `in channel: ${invite.channel}` : ''}`,
 					`Code: \`${invite.code}\`.`,
-					`Max uses: \`${invite.maxUses}\`.`,
-					`Runs out: \`${invite.maxAge != 0 ? dateFormat(new Date() + invite.maxAge, 'ddd dd/mm/yyyy') : 'never'}\`.`,
-					`Temporary: \`${invite.temporary}\``,
+					`Max uses: \`${invite.maxUses == 0 ? 'Infinity' : invite.maxUses}\`.`,
+					`Runs out: ${invite.maxAge != 0 ? `<t:${Math.round((new Date().getTime() / 1000)) + invite.maxAge}:R>` : 'never'}.`,
+					`Temporary: \`${invite.temporary ? 'Yes' : 'No'}\``,
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter({ text: `ID: ${invite.inviter.id}` })
