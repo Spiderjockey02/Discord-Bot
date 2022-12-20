@@ -1,5 +1,5 @@
 // Dependencies
-const { status } = require('minecraft-server-util'),
+const { get } = require('axios'),
 	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
@@ -104,7 +104,12 @@ class Minecraft extends Command {
 	*/
 	async createEmbed(bot, guild, channel, IP, port) {
 		try {
-			const response = await status(IP, parseInt(port));
+			const { data: { data: response } } = await get(`https://api.egglord.dev/api/games/mc?ip=${IP}&port=${port}`, {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
+
 			// turn favicon to thumbnail
 			let attachment;
 			if (response.favicon) {
