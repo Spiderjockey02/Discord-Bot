@@ -1,7 +1,7 @@
 // Dependencies
-const { define } = require('urban-dictionary'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
+	{ get } = require('axios'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -85,17 +85,21 @@ class Urban extends Command {
 	*/
 	async fetchDefinition(bot, guild, phrase, channel) {
 		try {
-			const resp = await define(phrase);
+			const { data: { data: definitions } } = await get(`https://api.egglord.dev/api/info/urban-dictionary?phrase=${phrase}`, {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
 
 			// send definition of word
 			return new Embed(bot, guild)
 				.setTitle('fun/urban:TITLE', { WORD: phrase })
-				.setURL(resp[0].permalink)
+				.setURL(definitions[0].permalink)
 				.setThumbnail('https://i.imgur.com/VFXr0ID.jpg')
-				.setDescription(guild.translate('fun/urban:DESC', { DEFINTION: resp[0].definition, EXAMPLES: resp[0].example }))
+				.setDescription(guild.translate('fun/urban:DESC', { DEFINTION: definitions[0].definition, EXAMPLES: definitions[0].example }))
 				.addFields(
-					{ name: '👍', value: `${resp[0].thumbs_up}`, inline: true },
-					{ name: '👎', value: `${resp[0].thumbs_down}`, inline: true },
+					{ name: '👍', value: `${definitions[0].thumbs_up}`, inline: true },
+					{ name: '👎', value: `${definitions[0].thumbs_down}`, inline: true },
 				);
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
