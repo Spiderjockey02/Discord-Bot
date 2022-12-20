@@ -38,13 +38,16 @@ class Ass extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
-			get('https://nekobot.xyz/api/image?type=ass')
-				.then(res => {
-					msg.delete();
-					const embed = new Embed(bot, message.guild)
-						.setImage(res.data.message);
-					message.channel.send({ embeds: [embed] });
-				});
+			const { data: { data: image } } = await get('https://api.egglord.dev/api/nsfw/image?type=ass', {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
+
+			msg.delete();
+			const embed = new Embed(bot, message.guild)
+				.setImage(image);
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			msg.delete();
@@ -65,15 +68,18 @@ class Ass extends Command {
 		await interaction.reply({ content: guild.translate('misc:FETCHING', {	EMOJI: bot.customEmojis['loading'], ITEM: 'Image' }) });
 
 		try {
-			get('https://nekobot.xyz/api/image?type=ass')
-				.then(res => {
-					const embed = new Embed(bot, guild)
-						.setImage(res.data.message);
-					interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
-				});
+			const { data: { data: image } } = await get('https://api.egglord.dev/api/nsfw/image?type=ass', {
+				headers: {
+					'Authorization': bot.config.api_keys.masterToken,
+				},
+			});
+
+			const embed = new Embed(bot, guild)
+				.setImage(image);
+			interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
