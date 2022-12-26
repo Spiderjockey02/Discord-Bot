@@ -1,6 +1,6 @@
 // Dependencies
-const { find } = require('weather-js'),
-	{ Embed } = require('../../utils'),
+const { Embed } = require('../../utils'),
+	{ get } = require('axios'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -47,26 +47,9 @@ class Weather extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: `${this.help.name}` }));
 
 		// Display weather
-		await find({ search: message.args.join(' '), degreeType: 'C' }, (err, result) => {
-			// make sure location was valid
-			if (!result[0]) return message.channel.error('search/weather:INVALID');
-
-			// Display weather at location
-			const embed = new Embed(bot, message.guild)
-				.setTitle(message.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
-				.setDescription(message.translate('searcher/weather:DESC'))
-				.addFields(
-					{ name: message.translate('searcher/weather:TEMP'), value: `${result[0].current.temperature}°C`, inline: true },
-					{ name: message.translate('searcher/weather:SKY'), value: result[0].current.skytext, inline: true },
-					{ name: message.translate('searcher/weather:HUMIDITY'), value: `${result[0].current.humidity}%`, inline: true },
-					{ name: message.translate('searcher/weather:SPEED'), value: result[0].current.windspeed, inline: true },
-					{ name: message.translate('searcher/weather:TIME'), value: result[0].current.observationtime, inline: true },
-					{ name: message.translate('searcher/weather:DISPLAY'), value: result[0].current.winddisplay, inline: true },
-				)
-				.setThumbnail(result[0].current.imageUrl);
-			msg.delete();
-			message.channel.send({ embeds: [embed] });
-		});
+		const embed = await this.fetchWeatherData(bot, message.guild, message.args[0]);
+		msg.delete();
+		message.channel.send({ embeds: [embed] });
 	}
 
 	/**
@@ -78,29 +61,34 @@ class Weather extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			location = args.get('location').value;
+		const location = args.get('location').value;
 
 		// Display weather
-		await find({ search: location, degreeType: 'C' }, (err, result) => {
-			// make sure location was valid
-			if (!result[0]) return interaction.reply({ embeds: [channel.error('search/weather:INVALID', null, true)], ephemeral: true });
+		const embed = await this.fetchWeatherData(bot, guild, location);
+		interaction.reply({ embeds: [embed] });
+	}
 
-			// Display weather at location
-			const embed = new Embed(bot, guild)
-				.setTitle(guild.translate('searcher/weather:TITLE', { LOC: result[0].location.name }))
-				.setDescription(guild.translate('searcher/weather:DESC'))
-				.addFields(
-					{ name: guild.translate('searcher/weather:TEMP'), value: `${result[0].current.temperature}°C`, inline: true },
-					{ name: guild.translate('searcher/weather:SKY'), value: result[0].current.skytext, inline: true },
-					{ name: guild.translate('searcher/weather:HUMIDITY'), value: `${result[0].current.humidity}%`, inline: true },
-					{ name: guild.translate('searcher/weather:SPEED'), value: result[0].current.windspeed, inline: true },
-					{ name: guild.translate('searcher/weather:TIME'), value: result[0].current.observationtime, inline: true },
-					{ name: guild.translate('searcher/weather:DISPLAY'), value: result[0].current.winddisplay, inline: true },
-				)
-				.setThumbnail(result[0].current.imageUrl);
-			interaction.reply({ embeds: [embed] });
+	async fetchWeatherData(bot, guild, location) {
+		const { data: { data: weather } } = await get(`https://api.egglord.dev/api/info/weather?location=${location}`, {
+			headers: {
+				'Authorization': bot.config.api_keys.masterToken,
+			},
 		});
+
+		// Display weather at location
+		const embed = new Embed(bot, guild)
+			.setTitle(guild.translate('searcher/weather:TITLE', { LOC: weather.location }))
+			.setDescription(guild.translate('searcher/weather:DESC'))
+			.addFields(
+				{ name: guild.translate('searcher/weather:TEMP'), value: `${weather.current.temperature}°C`, inline: true },
+				{ name: guild.translate('searcher/weather:SKY'), value: weather.current.skytext, inline: true },
+				{ name: guild.translate('searcher/weather:HUMIDITY'), value: `${weather.current.humidity}%`, inline: true },
+				{ name: guild.translate('searcher/weather:SPEED'), value: weather.current.windspeed, inline: true },
+				{ name: guild.translate('searcher/weather:TIME'), value: weather.current.observationtime, inline: true },
+				{ name: guild.translate('searcher/weather:DISPLAY'), value: weather.current.winddisplay, inline: true },
+			);
+
+		return embed;
 	}
 }
 
