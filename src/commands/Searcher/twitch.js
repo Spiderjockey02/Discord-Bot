@@ -1,11 +1,8 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	fetch = require('node-fetch'),
+	{ get } = require('axios'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
-
-// access token to interact with twitch API
-let access_token = null;
 
 /**
  * Twitch command
@@ -53,31 +50,9 @@ class Twitch extends Command {
 
 		// fetch data
 		try {
-			const twitchUser = await this.getUserByUsername(bot, user);
-			if (twitchUser) {
-				const stream = await this.getStreamByUsername(bot, user);
-				const embed = new Embed(bot, message.guild)
-					.setTitle(twitchUser.display_name)
-					.setURL(`https://twitch.tv/${twitchUser.login}`)
-					.setThumbnail(twitchUser.profile_image_url)
-					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
-					.addFields(
-						{ name: message.translate('searcher/twitch:BIO'), value: twitchUser.description || message.translate('searcher/twitch:NO_BIO'), inline: true },
-						{ name: message.translate('searcher/twitch:TOTAL'), value: twitchUser.view_count.toLocaleString(settings.Language), inline: true },
-						{ name: message.translate('searcher/twitch:FOLLOWERS'), value: await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(settings.Language)), inline: true },
-					);
-				if (stream) {
-					embed
-						.addFields(
-							{ name: '\u200B', value: message.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }) },
-						)
-						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
-				}
-				message.channel.send({ embeds: [embed] });
-			} else {
-				message.channel.error('searcher/twitch:NOT_FOUND');
-			}
+			const embed = await this.fetchTwitchData(bot, message.guild, user);
 			msg.delete();
+			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			msg.delete();
@@ -99,98 +74,41 @@ class Twitch extends Command {
 			user = args.get('username').value;
 
 		try {
-			const twitchUser = await this.getUserByUsername(bot, user);
-			if (twitchUser) {
-				const stream = await this.getStreamByUsername(bot, user);
-				const embed = new Embed(bot, guild)
-					.setTitle(twitchUser.display_name)
-					.setURL(`https://twitch.tv/${twitchUser.login}`)
-					.setThumbnail(twitchUser.profile_image_url)
-					.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
-					.addFields(
-						{ name: guild.translate('searcher/twitch:BIO'), value: twitchUser.description || guild.translate('searcher/twitch:NO_BIO'), inline: true },
-						{ name: guild.translate('searcher/twitch:TOTAL'), value: twitchUser.view_count.toLocaleString(guild.settings.Language), inline: true },
-						{ name: guild.translate('searcher/twitch:FOLLOWERS'), value: await this.getFollowersFromId(bot, twitchUser.id).then(num => num.toLocaleString(guild.settings.Language)), inline: true },
-					);
-				if (stream) {
-					embed
-						.addFields(
-							{ name: '\u200B', value: guild.translate('searcher/twitch:STREAMING', { TITLE: stream.title, NUM: stream.viewer_count }) },
-						)
-						.setImage(stream.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
-				}
-				interaction.reply({ embeds: [embed] });
-			} else {
-				interaction.reply({ embeds: [channel.error('searcher/twitch:NOT_FOUND', {}, true)] });
-			}
+			const embed = await this.fetchTwitchData(bot, guild, user);
+			interaction.reply({ embeds: [embed] });
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
-	/**
-	 * Function for fetching basic information on user
-	 * @param {bot} bot The instantiating client
-	 * @param {interaction} login The username to search
-	 * @returns {object}
-	*/
-	async getUserByUsername(bot, login) {
-		return this.request(bot, '/users', { login }).then(u => u && u.data[0]);
-	}
+	async fetchTwitchData(bot, guild, username) {
+		const { data: { data: twitch } } = await get(`https://api.egglord.dev/api/socials/twitch?username=${username}`, {
+			headers: {
+				'Authorization': bot.config.api_keys.masterToken,
+			},
+		});
 
-	/**
-	 * Function for checking if user is streaming
-	 * @param {bot} bot The instantiating client
-	 * @param {interaction} username The username to search
-	 * @returns {object}
-	*/
-	async getStreamByUsername(bot, username) {
-		return this.request(bot, '/streams', { user_login: username }).then(s => s && s.data[0]);
-	}
+		const embed = new Embed(bot, guild)
+			.setTitle(twitch.display_name)
+			.setURL(`https://twitch.tv/${twitch.login}`)
+			.setThumbnail(twitch.profile_image_url)
+			.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
+			.addFields(
+				{ name: guild.translate('searcher/twitch:BIO'), value: twitch.description || guild.translate('searcher/twitch:NO_BIO'), inline: true },
+				{ name: guild.translate('searcher/twitch:TOTAL'), value: twitch.view_count.toLocaleString(guild.settings.Language), inline: true },
+				{ name: guild.translate('searcher/twitch:FOLLOWERS'), value: twitch.followers.toLocaleString(guild.settings.Language), inline: true },
+			);
 
-	/**
-	 * Function for fetching data from twitch API
-	 * @param {bot} bot The instantiating client
-	 * @param {string} endpoint the endpoint of the twitch API to request
-	 * @param {object} queryParams The query sent to twitch API
-	 * @returns {object}
-	*/
-	request(bot, endpoint, queryParams = {}) {
-		const qParams = new URLSearchParams(queryParams);
-		return fetch('https://api.twitch.tv/helix' + endpoint + `?${qParams.toString()}`, {
-			headers: { 'Client-ID': bot.config.api_keys.twitch.clientID, 'Authorization': `Bearer ${access_token}` },
-		}).then(res => res.json())
-			.then(data => {
-				if (data.error === 'Unauthorized') {
-					return this.refreshTokens(bot)
-						.then(() => this.request(bot, endpoint, queryParams));
-				}
-				return data;
-			}).catch(e => console.log(e));
-	}
-
-	/**
-	 * Function for fetching follower data from user
-	 * @param {bot} bot The instantiating client
-	 * @param {string} id the ID of the user
-	 * @returns {object}
-	*/
-	async getFollowersFromId(bot, id) {
-		return this.request(bot, '/users/follows', { to_id: id }).then(u => u && u.total);
-	}
-
-	/**
-	 * Function for fetching access_token to interact with the twitch API
-	 * @param {bot} bot The instantiating client
-	 * @returns {string}
-	*/
-	async refreshTokens(bot) {
-		await fetch(`https://id.twitch.tv/oauth2/token?client_id=${bot.config.api_keys.twitch.clientID}&client_secret=${bot.config.api_keys.twitch.clientSecret}&grant_type=client_credentials`, {
-			method: 'POST',
-		}).then(res => res.json()).then(data => {
-			access_token = data.access_token;
-		}).catch(e => console.log(e));
+		if (twitch.steaming) {
+			embed
+				.addFields(
+					{ name: '\u200B', value: guild.translate('searcher/twitch:STREAMING', { TITLE: twitch.steaming.title, NUM: twitch.steaming.viewer_count }) },
+				)
+				.setImage(twitch.steaming.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
+		}
+		return embed;
 	}
 }
 
