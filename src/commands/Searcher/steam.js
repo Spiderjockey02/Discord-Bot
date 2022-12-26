@@ -1,5 +1,5 @@
 // Dependencies
-const fetch = require('node-fetch'),
+const { get } = require('axios'),
 	dateFormat = require('dateformat'),
 	{ Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
@@ -86,41 +86,24 @@ class Steam extends Command {
 	 * @returns {embed}
 	*/
 	async fetchSteamData(bot, guild, channel, token, username) {
-		const { response } = await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${token}&vanityurl=${username}`)
-			.then(res => res.json())
-			.catch(err => {
-				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
-			});
-
-		// make sure user was valid
-		if (!response.steamid) {
-			return channel.error('searcher/instagram:UNKNOWN_USER', {}, true);
-		}
-
-		// fetch profile data
-		const { response: { players: resp } } = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${token}&steamids=${response.steamid}`)
-			.then(res => res.json())
-			.catch(err => {
-				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
-			});
-
-		// Check for user bans
-		const { players: bans } = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${token}&steamids=${response.steamid}`)
-			.then(res => res.json())
-			.catch(err => {
-				bot.logger.error(`Command: 'steam' has error: ${err.message}.`);
-				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
-			});
+		const { data: { data: steam } } = await get(`https://api.egglord.dev/api/socials/steam?username=${username}`, {
+			headers: {
+				'Authorization': bot.config.api_keys.masterToken,
+			},
+		});
 
 		// display data
 		return new Embed(bot, guild)
 			.setColor(0x0099ff)
-			.setAuthor({ name: guild.translate('searcher/steam:AUTHOR', { NAME: resp[0].personaname }), iconURL: resp[0].avatarfull })
-			.setThumbnail(resp[0].avatarfull)
+			.setAuthor({ name: guild.translate('searcher/steam:AUTHOR', { NAME: steam.realname }), iconURL: steam.avatar })
+			.setThumbnail(steam.avatar)
 			.setDescription(guild.translate('searcher/steam:DESC', {
-				NAME: resp[0].realname || 'Unknown', STATUS: guild.translate('searcher/steam:STATE', { returnObjects: true })[resp[0].personastate], FLAG: resp[0].loccountrycode ? resp[0].loccountrycode.toLowerCase() : 'white', TIME: dateFormat(resp[0].timecreated * 1000, 'd/mm/yyyy (h:MM:ss TT)'), GAME_BANS: bans[0].NumberOfGameBans, VAC_BANS: bans[0].NumberOfVACBans, URL: resp[0].profileurl,
+				NAME: steam.realname || 'Unknown',
+				STATUS: steam.status,
+				FLAG: steam.countryCode ? steam.countryCode.toLowerCase() : 'white',
+				TIME: dateFormat(steam.createdAt * 1000, 'd/mm/yyyy (h:MM:ss TT)'),
+				GAME_BANS: steam.bans.NumberOfGameBans, VAC_BANS: steam.bans.NumberOfVACBans,
+				URL: steam.url,
 			}))
 			.setTimestamp();
 	}
