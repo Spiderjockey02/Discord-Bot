@@ -8,6 +8,7 @@ module.exports = {
 			connectTimeoutMS: 10000,
 			family: 4,
 			useUnifiedTopology: true,
+			strictQuery: false,
 		};
 		mongoose.connect(bot.config.MongoDBURl, dbOptions);
 		mongoose.Promise = global.Promise;
