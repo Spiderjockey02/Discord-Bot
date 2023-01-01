@@ -44,6 +44,10 @@ class Firstmessage extends Command {
 		// get channel
 		const channel = message.getChannel();
 
+		// Make sure channel is a text-based channel with permission to read messages
+		if (channel[0].isTextBased() || channel[0].permissionsFor(bot.user).has(Flags.ViewChannel)) return message.channel.error('misc:MISSING_CHANNEL');
+		if (!channel[0].permissionsFor(bot.user).has(Flags.ReadMessageHistory)) return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: channel.guild.translate('permissions:ReadMessageHistory') });
+
 		try {
 			// get first message in channel
 			const fMessage = await channel[0].messages.fetch({ after: 1, limit: 1 }).then(msg => msg.first());
@@ -67,7 +71,9 @@ class Firstmessage extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
+		// Check permission of channel
 		const channel = guild.channels.cache.get(args.get('channel')?.value ?? interaction.channelId);
+		if (!channel.permissionsFor(bot.user).has(Flags.ReadMessageHistory)) return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: channel.guild.translate('permissions:ReadMessageHistory') }, true)], ephemeral: true });
 
 		try {
 			// get first message in channel
@@ -77,6 +83,7 @@ class Firstmessage extends Command {
 			// send embed
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {
+			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
