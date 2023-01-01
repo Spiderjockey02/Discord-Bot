@@ -87,13 +87,13 @@ class MessageCreate extends Event {
 			// make sure user is not on banned list
 			if (message.author.cmdBanned) {
 				if (message.deletable) message.delete();
-				return message.channel.error('events/message:BANNED_USER').then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('events/message:BANNED_USER');
 			}
 
 			// Make sure guild only commands are done in the guild only
 			if (!message.guild && cmd.conf.guildOnly) {
 				if (message.deletable) message.delete();
-				return message.channel.error('events/message:GUILD_ONLY').then(m => m.timedDelete({ timeout: 5000 }));
+				return message.channel.error('events/message:GUILD_ONLY');
 			}
 
 			// Check to see if the command is being run in a blacklisted channel
@@ -137,7 +137,7 @@ class MessageCreate extends Event {
 					neededPermissions.forEach((item) => perms.add(BigInt(item)));
 					bot.logger.error(`Missing permission: \`${perms.toArray().join(', ')}\` in [${message.guild.id}].`);
 					if (message.deletable) message.delete();
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') });
 				}
 
 				// check user permissions
@@ -152,7 +152,7 @@ class MessageCreate extends Event {
 					const perms = new PermissionsBitField();
 					neededPermissions.forEach((item) => perms.add(BigInt(item)));
 					if (message.deletable) message.delete();
-					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:USER_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') });
 				}
 			}
 

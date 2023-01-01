@@ -48,7 +48,7 @@ class Pokemon extends Command {
 		const pokemon = message.args.join(' ');
 		if (!pokemon) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/pokemon:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/pokemon:USAGE')) });
 		}
 
 		// send 'waiting' message to show bot has recieved message

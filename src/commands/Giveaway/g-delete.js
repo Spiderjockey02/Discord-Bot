@@ -78,7 +78,7 @@ class GiveawayDelete extends Command {
 			interaction.reply({ embeds: [channel.success('giveaway/g-delete:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			interaction.reply(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			interaction.reply({ content: bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }

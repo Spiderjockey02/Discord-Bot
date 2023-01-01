@@ -74,7 +74,7 @@ class Radio extends Command {
 			searchterm: message.args.join(' '),
 		});
 
-		if (!data[0]) return message.channel.send('No radio found with that name').then(m => m.timedDelete({ timeout: 10000 }));
+		if (!data[0]) return message.channel.send('No radio found with that name');
 
 		const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
 		let embed = new Embed(bot, message.guild)

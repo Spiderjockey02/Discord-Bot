@@ -78,7 +78,7 @@ class GiveawayPause extends Command {
 			interaction.reply({ embeds: [channel.success('giveaway/g-pause:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			interaction.reply(bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			interaction.reply({ content: bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }

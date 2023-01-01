@@ -45,7 +45,7 @@ class Giveaway extends Command {
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {
-			interaction.reply({ content: 'Error' });
+			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }

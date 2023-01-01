@@ -115,7 +115,7 @@ class AutoModeration {
 			await require('./warning-system').run(this.bot, this.message, this.message.member, reason, this.message.guild.settings);
 		} catch (err) {
 			this.bot.logger.error(`${err.message} when trying to warn user`);
-			this.message.channel.error(this.message.guild.settings.Language, 'ERROR_MESSAGE', err.message).then(m => m.timedDelete({ timeout: 10000 }));
+			this.message.channel.error(this.message.guild.settings.Language, 'ERROR_MESSAGE', err.message);
 		}
 	}
 

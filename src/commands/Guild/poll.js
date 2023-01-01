@@ -45,7 +45,7 @@ class Poll extends Command {
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure a poll was provided
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) });
 
 		// Send poll to channel
 		const embed = new Embed(bot, message.guild)

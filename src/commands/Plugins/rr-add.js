@@ -75,11 +75,11 @@ class ReactionRoleAdd extends Command {
 				if (!(channel || channel.isText() || channel.permissionsFor(bot.user).has('VIEW_CHANNEL'))) {
 					return message.channel.error('misc:MISSING_CHANNEL');
 				} else if (!channel.permissionsFor(bot.user).has(Flags.SendMessages)) {
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:Flags.SendMessages') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:Flags.SendMessages') });
 				} else if (!channel.permissionsFor(bot.user).has(Flags.EmbedLinks)) {
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:EMBED_LINKS') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:EMBED_LINKS') });
 				} else if (!channel.permissionsFor(bot.user).has(Flags.AddReactions)) {
-					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:ADD_REACTIONS') }).then(m => m.timedDelete({ timeout: 10000 }));
+					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: message.translate('permissions:ADD_REACTIONS') });
 				}
 
 				// Get all roles mentioned

@@ -31,11 +31,10 @@ module.exports = async (bot) => {
 							if (!bUser) return;
 
 							await guild.members.unban(bUser.user);
-							const channel = bot.channels.cache.get(event.channelID);
-							if (channel) await channel.success('moderation/unban:SUCCESS', { USER: user }).then(m => m.timedDelete({ timeout: 3000 }));
+							await bot.channels.cache.get(event.channelID)?.success('moderation/unban:SUCCESS', { USER: user }).then(m => m.timedDelete({ timeout: 3000 }));
 						} catch (err) {
 							bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
-							bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+							bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 						}
 						break;
 					}
@@ -79,7 +78,7 @@ module.exports = async (bot) => {
 							}
 						} catch (err) {
 							bot.logger.error(`Error: ${err.message} fetching warns. (timed events)`);
-							return bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 5000 }));
+							return bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 						}
 						break;
 					case 'premium': {

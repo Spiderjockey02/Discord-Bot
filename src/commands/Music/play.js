@@ -91,9 +91,9 @@ class Play extends Command {
 				for (const type of fileTypes) {
 					if (url.endsWith(type)) message.args.push(url);
 				}
-				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE').then(m => m.timedDelete({ timeout: 10000 }));
+				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE');
 			} else {
-				return message.channel.error('music/play:NO_INPUT').then(m => m.timedDelete({ timeout: 10000 }));
+				return message.channel.error('music/play:NO_INPUT');
 			}
 		}
 
@@ -109,7 +109,7 @@ class Play extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 10000 }));
+			return message.channel.error('music/play:ERROR', { ERROR: err.message });
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {

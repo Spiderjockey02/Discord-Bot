@@ -112,7 +112,7 @@ class Reminder extends Command {
 
 		// Get time
 		const { error, success: time } = getTotalTime(args.get('time').value);
-		if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
+		if (error) return interaction.reply({ embeds: [channel.error(error, null, true)], ephemeral: true });
 
 		// send reminder
 		try {

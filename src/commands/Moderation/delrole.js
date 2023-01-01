@@ -83,7 +83,7 @@ class DelRole extends Command {
 			interaction.reply({ embeds: [channel.success('moderation/delrole:SUCCESS', { ROLE: delRole.name }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			interaction.reply({ embeds: [channel.error('moderation/delrole:FAIL', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
+			interaction.reply({ embeds: [channel.error('moderation/delrole:FAIL', {}, true)], ephemeral: true });
 		}
 	}
 }

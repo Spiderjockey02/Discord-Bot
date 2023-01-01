@@ -102,7 +102,7 @@ class DM extends Command {
 			interaction.reply({ embeds: [channel.success('moderation/dm:SUCCESS', { TAG: member.user.tag }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }

@@ -99,7 +99,7 @@ class GiveawayReroll extends Command {
 			interaction.reply({ embeds: [channel.success('giveaway/g-reroll:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
-			interaction.reply(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			interaction.reply({ content: bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }

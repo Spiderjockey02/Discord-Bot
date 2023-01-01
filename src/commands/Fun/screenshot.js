@@ -96,7 +96,7 @@ class Screenshot extends Command {
 		await interaction.deferReply();
 		const data = await this.fetchScreenshot(bot, url);
 		if (!data) {
-			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
+			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)], ephemeral: true });
 		} else {
 			const attachment = new AttachmentBuilder(data, { name: 'website.png' });
 			interaction.editReply({ files: [attachment] });

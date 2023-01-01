@@ -76,7 +76,7 @@ class User extends Command {
 			case 'premium':
 			// Update the user's premium
 				try {
-					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) });
 					const resp = await userSchema.findOne({ userID: user.id	});
 					if (!resp) {
 						await (new userSchema({
@@ -98,7 +98,7 @@ class User extends Command {
 			case 'banned':
 			// Update the user's global ban
 				try {
-					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+					if (!['true', 'false'].includes(message.args[2].toLowerCase())) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) });
 					const resp = await userSchema.findOne({ userID: user.id	});
 					if (!resp) {
 						await (new userSchema({
@@ -121,7 +121,7 @@ class User extends Command {
 				if (message.attachments.first().url) {
 					try {
 						const response = await axios.get(message.attachments.first().url, { responseType: 'arraybuffer' });
-						if (!['png', 'jpeg'].includes(response.headers['content-type'].replace('image/', ''))) return message.channel.error(`File type must be \`PNG\` or \`JPEG\`, this file type was: ${response.headers['content-type'].replace('image/', '')}`).then(m => m.timedDelete({ timeout: 5000 }));
+						if (!['png', 'jpeg'].includes(response.headers['content-type'].replace('image/', ''))) return message.channel.error(`File type must be \`PNG\` or \`JPEG\`, this file type was: ${response.headers['content-type'].replace('image/', '')}`);
 						const resp = await userSchema.findOne({ userID: user.id	});
 						if (!resp) {
 							await (new userSchema({
@@ -139,7 +139,7 @@ class User extends Command {
 						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 					}
 				} else {
-					return message.channel.error('Please upload either a PNG or JPEG file with the command.').then(m => m.timedDelete({ timeout: 5000 }));
+					return message.channel.error('Please upload either a PNG or JPEG file with the command.');
 				}
 				break;
 			case 'reset':
@@ -156,7 +156,7 @@ class User extends Command {
 				}
 				break;
 			default:
-				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) }).then(m => m.timedDelete({ timeout: 5000 }));
+				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/user:USAGE')) });
 				break;
 		}
 	}

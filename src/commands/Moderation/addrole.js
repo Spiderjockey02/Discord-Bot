@@ -108,11 +108,11 @@ class AddRole extends Command {
 			hoist = args.get('hoist').value;
 
 		// Make sure there isn't already the max number of roles in the guilds
-		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.success('moderation/addrole:MAX_ROLES', {}, true)], fetchReply:true }).then(m => m.timedDelete({ timeout: 5000 }));
+		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.error('moderation/addrole:MAX_ROLES', {}, true)], ephemeral: true });
 
 		try {
 			const role = await guild.roles.create({ name: name, reason: `Created by ${interaction.user.tag}`, color, hoist });
-			interaction.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
+			interaction.reply({ embeds: [channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
 		} catch (err) {
 			bot.logger.error(`Command: 'addrole' has error: ${err}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });

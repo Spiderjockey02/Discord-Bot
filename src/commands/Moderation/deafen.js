@@ -95,21 +95,21 @@ class Deafen extends Command {
 			// Make sure bot can deafen members
 			if (!member.voice.channel.permissionsFor(bot.user).has(Flags.DeafenMembers)) {
 				bot.logger.error(`Missing permission: \`DEAFEN_MEMBERS\` in [${guild.id}].`);
-				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:DEAFEN_MEMBERS') }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
+				return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:DEAFEN_MEMBERS') }, true)], ephemeral: true });
 			}
 
 			// Make sure user isn't trying to punish themselves
-			if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
+			if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], ephemeral: true });
 
 			try {
 				await member.voice.setDeaf(true);
 				interaction.reply({ embeds: [channel.success('moderation/deafen:SUCCESS', { USER: member.user }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 3000 }));
 			} catch(err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
+				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 			}
 		} else {
-			interaction.reply({ embeds: [channel.error('moderation/deafen:NOT_VC', {}, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 10000 }));
+			interaction.reply({ embeds: [channel.error('moderation/deafen:NOT_VC', {}, true)], ephemeral: true });
 		}
 	}
 }
