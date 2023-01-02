@@ -28,6 +28,8 @@ class Discrim extends Command {
 				name: 'discrim',
 				description: 'The discriminator you want to search for.',
 				type: ApplicationCommandOptionType.Integer,
+				minValue: 0,
+				maxValue: 9999,
 				required: false,
 			}],
 		});
@@ -44,11 +46,7 @@ class Discrim extends Command {
 		const discrim = message.args[0] ?? message.author.discriminator;
 
 		// Get all members with the entered discriminator
-		const members = message.guild.members.cache.filter(m => m.user.discriminator == discrim).map(m => m);
-
-		const embed = new Embed(bot, message.guild)
-			.setTitle('guild/discrim:TITLE', { DISCRIM: message.args[0] })
-			.setDescription(members.join(' '));
+		const embed = this.fetchDiscrimData(bot, message.guild, discrim);
 		message.channel.send({ embeds: [embed] });
 	}
 
@@ -62,13 +60,26 @@ class Discrim extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const discrim = args.get('discrim')?.value ?? guild.members.cache.get(interaction.user.id).user.discriminator;
+
 		// Get all members with the entered discriminator
+		const embed = this.fetchDiscrimData(bot, guild, discrim);
+		interaction.reply({ embeds: [embed] });
+	}
+
+	/**
+	 * Function for getting all members with a certain discrim
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {string} discrim The discrim to checks members to
+	 * @readonly
+	*/
+	fetchDiscrimData(bot, guild, discrim) {
 		const members = guild.members.cache.filter(m => m.user.discriminator == discrim).map(m => m);
 
 		const embed = new Embed(bot, guild)
 			.setTitle('guild/discrim:TITLE', { DISCRIM: discrim })
-			.setDescription(`${members}`);
-		interaction.reply({ embeds: [embed] });
+			.setDescription(members.length > 0 ? members.join(' ') : null);
+		return embed;
 	}
 }
 
