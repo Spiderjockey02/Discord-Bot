@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, IntentsBitField, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -101,7 +101,7 @@ class Firstmessage extends Command {
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
 			.setAuthor({ name: fMessage.author.tag, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
-			.setDescription(fMessage.content)
+			.setDescription(bot.options.intents.has(IntentsBitField.Flags.MessageContent) ? fMessage.content : 'Unable to fetch message content.')
 			.addFields(
 				{ name: bot.translate('guild/firstmessage:JUMP'), value: fMessage.url },
 			)
