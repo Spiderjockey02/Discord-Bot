@@ -70,17 +70,18 @@ class Leaderboard extends Command {
 
 		// Retrieve Ranks from database
 		try {
+			await interaction.deferReply();
 			const res = await this.createLeaderboard(bot, guild);
 			if (Array.isArray(res)) {
 				paginate(bot, interaction, res, interaction.user.id);
 			} else if (typeof (res) == 'object') {
-				interaction.reply({ embeds: [res] });
+				interaction.followUp({ embeds: [res] });
 			} else {
-				interaction.reply({ content: res });
+				interaction.followUp({ content: res });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.followUp({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
@@ -108,7 +109,7 @@ class Leaderboard extends Command {
 
 			// generate pages
 			const pages = [];
-			await guild.members.fetch();
+			await guild.members.fetch({ user: res.map(i => i.userID) });
 			for (let i = 0; i < pagesNum; i++) {
 				const embed2 = new Embed(bot, guild)
 					.setTitle('level/leaderboard:TITLE')

@@ -26,7 +26,11 @@ module.exports = async (bot, type, pages, userID) => {
 
 	let curPage;
 	if (type instanceof CommandInteraction) {
-		curPage = await type.reply({ embeds: [pages[page]], components: [row], fetchReply: true });
+		if (!type.deferred) {
+			curPage = await type.reply({ embeds: [pages[page]], components: [row], fetchReply: true });
+		} else {
+			curPage = await type.followUp({ embeds: [pages[page]], components: [row], fetchReply: true });
+		}
 	} else {
 		curPage = await type.send({ embeds: [pages[page]], components: [row] });
 	}
