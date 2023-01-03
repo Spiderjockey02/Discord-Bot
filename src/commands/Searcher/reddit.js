@@ -92,7 +92,7 @@ class Reddit extends Command {
 		}
 		// send subreddit post
 		try {
-			const resp = await this.fetchPost(bot, channel, subreddit, { type });
+			const resp = await this.fetchPost(bot, channel, subreddit, type);
 			await interaction.reply({ embeds: [resp] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -107,18 +107,16 @@ class Reddit extends Command {
 	 * @param {string} subreddit The subreddit to get a post from
 	 * @returns {embed}
 	*/
-	async fetchPost(bot, channel, subreddit, { type } = 'hot') {
-		let reddit;
+	async fetchPost(bot, channel, subreddit, type = 'hot') {
 		try {
-			// Whether or not to remove NSFW content
-			reddit = await bot.reddit.fetchSubreddit(subreddit, { removeNSFW: !(channel.nsfw || channel.type == 'DM'), type });
+			const reddit = await bot.fetch('info/reddit', { sub: subreddit, type: type });
 
 			// Send message to channel
 			return new Embed(bot, channel.guild)
-				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.subreddit })
-				.setURL(reddit.link)
-				.setImage(reddit.imageURL)
-				.setFooter({ text: channel.guild.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.downvotes.toLocaleString(channel.guild.settings.Language) }) });
+				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.sub.name })
+				.setURL(reddit.url)
+				.setImage(reddit.thumbnail)
+				.setFooter({ text: channel.guild.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.votes.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.votes.downvotes.toLocaleString(channel.guild.settings.Language) }) });
 		} catch (err) {
 			bot.logger.error(err.message);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);

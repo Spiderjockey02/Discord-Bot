@@ -1,6 +1,5 @@
 // Dependencies
-const { get } = require('axios'),
-	{ EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -37,11 +36,7 @@ class Advice extends Command {
 
 		// Connect to API and fetch data
 		try {
-			const { data: { data: advice } } = await get('https://api.egglord.dev/api/misc/advice', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const advice = await bot.fetch('misc/advice');
 			msg.delete();
 			const embed = new EmbedBuilder()
 				.setDescription(`💡 ${advice}`);
@@ -64,11 +59,7 @@ class Advice extends Command {
 	async callback(bot, interaction, guild) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
-			const { data: { data: advice } } = await get('https://api.egglord.dev/api/misc/advice', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const advice = await bot.fetch('misc/advice');
 			interaction.reply({ embeds: [{ color: bot.config.embedColor, description: `💡 ${advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

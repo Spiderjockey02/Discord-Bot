@@ -104,11 +104,7 @@ class Minecraft extends Command {
 	*/
 	async createEmbed(bot, guild, channel, IP, port) {
 		try {
-			const { data: { data: response } } = await get(`https://api.egglord.dev/api/games/mc?ip=${IP}&port=${port}`, {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const response = await bot.fetch('games/mc', { ip: IP, port: port });
 
 			// turn favicon to thumbnail
 			let attachment;

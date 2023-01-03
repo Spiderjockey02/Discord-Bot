@@ -1,6 +1,5 @@
 // Dependencies
-const { get } = require('axios'),
-	{ Embed } = require('../../utils'),
+const	{ Embed } = require('../../utils'),
 	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -38,12 +37,7 @@ class Anal extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
-			const { data: { data: image } } = await get('https://api.egglord.dev/api/nsfw/image?type=anal', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
-
+			const image = await bot.fetch('nsfw/image', { type: 'anal' });
 			msg.delete();
 			const embed = new Embed(bot, message.guild)
 				.setImage(image);
@@ -68,11 +62,7 @@ class Anal extends Command {
 		await interaction.reply({ content: guild.translate('misc:FETCHING', {	EMOJI: bot.customEmojis['loading'], ITEM: 'Image' }) });
 
 		try {
-			const { data: { data: image } } = await get('https://api.egglord.dev/api/nsfw/image?type=anal', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const image = await bot.fetch('nsfw/image', { type: 'anal' });
 			const embed = new Embed(bot, guild)
 				.setImage(image);
 			interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });

@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ get } = require('axios'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -95,11 +94,7 @@ class Pokemon extends Command {
 	}
 
 	async fetchPokemonData(bot, guild, name) {
-		const { data: { data: pokemon } } = await get(`https://api.egglord.dev/api/misc/pokemon?pokemon=${name}`, {
-			headers: {
-				'Authorization': bot.config.api_keys.masterToken,
-			},
-		});
+		const pokemon = await bot.fetch('misc/pokemon', { pokemon: name });
 
 		// Send response to channel
 		const embed = new Embed(bot, guild)

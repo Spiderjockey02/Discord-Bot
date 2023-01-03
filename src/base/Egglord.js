@@ -6,6 +6,7 @@ const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, Pe
 	{ promisify } = require('util'),
 	AudioManager = require('./Audio-Manager'),
 	Reddit = require('../APIs/reddit.js'),
+	{ get } = require('axios'),
 	readdir = promisify(require('fs').readdir);
 
 /**
@@ -304,6 +305,21 @@ class Egglord extends Client {
 			this.embedCollection.set(channelID, [embed]);
 		} else {
 			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
+		}
+	}
+
+	/**
+	 * Function for adding embeds to the webhook manager. (Stops API abuse)
+	 * @param {string} endpoint The key to search up
+	 * @readonly
+	*/
+	async fetch(endpoint, query = {}) {
+		try {
+			const { data: { data: response } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, { headers: { 'Authorization': this.config.api_keys.masterToken } });
+			return response;
+		} catch (err) {
+			this.logger.error(err.response.data.error);
+			return err.response.data;
 		}
 	}
 }

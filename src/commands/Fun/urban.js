@@ -1,7 +1,6 @@
 // Dependencies
 const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
-	{ get } = require('axios'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -85,11 +84,7 @@ class Urban extends Command {
 	*/
 	async fetchDefinition(bot, guild, phrase, channel) {
 		try {
-			const { data: { data: definitions } } = await get(`https://api.egglord.dev/api/info/urban-dictionary?phrase=${phrase}`, {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const definitions = await bot.fetch('info/urban-dictionary', { phrase: phrase });
 
 			// send definition of word
 			return new Embed(bot, guild)

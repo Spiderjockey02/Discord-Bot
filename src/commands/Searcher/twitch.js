@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ get } = require('axios'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -84,11 +83,7 @@ class Twitch extends Command {
 	}
 
 	async fetchTwitchData(bot, guild, username) {
-		const { data: { data: twitch } } = await get(`https://api.egglord.dev/api/socials/twitch?username=${username}`, {
-			headers: {
-				'Authorization': bot.config.api_keys.masterToken,
-			},
-		});
+		const twitch = await bot.fetch('socials/twitch', { username: username });
 
 		const embed = new Embed(bot, guild)
 			.setTitle(twitch.display_name)

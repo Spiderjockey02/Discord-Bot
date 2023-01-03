@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ get } = require('axios'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -69,11 +68,7 @@ class Weather extends Command {
 	}
 
 	async fetchWeatherData(bot, guild, location) {
-		const { data: { data: weather } } = await get(`https://api.egglord.dev/api/info/weather?location=${location}`, {
-			headers: {
-				'Authorization': bot.config.api_keys.masterToken,
-			},
-		});
+		const weather = await bot.fetch('info/weather', { location: location });
 
 		// Display weather at location
 		const embed = new Embed(bot, guild)

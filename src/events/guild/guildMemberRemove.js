@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ RankSchema } = require('../../database/models'),
-	dateFormat = require('dateformat'),
 	varSetter = require('../../helpers/variableSetter'),
 	Event = require('../../structures/Event');
 

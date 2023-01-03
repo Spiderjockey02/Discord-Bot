@@ -171,7 +171,7 @@ class MessageCreate extends Event {
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000;
 					if (message.deletable) message.delete();
-					return message.channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) }).then(m => m.timedDelete({ timeout:5000 }));
+					return message.channel.error('events/message:COMMAND_COOLDOWN', { NUM: timeLeft.toFixed(1) });
 				}
 			}
 

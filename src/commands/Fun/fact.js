@@ -1,6 +1,5 @@
 // Dependencies
-const { get } = require('axios'),
-	{ Embed } = require('../../utils'),
+const { Embed } = require('../../utils'),
 	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -35,12 +34,7 @@ class Fact extends Command {
 	async run(bot, message) {
 		// Get the random facts file
 		try {
-			const { data: { data: fact } } = await get('https://api.egglord.dev/api/misc/random-fact', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
-
+			const fact = await bot.fetch('misc/random-fact');
 			const embed = new Embed(bot, message.guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(fact);
@@ -63,11 +57,7 @@ class Fact extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId);
 
 		try {
-			const { data: { data: fact } } = await get('https://api.egglord.dev/api/misc/random-fact', {
-				headers: {
-					'Authorization': bot.config.api_keys.masterToken,
-				},
-			});
+			const fact = await bot.fetch('misc/random-fact');
 			const embed = new Embed(bot, guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(fact);

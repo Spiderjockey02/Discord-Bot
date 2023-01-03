@@ -1,7 +1,5 @@
 // Dependencies
-const { get } = require('axios'),
-	dateFormat = require('dateformat'),
-	{ Embed } = require('../../utils'),
+const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -86,11 +84,7 @@ class Steam extends Command {
 	 * @returns {embed}
 	*/
 	async fetchSteamData(bot, guild, channel, token, username) {
-		const { data: { data: steam } } = await get(`https://api.egglord.dev/api/socials/steam?username=${username}`, {
-			headers: {
-				'Authorization': bot.config.api_keys.masterToken,
-			},
-		});
+		const steam = await bot.fetch('socials/steam', { username: username });
 
 		// display data
 		return new Embed(bot, guild)
@@ -101,7 +95,7 @@ class Steam extends Command {
 				NAME: steam.realname || 'Unknown',
 				STATUS: steam.status,
 				FLAG: steam.countryCode ? steam.countryCode.toLowerCase() : 'white',
-				TIME: dateFormat(steam.createdAt * 1000, 'd/mm/yyyy (h:MM:ss TT)'),
+				TIME: `<t:${steam.createdAt}:F>`,
 				GAME_BANS: steam.bans.NumberOfGameBans, VAC_BANS: steam.bans.NumberOfVACBans,
 				URL: steam.url,
 			}))
