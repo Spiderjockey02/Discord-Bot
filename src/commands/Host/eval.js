@@ -44,7 +44,6 @@ class Eval extends Command {
 		const toEval = message.args.join(' ');
 		try {
 			if (toEval) {
-				// Auto-complete commands
 				const hrStart = process.hrtime(),
 					evaluated = await eval(toEval, { depth: 0 }),
 					hrDiff = process.hrtime(hrStart);
@@ -79,7 +78,7 @@ class Eval extends Command {
 			toEval = args.get('code').value;
 
 		try {
-			// Auto-complete commands
+			await interaction.deferReply();
 			const hrStart = process.hrtime(),
 				evaluated = await eval(toEval, { depth: 0 }),
 				hrDiff = process.hrtime(hrStart);
@@ -88,13 +87,13 @@ class Eval extends Command {
 				.addFields(
 					{ name: 'Input:\n', value: '```js\n' + `${toEval.substring(0, 1010)}` + '```' },
 					{ name: 'Output:\n', value: '```js\n' + `${inspect(evaluated).substring(0, 1010)}` + '```' },
-					{ name: 'Time:\n', value: `*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.*`, inline: true },
+					{ name: 'Time:\n', value: `*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''} ${hrDiff[1] / 1000000}ms.*`, inline: true },
 					{ name: 'Type:\n', value: `${typeof (evaluated)}`, inline: true },
 				);
-			interaction.reply({ embeds: [embed] });
+			interaction.followUp({ embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			interaction.followUp({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
