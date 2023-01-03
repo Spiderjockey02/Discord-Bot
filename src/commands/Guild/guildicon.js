@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ AttachmentBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ Canvas } = require('canvacord'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -34,14 +35,17 @@ class Guildicon extends Command {
 	*/
 	async run(bot, message) {
 		// Check for guild icon & send message
-		if (message.guild.icon) {
-			const embed = new Embed(bot, message.guild)
-				.setDescription(message.translate('guild/guildicon:ICON', { URL: message.guild.iconURL({ dynamic: true, size: 1024 }) }))
-				.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
-			message.channel.send({ embeds: [embed] });
+		const embed = new Embed(bot, message.guild)
+			.setDescription(message.translate('guild/guildicon:ICON', { URL: message.guild.iconURL({ dynamic: true, size: 1024 }) }));
+
+		if (message.guild.icon == null) {
+			const icon = await Canvas.guildIcon(message.guild.name, 128);
+			const attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
+			embed.setImage('attachment://guildicon.png');
+			message.channel.send({ embeds: [embed], files: [attachment] });
 		} else {
-			if (message.deletable) message.delete();
-			message.channel.error('guild/guildicon:NO_GUILD_ICON');
+			embed.setImage(message.guild.iconURL({ dynamic: true, size: 1024 }));
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 
@@ -53,15 +57,17 @@ class Guildicon extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
-		const channel = guild.channels.cache.get(interaction.channelId);
-		// Check for guild icon & send message
-		if (guild.icon) {
-			const embed = new Embed(bot, guild)
-				.setDescription(guild.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }))
-				.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
-			interaction.reply({ embeds: [embed] });
+		const embed = new Embed(bot, guild)
+			.setDescription(guild.translate('guild/guildicon:ICON', { URL: guild.iconURL({ dynamic: true, size: 1024 }) }));
+
+		if (guild.icon == null) {
+			const icon = await Canvas.guildIcon(guild.name, 128);
+			const attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
+			embed.setImage('attachment://guildicon.png');
+			interaction.reply({ embeds: [embed], files: [attachment] });
 		} else {
-			interaction.reply({ embeds: [channel.error('guild/guildicon:NO_GUILD_ICON', { }, true)], ephemeral: true });
+			embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+			interaction.reply({ embeds: [embed] });
 		}
 	}
 }
