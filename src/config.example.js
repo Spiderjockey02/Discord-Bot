@@ -5,24 +5,10 @@ const config = {
 	token: 'YourBotToken',
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
-		// https://dev.twitch.tv/console/apps
-		twitch: {
-			clientID: '',
-			clientSecret: '',
-		},
-		// https://fortnitetracker.com/site-api
-		fortnite: 'fortniteAPI-Key',
-		// https://steamcommunity.com/dev
-		steam: 'steamAPI-Key',
 		// https://developer.spotify.com/documentation/web-api/
 		spotify: {
 			iD: 'spotify-ID',
 			secret: 'spotify-secret',
-		},
-		// Your Ubisoft email and password (You don't need to enable anything)
-		rainbow: {
-			email: 'email',
-			password: 'password',
 		},
 		// https://genius.com/developers
 		genius: 'genuisAPI-KEY',
