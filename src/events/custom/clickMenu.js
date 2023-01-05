@@ -1,6 +1,5 @@
 // Dependencies
 const	translate = require('@vitalets/google-translate-api'),
-	optiic = new (require('optiic')),
 	{ Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
@@ -76,23 +75,19 @@ class ClickMenu extends Event {
 				break;
 			}
 			case 'OCR': {
-			// fetch message and check if message has attachments
+				await interaction.deferReply();
+
+				// fetch message and check if message has attachments
 				const message = await channel.messages.fetch(interaction.targetId);
-				if (!message.attachments.first()?.url) return interaction.reply({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
+				if (!message.attachments.first()?.url) return interaction.followUp({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
 
 				// Get text from image
-				const res = await optiic.process({
-					image: message.attachments.first().url,
-					mode: 'ocr',
-				});
+				const res = await bot.fetch('misc/get-text', { url: message.attachments.first().url });
 
 				// Make sure text was actually retrieved
-				if (!res.text) {
-					interaction.reply({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
-				} else {
-					interaction.reply({ content: `Text from image: ${res.text}` });
-				}
-				break;
+				if (!res) return interaction.followUp({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
+
+				return interaction.followUp({ content: `Text from image: ${res}` });
 			}
 			case 'Add to Queue': {
 				// Only allow this to show in server channels
