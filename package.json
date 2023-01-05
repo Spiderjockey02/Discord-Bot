@@ -1,12 +1,12 @@
 {
-  "name": "Discord_BotV12",
+  "name": "Discord_Bot",
   "version": "1.0.0",
   "description": "This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)",
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
     "generate-docs": "jsdoc --configure C:/Users/benja/Desktop/Discord-Bot/jsdoc.json --verbose",
-    "replit": "npm init -y && npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH"
+    "replit": "npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH"
   },
   "engines": {
     "node": ">=16.x",
@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
-    "@vitalets/google-translate-api": "^9.0.0",
     "axios": "^0.27.2",
     "canvacord": "^5.4.8",
     "chalk": "^4.1.2",
@@ -49,13 +48,10 @@
     "string-progressbar": "^1.0.3",
     "string-similarity": "^4.0.4",
     "tinyurl": "^1.1.7",
-    "valid-url": "^1.0.9",
-    "weather-js": "^2.0.0"
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "clean-jsdoc-theme": "^3.2.7",
-    "eslint": "^8.8.0",
-    "jsdoc": "^3.5.5"
+    "eslint": "^8.8.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.4",

@@ -1,6 +1,5 @@
 // Dependencies
-const	translate = require('@vitalets/google-translate-api'),
-	{ Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js'),
+const	{ Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Event = require('../../structures/Event');
 
@@ -65,11 +64,15 @@ class ClickMenu extends Event {
 
 				// translate message to server language
 				try {
-					const bar = await translate(message.content, { to: guild.settings.Language.split('-')[0] });
-					interaction.reply({ content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${bar.text}`,
-						allowedMentions: { parse: [] } });
+					const res = await bot.fetch('info/translate', { text: message.content, lang: bot.languages.find(lan => lan.name == guild.settings.Language).nativeName });
+
+					interaction.reply({
+						content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${res}`,
+						allowedMentions: { parse: [] },
+					});
 				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					console.log(err);
+					bot.logger.error(`Command: 'Translate' has error: ${err.message}.`);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 				}
 				break;
