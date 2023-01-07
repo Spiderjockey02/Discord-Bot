@@ -4,7 +4,7 @@ const { logger } = require('./utils');
 (async () => {
 
 	// This is to verify the config file
-	const configCorrect = await require('./scripts/verify-config.js').run(require('./config.js'));
+	const configCorrect = await require('./scripts/verify-config.js')(require('./config.js'));
 
 	if (!configCorrect) {
 		// This file is for sharding

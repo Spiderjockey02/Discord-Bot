@@ -1,17 +1,22 @@
 // Dependencies
 const { logger } = require('../utils'),
 	chalk = require('chalk'),
-	fetch = require('node-fetch'),
+	mongoose = require('mongoose'),
 	{ Client, GatewayIntentBits: FLAGS } = require('discord.js');
 
-module.exports.run = async (config) => {
+async function validateConfig(config) {
 	// This will check if the config is correct
 	logger.log('=-=-=-=-=-=-=- Config file Verification -=-=-=-=-=-=-=');
 	logger.log('Verifying config..');
 
 	// Make sure Node.js V16 or higher is being ran.
-	if (process.version.slice(1).split('.')[0] < 16) {
-		logger.error('Node 16 or higher is required.');
+	const nodeVersion = process.version.slice(1).split('.');
+	if (nodeVersion[0] < 16) {
+		// Node version is less than v16
+		logger.error(`${chalk.red('✗')} Node version 16.13 minimum.`);
+		return true;
+	} else if (nodeVersion[1] < 13) {
+		logger.error(`${chalk.red('✗')} Node version 16.13 minimum.`);
 		return true;
 	}
 
@@ -41,6 +46,7 @@ module.exports.run = async (config) => {
 		try {
 			await client.login(config.token);
 			client.destroy();
+			logger.ready(`${chalk.green('✓')} Client successfully logged in.`);
 		} catch (e) {
 			switch (e.message) {
 				case 'An invalid token was provided.':
@@ -56,70 +62,6 @@ module.exports.run = async (config) => {
 		}
 	}
 
-	// Check twitch API
-	if (config.api_keys.twitch.clientID && config.api_keys.twitch.clientSecret) {
-		logger.log('Checking twitch credentials..');
-		const req = await fetch(`https://id.twitch.tv/oauth2/token?client_id=${config.api_keys.twitch.clientID}&client_secret=${config.api_keys.twitch.clientSecret}&grant_type=client_credentials`, {
-			method: 'POST',
-		}).then(res => res.json()).catch(e => console.log(e));
-
-		// check response
-		if (req.message == 'invalid client secret') {
-			logger.error(`${chalk.red('✗')} Invalid twitch client secret.`);
-			return true;
-		}
-	} else {
-		logger.log(`${chalk.red('✗')} Twitch API key is missing.`);
-	}
-
-	// Check fortnite API
-	if (!config.api_keys.fortnite) {
-		logger.log(`${chalk.red('✗')} Fortnite API key is missing.`);
-	} else {
-		logger.log('Checking Fortnite credentials');
-		try {
-			await (new (require('../APIs/fortnite.js'))(config.api_keys.fortnite)).user('Ninja', 'pc');
-		} catch (err) {
-			if (err.message == 'Invalid authentication credentials') {
-				logger.error(`${chalk.red('✗')} Fortnite API key is incorrect.`);
-				return true;
-			}
-		}
-	}
-
-	// Check Steam API
-	if (!config.api_keys.steam) {
-		logger.log(`${chalk.red('✗')} Steam API key is missing.`);
-	} else {
-		logger.log('Checking Steam credentials');
-		try {
-			await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${config.api_keys.steam}&vanityurl=eroticgaben`).then(res => res.json());
-		} catch (e) {
-			if (e.type == 'invalid-json') {
-				logger.error(`${chalk.red('✗')} Steam API key is incorrect.`);
-				return true;
-			}
-		}
-	}
-
-	// Check Amethyste API
-	if (!config.api_keys.amethyste) {
-		logger.log(`${chalk.red('✗')} Amethyste API key is missing.`);
-	} else {
-		logger.log('Checking Amethyste credentials');
-		const res = await fetch('https://v1.api.amethyste.moe/generate/blurple', {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${config.api_keys.amethyste}`,
-			},
-		});
-		const result = await res.json();
-		if (result.status === 401) {
-			logger.error(`${chalk.red('✗')} Invalid Amethyste API key.`);
-			return true;
-		}
-	}
-
 	// Check support server set up
 	if (!config.SupportServer) {
 		logger.error(`${chalk.red('✗')} Support server setup is missing.`);
@@ -127,18 +69,39 @@ module.exports.run = async (config) => {
 
 	// Check mongodb connection
 	if (!config.MongoDBURl) {
-		logger.error(`${chalk.red('✗')} MongoDB URl is missing.`);
+		logger.error(`${chalk.red('✗')} MongoDB URL is missing.`);
 		return true;
 	} else {
-		logger.log('Checking MongoDB URL');
-		const mongoose = require('mongoose');
-		await mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true }).catch((err) => {
+		try {
+			logger.log('Checking MongoDB URL');
+			await mongoose.connect(config.MongoDBURl, { useUnifiedTopology: true, useNewUrlParser: true });
+			mongoose.disconnect();
+			logger.ready(`${chalk.green('✓')} MongoDB successfully connected.`);
+		} catch (err) {
 			console.log(err);
 			logger.error(`${chalk.red('✗')} Unable to connect to database.`);
 			return true;
-		});
-		mongoose.disconnect();
+		}
 	}
+
+	if (config.api_keys.masterToken) {
+		try {
+			await require('axios').get('https://api.egglord.dev/api/info/validate', {
+				headers: { 'Authorization': config.api_keys.masterToken },
+			});
+			logger.ready(`${chalk.green('✓')} API is online`);
+		} catch (e) {
+			switch (e.response.status) {
+				case 403:
+					logger.error(`${chalk.red('✗')} Master API token is incorrect. Get it here: https://api.egglord.dev/`);
+					return true;
+				case 502:
+					logger.error(`${chalk.red('✗')} API server is currently offline.`);
+					break;
+			}
+		}
+	}
+
 
 	// check spotify credentials
 	if (config.api_keys.spotify.iD && config.api_keys.spotify.secret) {
@@ -154,6 +117,7 @@ module.exports.run = async (config) => {
 				logger.error(`${chalk.red('✗')} Incorrect spotify credentials.`);
 				return true;
 			}
+			logger.ready(`${chalk.green('✓')} Successfully retrieved Spotify token`);
 		} catch (err) {
 			logger.error(`${chalk.red('✗')} Error fetching access token: ${err.message}`);
 			return true;
@@ -161,4 +125,6 @@ module.exports.run = async (config) => {
 	} else {
 		logger.log(`${chalk.red('✗')} Spotify credentials are missing.`);
 	}
-};
+}
+
+module.exports = validateConfig;
