@@ -1,6 +1,5 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+const	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -65,7 +64,7 @@ class Meme extends Command {
  	 * @returns {embed}
 	*/
 	async fetchMeme(bot, channel) {
-		const subreddits = ['meme', 'memes', 'dankmemes'];
+		const subreddits = ['meme', 'memes', 'dankmemes', 'ComedyCemetery'];
 
 		return await bot.commands.get('reddit').fetchPost(bot, channel, subreddits[Math.floor(Math.random() * subreddits.length)], 'hot');
 	}

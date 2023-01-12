@@ -114,7 +114,7 @@ class Reddit extends Command {
 			// Send message to channel
 			return new Embed(bot, channel.guild)
 				.setTitle('searcher/reddit:TITLE', { TITLE: reddit.sub.name })
-				.setURL(reddit.url)
+				.setURL(reddit.permalink)
 				.setImage(reddit.thumbnail)
 				.setFooter({ text: channel.guild.translate('searcher/reddit:FOOTER', { UPVOTES: reddit.votes.upvotes.toLocaleString(channel.guild.settings.Language), DOWNVOTES: reddit.votes.downvotes.toLocaleString(channel.guild.settings.Language) }) });
 		} catch (err) {
