@@ -15,7 +15,7 @@ async function validateConfig(config) {
 		// Node version is less than v16
 		logger.error(`${chalk.red('✗')} Node version 16.13 minimum.`);
 		return true;
-	} else if (nodeVersion[1] < 13) {
+	} else if (nodeVersion[0] < 16 & nodeVersion[1] < 13) {
 		logger.error(`${chalk.red('✗')} Node version 16.13 minimum.`);
 		return true;
 	}
