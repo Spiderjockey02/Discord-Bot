@@ -1,34 +1,42 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
  * 4k command
  * @extends {Command}
 */
-class K4 extends Command {
+class NSFW extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: '4k',
+			name: 'nsfw',
 			nsfw: true,
 			dirname: __dirname,
 			description: 'Look at NSFW images.',
 			usage: '4k',
 			cooldown: 2000,
 			slash: true,
+			options: [{
+				name: 'type',
+				description: 'Type of image',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				choices: ['cosplay', 'hentai', 'ass', 'pgif', 'swimsuit', 'thigh', 'hass', 'boobs', 'hboobs', 'lewdneko', 'feet', 'hyuri', 'hthigh', 'anal', 'blowjob', 'gonewild', '4k', 'kanna', 'hentai_anal', 'food', 'neko'].map(i => ({ name: i, value: i })),
+			}],
 		});
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
+	*/
 	async run(bot, message) {
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('nsfw/4k:FETCHING', {
@@ -49,18 +57,18 @@ class K4 extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
+	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		await interaction.reply({ content: guild.translate('misc:FETCHING', {	EMOJI: bot.customEmojis['loading'], ITEM: 'Image' }) });
 
 		try {
-			const image = await bot.fetch('nsfw/image', { type: '4k' });
+			const image = await bot.fetch('nsfw/image', { type: args.get('type').value });
 			const embed = new Embed(bot, guild)
 				.setImage(image);
 			interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
@@ -71,4 +79,4 @@ class K4 extends Command {
 	}
 }
 
-module.exports = K4;
+module.exports = NSFW;
