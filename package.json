@@ -51,7 +51,7 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "eslint": "^8.8.0"
+    "eslint": "^8.32.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.4",
