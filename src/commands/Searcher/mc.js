@@ -1,6 +1,5 @@
 // Dependencies
-const { get } = require('axios'),
-	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -18,7 +17,6 @@ class Minecraft extends Command {
 			name: 'mc',
 			dirname: __dirname,
 			aliases: ['minecraft'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Pings a minecraft for information.',
 			usage: 'mc <IP> [Port]',
 			cooldown: 3000,

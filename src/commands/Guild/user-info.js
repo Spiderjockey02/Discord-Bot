@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js'),
+	{ ApplicationCommandOptionType, GuildMember } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -20,7 +20,6 @@ class UserInfo extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['userinfo', 'whois'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a user.',
 			usage: 'user-info [user]',
 			cooldown: 2000,

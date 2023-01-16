@@ -20,7 +20,6 @@ class TagView extends Command {
 			dirname: __dirname,
 			aliases: ['t-view'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'View the server\'s tag(s)',
 			usage: 'tag-view [name]',
 			cooldown: 2000,

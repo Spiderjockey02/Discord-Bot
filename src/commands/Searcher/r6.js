@@ -1,9 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	R6API = require('r6api.js').default,
-	config = require('../../config.js'),
-	{ findByUsername, getProgression, getRanks, getStats } = new R6API({ email: config.api_keys?.rainbow?.email, password: config.api_keys?.rainbow?.password }),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
@@ -22,7 +19,6 @@ class Rainbow6Siege extends Command {
 		super(bot, {
 			name: 'r6',
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets statistics on a Rainbow 6 Account.',
 			usage: 'r6 <user> [pc / xbox / ps4] [eu / na / as]',
 			cooldown: 3000,

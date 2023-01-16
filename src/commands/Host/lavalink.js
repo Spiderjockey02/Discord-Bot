@@ -1,7 +1,7 @@
 // Dependencies
 const	{ Embed } = require('../../utils'),
 	{ Node } = require('erela.js'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,6 @@ class Lavalink extends Command {
 			name: 'lavalink',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Interact with the Lavalink nodes',
 			usage: 'lavalink [list | add | remove] <information>',
 			cooldown: 3000,

@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	{ functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,6 @@ class Shuffle extends Command {
 			name: 'shuffle',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Shuffles the playlist.',
 			usage: 'shuffle',
 			cooldown: 3000,

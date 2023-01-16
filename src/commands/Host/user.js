@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ userSchema } = require('../../database/models'),
 	moment = require('moment'),
 	axios = require('axios'),
@@ -19,7 +19,6 @@ class User extends Command {
 			name: 'user',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit a user\'s data',
 			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,

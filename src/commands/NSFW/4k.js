@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +16,6 @@ class K4 extends Command {
 			name: '4k',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Look at NSFW images.',
 			usage: '4k',
 			cooldown: 2000,

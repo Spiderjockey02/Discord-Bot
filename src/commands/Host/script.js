@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ promisify, inspect } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	Command = require('../../structures/Command.js');
@@ -19,7 +19,6 @@ class Script extends Command {
 			ownerOnly: true,
 			dirname: __dirname,
 			aliases: ['scripts'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Runs a script file.',
 			usage: 'script <file name> [...params]',
 			cooldown: 3000,

@@ -24,7 +24,7 @@ class EditRole extends Command {
 			usage: 'editrole <role name> <option> <value>',
 			cooldown: 5000,
 			examples: ['editrole Yellow colour yellow'],
-			slash: true,
+			slash: false,
 			options: [
 				{
 					name: 'role',

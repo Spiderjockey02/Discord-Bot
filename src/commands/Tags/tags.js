@@ -18,7 +18,6 @@ class Tags extends Command {
 			dirname: __dirname,
 			aliases: ['modifytags', 'tag'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit server\'s tags',
 			usage: 'tag <add/del/edit/view> <required paramters>',
 			cooldown: 5000,

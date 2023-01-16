@@ -19,7 +19,6 @@ class GiveawayEdit extends Command {
 			dirname: __dirname,
 			aliases: ['giveaway-edit', 'gedit'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit a giveaway.',
 			usage: 'g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>',
 			cooldown: 2000,

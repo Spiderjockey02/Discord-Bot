@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ AttachmentBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ AttachmentBuilder } = require('discord.js'),
 	{ Canvas } = require('canvacord'),
 	Command = require('../../structures/Command.js');
 
@@ -19,7 +19,6 @@ class Guildicon extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['servericon'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get the server\'s icon.',
 			usage: 'guildicon',
 			cooldown: 2000,

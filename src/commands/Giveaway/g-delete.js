@@ -18,7 +18,6 @@ class GiveawayDelete extends Command {
 			dirname: __dirname,
 			aliases: ['giveaway-delete', 'gdelete'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Delete a giveaway',
 			usage: 'g-delete <messageID>',
 			cooldown: 2000,

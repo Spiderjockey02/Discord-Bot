@@ -1,8 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags },
-	} = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -20,7 +19,6 @@ class RoleInfo extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['roleinfo'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get information on a role.',
 			usage: 'role-info <role>',
 			cooldown: 2000,

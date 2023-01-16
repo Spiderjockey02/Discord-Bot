@@ -1,5 +1,5 @@
 // Dependencies
-const	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,6 @@ class QRcode extends Command {
 			name: 'qrcode',
 			dirname: __dirname,
 			aliases: ['qr-code'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a QR code.',
 			usage: 'qrcode <text / file>',
 			cooldown: 5000,

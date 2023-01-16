@@ -1,6 +1,5 @@
 // Dependencies
-const	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	Command = require('../../structures/Command.js');
 
 /**
  * Emoji-list command
@@ -17,7 +16,6 @@ class EmojiList extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['emojilist', 'emotes'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays the server\'s emojis',
 			usage: 'emojilist',
 			cooldown: 2000,

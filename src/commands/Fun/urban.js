@@ -1,5 +1,5 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const { ApplicationCommandOptionType } = require('discord.js'),
 	{ Embed } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,6 @@ class Urban extends Command {
 			name: 'urban',
 			nsfw: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Get the urban dictionary of a word.',
 			usage: 'urban <word>',
 			cooldown: 1000,

@@ -2,7 +2,7 @@
 const { promisify } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	path = require('path'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +19,6 @@ class Reload extends Command {
 			name: 'reload',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Reloads a command.',
 			usage: 'reload <command / event>',
 			cooldown: 3000,

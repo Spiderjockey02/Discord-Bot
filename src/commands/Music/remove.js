@@ -1,6 +1,6 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +17,6 @@ class Remove extends Command {
 			name: 'remove',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Removes a song from the queue',
 			usage: 'remove <position> [position]',
 			cooldown: 3000,

@@ -1,7 +1,7 @@
 // Dependencies
 const { image_search } = require('duckduckgo-images-api'),
 	{ Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, ChannelType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, ChannelType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,6 @@ class Image extends Command {
 			name: 'image',
 			dirname: __dirname,
 			aliases: ['img'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Finds an image based on the topic.',
 			usage: 'image <topic>',
 			cooldown: 2000,

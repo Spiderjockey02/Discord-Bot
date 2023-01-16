@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,6 @@ class Back extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['vol'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Changes the volume of the song',
 			usage: 'volume <Number>',
 			cooldown: 3000,

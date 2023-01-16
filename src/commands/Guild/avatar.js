@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, GuildMember } = require('discord.js'),
+	{ ApplicationCommandOptionType, GuildMember } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
@@ -19,7 +19,6 @@ class Avatar extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['av'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays user\'s avatar.',
 			usage: 'avatar [user]',
 			cooldown: 2000,

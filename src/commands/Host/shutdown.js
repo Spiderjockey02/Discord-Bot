@@ -1,6 +1,5 @@
 // Dependencies
-const	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	Command = require('../../structures/Command.js');
 
 /**
  * Shutdown command
@@ -16,7 +15,6 @@ class Shutdown extends Command {
 			name: 'shutdown',
 			ownerOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Shutdowns the bot.',
 			usage: 'shutdown',
 			cooldown: 3000,

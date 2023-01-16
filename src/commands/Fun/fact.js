@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +16,6 @@ class Fact extends Command {
 			name: 'fact',
 			dirname: __dirname,
 			aliases: ['facts'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Receive a random fact.',
 			usage: 'fact',
 			slash: true,

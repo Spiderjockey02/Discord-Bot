@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,12 +18,11 @@ class Report extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rep'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Report a user.',
 			usage: 'report <user> [reason]',
 			cooldown: 3000,
 			examples: ['report username', 'report username swearing'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

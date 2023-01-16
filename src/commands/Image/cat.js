@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +17,6 @@ class Cat extends Command {
 			name: 'cat',
 			dirname: __dirname,
 			aliases: ['meow'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Have a nice picture of a cat.',
 			usage: 'cat',
 			cooldown: 2000,

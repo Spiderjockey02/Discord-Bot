@@ -22,7 +22,7 @@ class Deafen extends Command {
 			usage: 'deafen <user>',
 			cooldown: 2000,
 			examples: ['deafen username'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

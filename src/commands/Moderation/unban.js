@@ -23,7 +23,7 @@ class Unban extends Command {
 			usage: 'unban <userID> [reason]',
 			cooldown: 5000,
 			examples: ['unban 184376969016639488'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

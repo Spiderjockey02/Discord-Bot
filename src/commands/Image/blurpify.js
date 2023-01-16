@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,6 @@ class Blurpify extends Command {
 			name: 'blurpify',
 			dirname: __dirname,
 			aliases: ['blurp'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Blurpify an image.',
 			usage: 'blurpify [file]',
 			cooldown: 5000,

@@ -19,7 +19,6 @@ class TagEdit extends Command {
 			dirname: __dirname,
 			aliases: ['t-edit'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Edit a tag from this server',
 			usage: 'tag-edit <rename / edit> <name> <newName / newResponse>',
 			cooldown: 2000,

@@ -18,7 +18,6 @@ class Docs extends Command {
 			ownerOnly: true,
 			dirname: __dirname,
 			aliases: ['refresh-interaction'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Update all the servers interaction',
 			usage: 'refresh-interaction',
 			cooldown: 3000,

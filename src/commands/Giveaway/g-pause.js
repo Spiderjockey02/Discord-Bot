@@ -18,7 +18,6 @@ class GiveawayPause extends Command {
 			dirname: __dirname,
 			aliases: ['giveaway-pause', 'gpause'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Pause a giveaway',
 			usage: 'g-pause <messageID>',
 			cooldown: 2000,

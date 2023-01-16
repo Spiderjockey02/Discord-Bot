@@ -24,7 +24,7 @@ class Mute extends Command {
 			usage: 'mute <user> [time]',
 			cooldown: 2000,
 			examples: ['mute username', 'mute username 5m'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

@@ -1,7 +1,5 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ time: { getReadableTime } } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+const { Embed, time: { getReadableTime } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,7 +15,6 @@ class Uptime extends Command {
 		super(bot, {
 			name: 'uptime',
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the uptime of the bot.',
 			usage: 'uptime',
 			cooldown: 2000,

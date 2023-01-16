@@ -1,6 +1,5 @@
 // Dependencies
-const	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	Command = require('../../structures/Command.js');
 
 /**
  * Meme command
@@ -15,7 +14,6 @@ class Meme extends Command {
 		super(bot, {
 			name: 'meme',
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends a random meme.',
 			usage: 'meme',
 			cooldown: 1000,

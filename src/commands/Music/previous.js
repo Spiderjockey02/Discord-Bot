@@ -24,6 +24,7 @@ class Previous extends Command {
 			description: 'Displays the previous tracks that have been played.',
 			usage: 'previous [pageNumber]',
 			cooldown: 3000,
+			slash: true,
 			examples: ['previous', 'previous 2'],
 		});
 	}

@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	fetch = require('node-fetch'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -18,7 +18,6 @@ class WhoWouldWin extends Command {
 			name: 'whowouldwin',
 			dirname: __dirname,
 			aliases: ['www'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a whowouldwin image.',
 			usage: 'whowouldwin <user1> [user2]',
 			cooldown: 5000,

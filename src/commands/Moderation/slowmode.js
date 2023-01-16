@@ -24,7 +24,7 @@ class Slowmode extends Command {
 			usage: 'slowmode <time / off>',
 			cooldown: 5000,
 			examples: ['slowmode off', 'slowmode 1m'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'input',

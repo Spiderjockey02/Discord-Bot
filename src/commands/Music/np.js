@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ splitBar } = require('string-progressbar'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -19,7 +18,6 @@ class NowPlaying extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['song'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Shows the current song playing.',
 			usage: 'np',
 			cooldown: 3000,

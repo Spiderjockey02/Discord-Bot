@@ -14,7 +14,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fapi.egglord.dev%2F)
 [![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
-  
+
 </div>
 
 <p align="center">
@@ -37,16 +37,16 @@ If you liked this repository, feel free to leave a star ⭐ to help promote Eggl
 
 ## ❗ Features
 
-**120+** commands and counting across **13** different categories!
+**140+** commands and counting across **13** different categories!
 
-*   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokemon` and **6** more! 
+*   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokemon` and **6** more!
 *   🎁  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
-*   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **6** more! 
-*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **5** more! 
-*   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more! 
+*   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **6** more!
+*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **5** more!
+*   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more!
 *   💰  **Level**: `leaderboard`, `rank`!
 *   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **4** more!
-*   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **9** more! 
+*   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **9** more!
 *   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **25** more!
 *   🔞  **NSFW**: Total of **8** commands!
 * **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
@@ -71,7 +71,7 @@ Egglord also comes packed with a variety of features, such as:
 ## 📝 To-Do
 
 Egglord is pretty much at the end of development now, it will only be updated for the following things:
-  
+
   * Bug fixes
   * Code optimisation
   * New discord features

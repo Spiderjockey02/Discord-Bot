@@ -19,12 +19,11 @@ class ClearWarning extends Command {
 			dirname: __dirname,
 			aliases: ['cl-warning', 'cl-warnings', 'clear-warnings'],
 			userPermissions: [Flags.KickMembers],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Remove warnings from a user.',
 			usage: 'clear-warning <user> [warning number]',
 			cooldown: 5000,
 			examples: ['clear-warning username'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

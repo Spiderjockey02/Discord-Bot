@@ -19,7 +19,6 @@ class Firstmessage extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['firstmsg', 'first-msg'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Gets the first message from the channel.',
 			usage: 'firstmessage [channel]',
 			cooldown: 2000,

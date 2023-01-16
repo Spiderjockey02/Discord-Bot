@@ -23,7 +23,7 @@ class Kick extends Command {
 			usage: 'kick <user> [reason]',
 			cooldown: 5000,
 			examples: ['kick username spamming chat'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',

@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed, paginate } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 // Show the ordinal for the ranks
@@ -22,7 +21,6 @@ class Leaderboard extends Command {
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lb', 'levels', 'ranks'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Displays the Servers\'s level leaderboard.',
 			usage: 'leaderboard',
 			cooldown: 3000,

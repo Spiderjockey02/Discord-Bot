@@ -1,5 +1,5 @@
 // Dependencies
-const { EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+const { EmbedBuilder } = require('discord.js'),
 	{ functions: { genInviteLink } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
@@ -17,7 +17,6 @@ class Invite extends Command {
 			name: 'invite',
 			dirname: __dirname,
 			aliases: ['inv'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Send an invite link so people can add me to their server.',
 			usage: 'invite',
 			cooldown: 2000,

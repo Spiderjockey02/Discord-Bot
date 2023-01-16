@@ -19,7 +19,6 @@ class TagDelete extends Command {
 			dirname: __dirname,
 			aliases: ['t-delete', 't-remove', 'tag-del'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Remove a tag from the server',
 			usage: 'tag-delete <name>',
 			cooldown: 2000,

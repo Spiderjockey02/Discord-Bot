@@ -24,7 +24,7 @@ class Clear extends Command {
 			usage: 'clear <Number> [member]',
 			cooldown: 5000,
 			examples: ['clear 50 username', 'clear 10'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'number',

@@ -24,7 +24,7 @@ class Ban extends Command {
 			usage: 'ban <user> [reason] [time]',
 			cooldown: 5000,
 			examples: ['ban username spamming chat 4d', 'ban username raiding'],
-			slash: false,
+			slash: true,
 			options: [
 				{
 					name: 'user',
