@@ -1,6 +1,6 @@
 // Dependencies
-const fs = require('fs'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ colourNames } = require('../../assets/json/colours.json'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -73,24 +73,15 @@ class AddRole extends Command {
 		// Make sure there isn't already the max number of roles in the guilds
 		if (message.guild.roles.cache.size == 250) return message.channel.error('moderation/addrole:MAX_ROLES');
 
-		// Check colour name for role
-		fs.readFile('./src/assets/json/colours.json', async (err, data) => {
-			if (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
-
-			// Create role
-			const { colourNames } = JSON.parse(data);
-			const colour = (message.args[1]?.toLowerCase())?.replace(/\s/g, '');
-			if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[1])) {
-				const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
-				message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
-			} else {
-				const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, hoist: message.args[2] ?? false });
-				message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
-			}
-		});
+		// Create role
+		const colour = (message.args[1]?.toLowerCase())?.replace(/\s/g, '');
+		if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[1])) {
+			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
+			message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
+		} else {
+			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.tag}`, hoist: message.args[2] ?? false });
+			message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
+		}
 	}
 
 	/**
@@ -119,6 +110,12 @@ class AddRole extends Command {
 		}
 	}
 
+	/**
+	 * Function for handling autocomplete
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
 	autocomplete(bot, interaction) {
 		const input = interaction.options.getFocused(true).value,
 			colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
