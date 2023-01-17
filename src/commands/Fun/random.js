@@ -1,6 +1,5 @@
 // Dependencies
-const max = 100000,
-	{ EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,61 +15,18 @@ class Random extends Command {
 		super(bot, {
 			name: 'random',
 			dirname: __dirname,
-			description: 'Replies with a random number.',
-			usage: 'random <LowNum> <HighNum>',
+			description: 'Random number or caps',
+			usage: 'random',
 			cooldown: 1000,
-			examples: ['random 1 10', 'random 5 99'],
+			examples: ['random'],
 			slash: true,
-			options: [{
-				name: 'min',
-				description: 'The minimum number',
-				type: ApplicationCommandOptionType.Integer,
-				minValue: 0,
-				maxValue: 2147483647,
-				required: true,
-			},
-			{
-				name: 'max',
-				description: 'The maximum number',
-				type: ApplicationCommandOptionType.Integer,
-				minValue: 1,
-				maxValue: 2147483647,
-				required: true,
-			}],
+			options: bot.commands.filter(c => c.help.name.startsWith('random') && c.help.name != 'random').map(c => ({
+				name: c.help.name.replace('random-', ''),
+				description: c.help.description,
+				type: ApplicationCommandOptionType.Subcommand,
+				options: c.conf.options,
+			})),
 		});
-	}
-
-	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
-	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-  */
-	async run(bot, message, settings) {
-
-		// Random number and facts command
-		const num1 = parseInt(message.args[0]),
-			num2 = parseInt(message.args[1]);
-
-		// Make sure both entries are there
-		if (!num1 || !num2) {
-			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) });
-		}
-
-		// Make sure they follow correct rules
-		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) });
-		}
-
-		// send result
-		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		const embed = new EmbedBuilder()
-			.setColor(bot.config.embedColor)
-			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
-		message.channel.send({ embeds: [embed] });
 	}
 
 	/**
@@ -82,18 +38,12 @@ class Random extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			settings = guild.settings,
-			num1 = args.get('min').value,
-			num2 = args.get('max').value;
-
-		// Make sure they follow correct rules
-		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)], ephemeral: true });
+		const command = bot.commands.get(`random-${interaction.options.getSubcommand()}`);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
+		} else {
+			interaction.reply({ content: 'Error', ephemeral: true });
 		}
-		// send result
-		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return interaction.reply({ embeds: [{ color: bot.config.embedColor, description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 }
 
