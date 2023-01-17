@@ -92,7 +92,7 @@ class SlashCreate extends Event {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 		await cmd.callback(bot, interaction, guild, interaction.options);
 		timestamps.set(interaction.user.id, now);
-		this.commandsUsed++;
+		bot.commandsUsed++;
 	}
 }
 
