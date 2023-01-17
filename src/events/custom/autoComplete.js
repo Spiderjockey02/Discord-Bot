@@ -28,8 +28,7 @@ class AutoComplete extends Event {
 	async run(bot, interaction) {
 		// Make sure only play & search command trigger autoComplete
 		switch (interaction.commandName) {
-			case 'play':
-			case 'search': {
+			case 'play': {
 				// Get current input and make sure it's not 0
 				const searchQuery = interaction.options.getFocused(true).value;
 				if (searchQuery.length == 0) return interaction.respond([]);
@@ -113,7 +112,11 @@ class AutoComplete extends Event {
 				if (playlists) interaction.respond(playlists.map(i => ({ name: i.name, value: i.name }))); else interaction.respond([]);
 				break;
 			}
+			case 'reload':
+				bot.commands.get(`reload-${interaction.options.getSubcommand()}`).autocomplete(bot, interaction);
+				break;
 			default:
+				console.log(interaction);
 				interaction.respond([{ name: 'error', value: 'error fetching results' }]);
 		}
 	}

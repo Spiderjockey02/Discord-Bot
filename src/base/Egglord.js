@@ -204,6 +204,7 @@ class Egglord extends Client {
 						const item = {
 							name: command.help.name,
 							description: command.help.description,
+							nsfw: command.conf.nsfw,
 							defaultMemberPermissions: command.conf.userPermissions.length >= 1 ? command.conf.userPermissions : PermissionFlag.SendMessages,
 						};
 						if (command.conf.options[0]) item.options = command.conf.options;

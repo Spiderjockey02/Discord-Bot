@@ -23,13 +23,12 @@ class User extends Command {
 			usage: 'user <id> [premium / banned / rank / reset] [true / false]',
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
-			slash: false,
+			slash: true,
 			options: [{
-				name: 'track',
-				description: 'The link or name of the track.',
+				name: 'user',
+				description: 'The userID',
 				type: ApplicationCommandOptionType.String,
 				required: true,
-				autocomplete: true,
 			}],
 		});
 	}

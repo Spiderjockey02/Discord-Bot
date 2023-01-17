@@ -1,8 +1,5 @@
 // Dependencies
-const { promisify } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	path = require('path'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+const { ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,20 +13,22 @@ class Reload extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'reload',
+			name: 'reload-commands',
 			ownerOnly: true,
 			dirname: __dirname,
 			description: 'Reloads a command.',
-			usage: 'reload <command / event>',
+			usage: 'reload command',
 			cooldown: 3000,
-			examples: ['reload help', 'reload channelCreate'],
-			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('reload') && c.help.name != 'reload').map(c => ({
-				name: c.help.name.replace('reload-', ''),
-				description: c.help.description,
-				type: ApplicationCommandOptionType.Subcommand,
-				options: c.conf.options,
-			})),
+			examples: ['reload help'],
+			slash: false,
+			isSubCmd: true,
+			options: [{
+				name: 'command',
+				description: 'Command to reload',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+				autocomplete: true,
+			}],
 		});
 	}
 
@@ -63,31 +62,6 @@ class Reload extends Command {
 				if (message.deletable) message.delete();
 				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
-		} else if (Object.keys(bot._events).includes(message.args[0])) {
-			try {
-				// locate file
-				let fileDirectory;
-				const evtFolder = await readdir('./src/events/');
-				evtFolder.forEach(async folder => {
-					const folders = await readdir('./src/events/' + folder + '/');
-					folders.forEach(async file => {
-						const { name } = path.parse(file);
-						if (name == message.args[0]) {
-							fileDirectory = `../../events/${folder}/${file}`;
-							delete require.cache[require.resolve(fileDirectory)];
-							bot.removeAllListeners(message.args[0]);
-							const event = new (require(fileDirectory))(bot, message.args[0]);
-							bot.logger.log(`Loading Event: ${message.args[0]}`);
-							// eslint-disable-next-line no-shadow
-							bot.on(message.args[0], (...args) => event.run(bot, ...args));
-							return message.channel.success('host/reload:SUCCESS_EVENT', { NAME: message.args[0] }).then(m => m.timedDelete({ timeout: 8000 }));
-						}
-					});
-				});
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
 		} else {
 			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName });
 		}
@@ -102,12 +76,39 @@ class Reload extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`reload-${interaction.options.getSubcommand()}`);
-		if (command) {
-			command.callback(bot, interaction, guild, args);
+		const cmdName = args.get('command').value,
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		if (bot.commands.has(cmdName) || bot.commands.get(bot.aliases.get(cmdName))) {
+			// Finds command
+			const cmd = bot.commands.get(cmdName) || bot.commands.get(bot.aliases.get(cmdName));
+
+			// reloads command
+			try {
+				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
+				await bot.loadCommand(cmd.conf.location, cmd.help.name);
+				interaction.reply({ embeds: [channel.success('host/reload:SUCCESS', { NAME: cmdName }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 8000 }));
+			} catch (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			}
 		} else {
-			interaction.reply({ content: 'Error', ephemeral: true });
+			interaction.reply({ embeds: [channel.error(`${cmdName} is not a command name nor alias of a command.`, null, true)], ephemeral: true });
 		}
+	}
+
+	/**
+	 * Function for handling autocomplete
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	async autocomplete(bot, interaction) {
+		const events = bot.commands.map(i => i.help.name).sort(),
+			input = interaction.options.getFocused(true).value;
+		const selectedEvents = events.filter(i => i.toLowerCase().startsWith(input)).slice(0, 10);
+
+		interaction.respond(selectedEvents.map(i => ({ name: i, value: i })));
 	}
 }
 
