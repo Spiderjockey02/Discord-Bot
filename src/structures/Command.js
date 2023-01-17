@@ -1,5 +1,6 @@
 // Dependencies
-const path = require('path');
+const path = require('path'),
+	{ ApplicationCommandOptionType: CommandOptionType, PermissionsBitField: { Flags } } = require('discord.js');
 
 /**
  * Command structure
@@ -11,7 +12,7 @@ class Command {
 		guildOnly = false,
 		dirname = false,
 		aliases = new Array(),
-		botPermissions = new Array(),
+		botPermissions = [Flags.SendMessages, Flags.EmbedLinks],
 		userPermissions = new Array(),
 		examples = new Array(),
 		nsfw = false,
@@ -20,10 +21,11 @@ class Command {
 		description = '',
 		usage = '',
 		slash = false,
+		isSubCmd = false,
 		options = new Array(),
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
-		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, options };
+		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, isSubCmd, options };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
 

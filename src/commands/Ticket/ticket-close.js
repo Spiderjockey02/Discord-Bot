@@ -23,6 +23,7 @@ class TicketClose extends Command {
 			usage: 'ticket-close',
 			cooldown: 3000,
 			slash: false,
+			isSubCmd: true,
 		});
 	}
 

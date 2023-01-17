@@ -23,6 +23,7 @@ class GiveawayReroll extends Command {
 			cooldown: 2000,
 			examples: ['g-reroll 818821436255895612'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'id',

@@ -23,6 +23,7 @@ class GiveawayDelete extends Command {
 			cooldown: 2000,
 			examples: ['g-delete 818821436255895612'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'id',

@@ -26,6 +26,7 @@ class GiveawayStart extends Command {
 			cooldown: 30000,
 			examples: ['g-start 1m 1 nitro', 'g-start 2h30m 3 nitro classic'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'time',

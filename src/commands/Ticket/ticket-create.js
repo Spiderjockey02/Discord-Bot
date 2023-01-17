@@ -24,6 +24,7 @@ class TicketCreate extends Command {
 			cooldown: 3000,
 			examples: ['t-create Something isn\'t working'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'reason',

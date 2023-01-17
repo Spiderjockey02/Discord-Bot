@@ -26,17 +26,17 @@ class Nick extends Command {
 			slash: true,
 			options: [
 				{
-					name: 'user',
-					description: 'The user to change nickname.',
-					type: ApplicationCommandOptionType.User,
-					required: false,
-				},
-				{
 					name: 'name',
 					description: 'The nickname to give the user.',
 					type: ApplicationCommandOptionType.String,
 					maxLength: 32,
 					required: true,
+				},
+				{
+					name: 'user',
+					description: 'The user to change nickname.',
+					type: ApplicationCommandOptionType.User,
+					required: false,
 				},
 			],
 		});

@@ -23,6 +23,7 @@ class GiveawayPause extends Command {
 			cooldown: 2000,
 			examples: ['g-pause 818821436255895612'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'id',

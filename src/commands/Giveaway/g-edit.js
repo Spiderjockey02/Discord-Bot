@@ -24,6 +24,7 @@ class GiveawayEdit extends Command {
 			cooldown: 2000,
 			examples: ['g-edit 818821436255895612 2m 2 nitro', 'g-edit 818821436255895612 3h40m 5 nitro classic'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'id',

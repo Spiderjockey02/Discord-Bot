@@ -26,6 +26,7 @@ class TicketSetup extends Command {
 			cooldown: 3000,
 			examples: ['t-setup category 783024613037703237', 't-setup role 766029837017153576'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'option',
