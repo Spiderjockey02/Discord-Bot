@@ -2,6 +2,7 @@
 const { Embed } = require('../../utils'),
 	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ getStations } = require('radio-browser'),
+	radioStations = require('../../assets/json/radio_streams_yuck.json'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -196,6 +197,7 @@ class Radio extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
+
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
@@ -229,6 +231,20 @@ class Radio extends Command {
 				return interaction.reply({ embeds: [embed] });
 			}
 		}
+	}
+
+	/**
+	 * Function for handling autocomplete
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	autocomplete(bot, interaction) {
+		const input = interaction.options.getFocused(true).value,
+			stations = radioStations.map(i => i.name).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+
+		// Send back the responses
+		interaction.respond(stations.map(i => ({ name: i, value: radioStations.find(rad => rad.name == i).audio })));
 	}
 }
 

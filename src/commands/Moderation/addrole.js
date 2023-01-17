@@ -118,6 +118,14 @@ class AddRole extends Command {
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
+
+	autocomplete(bot, interaction) {
+		const input = interaction.options.getFocused(true).value,
+			colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+
+		// Send back the responses
+		interaction.respond(colour.map(i => ({ name: i, value: Object.entries(colourNames).find(c => c[0] == i)[1] })));
+	}
 }
 
 module.exports = AddRole;

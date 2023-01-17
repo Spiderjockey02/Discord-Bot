@@ -1,6 +1,8 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	axios = require('axios'),
+	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -257,6 +259,58 @@ class Play extends Command {
 				return interaction.reply({ embeds: [embed] });
 			}
 		}
+	}
+
+	async autocomplete(bot, interaction) {
+		// Get current input and make sure it's not 0
+		const searchQuery = interaction.options.getFocused(true).value;
+		if (searchQuery.length == 0) return interaction.respond([]);
+
+		let fetched = false;
+		const res = await axios.get(`https://www.youtube.com/results?q=${rfc3986EncodeURIComponent(searchQuery)}&hl=en`);
+		let html = res.data;
+
+		// try to parse html
+		try {
+			const data = html.split('ytInitialData = \'')[1]?.split('\';</script>')[0];
+			html = data.replace(/\\x([0-9A-F]{2})/ig, (...items) => String.fromCharCode(parseInt(items[1], 16)));
+			html = html.replaceAll('\\\\"', '');
+			html = JSON.parse(html);
+		} catch { null; }
+
+		let videos;
+		if (html?.contents?.sectionListRenderer?.contents?.length > 0 && html.contents.sectionListRenderer.contents[0]?.itemSectionRenderer?.contents?.length > 0) {
+			videos = html.contents.sectionListRenderer.contents[0].itemSectionRenderer.contents;
+			fetched = true;
+		}
+
+		// backup/ alternative parsing
+		if (!fetched) {
+			try {
+				videos = JSON.parse(html.split('{"itemSectionRenderer":{"contents":')[html.split('{"itemSectionRenderer":{"contents":').length - 1].split(',"continuations":[{')[0]);
+				fetched = true;
+			} catch {	fetched = false; }
+		}
+		if (!fetched) {
+			try {
+				videos = JSON.parse(html.split('{"itemSectionRenderer":')[html.split('{"itemSectionRenderer":').length - 1].split('},{"continuationItemRenderer":{')[0]).contents;
+				fetched = true;
+			} catch { fetched = false; }
+		}
+
+		const results = [];
+		if (!fetched) return interaction.respond(results);
+		for (const video of videos) {
+			// Only get 5 video suggestions
+			if (results.length >= 5) break;
+			results.push({
+				title: video.videoRenderer.title.runs[0].text,
+				url: `https://www.youtube.com${video.videoRenderer.navigationEndpoint.commandMetadata.webCommandMetadata.url}`,
+			});
+		}
+
+		// Send back the results to the user
+		interaction.respond(results.map(video => ({ name: video.title, value: interaction.commandName == 'play' ? video.url : video.title })));
 	}
 }
 

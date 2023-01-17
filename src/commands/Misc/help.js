@@ -59,6 +59,22 @@ class Help extends Command {
 	}
 
 	/**
+	 * Function for handling autocomplete
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	autocomplete(bot, interaction) {
+		const input = interaction.options.getFocused(true).value,
+			commands = bot.commands.map(i => ({ name: i.help.name, isSubCmd: i.conf.isSubCmd }))
+				.filter(cmd => !cmd.isSubCmd && cmd.name.toLowerCase().startsWith(input.toLowerCase()))
+				.slice(0, 10);
+
+		// Send back the responses
+		interaction.respond(commands.map(i => ({ name: i.name, value: i.name })));
+	}
+
+	/**
 	 * Function for creating bot about embed.
 	 * @param {bot} bot The instantiating client
 	 * @param {guild} guild The guild the command was ran in
