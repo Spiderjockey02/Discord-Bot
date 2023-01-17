@@ -1,6 +1,6 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -14,15 +14,25 @@ class PDelete extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'p-delete',
+			name: 'playlist-delete',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-delete'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Delete a playlist',
 			usage: 'p-delete <playlist name>',
 			cooldown: 3000,
 			examples: ['p-delete Songs'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'name',
+					description: 'The name of the playlist',
+					type: ApplicationCommandOptionType.String,
+					autocomplete: true,
+					required: true,
+				},
+			],
 		});
 	}
 

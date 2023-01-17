@@ -1,6 +1,6 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -14,15 +14,41 @@ class PRemove extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'p-remove',
+			name: 'playlist-remove',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-remove'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'remove a song from the playlist',
 			usage: 'p-remove <playlist name> <position> [position]',
 			cooldown: 3000,
 			examples: ['p-remove Songs 3', 'p-remove Songs 3 5'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'name',
+					description: 'The name of the playlist',
+					type: ApplicationCommandOptionType.String,
+					autocomplete: true,
+					required: true,
+				},
+				{
+					name: 'first_pos',
+					description: 'Position of song that will be removed',
+					type: ApplicationCommandOptionType.String,
+					minValue: 0,
+					maxValue: 200,
+					required: true,
+				},
+				{
+					name: 'last_pos',
+					description: 'Last position to remove',
+					type: ApplicationCommandOptionType.String,
+					minValue: 1,
+					maxValue: 200,
+					required: false,
+				},
+			],
 		});
 	}
 

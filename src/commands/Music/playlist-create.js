@@ -1,8 +1,7 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
+const	{ Embed, time: { getReadableTime } } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	{ time: { getReadableTime } } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,15 +15,31 @@ class PCreate extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'p-create',
+			name: 'playlist-create',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-create'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Create a playlist',
 			usage: 'p-create <playlist name> <search query/link>',
 			cooldown: 3000,
 			examples: ['p-create Songs https://www.youtube.com/watch?v=N3vY6yvHLdc&list=PLUhFQlEQDZOfDqu5eZUvwUs7EEcPpeVbB'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'name',
+					description: 'Name of new playlist',
+					type: ApplicationCommandOptionType.String,
+					maxLength: 32,
+					required: true,
+				},
+				{
+					name: 'track',
+					description: 'The link or name of the track.',
+					type: ApplicationCommandOptionType.String,
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -38,37 +53,36 @@ class PCreate extends Command {
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) });
 		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
-		const msg = await message.channel.send(message.translate('music/p-create:WAITING'));
+		const msg = await message.channel.send({ content: message.translate('music/p-create:WAITING') });
 
-		PlaylistSchema.find({
-			creator: message.author.id,
-		}, async (err, p) => {
-			// if an error occured
-			if (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
+		try {
+			const playlists = await	PlaylistSchema.find({
+				creator: message.author.id,
+			});
 
 			// response from database
-			if (!p[0]) {
+			if (!playlists[0]) {
 				await this.savePlaylist(bot, message, settings, msg);
-			} else if (p[0] && !message.author.premium) {
+			} else if (playlists[0] && !message.author.premium) {
 				// User needs premium to save more playlists
 				return msg.edit(message.translate('music/p-create:NO_PREM'));
-			} else if (p.length >= 3 && message.author.premium) {
+			} else if (playlists.length >= 3 && message.author.premium) {
 				// there is a max of 3 playlists per a user even with premium
 				return msg.edit(message.translate('music/p-create:MAX_PLAYLISTS'));
-			} else if (p && message.author.premium) {
+			} else if (playlists && message.author.premium) {
 				// user can have save another playlist as they have premium
-				const exist = p.find(obj => obj.name == message.args[0]);
+				const exist = playlists.find(obj => obj.name == message.args[0]);
 				if (!exist) {
 					await this.savePlaylist(bot, message, message.args, settings, msg);
 				} else {
 					msg.edit(message.translate('music/p-create:EXISTS'));
 				}
 			}
-		});
+		} catch (err) {
+			if (message.deletable) message.delete();
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+		}
 	}
 
 	// Check and save playlist to database

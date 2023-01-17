@@ -2,7 +2,7 @@
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
 	{ TrackUtils } = require('erela.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,7 @@ class PLoad extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'p-load',
+			name: 'playlist-load',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['playlist-load'],
@@ -25,6 +25,17 @@ class PLoad extends Command {
 			usage: 'p-load <playlist name>',
 			cooldown: 3000,
 			examples: ['p-load Songs'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'name',
+					description: 'The name of the playlist',
+					type: ApplicationCommandOptionType.String,
+					autocomplete: true,
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -41,7 +52,7 @@ class PLoad extends Command {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE').then(m => m.timedDelete({ timeout: 10000 }));
+				return message.channel.error('misc:MISSING_ROLE');
 			}
 		}
 
