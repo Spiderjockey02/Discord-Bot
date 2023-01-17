@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -16,7 +16,6 @@ class Help extends Command {
 		super(bot, {
 			name: 'help',
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Sends information about all the commands that I can do.',
 			usage: 'help [command]',
 			cooldown: 2000,
@@ -41,7 +40,7 @@ class Help extends Command {
 	*/
 	async run(bot, message, settings) {
 		// show help embed
-		const embed = this.createEmbed(bot, settings, message.channel, message.args[0], message.author);
+		const embed = await this.createEmbed(bot, settings, message.channel, message.args[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
@@ -55,7 +54,7 @@ class Help extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
-		const embed = this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
+		const embed = await this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
 		interaction.reply({ embeds: [embed] });
 	}
 
@@ -68,7 +67,7 @@ class Help extends Command {
 	 * @param {user} user The user who ran the command
  	 * @returns {embed}
 	*/
-	createEmbed(bot, settings, channel, command, user) {
+	async createEmbed(bot, settings, channel, command, user) {
 		if (!command) {
 			// Show default help page
 			const embed = new Embed(bot, channel.guild)
@@ -84,13 +83,25 @@ class Help extends Command {
 			if (bot.config.ownerID.includes(user.id)) categories.push('Host');
 
 			// Create the help embed
+			const slashCommands = await channel.guild.commands.fetch();
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
 					const commands = bot.commands
-						.filter(c => c.help.category === category)
+						.filter(c => c.help.category === category && !c.conf.isSubCmd)
 						.sort((a, b) => a.help.name - b.help.name)
-						.map(c => `\`${c.help.name}\``).join('**, **');
+						.map(c => {
+							const slshCmd = slashCommands.find(i => i.name == c.help.name);
+							if (slshCmd) {
+								if (c.conf.options[0]?.type == ApplicationCommandOptionType.Subcommand) {
+									return c.conf.options.map(i => `</${c.help.name} ${i.name}:${slshCmd.id}>`);
+								} else {
+									return `</${c.help.name}:${slshCmd.id}>`;
+								}
+							} else {
+								return c.help.name;
+							}
+						}).join(', ').slice(0, 1000);
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;
