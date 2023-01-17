@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
-    "generate-docs": "jsdoc --configure C:/Users/benja/Desktop/Discord-Bot/jsdoc.json --verbose",
     "replit": "npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH"
   },
   "engines": {
@@ -47,7 +46,6 @@
     "simple-node-logger": "^21.8.12",
     "string-progressbar": "^1.0.3",
     "string-similarity": "^4.0.4",
-    "tinyurl": "^1.1.7",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
