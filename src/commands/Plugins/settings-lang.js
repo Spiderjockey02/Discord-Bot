@@ -1,5 +1,5 @@
 // Dependencies
-const { MessageActionRow, MessageSelectMenu, PermissionsBitField: { Flags } } = require('discord.js'),
+const { ApplicationCommandOptionType, MessageActionRow, MessageSelectMenu, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 
@@ -25,7 +25,7 @@ class Setlang extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'set-lang',
+			name: 'settings-lang',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setlanguage', 'setlang'],
@@ -35,6 +35,17 @@ class Setlang extends Command {
 			usage: 'setlang <language>',
 			cooldown: 5000,
 			examples: ['setlang english'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'language',
+					description: 'Set the language for the server',
+					type: ApplicationCommandOptionType.String,
+					choices: bot.languages.map(lan => lan.nativeName).map(i => ({ name: i, value: i })),
+					required: true,
+				},
+			],
 		});
 	}
 
@@ -55,7 +66,8 @@ class Setlang extends Command {
 			if (!message.args[0] || !language) {
 				return message.channel.error('plugins/set-lang:MISSING_LANG', { list: bot.languages.map((l) => '`' + l.name + '`').join(', ') });
 			} else {
-				await updateLanguage(message.guild, language);
+				const embed = await this.updateLanguage(bot, message.channel, language);
+				message.channel.send({ embeds: [embed] });
 			}
 		} else {
 			const options = bot.languages.map(lan => ({
@@ -78,22 +90,44 @@ class Setlang extends Command {
 
 				try {
 					const resp = await msg.awaitMessageComponent({ filter, componentType: 'SELECT_MENU', time: 15000 });
-					await updateLanguage(message.guild, bot.languages.find(l => l.name === resp.values[0]));
+					const embed = await this.updateLanguage(bot, message.channel, bot.languages.find(l => l.name === resp.values[0]));
+					message.channel.send({ embeds: [embed] });
 					msg.delete();
 				} catch {
 					msg.delete();
 				}
 			});
 		}
+	}
 
-		async function updateLanguage(guild, language) {
-			try {
-				await guild.updateGuild({ Language: language.name });
-				return message.channel.success('plugins/set-lang:SUCCESS', { NAME: language.nativeName });
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const language = args.get('language').value,
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		try {
+			const embed = await this.updateLanguage(bot, channel, bot.languages.find(l => l.nativeName == language));
+			interaction.reply({ embeds: [embed] });
+		} catch (err) {
+			console.log(err);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+		}
+	}
+
+	async updateLanguage(bot, channel, language) {
+		try {
+			await channel.guild.updateGuild({ Language: language.name });
+			return channel.success('plugins/set-lang:SUCCESS', { NAME: language.nativeName }, true);
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 }

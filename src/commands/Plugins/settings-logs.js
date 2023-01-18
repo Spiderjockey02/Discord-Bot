@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 // List of events
@@ -22,7 +23,7 @@ class SetLog extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'set-logs',
+			name: 'settings-logs',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setlogs'],
@@ -31,6 +32,23 @@ class SetLog extends Command {
 			usage: 'set-logs <option> [data]',
 			cooldown: 5000,
 			examples: ['set-logs channel 761612724370931722', 'set-logs add CHANNELCREATE'],
+			slash: false,
+			isSubCmd: true,
+			options: [
+				{
+					name: 'toggle',
+					description: 'Enable or disable the logs',
+					type: ApplicationCommandOptionType.Boolean,
+					required: false,
+				},
+				{
+					name: 'channel',
+					description: 'Set the channel',
+					type: ApplicationCommandOptionType.Channel,
+					channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.GuildPrivateThread, ChannelType.GuildNews],
+					required: false,
+				},
+			],
 		});
 	}
 
@@ -119,6 +137,17 @@ class SetLog extends Command {
 				].join('\n'));
 			message.channel.send({ embeds: [embed] });
 		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	async callback(bot, interaction) {
+		interaction.reply({ content: 'Coming soon' });
+
 	}
 }
 

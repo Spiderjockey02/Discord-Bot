@@ -35,6 +35,9 @@ class InteractionCreate extends Event {
 
 		// Check if it's a modal submitted
 		if (interaction.isModalSubmit()) return bot.emit('modalSubmit', interaction);
+
+		// Check if it's a select menu submit
+		if (interaction.isStringSelectMenu()) return bot.emit('SelectMenuSubmit', interaction);
 	}
 }
 

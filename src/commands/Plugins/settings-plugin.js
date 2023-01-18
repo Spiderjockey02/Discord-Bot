@@ -1,6 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ActionRowBuilder, StringSelectMenuBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -14,15 +14,17 @@ class SetPlugin extends Command {
 */
 	constructor(bot) {
 		super(bot, {
-			name: 'set-plugin',
+			name: 'settings-plugin',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['setplugin'],
 			userPermissions: [Flags.ManageGuild],
 			description: 'Toggle plugins on and off',
-			usage: 'set-plugin <option>',
+			usage: 'set-plugin',
 			cooldown: 5000,
-			examples: ['set-plugin', 'setplugin Giveaway'],
+			examples: ['set-plugin'],
+			slash: false,
+			isSubCmd: true,
 		});
 	}
 
@@ -69,6 +71,7 @@ class SetPlugin extends Command {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
+					console.log(err.requestBody.json.map(i => i.name));
 				}
 				message.channel.success('plugins/set-plugin:ADDED', { PLUGINS: message.args[0] });
 				if (settings.plugins.includes('Level')) await message.guild.fetchLevels();
@@ -86,6 +89,7 @@ class SetPlugin extends Command {
 					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
+					console.log(err.requestBody.json.map(i => i.name));
 				}
 				message.channel.success('plugins/set-plugin:REMOVED', { PLUGINS: message.args[0] });
 			}
@@ -99,6 +103,34 @@ class SetPlugin extends Command {
 		} else {
 			return message.channel.error('plugins/set-plugin:INVALID');
 		}
+	}
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild) {
+		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
+
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new StringSelectMenuBuilder()
+					.setCustomId('plugin_change')
+					.setPlaceholder('Nothing selected')
+					.setMinValues(1)
+					.setMaxValues(defaultPlugins.length)
+					.addOptions(defaultPlugins.map(p => ({
+						label: p,
+						description: 'This is a description',
+						value: p,
+						default: guild.settings.plugins.includes(p),
+					})),
+					),
+			);
+
+		await interaction.reply({ content: 'Enable plugins:', components: [row] });
 	}
 }
 
