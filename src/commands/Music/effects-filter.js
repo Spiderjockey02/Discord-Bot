@@ -28,7 +28,7 @@ class Bassboost extends Command {
 			options: [{
 				name: 'filter',
 				description: 'The amount you want to bass-boost the song.',
-				choices: ['nightcore', 'vaporwave'].map(i => ({ name: i, value: i })),
+				choices: ['nightcore', 'vaporwave', 'reset'].map(i => ({ name: i, value: i })),
 				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
@@ -54,7 +54,11 @@ class Bassboost extends Command {
 
 		// Toggle the filter
 		const player = bot.manager?.players.get(member.guild.id);
-		player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
+		if (filter == 'reset') {
+			player.resetFilter();
+		} else {
+			player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
+		}
 
 
 		await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}_NC`) });
