@@ -73,7 +73,7 @@ class Seek extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`g-${interaction.options.getSubcommand()}`);
+		const command = bot.commands.get(`seek-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

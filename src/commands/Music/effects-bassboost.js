@@ -14,7 +14,7 @@ class Bassboost extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'bassboost',
+			name: 'effects-bassboost',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['bb'],
@@ -23,7 +23,8 @@ class Bassboost extends Command {
 			usage: 'bassboost [value]',
 			cooldown: 3000,
 			examples: ['bb 8', 'bb'],
-			slash: true,
+			slash: false,
+			isSubCmd: true,
 			options: [{
 				name: 'amount',
 				description: 'The amount you want to bass-boost the song.',

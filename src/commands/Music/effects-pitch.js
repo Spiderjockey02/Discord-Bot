@@ -14,7 +14,7 @@ class Pitch extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'pitch',
+			name: 'effects-pitch',
 			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
@@ -22,7 +22,8 @@ class Pitch extends Command {
 			usage: 'pitch',
 			cooldown: 3000,
 			examples: ['pitch off', 'pitch 6'],
-			slash: true,
+			slash: false,
+			isSubCmd: true,
 			options: [{
 				name: 'amount',
 				description: 'The amount you want to pitch the song.',

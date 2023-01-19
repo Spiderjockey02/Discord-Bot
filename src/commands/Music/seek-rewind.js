@@ -94,7 +94,7 @@ class Rewind extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
-			interaction.reply(embed);
+			interaction.reply({ embeds: [embed] });
 		}
 	}
 }

@@ -20,11 +20,6 @@ module.exports = {
 	checkNSFW: function(channel) {
 		return channel.nsfw || channel.type == ChannelType.DM;
 	},
-	genInviteLink: function(bot) {
-		return bot.generateInvite({
-			permissions: BigInt(1073081686),
-			scopes: ['bot', 'applications.commands'] });
-	},
 	CalcLevenDist: function(str1 = '', str2 = '') {
 		const track = Array(str2.length + 1).fill(null).map(() =>
 			Array(str1.length + 1).fill(null));

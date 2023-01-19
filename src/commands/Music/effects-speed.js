@@ -14,7 +14,7 @@ class Speed extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'speed',
+			name: 'effects-speed',
 			guildOnly: true,
 			dirname: __dirname,
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
@@ -22,7 +22,8 @@ class Speed extends Command {
 			usage: 'speed <Number>',
 			cooldown: 3000,
 			examples: ['speed 4'],
-			slash: true,
+			slash: false,
+			isSubCmd: true,
 			options: [{
 				name: 'speed',
 				description: 'The speed at what you want the song to go.',
