@@ -24,7 +24,7 @@ class MessageDeleteBulk extends Event {
 	*/
 	async run(bot, messages) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in guild: ${messages.first().guild.id}`);
+		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in channel: ${messages.first().channel.id}`);
 
 		// Get server settings / if no settings then return
 		const settings = messages.first().channel.guild.settings;
@@ -34,10 +34,12 @@ class MessageDeleteBulk extends Event {
 		if (settings.ModLogEvents?.includes('MESSAGEDELETEBULK') && settings.ModLog) {
 			// Create file of deleted messages
 			let humanLog = `**Deleted Messages from #${messages.first().channel.name} (${messages.first().channel.id}) in ${messages.first().guild.name} (${messages.first().guild.id})**`;
+
 			for (const message of [...messages.values()].reverse()) {
 				humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author?.tag ?? 'Unknown'} (${message.id})`;
 				humanLog += ' : ' + message.content;
 			}
+
 			const attachment = new AttachmentBuilder(Buffer.from(humanLog, 'utf-8'), { name: 'DeletedMessages.txt' });
 			// Get modlog channel
 			const modChannel = messages.first().guild.channels.cache.get(settings.ModLogChannel);

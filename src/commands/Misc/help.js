@@ -117,7 +117,7 @@ class Help extends Command {
 							} else {
 								return c.help.name;
 							}
-						}).join(', ').slice(0, 1000);
+						}).join(', ').slice(0, 1023);
 
 					const length = bot.commands
 						.filter(c => c.help.category === category).size;

@@ -27,12 +27,14 @@ class SelectMenuSubmit extends Event {
 			case 'plugin_change': {
 				// Fetch slash command data
 				const data = [];
-				for (const plugin of guild.settings.plugins) {
+				for (const plugin of interaction.values) {
 					const g = await bot.loadInteractionGroup(plugin, guild);
 					if (Array.isArray(g)) data.push(...g);
 				}
 
 				try {
+					// Update interactions + database with new plugins
+					await guild.updateGuild({ plugins: interaction.values });
 					await guild.commands.set(data);
 					interaction.reply({ embeds: [channel.success('plugins/set-plugin:ADDED', { PLUGINS: interaction.values }, true)] });
 				} catch (err) {

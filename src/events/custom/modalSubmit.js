@@ -5,7 +5,7 @@ const { Embed } = require('../../utils'),
 
 /**
  * modal submit event
- * @event Egglord#Warning
+ * @event Egglord#ModalSubmit
  * @extends {Event}
 */
 class ModalSubmit extends Event {
