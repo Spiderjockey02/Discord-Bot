@@ -23,12 +23,12 @@ class Seek extends Command {
 			cooldown: 3000,
 			examples: ['seek 1:00'],
 			slash: true,
-			options: [{
-				name: 'time',
-				description: 'The time you want to seek to.',
-				type: ApplicationCommandOptionType.String,
-				required: true,
-			}],
+			options: bot.commands.filter(c => c.help.name.startsWith('seek-')).map(c => ({
+				name: c.help.name.replace('seek-', ''),
+				description: c.help.description,
+				type: ApplicationCommandOptionType.Subcommand,
+				options: c.conf.options,
+			})),
 		});
 	}
 
@@ -73,25 +73,11 @@ class Seek extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelId);
-
-		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
-
-		// update the time
-		const player = bot.manager?.players.get(member.guild.id);
-		const time = read24hrFormat(args.get('time').value);
-
-		if (time > player.queue.current.duration) {
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
+		const command = bot.commands.get(`g-${interaction.options.getSubcommand()}`);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
 		} else {
-			player.seek(time);
-			const embed = new EmbedBuilder()
-				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
-			interaction.reply({ embeds: [embed] });
+			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }

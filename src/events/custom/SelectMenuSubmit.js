@@ -32,6 +32,12 @@ class SelectMenuSubmit extends Event {
 					if (Array.isArray(g)) data.push(...g);
 				}
 
+				// Add interactions
+				if (guild.id == bot.config.SupportServer.GuildID) {
+					const g = await bot.loadInteractionGroup('Host', guild);
+					if (Array.isArray(g)) data.push(...g);
+				}
+
 				try {
 					// Update interactions + database with new plugins
 					await guild.updateGuild({ plugins: interaction.values });

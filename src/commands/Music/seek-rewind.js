@@ -14,19 +14,20 @@ class Rewind extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'rewind',
+			name: 'seek-rewind',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['rw'],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
-			description: 'Rewinds the player by your specified amount.',
+			description: 'Rewinds the player by your specified amount  (Default: 10 secs).',
 			usage: 'rewind <time>',
 			cooldown: 3000,
 			examples: ['rw 1:00', 'rw 1:32:00'],
-			slash: true,
+			slash: false,
+			isSubCmd: true,
 			options: [{
 				name: 'time',
-				description: 'The time you want to rewind to.',
+				description: 'The amount of time to rewind by.',
 				type: ApplicationCommandOptionType.String,
 				required: false,
 			}],
