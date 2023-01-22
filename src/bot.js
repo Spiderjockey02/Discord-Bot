@@ -38,13 +38,14 @@ async function loadCommands() {
 		if (bot.config.disabledPlugins.includes(dir) || dir == 'command.example.js') return;
 		const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
 		// loop through each command in the category
-		commands.forEach((cmd) => {
-			if (bot.config.disabledCommands.includes(cmd.replace('.js', ''))) return;
+		commands.forEach((file) => {
+			if (bot.config.disabledCommands.includes(file.replace('.js', ''))) return;
 			try {
-				bot.loadCommand('./commands/' + dir, cmd);
+				const cmd = new (require(`./commands/${dir}/${file}`))(bot);
+				cmd.load(bot);
 			} catch (err) {
 				if (bot.config.debug) console.log(err);
-				bot.logger.error(`Unable to load command ${cmd}: ${err}`);
+				bot.logger.error(`Unable to load command ${file}: ${err}`);
 			}
 		});
 	});

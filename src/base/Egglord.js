@@ -173,22 +173,6 @@ class Egglord extends Client {
 	}
 
 	/**
-	 * Function for loading commands to the bot.
-	 * @param {string} commandPath The path of where the command is located
-	 * @param {string} commandName The name of the command
-	 * @readonly
-	*/
-	loadCommand(commandPath, commandName) {
-		const cmd = new (require(`.${commandPath}${path.sep}${commandName}`))(this);
-		this.logger.log(`Loading Command: ${cmd.help.name}.`);
-		cmd.conf.location = commandPath;
-		this.commands.set(cmd.help.name, cmd);
-		cmd.help.aliases.forEach((alias) => {
-			this.aliases.set(alias, cmd.help.name);
-		});
-	}
-
-	/**
 	 * Function for fetching slash command data.
 	 * @param {string} category The command category to get data from
 	 * @returns {array}
@@ -247,24 +231,6 @@ class Egglord extends Client {
 		} catch (err) {
 			return `Unable to load category ${category}: ${err}`;
 		}
-	}
-
-	/**
-	 * Function for unloading commands to the bot.
-	 * @param {string} commandPath The path of where the command is located
-	 * @param {string} commandName The name of the command
-	 * @readonly
-	*/
-	async unloadCommand(commandPath, commandName) {
-		let command;
-		if (this.commands.has(commandName)) {
-			command = this.commands.get(commandName);
-		} else if (this.aliases.has(commandName)) {
-			command = this.commands.get(this.aliases.get(commandName));
-		}
-		if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
-		delete require.cache[require.resolve(`.${commandPath}${path.sep}${commandName}.js`)];
-		return false;
 	}
 
 	/**

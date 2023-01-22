@@ -54,12 +54,11 @@ class Reload extends Command {
 
 			// reloads command
 			try {
-				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
-				await bot.loadCommand(cmd.conf.location, cmd.help.name);
+				cmd.unload();
+				cmd.load(bot);
 				return message.channel.success('host/reload:SUCCESS', { NAME: commandName }).then(m => m.timedDelete({ timeout: 8000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				if (message.deletable) message.delete();
 				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else {
@@ -85,8 +84,8 @@ class Reload extends Command {
 
 			// reloads command
 			try {
-				await bot.unloadCommand(cmd.conf.location, cmd.help.name);
-				await bot.loadCommand(cmd.conf.location, cmd.help.name);
+				cmd.unload();
+				cmd.load(bot);
 				interaction.reply({ embeds: [channel.success('host/reload:SUCCESS', { NAME: cmdName }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 8000 }));
 			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
