@@ -102,7 +102,7 @@ class Rank extends Command {
 	*/
 	async createRankCard(bot, guild, author, target, channel) {
 		// make sure it's not a bot
-		if (target.user.bot) return channel.error('level/rank:NO_BOTS', { }, true);
+		if (target.user.bot) return channel.error('level/rank:NO_BOTS', null, true);
 
 		// sort and find user
 		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
@@ -110,8 +110,8 @@ class Rank extends Command {
 
 		// if they haven't send any messages
 		if (!user) {
-			if (author.id == target.user.id) return channel.error('level/rank:NO_MESSAGES', { ERROR: null }, true);
-			return channel.error('level/rank:MEMBER_MESSAGE', { ERROR: null }, true);
+			if (author.id == target.user.id) return channel.error('level/rank:NO_MESSAGES', null, true);
+			return channel.error('level/rank:MEMBER_MESSAGE', null, true);
 		}
 
 		// Get rank
@@ -128,11 +128,10 @@ class Rank extends Command {
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
 			.setUsername(target.user.username)
 			.setDiscriminator(target.user.discriminator);
-		//	if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
+		if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
 
 		// create rank card
 		const buffer = await rankcard.build();
-		console.log(buffer);
 		return new AttachmentBuilder(buffer, { name: 'RankCard.png' });
 	}
 }
