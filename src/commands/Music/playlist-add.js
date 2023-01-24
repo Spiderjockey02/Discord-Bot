@@ -53,82 +53,8 @@ class PAdd extends Command {
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) });
 
-		// Fetch playlist
-		let playlist;
-		try {
-			playlist = await PlaylistSchema.findOne({
-				name: message.args[0],
-				creator: message.author.id,
-			});
-		} catch (err) {
-			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-		}
-
-		// playlist found
-		if (!playlist) return message.channel.error('music/p-add:NO_PLAYLIST', { NAME: message.args[0] });
-
-		// Get songs to add to playlist
-		let res;
-		try {
-			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
-		} catch (err) {
-			return message.channel.error('music/p-add:ERROR', { ERROR: err.message });
-		}
-
-		// Workout what to do with the results
-		if (res.loadType == 'NO_MATCHES') {
-			// An error occured or couldn't find the track
-			return message.channel.error('music/play:NO_SONG');
-		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
-			try {
-				// add songs to playlist
-				const newTracks = res.tracks.slice(0, (message.author.premium ? 200 : 100) - playlist.songs.length);
-				playlist.songs.push(...newTracks);
-				playlist.duration = parseInt(playlist.duration) + parseInt(res.tracks.reduce((prev, curr) => prev + curr.duration, 0));
-				await playlist.save();
-				message.channel.success('music/p-add:SUCCESS', { NUM: newTracks.length, TITLE: message.args[0] });
-			} catch (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
-		}	else if (res.loadType == 'SEARCH_RESULT') {
-			// Display the options for search
-			let max = 10, collected;
-			const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-			if (res.tracks.length < max) max = res.tracks.length;
-
-			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-			const embed = new Embed(bot, message.guild)
-				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
-				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-			message.channel.send({ embeds: [embed] });
-
-			try {
-				collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
-			} catch (e) {
-				return message.reply(message.translate('misc:WAITED_TOO_LONG'));
-			}
-
-			const first = collected.first().content;
-			if (first.toLowerCase() === 'cancel') {
-				return message.channel.send(message.translate('misc:CANCELLED'));
-			}
-
-			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
-
-			const track = res.tracks[index];
-			playlist.songs.push(track);
-			playlist.duration = parseInt(playlist.duration) + parseInt(track.duration);
-			await playlist.save();
-			message.channel.success('music/p-add:SUCCESS', { NUM: 1, TITLE: track.title });
-		} else {
-			message.channel.error('music/p-add:NO_SONG');
-		}
+		const resp = await this.addToPlaylist(bot, message.channel, message.author, message.args[0], message.args.slice(1).join(' '));
+		message.channel.send({ embeds: [resp] });
 	}
 
 	/**
@@ -140,80 +66,96 @@ class PAdd extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const name = args.get('name').value;
+		const channel = guild.channels.cache.get(interaction.channelId),
+			playlistName = args.get('name').value,
+			searchQuery = args.get('track').value;
+
 		// Fetch playlist
+		const resp = await this.addToPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+		interaction.reply({ embeds: [resp] });
+	}
+
+	/**
+	 * Function for editing the playlist
+	 * @param {bot} bot The instantiating client
+	 * @param {channel} channel The interaction that ran the command
+	 * @param {User} user The guild the interaction ran in
+	 * @param {string} playlistName The name of the playlist
+	 * @param {string} searchQuery The seqrch query for new track
+	 * @return {embed}
+	*/
+	async addToPlaylist(bot, channel, user, playlistName, searchQuery) {
 		let playlist;
 		try {
 			playlist = await PlaylistSchema.findOne({
-				name: name,
-				creator: message.author.id,
+				name: playlistName,
+				creator: user.id,
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 
-		// playlist found
-		if (!playlist) return message.channel.error('music/p-add:NO_PLAYLIST', { NAME: message.args[0] });
+		// Playlist not found
+		if (!playlist) return channel.error('music/p-add:NO_PLAYLIST', { NAME: playlistName }, true);
 
 		// Get songs to add to playlist
 		let res;
 		try {
-			res = await bot.manager.search(name, message.author);
+			res = await bot.manager.search(searchQuery, user);
 		} catch (err) {
-			return message.channel.error('music/p-add:ERROR', { ERROR: err.message });
+			return channel.error('music/p-add:ERROR', { ERROR: err.message }, true);
 		}
 
-		// Workout what to do with the results
-		if (res.loadType == 'NO_MATCHES') {
-			// An error occured or couldn't find the track
-			return message.channel.error('music/play:NO_SONG');
-		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED') {
-			try {
-				// add songs to playlist
-				const newTracks = res.tracks.slice(0, (message.author.premium ? 200 : 100) - playlist.songs.length);
-				playlist.songs.push(...newTracks);
-				playlist.duration = parseInt(playlist.duration) + parseInt(res.tracks.reduce((prev, curr) => prev + curr.duration, 0));
+		switch (res.loadType) {
+			case 'NO_MATCHES':
+				// An error occured or couldn't find the track
+				return channel.error('music/play:NO_SONG', null, true);
+			case 'PLAYLIST_LOADED':
+			case 'TRACK_LOADED':
+				try {
+					// add songs to playlist
+					const newTracks = res.tracks.slice(0, (user.premium ? 200 : 100) - playlist.songs.length);
+					playlist.songs.push(...newTracks);
+					playlist.duration = parseInt(playlist.duration) + parseInt(res.tracks.reduce((prev, curr) => prev + curr.duration, 0));
+					await playlist.save();
+					return channel.success('music/p-add:SUCCESS', { NUM: newTracks.length, TITLE: playlistName }, true);
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
+				}
+			case 'SEARCH_RESULT': {
+				// Display the options for search
+				let max = 10, collected;
+				const filter = (m) => m.author.id === user.id && /^(\d+|cancel)$/i.test(m.content);
+				if (res.tracks.length < max) max = res.tracks.length;
+
+				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+				const embed = new Embed(bot, channel.guild)
+					.setTitle('music/search:TITLE', { TITLE: playlistName })
+					.setDescription(channel.guild.translate('music/search:DESC', { RESULTS: results }));
+				channel.send({ embeds: [embed] });
+
+				try {
+					collected = await channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
+				} catch (e) {
+					return channel.error('misc:WAITED_TOO_LONG', null, true);
+				}
+
+				const first = collected.first().content;
+				if (first.toLowerCase() === 'cancel') return channel.success('misc:CANCELLED', null, true);
+
+				const index = Number(first) - 1;
+				if (index < 0 || index > max - 1) return channel.error('music/search:INVALID', { NUM: max }, true);
+
+				const track = res.tracks[index];
+				playlist.songs.push(track);
+				playlist.duration = parseInt(playlist.duration) + parseInt(track.duration);
 				await playlist.save();
-				message.channel.success('music/p-add:SUCCESS', { NUM: newTracks.length, TITLE: name });
-			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+				return channel.success('music/p-add:SUCCESS', { NUM: 1, TITLE: track.title }, true);
 			}
-		}	else if (res.loadType == 'SEARCH_RESULT') {
-			// Display the options for search
-			let max = 10, collected;
-			const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-			if (res.tracks.length < max) max = res.tracks.length;
-
-			const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-			const embed = new Embed(bot, message.guild)
-				.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
-				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-			message.channel.send({ embeds: [embed] });
-
-			try {
-				collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
-			} catch (e) {
-				return message.reply(message.translate('misc:WAITED_TOO_LONG'));
-			}
-
-			const first = collected.first().content;
-			if (first.toLowerCase() === 'cancel') {
-				return message.channel.send(message.translate('misc:CANCELLED'));
-			}
-
-			const index = Number(first) - 1;
-			if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
-
-			const track = res.tracks[index];
-			playlist.songs.push(track);
-			playlist.duration = parseInt(playlist.duration) + parseInt(track.duration);
-			await playlist.save();
-			message.channel.success('music/p-add:SUCCESS', { NUM: 1, TITLE: track.title });
-		} else {
-			message.channel.error('music/p-add:NO_SONG');
+			default:
+				return channel.error('music/p-add:NO_SONG', null, true);
 		}
 	}
 }

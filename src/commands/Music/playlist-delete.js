@@ -46,31 +46,51 @@ class PDelete extends Command {
 		// Make sure a playlist name was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-delete:USAGE')) });
 
-		// Find and then delete playlist if it exists
-		PlaylistSchema.findOne({
-			name: message.args[0],
-			creator: message.author.id,
-		}, async (err, p) => {
-			// if an error occured
-			if (err) {
-				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-			}
+		const resp = await this.deletePlaylist(bot, message.channel, message.author, message.args[0]);
+		message.channel.send({ embeds: [resp] });
+	}
 
-			if (!p) {
-				message.channel.error('music/p-delete:MISSING', { TITLE: message.args[0] });
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId),
+			playlistName = args.get('name').value;
+
+		const resp = await this.deletePlaylist(bot, channel, interaction.user, playlistName);
+		interaction.reply({ embeds: [resp] });
+	}
+
+	/**
+	 * Function for deleting playlist
+	 * @param {bot} bot The instantiating client
+	 * @param {channel} channel The interaction that ran the command
+	 * @param {user} user The guild the interaction ran in
+	 * @param {string} playlistName The options provided in the command, if any
+	 * @readonly
+	*/
+	async deletePlaylist(bot, channel, user, playlistName) {
+		try {
+			const playlist = PlaylistSchema.findOne({
+				name: playlistName,
+				creator: user.id,
+			});
+
+			if (!playlist) {
+				return channel.error('music/p-delete:MISSING', { TITLE: playlistName }, true);
 			} else {
-				try {
-					await PlaylistSchema.findOneAndRemove({ name: message.args[0],	creator: message.author.id });
-					message.channel.success('music/p-delete:SUCCESS', { TITLE: message.args[0] });
-				} catch (err) {
-					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-				}
+				await PlaylistSchema.findOneAndRemove({ name: playlistName,	creator: user.id });
+				return channel.success('music/p-delete:SUCCESS', { TITLE: playlistName }, true);
 			}
-		});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
+		}
 	}
 }
 

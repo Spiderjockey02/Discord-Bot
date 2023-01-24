@@ -85,88 +85,6 @@ class PCreate extends Command {
 		}
 	}
 
-	// Check and save playlist to database
-	async savePlaylist(bot, message, settings, msg) {
-		// Get songs to add to playlist
-		let res;
-		try {
-			res = await bot.manager.search(message.args.slice(1).join(' '), message.author);
-		} catch (err) {
-			return message.channel.error('music/play:ERROR', { ERROR: err.message });
-		}
-
-		// Workout what to do with the results
-		if (res.loadType == 'NO_MATCHES') {
-			// An error occured or couldn't find the track
-			msg.delete();
-			return message.channel.error('music/play:NO_SONG');
-		} else if (res.loadType == 'PLAYLIST_LOADED' || res.loadType == 'TRACK_LOADED' || res.loadType == 'SEARCH_RESULT') {
-			let tracks = [], thumbnail, duration;
-			if (res.loadType == 'SEARCH_RESULT') {
-				// Display the options for search
-				let max = 10, collected;
-				const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
-				if (res.tracks.length < max) max = res.tracks.length;
-
-				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-				const embed = new Embed(bot, message.guild)
-					.setTitle('music/search:TITLE', { TITLE: message.args.join(' ') })
-					.setColor(message.member.displayHexColor)
-					.setDescription(message.translate('music/search:DESC', { RESULTS: results }));
-				const search = await message.channel.send({ embeds: [embed] });
-
-				try {
-					collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
-				} catch (e) {
-					return message.reply(message.translate('misc:WAITED_TOO_LONG'));
-				}
-
-				const first = collected.first().content;
-				if (first.toLowerCase() === 'cancel') {
-					return message.channel.send(message.translate('misc:CANCELLED'));
-				}
-
-				const index = Number(first) - 1;
-				if (index < 0 || index > max - 1) return message.reply(message.translate('music/search:INVALID', { NUM: max }));
-
-				tracks.push(res.tracks[index]);
-				thumbnail = res.tracks[index].thumbnail;
-				duration = res.tracks[index].duration;
-				search.delete();
-			} else {
-				tracks = res.tracks.slice(0, message.author.premium ? 200 : 100);
-				thumbnail = res.playlist?.selectedTrack?.thumbnail ?? res.tracks[0].thumbnail;
-				duration = res.playlist?.duration ?? res.tracks[0].duration;
-			}
-
-			// Save playlist to database
-			const newPlaylist = new PlaylistSchema({
-				name: message.args[0],
-				songs: tracks,
-				timeCreated: Date.now(),
-				thumbnail: thumbnail,
-				creator: message.author.id,
-				duration: duration,
-			});
-			newPlaylist.save().catch(err => bot.logger.error(err.message));
-
-			// Show that playlist has been saved
-			const embed = new Embed(bot, message.guild)
-				.setAuthor({ name: newPlaylist.name, iconURL: message.author.displayAvatarURL() })
-				.setDescription([
-					message.translate('music/p-create:DESC_1', { TITLE: message.args[0] }),
-					message.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
-					message.translate('music/p-create:DESC_3', { NAME: (res.loadType == 'PLAYLIST_LOADED') ? res.playlist.name : tracks[0].title, NUM: tracks.length, TITLE: message.args[0] }),
-				].join('\n'))
-				.setFooter({ text: message.guild.translate('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (message.author.premium) ? '200' : '100' }) })
-				.setTimestamp();
-			msg.edit({ embeds: [embed] });
-		} else {
-			msg.delete();
-			return message.channel.error('music/p-create:NO_SONG');
-		}
-	}
-
 	/**
 	 * Function for receiving interaction.
 	 * @param {bot} bot The instantiating client
@@ -175,8 +93,146 @@ class PCreate extends Command {
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction) {
-		interaction.reply({ content: 'This is currently unavailable.' });
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId),
+			playlistName = args.get('name').value,
+			searchQuery = args.get('track').value;
+
+		try {
+			const playlists = await	PlaylistSchema.find({
+				creator: interaction.user.id,
+			});
+
+			// response from database
+			if (!playlists[0]) {
+				const resp = await this.createPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+				interaction.reply({ embeds: [resp] });
+			} else if (playlists[0] && !interaction.user.premium) {
+				// User needs premium to save more playlists
+				await interaction.reply({ embeds: [channel.error('music/p-create:NO_PREM', null, true)] });
+			} else if (playlists.length >= 3 && interaction.user.premium) {
+				// there is a max of 3 playlists per a user even with premium
+				await interaction.reply({ embeds: [channel.error('music/p-create:MAX_PLAYLISTS', null, true)] });
+			} else if (playlists && interaction.user.premium) {
+				// user can have save another playlist as they have premium
+				const exist = playlists.find(obj => obj.name == playlistName);
+				if (!exist) {
+					const resp = await this.createPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+					interaction.reply({ embeds: [resp] });
+				} else {
+					await interaction.reply({ embeds: [channel.send('music/p-create:EXISTS', null, true)] });
+				}
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			await interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+		}
+	}
+
+	/**
+	 * Function for creating the playlist
+	 * @param {bot} bot The instantiating client
+	 * @param {channel} channel The interaction that ran the command
+	 * @param {User} user The guild the interaction ran in
+	 * @param {string} playlistName The name of the playlist
+	 * @param {string} searchQuery The seqrch query for new track
+	 * @return {embed}
+	*/
+	async createPlaylist(bot, channel, user, playlistName, searchQuery) {
+		// Get songs to add to playlist
+		let res;
+		try {
+			res = await bot.manager.search(searchQuery, user);
+		} catch (err) {
+			return channel.error('music/play:ERROR', { ERROR: err.message }, true);
+		}
+
+		switch (res.loadType) {
+			case 'NO_MATCHES':
+				// An error occured or couldn't find the track
+				return channel.error('music/play:NO_SONG', null, true);
+			case 'PLAYLIST_LOADED':
+			case 'TRACK_LOADED': {
+				const tracks = res.tracks.slice(0, user.premium ? 200 : 100);
+				const thumbnail = res.playlist?.selectedTrack?.thumbnail ?? res.tracks[0].thumbnail;
+				const duration = res.playlist?.duration ?? res.tracks[0].duration;
+				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, thumbnail, duration });
+			}
+			case 'SEARCH_RESULT': {
+			// Display the options for search
+				let max = 10, collected;
+				const filter = (m) => m.author.id === user.id && /^(\d+|cancel)$/i.test(m.content);
+				if (res.tracks.length < max) max = res.tracks.length;
+
+				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
+				const embed = new Embed(bot, channel.guild)
+					.setTitle('music/search:TITLE', { TITLE: searchQuery })
+					.setDescription(channel.guild.translate('music/search:DESC', { RESULTS: results }));
+				const search = await channel.send({ embeds: [embed] });
+
+				try {
+					collected = await channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
+				} catch (e) {
+					return channel.error('misc:WAITED_TOO_LONG', null, true);
+				}
+
+				const first = collected.first().content;
+				if (first.toLowerCase() === 'cancel') return channel.success('misc:CANCELLED', null, true);
+
+				const index = Number(first) - 1;
+				if (index < 0 || index > max - 1) return channel.error('music/search:INVALID', { NUM: max }, true);
+
+				const tracks = res.tracks[index];
+				const thumbnail = res.tracks[index].thumbnail;
+				const duration = res.tracks[index].duration;
+				search.delete();
+				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, thumbnail, duration });
+			}
+			default:
+				return channel.error('music/p-create:NO_SONG');
+		}
+	}
+
+	/**
+	 * Function for saving the new playlist to the database
+	 * @param {bot} bot The instantiating client
+	 * @param {channel} channel The interaction that ran the command
+	 * @param {User} user The guild the interaction ran in
+	 * @param {string} playlistName The name of the playlist
+	 * @param {object} resData The seqrch query for new track
+	 * @param {array<objects>} resData.tracks The seqrch query for new track
+	 * @param {string} resData.thumbnail The seqrch query for new track
+	 * @param {integer} resData.duration The seqrch query for new track
+	 * @return {embed}
+	*/
+	async savePlaylist(bot, channel, user, playlistName, resData) {
+		try {
+			// Save playlist to database
+			const newPlaylist = new PlaylistSchema({
+				name: playlistName,
+				songs: resData.tracks,
+				timeCreated: Date.now(),
+				thumbnail: resData.thumbnail,
+				creator: user.id,
+				duration: resData.duration,
+			});
+			await newPlaylist.save();
+
+			// Show that playlist has been saved
+			const embed = new Embed(bot, channel.guild)
+				.setAuthor({ name: newPlaylist.name, iconURL: user.displayAvatarURL() })
+				.setDescription([
+					channel.guild.translate('music/p-create:DESC_1', { TITLE: playlistName }),
+					channel.guild.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
+					channel.guild.translate('music/p-create:DESC_3', { NAME: resData.tracks[0].title, NUM: resData.tracks.length, TITLE: playlistName }),
+				].join('\n'))
+				.setFooter({ text: channel.guild.translate('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (user.premium) ? '200' : '100' }) })
+				.setTimestamp();
+			return embed;
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
+		}
 	}
 }
 

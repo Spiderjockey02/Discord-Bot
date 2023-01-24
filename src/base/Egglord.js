@@ -209,11 +209,12 @@ class Egglord extends Client {
 	 * @param {guild} guild The guild to delete the slash commands from
 	 * @returns {?array}
 	*/
-	async deleteInteractionGroup(category, guild) {
+	async deleteInteractionGroup(category) {
 		try {
 			const commands = (await readdir('./src/commands/' + category + '/')).filter((v, i, a) => a.indexOf(v) === i);
+
 			const arr = [];
-			commands.forEach((cmd) => {
+			for (const cmd of commands) {
 				if (!this.config.disabledCommands.includes(cmd.replace('.js', ''))) {
 					const command = new (require(`../commands/${category}${path.sep}${cmd}`))(this);
 					if (command.conf.slash) {
@@ -223,10 +224,9 @@ class Egglord extends Client {
 							options: command.conf.options,
 							defaultPermission: command.conf.defaultPermission,
 						});
-						guild.interactions.delete(command.help.name, command);
 					}
 				}
-			});
+			}
 			return arr;
 		} catch (err) {
 			return `Unable to load category ${category}: ${err}`;
@@ -238,8 +238,8 @@ class Egglord extends Client {
 	 * @return {array}
 	*/
 	async fetchAdultSiteList() {
-		const blockedWebsites = require('../assets/json/whitelistWebsiteList.json');
-		this.adultSiteList = blockedWebsites.websites;
+		this.adultSiteList = require('../assets/json/whitelistWebsiteList.json').websites;
+		// this.adultSiteList = blockedWebsites.websites;
 		return this.adultSiteList;
 	}
 
@@ -264,12 +264,16 @@ class Egglord extends Client {
 	 * @readonly
 	*/
 	addEmbed(channelID, embed) {
+		this.embedCollection.set(channelID, [this.embedCollection.has(channelID) ? [...this.embedCollection.get(channelID), embed].flat() : embed]);
+
 		// collect embeds
+		/*
 		if (!this.embedCollection.has(channelID)) {
 			this.embedCollection.set(channelID, [embed]);
 		} else {
 			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
 		}
+		*/
 	}
 
 	/**

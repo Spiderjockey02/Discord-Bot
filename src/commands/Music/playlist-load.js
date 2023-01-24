@@ -70,60 +70,101 @@ class PLoad extends Command {
 		}
 
 		// send waiting message
-		const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
+		// const msg = await message.channel.send('Loading playlist (This might take a few seconds)...');
 
-		// interact with database
-		PlaylistSchema.findOne({
-			name: message.args[0],
-			creator: message.author.id,
-		}, async (err, p) => {
-			// if an error occured
-			if (err) {
-				if (message.deletable) message.delete();
+		const resp = await this.loadPlaylist(bot, message.channel, message.member, message.args[0]);
+		message.channel.send({ embeds: [resp] });
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId),
+			member = guild.members.cache.get(interaction.user.id),
+			playlistName = args.get('name').value;
+
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole) && !member.roles.cache.has(guild.settings.MusicDJRole)) {
+			return interaction.reply({ embeds: [channel.error('misc:MISSING_ROLE', null, true)] });
+		}
+
+		// make sure user is in a voice channel
+		if (!member.voice.channel) return interaction.reply({ embeds: [channel.error('music/play:NOT_VC', null, true)] });
+
+		// Check that user is in the same voice channel
+		if (bot.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ embeds: [channel.error('misc:NOT_VOICE', null, true)] });
+		}
+
+		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has(Flags.MoveMembers)) {
+			return interaction.reply({ embeds: [channel.error('music/play:VC_FULL', null, true)] });
+		}
+
+		const resp = await this.loadPlaylist(bot, channel, member, playlistName);
+		interaction.reply({ embeds: [resp] });
+	}
+
+	/**
+	 * Function for saving the playlist
+	 * @param {bot} bot The instantiating client
+	 * @param {channel} channel The interaction that ran the command
+	 * @param {member} member The guild the interaction ran in
+	 * @param {string} playlistName The options provided in the command, if any
+	 * @readonly
+	*/
+	async loadPlaylist(bot, channel, member, playlistName) {
+		try {
+			// interact with database
+			const playlist = PlaylistSchema.findOne({
+				name: playlistName,
+				creator: member.user.id,
+			});
+
+			if (!playlist) return channel.error('music/p-load:NO_PLAYLIST', null, true);
+
+			// Create player
+			let player;
+			try {
+				player = bot.manager.create({
+					guild: channel.guild.id,
+					voiceChannel: member.voice.channel.id,
+					textChannel: channel.id,
+					selfDeafen: true,
+				});
+				player.connect();
+			} catch (err) {
 				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 			}
 
-			if (p) {
-				// Create player
-				let player;
-				try {
-					player = bot.manager.create({
-						guild: message.guild.id,
-						voiceChannel: message.member.voice.channel.id,
-						textChannel: message.channel.id,
-						selfDeafen: true,
-					});
-					player.connect();
-				} catch (err) {
-					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+			// add songs to queue
+			// eslint-disable-next-line no-async-promise-executor
+			await new Promise(async function(resolve) {
+				for (let i = 0; i < playlist.songs.length; i++) {
+					player.queue.add(TrackUtils.buildUnresolved({
+						title: playlist.songs[i].title,
+						author: playlist.songs[i].author,
+						duration: playlist.songs[i].duration,
+					}, member.user));
+					if (!player.playing && !player.paused && !player.queue.length) player.play();
+					if (i == playlist.songs.length - 1) resolve();
 				}
+			});
 
-				// add songs to queue
-				// eslint-disable-next-line no-async-promise-executor
-				const content = new Promise(async function(resolve) {
-					for (let i = 0; i < p.songs.length; i++) {
-						player.queue.add(TrackUtils.buildUnresolved({
-							title: p.songs[i].title,
-							author: p.songs[i].author,
-							duration: p.songs[i].duration,
-						}, message.author));
-						if (!player.playing && !player.paused && !player.queue.length) player.play();
-						if (i == p.songs.length - 1) resolve();
-					}
-				});
-
-				content.then(async function() {
-					const embed = new Embed(bot, message.guild)
-						.setDescription(message.translate('music/p-load:QUEUE', { NUM: p.songs.length, TITLE: message.args[0] }));
-					msg.edit({ embeds: [embed] });
-				});
-			} else {
-				msg.edit(message.translate('music/p-load:NO_PLAYLIST'));
-			}
-		});
+			const embed = new Embed(bot, channel.guild)
+				.setDescription(channel.guild.translate('music/p-load:QUEUE', { NUM: playlist.songs.length, TITLE: playlistName }));
+			return embed;
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
+		}
 	}
 }
 
