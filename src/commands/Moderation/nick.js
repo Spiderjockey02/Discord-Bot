@@ -13,10 +13,10 @@ class Nick extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'nickname',
+			name: 'nick',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['nick', 'setnick'],
+			aliases: ['nickname', 'setnick'],
 			userPermissions: [Flags.ChangeNickname, Flags.ManageNicknames],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.ManageNicknames],
 			description: 'Change the nickname of a user.',
