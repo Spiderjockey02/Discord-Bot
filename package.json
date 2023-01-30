@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
-    "axios": "^1.2.2",
+    "axios": "^1.2.6",
     "canvacord": "^5.4.8",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
