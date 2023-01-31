@@ -38,11 +38,15 @@ class LevelManager {
 				} else {
 					// user was found
 					res.Xp = res.Xp + xpAdd;
-					const xpNeed = (5 * (res.Level ** 2) + 50 * res.Level + 100);
 					// User has leveled up
-					if (res.Xp >= xpNeed) {
-						// now check how to send message
+					let lvlChanged = false
+					while (res.Xp >= (5 * (res.Level ** 2) + 50 * res.Level + 100)) {
 						res.Level = res.Level + 1;
+						lvlChanged = true;
+					}
+
+					if (lvlChanged) {
+						// now check how to send message
 						if (settings.LevelOption == 1) {
 							channel.send(varSetter(settings.LevelMessage, member, channel, member.guild).replace('{level}', res.Level));
 						} else if (settings.LevelOption == 2) {
