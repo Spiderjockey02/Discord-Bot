@@ -6,7 +6,7 @@ module.exports = async (bot) => {
 	for (const channel of channelIDs) {
 		try {
 			const webhooks = await bot.channels.fetch(channel).then(c => c.fetchWebhooks());
-			let webhook = webhooks.find(wh => wh.name == bot.user.username);
+			let webhook = webhooks.find(wh => wh.name == bot.user.tag);
 
 			// create webhook if it doesn't exist
 			if (!webhook) {
