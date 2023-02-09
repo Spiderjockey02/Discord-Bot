@@ -63,7 +63,7 @@ class Nick extends Command {
 		if (!members[0]) return message.channel.error('moderation/ban:MISSING_USER');
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (members[0].permissions.has('ADMINISTRATOR') || (members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) > 0)) {
+		if (members[0].permissions.has(Flags.Administrator) || (members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) > 0)) {
 			return message.channel.error('moderation/nick:TOO_POWERFUL');
 		}
 
@@ -100,7 +100,7 @@ class Nick extends Command {
 			nickname = args.get('nickname').value;
 
 		// Make sure user user does not have ADMINISTRATOR permissions
-		if (member.permissions.has('ADMINISTRATOR') || (member.roles.highest.comparePositionTo(guild.members.me.roles.highest) > 0)) {
+		if (member.permissions.has(Flags.Administrator) || (member.roles.highest.comparePositionTo(guild.members.me.roles.highest) > 0)) {
 			interaction.reply({ embeds: [channel.error('moderation/nick:TOO_POWERFUL', null, true)] });
 		}
 

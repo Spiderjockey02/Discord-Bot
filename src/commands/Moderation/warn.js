@@ -71,7 +71,7 @@ class Warn extends Command {
 		if (members[0].user.id == message.author.id) return message.channel.error('misc:SELF_PUNISH');
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (members[0].permissions.has('ADMINISTRATOR') || members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
+		if (members[0].permissions.has(Flags.Administrator) || members[0].roles.highest.comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			return message.channel.error('moderation/warn:TOO_POWERFUL');
 		}
 
@@ -108,7 +108,7 @@ class Warn extends Command {
 		if (member.user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', { }, true)] });
 
 		// Make sure user does not have ADMINISTRATOR permissions or has a higher role
-		if (member.permissions.has('ADMINISTRATOR') || member.roles.highest.comparePositionTo(guild.members.me.roles.highest) >= 0) {
+		if (member.permissions.has(Flags.Administrator) || member.roles.highest.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			return interaction.reply({ embeds: [channel.error('moderation/warn:TOO_POWERFUL', { }, true)] });
 		}
 

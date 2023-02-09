@@ -70,7 +70,7 @@ class EditRole extends Command {
 		// No role was found
 		if (!role[0]) return message.channel.error('moderation/delrole:MISSING');
 
-		if (message.member.permissions.has('ADMINISTRATOR') || role[0].comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
+		if (message.member.permissions.has(Flags.Administrator) || role[0].comparePositionTo(message.guild.members.me.roles.highest) >= 0) {
 			switch (message.args[1].toLowerCase()) {
 				case 'colour':
 				case 'color':
@@ -124,7 +124,7 @@ class EditRole extends Command {
 			key = args.get('key').value,
 			value = args.get('value').value;
 
-		if (member.permissions.has('ADMINISTRATOR') || role.comparePositionTo(guild.members.me.roles.highest) >= 0) {
+		if (member.permissions.has(Flags.Administrator) || role.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			switch (key) {
 				case 'colour':
 				case 'color':
