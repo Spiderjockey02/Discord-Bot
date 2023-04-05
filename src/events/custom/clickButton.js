@@ -55,7 +55,7 @@ class ClickButton extends Event {
 				{ id: bot.user, allow: [PermFlag.SendMessages, PermFlag.ViewChannel, PermFlag.EmbedLinks] },
 			];
 			if (guild.roles.cache.get(guild.settings.TicketSupportRole)) perms.push({ id: guild.settings.TicketSupportRole, allow: [PermFlag.SendMessages, PermFlag.ViewChannel] });
-			console.log(perms);
+
 			// create channel
 			try {
 				const c = await guild.channels.create({ name: `ticket-${member.user.id}`, type: ChannelType.GuildText,

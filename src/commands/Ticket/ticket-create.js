@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ChannelType } = require('discord-api-types/v10'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -63,7 +64,7 @@ class TicketCreate extends Command {
 
 		// create channel
 		try {
-			const channel = await message.guild.channels.create({ name: `ticket-${message.author.id}`, type: 'text',
+			const channel = await message.guild.channels.create({ name: `ticket-${message.author.id}`, type: ChannelType.GuildText,
 				reason: reason,
 				parent: settings.TicketCategory,
 				permissionOverwrites: perms });
@@ -121,7 +122,7 @@ class TicketCreate extends Command {
 
 		// create channel
 		try {
-			channel = await guild.channels.create(`ticket-${interaction.user.id}`, { type: 'text',
+			channel = await guild.channels.create(`ticket-${interaction.user.id}`, { type: ChannelType.GuildText,
 				reason: reason,
 				parent: settings.TicketCategory,
 				permissionOverwrites: perms });
