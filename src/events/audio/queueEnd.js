@@ -37,7 +37,7 @@ class QueueEnd extends Event {
 					throw res.exception;
 				}
 			} catch (err) {
-				return channel.error('music/play:ERROR', { ERROR: err.message }).then(m => m.timedDelete({ timeout: 10000 }));
+				return channel.error('music/play:ERROR', { ERROR: err.message });
 			}
 
 			switch (res.loadType) {
