@@ -1,4 +1,5 @@
 const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
+	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Event = require('../../structures/Event');
 
 /**
@@ -99,6 +100,27 @@ class Ready extends Event {
 		} catch (err) {
 			console.log(err);
 		}
+
+		// Make sure 'SupportServer' has Host commands
+		if (bot.config.SupportServer.GuildID) {
+			const guild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
+			if (guild) {
+				// Check if Main server already have 'Host' commands
+				const guildCmds = await guild.commands.fetch();
+				if (guildCmds.find(cmd => cmd.name == 'reload')) return;
+
+				// Add host commands to Support server as they don't have them
+				const cmds = await bot.loadInteractionGroup('Host', guild.id);
+				for (const cmd of cmds) {
+					cmd.defaultMemberPermissions = [Flags.Administrator];
+				}
+				if (Array.isArray(cmds)) await bot.guilds.cache.get(guild.id)?.commands.set(cmds);
+				bot.logger.log(`Added Host commands to Support server: ${guild.id}.`);
+			} else {
+				bot.logger.error('Bot is not in Support server.');
+			}
+		}
+
 
 		// LOG ready event
 		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
