@@ -39,7 +39,7 @@ class LevelManager {
 					// user was found
 					res.Xp = res.Xp + xpAdd;
 					// User has leveled up
-					let lvlChanged = false
+					let lvlChanged = false;
 					while (res.Xp >= (5 * (res.Level ** 2) + 50 * res.Level + 100)) {
 						res.Level = res.Level + 1;
 						lvlChanged = true;

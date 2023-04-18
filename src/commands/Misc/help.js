@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+const { Embed, paginate } = require('../../utils'),
+	{ ApplicationCommandOptionType, GatewayIntentBits } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -54,8 +54,87 @@ class Help extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
-		const embed = await this.createEmbed(bot, guild.settings, channel, args.get('command')?.value, interaction.member.user);
-		interaction.reply({ embeds: [embed] });
+		const command = args.get('command')?.value;
+
+		if (command) {
+			// Check if arg is command
+			if (bot.commands.get(command) || bot.commands.get(bot.aliases.get(command))) {
+				// arg was a command
+				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+				// Check if the command is allowed on the server
+				if (guild.settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(interaction.user.id)) {
+					const embed = new Embed(bot, channel.guild)
+						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
+						.setDescription([
+							channel.guild.translate('misc/help:DESC', { DESC: channel.guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:DESCRIPTION`) }),
+							channel.guild.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
+							channel.guild.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
+							channel.guild.translate('misc/help:USE', { USAGE: guild.settings.prefix.concat(bot.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							channel.guild.translate('misc/help:EXAMPLE', { EX: `${guild.settings.prefix}${cmd.help.examples.join(`,\n ${guild.settings.prefix}`)}` }),
+							channel.guild.translate('misc/help:LAYOUT'),
+						].join('\n'));
+					interaction.reply({ embeds: [embed] });
+				} else {
+					interaction.reply({ embeds: [channel.error('misc/help:NO_COMMAND', {}, true)] });
+				}
+			} else {
+				interaction.reply({ embeds: [channel.error('misc/help:NO_COMMAND', {}, true)] });
+			}
+		} else {
+			let categories = bot.commands.map(c => c.help.category).filter((v, i, a) => guild.settings.plugins.includes(v) && a.indexOf(v) === i);
+			const embeds = [],
+				slashCommands = await channel.guild.commands.fetch();
+
+			// Split categories into sections of 4
+			categories = categories.reduce((all, one, i) => {
+				const ch = Math.floor(i / 4);
+				all[ch] = [].concat((all[ch] || []), one);
+				return all;
+			}, []);
+
+			// Get all command categories
+			for (const category of categories) {
+				// Check for MessageContent intent (if not don't show message prefix)
+				const desc = [];
+				if (bot.options.intents.has(GatewayIntentBits.MessageContent)) {
+					desc.push(...[
+						bot.translate('misc/help:PREFIX_DESC', { PREFIX: guild.settings.prefix, ID: bot.user.id }),
+						bot.translate('misc/help:INFO_DESC', { PREFIX: guild.settings.prefix, USAGE: bot.translate('misc/help:USAGE') }),
+						'',
+					]);
+				}
+
+				// Show all commands in that category
+				desc.push(category.map((item) => {
+					return [
+						`**${item} [${bot.commands.filter(c => c.help.category === item).size}]:**`,
+						`${bot.commands
+							.filter(c => c.help.category === item && !c.conf.isSubCmd)
+							.sort((a, b) => a.help.name - b.help.name)
+							.map(c => {
+								const slshCmd = slashCommands.find(i => i.name == c.help.name);
+								if (slshCmd) {
+									if (c.conf.options[0]?.type == ApplicationCommandOptionType.Subcommand) {
+										return c.conf.options.map(i => ` </${c.help.name} ${i.name}:${slshCmd.id}>`);
+									} else {
+										return ` </${c.help.name}:${slshCmd.id}>`;
+									}
+								} else {
+									return c.help.name;
+								}
+							})}.`,
+					].join('\n');
+				}).join('\n'));
+
+				const embed = new Embed(bot, channel.guild)
+					.setAuthor({ name: bot.translate('misc/help:AUTHOR'), iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
+					.setDescription(
+						desc.join('\n'),
+					);
+				embeds.push(embed);
+			}
+			paginate(bot, interaction, embeds, interaction.user.id);
+		}
 	}
 
 	/**
