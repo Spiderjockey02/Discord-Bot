@@ -107,15 +107,15 @@ class Ready extends Event {
 			if (guild) {
 				// Check if Main server already have 'Host' commands
 				const guildCmds = await guild.commands.fetch();
-				if (guildCmds.find(cmd => cmd.name == 'reload')) return;
-
-				// Add host commands to Support server as they don't have them
-				const cmds = await bot.loadInteractionGroup('Host', guild.id);
-				for (const cmd of cmds) {
-					cmd.defaultMemberPermissions = [Flags.Administrator];
+				if (!(guildCmds.find(cmd => cmd.name == 'reload'))) {
+					// Add host commands to Support server as they don't have them
+					const cmds = await bot.loadInteractionGroup('Host', guild.id);
+					for (const cmd of cmds) {
+						cmd.defaultMemberPermissions = [Flags.Administrator];
+					}
+					if (Array.isArray(cmds)) await bot.guilds.cache.get(guild.id)?.commands.set(cmds);
+					bot.logger.log(`Added Host commands to Support server: ${guild.id}.`);
 				}
-				if (Array.isArray(cmds)) await bot.guilds.cache.get(guild.id)?.commands.set(cmds);
-				bot.logger.log(`Added Host commands to Support server: ${guild.id}.`);
 			} else {
 				bot.logger.error('Bot is not in Support server.');
 			}
