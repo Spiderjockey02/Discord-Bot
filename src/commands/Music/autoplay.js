@@ -61,7 +61,7 @@ class Autoplay extends Command {
 		// toggle autplay mode off and on
 		const player = bot.manager?.players.get(member.guild.id);
 		player.autoplay = !player.autoplay;
-		await interaction.reply({ content: bot.translate('music/247:RESP', { TOGGLE: player.autoplay }) });
+		await interaction.reply({ content: guild.translate('music/AUTOPLAY:RESP', { TOGGLE: player.autoplay }) });
 	}
 }
 
