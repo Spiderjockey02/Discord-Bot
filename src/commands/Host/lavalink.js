@@ -22,13 +22,12 @@ class Lavalink extends Command {
 			usage: 'lavalink [list | add | remove] <information>',
 			cooldown: 3000,
 			slash: true,
-			options: [{
-				name: 'option',
-				description: 'The link or name of the track.',
-				type: ApplicationCommandOptionType.String,
-				choices: [...['list', 'add', 'remove'].map(i => ({ name: i, value: i }))],
-				required: true,
-			}],
+			options: bot.commands.filter(c => c.help.name.startsWith('lavalink-')).map(c => ({
+				name: c.help.name.replace('lavalink-', ''),
+				description: c.help.description,
+				type: ApplicationCommandOptionType.Subcommand,
+				options: c.conf.options,
+			})),
 		});
 	}
 
@@ -119,8 +118,13 @@ class Lavalink extends Command {
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction) {
-		interaction.reply({ content: 'This is currently unavailable.' });
+	async callback(bot, interaction, guild, args) {
+		const command = bot.commands.get(`lavalink-${interaction.options.getSubcommand()}`);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
+		} else {
+			interaction.reply({ content: 'Error', ephemeral: true });
+		}
 	}
 
 	/**
