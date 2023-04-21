@@ -24,12 +24,12 @@ class User extends Command {
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
 			slash: true,
-			options: [{
-				name: 'user',
-				description: 'The userID',
-				type: ApplicationCommandOptionType.String,
-				required: true,
-			}],
+			options: bot.commands.filter(c => c.help.name.startsWith('user-')).map(c => ({
+				name: c.help.name.replace('user-', ''),
+				description: c.help.description,
+				type: ApplicationCommandOptionType.Subcommand,
+				options: c.conf.options,
+			})),
 		});
 	}
 
@@ -166,8 +166,13 @@ class User extends Command {
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction) {
-		interaction.reply({ content: 'This is currently unavailable.' });
+	async callback(bot, interaction, guild, args) {
+		const command = bot.commands.get(`user-${interaction.options.getSubcommand()}`);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
+		} else {
+			interaction.reply({ content: 'Error', ephemeral: true });
+		}
 	}
 }
 
