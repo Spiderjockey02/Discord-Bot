@@ -25,28 +25,12 @@ class Clear extends Command {
 			cooldown: 5000,
 			examples: ['clear 50 username', 'clear 10'],
 			slash: true,
-			options: [
-				{
-					name: 'number',
-					description: 'The number of messages to delete.',
-					type: ApplicationCommandOptionType.Integer,
-					minValue: 1,
-					maxValue: 1000,
-					required: true,
-				},
-				{
-					name: 'user',
-					description: 'Only delete messages from this user.',
-					type: ApplicationCommandOptionType.User,
-					required: false,
-				},
-				{
-					name: 'flag',
-					description: 'Show how many messages were deleted.',
-					type: ApplicationCommandOptionType.String,
-					choices: ['-show'].map(i => ({ name: i, value: i })),
-				},
-			],
+			options: bot.commands.filter(c => c.help.name.startsWith('clear-')).map(c => ({
+				name: c.help.name.replace('clear-', ''),
+				description: c.help.description,
+				type: ApplicationCommandOptionType.Subcommand,
+				options: c.conf.options,
+			})),
 		});
 	}
 
@@ -169,101 +153,14 @@ class Clear extends Command {
 	 * @param {bot} bot The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user')),
-			channel = guild.channels.cache.get(interaction.channelId),
-			amount = args.get('amount').value;
-
-		// make sure guild is premium if amount > 200
-		if (amount > 200 && !guild.premium) return interaction.reply({ embeds: [channel.error('moderation/clear:NO_PREM', null, true)] });
-
-		// Confirmation for message deletion over 100
-		if (amount >= 100) {
-			const embed = new Embed(bot, guild)
-				.setTitle(guild.translate('moderation/clear:TITLE'))
-				.setDescription(guild.translate('moderation/clear:DESC', { NUM: amount }));
-
-			// create the buttons
-			const row = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-						.setCustomId('success')
-						.setLabel('Confirm')
-						.setStyle(ButtonStyle.Success)
-						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
-				)
-				.addComponents(
-					new ButtonBuilder()
-						.setCustomId('cancel')
-						.setLabel('Cancel')
-						.setStyle(ButtonStyle.Danger)
-						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
-				);
-
-			// Send confirmation message
-			await interaction.reply({ embeds: [embed], components: [row], fetchReply: true }).then(async msg => {
-				// create collector
-				const filter = (i) => ['cancel', 'success'].includes(i.customId) && i.user.id === interaction.user.id;
-				const collector = msg.createMessageComponentCollector({ filter, time: 15000 });
-
-				// A button was clicked
-				collector.on('collect', async i => {
-					// User pressed cancel button
-					if (i.customId === 'cancel') {
-						embed.setDescription(guild.translate('moderation/clear:CON_CNC'));
-						return msg.edit({ embeds: [embed], components: [] });
-					} else {
-						// Delete the messages
-						await i.reply(guild.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
-						await bot.delay(5000);
-
-						let x = 0, y = 0;
-						const z = amount;
-						while (x !== Math.ceil(amount / 100)) {
-							try {
-								let messages = await channel.messages.fetch({ limit: z > 100 ? 100 : z });
-								// Delete user messages
-								if (member) {
-									messages = messages.filter((m) => m.author.id == member[0].user.id);
-								}
-
-								// delete the message
-								const delMessages = await channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
-								y += delMessages.size;
-								x++;
-								await bot.delay(5000);
-							} catch (e) {
-								x = Math.ceil(amount / 100);
-							}
-						}
-						return interaction.reply({ embeds: [channel.success('moderation/clear:SUCCESS', { NUM: y }, true)] });
-					}
-				});
-
-				// user did not react in time
-				collector.on('end', async () => {
-					if (msg.deleted) return;
-					if (embed.description == guild.translate('moderation/clear:CON_CNC')) {
-						await msg.delete();
-					} else {
-						embed.setDescription(guild.translate('moderation/clear:CON_TO'));
-						await msg.edit({ embeds: [embed], components: [] });
-					}
-				});
-			});
+		const command = bot.commands.get(`clear-${interaction.options.getSubcommand()}`);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
 		} else {
-			// Delete messages (less than 100)
-			await channel.messages.fetch({ limit: amount }).then(async messages => {
-				// Delete user messages
-				if (member) messages = messages.filter((m) => m.author.id == member[0].user.id);
-
-				// delete the message
-				await channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
-				interaction.reply({ embeds: [channel.success('moderation/clear:SUCCESS', { NUM: messages.size }, true)] });
-			});
+			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }

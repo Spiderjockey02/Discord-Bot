@@ -51,7 +51,7 @@ class MessageDeleteBulk extends Event {
 					.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
 					.setColor(15158332)
 					.setFooter({ text: `Channel: ${messages.first().channel.id}` })
-					.setAuthor({ name: messages.first().channel.name, iconURL: messages.first().guild.iconURL })
+					.setAuthor({ name: messages.first().channel.name, iconURL: messages.first().guild.iconURL() })
 					.addFields(
 						{ name: 'Message count:', value: `${messages.size}`, inline: true },
 						{ name: 'Deleted Messages:', value: `[view](https://txt.discord.website/?txt=${modChannel.id}/${msg.attachments.first().id}/DeletedMessages)`, inline: true },

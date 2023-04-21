@@ -23,7 +23,8 @@ class ClearWarning extends Command {
 			usage: 'clear-warning <user> [warning number]',
 			cooldown: 5000,
 			examples: ['clear-warning username'],
-			slash: true,
+			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'user',
