@@ -13,7 +13,7 @@ class DelRole extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'delrole',
+			name: 'role-delete',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['removerole', 'deleterole'],
@@ -24,6 +24,7 @@ class DelRole extends Command {
 			cooldown: 5000,
 			examples: ['delrole Test'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'role',

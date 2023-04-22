@@ -16,7 +16,7 @@ class AutoComplete extends Event {
 	/**
 	 * Function for receiving event.
 	 * @param {bot} bot The instantiating client
-	 * @param {AutocompleteInteraction} button The button that was pressed
+	 * @param {AutocompleteInteraction} interaction The button that was pressed
 	 * @readonly
 	*/
 	async run(bot, interaction) {
@@ -26,8 +26,8 @@ class AutoComplete extends Event {
 				return bot.commands.get('play').autocomplete(bot, interaction);
 			case 'radio':
 				return bot.commands.get('radio').autocomplete(bot, interaction);
-			case 'addrole':
-				return bot.commands.get('addrole').autocomplete(bot, interaction);
+			case 'role':
+				return bot.commands.get('role-add').autocomplete(bot, interaction);
 			case 'help':
 				return bot.commands.get('help').autocomplete(bot, interaction);
 			case 'playlist':

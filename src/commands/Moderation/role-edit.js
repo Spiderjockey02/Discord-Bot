@@ -14,7 +14,7 @@ class EditRole extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'editrole',
+			name: 'role-edit',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['modifyrole'],
@@ -25,6 +25,7 @@ class EditRole extends Command {
 			cooldown: 5000,
 			examples: ['editrole Yellow colour yellow'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'role',
@@ -32,6 +33,7 @@ class EditRole extends Command {
 					type: ApplicationCommandOptionType.Role,
 					required: true,
 				},
+				// Make this subcommands or something similar
 				{
 					name: 'key',
 					description: 'The key to edit.',
@@ -83,7 +85,7 @@ class EditRole extends Command {
 						// Retrieve the names of colours
 						const { colourNames } = JSON.parse(data);
 						const colour = (message.args[2].toLowerCase()).replace(/\s/g, '');
-						if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[2])) {
+						if (colourNames[colour] || /[0-9A-Fa-f]{6}/g.test(message.args[2])) {
 							role[0].edit({ color: colourNames[colour] ?? message.args[2] });
 							message.channel.success('moderation/editrole:SUCCESS').then(m => m.timedDelete({ timeout: 3000 }));
 						} else {
@@ -120,14 +122,12 @@ class EditRole extends Command {
 		const role = guild.roles.cache.get(args.get('role').value),
 			channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
-			{ settings } = guild,
 			key = args.get('key').value,
 			value = args.get('value').value;
 
 		if (member.permissions.has(Flags.Administrator) || role.comparePositionTo(guild.members.me.roles.highest) >= 0) {
 			switch (key) {
 				case 'colour':
-				case 'color':
 					fs.readFile('./src/assets/json/colours.json', async (err, data) => {
 						if (err) {
 							bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -137,7 +137,7 @@ class EditRole extends Command {
 						// Retrieve the names of colours
 						const { colourNames } = JSON.parse(data);
 						const colour = (value).replace(/\s/g, '');
-						if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(value)) {
+						if (colourNames[colour] || /[0-9A-Fa-f]{6}/g.test(value)) {
 							await role.edit({ color: colourNames[colour] ?? value });
 							interaction.reply({ embeds: [channel.error('moderation/editrole:SUCCESS', null, true)] });
 						} else {
@@ -146,18 +146,13 @@ class EditRole extends Command {
 					});
 					break;
 				case 'hoist':
-					if (!['true', 'false'].includes(value)) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Please provide the boolean as a value' }, true)] });
 					await role.edit({ hoist: value });
 					interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
 					break;
 				case 'name':
-				case 'rename':
-					if (value.length >= 100) return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'The role name is greater than the character limit of (100)' }, true)] });
 					await role.edit({ name: value });
 					interaction.reply({ embeds: [channel.success('moderation/editrole:SUCCESS', null, true)] });
 					break;
-				default:
-					interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(guild.translate('moderation/editrole:USAGE')) }, true)] });
 			}
 		}
 	}

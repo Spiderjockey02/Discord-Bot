@@ -14,7 +14,7 @@ class AddRole extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'addrole',
+			name: 'role-add',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['createrole'],
@@ -25,10 +25,11 @@ class AddRole extends Command {
 			cooldown: 5000,
 			examples: ['addrole Test #FF0000 true'],
 			slash: false,
+			isSubCmd: true,
 			options: [
 				{
 					name: 'name',
-					description: 'Name of the new roll.',
+					description: 'Name of the new role.',
 					type: ApplicationCommandOptionType.String,
 					maxLength: 100,
 					required: true,
@@ -37,14 +38,14 @@ class AddRole extends Command {
 					name: 'colour',
 					description: 'colour of the new role',
 					type: ApplicationCommandOptionType.String,
-					required: true,
+					required: false,
 					autocomplete: true,
 				},
 				{
 					name: 'hoist',
 					description: 'Should the role show seperately.',
 					type: ApplicationCommandOptionType.Boolean,
-					required: true,
+					required: false,
 				},
 			],
 		});
@@ -96,7 +97,7 @@ class AddRole extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			name = args.get('name').value,
 			color = args.get('colour').value,
-			hoist = args.get('hoist').value;
+			hoist = args.get('hoist')?.value ?? false;
 
 		// Make sure there isn't already the max number of roles in the guilds
 		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.error('moderation/addrole:MAX_ROLES', {}, true)], ephemeral: true });
