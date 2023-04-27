@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	fetch = require('node-fetch'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ AttachmentBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -54,13 +53,12 @@ class Clyde extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=clyde&text=${text}`)).then(res => res.json());
+			const resp = await bot.fetch('image/clyde', { text });
 
-			// send image
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'clyde.png' });
 			const embed = new Embed(bot, message.guild)
-				.setColor(3447003)
-				.setImage(json.message);
-			message.channel.send({ embeds: [embed] });
+				.setImage('attachment://clyde.png');
+			message.channel.send({ embeds: [embed], files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -84,11 +82,12 @@ class Clyde extends Command {
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
 			EMOJI: bot.customEmojis['loading'] }) });
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=clyde&text=${text}`)).then(res => res.json());
+			const resp = await bot.fetch('image/clyde', { text });
+
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'clyde.png' });
 			const embed = new Embed(bot, guild)
-				.setColor(3447003)
-				.setImage(json.message);
-			interaction.editReply({ content: ' ', embeds: [embed] });
+				.setImage('attachment://clyde.png');
+			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });

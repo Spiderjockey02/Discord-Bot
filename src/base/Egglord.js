@@ -12,6 +12,7 @@ const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, Pe
  * Egglord custom client
  * @extends {Client}
 */
+
 class Egglord extends Client {
 	constructor() {
 		super({
@@ -283,8 +284,18 @@ class Egglord extends Client {
 	*/
 	async fetch(endpoint, query = {}) {
 		try {
-			const { data: { data: response } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, { headers: { 'Authorization': this.config.api_keys.masterToken } });
-			return response;
+			if (endpoint.startsWith('image')) {
+				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+					headers: { 'Authorization': this.config.api_keys.masterToken },
+					responseType: 'arraybuffer',
+				});
+				return data;
+			} else {
+				const { data: { data: res } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+					headers: { 'Authorization': this.config.api_keys.masterToken },
+				});
+				return res;
+			}
 		} catch (err) {
 			this.logger.error(err.response.data.error);
 			return err.response.data;
