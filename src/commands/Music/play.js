@@ -264,7 +264,7 @@ class Play extends Command {
 	async autocomplete(bot, interaction) {
 		// Get current input and make sure it's not 0
 		const searchQuery = interaction.options.getFocused(true).value;
-		if (searchQuery.length == 0) return interaction.respond([]);
+		if (searchQuery.length == 0 || searchQuery.startsWith('http')) return interaction.respond([]);
 
 		try {
 			let fetched = false;
@@ -305,7 +305,7 @@ class Play extends Command {
 				// Only get 5 video suggestions
 				if (results.length >= 5) break;
 				results.push({
-					title: video.videoRenderer.title.runs[0].text,
+					title: video.videoRenderer.title.runs[0].text.substring(0, 100),
 					url: `https://www.youtube.com${video.videoRenderer.navigationEndpoint.commandMetadata.webCommandMetadata.url}`,
 				});
 			}
