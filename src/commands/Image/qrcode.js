@@ -47,8 +47,9 @@ class QRcode extends Command {
 
 		// Try and convert image
 		try {
-			const attachment = new AttachmentBuilder(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(/ /g, '%20')}`, { name: 'QRCODE.png' });
-			// send image in embed
+			const resp = await bot.fetch('misc/qrcode', { url: text });
+
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'QRCODE.png' });
 			const embed = new Embed(bot, message.guild)
 				.setImage('attachment://QRCODE.png');
 			message.channel.send({ embeds: [embed], files: [attachment] });
@@ -75,7 +76,9 @@ class QRcode extends Command {
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
-			const attachment = new AttachmentBuilder(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text.replace(/ /g, '%20')}`, { name: 'QRCODE.png' });
+			const resp = await bot.fetch('misc/qrcode', { url: text });
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'QRCODE.png' });
+
 			const embed = new Embed(bot, guild)
 				.setImage('attachment://QRCODE.png');
 			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });
