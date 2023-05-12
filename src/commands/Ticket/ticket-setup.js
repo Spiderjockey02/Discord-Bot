@@ -38,7 +38,7 @@ class TicketSetup extends Command {
 				{
 					name: 'id',
 					description: 'id of role or category',
-					type: ApplicationCommandOptionType.Integer,
+					type: ApplicationCommandOptionType.String,
 					require: true,
 				},
 			],
