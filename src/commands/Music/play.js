@@ -175,6 +175,8 @@ class Play extends Command {
 			}
 		}
 
+		await interaction.deferReply();
+
 		// Create player
 		let player, res;
 		try {
@@ -186,7 +188,7 @@ class Play extends Command {
 			});
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
 		// Search for track
@@ -198,13 +200,13 @@ class Play extends Command {
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
 		// Workout what to do with the results
 		if (res.loadType == 'NO_MATCHES') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
 
 		} else if (res.loadType == 'PLAYLIST_LOADED') {
 			// Connect to voice channel if not already
@@ -234,7 +236,7 @@ class Play extends Command {
 
 			// Play the tracks
 			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-			return interaction.reply({ embeds: [embed] });
+			return interaction.followUp({ embeds: [embed] });
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
@@ -250,13 +252,19 @@ class Play extends Command {
 			}
 
 			if (!player.playing && !player.paused && !player.queue.size) {
-				player.play();
-				return interaction.reply({ content: 'Successfully started queue.' });
+				try {
+					await player.play();
+					return interaction.followUp({ content: 'Successfully started queue.' });
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+				}
+
 			} else {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				return interaction.reply({ embeds: [embed] });
+				return interaction.followUp({ embeds: [embed] });
 			}
 		}
 	}
