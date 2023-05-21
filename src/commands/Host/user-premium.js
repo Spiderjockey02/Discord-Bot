@@ -42,6 +42,7 @@ class UserPremium extends Command {
 	 * @param {bot} bot The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
@@ -51,15 +52,18 @@ class UserPremium extends Command {
 
 		try {
 			const resp = await userSchema.findOne({ userID: user.id	});
+			const time = Date.now();
 			if (!resp) {
 				await (new userSchema({
 					userID: user.id,
 					premium: premiumStatus,
-					premiumSince: Date.now(),
+					premiumSince: time,
 				})).save();
 			} else {
 				await userSchema.findOneAndUpdate({ userID: user.id }, { premium: premiumStatus, premiumSince: Date.now() });
 			}
+			user.premium = premiumStatus;
+			user.premiumSince = time;
 			interaction.reply({ embeds: [channel.success('host/user:SUCCESS_PREM', null, true)] });
 		} catch (err) {
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
