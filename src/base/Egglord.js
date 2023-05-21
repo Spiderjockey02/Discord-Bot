@@ -276,13 +276,13 @@ class Egglord extends Client {
 	async fetch(endpoint, query = {}) {
 		try {
 			if (endpoint.startsWith('image') || endpoint == 'misc/qrcode') {
-				const { data } = await get(`https://localhost:4500/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 					responseType: 'arraybuffer',
 				});
 				return data;
 			} else {
-				const { data: { data: res } } = await get(`https://localhost:4500/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data: { data: res } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 				});
 				return res;
