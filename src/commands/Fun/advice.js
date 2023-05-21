@@ -59,6 +59,8 @@ class Advice extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		try {
 			const advice = await bot.fetch('misc/advice');
+			if (advice.error) throw new Error(advice.error);
+
 			interaction.reply({ embeds: [{ color: bot.config.embedColor, description: `💡 ${advice}` }] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);

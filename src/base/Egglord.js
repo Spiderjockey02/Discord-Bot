@@ -266,15 +266,6 @@ class Egglord extends Client {
 	*/
 	addEmbed(channelID, embed) {
 		this.embedCollection.set(channelID, [this.embedCollection.has(channelID) ? [...this.embedCollection.get(channelID), embed].flat() : embed]);
-
-		// collect embeds
-		/*
-		if (!this.embedCollection.has(channelID)) {
-			this.embedCollection.set(channelID, [embed]);
-		} else {
-			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
-		}
-		*/
 	}
 
 	/**
@@ -297,8 +288,9 @@ class Egglord extends Client {
 				return res;
 			}
 		} catch (err) {
-			this.logger.error(err.response.data.error);
-			return err.response.data;
+			const error = err.response?.data.error ?? 'API website currently down';
+			this.logger.error(error);
+			return { error: error };
 		}
 	}
 }

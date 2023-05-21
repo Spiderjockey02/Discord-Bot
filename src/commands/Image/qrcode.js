@@ -77,8 +77,10 @@ class QRcode extends Command {
 
 		try {
 			const resp = await bot.fetch('misc/qrcode', { url: text });
-			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'QRCODE.png' });
+			const possibleError = JSON.parse(resp.toString()).error;
+			if (possibleError) throw new Error(possibleError);
 
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'QRCODE.png' });
 			const embed = new Embed(bot, guild)
 				.setImage('attachment://QRCODE.png');
 			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });

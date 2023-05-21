@@ -69,12 +69,14 @@ class NSFW extends Command {
 
 		try {
 			const image = await bot.fetch('nsfw/image', { type: args.get('type').value });
+			if (image.error) throw new Error(image.error);
+
 			const embed = new Embed(bot, guild)
 				.setImage(image);
 			interaction.editReply({ content: ' ', embeds: [embed], ephemeral: true });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
