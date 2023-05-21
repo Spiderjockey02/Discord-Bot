@@ -84,6 +84,7 @@ class Urban extends Command {
 	async fetchDefinition(bot, guild, phrase, channel) {
 		try {
 			const definitions = await bot.fetch('info/urban-dictionary', { phrase: phrase });
+			if (definitions.error) throw new Error(definitions.error);
 
 			// send definition of word
 			return new Embed(bot, guild)

@@ -80,18 +80,18 @@ class ChangeMyMind extends Command {
 	async callback(bot, interaction, guild, args) {
 		const text = args.get('text').value,
 			channel = guild.channels.cache.get(interaction.channelId);
-
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
 			const resp = await bot.fetch('image/changemymind', { text });
+			const possibleError = JSON.parse(resp.toString()).error;
+			if (possibleError) throw new Error(possibleError);
 
 			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'changemymind.png' });
 			const embed = new Embed(bot, guild)
 				.setImage('attachment://changemymind.png');
 			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });
 		} catch(err) {
-			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}

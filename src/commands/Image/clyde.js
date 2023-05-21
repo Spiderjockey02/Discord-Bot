@@ -83,6 +83,8 @@ class Clyde extends Command {
 			EMOJI: bot.customEmojis['loading'] }) });
 		try {
 			const resp = await bot.fetch('image/clyde', { text });
+			const possibleError = JSON.parse(resp.toString()).error;
+			if (possibleError) throw new Error(possibleError);
 
 			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'clyde.png' });
 			const embed = new Embed(bot, guild)

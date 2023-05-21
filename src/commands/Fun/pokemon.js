@@ -23,11 +23,7 @@ class Pokemon extends Command {
 			slash: true,
 			options: [{
 				name: 'pokemon',
-				nameLocalized: 'en-US',
-				// nameLocalizations: bot.languages.map(({ name }) => ({ [name]: bot.translate(`${this.help.category.toLowerCase()}/${this.help.name}:USAGE`, {}, name) }), bot.commands.get('pokemon')),
 				description: 'The specified pokemon to gather information on.',
-				// descriptionLocalized: 'en-Us',
-				//	descriptionLocalizations:bot.languages.map(({ name }) => ({ [name]: bot.translate(`${this.help.category.toLowerCase()}/${this.help.name}:USAGE`, {}, name) }), bot.commands.get('pokemon')),
 				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
@@ -94,6 +90,7 @@ class Pokemon extends Command {
 
 	async fetchPokemonData(bot, guild, name) {
 		const pokemon = await bot.fetch('misc/pokemon', { pokemon: name });
+		if (pokemon.error) throw new Error(pokemon.error);
 
 		// Send response to channel
 		const embed = new Embed(bot, guild)

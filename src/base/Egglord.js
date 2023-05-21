@@ -266,15 +266,6 @@ class Egglord extends Client {
 	*/
 	addEmbed(channelID, embed) {
 		this.embedCollection.set(channelID, [this.embedCollection.has(channelID) ? [...this.embedCollection.get(channelID), embed].flat() : embed]);
-
-		// collect embeds
-		/*
-		if (!this.embedCollection.has(channelID)) {
-			this.embedCollection.set(channelID, [embed]);
-		} else {
-			this.embedCollection.set(channelID, [...this.embedCollection.get(channelID), embed]);
-		}
-		*/
 	}
 
 	/**
@@ -285,20 +276,21 @@ class Egglord extends Client {
 	async fetch(endpoint, query = {}) {
 		try {
 			if (endpoint.startsWith('image') || endpoint == 'misc/qrcode') {
-				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data } = await get(`https://localhost:4500/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 					responseType: 'arraybuffer',
 				});
 				return data;
 			} else {
-				const { data: { data: res } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data: { data: res } } = await get(`https://localhost:4500/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 				});
 				return res;
 			}
 		} catch (err) {
-			this.logger.error(err.response.data.error);
-			return err.response.data;
+			const error = err.response?.data.error ?? 'API website currently down';
+			this.logger.error(error);
+			return { error: error };
 		}
 	}
 }

@@ -68,6 +68,7 @@ class Animal extends Command {
 
 		try {
 			const imageURL = await bot.fetch('misc/animal', { name });
+			if (imageURL.error) throw new Error(imageURL.error);
 
 			// send image
 			const embed = new Embed(bot, guild)
@@ -76,7 +77,7 @@ class Animal extends Command {
 			interaction.editReply({ content: ' ', embeds: [embed] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 

@@ -56,6 +56,8 @@ class Fact extends Command {
 
 		try {
 			const fact = await bot.fetch('misc/random-fact');
+			if (fact.error) throw new Error(fact.error);
+
 			const embed = new Embed(bot, guild)
 				.setTitle('fun/fact:FACT_TITLE')
 				.setDescription(fact);
