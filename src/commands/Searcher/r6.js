@@ -34,7 +34,7 @@ class Rainbow6Siege extends Command {
 				name: 'platform',
 				description: 'Device of user.',
 				type: ApplicationCommandOptionType.String,
-				choices: [...['pc', 'xbox', 'ps4'].map(i => ({ name: i, value: i }))],
+				choices: [...['uplay', 'xbl', 'psn'].map(i => ({ name: i, value: i }))],
 				required: false,
 			},
 			{
@@ -112,19 +112,11 @@ class Rainbow6Siege extends Command {
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value,
-			platform = args.get('platform')?.value,
-			region = args.get('region')?.value;
-
-		// Get platform
-		let device = platforms['pc'];
-		if (['pc', 'xbox', 'ps4'].includes(platform?.toLowerCase())) device = platforms[platform.toLowerCase()];
-
-		// Get region
-		let Region = regions['eu'];
-		if (['eu', 'na', 'as'].includes(region?.toLowerCase())) Region = regions[region.toLowerCase()];
+			platform = args.get('platform')?.value ?? 'uplay',
+			region = args.get('region')?.value ?? 'eu';
 
 		// display stats
-		const resp = await this.fetchUserData(bot, guild, channel, username, device, Region);
+		const resp = await this.fetchUserData(bot, guild, channel, username, platform, region);
 		if (resp.color && resp.color == 15158332) {
 			interaction.reply({ embeds: [resp], ephermal: true });
 		} else {
@@ -143,9 +135,9 @@ class Rainbow6Siege extends Command {
 	 * @returns {embed}
 	*/
 	async fetchUserData(bot, guild, channel, player, platform, region) {
-		// /api/games/r6?username=ThatGingerGuy02&platform=uplay&region=emea
 		if (platform === 'xbl') player = player.replace('_', '');
 		const playerData = await bot.fetch('games/r6', { username: player, platform: platform, region: region });
+		if (playerData.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: playerData.error }, true);
 
 		return new Embed(bot, guild)
 			.setAuthor({ name: player, iconURL: bot.user.displayAvatarURL() })

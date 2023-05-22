@@ -84,6 +84,7 @@ class Steam extends Command {
 	*/
 	async fetchSteamData(bot, guild, channel, token, username) {
 		const steam = await bot.fetch('socials/steam', { username: username });
+		if (steam.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: steam.error }, true);
 
 		// display data
 		return new Embed(bot, guild)

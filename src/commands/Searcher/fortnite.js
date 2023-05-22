@@ -10,7 +10,7 @@ const { Embed } = require('../../utils'),
 class Fortnite extends Command {
 	/**
  	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+ 	 * @param {Commandfortnite} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -106,26 +106,25 @@ class Fortnite extends Command {
  	 * @returns {embed}
 	*/
 	async createEmbed(bot, guild, channel, username, platform) {
-		const data = await (new (require('../../APIs/fortnite.js'))(bot.config.api_keys.fortnite)).user(username, platform);
+		const fortnite = await bot.fetch('games/fortnite', { username, platform });
+		if (fortnite.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: fortnite.error }, true);
+
 		// Check for error
-		if (data.error) {
-			return channel.error('misc:ERROR_MESSAGE', { ERROR: data.error }, true);
-		} else {
-			return new Embed(bot, guild)
-				.setColor(0xffffff)
-				.setTitle('searcher/fortnite:TITLE', { USER: data.username })
-				.setURL(data.url)
-				.setDescription(guild.translate('searcher/fortnite:DESC', { TOP_3: data.stats.lifetime.top_3.toLocaleString(guild.settings.Language), TOP_5: data.stats.lifetime.top_5.toLocaleString(guild.settings.Language), TOP_6: data.stats.lifetime.top_6.toLocaleString(guild.settings.Language), TOP_12: data.stats.lifetime.top_12.toLocaleString(guild.settings.Language), TOP_25: data.stats.lifetime.top_25.toLocaleString(guild.settings.Language) }))
-				.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
-				.addFields(
-					{ name: guild.translate('searcher/fortnite:TOTAL'), value: (data.stats.solo.score + data.stats.duo.score + data.stats.squad.score).toLocaleString(guild.settings.Language), inline: true },
-					{ name: guild.translate('searcher/fortnite:PLAYED'), value: data.stats.lifetime.matches.toLocaleString(guild.settings.Language), inline: true },
-					{ name: guild.translate('searcher/fortnite:WINS'), value: data.stats.lifetime.wins.toLocaleString(guild.settings.Language), inline: true },
-					{ name: guild.translate('searcher/fortnite:WINS_PRE'), value: `${((data.stats.lifetime.wins / data.stats.lifetime.matches) * 100).toFixed(2)}%`, inline: true },
-					{ name: guild.translate('searcher/fortnite:KILLS'), value: `${data.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, inline: true },
-					{ name: guild.translate('searcher/fortnite:K/D'), value: `${data.stats.lifetime.kd}`, inline: true },
-				);
-		}
+		return new Embed(bot, guild)
+			.setColor(0xffffff)
+			.setTitle('searcher/fortnite:TITLE', { USER: fortnite.username })
+			.setURL(fortnite.url)
+			.setDescription(guild.translate('searcher/fortnite:DESC', { TOP_3: fortnite.stats.lifetime.top_3.toLocaleString(guild.settings.Language), TOP_5: fortnite.stats.lifetime.top_5.toLocaleString(guild.settings.Language), TOP_6: fortnite.stats.lifetime.top_6.toLocaleString(guild.settings.Language), TOP_12: fortnite.stats.lifetime.top_12.toLocaleString(guild.settings.Language), TOP_25: fortnite.stats.lifetime.top_25.toLocaleString(guild.settings.Language) }))
+			.setThumbnail('https://vignette.wikia.nocookie.net/fortnite/images/d/d8/Icon_Founders_Badge.png')
+			.addFields(
+				{ name: guild.translate('searcher/fortnite:TOTAL'), value: (fortnite.stats.solo.score + fortnite.stats.duo.score + fortnite.stats.squad.score).toLocaleString(guild.settings.Language), inline: true },
+				{ name: guild.translate('searcher/fortnite:PLAYED'), value: fortnite.stats.lifetime.matches.toLocaleString(guild.settings.Language), inline: true },
+				{ name: guild.translate('searcher/fortnite:WINS'), value: fortnite.stats.lifetime.wins.toLocaleString(guild.settings.Language), inline: true },
+				{ name: guild.translate('searcher/fortnite:WINS_PRE'), value: `${((fortnite.stats.lifetime.wins / fortnite.stats.lifetime.matches) * 100).toFixed(2)}%`, inline: true },
+				{ name: guild.translate('searcher/fortnite:KILLS'), value: `${fortnite.stats.lifetime.kills.toLocaleString(guild.settings.Language)}`, inline: true },
+				{ name: guild.translate('searcher/fortnite:K/D'), value: `${fortnite.stats.lifetime.kd}`, inline: true },
+			);
+
 	}
 }
 

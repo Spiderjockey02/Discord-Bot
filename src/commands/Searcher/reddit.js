@@ -109,6 +109,7 @@ class Reddit extends Command {
 	async fetchPost(bot, channel, subreddit, type = 'hot') {
 		try {
 			const reddit = await bot.fetch('info/reddit', { sub: subreddit, type: type });
+			if (reddit.error) throw new Error(reddit.error);
 
 			// Send message to channel
 			return new Embed(bot, channel.guild)

@@ -48,7 +48,7 @@ class Twitch extends Command {
 
 		// fetch data
 		try {
-			const embed = await this.fetchTwitchData(bot, message.guild, user);
+			const embed = await this.fetchTwitchData(bot, message.channel, user);
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
@@ -72,34 +72,32 @@ class Twitch extends Command {
 			user = args.get('username').value;
 
 		try {
-			const embed = await this.fetchTwitchData(bot, guild, user);
+			const embed = await this.fetchTwitchData(bot, channel, user);
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {
-			console.log(err);
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
-	async fetchTwitchData(bot, guild, username) {
+	async fetchTwitchData(bot, channel, username) {
 		const twitch = await bot.fetch('socials/twitch', { username: username });
+		if (twitch.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: twitch.error }, true);
 
-		const embed = new Embed(bot, guild)
+		const embed = new Embed(bot, channel.guild)
 			.setTitle(twitch.display_name)
 			.setURL(`https://twitch.tv/${twitch.login}`)
 			.setThumbnail(twitch.profile_image_url)
 			.setAuthor({ name: 'Twitch', iconURL: 'https://i.imgur.com/4b9X738.png' })
 			.addFields(
-				{ name: guild.translate('searcher/twitch:BIO'), value: twitch.description || guild.translate('searcher/twitch:NO_BIO'), inline: true },
-				{ name: guild.translate('searcher/twitch:TOTAL'), value: twitch.view_count.toLocaleString(guild.settings.Language), inline: true },
-				{ name: guild.translate('searcher/twitch:FOLLOWERS'), value: twitch.followers.toLocaleString(guild.settings.Language), inline: true },
+				{ name: channel.guild.translate('searcher/twitch:BIO'), value: twitch.description || channel.guild.translate('searcher/twitch:NO_BIO'), inline: true },
+				{ name: channel.guild.translate('searcher/twitch:TOTAL'), value: twitch.view_count.toLocaleString(channel.guild.settings.Language), inline: true },
+				{ name: channel.guild.translate('searcher/twitch:FOLLOWERS'), value: twitch.followers.toLocaleString(channel.guild.settings.Language), inline: true },
 			);
 
 		if (twitch.steaming) {
 			embed
-				.addFields(
-					{ name: '\u200B', value: guild.translate('searcher/twitch:STREAMING', { TITLE: twitch.steaming.title, NUM: twitch.steaming.viewer_count }) },
-				)
+				.addFields({ name: '\u200B', value: channel.guild.translate('searcher/twitch:STREAMING', { TITLE: twitch.steaming.title, NUM: twitch.steaming.viewer_count }) })
 				.setImage(twitch.steaming.thumbnail_url.replace('{width}', 1920).replace('{height}', 1080));
 		}
 		return embed;
