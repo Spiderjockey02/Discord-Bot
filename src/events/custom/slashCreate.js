@@ -69,6 +69,11 @@ class SlashCreate extends Event {
 			return interaction.reply({ embeds: [channel.error('misc:USER_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => bot.translate(`permissions:${p}`)).join(', ') }, true)], ephemeral: true });
 		}
 
+		// Make sure user does not have access to ownerOnly commands
+		if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(interaction.user.id)) {
+			return interaction.reply({ content: 'Nice try', ephemeral: true });
+		}
+
 		// Check to see if user is in 'cooldown'
 		if (!bot.cooldowns.has(cmd.help.name)) {
 			bot.cooldowns.set(cmd.help.name, new Collection());
