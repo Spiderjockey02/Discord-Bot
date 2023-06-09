@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "تکرار آهنگ یا لیست پخش.",
+  "USAGE": "loop [queue / song]",
+  "TRACK": "{{TOGGLE}} تکرار موزیک.",
+  "QUEUE": "{{TOGGLE}} تکرار لیست."
+}

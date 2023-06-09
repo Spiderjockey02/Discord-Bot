@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "دیدن عکس کاربر.",
+  "USAGE": "avatar [user]",
+  "AVATAR_TITLE": "🖼 عکس برای {{USER}}",
+  "AVATAR_DESCRIPTION": "**Links:**"
+}

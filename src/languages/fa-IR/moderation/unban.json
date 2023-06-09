@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "آن بن کردن کاربر.",
+  "USAGE": "unban <userID> [reason]",
+  "NO_ONE": "شخصی پیدا نشد",
+  "SUCCESS": "*<@{{USER}}> با موفقیت از بن در آمد*.",
+  "MISSING": "کسی با این ایدی بن نشده است: {{ID}}."
+}

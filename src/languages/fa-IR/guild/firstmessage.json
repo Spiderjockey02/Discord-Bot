@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "نشان دادن اولین پیام چنل.",
+  "USAGE": "firstmessage [channel]",
+  "JUMP": "❯ Jump"
+}

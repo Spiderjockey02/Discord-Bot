@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "ارسال لینک سیاست حفظ حریم خصوصی.",
+  "USAGE": "privacy",
+  "LINK": "[📝 Privacy Policy]({{LINK}})"
+}

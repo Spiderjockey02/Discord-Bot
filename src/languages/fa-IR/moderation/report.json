@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "گذارش دادن کاربر.",
+  "USAGE": "report <user> [reason]",
+  "AUTHOR": "~کاربر گذارش داده شد~",
+  "MEMBER": "کاربر:",
+  "BY": "گذارش داده شد توسط:",
+  "IN": "در:",
+  "REASON": "دلیل:",
+  "SUCCESS": "*<@{{USER}}> has been successfully reported*."
+}

@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "بن کردن کاربرr.",
+  "USAGE": "ban <user> [reason] [time]",
+  "TITLE": "بن شد",
+  "MISSING_USER": "من نمیتوانم کسی که در سرور نیست رو بن کنم.",
+  "TOO_POWERFUL": "من نمیتوانم این کاربر را بن کنم.",
+  "DESC": "شما بن شدید از  {{NAME}}.",
+  "BAN_BY": "بن شد توسط:",
+  "SUCCESS": "*<@{{USER}}> was successfully banned*."
+}

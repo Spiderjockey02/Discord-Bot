@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "دریافت فرهنگ لغت یک کلمه.",
+  "USAGE": "urban <word>",
+  "INCORRECT_URBAN": "Phrase: `{{PHRASE}}` was not found on the urban dictionary.",
+  "TITLE": "Definition of {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Example:**\n{{EXAMPLES}}"
+}

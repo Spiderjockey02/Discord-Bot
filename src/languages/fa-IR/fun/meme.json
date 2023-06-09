@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "ارسال رندوم میم.",
+  "USAGE": "meme",
+  "TITLE": "From {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

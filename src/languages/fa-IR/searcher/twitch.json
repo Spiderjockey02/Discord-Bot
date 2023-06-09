@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "دریافت اطلاعات توییچ.",
+  "USAGE": "twitch <user>",
+  "BIO": "بایوگرافی: ",
+  "NO_BIO": "این کاربر بایو ندارد.",
+  "TOTAL": "کل بازدید: ",
+  "FOLLOWERS": "دنبال کنندگان: ",
+  "NOT_FOUND": "کاربر توییچ پیدا نشود.",
+  "STREAMING": "**{{TITLE}}** for {{NUM}} viewers"
+}

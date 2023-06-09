@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "ساخت میم.",
+  "USAGE": "changemymind <text>",
+  "TOO_LONG": "متن شما نباید بیشتر از 80 کارکتر باشد."
+}

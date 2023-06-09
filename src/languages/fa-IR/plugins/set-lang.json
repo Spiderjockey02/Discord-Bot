@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "انتخاب کردن زبان برای ربات.",
+  "USAGE": "setlang <language>",
+  "MISSING_LANG": "این زبان وجود ندارد : {{list}}",
+  "SUCCESS": "زبان ربات تغییر کرد به {{NAME}}!"
+}

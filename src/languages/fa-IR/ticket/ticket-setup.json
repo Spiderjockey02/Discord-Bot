@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "راه اندازی تیکت",
+  "USAGE": "ticket-setup",
+  "TITLE": "کمک برای راه اندازی",
+  "NOT_CATEGORY": "این یک کتگوری نیست.",
+  "UPDATED_CATEGORY": "کتگوری تیکت اپدیت شد : `{{NAME}}`.",
+  "NOT_ROLE": "این یک رول نیست.",
+  "UPDATED_ROLE": "رول ساپورت اپدیت شد: {ROLE}."
+}

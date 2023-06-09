@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "فعال کردن حالت آروم در چنل.",
+  "USAGE": "slowmode <time / off>",
+  "SUCCESS": "Slowmode set to **{{TIME}}**."
+}

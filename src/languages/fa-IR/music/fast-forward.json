@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "افزایش سرعت پلیر با وارد کردن عدد مشخص.",
+  "USAGE": "fast-forward <time>",
+  "LIVESTREAM": "شمار نمیتوانید از این قابلیت در لایو استریم استفاده کنید.",
+  "TOO_LONG": "این موزیک فقط {{TIME}} ثانیه است.",
+  "DESC": "**Fast-forwarded `{{OLD}}` to: `{{NEW}}`.**"
+}

@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "دریافت اطلاعات درباره سرور.",
+  "USAGE": "server-info",
+  "AUTHOR": "{{NAME}}'s server info",
+  "NAME": "اسم سرور:",
+  "OWNER": "سازنده سرور:",
+  "ID": "ایدی سرور:",
+  "CREATED": "زمان ساخت:",
+  "REGION": "موقعیت سرور:",
+  "VERIFICATION": "سطح تایید:",
+  "MEMBER": "تعداد ممبر [{{NUM}}]:",
+  "MEMBER_DESC": "`{{ONLINE}} online, {{IDLE}} idle and {{DND}} DnD \n{{BOTS}} bots, {{HUMANS}} humans`",
+  "FEATURES": "قابلیت ها:",
+  "ROLES": "رول ها [{{NUM}}]:",
+  "FOOTER": "درخواست توسط: {{USER}}"
+}

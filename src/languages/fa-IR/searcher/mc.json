@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "پینگ کردن سرور ماینکرفت.",
+  "USAGE": "mc <IP> [Port]",
+  "FETCHING": "{{EMOJI}} Fetching {{ITEM}} server info...",
+  "TITLE": "وضعیت سرور",
+  "PING": "پینگ سرور:",
+  "VERSION": "نسخه سرور:",
+  "DESC": "اطلاعات:",
+  "PLAYERS": "بازیکنان انلاین"
+}

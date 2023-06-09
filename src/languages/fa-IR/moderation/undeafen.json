@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "شنوا کردن کاربر .",
+  "USAGE": "undeafen <user>",
+  "NOT_VC": "من نمیتوانم کسی که در ویس نیست رو شنوا کنم.",
+  "SUCCESS": "*<@{{USER}}> was successfully undeafened*."
+}

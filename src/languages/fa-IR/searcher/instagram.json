@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "اطلاعات مربوط به یک حساب instagram را دریافت کنید.",
+  "USAGE": "instagram <user>",
+  "UNKNOWN_USER": "نمیتوانم این نام کاربری رو پیدا کنم.",
+  "USERNAME": "نام کاربری: ",
+  "FULL_NAME": "نام کامل: ",
+  "BIOGRAPHY": "بایو: ",
+  "POSTS": "پست ها: ",
+  "FOLLOWERS": "دنبال کنندگان: ",
+  "FOLLOWING": "کسانی که دنبال میکند: ",
+  "PRIVATE": "اکانت خصوصی: ",
+  "VERIFIED": "اکانت تایید شده: "
+}
