@@ -126,8 +126,7 @@ class Rank extends Command {
 			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (user.Level == 1 ? 0 : (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setStatus(target.presence?.status ?? 'dnd')
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-			.setUsername(target.user.username)
-			.setDiscriminator(target.user.discriminator);
+			.setUsername(target.user.username);
 		if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
 
 		// create rank card
