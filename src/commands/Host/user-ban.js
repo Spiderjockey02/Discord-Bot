@@ -60,6 +60,7 @@ class UserBan extends Command {
 			} else {
 				await userSchema.findOneAndUpdate({ userID: user.id }, { cmdBanned: bannedStatus });
 			}
+			user.cmdBanned = bannedStatus;
 			interaction.reply({ embeds: [channel.success('host/user:SUCCESS_BAN', null, true)] });
 		} catch (err) {
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
