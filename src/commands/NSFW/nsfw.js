@@ -43,7 +43,7 @@ class NSFW extends Command {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		try {
-			const image = await bot.fetch('nsfw/image', { type: '4k' });
+			const image = await bot.fetch('nsfw/image', { type: message.args[0] });
 			msg.delete();
 			const embed = new Embed(bot, message.guild)
 				.setImage(image);
