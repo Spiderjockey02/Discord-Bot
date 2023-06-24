@@ -24,7 +24,7 @@ class User extends Command {
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('user-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('user-')).map(c => ({
 				name: c.help.name.replace('user-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -167,7 +167,7 @@ class User extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`user-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`user-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

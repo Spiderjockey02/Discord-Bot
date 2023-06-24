@@ -140,10 +140,16 @@ class Command {
 	load(bot) {
 		const cmd = new (require(`../commands/${this.help.category}${path.sep}${this.help.name}.js`))(bot);
 		bot.logger.log(`Loading Command: ${cmd.help.name}.`);
-		bot.commands.set(cmd.help.name, cmd);
-		cmd.help.aliases.forEach((alias) => {
-			bot.aliases.set(alias, cmd.help.name);
-		});
+
+		// Check if it's a subCommand or not
+		if (cmd.conf.isSubCmd) {
+			bot.subCommands.set(cmd.help.name, cmd);
+		} else {
+			bot.commands.set(cmd.help.name, cmd);
+			cmd.help.aliases.forEach((alias) => {
+				bot.aliases.set(alias, cmd.help.name);
+			});
+		}
 	}
 
 	/**

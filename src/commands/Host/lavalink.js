@@ -22,7 +22,7 @@ class Lavalink extends Command {
 			usage: 'lavalink [list | add | remove] <information>',
 			cooldown: 3000,
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('lavalink-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('lavalink-')).map(c => ({
 				name: c.help.name.replace('lavalink-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -120,7 +120,7 @@ class Lavalink extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`lavalink-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`lavalink-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

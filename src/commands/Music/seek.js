@@ -23,7 +23,7 @@ class Seek extends Command {
 			cooldown: 3000,
 			examples: ['seek 1:00'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('seek-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('seek-')).map(c => ({
 				name: c.help.name.replace('seek-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -73,7 +73,7 @@ class Seek extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`seek-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`seek-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

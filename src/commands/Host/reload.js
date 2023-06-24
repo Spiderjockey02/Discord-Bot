@@ -24,7 +24,7 @@ class Reload extends Command {
 			cooldown: 3000,
 			examples: ['reload help', 'reload channelCreate'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('reload') && c.help.name != 'reload').map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('reload') && c.help.name != 'reload').map(c => ({
 				name: c.help.name.replace('reload-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -102,7 +102,7 @@ class Reload extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`reload-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`reload-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

@@ -23,7 +23,7 @@ class PAdd extends Command {
 			cooldown: 3000,
 			examples: ['p-add Songs https://www.youtube.com/watch?v=4AnmemzByVY'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('playlist-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('playlist-')).map(c => ({
 				name: c.help.name.replace('playlist-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -41,7 +41,7 @@ class PAdd extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`playlist-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`playlist-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

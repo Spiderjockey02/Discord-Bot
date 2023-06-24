@@ -24,7 +24,7 @@ class Role extends Command {
 			cooldown: 5000,
 			examples: ['addrole Test #FF0000 true'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('role-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('role-')).map(c => ({
 				name: c.help.name.replace('role-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -41,7 +41,7 @@ class Role extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`role-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`role-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

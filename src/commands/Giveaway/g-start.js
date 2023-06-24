@@ -164,6 +164,7 @@ class GiveawayStart extends Command {
 				},
 			});
 			bot.logger.log(`${member.user.tag} started a giveaway in server: [${guild.id}].`);
+			interaction.reply({ content: 'Succesfully started giveaway' });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });

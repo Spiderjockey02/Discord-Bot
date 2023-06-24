@@ -71,6 +71,7 @@ class Egglord extends Client {
 		*/
 		this.aliases = new Collection();
 		this.commands = new Collection();
+		this.subCommands = new Collection();
 		this.interactions = new Collection();
 		this.cooldowns = new Collection();
 		this.requests = {};

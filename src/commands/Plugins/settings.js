@@ -23,7 +23,7 @@ class Settings extends Command {
 			cooldown: 30000,
 			examples: ['giveaway start 1m 1 nitro', 'giveaway reroll 1021725995901911080'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('settings-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('settings-')).map(c => ({
 				name: c.help.name.replace('settings-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -41,7 +41,7 @@ class Settings extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`settings-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`settings-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {

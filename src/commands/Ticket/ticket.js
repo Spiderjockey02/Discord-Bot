@@ -30,7 +30,7 @@ class Ticket extends Command {
 					description: 'Create reaction embed',
 					type: ApplicationCommandOptionType.Subcommand,
 				},
-				...bot.commands.filter(c => c.help.category == 'Ticket' && c.help.name !== 'ticket').map(c => ({
+				...bot.subCommands.filter(c => c.help.category == 'Ticket' && c.help.name !== 'ticket').map(c => ({
 					name: c.help.name.replace('ticket-', ''),
 					description: c.help.description,
 					type: ApplicationCommandOptionType.Subcommand,
@@ -81,7 +81,7 @@ class Ticket extends Command {
 			await this.sendReactionEmbed(bot, interaction.channel);
 			interaction.reply({ content: 'Created embed', ephermal: true });
 		} else {
-			const command = bot.commands.get(`ticket-${option}`);
+			const command = bot.subCommands.get(`ticket-${option}`);
 			if (command) {
 				command.callback(bot, interaction, guild, args);
 			} else {

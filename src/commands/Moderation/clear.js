@@ -25,7 +25,7 @@ class Clear extends Command {
 			cooldown: 5000,
 			examples: ['clear 50 username', 'clear 10'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('clear-')).map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('clear-')).map(c => ({
 				name: c.help.name.replace('clear-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -156,7 +156,7 @@ class Clear extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`clear-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`clear-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {
