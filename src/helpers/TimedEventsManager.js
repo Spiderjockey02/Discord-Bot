@@ -32,6 +32,7 @@ module.exports = async (bot) => {
 
 							await guild.members.unban(bUser.user);
 							await bot.channels.cache.get(event.channelID)?.success('moderation/unban:SUCCESS', { USER: user }).then(m => m.timedDelete({ timeout: 3000 }));
+							await timeEventSchema.findByIdAndRemove(event._id);
 						} catch (err) {
 							bot.logger.error(`Error: ${err.message} when trying to unban user. (timed event)`);
 							bot.channels.cache.get(event.channelID)?.error('misc:ERROR_MESSAGE', { ERROR: err.message });
@@ -50,6 +51,7 @@ module.exports = async (bot) => {
 							.setFooter({ text: guild.translate('fun/reminder:FOOTER', { TIME: ms(event.time, { long: true }) }) });
 						try {
 							await bot.users.cache.get(event.userID).send({ embeds: [embed], files: [attachment] });
+							await timeEventSchema.findByIdAndRemove(event._id);
 						} catch (err) {
 							bot.logger.error(`Error: ${err.message} when sending reminder to user. (timed event)`);
 							bot.channels.cache.get(event.channelID)?.send(guild.translate('fun/reminder:RESPONSE', { USER: user.id, INFO: event.message }));
@@ -72,7 +74,10 @@ module.exports = async (bot) => {
 											b = new Date(event.time).getTime();
 
 										// Delete warning
-										if (Math.abs(a, b) <= 4000) await WarningSchema.findByIdAndRemove(warn._id);
+										if (Math.abs(a, b) <= 4000) {
+											await WarningSchema.findByIdAndRemove(warn._id);
+											await timeEventSchema.findByIdAndRemove(event._id);
+										}
 									}
 								}
 							}
