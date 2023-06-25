@@ -108,7 +108,7 @@ class TicketSetup extends Command {
 			// update category channel
 				try {
 					channel = guild.channels.cache.get(id);
-					if (!channel || channel.type != 'GUILD_CATEGORY') return interaction.reply({ content: guild.translate('ticket/ticket-setup:NOT_CATEGORY') });
+					if (!channel || channel.type != ChannelType.GuildCategory) return interaction.reply({ content: guild.translate('ticket/ticket-setup:NOT_CATEGORY') });
 
 					// update database
 					await guild.updateGuild({ TicketCategory: id });
