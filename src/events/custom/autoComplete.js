@@ -35,7 +35,7 @@ class AutoComplete extends Event {
 			case 'animal':
 				return bot.commands.get('animal').autocomplete(bot, interaction);
 			case 'reload':
-				bot.commands.get(`reload-${interaction.options.getSubcommand()}`).autocomplete(bot, interaction);
+				bot.subCommands.get(`reload-${interaction.options.getSubcommand()}`).autocomplete(bot, interaction);
 				break;
 			default:
 				interaction.respond([{ name: 'error', value: 'error fetching results' }]);
