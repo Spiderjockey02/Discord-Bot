@@ -87,7 +87,7 @@ class Deafen extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('').value),
+		const member = guild.members.cache.get(args.get('user').value),
 			channel = guild.channels.cache.get(interaction.channelId);
 
 		// Make sure that the user is in a voice channel
