@@ -27,11 +27,13 @@ class AutoComplete extends Event {
 			case 'radio':
 				return bot.commands.get('radio').autocomplete(bot, interaction);
 			case 'role':
-				return bot.commands.get('role-add').autocomplete(bot, interaction);
+				return bot.subCommands.get('role-add').autocomplete(bot, interaction);
 			case 'help':
 				return bot.commands.get('help').autocomplete(bot, interaction);
 			case 'playlist':
 				return bot.commands.get('playlist').autocomplete(bot, interaction);
+			case 'animal':
+				return bot.commands.get('animal').autocomplete(bot, interaction);
 			case 'reload':
 				bot.commands.get(`reload-${interaction.options.getSubcommand()}`).autocomplete(bot, interaction);
 				break;

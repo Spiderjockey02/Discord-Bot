@@ -20,7 +20,7 @@ class Random extends Command {
 			cooldown: 1000,
 			examples: ['random'],
 			slash: true,
-			options: bot.commands.filter(c => c.help.name.startsWith('random') && c.help.name != 'random').map(c => ({
+			options: bot.subCommands.filter(c => c.help.name.startsWith('random') && c.help.name != 'random').map(c => ({
 				name: c.help.name.replace('random-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -38,7 +38,7 @@ class Random extends Command {
  	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const command = bot.commands.get(`random-${interaction.options.getSubcommand()}`);
+		const command = bot.subCommands.get(`random-${interaction.options.getSubcommand()}`);
 		if (command) {
 			command.callback(bot, interaction, guild, args);
 		} else {
