@@ -97,7 +97,7 @@ class Nick extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
-			nickname = args.get('nickname').value;
+			nickname = args.get('nickname')?.value ?? null;
 
 		// Make sure user user does not have ADMINISTRATOR permissions
 		if (member.permissions.has(Flags.Administrator) || (member.roles.highest.comparePositionTo(guild.members.me.roles.highest) > 0)) {
