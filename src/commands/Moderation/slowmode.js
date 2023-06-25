@@ -78,7 +78,7 @@ class Slowmode extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const input = args.get('input'),
+		const input = args.get('input').value,
 			channel = guild.channels.cache.get(interaction.channelId);
 
 		// get time
@@ -86,15 +86,18 @@ class Slowmode extends Command {
 		if (input == 'off') {
 			time = 0;
 		} else if (input) {
-			const { error, success } = getTotalTime(args.get('input').value);
+			const { error, success } = getTotalTime(input);
 			if (error) return interaction.reply({ embeds: [channel.error(error, null, true)] });
-			time = success;
+			time = (success / 1000);
 		}
+
+		// Make sure it's not more than 6 hours
+		if (time > 21600) return interaction.reply({ embeds: [channel.error('Slowmode can\'t be more than 6 hours.', null, true)] });
 
 		// Activate slowmode
 		try {
-			await channel.setRateLimitPerUser(time / 1000);
-			interaction.reply({ embeds: [channel.error('moderation/slowmode:SUCCESS', { TIME: time == 0 ? guild.translate('misc:OFF') : getReadableTime(time) }, true)] });
+			await channel.setRateLimitPerUser(time);
+			interaction.reply({ embeds: [channel.success('moderation/slowmode:SUCCESS', { TIME: time == 0 ? guild.translate('misc:OFF') : getReadableTime(time * 1000) }, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
