@@ -64,10 +64,12 @@ class TicketCreate extends Command {
 
 		// create channel
 		try {
-			const channel = await message.guild.channels.create({ name: `ticket-${message.author.id}`, type: ChannelType.GuildText,
+			const channel = await message.guild.channels.create({ name: `ticket-${message.author.id}`,
+				type: ChannelType.GuildText,
 				reason: reason,
 				parent: settings.TicketCategory,
-				permissionOverwrites: perms });
+				permissionOverwrites: perms,
+			});
 
 			// reply to user saying that channel has been created
 			const successEmbed = new Embed(bot, message.guild)
@@ -122,10 +124,12 @@ class TicketCreate extends Command {
 
 		// create channel
 		try {
-			channel = await guild.channels.create(`ticket-${interaction.user.id}`, { type: ChannelType.GuildText,
+			channel = await guild.channels.create({ name: `ticket-${interaction.user.id}`,
+				type: ChannelType.GuildText,
 				reason: reason,
 				parent: settings.TicketCategory,
-				permissionOverwrites: perms });
+				permissionOverwrites: perms,
+			});
 
 			// reply to user saying that channel has been created
 			const successEmbed = new Embed(bot, guild)
