@@ -108,7 +108,7 @@ class Nick extends Command {
 		// Change nickname and tell user (send error message if dosen't work)
 		try {
 			await member.setNickname(nickname);
-			interaction.reply({ embeds: [channel.error('moderation/nick:SUCCESS', { USER: member.user }, true)] });
+			interaction.reply({ embeds: [channel.success('moderation/nick:SUCCESS', { USER: member.user }, true)] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
