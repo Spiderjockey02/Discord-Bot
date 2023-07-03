@@ -78,9 +78,9 @@ class Reload extends Command {
 		const cmdName = args.get('command').value,
 			channel = guild.channels.cache.get(interaction.channelId);
 
-		if (bot.commands.has(cmdName) || bot.commands.get(bot.aliases.get(cmdName))) {
-			// Finds command
-			const cmd = bot.commands.get(cmdName) || bot.commands.get(bot.aliases.get(cmdName));
+		// Find apparent command
+		const cmd = bot.commands.has(cmdName) || bot.commands.get(bot.aliases.get(cmdName)) || bot.subCommands.get(cmdName);
+		if (cmd) {
 
 			// reloads command
 			try {
@@ -103,9 +103,9 @@ class Reload extends Command {
 	 * @readonly
 	*/
 	async autocomplete(bot, interaction) {
-		const events = bot.commands.map(i => i.help.name).sort(),
+		const cmds = [...bot.commands.map(i => i.help.name), ...bot.subCommands.map(i => i.help.name)].sort(),
 			input = interaction.options.getFocused(true).value;
-		const selectedEvents = events.filter(i => i.toLowerCase().startsWith(input)).slice(0, 10);
+		const selectedEvents = cmds.filter(i => i.toLowerCase().startsWith(input)).slice(0, 10);
 
 		interaction.respond(selectedEvents.map(i => ({ name: i, value: i })));
 	}
