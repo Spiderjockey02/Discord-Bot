@@ -79,9 +79,8 @@ class Reload extends Command {
 			channel = guild.channels.cache.get(interaction.channelId);
 
 		// Find apparent command
-		const cmd = bot.commands.has(cmdName) || bot.commands.get(bot.aliases.get(cmdName)) || bot.subCommands.get(cmdName);
+		const cmd = bot.commands.get(cmdName) || bot.commands.get(bot.aliases.get(cmdName)) || bot.subCommands.get(cmdName);
 		if (cmd) {
-
 			// reloads command
 			try {
 				cmd.unload();
