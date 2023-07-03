@@ -283,10 +283,17 @@ class Egglord extends Client {
 				});
 				return data;
 			} else {
-				const { data: { data: res } } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 				});
-				return res;
+
+				// Check if error or not
+				if (data.error) {
+					return { error: data.error };
+				} else {
+					return data.data;
+				}
+
 			}
 		} catch (err) {
 			const error = err.response?.data.error ?? 'API website currently down';
