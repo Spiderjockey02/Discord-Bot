@@ -26,7 +26,7 @@ class NSFW extends Command {
 				description: 'Type of image',
 				type: ApplicationCommandOptionType.String,
 				required: true,
-				choices: ['cosplay', 'hentai', 'ass', 'pgif', 'swimsuit', 'thigh', 'hass', 'boobs', 'hboobs', 'lewdneko', 'feet', 'hyuri', 'hthigh', 'anal', 'blowjob', 'gonewild', '4k', 'kanna', 'hentai_anal', 'food', 'neko'].map(i => ({ name: i, value: i })),
+				choices: ['hentai', 'ass', 'pgif', 'thigh', 'hass', 'boobs', 'hboobs', 'lewdneko', 'feet', 'hyuri', 'hthigh', 'anal', 'blowjob', 'gonewild', '4k', 'kanna', 'hentai_anal', 'neko'].map(i => ({ name: i, value: i })),
 			}],
 		});
 	}
