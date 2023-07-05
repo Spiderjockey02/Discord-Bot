@@ -48,6 +48,20 @@ class SetLog extends Command {
 					channelTypes: [ChannelType.GuildText, ChannelType.GuildPublicThread, ChannelType.GuildPrivateThread, ChannelType.GuildNews],
 					required: false,
 				},
+				{
+					name: 'add',
+					description: 'Add a event to listen to',
+					type: ApplicationCommandOptionType.String,
+					autocomplete: true,
+					required: false,
+				},
+				{
+					name: 'remove',
+					description: 'Remove a event to listen to',
+					type: ApplicationCommandOptionType.String,
+					autocomplete: true,
+					required: false,
+				},
 			],
 		});
 	}
@@ -143,11 +157,79 @@ class SetLog extends Command {
 	 * Function for receiving interaction.
 	 * @param {bot} bot The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction) {
-		interaction.reply({ content: 'Coming soon' });
+	async callback(bot, interaction, guild, args) {
+		const toggle = args.get('toggle')?.value,
+			channel = guild.channels.cache.get(args.get('channel')?.value),
+			add = args.get('add')?.value,
+			remove = args.get('remove')?.value;
 
+		const updatedFeatures = [];
+		// Update toggle
+		if (toggle != undefined) {
+			updatedFeatures.push(`Logging: ${toggle ? 'enabled' : 'disabled'}`);
+			await guild.updateGuild({ ModLog: toggle });
+		}
+
+		// Update channel
+		if (channel != undefined) {
+			updatedFeatures.push(`Channel: ${channel}`);
+			await guild.updateGuild({ ModLogChannel: channel });
+		}
+
+		// Add to the log events array
+		if (add != undefined) {
+			const events = guild.settings.ModLogEvents;
+			// Check if it's already included
+			if (features.includes(remove)) {
+				events.push(add);
+				updatedFeatures.push(`Added ${add} to the logs`);
+				await guild.updateGuild({ ModLogEvents: events });
+			} else {
+				updatedFeatures.push(`${add} was an invalid event`);
+			}
+		}
+
+		// Remove to the log events array
+		if (remove != undefined) {
+			if (guild.settings.ModLogEvents.includes(remove)) {
+				const events = guild.settings.ModLogEvents.filter(l => l !== remove);
+				updatedFeatures.push(`Removed ${remove} from the logs`);
+				await guild.updateGuild({ ModLogEvents: events });
+			} else {
+				updatedFeatures.push(`${remove} was an invalid event`);
+			}
+		}
+
+		interaction.reply({ content: `Updated the following:\n- ${updatedFeatures.join('\n- ')}` });
+	}
+
+	/**
+	  * Function for handling autocomplete
+	  * @param {bot} bot The instantiating client
+	  * @param {interaction} interaction The interaction that ran the command
+	  * @readonly
+	*/
+	autocomplete(bot, interaction) {
+		const option = interaction.options.getFocused(true);
+		let events = [];
+
+		// Get the list of events based on subcommand
+		if (option.name == 'add') {
+			events = features.filter(f => !interaction.member.guild.settings.ModLogEvents.includes(f));
+		} else {
+			// They are trying to remove an existing event
+			events = interaction.member.guild.settings.ModLogEvents;
+		}
+
+		// Filter the events based on input
+		events = events.filter(i => i.toLowerCase().startsWith(option.value.toLowerCase())).slice(0, 10);
+
+		// Send back the responses
+		interaction.respond(events.map(i => ({ name: i, value: i })));
 	}
 }
 
