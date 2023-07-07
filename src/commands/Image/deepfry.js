@@ -1,7 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	fetch = require('node-fetch'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
+	{ ApplicationCommandOptionType, AttachmentBuilder } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -49,12 +48,19 @@ class Deepfry extends Command {
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=deepfry&image=${files[0]}`)).then(res => res.json());
-			// send image
+			const resp = await bot.fetch('image/deepfry', { image1: files[0] });
+
+			// Check if an object was sent instead (probs an error)
+			const isObject = typeof resp.toString() == 'object';
+			if (isObject) {
+				const possibleError = JSON.parse(resp.toString())?.error;
+				if (possibleError) throw new Error(possibleError);
+			}
+
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'deepfry.png' });
 			const embed = new Embed(bot, message.guild)
-				.setColor(15105570)
-				.setImage(json.message);
-			message.channel.send({ embeds: [embed] });
+				.setImage('attachment://deepfry.png');
+			message.channel.send({ embeds: [embed], files: [attachment] });
 		} catch(err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -78,11 +84,19 @@ class Deepfry extends Command {
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=deepfry&image=${member.user.displayAvatarURL({ format: 'png', size: 1024 })}`)).then(res => res.json());
+			const resp = await bot.fetch('image/deepfry', { image1: member.user.displayAvatarURL({ format: 'png', size: 1024 }) });
+
+			// Check if an object was sent instead (probs an error)
+			const isObject = typeof resp.toString() == 'object';
+			if (isObject) {
+				const possibleError = JSON.parse(resp.toString())?.error;
+				if (possibleError) throw new Error(possibleError);
+			}
+
+			const attachment = new AttachmentBuilder(Buffer.from(resp, 'base64'), { name: 'deepfry.png' });
 			const embed = new Embed(bot, guild)
-				.setColor(3447003)
-				.setImage(json.message);
-			interaction.editReply({ content: ' ', embeds: [embed] });
+				.setImage('attachment://deepfry.png');
+			interaction.editReply({ content: ' ', embeds: [embed], files: [attachment] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
