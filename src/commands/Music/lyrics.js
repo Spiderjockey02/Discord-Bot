@@ -1,6 +1,5 @@
 // Dependencies
 const { Embed, paginate } = require('../../utils'),
-	{ getSong } = require('genius-lyrics-api'),
 	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -39,25 +38,14 @@ class Lyrics extends Command {
   */
 	async run(bot, message) {
 		// Check that a song is being played
-		let options;
-		if (message.args.length == 0) {
+		let song = message.args.join(' ');
+
+		// Check if they want to get the lyrics from the currently played song
+		if (song.length == 0) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(message.guild.id);
 			if (!player) return message.channel.error('misc:NO_QUEUE');
-			options = {
-				apiKey: bot.config.api_keys.genius,
-				title: player.queue.current.title,
-				artist: '‎',
-				optimizeQuery: true,
-			};
-		} else {
-			// Use the message.args for song search
-			options = {
-				apiKey: bot.config.api_keys.genius,
-				title: message.args.join(' '),
-				artist: '‎',
-				optimizeQuery: true,
-			};
+			song = player.queue.current.title;
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -66,7 +54,7 @@ class Lyrics extends Command {
 
 		// display lyrics
 		try {
-			const lyrics = await this.searchLyrics(bot, message.guild, options, message.author);
+			const lyrics = await this.searchLyrics(bot, message.guild, song, message.author);
 			msg.delete();
 			if (Array.isArray(lyrics)) {
 				paginate(bot, message.channel, lyrics, message.author.id);
@@ -89,63 +77,49 @@ class Lyrics extends Command {
 	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
-			channel = guild.channels.cache.get(interaction.channelId),
-			song = args.get('track')?.value;
+			channel = guild.channels.cache.get(interaction.channelId);
+		let song = args.get('track')?.value;
 
-		// create options
-		let options;
+		await interaction.deferReply();
+
+		// Check if they want to get the lyrics from the currently played song
 		if (!song) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(guild.id);
-			if (!player) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
-			options = {
-				apiKey: bot.config.api_keys.genius,
-				title: player.queue.current.title,
-				artist: '‎',
-				optimizeQuery: true,
-			};
-		} else {
-			// Use the message.args for song search
-			options = {
-				apiKey: bot.config.api_keys.genius,
-				title: song,
-				artist: '‎',
-				optimizeQuery: true,
-			};
+			if (!player) return interaction.followUp({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+			song = player.queue.current.title;
 		}
 
 		// display lyrics
 		try {
-			const lyrics = await this.searchLyrics(bot, guild, options, member.user);
+			const lyrics = await this.searchLyrics(bot, guild, song, member.user);
 			if (Array.isArray(lyrics)) {
 				paginate(bot, interaction, lyrics, member.id);
 			} else {
-				interaction.reply({ content: lyrics });
+				interaction.followUp({ content: lyrics });
 			}
 		} catch (err) {
-			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err }, true)], ephemeral: true });
+			interaction.followUp({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message ?? err }, true)], ephemeral: true });
 		}
 	}
 
-	async searchLyrics(bot, guild, options, author) {
+	async searchLyrics(bot, guild, song, author) {
 		// search for and send lyrics
-		const info = await getSong(options);
+		const info = await bot.fetch('info/lyrics', { title: song });
 
 		// make sure lyrics were found
-		if (!info || !info.lyrics) {
-			return guild.translate('music/lyrics:NO_LYRICS');
-		}
+		if (!info || !info.lyrics) return guild.translate('music/lyrics:NO_LYRICS');
 
 		// create pages
-		let pagesNum = Math.ceil(info.lyrics.length / 2048);
+		let pagesNum = Math.ceil(info.lyrics.join('\n').length / 2048);
 		if (pagesNum === 0) pagesNum = 1;
 
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const embed = new Embed(bot, guild)
-				.setTitle(options.title)
+				.setTitle(info.name)
 				.setURL(info.url)
-				.setDescription(info.lyrics.substring(i * 2048, (i + 1) * 2048))
+				.setDescription(info.lyrics.join('\n').substring(i * 2048, (i + 1) * 2048))
 				.setTimestamp()
 				.setFooter({ text: guild.translate('music/lyrics:FOOTER', { TAG: author.tag }), iconURL: author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }) });
 			pages.push(embed);
