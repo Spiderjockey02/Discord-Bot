@@ -50,6 +50,9 @@ class UserBan extends Command {
 			user = bot.users.cache.get(args.get('user').value),
 			bannedStatus = args.get('banned').value;
 
+		// Make sure user isn't trying to punish themselves
+		if (user.id == interaction.user.id) return interaction.reply({ embeds: [channel.error('misc:SELF_PUNISH', {}, true)], ephermal: true });
+
 		try {
 			const resp = await userSchema.findOne({ userID: user.id	});
 			if (!resp) {
