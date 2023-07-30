@@ -81,5 +81,22 @@ module.exports = function(bot) {
 		}
 	});
 
+	router.get('/:guildId/refresh', async (req, res) => {
+		const guild = bot.guilds.cache.get(req.params.guildId);
+
+		if (guild) {
+			try {
+				await guild.fetchSettings();
+				res.json({ success: 'Successfully reloaded guild settings' });
+			} catch (e) {
+				res.json({ error: `An error occured refreshing guild: ${req.params.guildId} settings.` });
+			}
+		} else {
+			res.json({ error: `No guild was found with the ID: ${req.params.guildId}` });
+		}
+
+	});
+
+
 	return router;
 };
