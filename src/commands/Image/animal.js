@@ -69,11 +69,10 @@ class Animal extends Command {
 		try {
 			const imageURL = await bot.fetch('misc/animal', { name });
 			if (imageURL.error) throw new Error(imageURL.error);
-
 			// send image
 			const embed = new Embed(bot, guild)
 				.setColor(3426654)
-				.setImage(imageURL);
+				.setImage(imageURL[Math.floor((Math.random() * imageURL.length))].imageURL);
 			interaction.editReply({ content: ' ', embeds: [embed] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
