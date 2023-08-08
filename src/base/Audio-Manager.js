@@ -5,6 +5,13 @@ const { Manager } = require('erela.js'),
 	{ LavalinkNodes: nodes, api_keys: { spotify } } = require('../config');
 require('../structures/Player');
 
+const plugins = [
+	new Deezer({ playlistLimit: 1, albumLimit: 1 }),
+	new Facebook(),
+];
+
+if (spotify.iD.length > 1 && spotify.secret.length > 1) plugins.push(new Spotify({ clientID: spotify.iD, clientSecret: spotify.secret }));
+
 /**
  * Audio manager
  * @extends {Manager}
@@ -13,11 +20,7 @@ class AudioManager extends Manager {
 	constructor(bot) {
 		super({
 			nodes: nodes,
-			plugins: [
-				new Deezer({ playlistLimit: 1, albumLimit: 1 }),
-				new Facebook(),
-				new Spotify({ clientID: spotify.iD, clientSecret: spotify.secret }),
-			],
+			plugins: plugins,
 			autoPlay: true,
 			send(id, payload) {
 				const guild = bot.guilds.cache.get(id);
