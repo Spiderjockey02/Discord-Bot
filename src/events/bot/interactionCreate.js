@@ -22,10 +22,8 @@ class InteractionCreate extends Event {
 	async run(bot, interaction) {
 		const channel = bot.channels.cache.get(interaction.channelId);
 
-		// make sure user is not on banned list
-		if (interaction.user.cmdBanned) {
-			return interaction.reply({ embeds: [channel.error('events/message:BANNED_USER', null, true)] });
-		}
+		// Make sure user is not on banned list
+		if (interaction.user.cmdBanned && !interaction.isAutocomplete()) return interaction.reply({ embeds: [channel.error('events/message:BANNED_USER', null, true)] });
 
 		// Check if it's message context menu
 		if (interaction.isMessageContextMenuCommand() || interaction.isUserContextMenuCommand()) return bot.emit('clickMenu', interaction);
