@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "ارسال تصادفی عکس از یک ساب ردیت.",
+  "USAGE": "reddit <subreddit>",
+  "TITLE": "از /{{TITLE}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

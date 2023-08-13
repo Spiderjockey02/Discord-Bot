@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "دریافت اطلاعات اکانت استیم",
+  "USAGE": "steam <user>",
+  "AUTHOR": "استیم سرویس | {{NAME}}",
+  "STATE": [
+    "افلاین",
+    "آنلاین",
+    "مشغول",
+    "دور از کامپیوتر",
+    "خواب",
+    "به دنبال ترید",
+    "به دنبال بازی کردن"
+  ],
+  "DESC": "**Real name:** {{NAME}}\n**Status:** {{STATUS}}\n**Country:** :flag_{{FLAG}}:\n**Account Created:** {{TIME}}\n**Bans:** Vac: {{VAC_BANS}}, Game: {{GAME_BANS}}\n**Link:** [Link to profile]({{URL}})"
+}

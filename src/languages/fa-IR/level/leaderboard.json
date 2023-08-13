@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "نشان دادن لیدربورد لول اعضای سرور.",
+  "USAGE": "leaderboard",
+  "TITLE": "لیدربورد",
+  "EMPTY_TITLE": "دیتایی پیدا نشد",
+  "EMPTY_DESC": "برای افزایش لول داخل کانال ها چت کنید.",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "**XP:** {{XP}} | **Level:** {{LEVEL}}"
+}

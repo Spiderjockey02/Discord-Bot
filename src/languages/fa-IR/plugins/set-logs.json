@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "بروزرسانی تنظیمات لاگ.",
+  "USAGE": "set-logs <option> [data]",
+  "TOGGLE": "پلاگین لاگ ست شد روی  `{{TOGGLE}}`.",
+  "TITLE": "قابلیت لاگ:",
+  "DESC": "قابلیت های موجود: `{{FEAT}}`.\n\nقابلیت الان: `{{CUR_FEAT}}`.",
+  "ADD_LOG": "اضافه شد: {{LOG}} به لاگ.",
+  "REM_LOG": "پاک شد: {{LOG}} از لاگ.",
+  "CHANNEL": "کانال لاگ آپدیت شد: <#{{ID}}>",
+  "TITLE_2": "اطلاعات لاگ",
+  "DESC_2": "**Channel:** <#{{ID}}>\n**Enabled:** {{TOGGLE}}\n\n**Feature logging:** `{{FEAT}}`."
+}

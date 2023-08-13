@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "پاک کردن پلی لیستt",
+  "USAGE": "p-delete <playlist name>",
+  "MISSING": "پلی لیستی با این نام پیدا نشود {{TITLE}}.",
+  "SUCCESS": "با موفقیت پاک شد {{TITLE}}."
+}

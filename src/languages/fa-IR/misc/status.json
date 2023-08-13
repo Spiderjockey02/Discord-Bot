@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "دریافت وضعیت ربات.",
+  "USAGE": "status",
+  "PONG": "پونگ",
+  "PING": "پینگ:",
+  "CLIENT": "Client API:",
+  "MONGO": "MongoDB:"
+}

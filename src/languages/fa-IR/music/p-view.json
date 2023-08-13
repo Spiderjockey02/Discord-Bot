@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "مشاهده پلی لیست",
+  "USAGE": "p-view <playlist name>",
+  "NO_PLAYLIST": "پلی لیست پیدا نشود",
+  "AVAIABLE": "موجود در این پلی لیست `{{NAMES}}`."
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "پاک کردن ری اکشن رول",
+  "USAGE": "reactionroles <messagelink>",
+  "INVALID": "لینک پیام نا موجود است",
+  "SUCCESS": "ری اکشن رول به درستی پاک شد"
+}

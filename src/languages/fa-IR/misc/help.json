@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "ارسال اطلاعات درباره تمام کار هایی که من میکنم.",
+  "USAGE": "help [command]",
+  "AUTHOR": "کامند های موجود",
+  "PREFIX_DESC": "**Prefix:** `{{PREFIX}}` (You can also use <@!{{ID}}> as a prefix)",
+  "INFO_DESC": "**Type `{{PREFIX}}{{USAGE}}` for command specific information.**",
+  "TITLE": "`Command: {{COMMAND}}`",
+  "DESC": "**Description:** {{DESC}}",
+  "ALIAS": "**Aliases:** {{ALIAS}}",
+  "COOLDOWN": "**Cooldown:** {{CD}} seconds",
+  "USE": "**Usage:** {{USAGE}}",
+  "EXAMPLE": "**Example:** {{EX}}",
+  "LAYOUT": "\n**Layout**: `<> = required, [] = optional`",
+  "NO_COMMAND": "این یک کامند نییست"
+}

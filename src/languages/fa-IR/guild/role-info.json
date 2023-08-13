@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "دریافت اطلاعات رول.",
+  "USAGE": "role-info <role>",
+  "NAME": "رول | {{NAME}}",
+  "MEMBERS": "ممبرها:",
+  "COLOR": "رنگ:",
+  "POSITION": "موقعیت:",
+  "MENTION": "منشن:",
+  "HOISTED": "ساخته شده:",
+  "MENTIONABLE": "قابل منشن:",
+  "PERMISSION": "مجوز ها:",
+  "CREATED": "ساخته شده در:",
+  "FOOTER": "درخواست  از طرف {{MEMBER}} | Role ID: {{ID}}"
+}

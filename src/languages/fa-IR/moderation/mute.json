@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "میوت کردن کاربر.",
+  "USAGE": "mute <user> [time]",
+  "SUCCESS": "*<@{{USER}}> کاربر با موفقیت میوت شد *."
+}

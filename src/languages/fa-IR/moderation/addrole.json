@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "اضافه کردن رول جدید به سرور ",
+  "USAGE": "addrole <role name> [hex color] [hoist]",
+  "MAX_NAME": "تعداد کارکتر های نام رول نباید بیشتر از 100 باشد.",
+  "BOOLEAN": "افزایش دهنده باید بین این دو باشد: `true` or `false`.",
+  "INVALID": "رنگ نامعتبر.",
+  "MAX_ROLES": "شما به حداکثررول در سرور رسیده اید (250).",
+  "SUCCESS": "Role: <@&{{ROLE}}> successfully created."
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "انتخاب یک عدد رندوم.",
+  "USAGE": "random <LowNum> <HighNum>",
+  "RESPONSE": "🎲 Random number: {{NUMBER}}"
+}

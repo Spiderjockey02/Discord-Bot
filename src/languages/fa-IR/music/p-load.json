@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "لود پلی لیست",
+  "USAGE": "p-load <playlist name>",
+  "QUEUE": "تعداد {{NUM}} موزیک لیست شد از این پلی لیست **{{TITLE}}**.",
+  "NO_PLAYLIST": "پلی لیستی پیدا نشود"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "پاک کرد تگ از سرور",
+  "USAGE": "tag-delete <name>",
+  "TAG_DELETED": "پاک شد {{TAG}} تگ :",
+  "NO_TAG": "No tag with name: `{{TAG}}` was found."
+}

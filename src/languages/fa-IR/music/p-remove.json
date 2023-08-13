@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "پاک کردن یک موزیک از پلی لیست",
+  "USAGE": "p-remove <playlist name> <position> [position]",
+  "SUCCESS": "پلی لیست با موفقیت پاک شد.",
+  "NO_PLAYLIST": "پلی لیست پیدا نشود"
+}

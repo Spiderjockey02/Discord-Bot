@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "تغییر تگ های سرور",
+  "USAGE": "tag-edit <rename / edit> <name> <newName / newResponse>",
+  "INVALID_NAME": "لطفا اسم تگ را وارد کنید.",
+  "INVALID_NEW_NAME": "لطفا اسم جدید تگ را وارد کنید.",
+  "UPDATED_NAME": "تگ آپدیت شد به اسم جدید : `{{NAME}}`.",
+  "INVALID_NEW_RESP": "لطفا یک پاسخ جدید وارد کنید",
+  "UPDATED_RESP": "تگ آپدیت شد به پاسخ  : `{{RESP}}`."
+}

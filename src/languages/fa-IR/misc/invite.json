@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "ارسال لینک اینوایت ربات.",
+  "USAGE": "invite",
+  "LINK": "🤖 [Invite me to your server]({{LINK}} 'You know you want to')"
+}

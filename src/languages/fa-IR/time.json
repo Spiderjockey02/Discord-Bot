@@ -1,0 +1,14 @@
+{
+    "ONE_DAY": "1 روز",
+    "DAYS": "{{amount}} روز",
+    "ONE_HOUR": "1 ساعت",
+    "HOURS": "{{amount}} ساعت",
+    "ONE_MINUTE": "1 دقیقه",
+    "MINUTES": "{{amount}} دقیقه",
+    "ONE_SECOND": "1 ثانیه",
+    "SECONDS": "{{amount}} ثانیه",
+    "NOT_NUMBER": "ورودی باید عدد باشد.",
+    "INCORRECT_DELIMITERS": "لطفا از یکی از تعیین کننده ها استفاده کنید: `d`,  `h`,  `m`, `s`.",
+    "MAX_TIME": "زمان نمیتواند بیشتر از 10 روز باشد.",
+    "INVALID_TIME": "عدد وارد شده صحیح نمیباشد."
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "خاموش روشن کردن پلاگین ها",
+  "USAGE": "set-plugin <option>",
+  "ADDED": "اضافه شد {{PLUGINS}} به گیلد پلاگین.",
+  "REMOVED": "پاک شد {{PLUGINS}} از گیلد پلاگین.",
+  "INVALID": "این پلاگین پشتیبانی نمیشود"
+}

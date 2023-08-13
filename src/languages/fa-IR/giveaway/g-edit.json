@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "تغییر قرعه کشی.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "تعداد برنده ها باید کمتر از 10 باشد.",
+  "EDIT_GIVEAWAY": "Success! Giveaway will updated in less than {{TIME}} seconds.",
+  "UNKNOWN_GIVEAWAY": "هیچ قرعه کشی با این ایدی وجود ندارد: `{{ID}}`"
+}

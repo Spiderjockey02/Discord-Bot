@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "پاک کردن قرعه کشی",
+  "USAGE": "g-delete <messageID>",
+  "SUCCESS_GIVEAWAY": "قرعه کشی پاک شد!",
+  "UNKNOWN_GIVEAWAY": "هیچ قرعه کشی با این ایدی وجود ندارد: `{{ID}}`"
+}
