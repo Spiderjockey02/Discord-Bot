@@ -155,7 +155,7 @@ class Play extends Command {
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(bot, interaction) {
 		if (!interaction.replied || interaction.deferred) {
       await interaction.deferReply({
         ephemeral: false,

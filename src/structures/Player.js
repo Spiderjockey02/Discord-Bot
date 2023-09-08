@@ -14,9 +14,9 @@ module.exports = Structure.extend('Player', Player => {
             this.autoplay = false;
 			// for filters
             this.filterStatus = {
-			  bassboost: false,
-			  nightcore: false,
-			  vaporwave: false,
+				bassboost: false,
+				nightcore: false,
+				vaporwave: false,
             };
             
 		}
@@ -127,7 +127,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.node.rest.updatePlayer({
                 data: {
                     filters: {
-                    	timescale: { speed: value },
+						timescale: { speed: value },
                     },
                 },
 				guildId: this.guild.id || this.guild,

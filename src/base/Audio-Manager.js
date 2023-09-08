@@ -10,7 +10,7 @@ class AudioManager extends Manager {
 	constructor(bot) {
 		super({
 			nodes: nodes,
-            user: bot.user.id
+            user: bot.user.id,
 		});
 	}
 }
