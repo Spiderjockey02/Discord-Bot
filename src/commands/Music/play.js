@@ -233,7 +233,7 @@ class Play extends Command {
         ) {
           await player.play();
         }
-		
+
 		return await interaction.editReply({
 			content: `Added [${result.tracks[0].title}](${result.tracks[0].uri}) to the queue.`,
 		  });
