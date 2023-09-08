@@ -173,7 +173,7 @@ class Radio extends Command {
 		}
 
 		// Create player
-		let player, res;
+		let player;
 		try {
 			player = bot.manager.create({
 				guild: guild.id,
@@ -185,6 +185,9 @@ class Radio extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
+
+		// Not sure if this is required I forgot
+		const res = await player.search(input, member);
 
 		// Search for track
 		try {

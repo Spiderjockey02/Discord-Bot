@@ -1,5 +1,5 @@
 // Dependecies
-const { Structure } = require('erela.js');
+const { Structure } = require('magmastream');
 
 module.exports = Structure.extend('Player', Player => {
 	class CustomPlayer extends Player {
@@ -10,13 +10,15 @@ module.exports = Structure.extend('Player', Player => {
 			this.previousTracks = [];
 			// for bot leave function
 			this.timeout = null;
+            // for autoplay
+            this.autoplay = false;
 			// for filters
-			this.speed = 1;
-			this.bassboost = false;
-			this.nightcore = false;
-			this.vaporwave = false;
-			// for Autoplay
-			this.autoplay = false;
+            this.filterStatus = {
+			  bassboost: false,
+			  nightcore: false,
+			  vaporwave: false,
+            };
+            
 		}
 
 		// update bassboost filter
@@ -86,23 +88,31 @@ module.exports = Structure.extend('Player', Player => {
 
 		// send lavalink the new filters
 		setFilter(body = {}) {
-			this.node.send({
-				op: 'filters',
-				guildId: this.guild.id || this.guild,
-				...body,
-			});
-			return this;
-		}
+            this.node.rest.updatePlayer({
+                data: {
+                  filters: {
+                    ...body,
+                  },
+                },
+                guildId: this.guild,
+            })
+            return this;
+        }
 
 		// reset filters
 		resetFilter() {
 			this.speed = 1;
-			this.node.send({
-				op: 'filters',
-				guildId: this.guild.id || this.guild,
-				...{},
-			});
-			return this;
+			this.node.rest.updatePlayer({
+                data: {
+                  filters: {},
+                },
+                guildId: this.guild,
+            });
+            this.speed = 1;
+            this.bassboost = false;
+            this.nightcore = false;
+            this.vaporwave = false;
+            return this;
 		}
 
 		// Adds a song to previousTracks
@@ -110,14 +120,17 @@ module.exports = Structure.extend('Player', Player => {
 			this.previousTracks.push(song);
 			return this;
 		}
-
-		// Change playback speed
-		setSpeed(value) {
+        
+        // Change playback speed
+        setSpeed(value) {
 			this.speed = value;
-			this.node.send({
-				op: 'filters',
+			this.node.rest.updatePlayer({
+                data: {
+                    filters: {
+                    	timescale: { speed: value },
+                    },
+                },
 				guildId: this.guild.id || this.guild,
-				timescale: { speed: value },
 			});
 			return this;
 		}

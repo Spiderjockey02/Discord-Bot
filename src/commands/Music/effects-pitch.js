@@ -46,15 +46,6 @@ class Pitch extends Command {
 
 		const player = bot.manager?.players.get(message.guild.id);
 
-		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
-			player.resetFilter();
-			const msg = await message.channel.send(message.translate('music/pitch:PITCH_OFF'));
-			const embed = new EmbedBuilder()
-				.setDescription(message.translate('music/pitch:DESC_1'));
-			await bot.delay(5000);
-			return msg.edit({ content: '​​ ', embeds: [embed] });
-		}
-
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/pitch:INVALID'));
 		if (message.args[0] < 0 || message.args[0] > 10) return message.channel.send(message.translate('music/pitch:INCORRECT'));
 
@@ -86,15 +77,6 @@ class Pitch extends Command {
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		const player = bot.manager?.players.get(member.guild.id);
-
-		if (amount && ['reset', 'off'].includes(amount.toLowerCase())) {
-			player.resetFilter();
-			await interaction.reply(bot.translate('music/pitch:PITCH_OFF'));
-			const embed = new EmbedBuilder()
-				.setDescription(bot.translate('music/pitch:DESC_1'));
-			await bot.delay(5000);
-			return interaction.editReply({ content: '​​ ', embeds: [embed] });
-		} else {
 			player.setFilter({
 				timescale: { pitch: amount },
 			});
@@ -103,7 +85,6 @@ class Pitch extends Command {
 				.setDescription(bot.translate('music/pitch:DESC_2', { NUM: amount }));
 			await bot.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
-		}
 	}
 }
 

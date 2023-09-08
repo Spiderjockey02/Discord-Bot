@@ -27,6 +27,9 @@ lavalink:
       gc-warnings: true
       youtubeSearchEnabled: true
       soundcloudSearchEnabled: true
+    youtubeConfig: # Required for avoiding all age restrictions by YouTube, some restricted videos still can be played without.
+      email: "" # Email of Google account
+      password: "" # Password of Google account
 
 plugins:
   dunctebot:
@@ -39,6 +42,17 @@ plugins:
       pornhub: true # should be self-explanatory
       reddit: true # should be self-explanatory
       ocremix: true # www.ocremix.org
+  lavasrc:
+    providers:
+    sources:
+      spotify: true
+    spotify:
+      # https://developer.spotify.com/documentation/web-api/
+      clientId: ""
+      clientSecret: ""
+      countryCode: "US" 
+      playlistLoadLimit: 6 
+      albumLoadLimit: 6
 
 metrics:
   prometheus:

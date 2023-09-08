@@ -1,6 +1,6 @@
 // Dependencies
 const	{ ApplicationCommandOptionType } = require('discord.js'),
-	{ Node } = require('erela.js'),
+	{ Node } = require('magmastream'),
 	Command = require('../../structures/Command.js');
 
 /**

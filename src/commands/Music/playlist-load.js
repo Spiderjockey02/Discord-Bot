@@ -1,7 +1,7 @@
 // Dependencies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	{ TrackUtils } = require('erela.js'),
+	{ TrackUtils } = require('magmastream'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
