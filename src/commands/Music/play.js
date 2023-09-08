@@ -236,7 +236,7 @@ class Play extends Command {
 
 		return await interaction.editReply({
 			content: `Added [${result.tracks[0].title}](${result.tracks[0].uri}) to the queue.`,
-		  });
+		});
 
       case "search":
         player.queue.add(result.tracks[0]);
