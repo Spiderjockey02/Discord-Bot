@@ -2,7 +2,6 @@
 const { Embed } = require('../../utils'),
 	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ getStations } = require('radio-browser'),
-	radioStations = require('../../assets/json/radio_streams_yuck.json'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -239,12 +238,12 @@ class Radio extends Command {
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @readonly
 	*/
-	autocomplete(bot, interaction) {
+	async autocomplete(bot, interaction) {
 		const input = interaction.options.getFocused(true).value,
-			stations = radioStations.map(i => i.name).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
+			radios = await bot.fetch('info/radio', { search: input });
 
 		// Send back the responses
-		interaction.respond(stations.map(i => ({ name: i, value: radioStations.find(rad => rad.name == i).audio })));
+		interaction.respond(radios.map(i => ({ name: i.name, value: i.audio })));
 	}
 }
 
