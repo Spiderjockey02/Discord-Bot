@@ -18,7 +18,7 @@ module.exports = Structure.extend('Player', Player => {
 				nightcore: false,
 				vaporwave: false,
             };
-            
+
 		}
 
 		// update bassboost filter
@@ -95,7 +95,7 @@ module.exports = Structure.extend('Player', Player => {
                   },
                 },
                 guildId: this.guild,
-            })
+            });
             return this;
         }
 
@@ -120,7 +120,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.previousTracks.push(song);
 			return this;
 		}
-        
+
         // Change playback speed
         setSpeed(value) {
 			this.speed = value;
