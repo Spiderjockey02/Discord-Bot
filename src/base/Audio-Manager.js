@@ -9,8 +9,11 @@ require('../structures/Player');
 class AudioManager extends Manager {
 	constructor(bot) {
 		super({
-			nodes: nodes,
-            user: bot.user.id,
+                nodes,
+                send: (id, payload) => {
+                          const guild = bot.guilds.cache.get(id);
+                          if (guild) guild.shard.send(payload);
+			    },
 		});
 	}
 }
