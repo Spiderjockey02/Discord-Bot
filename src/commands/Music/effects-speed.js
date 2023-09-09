@@ -108,4 +108,4 @@ class Speed extends Command {
 }
 
 module.exports = Speed;
-										
+
