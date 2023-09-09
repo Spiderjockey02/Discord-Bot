@@ -5,11 +5,6 @@ const config = {
 	token: 'YourBotToken',
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
-		// https://developer.spotify.com/documentation/web-api/
-		spotify: {
-			iD: 'spotify-ID',
-			secret: 'spotify-secret',
-		},
 		// https://genius.com/developers
 		genius: 'genuisAPI-KEY',
 		// https://api.amethyste.moe/
