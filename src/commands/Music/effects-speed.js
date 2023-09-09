@@ -55,15 +55,13 @@ class Speed extends Command {
 
 		// Change speed value
 		try {
-			player.filters.setTimescale({
-				speed: message.args[0],
-			});
+			player.setSpeed(message.args[0]);
 			const msg = await message.channel.send(message.translate('music/speed:ON_SPD'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/speed:UPDATED', { NUM: player.speed }));
 			await bot.delay(5000);
 			player.speed = message.args[0];
-			return msg.edit({ content: '​​ ', embeds: [embed] });
+			return msg.edit({ content: ' ', embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -95,15 +93,13 @@ class Speed extends Command {
 
 		// Change speed value
 		try {
-			player.filters.setTimescale({
-				speed: speed,
-			});
+			player.setSpeed(speed);
 			await interaction.reply({ content: guild.translate('music/speed:ON_SPD') });
 			const embed = new Embed(bot, guild)
 				.setDescription(guild.translate('music/speed:UPDATED', { NUM: player.speed }));
 			await bot.delay(5000);
 			player.speed = speed;
-			return interaction.editReply({ content: '​​ ', embeds: [embed] });
+			return interaction.editReply({ content: ' ', embeds: [embed] });
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
@@ -112,3 +108,4 @@ class Speed extends Command {
 }
 
 module.exports = Speed;
+										
