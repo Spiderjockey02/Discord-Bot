@@ -55,7 +55,7 @@ class Speed extends Command {
 
 		// Change speed value
 		try {
-			player.filters.setTimescale({ message.args[0] });
+			player.filters.setTimescale({ speed: message.args[0] });
 			const msg = await message.channel.send(message.translate('music/speed:ON_SPD'));
 			const embed = new Embed(bot, message.guild)
 				.setDescription(message.translate('music/speed:UPDATED', { NUM: message.args[0] }));
@@ -106,4 +106,3 @@ class Speed extends Command {
 }
 
 module.exports = Speed;
-

@@ -194,7 +194,7 @@ class Play extends Command {
 		// Search for track
 		try {
 			res = await player.search(search, member);
-			if (res.loadType === 'LOAD_FAILED') {
+			if (res.loadType === 'error') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
@@ -202,70 +202,64 @@ class Play extends Command {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
-		// Workout what to do with the results
-		if (res.loadType == 'NO_MATCHES') {
-			// An error occured or couldn't find the track
-			if (!player.queue.current) player.destroy();
-			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
 
-		} else if (res.loadType == 'PLAYLIST_LOADED') {
-			// Connect to voice channel if not already
-			if (player.state !== 'CONNECTED') player.connect();
-			// Show how many songs have been added
-			const embed = new Embed(bot, guild)
-				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
-
-			// Add songs to queue depending on flag (if any)
-			switch (flag) {
-				case '-r':
+		switch (res.loadType) {
+			case 'empty':
+				// An error occured or couldn't find the track
+				if (!player.queue.current) player.destroy();
+				return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
+			case 'playlist':
+				// Connect to voice channel if not already
+				if (player.state !== 'CONNECTED') player.connect();
+				// Add songs to queue depending on flag (if any)
+				switch (flag) {
+					case '-r':
 					// Reverse the added tracks
-					player.queue.add(res.tracks.reverse());
-					break;
-				case '-n':
+						player.queue.add(res.playlist.tracks.reverse());
+						break;
+					case '-n':
 					// Add the tracks to the front of the queue
-					player.queue.unshift(...res.tracks);
-					break;
-				case '-s':
+						player.queue.unshift(...res.playlist.tracks);
+						break;
+					case '-s':
 					// Shuffle the added songs
-					player.queue.add(res.tracks.sort(() => Math.random() - 0.5));
-					break;
-				default:
-					player.queue.add(res.tracks);
-			}
-
-			// Play the tracks
-			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-			return interaction.followUp({ embeds: [embed] });
-		} else {
-			// add track to queue and play
-			if (player.state !== 'CONNECTED') player.connect();
-
-			// Add songs to queue depending on flag (if any)
-			switch (flag) {
-				case '-n':
-					// Add the tracks to the front of the queue
-					player.queue.unshift(res.tracks[0]);
-					break;
-				default:
-					player.queue.add(res.tracks[0]);
-			}
-
-			if (!player.playing && !player.paused && !player.queue.size) {
-				try {
-					await player.play();
-					return interaction.followUp({ content: 'Successfully started queue.' });
-				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-					return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+						player.queue.add(res.playlist.tracks.sort(() => Math.random() - 0.5));
+						break;
+					default:
+						player.queue.add(res.playlist.tracks);
 				}
 
-			} else {
-				const embed = new Embed(bot, guild)
+				if (!player.playing && !player.paused && player.queue.totalSize === (res.playlist.tracks.length + 1)) player.play();
+				return interaction.followUp({ embeds: [new Embed(bot, guild)
 					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				return interaction.followUp({ embeds: [embed] });
-			}
+					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }))] });
+			default:
+				// add track to queue and play
+				if (player.state !== 'CONNECTED') player.connect();
+				// Add songs to queue depending on flag (if any)
+				switch (flag) {
+					case '-n':
+					// Add the tracks to the front of the queue
+						player.queue.unshift(res.tracks[0]);
+						break;
+					default:
+						player.queue.add(res.tracks[0]);
+				}
+
+				if (!player.playing && !player.paused && player.queue.size == 0) {
+					try {
+						await player.play();
+						return interaction.followUp({ content: 'Successfully started queue.' });
+					} catch (err) {
+						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+						return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+					}
+				} else {
+					const embed = new Embed(bot, guild)
+						.setColor(member.displayHexColor)
+						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					return interaction.followUp({ embeds: [embed] });
+				}
 		}
 	}
 

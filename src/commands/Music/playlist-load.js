@@ -122,7 +122,7 @@ class PLoad extends Command {
 	async loadPlaylist(bot, channel, member, playlistName) {
 		try {
 			// interact with database
-			const playlist = PlaylistSchema.findOne({
+			const playlist = await PlaylistSchema.findOne({
 				name: playlistName,
 				creator: member.user.id,
 			});
