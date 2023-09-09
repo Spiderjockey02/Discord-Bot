@@ -325,3 +325,5 @@ class Play extends Command {
 		}
 	}
 }
+
+module.exports = Play;
