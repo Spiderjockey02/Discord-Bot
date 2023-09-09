@@ -45,7 +45,12 @@ plugins:
   lavasrc:
     providers:
     sources:
-      spotify: true
+      spotify: false # Enable Spotify source
+      applemusic: false # Enable Apple Music source
+      deezer: false # Enable Deezer source
+      yandexmusic: false # Enable Yandex Music source
+      flowerytts: false # Enable Flowery TTS source
+      youtube: false # Enable YouTube search source (https://github.com/topi314/LavaSearch)
     spotify:
       # https://developer.spotify.com/documentation/web-api/
       clientId: ""
