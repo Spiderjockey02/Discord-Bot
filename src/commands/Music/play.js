@@ -105,7 +105,7 @@ class Play extends Command {
 
 		// Search for track
 		try {
-			res = await bot.manager.search(search, message.author);
+			res = await player.search(search, message.author);
 			if (res.loadType === 'LOAD_FAILED') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
@@ -155,99 +155,118 @@ class Play extends Command {
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction) {
-		if (!interaction.replied || interaction.deferred) {
-      await interaction.deferReply({
-        ephemeral: false,
-      });
-    }
+	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId),
+			member = guild.members.cache.get(interaction.user.id),
+			flag = args.get('flag')?.value,
+			search = args.get('track').value;
 
-    const query = interaction.options.getString("track");
+		// make sure user is in a voice channel
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', null, true)] });
 
-    if (!interaction.member.voice.channelId) {
-      return await interaction.editReply({
-        content: "You must be in a voice channel to use this command.",
-      });
-    }
+		// Check that user is in the same voice channel
+		if (bot.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', null, true)] });
+		}
 
-    const botCurrentVoiceChannelId =
-      interaction.guild?.members.me?.voice.channelId;
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', null, true)] });
+			}
+		}
 
-    if (
-      botCurrentVoiceChannelId &&
-      interaction.member.voice.channelId &&
-      interaction.member.voice.channelId !== botCurrentVoiceChannelId
-    ) {
-      return await interaction.editReply({
-        content: `You must be connnected to the same voice channel as me to use this command. <#${botCurrentVoiceChannelId}>`,
-      });
-    }
+		await interaction.deferReply();
 
-    const player = bot.manager.create({
-      guild: interaction.guildId,
-      textChannel: interaction.channelId,
-      voiceChannel: interaction.member?.voice.channelId,
-      selfDeafen: true,
-      volume: 100,
-    });
+		// Create player
+		let player, res;
+		try {
+			player = bot.manager.create({
+				guild: guild.id,
+				voiceChannel: member.voice.channel.id,
+				textChannel: channel.id,
+				selfDeafen: true,
+			});
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+		}
 
-    if (player.state !== "CONNECTED") player.connect();
+		// Search for track
+		try {
+			res = await player.search(search, member);
+			if (res.loadType === 'LOAD_FAILED') {
+				if (!player.queue.current) player.destroy();
+				throw res.exception;
+			}
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+		}
+		// Workout what to do with the results
+		if (res.loadType == 'NO_MATCHES') {
+			// An error occured or couldn't find the track
+			if (!player.queue.current) player.destroy();
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
 
-    const result = await player.search(query, interaction.user);
+		} else if (res.loadType == 'PLAYLIST_LOADED') {
+			// Connect to voice channel if not already
+			if (player.state !== 'CONNECTED') player.connect();
+			// Show how many songs have been added
+			const embed = new Embed(bot, guild)
+				.setColor(member.displayHexColor)
+				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 
-    switch (result.loadType) {
-      case "empty":
-        if (!player.queue.current) player.destroy();
+			// Add songs to queue depending on flag (if any)
+			switch (flag) {
+				case '-r':
+					// Reverse the added tracks
+					player.queue.add(res.tracks.reverse());
+					break;
+				case '-n':
+					// Add the tracks to the front of the queue
+					player.queue.unshift(...res.tracks);
+					break;
+				case '-s':
+					// Shuffle the added songs
+					player.queue.add(res.tracks.sort(() => Math.random() - 0.5));
+					break;
+				default:
+					player.queue.add(res.tracks);
+			}
 
-        return await interaction.editReply({
-          content: `Load failed when searching for \`${query}\``,
-        });
+			// Play the tracks
+			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+			return interaction.followUp({ embeds: [embed] });
+		} else {
+			// add track to queue and play
+			if (player.state !== 'CONNECTED') player.connect();
 
-      case "error":
-        if (!player.queue.current) player.destroy();
+			// Add songs to queue depending on flag (if any)
+			switch (flag) {
+				case '-n':
+					// Add the tracks to the front of the queue
+					player.queue.unshift(res.tracks[0]);
+					break;
+				default:
+					player.queue.add(res.tracks[0]);
+			}
 
-        return await interaction.editReply({
-          content: `No matches when searching for \`${query}\``,
-        });
+			if (!player.playing && !player.paused && !player.queue.size) {
+				try {
+					await player.play();
+					return interaction.followUp({ content: 'Successfully started queue.' });
+				} catch (err) {
+					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
+				}
 
-      case "track":
-        player.queue.add(result.tracks[0]);
-
-        if (!player.playing && !player.paused && !player.queue.length) {
-          await player.play();
-        }
-
-        return await interaction.editReply({
-          content: `Added [${result.tracks[0].title}](${result.tracks[0].uri}) to the queue.`,
-        });
-
-      case "playlist":
-        if (!result.playlist?.tracks) return;
-
-        player.queue.add(result.playlist.tracks);
-
-        if (
-          !player.playing &&
-          !player.paused &&
-          player.queue.size === result.playlist.tracks.length
-        ) {
-          await player.play();
-        }
-
-		return await interaction.editReply({
-			content: `Added [${result.tracks[0].title}](${result.tracks[0].uri}) to the queue.`,
-		});
-
-      case "search":
-        player.queue.add(result.tracks[0]);
-        if (!player.playing && !player.paused && !player.queue.length) {
-          await player.play();
-        }
-
-        return await interaction.editReply({
-          content: `Added [${result.tracks[0].title}](${result.tracks[0].uri}) to the queue.`,
-        });
-    }
+			} else {
+				const embed = new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+				return interaction.followUp({ embeds: [embed] });
+			}
+		}
 	}
 
 	async autocomplete(bot, interaction) {
@@ -306,5 +325,3 @@ class Play extends Command {
 		}
 	}
 }
-
-module.exports = Play;
