@@ -40,17 +40,18 @@ If you liked this repository, feel free to leave a star ⭐ to help promote Eggl
 **140+** commands and counting across **13** different categories!
 
 *   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokemon` and **6** more!
-*   🎁  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete`!
+*   🎁  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete` and **2** more!
 *   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **6** more!
-*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **5** more!
+*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **10** more!
 *   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more!
 *   💰  **Level**: `leaderboard`, `rank`!
-*   ❔  **Misc**: `about`, `invite`, `status`, `support`, and **4** more!
-*   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **9** more!
-*   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **25** more!
-*   🔞  **NSFW**: Total of **8** commands!
-* **Plugins**: `serverstats`, `set-(logs | plugin)` and `setlang`!
-*   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **4** more!
+*   ❔  **Misc**: `about`, `help`, `status`, `uptime`!
+*   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **16** more!
+*   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **29** more!
+*   🔞  **NSFW**: Total of **18** commands!
+* **Plugins**: `reaction roles`, `settings language`, `settings logs` and **4** more!
+*   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **3** more!
+* **Tag**: `Tag system`!
 *   ❓  **Ticket**: `t-(close | create |setup )`!
 *   **Full list** of commands: [here](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md).
 
@@ -86,8 +87,10 @@ Egglord is pretty much at the end of development now, it will only be updated fo
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
 ## 📜 Credits
-* **[Tovade#6617](https://github.com/tovade)** - Initial Reaction Role System.
-* **Josh_V2#9733** - Slash Commands & Tags System.
-* **XBouBou#0856** - French Translation.
-* **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin/tree/1.1.2) (TTS, reddit etc).
+* **[tovade](https://github.com/tovade)** - Initial Reaction Role System.
+* **[josh_0242](https://github.com/ChaosArising)** - Slash Commands & Tags System.
+* **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, reddit, TikTok, Phub, Mixcloud etc).
+* **[topi314](https://github.com/topi314)** - [Lavalink plugin 2](https://github.com/topi314/LavaSrc) (Spotify, Apple Music, Deezer & Yandex)
+* **[thororen](https://github.com/thororen1234)** - Updated Music system to support new Lavalink v4.
+* **[Our translators](https://crowdin.com/project/egglord-discord-bot)** - Everyone over at Crowdin who helps make this bot multilingual.
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
