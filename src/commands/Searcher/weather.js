@@ -73,15 +73,15 @@ class Weather extends Command {
 
 		// Display weather at location
 		const embed = new Embed(bot, channel.guild)
-			.setTitle(channel.guild.translate('searcher/weather:TITLE', { LOC: weather.location }))
+			.setTitle(channel.guild.translate('searcher/weather:TITLE', { LOC: `${weather.location.name}, ${weather.location.country}` }))
 			.setDescription(channel.guild.translate('searcher/weather:DESC'))
 			.addFields(
-				{ name: channel.guild.translate('searcher/weather:TEMP'), value: `${weather.current.temperature}°C`, inline: true },
-				{ name: channel.guild.translate('searcher/weather:SKY'), value: weather.current.skytext, inline: true },
+				{ name: channel.guild.translate('searcher/weather:TEMP'), value: `${weather.current.temp_c}°C`, inline: true },
+				{ name: channel.guild.translate('searcher/weather:SKY'), value: weather.current.condition.text, inline: true },
 				{ name: channel.guild.translate('searcher/weather:HUMIDITY'), value: `${weather.current.humidity}%`, inline: true },
-				{ name: channel.guild.translate('searcher/weather:SPEED'), value: weather.current.windspeed, inline: true },
-				{ name: channel.guild.translate('searcher/weather:TIME'), value: weather.current.observationtime, inline: true },
-				{ name: channel.guild.translate('searcher/weather:DISPLAY'), value: weather.current.winddisplay, inline: true },
+				{ name: channel.guild.translate('searcher/weather:SPEED'), value: `${weather.current.wind_mph}mph`, inline: true },
+				{ name: channel.guild.translate('searcher/weather:TIME'), value: new Date(weather.current.last_updated).toUTCString(), inline: true },
+				{ name: channel.guild.translate('searcher/weather:DISPLAY'), value: weather.current.wind_dir, inline: true },
 			);
 
 		return embed;
