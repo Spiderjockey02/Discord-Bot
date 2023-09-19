@@ -154,8 +154,10 @@ class PCreate extends Command {
             case 'playlist':
 			case 'track': {
 				const tracks = res.playlist?.tracks.slice(0, user.premium ? 200 : 100) ?? res.tracks.slice(0, user.premium ? 200 : 100);
+				// currently broken
+				//const thumbnail = res.playlist?.tracks[0]?.thumbnail ?? res.tracks[0].thumbnail;
 				const duration = res.playlist?.duration ?? res.tracks[0].duration;
-				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration });
+				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, /*thumbnail,*/ duration });
 			}
 			case 'search': {
 			// Display the options for search
@@ -182,9 +184,11 @@ class PCreate extends Command {
 				if (index < 0 || index > max - 1) return channel.error('music/search:INVALID', { NUM: max }, true);
 
 				const tracks = res.tracks[index];
+				// currently broken
+				//const thumbnail = res.tracks[index].thumbnail;
 				const duration = res.tracks[index].duration;
 				search.delete();
-				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration });
+				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, /*thumbnail,*/ duration });
 			}
 			default:
 				return channel.error('music/p-create:NO_SONG');
@@ -199,6 +203,7 @@ class PCreate extends Command {
 	 * @param {string} playlistName The name of the playlist
 	 * @param {object} resData The seqrch query for new track
 	 * @param {array<objects>} resData.tracks The seqrch query for new track
+	 * @param {string} resData.thumbnail The seqrch query for new track
 	 * @param {integer} resData.duration The seqrch query for new track
 	 * @return {embed}
 	*/
@@ -209,6 +214,7 @@ class PCreate extends Command {
 				name: playlistName,
 				songs: resData.tracks,
 				timeCreated: Date.now(),
+				//thumbnail: resData.thumbnail,
 				creator: user.id,
 				duration: resData.duration,
 			});
@@ -220,7 +226,7 @@ class PCreate extends Command {
 				.setDescription([
 					channel.guild.translate('music/p-create:DESC_1', { TITLE: playlistName }),
 					channel.guild.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
-					`Added ${resData.tracks.length} tracks to **${playlistName}**.`,
+					channel.guild.translate('music/p-create:DESC_3', { NUM: resData.tracks.length, TITLE: playlistName}),
 				].join('\n'))
 				.setFooter({ text: channel.guild.translate('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (user.premium) ? '200' : '100' }) })
 				.setTimestamp();
