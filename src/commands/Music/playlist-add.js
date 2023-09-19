@@ -108,11 +108,11 @@ class PAdd extends Command {
 		}
 
 		switch (res.loadType) {
-			case 'NO_MATCHES':
+			case 'empty':
 				// An error occured or couldn't find the track
 				return channel.error('music/play:NO_SONG', null, true);
-			case 'PLAYLIST_LOADED':
-			case 'TRACK_LOADED':
+			case 'playlist':
+			case 'track':
 				try {
 					// add songs to playlist
 					const newTracks = res.tracks.slice(0, (user.premium ? 200 : 100) - playlist.songs.length);
@@ -124,7 +124,7 @@ class PAdd extends Command {
 					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 				}
-			case 'SEARCH_RESULT': {
+			case 'search': {
 				// Display the options for search
 				let max = 10, collected;
 				const filter = (m) => m.author.id === user.id && /^(\d+|cancel)$/i.test(m.content);
