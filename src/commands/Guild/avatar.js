@@ -95,7 +95,7 @@ class Avatar extends Command {
 	*/
 	avatarEmbed(bot, guild, member) {
 		return new Embed(bot, guild)
-			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member.user.tag })
+			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member.user.globalName })
 			.setDescription([
 				`${bot.translate('guild/avatar:AVATAR_DESCRIPTION')}`,
 				`[png](${member.user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member.user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member.user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member.user.displayAvatarURL({ format: 'webp', size: 1024 })})`,

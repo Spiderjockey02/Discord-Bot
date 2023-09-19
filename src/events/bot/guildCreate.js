@@ -47,7 +47,7 @@ class GuildCreate extends Event {
 		}
 		embed.setDescription([
 			`Guild ID: ${guild.id ?? 'undefined'}`,
-			`Owner: ${owner.user.tag}`,
+			`Owner: ${owner.user.globalName}`,
 			`MemberCount: ${guild.memberCount ?? 'undefined'}`,
 		].join('\n'));
 

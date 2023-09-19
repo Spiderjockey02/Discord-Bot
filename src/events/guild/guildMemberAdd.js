@@ -23,8 +23,7 @@ class GuildMemberAdd extends Event {
 	*/
 	async run(bot, member) {
 	// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.tag} has been joined guild: ${member.guild.id}.`);
-
+		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.globalName} has joined guild: ${member.guild.id}.`);
 		if (member.user.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return

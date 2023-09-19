@@ -55,10 +55,10 @@ class User extends Command {
 		if (!message.args[1]) {
 			const embed = new EmbedBuilder()
 				.setTitle('User Information:')
-				.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
+				.setAuthor({ name: user.globalName, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
 				.setThumbnail(user.displayAvatarURL({ dynamic: true, size: 1024 }))
 				.setDescription([
-					`Username: \`${user.tag}\``,
+					`Username: \`${user.globalName}\``,
 					`ID: \`${user.id}\``,
 					`Creation Date: \`${moment(user.createdAt).format('lll')}\``,
 					'',

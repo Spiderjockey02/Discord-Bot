@@ -381,7 +381,7 @@ class GiveawaysManager extends EventEmitter {
 			}
 
 			// Third case: the giveaway is paused and we should check whether it should be unpaused
-			if (giveaway.pauseOptions.isPaused) {
+			if (giveaway.pauseOptions?.isPaused) {
 				if (
 					!Number.isFinite(giveaway.pauseOptions.unpauseAfter) &&
                     !Number.isFinite(giveaway.pauseOptions.durationAfterPause)

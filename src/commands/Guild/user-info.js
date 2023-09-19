@@ -106,11 +106,11 @@ class UserInfo extends Command {
 		}
 
 		const embed = new Embed(bot, guild)
-			.setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
+			.setAuthor({ name: member.user.globalName, iconURL: member.user.displayAvatarURL() })
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.username, inline: true },
+				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.globalName, inline: true },
 				{ name: bot.translate('guild/user-info:DISCRIM', {}, guild.settings?.Language), value: `${member.user.discriminator}`, inline: true },
 				{ name: bot.translate('guild/user-info:ROBOT', {}, guild.settings?.Language), value: bot.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`, {}, guild.settings?.Language), inline: true },
 				{ name: bot.translate('guild/user-info:CREATE', {}, guild.settings?.Language), value: moment(member.user.createdAt).format('lll'), inline: true },

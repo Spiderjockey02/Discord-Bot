@@ -21,6 +21,8 @@ class GuildBanRemove extends Event {
 	 * @readonly
 	*/
 	async run(bot, guildBan) {
+		const { guild, user } = guildBan;
+
 		// Make sure all relevant data is fetched
 		try {
 			if (guildBan.user.partial) await guildBan.user.fetch();
@@ -29,10 +31,8 @@ class GuildBanRemove extends Event {
 			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
-		const { guild, user } = guildBan;
-
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${user.tag} has been unbanned in guild: ${guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Member: ${user.globalName} has been unbanned in guild: ${guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = guild.settings;

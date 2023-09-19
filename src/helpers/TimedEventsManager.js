@@ -21,7 +21,7 @@ module.exports = async (bot) => {
 			if (new Date() >= new Date(event.time)) {
 				switch(event.type) {
 					case 'ban': {
-						bot.logger.debug(`Unbanning ${user.tag} in guild: ${guild.id}.`);
+						bot.logger.debug(`Unbanning ${user.globalName} in guild: ${guild.id}.`);
 
 						// unban user from guild
 						try {

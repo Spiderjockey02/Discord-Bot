@@ -23,8 +23,7 @@ class GuildMemberUpdate extends Event {
 	*/
 	async run(bot, oldMember, newMember) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${newMember.user.tag} has been updated in guild: ${newMember.guild.id}.`);
-
+		if (bot.config.debug) bot.logger.debug(`Member: ${newMember.user.globalName} has been updated in guild: ${newMember.guild.id}.`);
 		if (oldMember.user.id == bot.user.id) return;
 
 		// if the oldMember is not cached ignore.
@@ -43,7 +42,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} nickname changed**`)
 					.setFooter({ text: `ID: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
+					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: 'Before:', value: `${oldMember.nickname || '*None*'}`, inline: true },
 						{ name: 'After:', value: `${newMember.nickname || '*None*'}`, inline: true })
@@ -56,7 +55,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has boosted the server**`)
 					.setFooter({ text: `ID: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
+					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
 			}
@@ -66,22 +65,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} has unboosted the server**`)
 					.setFooter({ text: `ID: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
-					.setTimestamp();
-				updated = true;
-			}
-
-			// Look to see if user has changed their username
-			if (oldMember.username !== newMember.username) {
-				embed = new Embed(bot, newMember.guild)
-					.setDescription(`**username changed of ${newMember.toString()}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
-					.addFields(
-						{ name: 'Old:', value: `${oldMember.name}`, inline: true },
-						{ name: 'New:', value: `${newMember.name}`, inline: true },
-					)
+					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() })
 					.setTimestamp();
 				updated = true;
 			}
@@ -101,7 +85,7 @@ class GuildMemberUpdate extends Event {
 				embed = new Embed(bot, newMember.guild)
 					.setDescription(`**${newMember.toString()} roles changed**`)
 					.setFooter({ text: `ID: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.tag, iconURL: newMember.user.displayAvatarURL() })
+					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() })
 					.addFields(
 						{ name: `Added roles [${rolesAdded.size}]:`, value: `${roleAddedString.length == 0 ? '*None*' : roleAddedString.join('\n ')}`, inline: true },
 						{ name: `Removed Roles [${rolesRemoved.size}]:`, value: `${roleRemovedString.length == 0 ? '*None*' : roleRemovedString.join('\n ')}`, inline: true })
