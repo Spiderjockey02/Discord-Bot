@@ -82,6 +82,7 @@ class PView extends Command {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 					const embed = new Embed(bot, message.guild)
 						.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
+						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
 						.setDescription(str)
 						.setTimestamp()
@@ -140,6 +141,7 @@ class PView extends Command {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 					const embed = new Embed(bot, guild)
 						.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
 						.setDescription(str)
 						.setTimestamp(playlist.timeCreated)

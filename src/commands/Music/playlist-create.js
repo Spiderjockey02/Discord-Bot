@@ -151,13 +151,12 @@ class PCreate extends Command {
 			case 'empty':
 				// An error occured or couldn't find the track
 				return channel.error('music/play:NO_SONG', null, true);
-            case 'playlist':
+			case 'playlist':
 			case 'track': {
 				const tracks = res.playlist?.tracks.slice(0, user.premium ? 200 : 100) ?? res.tracks.slice(0, user.premium ? 200 : 100);
-				// currently broken
-				// const thumbnail = res.playlist?.tracks[0]?.thumbnail ?? res.tracks[0].thumbnail;
+				const thumbnail = res.playlist?.tracks[0]?.thumbnail ?? res.tracks[0]?.thumbnail ?? null;
 				const duration = res.playlist?.duration ?? res.tracks[0].duration;
-				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration });
+				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration, thumbnail });
 			}
 			case 'search': {
 			// Display the options for search
@@ -214,7 +213,7 @@ class PCreate extends Command {
 				name: playlistName,
 				songs: resData.tracks,
 				timeCreated: Date.now(),
-				// thumbnail: resData.thumbnail,
+				thumbnail: resData.thumbnail,
 				creator: user.id,
 				duration: resData.duration,
 			});
