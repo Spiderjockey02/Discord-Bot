@@ -226,7 +226,7 @@ class PCreate extends Command {
 				.setDescription([
 					channel.guild.translate('music/p-create:DESC_1', { TITLE: playlistName }),
 					channel.guild.translate('music/p-create:DESC_2', { NUM: getReadableTime(parseInt(newPlaylist.duration)) }),
-					channel.guild.translate('music/p-create:DESC_3', { NUM: resData.tracks.length, TITLE: playlistName }),
+					channel.guild.translate('music/p-create:DESC_3', { NAME: resData.tracks[0].title, NUM: resData.tracks.length, TITLE: playlistName }),
 				].join('\n'))
 				.setFooter({ text: channel.guild.translate('music/p-create:FOOTER', { ID: newPlaylist._id, NUM: newPlaylist.songs.length, PREM: (user.premium) ? '200' : '100' }) })
 				.setTimestamp();

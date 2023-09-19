@@ -8,7 +8,7 @@
   "EXISTS": "˙ǝɯɐu ʇɐɥʇ ɥʇᴉʍ sʇsᴉxǝ ʎpɐǝɹlɐ ʇsᴉlʎɐld ∀",
   "DESC_1": "˙**{{TITLE}}** :ǝɯɐu ɥʇᴉʍ ʇsᴉlʎɐld ɐ pǝʇɐǝɹƆ",
   "DESC_2": "˙{{NUM}} :uoᴉʇɐɹnp ʇsᴉlʎɐlԀ",
-  "DESC_3": "Added **{{NUM}}** tracks to **{{TITLE}}**.",
+  "DESC_3": "Added **{{NAME}}** ({{NUM}} tracks) to **{{TITLE}}**.",
   "FOOTER": "ID: {{ID}} • Songs: {{NUM}}/{{PREM}}",
   "NO_SONG": "˙ƃuos ʇɐɥʇ puᴉɟ ʇ,uplnoɔ I"
 }
