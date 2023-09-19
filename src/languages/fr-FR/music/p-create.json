@@ -8,7 +8,7 @@
   "EXISTS": "Une liste de lecture existe déjà sous ce nom.",
   "DESC_1": "Liste de lecture ajoutée : **{{TITLE}}**.",
   "DESC_2": "Durée de la liste de lecture : {{NUM}}.",
-  "DESC_3": "\"Ajouté **{{NAME}}** ({{NUM}} titres) à **{{TITLE}}**.",
+  "DESC_3": "\"Ajouté **{{NUM}}** titres à **{{TITLE}}**.",
   "FOOTER": "ID : {{ID}} • Titre : {{NUM}}/{{PREM}}",
   "NO_SONG": "Je ne trouve pas ce titre."
 }

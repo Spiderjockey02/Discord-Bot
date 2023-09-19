@@ -8,7 +8,7 @@
   "EXISTS": "A playlist already exists with that name.",
   "DESC_1": "Created a playlist with name: **{{TITLE}}**.",
   "DESC_2": "Playlist duration: {{NUM}}.",
-  "DESC_3": "Added **{{NAME}}** ({{NUM}} tracks) to **{{TITLE}}**.",
+  "DESC_3": "Added **{{NUM}}** tracks to **{{TITLE}}**.",
   "FOOTER": "ID: {{ID}} • Songs: {{NUM}}/{{PREM}}",
   "NO_SONG": "I couldn't find that song."
 }
