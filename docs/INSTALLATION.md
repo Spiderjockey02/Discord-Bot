@@ -10,7 +10,7 @@ Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/au
 
 ### Setting up server
 * The system you are using to host on must have a minimum version [Node.js](https://nodejs.org/en/) 14. (It will not run at all if less).
-* If you are hosting the lavalink aswell on the same system, it will need [Java](https://adoptopenjdk.net/) v11+ (v13 is preferred) and if not on the same system you will need to get the IP and port of the server. (This may require editing of application.yml)
+* If you are hosting the lavalink aswell on the same system, it will need [Java](https://adoptopenjdk.net/) v17+ (v17 is preferred) and if not on the same system you will need to get the IP and port of the server. (This may require editing of application.yml)
 * (Optional) You can also host the [mongo](https://www.mongodb.com/) database on your system but this is optional.
 
 ### Setting up the database
@@ -31,13 +31,13 @@ Find the file `src/config.example.js`, this is where all your information will g
 * `websiteURL` will match your bot's dashboard, If you don't have one use `https://localhost`.
 * `defaultSettings` are the settings the bot will use when in **DM's**.
 * `MongoDBURl` where your MongoDB URL will go. (This is VITAL, you need it for the bot to work)
+* `LavalinkNodes` where your Lavalink server information(host, port, password) go. (This is required for any type of music to be played). You can add more than one Lavalink node by adding the config line again under your current node, this helps eith ratelimiting.
 * Make sure to add your bot to **the emoji [server](https://discord.gg/juFcfkVDGx)** to get access to the custom emoijis.
 > Once the config is filled out rename **config.example.js** to **config.js**
 
 
 ### Editing bot settings
 * For editing guild settings: `src/database/models/GuildSettings.js`.
-* For entering Lavalink server information (host, port, password): `src/base/Audio-Manager#14`. As nodes is an array you can multiply lavalink servers connected to the same bot, this helps with ratelimiting.
 
 ### Editing the files
 * Want to create your own commands?
