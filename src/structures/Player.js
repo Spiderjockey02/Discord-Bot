@@ -124,7 +124,7 @@ module.exports = Structure.extend('Player', Player => {
 				data: {
 					filters: {
 						timescale: {
-							speed: value
+							speed: value,
 						},
 					},
 				},
