@@ -61,12 +61,12 @@ class Filters extends Command {
 		}
 
 		if (filter == 'nightcore') {
-            await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
-        } else if (filter == 'vaporwave') {
-            await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
-        } else if (filter == 'reset') {
-            await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });
-        }
+			await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
+		} else if (filter == 'vaporwave') {
+			await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
+		} else if (filter == 'reset') {
+			await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });
+		}
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);
