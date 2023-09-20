@@ -38,10 +38,10 @@ class MessageCreate extends Event {
 		// Check if bot was mentioned
 		if (new RegExp(`/<@(!?)${bot.user.id}>/g`).test(message.content)) {
 			const embed = new EmbedBuilder()
-				.setAuthor({ name: tag, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
+				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					message.translate('events/message:INTRO', { USER: tag }),
+					message.translate('events/message:INTRO', { USER: bot.user.globalName }),
 					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString(), CMDS: bot.commands.size }),
 					message.translate('events/message:PREFIX', { PREFIX: settings.prefix }),
 				].join('\n\n'))
