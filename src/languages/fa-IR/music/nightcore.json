@@ -1,8 +1,8 @@
 {
   "DESCRIPTION": "فعال کردن نایت کور مود.",
   "USAGE": "nightcore",
-  "ON_NC": "در حال فعال کردن مود **nightcore**.",
+  "ON": "در حال فعال کردن مود **nightcore**.",
   "DESC_1": "فعال شد**nightcore**",
-  "OFF_NC": "درحال خاموش کردن مود **nightcore**.",
+  "OFF": "درحال خاموش کردن مود **nightcore**.",
   "DESC_2": "خاموش شد **nightcore**"
 }
