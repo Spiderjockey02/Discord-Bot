@@ -85,6 +85,7 @@ module.exports = Structure.extend('Player', Player => {
 			return this;
 		}
 
+		// update slowmo filter
 		setSlowmo(value) {
 			if (value) {
 				this.setFilter({
