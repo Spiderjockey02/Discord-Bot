@@ -60,7 +60,7 @@ class Filters extends Command {
 			player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
 		}
 
-    	await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}`) });
+		await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}`) });
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);
