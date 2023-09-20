@@ -28,7 +28,7 @@ class Filters extends Command {
 			options: [{
 				name: 'filter',
 				description: 'The amount you want to bass-boost the song.',
-				choices: ['nightcore', 'vaporwave', 'reset'].map(i => ({ name: i, value: i })),
+				choices: ['nightcore', 'vaporwave', 'slowmo', 'reset'].map(i => ({ name: i, value: i })),
 				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
@@ -64,9 +64,11 @@ class Filters extends Command {
             await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
         } else if (filter == 'vaporwave') {
             await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
+		} else if (filter == 'slowmo') {
+			await interaction.reply({ content: guild.translate(`music/slowmo:${player[filter] ? 'ON' : 'OFF'}_SM`) });
         } else if (filter == 'reset') {
             await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });
-        }
+		}
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);

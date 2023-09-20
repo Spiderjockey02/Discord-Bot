@@ -14,6 +14,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.speed = 1;
 			this.bassboost = false;
 			this.nightcore = false;
+            this.slowmo = false;
 			this.vaporwave = false;
 			// for Autoplay
 			this.autoplay = false;
@@ -83,6 +84,19 @@ module.exports = Structure.extend('Player', Player => {
 			}
 			return this;
 		}
+		
+		setSlowmo(value) {
+			if (value) {
+				this.setFilter({
+					timescale: { speed: 0.7, pitch: 1.0, rate: 0.8 },
+				});
+				this.slowmo = true;
+			} else {
+				this.resetFilter();
+				this.slowmo = false;
+			}
+			return this;
+		}
 
 		// send lavalink the new filters
 		setFilter(body = {}) {
@@ -123,9 +137,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.node.rest.updatePlayer({
 				data: {
 					filters: {
-						timescale: {
-							speed: value,
-						},
+						timescale: { speed: value },
 					},
 				},
 				guildId: this.guild,
