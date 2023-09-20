@@ -1,5 +1,6 @@
 const { Manager } = require('magmastream'),
 	{ LavalinkNodes: nodes } = require('../config');
+require('../structures/Player');
 
 /**
  * Audio manager

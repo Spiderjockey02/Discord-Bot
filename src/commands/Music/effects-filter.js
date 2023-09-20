@@ -4,10 +4,10 @@ const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags
 	Command = require('../../structures/Command.js');
 
 /**
- * Bassboost command
+ * Filters command
  * @extends {Command}
 */
-class Bassboost extends Command {
+class Filters extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -17,10 +17,10 @@ class Bassboost extends Command {
 			name: 'effects-filter',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['bb'],
+			aliases: ['filter'],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
-			description: 'Bassboost the song',
-			usage: 'bassboost [value]',
+			description: 'apply filters to the song',
+			usage: 'effects-filter [filter]',
 			cooldown: 3000,
 			examples: ['bb 8', 'bb'],
 			slash: false,
@@ -60,8 +60,13 @@ class Bassboost extends Command {
 			player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
 		}
 
-
-		await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}_NC`) });
+		if (filter == 'nightcore'){
+            await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
+        } else if (filter == 'vaporwave'){
+            await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
+        } else if (filter == 'reset') {
+            await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });
+        }
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);
@@ -70,4 +75,4 @@ class Bassboost extends Command {
 	}
 }
 
-module.exports = Bassboost;
+module.exports = Filters;
