@@ -120,10 +120,15 @@ module.exports = Structure.extend('Player', Player => {
 		// Change playback speed
 		setSpeed(value) {
 			this.speed = value;
-			this.node.send({
-				op: 'filters',
-				guildId: this.guild.id || this.guild,
-				timescale: { speed: value },
+			this.node.rest.updatePlayer({
+				data: {
+					filters: {
+						timescale: {
+							speed: value
+						},
+					},
+				},
+				guildId: this.guild,
 			});
 			return this;
 		}
