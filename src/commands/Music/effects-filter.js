@@ -60,9 +60,9 @@ class Filters extends Command {
 			player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
 		}
 
-		if (filter == 'nightcore'){
+		if (filter == 'nightcore') {
             await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
-        } else if (filter == 'vaporwave'){
+        } else if (filter == 'vaporwave') {
             await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
         } else if (filter == 'reset') {
             await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });

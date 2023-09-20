@@ -93,7 +93,7 @@ module.exports = Structure.extend('Player', Player => {
                   },
                 },
                 guildId: this.guild,
-            })
+            });
             return this;
         }
 
