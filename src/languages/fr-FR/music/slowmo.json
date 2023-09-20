@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Active le mode ralenti.",
-  "USAGE": "ralenti",
-  "ON": "Activation du **slowmo**. Cela peut prendre quelques secondes...",
-  "DESC_1": "Activé **slowmo**",
-  "OFF": "Désactivation du **slowmo**. Cela peut prendre quelques secondes...",
-  "DESC_2": "**slowmo** désactivé"
-}

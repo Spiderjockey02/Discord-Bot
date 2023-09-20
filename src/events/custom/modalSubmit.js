@@ -45,7 +45,7 @@ class ModalSubmit extends Event {
 				case 'user': {
 					const user = await bot.users.fetch(interaction.customId.split('_')[2]);
 					embed.addFields(
-						{ name: 'Global Name:', value: user.globalName, inline: true },
+						{ name: 'Tag:', value: user.globalName, inline: true },
 						{ name: 'Created at:', value: moment(user.createdAt).format('lll'), inline: true },
 					)
 						.setImage(user.displayAvatarURL());

@@ -111,6 +111,7 @@ class UserInfo extends Command {
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
 				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.globalName, inline: true },
+				{ name: bot.translate('guild/user-info:DISCRIM', {}, guild.settings?.Language), value: `${member.user.discriminator}`, inline: true },
 				{ name: bot.translate('guild/user-info:ROBOT', {}, guild.settings?.Language), value: bot.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`, {}, guild.settings?.Language), inline: true },
 				{ name: bot.translate('guild/user-info:CREATE', {}, guild.settings?.Language), value: moment(member.user.createdAt).format('lll'), inline: true },
 				{ name: bot.translate('guild/user-info:STATUS', {}, guild.settings?.Language), value: `\`${status}\``, inline: true },
