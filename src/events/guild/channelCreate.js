@@ -43,7 +43,7 @@ class ChannelCreate extends Event {
 				.setDescription(`**${guild.translate(`events/channel:${type}`)} ${guild.translate('events/channel:CREATE', { CHANNEL: channel.toString() })}**`)
 				.setColor(3066993)
 				.setFooter({ text: guild.translate('misc:ID', { ID: channel.id }) })
-				.setAuthor({ name: bot.user.tag, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message
