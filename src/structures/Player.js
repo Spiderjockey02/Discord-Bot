@@ -83,34 +83,33 @@ module.exports = Structure.extend('Player', Player => {
 			}
 			return this;
 		}
-
+		
 		// send lavalink the new filters
 		setFilter(body = {}) {
-            this.node.rest.updatePlayer({
-                data: {
-                  filters: {
-                    ...body,
-                  },
-                },
-                guildId: this.guild,
-            });
-            return this;
-        }
+			this.node.rest.updatePlayer({
+				data: {
+					filters: {
+                    				...body,
+                  			},
+                		},
+                		guildId: this.guild,
+            		});
+            		return this;
+        	}
 
 		// reset filters
 		resetFilter() {
-            this.node.rest.updatePlayer({
-                data: {
-                    filters: {},
-                },
-                guildId: this.guild,
-            });
-            this.speed = 1;
-            this.nightcore = false;
-            this.vaporwave = false;
-            this.demon = false;
-            return this;
-        }
+            		this.node.rest.updatePlayer({
+                		data: {
+                    			filters: {},
+                		},
+                		guildId: this.guild,
+            		});
+            		this.speed = 1;
+            		this.nightcore = false;
+            		this.vaporwave = false;
+            		return this;
+        	}
 
 		// Adds a song to previousTracks
 		addPreviousSong(song) {
