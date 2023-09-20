@@ -42,7 +42,7 @@ class ChannelDelete extends Event {
 				.setDescription(`**${ChannelType[channel.type]} channel deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
 				.setFooter({ text: `ID: ${channel.id}` })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: tag, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message
