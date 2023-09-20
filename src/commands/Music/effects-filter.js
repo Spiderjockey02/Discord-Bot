@@ -60,18 +60,7 @@ class Filters extends Command {
 			player[`set${filter.charAt(0).toUpperCase() + filter.slice(1)}`](!player[filter]);
 		}
 
-		if (filter == 'nightcore') {
-            await interaction.reply({ content: guild.translate(`music/nightcore:${player[filter] ? 'ON' : 'OFF'}_NC`) });
-        }
-		if (filter == 'vaporwave') {
-            await interaction.reply({ content: guild.translate(`music/vaporwave:${player[filter] ? 'ON' : 'OFF'}_VW`) });
-		}
-		if (filter == 'slowmo') {
-			await interaction.reply({ content: guild.translate(`music/slowmo:${player[filter] ? 'ON' : 'OFF'}_SM`) });
-        }
-		if (filter == 'reset') {
-            await interaction.reply({ content: guild.translate('music/reset:OFF_RE') });
-		}
+    	await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}`) });
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);

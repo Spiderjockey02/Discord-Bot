@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Resett alle filters.",
   "USAGE": "resetten",
-  "OFF_RE": "**filters** uitschakelen. Dit kan een paar seconden duren...",
+  "OFF": "**filters** uitschakelen. Dit kan een paar seconden duren...",
   "DESC_2": "**filters** uitgeschakeld"
 }

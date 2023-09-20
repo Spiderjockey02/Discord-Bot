@@ -1,8 +1,8 @@
 {
   "DESCRIPTION": "Schakelt de slowmo-modus in.",
   "USAGE": "slowmo",
-  "ON_SM": "**slowmo** wordt ingeschakeld. Dit kan een paar seconden duren...",
+  "ON": "**slowmo** wordt ingeschakeld. Dit kan een paar seconden duren...",
   "DESC_1": "**slowmo** ingeschakeld",
-  "OFF_SM": "**slowmo** wordt uitgeschakeld. Dit kan een paar seconden duren...",
+  "OFF": "**slowmo** wordt uitgeschakeld. Dit kan een paar seconden duren...",
   "DESC_2": "**slowmo** uitgeschakeld"
 }
