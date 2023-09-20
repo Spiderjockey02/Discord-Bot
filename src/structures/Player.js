@@ -83,7 +83,7 @@ module.exports = Structure.extend('Player', Player => {
 			}
 			return this;
 		}
-		
+
 		// send lavalink the new filters
 		setFilter(body = {}) {
 			this.node.rest.updatePlayer({
