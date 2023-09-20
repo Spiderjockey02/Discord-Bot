@@ -4,10 +4,10 @@ const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusi
 	Command = require('../../structures/Command.js');
 
 /**
- * rewind command
+ * seekrewind command
  * @extends {Command}
 */
-class Rewind extends Command {
+class SeekRewind extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -99,4 +99,4 @@ class Rewind extends Command {
 	}
 }
 
-module.exports = Rewind;
+module.exports = SeekRewind;

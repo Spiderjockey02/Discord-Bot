@@ -6,7 +6,6 @@ module.exports = Structure.extend('Player', Player => {
 		constructor(...args) {
 			super(...args);
 			// extra settings
-			this.twentyFourSeven = false;
 			this.previousTracks = [];
 			// for bot leave function
 			this.timeout = null;

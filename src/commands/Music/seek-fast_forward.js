@@ -4,10 +4,10 @@ const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusi
 	Command = require('../../structures/Command.js');
 
 /**
- * Addrole command
+ * seekfastforward command
  * @extends {Command}
 */
-class FastForward extends Command {
+class SeekFastForward extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -98,4 +98,4 @@ class FastForward extends Command {
 	}
 }
 
-module.exports = FastForward;
+module.exports = SeekFastForward;
