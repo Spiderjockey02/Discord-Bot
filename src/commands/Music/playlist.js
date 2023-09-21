@@ -4,7 +4,7 @@ const	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * playlist add command
+ * playlist command
  * @extends {Command}
 */
 class Playlist extends Command {
