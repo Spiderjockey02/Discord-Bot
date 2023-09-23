@@ -42,11 +42,11 @@ module.exports = Object.defineProperties(Message.prototype, {
 
 					// search for members
 					this.guild.members.cache.forEach(member => {
-						members.push(member.user.globalName);
+						members.push(member.user.displayName);
 						indexes.push(member.id);
 					});
 				} else {
-					members.push(this.author.globalName, this.client.user.globalName);
+					members.push(this.author.displayName, this.client.user.displayName);
 					indexes.push(this.author.id, this.client.user.id);
 				}
 
