@@ -49,7 +49,7 @@ class MessageReactionRemove extends Event {
 				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(15158332)
 				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
-				.setAuthor({ name: user.globalName, iconURL: user.displayAvatarURL() })
+				.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

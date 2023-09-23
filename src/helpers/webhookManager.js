@@ -6,13 +6,13 @@ module.exports = async (bot) => {
 	for (const channel of channelIDs) {
 		try {
 			const webhooks = await bot.channels.fetch(channel).then(c => c.fetchWebhooks());
-			let webhook = webhooks.find(wh => wh.name == bot.user.globalName);
+			let webhook = webhooks.find(wh => wh.name == bot.user.displayName);
 
 			// create webhook if it doesn't exist
 			if (!webhook) {
 				webhook = await bot.channels.fetch(channel).then(c => c.createWebhook({
 					avatar: bot.user.displayAvatarURL({ format: 'png', size: 1024 }),
-					name: bot.user.globalName,
+					name: bot.user.displayName,
 					reason: 'Mod logging',
 				}));
 			}

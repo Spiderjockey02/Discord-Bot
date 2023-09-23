@@ -82,7 +82,7 @@ class Kick extends Command {
 					.setThumbnail(message.guild.iconURL())
 					.setDescription(message.translate('moderation/kick:DESC', { NAME: message.guild.name }))
 					.addFields(
-						{ name: message.translate('moderation/kick:KICKED'), value: message.author.globalName, inline: true },
+						{ name: message.translate('moderation/kick:KICKED'), value: message.author.displayName, inline: true },
 						{ name: message.translate('misc:REASON'), value: reason, inline: true },
 					);
 				await members[0].send({ embeds: [embed] });
@@ -130,7 +130,7 @@ class Kick extends Command {
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/kick:DESC', { NAME: guild.name }))
 					.addFields(
-						{ name: guild.translate('moderation/kick:KICKED'), value:  interaction.user.globalName, inline: true },
+						{ name: guild.translate('moderation/kick:KICKED'), value:  interaction.user.displayName, inline: true },
 						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
 					);
 				await member.send({ embeds: [embed] });

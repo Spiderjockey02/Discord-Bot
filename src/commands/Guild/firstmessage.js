@@ -99,7 +99,7 @@ class Firstmessage extends Command {
 		return new Embed(bot, guild)
 			.setColor(fMessage.member ? fMessage.member.displayHexColor : 0x00AE86)
 			.setThumbnail(fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }))
-			.setAuthor({ name: fMessage.author.globalName, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
+			.setAuthor({ name: fMessage.author.displayName, iconURL: fMessage.author.displayAvatarURL({ format: 'png', dynamic: true }) })
 			.setDescription(bot.options.intents.has(IntentsBitField.Flags.MessageContent) ? fMessage.content : 'Unable to fetch message content.')
 			.addFields(
 				{ name: bot.translate('guild/firstmessage:JUMP'), value: fMessage.url },

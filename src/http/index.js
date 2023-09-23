@@ -41,7 +41,7 @@ module.exports = async bot => {
 			res
 				.type('text/plain')
 				.send([
-					`API server for ${bot.user.globalName}`,
+					`API server for ${bot.user.displayName}`,
 					'Endpoints:',
 					endpoints.join('\n'),
 				].join('\n'));

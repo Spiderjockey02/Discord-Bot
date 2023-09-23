@@ -78,7 +78,7 @@ class ClickButton extends Event {
 				const embed = new Embed(bot, guild)
 					.setColor(0xFF5555)
 					.addFields(
-						{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: member.user.globalName }), value: guild.translate('ticket/ticket-create:FIELDT') },
+						{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: member.user.displayName }), value: guild.translate('ticket/ticket-create:FIELDT') },
 						{ name: guild.translate('ticket/ticket-create:FIELD2'), value: guild.translate('misc:NO_REASON') },
 					)
 					.setTimestamp();

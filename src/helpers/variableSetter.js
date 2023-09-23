@@ -1,7 +1,7 @@
 const constants = {
 	server: ['createdAt', 'createdTimestamp', 'description', 'id', 'memberCount', 'name', 'nameAcronym', 'ownerId', '.rulesChannelId', 'vanityURLCode'],
 	channel: ['createdAt', 'createdTimestamp', 'id', 'name', 'members', 'userLimit', 'rtcRegion'],
-	user: ['createdAt', 'createdTimestamp', 'bot', 'defaultAvatarURL', 'discriminator', 'id', 'tag', 'username'],
+	user: ['createdAt', 'createdTimestamp', 'bot', 'defaultAvatarURL', 'discriminator', 'id', 'displayName', 'username'],
 	member: ['joinedAt', 'joinedTimestamp', 'nickname', 'premiumSince', 'premiumSinceTimestamp'],
 };
 

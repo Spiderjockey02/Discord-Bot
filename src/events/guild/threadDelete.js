@@ -34,11 +34,11 @@ class ThreadDelete extends Event {
 				.setDescription([
 					`**${thread.type.split('_')[1].toLowerCase()} thread deleted: ${thread.toString()}**`,
 					'',
-					`Owner: ${bot.users.cache.get(thread.ownerId)?.tag}`,
+					`Owner: ${bot.users.cache.get(thread.ownerId)?.displayName}`,
 				].join('\n'))
 				.setColor(15158332)
 				.setFooter({ text: thread.guild.translate('misc:ID', { ID: thread.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

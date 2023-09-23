@@ -114,14 +114,9 @@ class Leaderboard extends Command {
 					.setURL(`${bot.config.websiteURL}/leaderboard/${guild.id}`);
 				for (let j = 0; j < 10; j++) {
 					if (res[(i * 10) + j]) {
-						const name = guild.members.cache.get(res[(i * 10) + j].userID) || 'User left';
-						if (name == 'User left') {
-							embed2.addFields({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name }),
-								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
-						} else {
-							embed2.addFields({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: name.user.globalName }),
-								value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
-						}
+						const member = guild.members.cache.get(res[(i * 10) + j].userID);
+						embed2.addFields({ name: guild.translate('level/leaderboard:FIELD_TITLE', { POS: ordinal((i * 10) + j + 1), NAME: member == undefined ? 'User left' : member.user.displayName }),
+							value: guild.translate('level/leaderboard:FIELD_DATA', { XP: res[(i * 10) + j].Xp.toLocaleString(guild.settings.Language), LEVEL: res[(i * 10) + j].Level.toLocaleString(guild.settings.Language) }) });
 					}
 				}
 

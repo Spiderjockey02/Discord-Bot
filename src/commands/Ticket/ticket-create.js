@@ -81,7 +81,7 @@ class TicketCreate extends Command {
 			const embed = new Embed(bot, message.guild)
 				.setColor(0xFF5555)
 				.addFields(
-					{ name: message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.globalName }), value: message.translate('ticket/ticket-create:FIELDT') },
+					{ name: message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.displayName }), value: message.translate('ticket/ticket-create:FIELDT') },
 					{ name: message.translate('ticket/ticket-create:FIELD2'), value: reason },
 				)
 				.setTimestamp();
@@ -141,7 +141,7 @@ class TicketCreate extends Command {
 			const embed = new Embed(bot, guild)
 				.setColor(0xFF5555)
 				.addFields(
-					{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: interaction.user.globalName }), value: guild.translate('ticket/ticket-create:FIELDT') },
+					{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: interaction.user.displayName }), value: guild.translate('ticket/ticket-create:FIELDT') },
 					{ name: guild.translate('ticket/ticket-create:FIELD2'), value: reason },
 				)
 				.setTimestamp();

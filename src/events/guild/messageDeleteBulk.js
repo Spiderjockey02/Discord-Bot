@@ -36,7 +36,7 @@ class MessageDeleteBulk extends Event {
 			let humanLog = `**Deleted Messages from #${messages.first().channel.name} (${messages.first().channel.id}) in ${messages.first().guild.name} (${messages.first().guild.id})**`;
 
 			for (const message of [...messages.values()].reverse()) {
-				humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author?.tag ?? 'Unknown'} (${message.id})`;
+				humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author?.displayName ?? 'Unknown'} (${message.id})`;
 				humanLog += ' : ' + message.content;
 			}
 

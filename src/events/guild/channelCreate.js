@@ -24,7 +24,7 @@ class ChannelCreate extends Event {
 	async run(bot, channel) {
 		const { type, guild, name } = channel;
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${type == ChannelType.DM ? channel.recipient.tag : name} has been created${type == ChannelType.DM ? '' : ` in guild: ${guild.id}`}. (${type})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${type == ChannelType.DM ? channel.recipient.displayName : name} has been created${type == ChannelType.DM ? '' : ` in guild: ${guild.id}`}. (${type})`);
 
 		// Make sure the channel isn't a DM
 		if (type == 'dm') return;
@@ -43,7 +43,7 @@ class ChannelCreate extends Event {
 				.setDescription(`**${guild.translate(`events/channel:${type}`)} ${guild.translate('events/channel:CREATE', { CHANNEL: channel.toString() })}**`)
 				.setColor(3066993)
 				.setFooter({ text: guild.translate('misc:ID', { ID: channel.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

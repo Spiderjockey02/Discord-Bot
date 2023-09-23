@@ -44,7 +44,7 @@ class ClickMenu extends Event {
 		}
 
 		// Run context menu
-		if (bot.config.debug) bot.logger.debug(`Context menu: ${interaction.commandName} was ran by ${interaction.user.globalName}.`);
+		if (bot.config.debug) bot.logger.debug(`Context menu: ${interaction.commandName} was ran by ${interaction.user.displayName}.`);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		switch (interaction.commandName) {

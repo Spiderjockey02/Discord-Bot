@@ -80,10 +80,10 @@ class Rank extends Command {
 		// Retrieve Rank from databse
 		try {
 			const res = await this.createRankCard(bot, guild, interaction.user, member, channel);
-			if (typeof (res) == 'object') {
+			if (res.attachment && res.name == 'RankCard.png') {
 				await interaction.reply({ files: [res] });
 			} else {
-				await interaction.reply({ content: res });
+				await interaction.reply({ embeds: [res] });
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -126,7 +126,7 @@ class Rank extends Command {
 			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (user.Level == 1 ? 0 : (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
 			.setStatus(target.presence?.status ?? 'dnd')
 			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-			.setUsername(target.user.globalName);
+			.setUsername(target.user.displayName);
 		if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
 
 		// create rank card

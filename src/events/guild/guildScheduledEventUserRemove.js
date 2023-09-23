@@ -23,7 +23,7 @@ class GuildScheduledEventUserRemove extends Event {
 	*/
 	async run(bot, guildEvent, user) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`User: ${user.globalName} has left event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`User: ${user.displayName} has left event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = guildEvent.guild.settings;
@@ -33,13 +33,13 @@ class GuildScheduledEventUserRemove extends Event {
 		if (settings.ModLogEvents?.includes('EVENTUSERREMOVE') && settings.ModLog) {
 			const embed = new Embed(bot, guildEvent.guild)
 				.setDescription([
-					`${user.globalName} left event: [${guildEvent.name}](${guildEvent})`,
+					`${user.displayName} left event: [${guildEvent.name}](${guildEvent})`,
 					'',
 					`There are still ${guildEvent.userCount ?? 0} users subscribed to the event.`,
 				].join('\n'))
 				.setColor(15158332)
 				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

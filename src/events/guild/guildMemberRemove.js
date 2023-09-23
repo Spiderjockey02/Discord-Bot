@@ -24,7 +24,7 @@ class GuildMemberRemove extends Event {
 	*/
 	async run(bot, member) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.globalName} has left guild: ${member.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.displayName} has left guild: ${member.guild.id}.`);
 		if (member.user.id == bot.user.id) return;
 
 		// Get server settings / if no settings then return

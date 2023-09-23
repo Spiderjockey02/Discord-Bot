@@ -67,7 +67,7 @@ class Warnings extends Command {
 				}
 
 				const embed = new Embed(bot, message.guild)
-					.setTitle('moderation/warnings:TITLE', { USER: members[0].user.globalName })
+					.setTitle('moderation/warnings:TITLE', { USER: members[0].user.displayName })
 					.setDescription(list)
 					.setTimestamp();
 				message.channel.send({ embeds: [embed] });
@@ -109,7 +109,7 @@ class Warnings extends Command {
 				}
 
 				const embed = new Embed(bot, guild)
-					.setTitle('moderation/warnings:TITLE', { USER: member.user.globalName })
+					.setTitle('moderation/warnings:TITLE', { USER: member.user.displayName })
 					.setDescription(list)
 					.setTimestamp();
 				interaction.reply({ embeds: [embed] });

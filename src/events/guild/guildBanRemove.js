@@ -32,7 +32,7 @@ class GuildBanRemove extends Event {
 		}
 
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${user.globalName} has been unbanned in guild: ${guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`Member: ${user.displayName} has been unbanned in guild: ${guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = guild.settings;

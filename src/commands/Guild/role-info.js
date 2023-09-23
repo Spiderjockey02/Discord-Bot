@@ -87,7 +87,7 @@ class RoleInfo extends Command {
 		// Send information to channel
 		return new Embed(bot, guild)
 			.setColor(role.color)
-			.setAuthor({ name: user.globalName, iconURL: user.displayAvatarURL() })
+			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
 			.setDescription(guild.translate('guild/role-info:NAME', { NAME: role.name }))
 			.addFields(
 				{ name: guild.translate('guild/role-info:MEMBERS'), value: role.members.size.toLocaleString(guild.settings.Language), inline: true },
@@ -100,7 +100,7 @@ class RoleInfo extends Command {
 				{ name: guild.translate('guild/role-info:CREATED'), value: moment(role.createdAt).format('lll') },
 			)
 			.setTimestamp()
-			.setFooter({ text: guild.translate('guild/role-info:FOOTER', { MEMBER: user.globalName, ID: role.id }) });
+			.setFooter({ text: guild.translate('guild/role-info:FOOTER', { MEMBER: user.displayName, ID: role.id }) });
 	}
 }
 

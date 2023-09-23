@@ -41,11 +41,11 @@ class ThreadCreate extends Event {
 				.setDescription([
 					`**${thread.type.split('_')[1].toLowerCase()} thread created: ${thread.toString()}**`,
 					'',
-					`Owner: ${bot.users.cache.get(thread.ownerId)?.tag}`,
+					`Owner: ${bot.users.cache.get(thread.ownerId)?.displayName}`,
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter({ text: thread.guild.translate('misc:ID', { ID: thread.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

@@ -89,7 +89,7 @@ class Ban extends Command {
 					.setThumbnail(message.guild.iconURL())
 					.setDescription(message.translate('moderation/ban:DESC', { NAME: message.guild.name }))
 					.addFields(
-						{ name: message.translate('moderation/ban:BAN_BY'), value: message.author.globalName, inline: true },
+						{ name: message.translate('moderation/ban:BAN_BY'), value: message.author.displayName, inline: true },
 						{ name: message.translate('misc:REASON'), value: reason, inline: true },
 					);
 				await members[0].send({ embeds: [embed] });
@@ -165,7 +165,7 @@ class Ban extends Command {
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/ban:DESC', { NAME: guild.name }))
 					.addFields(
-						{ name: guild.translate('moderation/ban:BAN_BY'), value: interaction.user.globalName, inline: true },
+						{ name: guild.translate('moderation/ban:BAN_BY'), value: interaction.user.displayName, inline: true },
 						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
 					);
 				await member.send({ embeds: [embed] });

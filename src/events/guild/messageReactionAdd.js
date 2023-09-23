@@ -81,7 +81,7 @@ class MessageReactionAdd extends Event {
 				.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(3066993)
 				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
-				.setAuthor({ name: user.globalName, iconURL: user.displayAvatarURL() })
+				.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

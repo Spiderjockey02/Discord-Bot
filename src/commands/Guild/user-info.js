@@ -74,12 +74,13 @@ class UserInfo extends Command {
 	 * @readonly
 	*/
 	reply(bot, interaction, channel, userID) {
+		const guild = bot.channels.cache.get(interaction.guildId);
+
 		let member;
 		if (channel.type == ChannelType.DM) {
-			member = new GuildMember(bot, bot.users.cache.get(userID));
-			member._patch({ user: bot.users.cache.get(userID) });
+			member = new GuildMember(bot, { user: bot.users.cache.get(userID) });
 		} else {
-			member = channel.guild.members.cache.get(userID);
+			member = guild.members.cache.get(userID);
 		}
 
 		// send embed
@@ -100,17 +101,18 @@ class UserInfo extends Command {
 			roles.pop();
 		}
 
+		// Check if user has status
 		let status = 'None';
 		if (member.guild) {
 			status = (member.presence?.activities.length >= 1) ? `${member.presence.activities[0].name} - ${(member.presence.activities[0].type == 'CUSTOM_STATUS') ? member.presence.activities[0].state : member.presence.activities[0].details}` : 'None';
 		}
 
 		const embed = new Embed(bot, guild)
-			.setAuthor({ name: member.user.globalName, iconURL: member.user.displayAvatarURL() })
+			.setAuthor({ name: member.user.displayName, iconURL: member.user.displayAvatarURL() })
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.globalName, inline: true },
+				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.displayName, inline: true },
 				{ name: bot.translate('guild/user-info:DISCRIM', {}, guild.settings?.Language), value: `${member.user.discriminator}`, inline: true },
 				{ name: bot.translate('guild/user-info:ROBOT', {}, guild.settings?.Language), value: bot.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`, {}, guild.settings?.Language), inline: true },
 				{ name: bot.translate('guild/user-info:CREATE', {}, guild.settings?.Language), value: moment(member.user.createdAt).format('lll'), inline: true },

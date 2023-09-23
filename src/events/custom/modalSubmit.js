@@ -33,7 +33,7 @@ class ModalSubmit extends Event {
 		if (guild.settings.ModLogEvents?.includes('REPORT')) {
 			const embed = new Embed(bot, guild)
 				.setTitle(`Reported ${interaction.customId.split('_')[1]}`)
-				.setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL() })
+				.setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL() })
 				.addFields(
 					{ name: 'Reason:', value: reason ?? 'No reason given' },
 				)
@@ -45,7 +45,7 @@ class ModalSubmit extends Event {
 				case 'user': {
 					const user = await bot.users.fetch(interaction.customId.split('_')[2]);
 					embed.addFields(
-						{ name: 'Tag:', value: user.globalName, inline: true },
+						{ name: 'Tag:', value: user.displayName, inline: true },
 						{ name: 'Created at:', value: moment(user.createdAt).format('lll'), inline: true },
 					)
 						.setImage(user.displayAvatarURL());

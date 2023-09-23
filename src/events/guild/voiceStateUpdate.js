@@ -42,7 +42,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.serverDeaf ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() });
+					.setAuthor({ name: newMember.user.displayName, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 
@@ -53,7 +53,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.serverMute ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() });
+					.setAuthor({ name: newMember.user.displayName, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 
@@ -64,7 +64,7 @@ class VoiceStateUpdate extends Event {
 					.setColor(newState.streaming ? 15158332 : 3066993)
 					.setTimestamp()
 					.setFooter({ text: `User: ${newMember.id}` })
-					.setAuthor({ name: newMember.user.globalName, iconURL: newMember.user.displayAvatarURL() });
+					.setAuthor({ name: newMember.user.displayName, iconURL: newMember.user.displayAvatarURL() });
 				updated = true;
 			}
 

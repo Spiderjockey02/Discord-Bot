@@ -38,10 +38,10 @@ class MessageCreate extends Event {
 		// Check if bot was mentioned
 		if (new RegExp(`/<@(!?)${bot.user.id}>/g`).test(message.content)) {
 			const embed = new EmbedBuilder()
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
 				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					message.translate('events/message:INTRO', { USER: bot.user.globalName }),
+					message.translate('events/message:INTRO', { USER: bot.user.displayName }),
 					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString(), CMDS: bot.commands.size }),
 					message.translate('events/message:PREFIX', { PREFIX: settings.prefix }),
 				].join('\n\n'))
@@ -99,7 +99,7 @@ class MessageCreate extends Event {
 			// Check to see if the command is being run in a blacklisted channel
 			if ((settings.CommandChannelToggle) && (settings.CommandChannels.includes(message.channel.id))) {
 				if (message.deletable) message.delete();
-				return message.channel.error('events/message:BLACKLISTED_CHANNEL', { USER: message.author.globalName }).then(m => m.timedDelete({ timeout:5000 }));
+				return message.channel.error('events/message:BLACKLISTED_CHANNEL', { USER: message.author.displayName }).then(m => m.timedDelete({ timeout:5000 }));
 			}
 
 			// Make sure NSFW commands are only being run in a NSFW channel
@@ -177,7 +177,7 @@ class MessageCreate extends Event {
 
 			// run the command
 			bot.commandsUsed++;
-			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.globalName}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
+			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.displayName}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
 			cmd.run(bot, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);

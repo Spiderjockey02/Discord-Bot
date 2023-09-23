@@ -25,7 +25,7 @@ class ChannelUpdate extends Event {
 	*/
 	async run(bot, oldChannel, newChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == ChannelType.DM ? newChannel.recipient.tag : newChannel.name} has been updated${newChannel.type == ChannelType.DM ? '' : ` in guild: ${newChannel.guild.id}`}. (${ChannelType[newChannel.type]})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == ChannelType.DM ? newChannel.recipient.displayName : newChannel.name} has been updated${newChannel.type == ChannelType.DM ? '' : ` in guild: ${newChannel.guild.id}`}. (${ChannelType[newChannel.type]})`);
 
 		// Get server settings / if no settings then return
 		const settings = newChannel.guild?.settings;
@@ -131,7 +131,7 @@ class ChannelUpdate extends Event {
 					if (!value.length) value = 'Overwrite got deleted';
 					// add field to embed
 					embed.addFields({
-						'name': role ? role.name + ` (ID: ${role.id}):` : member.user.globalName + ` (ID: ${member.id}):`,
+						'name': role ? role.name + ` (ID: ${role.id}):` : member.user.displayName + ` (ID: ${member.id}):`,
 						'value': value,
 					});
 				}

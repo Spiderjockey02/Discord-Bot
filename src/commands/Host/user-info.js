@@ -44,10 +44,10 @@ class UserBan extends Command {
 
 		const embed = new EmbedBuilder()
 			.setTitle('User Information:')
-			.setAuthor({ name: user.globalName, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
+			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
 			.setThumbnail(user.displayAvatarURL({ dynamic: true, size: 1024 }))
 			.setDescription([
-				`Username: \`${user.globalName}\``,
+				`Username: \`${user.displayName}\``,
 				`ID: \`${user.id}\``,
 				`Creation Date: \`${moment(user.createdAt).format('lll')}\``,
 				'',

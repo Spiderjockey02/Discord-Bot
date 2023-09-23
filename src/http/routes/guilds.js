@@ -28,7 +28,7 @@ module.exports = function(bot) {
 
 			// check if an ID query was made
 			let members = guild.members.cache.map(member => ({
-				user: member.user.globalName,
+				user: member.user.displayName,
 				id: member.user.id,
 				avatar: member.user.displayAvatarURL({ size: 128 }),
 			}));

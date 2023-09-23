@@ -77,10 +77,10 @@ class AddRole extends Command {
 		// Create role
 		const colour = (message.args[1]?.toLowerCase())?.replace(/\s/g, '');
 		if (colourNames[colour] ?? /[0-9A-Fa-f]{6}/g.test(message.args[1])) {
-			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.globalName}`, color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
+			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.displayName}`, color: colourNames[colour] ?? message.args[1], hoist: message.args[2] ?? false });
 			message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
 		} else {
-			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.globalName}`, hoist: message.args[2] ?? false });
+			const role = await message.guild.roles.create({ name: message.args[0], reason: `Created by ${message.author.displayName}`, hoist: message.args[2] ?? false });
 			message.channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }).then(m => m.timedDelete({ timeout: 5000 }));
 		}
 	}
@@ -103,7 +103,7 @@ class AddRole extends Command {
 		if (guild.roles.cache.size == 250) return interaction.reply({ embeds: [channel.error('moderation/addrole:MAX_ROLES', {}, true)], ephemeral: true });
 
 		try {
-			const role = await guild.roles.create({ name: name, reason: `Created by ${interaction.user.globalName}`, color, hoist });
+			const role = await guild.roles.create({ name: name, reason: `Created by ${interaction.user.displayName}`, color, hoist });
 			interaction.reply({ embeds: [channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
 		} catch (err) {
 			bot.logger.error(`Command: 'addrole' has error: ${err}.`);

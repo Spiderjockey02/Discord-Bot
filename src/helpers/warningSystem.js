@@ -16,7 +16,7 @@ module.exports.run = async (bot, userInput, member, reason) => {
 		let newWarn;
 		if (!warnings[0]) {
 			// debugging mode
-			if (bot.config.debug) bot.logger.debug(`${member.user.globalName} was warned for the first time in guild: ${userInput.guild.id}`);
+			if (bot.config.debug) bot.logger.debug(`${member.user.displayName} was warned for the first time in guild: ${userInput.guild.id}`);
 
 			try {
 				// create a new warning file
@@ -32,7 +32,7 @@ module.exports.run = async (bot, userInput, member, reason) => {
 				await newWarn.save();
 				const embed1 = new Embed(bot, userInput.guild)
 					.setColor(15158332)
-					.setAuthor({ name: guild.translate('moderation/warn:SUCCESS', { USER: member.user.globalName }), iconURL: member.user.displayAvatarURL() })
+					.setAuthor({ name: guild.translate('moderation/warn:SUCCESS', { USER: member.user.displayName }), iconURL: member.user.displayAvatarURL() })
 					.setDescription(guild.translate('moderation/warn:REASON', { REASON: reason }));
 
 				// try and send warning embed to culprit
@@ -42,7 +42,7 @@ module.exports.run = async (bot, userInput, member, reason) => {
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/warn:WARN_IN', { NAME: guild.name }))
 					.addFields(
-						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.globalName, inline: true },
+						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.displayName, inline: true },
 						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
 						{ name: guild.translate('moderation/warn:WARN_CNTR'), value: '1/3', inline: true },
 					);
@@ -78,9 +78,9 @@ module.exports.run = async (bot, userInput, member, reason) => {
 				// send embed
 				const embed1 = new Embed(bot, guild)
 					.setColor(15158332)
-					.setAuthor({ name: guild.translate('moderation/warn:SUCCESS', { USER: member.user.globalName }), iconURL: member.user.displayAvatarURL() })
+					.setAuthor({ name: guild.translate('moderation/warn:SUCCESS', { USER: member.user.displayName }), iconURL: member.user.displayAvatarURL() })
 					.setDescription(guild.translate('moderation/warn:REASON', { REASON: reason }));
-				if (bot.config.debug) bot.logger.debug(`${member.user.globalName} was warned for the second time in guild: ${guild.id}`);
+				if (bot.config.debug) bot.logger.debug(`${member.user.displayName} was warned for the second time in guild: ${guild.id}`);
 
 				// try and send warning embed to culprit
 				const embed2 = new Embed(bot, guild)
@@ -89,7 +89,7 @@ module.exports.run = async (bot, userInput, member, reason) => {
 					.setThumbnail(guild.iconURL())
 					.setDescription(guild.translate('moderation/warn:WARN_IN', { NAME: guild.name }))
 					.addFields(
-						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.globalName, inline: true },
+						{ name: guild.translate('moderation/warn:WARN_BY'), value: userInput.member.user.displayName, inline: true },
 						{ name: guild.translate('misc:REASON'), value: reason, inline: true },
 						{ name: guild.translate('moderation/warn:WARN_CNTR'), value: '2/3', inline: true },
 					);
@@ -99,12 +99,12 @@ module.exports.run = async (bot, userInput, member, reason) => {
 				checkTimedWarning(bot, reason, member, userInput, newWarn);
 				return embed1;
 			} else {
-				if (bot.config.debug) bot.logger.debug(`${member.user.globalName} was warned for the third time in guild: ${guild.id}`);
+				if (bot.config.debug) bot.logger.debug(`${member.user.displayName} was warned for the third time in guild: ${guild.id}`);
 				// try and kick user from guild
 				try {
 					await guild.members.cache.get(member.user.id).kick(reason);
 					await WarningSchema.collection.deleteOne({ userID: member.user.id, guildID: guild.id });
-					return { success: ['moderation/warn:KICKED', { USER: member.user.globalName }] };
+					return { success: ['moderation/warn:KICKED', { USER: member.user.displayName }] };
 					// Delete user from database
 				} catch (err) {
 					bot.logger.error(`${err.message} when kicking user.`);

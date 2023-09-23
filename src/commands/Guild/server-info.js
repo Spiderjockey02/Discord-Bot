@@ -73,7 +73,7 @@ class ServerInfo extends Command {
 			.setThumbnail(guild.iconURL())
 			.addFields(
 				{ name: guild.translate('guild/server-info:NAME'), value: `\`${guild.name}\``, inline: true },
-				{ name: guild.translate('guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.globalName)}\``, inline: true },
+				{ name: guild.translate('guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.displayName)}\``, inline: true },
 				{ name: guild.translate('guild/server-info:ID'), value: `\`${guild.id}\``, inline: true },
 				{ name: guild.translate('guild/server-info:CREATED'), value: `\`${moment(guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
 				{ name: guild.translate('guild/server-info:VERIFICATION'), value: `\`${guild.verificationLevel}\``, inline: true },
@@ -84,7 +84,7 @@ class ServerInfo extends Command {
 				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
 			)
 			.setTimestamp()
-			.setFooter({ text: guild.translate('guild/server-info:FOOTER', { USER: user.globalName }) });
+			.setFooter({ text: guild.translate('guild/server-info:FOOTER', { USER: user.displayName }) });
 	}
 }
 

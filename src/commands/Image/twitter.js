@@ -64,7 +64,7 @@ class Twitter extends Command {
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${members[0].user.globalName}&text=${text}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${members[0].user.displayName}&text=${text}`)).then(res => res.json());
 
 			// send image in embed
 			const embed = new Embed(bot, message.guild)
@@ -94,7 +94,7 @@ class Twitter extends Command {
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', { EMOJI: bot.customEmojis['loading'] }) });
 
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${member.user.globalName}&text=${text}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=tweet&username=${member.user.displayName}&text=${text}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)
 				.setColor(3447003)
 				.setImage(json.message);

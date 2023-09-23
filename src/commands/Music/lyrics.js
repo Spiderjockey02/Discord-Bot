@@ -121,7 +121,7 @@ class Lyrics extends Command {
 				.setURL(info.url)
 				.setDescription(info.lyrics.join('\n').substring(i * 2048, (i + 1) * 2048))
 				.setTimestamp()
-				.setFooter({ text: guild.translate('music/lyrics:FOOTER', { TAG: author.globalName }), iconURL: author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }) });
+				.setFooter({ text: guild.translate('music/lyrics:FOOTER', { TAG: author.displayName }), iconURL: author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }) });
 			pages.push(embed);
 		}
 

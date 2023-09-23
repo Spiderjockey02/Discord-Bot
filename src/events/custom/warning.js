@@ -41,7 +41,7 @@ class Warning extends Event {
 				.setAuthor({ name: `${warns.length == 3 ? '[KICK]' : '[WARN]'}`, iconURL: member.user.displayAvatarURL() })
 				.addFields(
 					{ name: 'User', value: member.toString(), inline: true },
-					{ name: 'Moderator', value: `${member.guild.members.cache.get(warning.Moderater).user.globalName}`, inline: true },
+					{ name: 'Moderator', value: `${member.guild.members.cache.get(warning.Moderater).user.displayName}`, inline: true },
 					{ name: 'Warnings', value: `${warns.length != 3 ? warns.length : '1'}`, inline: true },
 					{ name: 'Reason:', value: warning.reason },
 				)

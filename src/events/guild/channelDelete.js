@@ -23,7 +23,7 @@ class ChannelDelete extends Event {
 	*/
 	async run(bot, channel) {
 	// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == ChannelType.DM ? channel.recipient.tag : channel.name} has been deleted${channel.type == ChannelType.DM ? '' : ` in guild: ${channel.guild.id}`}. (${ChannelType[channel.type]})`);
+		if (bot.config.debug) bot.logger.debug(`Channel: ${channel.type == ChannelType.DM ? channel.recipient.displayName : channel.name} has been deleted${channel.type == ChannelType.DM ? '' : ` in guild: ${channel.guild.id}`}. (${ChannelType[channel.type]})`);
 
 		// Don't really know but a check for DM must be made
 		if (channel.type == 'dm') return;
@@ -42,7 +42,7 @@ class ChannelDelete extends Event {
 				.setDescription(`**${ChannelType[channel.type]} channel deleted: ${'#' + channel.name}**`)
 				.setColor(15158332)
 				.setFooter({ text: `ID: ${channel.id}` })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

@@ -81,7 +81,7 @@ class PView extends Command {
 				for (let i = 0; i < pagesNum; i++) {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 					const embed = new Embed(bot, message.guild)
-						.setAuthor({ name: message.author.globalName, iconURL: message.author.displayAvatarURL() })
+						.setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL() })
 						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
 						.setDescription(str)
@@ -140,7 +140,7 @@ class PView extends Command {
 				for (let i = 0; i < pagesNum; i++) {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
 					const embed = new Embed(bot, guild)
-						.setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL() })
+						.setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL() })
 						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
 						.setDescription(str)

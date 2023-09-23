@@ -111,7 +111,7 @@ class GiveawayStart extends Command {
 					},
 				},
 			});
-			bot.logger.log(`${message.author.globalName} started a giveaway in server: [${message.guild.id}].`);
+			bot.logger.log(`${message.author.displayName} started a giveaway in server: [${message.guild.id}].`);
 		} catch (err) {
 			bot.logger.error(`Command: 'g-start' has error: ${err}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err });
@@ -163,7 +163,7 @@ class GiveawayStart extends Command {
 					},
 				},
 			});
-			bot.logger.log(`${member.user.globalName} started a giveaway in server: [${guild.id}].`);
+			bot.logger.log(`${member.user.displayName} started a giveaway in server: [${guild.id}].`);
 			interaction.reply({ content: 'Succesfully started giveaway' });
 		} catch (err) {
 			bot.logger.error(`Command: 'g-start' has error: ${err}.`);

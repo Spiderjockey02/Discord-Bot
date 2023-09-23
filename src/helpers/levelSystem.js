@@ -53,7 +53,7 @@ class LevelManager {
 							const lvlChannel = guild.channels.cache.get(settings.LevelChannel);
 							if (lvlChannel) lvlChannel.send(settings.LevelMessage.replace('{user}', this.message.author).replace('{level}', res.Level));
 						}
-						if (this.bot.config.debug) this.bot.logger.debug(`${this.message.author.globalName} has leveled up to ${res.Level} in guild: ${guild.id}.`);
+						if (this.bot.config.debug) this.bot.logger.debug(`${this.message.author.displayName} has leveled up to ${res.Level} in guild: ${guild.id}.`);
 					}
 
 					// update database

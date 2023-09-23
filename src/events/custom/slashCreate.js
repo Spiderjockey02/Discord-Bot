@@ -28,7 +28,7 @@ class SlashCreate extends Event {
 
 		// Check to see if the command is being run in a blacklisted channel
 		if ((guild.settings.CommandChannelToggle) && (guild.settings.CommandChannels.includes(channel.id))) {
-			return interaction.reply({ embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', { USER: member.user.globalName }, true)], ephermal: true });
+			return interaction.reply({ embeds: [channel.error('events/message:BLACKLISTED_CHANNEL', { USER: member.user.displayName }, true)], ephermal: true });
 		}
 
 		// Make sure NSFW commands are only being run in a NSFW channel
@@ -93,7 +93,7 @@ class SlashCreate extends Event {
 		}
 
 		// Run slash command
-		if (bot.config.debug) bot.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.globalName}.`);
+		if (bot.config.debug) bot.logger.debug(`Interaction: ${interaction.commandName} was ran by ${interaction.user.displayName}.`);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 		await cmd.callback(bot, interaction, guild, interaction.options);
 		timestamps.set(interaction.user.id, now);

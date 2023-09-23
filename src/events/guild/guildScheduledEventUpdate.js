@@ -62,7 +62,7 @@ class GuildScheduledEventUpdate extends Event {
 
 			embed.setDescription(`**Event: ${newGuildEvent.name} has been updated.**`)
 				.setFooter({ text: newGuildEvent.guild.translate('misc:ID', { ID: newGuildEvent.guild.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

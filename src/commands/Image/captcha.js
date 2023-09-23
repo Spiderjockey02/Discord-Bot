@@ -47,7 +47,7 @@ class Captcha extends Command {
 
 		// Try and convert image
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${members[0].user.globalName}&url=${members[0].user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${members[0].user.displayName}&url=${members[0].user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
 
 			// send image
 			const embed = new Embed(bot, message.guild)
@@ -76,7 +76,7 @@ class Captcha extends Command {
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
 			EMOJI: bot.customEmojis['loading'] }) });
 		try {
-			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${member.user.globalName}&url=${member.user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
+			const json = await fetch(encodeURI(`https://nekobot.xyz/api/imagegen?type=captcha&username=${member.user.displayName}&url=${member.user.displayAvatarURL({ format: 'png', size: 512 })}`)).then(res => res.json());
 			const embed = new Embed(bot, guild)
 				.setColor(3447003)
 				.setImage(json.message);

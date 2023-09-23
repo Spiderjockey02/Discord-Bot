@@ -40,12 +40,12 @@ class StickerCreate extends Event {
 		if (settings.ModLogEvents?.includes('STICKERCREATE') && settings.ModLog) {
 			const embed = new Embed(bot, sticker.guild)
 				.setDescription([
-					`**Sticker created: ${sticker.name}**`, `${user ? ['', `Created by: ${user?.tag}`].join('\n') : []}`,
+					`**Sticker created: ${sticker.name}**`, `${user ? ['', `Created by: ${user?.displayName}`].join('\n') : []}`,
 				].join('\n'))
 				.setColor(3066993)
 				.setImage(`https://cdn.discordapp.com/stickers/${sticker.id}.png`)
 				.setFooter({ text: sticker.guild.translate('misc:ID', { ID: sticker.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

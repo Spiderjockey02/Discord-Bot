@@ -61,12 +61,12 @@ class About extends Command {
 			voiceBasedChannelSize = bot.channels.cache.filter(c => [ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(c.type)).size;
 
 		return new Embed(bot, guild)
-			.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+			.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 			.setTitle('misc/about:TITLE')
 			.setDescription(guild.translate('misc/about:DESC', { URL: bot.config.websiteURL, INVITE: bot.generateInvite({
 				permissions: BigInt(1073081686),
 				scopes: ['bot', 'applications.commands'],
-			}), SERVER: bot.config.SupportServer.link, USERNAME: bot.user.globalName }))
+			}), SERVER: bot.config.SupportServer.link, USERNAME: bot.user.displayName }))
 			.addFields(
 				{ name: guild.translate('misc/about:MEMBERS', { MEMBERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString() }), value:  bot.translate('misc/about:MEMBERS_DESC', { USERS: bot.users.cache.size.toLocaleString(settings.Language), BOTS: bot.users.cache.filter(user => user.bot).size.toLocaleString(settings.Language), HUMANS: bot.users.cache.filter(user => !user.bot).size.toLocaleString(settings.Language) }), inline: true },
 				{ name: guild.translate('misc/about:CHANNELS'), value: bot.translate('misc/about:CHANNELS_DESC', { CHANNELS: bot.channels.cache.size.toLocaleString(settings.Language), TEXT: textBasedChannelSize.toLocaleString(settings.Language), VOICE: voiceBasedChannelSize.toLocaleString(settings.Language), DM: bot.channels.cache.filter(channel => channel.type === 'DM').size.toLocaleString(settings.Language) }), inline: true },

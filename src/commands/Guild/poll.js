@@ -49,7 +49,7 @@ class Poll extends Command {
 
 		// Send poll to channel
 		const embed = new Embed(bot, message.guild)
-			.setTitle('guild/poll:TITLE', { USER: message.author.globalName })
+			.setTitle('guild/poll:TITLE', { USER: message.author.displayName })
 			.setDescription(message.args.join(' '))
 			.setFooter({ text: message.guild.translate('guild/poll:FOOTER') });
 		message.channel.send({ embeds: [embed] }).then(async (msg) => {
@@ -72,7 +72,7 @@ class Poll extends Command {
 
 		// Send poll to channel
 		const embed = new Embed(bot, guild)
-			.setTitle('guild/poll:TITLE', { USER: interaction.user.globalName })
+			.setTitle('guild/poll:TITLE', { USER: interaction.user.displayName })
 			.setDescription(text)
 			.setFooter({ text: guild.translate('guild/poll:FOOTER') });
 		interaction.reply({ embeds: [embed],	fetchReply: true }).then(async (msg) => {

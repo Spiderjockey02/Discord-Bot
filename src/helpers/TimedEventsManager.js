@@ -21,7 +21,7 @@ module.exports = async (bot) => {
 			if (new Date() >= new Date(event.time)) {
 				switch(event.type) {
 					case 'ban': {
-						bot.logger.debug(`Unbanning ${user.globalName} in guild: ${guild.id}.`);
+						bot.logger.debug(`Unbanning ${user.displayName} in guild: ${guild.id}.`);
 
 						// unban user from guild
 						try {
@@ -40,7 +40,7 @@ module.exports = async (bot) => {
 						break;
 					}
 					case 'reminder': {
-						bot.logger.debug(`Reminding ${bot.users.cache.get(event.userID).tag}`);
+						bot.logger.debug(`Reminding ${bot.users.cache.get(event.userID).displayName}`);
 
 						// Message user about reminder
 						const attachment = new AttachmentBuilder('./src/assets/imgs/Timer.png', { name: 'Timer.png' });

@@ -26,7 +26,7 @@ class GuildScheduledEventUserAdd extends Event {
 		if (user.id == guildEvent.creatorId) return;
 
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`User: ${user.globalName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
+		if (bot.config.debug) bot.logger.debug(`User: ${user.displayName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = guildEvent.guild.settings;
@@ -36,13 +36,13 @@ class GuildScheduledEventUserAdd extends Event {
 		if (settings.ModLogEvents?.includes('EVENTUSERADD') && settings.ModLog) {
 			const embed = new Embed(bot, guildEvent.guild)
 				.setDescription([
-					`${user.globalName} joined event: [${guildEvent.name}](${guildEvent})`,
+					`${user.displayName} joined event: [${guildEvent.name}](${guildEvent})`,
 					'',
 					`There are now ${guildEvent.userCount ?? 0} users subscribed to the event.`,
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
-				.setAuthor({ name: bot.user.globalName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message

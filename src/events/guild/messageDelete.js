@@ -75,7 +75,7 @@ class MessageDelete extends Event {
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter({ text: `Author: ${message.author.id} | Message: ${message.id}` })
-				.setAuthor({ name: message.author.globalName, iconURL: message.author.displayAvatarURL() });
+				.setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL() });
 			if (message.content.length > 0) embed.addFields({ name: `Content ${shortened ? ' (shortened)' : ''}:`, value: `${content}` });
 			embed.setTimestamp();
 			// check for attachment deletion

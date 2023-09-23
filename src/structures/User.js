@@ -25,4 +25,9 @@ module.exports = Object.defineProperties(User.prototype, {
 		writable: true,
 		enumerable: true,
 	},
+	displayName: {
+		get: function() {
+			return this.globalName ?? this.tag;
+		},
+	},
 });
