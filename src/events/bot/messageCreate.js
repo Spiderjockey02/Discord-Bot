@@ -178,7 +178,6 @@ class MessageCreate extends Event {
 			// run the command
 			bot.commandsUsed++;
 			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.globalName}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
-			console.log(await cmd.getArgs(bot, message.content, message.guild));
 			cmd.run(bot, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
