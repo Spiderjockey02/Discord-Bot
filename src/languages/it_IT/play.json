@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Play a song.",
+  "USAGE": "play <link / song name>",
+  "NOT_VC": "You're not in a voice channel that I can connect to.",
+  "INVALID_FILE": "That file format is not supported.",
+  "ERROR": "There was an error while searching: `{{ERROR}}`",
+  "NO_INPUT": "Please enter a song name/url",
+  "QUEUED": "Queued **{{NUM}}** tracks",
+  "SONG_ADD": "Added to queue: [{{TITLE}}]({{URL}})",
+  "NO_SONG": "I couldn't find that song."
+}
