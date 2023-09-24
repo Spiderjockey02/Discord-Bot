@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Removes a song from the queue",
+  "USAGE": "remove <position> [position]",
+  "NAN": "Invalid number.",
+  "PLAYING": "Cannot remove a song that is already playing. To skip the song type: `{{PREFIX}}skip`",
+  "MISSING": "Song not found.",
+  "REMOVED": "Removed **{{TITLE}}** from the queue",
+  "INVALID": "Start amount must be bigger than end.",
+  "REMOVED_MULTI": "Removed **{{NUM}}** songs from the queue"
+}
