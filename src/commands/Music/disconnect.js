@@ -13,12 +13,12 @@ class Disconnect extends Command {
 	*/
 	constructor(bot) {
 		super(bot, {
-			name: 'dc',
+			name: 'disconnect',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['stop', 'disconnect'],
+			aliases: ['stop', 'dc'],
 			description: 'Disconnects the bot from the voice channel.',
-			usage: 'dc',
+			usage: 'disconnect',
 			cooldown: 3000,
 			slash: true,
 		});
