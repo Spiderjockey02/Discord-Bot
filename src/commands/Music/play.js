@@ -35,7 +35,7 @@ class Play extends Command {
 			},
 			{
 				name: 'flag',
-				description: '(R)andom, (S)huffle or (N)ext to queue',
+				description: '(R)everse, (S)huffle or (N)ext to queue',
 				type: ApplicationCommandOptionType.String,
 				choices: ['-r', '-n', '-s'].map(i => ({ name: i, value: i })),
 			}],

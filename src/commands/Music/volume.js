@@ -4,10 +4,10 @@ const { Embed, functions: { checkMusic } } = require('../../utils'),
 	Command = require('../../structures/Command.js');
 
 /**
- * back command
+ * volume command
  * @extends {Command}
 */
-class Back extends Command {
+class Volume extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -101,4 +101,4 @@ class Back extends Command {
 	}
 }
 
-module.exports = Back;
+module.exports = Volume;

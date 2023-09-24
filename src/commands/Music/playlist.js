@@ -4,10 +4,10 @@ const	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * playlist add command
+ * playlist command
  * @extends {Command}
 */
-class PAdd extends Command {
+class Playlist extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -57,4 +57,4 @@ class PAdd extends Command {
 	}
 }
 
-module.exports = PAdd;
+module.exports = Playlist;

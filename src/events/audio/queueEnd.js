@@ -32,7 +32,7 @@ class QueueEnd extends Event {
 			let res;
 			try {
 				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID};`, requester);
-				if (res.loadType === 'LOAD_FAILED') {
+				if (res.loadType === 'error') {
 					if (!player.queue.current) player.destroy();
 					throw res.exception;
 				}
@@ -41,11 +41,11 @@ class QueueEnd extends Event {
 			}
 
 			switch (res.loadType) {
-				case 'NO_MATCHES':
+				case 'empty':
 				// An error occured or couldn't find the track
 					if (!player.queue.current) player.destroy();
 					return channel.error('music/play:NO_SONG');
-				case 'PLAYLIST_LOADED': {
+				case 'playlist': {
 				// Connect to voice channel if not already
 					if (player.state !== 'CONNECTED') player.connect();
 

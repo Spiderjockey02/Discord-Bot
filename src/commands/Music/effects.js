@@ -3,10 +3,10 @@ const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require
 	Command = require('../../structures/Command.js');
 
 /**
- * Bassboost command
+ * effects command
  * @extends {Command}
 */
-class Bassboost extends Command {
+class Effects extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
@@ -49,4 +49,4 @@ class Bassboost extends Command {
 	}
 }
 
-module.exports = Bassboost;
+module.exports = Effects;

@@ -1,8 +1,8 @@
 {
   "DESCRIPTION": "Active le mode **nightcore**.",
   "USAGE": "nightcore",
-  "ON_NC": "Activation du mode **nightcore**. Cela prendra effet dans quelques instants...",
+  "ON": "Activation du mode **nightcore**. Cela prendra effet dans quelques instants...",
   "DESC_1": "Mode **nightcore** activé",
-  "OFF_NC": "Mode **nightcore** désactivé. Cela prendra effet dans quelques instants...",
+  "OFF": "Mode **nightcore** désactivé. Cela prendra effet dans quelques instants...",
   "DESC_2": "Mode **nightcore** désactivé"
 }
