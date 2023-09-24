@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Get information on an Instagram account.",
+  "USAGE": "instagram <user>",
+  "UNKNOWN_USER": "This username was unable to be found.",
+  "USERNAME": "Username: ",
+  "FULL_NAME": "Full Name: ",
+  "BIOGRAPHY": "Biography: ",
+  "POSTS": "Posts: ",
+  "FOLLOWERS": "Followers: ",
+  "FOLLOWING": "Following: ",
+  "PRIVATE": "Private Account: ",
+  "VERIFIED": "Verified Account: "
+}
