@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Kick a user.",
+  "USAGE": "kick <user> [reason]",
+  "TITLE": "KICKED",
+  "TOO_POWERFUL": "I am unable to kick this user due to their power.",
+  "DESC": "You have been kicked from {{NAME}}.",
+  "KICKED": "Kicked by:",
+  "SUCCESS": "*<@{{USER}}> was successfully kicked*."
+}
