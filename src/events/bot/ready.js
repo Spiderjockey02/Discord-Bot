@@ -40,14 +40,14 @@ class Ready extends Event {
 			await require('../../helpers/webhookManager')(bot);
 		}, 10000);
 
+		// Fetch and prepare guild for settings etc
 		for (const guild of [...bot.guilds.cache.values()]) {
 			// Sort out guild settings
 			await guild.fetchSettings();
-			if (guild.settings == null) return bot.emit('guildCreate', guild);
 			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
 
 			// Append tags to guild specific arrays
-			if(guild.settings.PrefixTags) {
+			if (guild.settings.PrefixTags) {
 				TagsSchema.find({ guildID: guild.id }).then(result => {
 					result.forEach(value => {
 						guild.guildTags.push(value.name);
@@ -75,16 +75,9 @@ class Ready extends Event {
 
 		bot.logger.ready('All guilds have been initialized.');
 
-		// Every 1 minutes fetch new guild data
-		setInterval(async () => {
-			if (bot.config.debug) bot.logger.debug('Fetching guild settings (Interval: 1 minutes)');
-			bot.guilds.cache.forEach(async guild => {
-				await guild.fetchSettings();
-			});
-		}, 60000);
-
-		// check for premium users
+		// check for custom users
 		const users = await userSchema.find({});
+		if (users.length > 0) bot.logger.log(`Preparing ${users.length} users.`);
 		for (const { userID, premium, premiumSince, cmdBanned, rankImage } of users) {
 			const user = await bot.users.fetch(userID);
 			user.premium = premium;
@@ -123,9 +116,9 @@ class Ready extends Event {
 
 
 		// LOG ready event
-		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
-		bot.logger.log(`${bot.user.displayName}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`, 'ready');
-		bot.logger.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=', 'ready');
+		bot.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+		bot.logger.ready(`${bot.user.displayName}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`);
+		bot.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
 	}
 }
 
