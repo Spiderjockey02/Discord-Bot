@@ -1,15 +1,18 @@
 // Dependencies
 const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ Embed } = require('../../utils'),
-	{ post } = require('axios'),
 	Command = require('../../structures/Command.js');
 
 // image types
+const image_1 = ['3000years', 'affect', 'approved', 'beautiful', 'blur', 'circle', 'deepfry', 'facepalm', 'greyscale', 'invert', 'joke-over-head', ' rip', 'trigger', 'wanted', 'wasted'];
+const image_2 = ['bed', 'distracted', 'kiss', 'slap', 'spank', 'whowouldwin'];
+
+/*
 const image_1 = ['3000years', 'approved', 'beautiful', 'brazzers', 'burn', 'challenger', 'circle', 'contrast', 'crush', 'ddungeon', 'dictator', 'distort', 'emboss', 'fire', 'frame', 'gay',
 	'glitch', 'greyscale', 'instagram', 'invert', 'jail', 'magik', 'missionpassed', 'moustache', 'ps4', 'posterize', 'rejected', 'redple', 'rip', 'scary', 'sepia', 'sharpen', 'sniper', 'thanos',
 	'tobecontinued', 'triggered', 'subzero', 'unsharpen', 'utatoo', 'wanted', 'wasted'];
 const image_2 = ['afusion', 'batslap', 'vs'];
-
+*/
 /**
  * Generate command
  * @extends {Command}
@@ -77,24 +80,9 @@ class Generate extends Command {
 		const msg = await message.channel.send(message.translate('misc:GENERATING_IMAGE', {
 			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '' }));
 
-		// get image
-		const options = image_1.includes(choice) ? { 'url' : files[0] } : { 'avatar': files[1], 'url' : files[0] };
-		const image = await post(`https://v1.api.amethyste.moe/generate/${choice}`, options, {
-			responseType: 'arraybuffer',
-			headers: {
-				'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
-			},
-		}).catch(err => {
-			// if an error occured
-			msg.delete();
-			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
-		});
-
 		// send embed
 		try {
-			if (!image || !image.data) return;
+			const image = await bot.fetch(`image/${choice}`, { image1: files[0], image2: files[1] });
 			const attachment = new AttachmentBuilder(image.data, { name: `${choice}.${choice == 'triggered' ? 'gif' : 'png'}` });
 			msg.delete();
 			message.channel.send({ files: [attachment] });
@@ -129,17 +117,9 @@ class Generate extends Command {
 			}
 
 			// generate image
-			const options = image_1.includes(option) ? { 'url' : member } : { 'avatar': member2, 'url' : member };
-			const image = await post(`https://v1.api.amethyste.moe/generate/${option}`, options, {
-				responseType: 'arraybuffer',
-				headers: {
-					'Authorization': `Bearer ${bot.config.api_keys.amethyste}`,
-				},
-			});
+			const image = await bot.fetch(`image/${option}`, { image1: member, image2: member2 });
+			const attachment = new AttachmentBuilder(Buffer.from(image, 'base64'), { name: `${option}.${option == 'triggered' ? 'gif' : 'png'}` });
 
-			// display image
-			if (!image || !image.data) return;
-			const attachment = new AttachmentBuilder(image.data, { name: `${option}.${option == 'triggered' ? 'gif' : 'png'}` });
 			interaction.editReply({ content: ' ', files: [attachment] });
 		} catch(err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
