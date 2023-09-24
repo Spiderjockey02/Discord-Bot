@@ -17,9 +17,9 @@ class Egglord extends Client {
 	constructor() {
 		super({
 			partials: [Partials.GuildMember, Partials.User, Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildScheduledEvent],
-			intents: [FLAGS.Guilds, FLAGS.GuildMembers, FLAGS.GuildBans, FLAGS.GuildEmojisAndStickers,
+			intents: [FLAGS.AutoModerationConfiguration, FLAGS.AutoModerationExecution, FLAGS.Guilds, FLAGS.GuildMembers, FLAGS.GuildBans, FLAGS.GuildEmojisAndStickers,
 				FLAGS.GuildMessages, FLAGS.GuildMessageReactions, FLAGS.DirectMessages, FLAGS.GuildVoiceStates, FLAGS.GuildInvites,
-				FLAGS.GuildScheduledEvents, FLAGS.MessageContent],
+				FLAGS.GuildScheduledEvents, FLAGS.MessageContent, FLAGS.GuildModeration],
 			presence: {
 				status: 'online',
 				activities: [{
