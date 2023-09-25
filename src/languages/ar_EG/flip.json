@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Flip a coin.",
+  "DESCRIPTION": "قلب عملة معدنية.",
   "USAGE": "flip",
-  "HEADS": "Heads",
-  "TAILS": "Tails"
+  "HEADS": "رؤساء",
+  "TAILS": "علامات"
 }
