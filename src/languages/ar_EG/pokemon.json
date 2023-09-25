@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Get information on a pokemon.",
-  "USAGE": "pokemon <pokemon>"
+  "DESCRIPTION": "احصل على معلومات حول بوكيمون.",
+  "USAGE": "بوكيمون <pokemon>"
 }
