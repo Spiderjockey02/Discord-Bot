@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Sends a random meme.",
+  "DESCRIPTION": "يرسل ميمز عشوائية.",
   "USAGE": "meme",
-  "TITLE": "From {{SUBREDDIT}}",
+  "TITLE": "من {{SUBREDDIT}}",
   "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
 }
