@@ -1,15 +1,15 @@
 {
-  "DESCRIPTION": "Start a giveaway",
+  "DESCRIPTION": "Démarre un concours",
   "USAGE": "g-start <time> <Number of winners> <prize>",
-  "PRIZE_TOO_LONG": "Prize must be less than 256 characters long.",
-  "TITLE": "🎉🎉 **GIVEAWAY** 🎉🎉",
-  "ENDED": "🎉🎉 **GIVEAWAY ENDED** 🎉🎉",
-  "TIME_REMAINING": "Time remaining: **{duration}**!",
-  "INVITE_PARTICIPATE": "React with 🎉 to participate!",
-  "WIN_MESSAGE": "Congratulations, {winners}! You won **{this.prize}**!",
-  "FOOTER": "{this.winnerCount} winner(s)",
-  "NO_WINNER": "Giveaway cancelled, no valid participations.",
-  "WINNERS": "winner(s)",
-  "END_AT": "End at",
-  "HOSTED": "Hosted by: {this.hostedBy}"
+  "PRIZE_TOO_LONG": "Le prix doit faire moins de 256 caractères.",
+  "TITLE": "🎉🎉 **Concours** 🎉🎉",
+  "ENDED": "🎉🎉 **Concours terminé** 🎉🎉",
+  "TIME_REMAINING": "Temps restant : **{duration}**!",
+  "INVITE_PARTICIPATE": "Utilise la réaction 🎉 pour participer !",
+  "WIN_MESSAGE": "Félicitations, {winners}! Vous gagnez **{this.prize}**!",
+  "FOOTER": "{this.winnerCount} gagnant(s)",
+  "NO_WINNER": "Giveaway annulé, aucune participation valide.",
+  "WINNERS": "gagnant(s)",
+  "END_AT": "Terminé",
+  "HOSTED": "Organisé par : {this.hostedBy}"
 }
