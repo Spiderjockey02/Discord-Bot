@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "View the server's tag(s)",
+  "DESCRIPTION": "Affiche tag(s)",
   "USAGE": "tag-view [name]",
-  "NO_TAG": "No tags saved",
-  "TITLE": "List of tags for: {{NAME}}",
-  "NAME": "Name: {{NAME}}",
-  "RESP": "Responses: {{RESP}}",
-  "NO_EXIST": "There are no existing tags."
+  "NO_TAG": "Aucun Tag enregistré",
+  "TITLE": "Liste des Tags pour : {{NAME}}",
+  "NAME": "Nom : {{NAME}}",
+  "RESP": "Réponse : {{RESP}}",
+  "NO_EXIST": "Il n'existe aucun Tag."
 }
