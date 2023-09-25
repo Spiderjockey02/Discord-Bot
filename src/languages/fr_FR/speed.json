@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Sets the player's playback speed.",
+  "DESCRIPTION": "Défini la vitesse de lecture.",
   "USAGE": "speed <Number>",
-  "LIVESTREAM": "You can't change the time in a livestream.",
-  "INVALID": "Amount must be a real number between 1 and 10.",
-  "ON_SPD": "Updating playback speed. This may take a few seconds...",
-  "UPDATED": "Speed is {{NUM}}."
+  "LIVESTREAM": "Flux audio en direct, impossible de modifier la vitesse de lecture sur un Stream.",
+  "INVALID": "La valeur doit être un entier entre 1 et 10.",
+  "ON_SPD": "Mise à jour de la vitesse de lecture. Cela prendra effet dans quelques instants...",
+  "UPDATED": "La vitesse de lecture est {{NUM}}."
 }
