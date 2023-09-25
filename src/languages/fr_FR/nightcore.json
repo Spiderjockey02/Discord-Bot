@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Toggles nightcore mode.",
+  "DESCRIPTION": "Active le mode **nightcore**.",
   "USAGE": "nightcore",
-  "ON": "Turning on **nightcore**. This may take a few seconds...",
-  "DESC_1": "Turned on **nightcore**",
-  "OFF": "Turning off **nightcore**. This may take a few seconds...",
-  "DESC_2": "Turned off **nightcore**"
+  "ON": "Activation du mode **nightcore**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Mode **nightcore** activé",
+  "OFF": "Mode **nightcore** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **nightcore** désactivé"
 }
