@@ -1,13 +1,13 @@
 {
-  "DESCRIPTION": "Get information on the server.",
+  "DESCRIPTION": "Informations sur un membre du serveur.",
   "USAGE": "user-info [user]",
-  "USERNAME": "✍ Username",
-  "DISCRIM": "#️⃣ Discriminator",
+  "USERNAME": "✍ Utilisateur",
+  "DISCRIM": "#️⃣ Discriminateur",
   "ROBOT": "🤖 Robot",
-  "CREATE": "Creation",
-  "STATUS": "Status",
-  "ROLE": "🔼 Highest role",
-  "JOIN": "Join",
-  "NICK": "📝 Nickname",
-  "ROLES": "Roles"
+  "CREATE": "Création",
+  "STATUS": "État",
+  "ROLE": "🔼 Rôle le plus élevé",
+  "JOIN": "Ici depuis",
+  "NICK": "📝 Pseudo",
+  "ROLES": "Rôles"
 }
