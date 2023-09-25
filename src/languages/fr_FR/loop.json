@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Loops the song or queue.",
+  "DESCRIPTION": "Lit en boucle un titre ou une file d'attente.",
   "USAGE": "loop [queue / song]",
-  "TRACK": "{{TOGGLE}} track repeat.",
-  "QUEUE": "{{TOGGLE}} queue repeat."
+  "TRACK": "titre {{TOGGLE}} en boucle.",
+  "QUEUE": "File d'attente {{TOGGLE}} en boucle."
 }
