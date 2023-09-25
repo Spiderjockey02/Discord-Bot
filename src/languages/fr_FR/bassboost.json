@@ -1,11 +1,11 @@
 {
-  "DESCRIPTION": "Bassboost the song",
+  "DESCRIPTION": "Active le mode **Bassboost**",
   "USAGE": "bassboost [value]",
-  "ON_BB": "Turning on **bassboost**. This may take a few seconds...",
-  "DESC_1": "Turned on **bassboost**",
-  "OFF_BB": "Turning off **bassboost**. This may take a few seconds...",
-  "DESC_2": "Turned off **bassboost**",
-  "INVALID": "Amount must be a real number.",
-  "SET_BB": "Setting bassboost to **{{DB}}dB**. This may take a few seconds...",
-  "DESC_3": "Bassboost set to: **{{DB}}**"
+  "ON_BB": "Activation du mode **bassboost**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Mode **bassboost** activé",
+  "OFF_BB": "Mode **bassboost** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **bassboost** désactivé",
+  "INVALID": "La valeur doit être un nombre réel.",
+  "SET_BB": "Bassboost à **{{DB}}dB**. Cela prendra effet dans quelques instants...",
+  "DESC_3": "Amplification réglée à : **{{DB}}**"
 }
