@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Evaluates JS code.",
+  "DESCRIPTION": "Test un code JS.",
   "USAGE": "eval <code>",
-  "RESPONSE": "*Executed in {{DIFF}}ms.*```javascript\n{{CODE}}\n```"
+  "RESPONSE": "*Executé en {{DIFF}}ms.*```javascript\n{{CODE}}\n```"
 }
