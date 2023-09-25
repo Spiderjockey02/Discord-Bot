@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Sends a random meme.",
-  "USAGE": "meme",
-  "TITLE": "From {{SUBREDDIT}}",
+  "DESCRIPTION": "Renvoi un `meme` aléatoire.",
+  "USAGE": "mème",
+  "TITLE": "Depuis {{SUBREDDIT}}",
   "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
 }
