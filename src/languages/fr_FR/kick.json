@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "Kick a user.",
+  "DESCRIPTION": "Expulser un membre.",
   "USAGE": "kick <user> [reason]",
-  "TITLE": "KICKED",
-  "TOO_POWERFUL": "I am unable to kick this user due to their power.",
-  "DESC": "You have been kicked from {{NAME}}.",
-  "KICKED": "Kicked by:",
-  "SUCCESS": "*<@{{USER}}> was successfully kicked*."
+  "TITLE": "TU SORS",
+  "TOO_POWERFUL": "Je ne suis pas en mesure d'expulser ce membre en raison de ses droits.",
+  "DESC": "Tu as été expulsé de {{NAME}}.",
+  "KICKED": "Expulsé par :",
+  "SUCCESS": "*<@{{USER}}> a été expulsé*."
 }
