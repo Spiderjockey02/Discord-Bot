@@ -1,10 +1,10 @@
 {
-  "DESCRIPTION": "Removes a song from the queue",
+  "DESCRIPTION": "Retirer un titre de la file d'attente",
   "USAGE": "remove <position> [position]",
-  "NAN": "Invalid number.",
-  "PLAYING": "Cannot remove a song that is already playing. To skip the song type: `{{PREFIX}}skip`",
-  "MISSING": "Song not found.",
-  "REMOVED": "Removed **{{TITLE}}** from the queue",
-  "INVALID": "Start amount must be bigger than end.",
-  "REMOVED_MULTI": "Removed **{{NUM}}** songs from the queue"
+  "NAN": "Nombre invalide.",
+  "PLAYING": "Impossible de supprimer un titre en cours de lecture. Pour passer au titre suivant : `{{PREFIX}}skip`",
+  "MISSING": "Je ne trouve pas ce titre.",
+  "REMOVED": "**{{TITLE}}** supprimé de la liste",
+  "INVALID": "Le nombre de départ doit être supérieur à celui de la fin.",
+  "REMOVED_MULTI": "**{{NUM}}** titres supprimés de la liste"
 }
