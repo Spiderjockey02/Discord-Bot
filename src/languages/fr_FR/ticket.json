@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Information on ticket plugin.",
+  "DESCRIPTION": "Information sur le plugin ticket.",
   "USAGE": "ticket",
-  "TITLE_REACT": "React for Ticket channel",
-  "REACT_DESC": "You can react here or use the following command:\n `{{PREFIX}}t-open [reason]`.",
-  "TITLE": "Ticket help"
+  "TITLE_REACT": "Réagir pour ouvrir un ticket",
+  "REACT_DESC": "Réagir ici ou utiliser la commande suivante :\n `{{PREFIX}}t-open [reason]`.",
+  "TITLE": "Assistance par Ticket"
 }
