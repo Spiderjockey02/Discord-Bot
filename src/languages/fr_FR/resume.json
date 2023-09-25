@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Resumes the music.",
+  "DESCRIPTION": "Reprendre une lecture suspendue.",
   "USAGE": "resume",
-  "IS_RESUMED": "I am already playing, `{{PREFIX}}pause` to pause the song.",
-  "SUCCESS": "Successfully resuming song"
+  "IS_RESUMED": "Lecture déjà en cours, `{{PREFIX}}pause` pour suspendre la lecture.",
+  "SUCCESS": "Reprise de la lecture"
 }
