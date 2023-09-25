@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "Setups the ticket plugin",
+  "DESCRIPTION": "Configure le plugin Ticket",
   "USAGE": "ticket-setup",
-  "TITLE": "Ticket setup Help",
-  "NOT_CATEGORY": "That is not a category.",
-  "UPDATED_CATEGORY": "Updated Ticket category to: `{{NAME}}`.",
-  "NOT_ROLE": "That is not a role.",
-  "UPDATED_ROLE": "Updated support role to: {ROLE}."
+  "TITLE": "Configuration des tickets",
+  "NOT_CATEGORY": "Ce n'est pas une catégorie valide.",
+  "UPDATED_CATEGORY": "Catégorie pour les Tickets : `{{NAME}}`.",
+  "NOT_ROLE": "Ce n'est pas un rôle valide.",
+  "UPDATED_ROLE": "Rôle pour le suivi des Tickets : {ROLE}."
 }
