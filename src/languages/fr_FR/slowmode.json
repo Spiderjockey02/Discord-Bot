@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Activate slowmode on a channel.",
+  "DESCRIPTION": "Activer le Mode Lent d'un salon.",
   "USAGE": "slowmode <time / off>",
-  "SUCCESS": "Slowmode set to **{{TIME}}**."
+  "SUCCESS": "Mode lent activé : **{{TIME}}**."
 }
