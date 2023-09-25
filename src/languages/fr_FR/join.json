@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Makes the bot join your voice channel.",
+  "DESCRIPTION": "Invite le Bot à te rejoindre dans un salon vocal.",
   "USAGE": "join",
-  "NO_VC": "You're not in a voice channel that I can connect to.",
-  "JOIN": "I have successfully joined the channel.",
-  "MOVED": "I have successfully moved channel."
+  "NO_VC": "Tu n'es pas dans un salon vocal auquel j'ai accès.",
+  "JOIN": "J'ai rejoint le salon vocal avec succès.",
+  "MOVED": "J'ai changé de salon vocal."
 }
