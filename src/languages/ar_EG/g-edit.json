@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Edit a giveaway.",
-  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
-  "INCORRECT_WINNER_COUNT": "Winner count must be less than 10.",
-  "EDIT_GIVEAWAY": "Success! Giveaway will updated in less than {{TIME}} seconds.",
-  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again."
+  "DESCRIPTION": "تعديل جيف اواي.",
+  "USAGE": "ز-تحرير <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "يجب أن يكون عدد الفائزين أقل من 10.",
+  "EDIT_GIVEAWAY": "تم بنجاح! سيتم تحديث الجيف اواي في أقل من {{TIME}} ثانية.",
+  "UNKNOWN_GIVEAWAY": "لم يتم العثور على جيف اواي مع معرف الرسالة: `{{ID}}`، الرجاء التحقق والمحاولة مرة أخرى."
 }
