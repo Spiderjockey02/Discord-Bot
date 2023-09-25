@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Sets the playing track's position to the specified position.",
+  "DESCRIPTION": "Positionne le lecteur audio à la durée indiquée.",
   "USAGE": "seek <time>",
-  "LIVESTREAM": "You can't change the time in a livestream.",
-  "INVALID": "Choose a time between 0 and {{TIME}}.",
-  "UPDATED": "Time moved to: `{{TIME}}`."
+  "LIVESTREAM": "Flux audio en direct, impossible de modifier la vitesse de lecture sur un Stream.",
+  "INVALID": "Choisir une durée entre 0 et {{TIME}}.",
+  "UPDATED": "Lecture en cours à la position : `{{TIME}}`."
 }
