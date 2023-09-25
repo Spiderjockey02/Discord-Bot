@@ -1,14 +1,14 @@
 {
-  "DESCRIPTION": "Displays Lavalink node information",
+  "DESCRIPTION": "Affiche des informations concernant le node Lavalink",
   "USAGE": "lavalink",
-  "FETCHING": "Getting lavalink stats...",
-  "AUTHOR": "Lavalink Statistics: {{NAME}}",
-  "PLAYERS": "Playing Players/Players",
-  "PLAYER_STATS": "```{{PLAYING}} playing / {{PLAYERS}} players```",
-  "MEMORY": "Memory",
-  "MEMORY_STATS": "```Allocated: {{ALL}} MB\nUsed: {{USED}} MB\nFree: {{FREE}} MB\nReservable: {{RESERVE}} MB```",
+  "FETCHING": "Récupération des statistiques de lavalink...",
+  "AUTHOR": "Statistiques Lavalink : {{NAME}}",
+  "PLAYERS": "Lecteurs actifs/Lecteurs",
+  "PLAYER_STATS": "```{{PLAYING}} lecteurs actifs / {{PLAYERS}} lecteurs```",
+  "MEMORY": "Mémoire",
+  "MEMORY_STATS": "```Allocation : {{ALL}} Mo\nUtilisé : {{USED}} Mo\nLibre : {{FREE}} Mo\nRéservé : {{RESERVE}} MB```",
   "CPU": "CPU",
-  "CPU_STATS": "```Cores: {{CORES}}\nSystem Load: {{SYSLOAD}}%\nLavalink Load: {{LVLLOAD}}%```",
-  "UPTIME": "Uptime",
+  "CPU_STATS": "```Coeurs : {{CORES}}\nCharge système : {{SYSLOAD}}%\nCharge de Lavalink : {{LVLLOAD}}%```",
+  "UPTIME": "En service",
   "UPTIME_STATS": "```{{NUM}}```"
 }
