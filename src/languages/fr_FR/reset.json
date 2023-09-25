@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Resets all filters.",
-  "USAGE": "reset",
-  "OFF": "Turning off **filters**. This may take a few seconds...",
-  "DESC_2": "Turned off **filters**"
+  "DESCRIPTION": "Réinitialise tous les filtres.",
+  "USAGE": "réinitialiser",
+  "OFF": "Mode **nightcore** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **nightcore** désactivé"
 }
