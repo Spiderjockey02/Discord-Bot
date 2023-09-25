@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Shows your rank/Level.",
+  "DESCRIPTION": "Affiche le Rang/Niveau.",
   "USAGE": "level [username]",
-  "NO_MESSAGES": "You aren't ranked yet. Send some messages first, then try again.",
-  "NO_BOTS": "Bots are unable to gain XP.",
-  "MEMBER_MESSAGE": "That user isn't ranked yet. Encourage them to send a message"
+  "NO_MESSAGES": "Tu n'as pas encore atteint un rang. Envoi quelques messages puis essaie à nouveau.",
+  "NO_BOTS": "Les Bots ne peuvent pas gagner d'XP.",
+  "MEMBER_MESSAGE": "Cet utilisateur ne figure pas encore sur la liste de classement. Encouragez-le/la à envoyer d'abord un message"
 }
