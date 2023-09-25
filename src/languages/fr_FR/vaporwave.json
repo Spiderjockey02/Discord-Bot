@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Toggles vaporwave mode.",
+  "DESCRIPTION": "Active le mode **vaporwave**.",
   "USAGE": "vaporwave",
-  "ON": "Turning on **vaporwave**. This may take a few seconds...",
-  "DESC_1": "Turned on **vaporwave**",
-  "OFF": "Turning off **vaporwave**. This may take a few seconds...",
-  "DESC_2": "Turned off **vaporwave**"
+  "ON": "Activation du mode **vaporwave**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Mode **vaporwave** activé",
+  "OFF": "Mode **vaporwave** désactivé. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Mode **vaporwave** désactivé"
 }
