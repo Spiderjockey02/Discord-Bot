@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Create a whowouldwin image.",
+  "DESCRIPTION": "Créez une image de \"qui veut gagner\".",
   "USAGE": "whowouldwin <user1> [user2]"
 }
