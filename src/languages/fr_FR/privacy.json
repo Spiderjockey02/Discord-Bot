@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Sends a link to the privacy policy.",
+  "DESCRIPTION": "Politique de confidentialité.",
   "USAGE": "privacy",
-  "LINK": "[📝 Privacy Policy]({{LINK}})"
+  "LINK": "[📝 Politique de confidentialité]({{LINK}})"
 }
