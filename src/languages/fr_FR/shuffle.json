@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Shuffles the playlist.",
+  "DESCRIPTION": "Lecture aléatoire de la playlist.",
   "USAGE": "shuffle",
-  "DESC": "Queue has been shuffled"
+  "DESC": "La playlist a été mélangée"
 }
