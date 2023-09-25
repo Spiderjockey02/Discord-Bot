@@ -1,15 +1,15 @@
 {
-  "DESCRIPTION": "Sends information about all the commands that I can do.",
+  "DESCRIPTION": "Informations sur les commandes disponibles.",
   "USAGE": "help [command]",
-  "AUTHOR": "Available commands",
-  "PREFIX_DESC": "**Prefix:** `{{PREFIX}}` (You can also use <@!{{ID}}> as a prefix)",
-  "INFO_DESC": "**Type `{{PREFIX}}{{USAGE}}` for command specific information.**",
-  "TITLE": "`Command: {{COMMAND}}`",
-  "DESC": "**Description:** {{DESC}}",
-  "ALIAS": "**Aliases:** {{ALIAS}}",
-  "COOLDOWN": "**Cooldown:** {{CD}} seconds",
-  "USE": "**Usage:** {{USAGE}}",
-  "EXAMPLE": "**Example:** {{EX}}",
-  "LAYOUT": "\n**Layout**: `<> = required, [] = optional`",
-  "NO_COMMAND": "That is not a command."
+  "AUTHOR": "Commandes disponibles",
+  "PREFIX_DESC": "**Préfixe :** `{{PREFIX}}` (Tu peux également utiliser <@!{{ID}}> comme un préfixe)",
+  "INFO_DESC": "**Saisir `{{PREFIX}}{{USAGE}}` pour des informations spécifiques à la commande.**",
+  "TITLE": "`Commande : {{COMMAND}}`",
+  "DESC": "**Description :** {{DESC}}",
+  "ALIAS": "**Alias :** {{ALIAS}}",
+  "COOLDOWN": "**Délais entre deux commandes :** {{CD}} secondes",
+  "USE": "**Utilisation:** {{USAGE}}",
+  "EXAMPLE": "**Exemple :** {{EX}}",
+  "LAYOUT": "\n**Format** : `<> = requis, [] = optionnel`",
+  "NO_COMMAND": "Ce n'est pas une commande valide."
 }
