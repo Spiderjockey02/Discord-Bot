@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Disconnects the bot from the voice channel.",
+  "DESCRIPTION": "Déconnecte le Bot du salon vocal.",
   "USAGE": "dc",
-  "LEFT": "I have successfully left the voice channel.",
-  "INACTIVE": "I left 🔉 **{{VC}}** because I was inactive for too long.",
-  "KICKED": "The queue has ended as I was kicked from the voice channel"
+  "LEFT": "J'ai quitté le salon vocal.",
+  "INACTIVE": "Je quitte 🔉 **{{VC}}** car je suis inactif depuis trop longtemps.",
+  "KICKED": "La file d'attente s'est terminée car j'ai été expulsé du salon vocal"
 }
