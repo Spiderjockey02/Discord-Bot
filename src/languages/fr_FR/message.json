@@ -5,7 +5,7 @@
   "LINKS": "Liens utiles :",
   "ADD": "[M'ajouter au serveur]({{INVITE}})",
   "SUPPORT": "[Rejoindre le serveur de support]({{LINK}})",
-  "WEBSITE": "[Website]({{URL}})",
+  "WEBSITE": "[Site Web]({{URL}})",
   "GUILD_ONLY": "Cette commande peut être utilisée uniquement dans un serveur.",
   "COMMAND_COOLDOWN": "Tu dois attendre {{NUM}} secondes entre chaque commande.",
   "BANNED_USER": "Tu n'es pas autorisé à utiliser les commandes.",
