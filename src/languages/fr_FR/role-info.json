@@ -1,14 +1,14 @@
 {
-  "DESCRIPTION": "Get information on a role.",
+  "DESCRIPTION": "Obtenir des information sur un rôle.",
   "USAGE": "role-info <role>",
-  "NAME": "Role | {{NAME}}",
-  "MEMBERS": "Members:",
-  "COLOR": "Color:",
-  "POSITION": "Position:",
-  "MENTION": "Mention:",
-  "HOISTED": "Hoisted:",
-  "MENTIONABLE": "Mentionable:",
-  "PERMISSION": "Key permissions:",
-  "CREATED": "Created at:",
-  "FOOTER": "Requested by {{MEMBER}} | Role ID: {{ID}}"
+  "NAME": "Rôle | {{NAME}}",
+  "MEMBERS": "Membres :",
+  "COLOR": "Couleur :",
+  "POSITION": "Position :",
+  "MENTION": "Mention :",
+  "HOISTED": "Visible :",
+  "MENTIONABLE": "Mentionnable :",
+  "PERMISSION": "Permissions :",
+  "CREATED": "Date de création :",
+  "FOOTER": "Requête : {{MEMBER}} | Role ID: {{ID}}"
 }
