@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Flip a coin.",
-  "USAGE": "flip",
-  "HEADS": "Heads",
-  "TAILS": "Tails"
+  "DESCRIPTION": "Pile ou Face.",
+  "USAGE": "retourner",
+  "HEADS": "Têtes",
+  "TAILS": "Pile"
 }
