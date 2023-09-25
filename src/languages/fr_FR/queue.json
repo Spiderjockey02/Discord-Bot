@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Displays the queue.",
+  "DESCRIPTION": "Liste les titres en attente.",
   "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "EMPTY": "File d'attente vide",
+  "NAN": "Numéro_de_page doit être un nombre.",
+  "TOO_HIGH": "Il n'y a que {{NUM}} pages."
 }
