@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Toggle plugins on and off",
+  "DESCRIPTION": "Activer/désactiver les plugins",
   "USAGE": "set-plugin <option>",
-  "ADDED": "Added {{PLUGINS}} to Guild's plugins.",
-  "REMOVED": "Removed {{PLUGINS}} from Guild's plugins.",
-  "INVALID": "Not a supported plugin"
+  "ADDED": "{{PLUGINS}} ajouté au serveur.",
+  "REMOVED": "{{PLUGINS}} supprimé du serveur.",
+  "INVALID": "Ce plugin n'est pas supporté"
 }
