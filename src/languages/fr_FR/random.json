@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Replies with a random number.",
-  "USAGE": "random <LowNum> <HighNum>",
-  "RESPONSE": "🎲 Random number: {{NUMBER}}"
+  "DESCRIPTION": "Retourne un nombre aléatoire.",
+  "USAGE": "<LowNum> <HighNum> au hasard",
+  "RESPONSE": "🎲 Nombre aléatoire : {{NUMBER}}"
 }
