@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Rewinds the player by your specified amount.",
+  "DESCRIPTION": "Retour arrière du lecteur suivant une durée spécifique.",
   "USAGE": "rewind <time>",
-  "LIVESTREAM": "You can't rewind a livestream.",
-  "INVALID": "A song can not be less than 0 seconds long",
-  "NEW_TIME": "**Rewinded `{{OLD}}` to: `{{NEW}}`.**"
+  "LIVESTREAM": "Flux audio en direct, impossible d'effectuer cette action sur un Stream.",
+  "INVALID": "Un titre ne peut pas durer moins de 0 secondes",
+  "NEW_TIME": "**Retour arrière de `{{OLD}}` à la position : `{{NEW}}`.**"
 }
