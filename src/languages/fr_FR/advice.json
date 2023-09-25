@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Get some random advice.",
-  "USAGE": "advice"
+  "DESCRIPTION": "Prodigue un conseil aléatoire.",
+  "USAGE": "conseil"
 }
