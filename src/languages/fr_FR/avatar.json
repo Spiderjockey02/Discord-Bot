@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "View a user's avatar.",
+  "DESCRIPTION": "Voir l'avatar d'un utilisateur.",
   "USAGE": "avatar [user]",
-  "AVATAR_TITLE": "🖼 Avatar for {{USER}}",
-  "AVATAR_DESCRIPTION": "**Links:**"
+  "AVATAR_TITLE": "🖼 Avatar de {{USER}}",
+  "AVATAR_DESCRIPTION": "**Liens :**"
 }
