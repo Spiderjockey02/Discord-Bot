@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Unban a user.",
+  "DESCRIPTION": "Débannir un membre.",
   "USAGE": "unban <userID> [reason]",
-  "NO_ONE": "There is no one to ban.",
-  "SUCCESS": "*<@{{USER}}> was successfully unbanned*.",
-  "MISSING": "No banned user with ID: {{ID}}."
+  "NO_ONE": "Il n'y a personne a débannir.",
+  "SUCCESS": "*<@{{USER}}> n'est plus banni*.",
+  "MISSING": "Aucun utilisateur banni avec cet ID : {{ID}}."
 }
