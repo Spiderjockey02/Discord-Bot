@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Make reaction roles",
+  "DESCRIPTION": "Supprime le message permettant d'associer un rôle à une réaction - **réaction rôle**",
   "USAGE": "reactionroles <messagelink>",
-  "INVALID": "Invalid message link",
-  "SUCCESS": "Successfully deleted reaction role"
+  "INVALID": "ID du message invalide",
+  "SUCCESS": "Réaction rôle supprimé"
 }
