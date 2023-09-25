@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "reroll a giveaway.",
-  "USAGE": "g-reroll <messageID>",
+  "DESCRIPTION": "تجديد جيف اواي.",
+  "USAGE": "ز-reroll <messageID>",
   "SUCCESS_GIVEAWAY": "Success! Giveaway re-rolled!",
   "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again.",
   "CONGRAT": "🎉 New winner(s): {winners}! Congratulations!",
