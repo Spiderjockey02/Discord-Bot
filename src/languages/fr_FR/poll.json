@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Create a poll for users to answer.",
-  "USAGE": "poll <question>",
-  "TITLE": "🗳️ Poll created by {{USER}}",
-  "FOOTER": "React to vote..."
+  "DESCRIPTION": "Créer un sondage auprès des membres.",
+  "USAGE": "sondage <question>",
+  "TITLE": "🗳️ Sondage crée par {{USER}}",
+  "FOOTER": "Réagir pour répondre au sondage..."
 }
