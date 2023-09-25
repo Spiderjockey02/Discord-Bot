@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Get lyrics on a song.",
+  "DESCRIPTION": "Obtenir les paroles d'une chanson.",
   "USAGE": "lyrics [song]",
-  "NO_LYRICS": "No lyrics found",
-  "FOOTER": "Requested by {{TAG}}"
+  "NO_LYRICS": "Je ne trouve pas cette chanson",
+  "FOOTER": "Demandé par {{TAG}}"
 }
