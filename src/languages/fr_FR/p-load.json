@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Load a playlist",
+  "DESCRIPTION": "Charge une liste de lecture",
   "USAGE": "p-load <playlist name>",
-  "QUEUE": "Queued **{{NUM}} songs** from **{{TITLE}}**.",
-  "NO_PLAYLIST": "No playlist found"
+  "QUEUE": "En file d'attente **{{NUM}} titres** depuis **{{TITLE}}**.",
+  "NO_PLAYLIST": "Liste de lecture non trouvée"
 }
