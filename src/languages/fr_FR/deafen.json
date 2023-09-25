@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Deafen a user.",
+  "DESCRIPTION": "Mettre en sourdine un membre.",
   "USAGE": "deafen <user> [time]",
-  "NOT_VC": "I can't deafen someone not in a voice channel.",
-  "SUCCESS": "*<@{{USER}}> was successfully deafened*."
+  "NOT_VC": "Je ne peux pas rétablir le son de quelqu'un qui n'est pas dans un salon vocal.",
+  "SUCCESS": "*<@{{USER}}> a été mis en sourdine*."
 }
