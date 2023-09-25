@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Listen to the radio",
+  "DESCRIPTION": "Ecouter la radio",
   "USAGE": "radio",
-  "MISSING_RADIO": "No radio found with that name"
+  "MISSING_RADIO": "Aucune radio trouvée avec ce nom"
 }
