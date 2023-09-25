@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Gets the uptime of the bot.",
+  "DESCRIPTION": "Durée d'activité du bot.",
   "USAGE": "uptime",
-  "DESC": "📶 I have been online for: {{TIME}}."
+  "DESC": "📶 Bot démarré depuis : {{TIME}}."
 }
