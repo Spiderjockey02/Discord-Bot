@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Get support on the bot.",
+  "DESCRIPTION": "Obtenir de l'aide sur le bot.",
   "USAGE": "support",
   "TITLE": "{{USER}} support",
-  "DESC": "**Our Server:**  [Support Server]({{SUPPORT}})\n **Our website:**  [Website]({{WEBSITE}})\n **Git Repo:** [Website](https://github.com/Spiderjockey02/Discord-Bot)"
+  "DESC": "**Notre Server :**  [Serveur Support]({{SUPPORT}})\n **Notre siteweb :**  [Website]({{WEBSITE}})\n **Git Repo:** [Website](https://github.com/Spiderjockey02/Discord-Bot)"
 }
