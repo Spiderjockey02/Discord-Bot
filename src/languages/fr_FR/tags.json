@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Edit server's tags",
+  "DESCRIPTION": "Modifier les Tag du serveur",
   "USAGE": "tag <add/del/edit/view> <required paramters>"
 }
