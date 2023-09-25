@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Edit a role's data in the server",
+  "DESCRIPTION": "Modifier un rôle sur le serveur",
   "USAGE": "editrole <role name> <option> <value>",
-  "SUCCESS": "Successfully edited role."
+  "SUCCESS": "Rôle modifié avec succès."
 }
