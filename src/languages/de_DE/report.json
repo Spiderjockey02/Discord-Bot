@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Report a user.",
-  "USAGE": "report <user> [reason]",
-  "AUTHOR": "~Member Reported~",
-  "MEMBER": "Member:",
+  "DESCRIPTION": "Benutzer melden.",
+  "USAGE": "<user> [reason] melden",
+  "AUTHOR": "~Mitglied gemeldet~",
+  "MEMBER": "Mitglied:",
   "BY": "Reported by:",
   "IN": "Reported in:",
   "REASON": "Reason:",
