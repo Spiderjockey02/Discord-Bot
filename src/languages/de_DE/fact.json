@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Receive a random fact.",
-  "USAGE": "fact",
-  "FACT_TITLE": "Random Fact:"
+  "DESCRIPTION": "Bekomme einen zufälligen Fakt.",
+  "USAGE": "Fakt/Tatsache",
+  "FACT_TITLE": "Zufälliger Fakt:"
 }
