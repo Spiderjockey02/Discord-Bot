@@ -1,15 +1,15 @@
 {
-  "DESCRIPTION": "Get information on a Steam account.",
+  "DESCRIPTION": "Erhalte Informationen über ein Steam-Konto.",
   "USAGE": "steam <user>",
   "AUTHOR": "Steam Services | {{NAME}}",
   "STATE": [
     "Offline",
     "Online",
-    "Busy",
-    "Away",
-    "Snooze",
-    "Looking to trade",
-    "Looking to play"
+    "Besetzt",
+    "Abwesend",
+    "Schlummer",
+    "Suche nach Handel",
+    "Suche nach Spiele"
   ],
-  "DESC": "**Real name:** {{NAME}}\n**Status:** {{STATUS}}\n**Country:** :flag_{{FLAG}}:\n**Account Created:** {{TIME}}\n**Bans:** Vac: {{VAC_BANS}}, Game: {{GAME_BANS}}\n**Link:** [Link to profile]({{URL}})"
+  "DESC": "**Echter Name:** {{NAME}}\n**Status:** {{STATUS}}\n**Land:** :flag_{{FLAG}}:\n**Account erstellt:** {{TIME}}\n**Bans:** Urlaub: {{VAC_BANS}}, Spiel: {{GAME_BANS}}\n**Link:** [Link zum Profil] ({{URL}})"
 }
