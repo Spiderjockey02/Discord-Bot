@@ -1,11 +1,11 @@
 {
-  "DESCRIPTION": "Closes the current ticket channel",
-  "USAGE": "ticket-close",
-  "NOT_SUPPORT": "You do not have the correct permissions to close this channel.",
-  "NOT_TICKET": "This is not a ticket channel.",
-  "TITLE": "Ticket Closed!",
+  "DESCRIPTION": "Schließe den aktuellen Ticket-Kanal",
+  "USAGE": "Ticketschließung",
+  "NOT_SUPPORT": "Du hast nicht die Berechtigung, diesen Kanal zu schließen.",
+  "NOT_TICKET": "Das ist kein Ticket-Kanal.",
+  "TITLE": "Ticket geschlossen!",
   "TICKET": "Ticket: ",
-  "USER": "User: ",
-  "SUCCESS": "Successfully deleted channel",
-  "MISSING_TICKET": "You do not have a ticket to delete."
+  "USER": "Benutzer: ",
+  "SUCCESS": "Kanal wurde gelöscht",
+  "MISSING_TICKET": "Du hast kein Ticket, um es zu schließen."
 }
