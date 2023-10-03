@@ -1,10 +1,10 @@
 {
-  "DESCRIPTION": "Pings a minecraft for information.",
+  "DESCRIPTION": "Fügt ein Minecraft für Informationen an.",
   "USAGE": "mc <IP> [Port]",
-  "FETCHING": "{{EMOJI}} Fetching {{ITEM}} server info...",
-  "TITLE": "Server Status",
-  "PING": "Server ping:",
-  "VERSION": "Server Version:",
-  "DESC": "Description:",
-  "PLAYERS": "Online Players"
+  "FETCHING": "{{EMOJI}} Abrufen von {{ITEM}} Serverinformationen...",
+  "TITLE": "Server-Status",
+  "PING": "Serverping:",
+  "VERSION": "Serverversion:",
+  "DESC": "Beschreibung:",
+  "PLAYERS": "Online-Spieler"
 }
