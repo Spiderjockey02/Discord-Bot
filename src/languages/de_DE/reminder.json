@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "Message Link:",
-  "USAGE": "reminder <time> <information>",
-  "MESSAGE": "I'll remind you about `{{INFO}}` in about {{TIME}}.",
-  "TITLE": "Reminder",
-  "FOOTER": "Reminder from {{TIME}} ago.",
-  "RESPONSE": "\n**REMINDER:**\n {USER} your reminder: {{INFO}}",
-  "MSG_LINK": "Message link"
+  "DESCRIPTION": "Link zur Nachricht:",
+  "USAGE": "Erinnerung <time> <information>",
+  "MESSAGE": "Ich erinnere dich in {{TIME}} an `{{INFO}}`.",
+  "TITLE": "Erinnerung",
+  "FOOTER": "Erinnerung von vor {{TIME}}.",
+  "RESPONSE": "\n**ERINNERUNG:**\n {USER} deine Erinnerung: {{INFO}}",
+  "MSG_LINK": "Link zur Nachricht"
 }
