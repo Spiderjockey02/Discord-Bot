@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Make reaction roles",
-  "USAGE": "reactionroles <messagelink>",
-  "INVALID": "Invalid message link",
-  "SUCCESS": "Successfully deleted reaction role"
+  "DESCRIPTION": "Erstelle Reaktionsrollen",
+  "USAGE": "reaktionRollen <messagelink>",
+  "INVALID": "Ungültiger Bildlink",
+  "SUCCESS": "Kanal wurde gelöscht"
 }
