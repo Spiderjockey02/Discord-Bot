@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Generate a custom image.",
-  "USAGE": "generate <option> [image]",
-  "DESC": "**1 Image is needed**:\n`{{IMG_1}}`. \n**2 images is needed**:\n`{{IMG_2}}`.",
-  "NEED_2IMG": "Please enter 2 inputs. (Images and/or mentions)"
+  "DESCRIPTION": "Benutzerdefiniertes Bild generieren.",
+  "USAGE": "erzeugen <option> [image]",
+  "DESC": "**1 Bild wird benötigt**:\n`{{IMG_1}}`. \n**2 Bilder werden benötigt**:\n`{{IMG_2}}`.",
+  "NEED_2IMG": "Bitte gebe 2 Eingaben an. (Bilder und/oder Erwähnungen)"
 }
