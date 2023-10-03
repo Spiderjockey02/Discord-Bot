@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Deepfry an image.",
-  "USAGE": "deepfry [file]"
+  "DESCRIPTION": "Ein Bild frittieren (im Meme-Kontext).",
+  "USAGE": "frittieren [file]"
 }
