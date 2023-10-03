@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Runs a script file.",
-  "USAGE": "script <file name> [...params]"
+  "DESCRIPTION": "Skriptdatei ausführen.",
+  "USAGE": "Skript <file name> [...params]"
 }
