@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Get a screenshot of a website.",
-  "USAGE": "screenshot <url>",
-  "INVALID_URL": "That is an incorrect URL.",
-  "BLACKLIST_WEBSITE": "You can not view this websites in a non-NSFW channel."
+  "DESCRIPTION": "Erhalte einen Screenshot von einer Website.",
+  "USAGE": "Bildschirmfoto <url>",
+  "INVALID_URL": "Diese URL ist falsch.",
+  "BLACKLIST_WEBSITE": "Du kannst diese Websites nicht in einem nicht-NSFW-Kanal anzeigen."
 }
