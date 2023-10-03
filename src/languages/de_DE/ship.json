@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Create a ship image.",
-  "USAGE": "ship <user1> [user2]"
+  "DESCRIPTION": "Erstelle ein Schiffsbild.",
+  "USAGE": "Schiff <user1> [user2]"
 }
