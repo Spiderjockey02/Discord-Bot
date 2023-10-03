@@ -1,8 +1,8 @@
 {
-  "INTRO": "Hello, my name is {{USER}}, and I'm a multi-purpose Discord bot, built to help you with all of your server problems and needs.",
-  "INFO": "I've been online for {{UPTIME}}, helping {{GUILDS}} servers and {{USERS}} users with {{CMDS}} commands.",
-  "PREFIX": "My prefix for this server is: `{{PREFIX}}`.",
-  "LINKS": "Useful Links:",
+  "INTRO": "Hallo, mein Name ist {{USER}} und ich bin ein vielseitiger Discord-Bot, der erstellt wurde, um dir mit all deinen Serverproblemen und Bedürfnissen zu helfen.",
+  "INFO": "Ich bin seit {{UPTIME}} online, helfe insgesamt {{GUILDS}} Servern und {{USERS}} Nutzern mit {{CMDS}} Befehlen.",
+  "PREFIX": "Mein Präfix für diesen Server ist: `{{PREFIX}}`.",
+  "LINKS": "Nützliche Links:",
   "ADD": "[Add to server]({{INVITE}})",
   "SUPPORT": "[Join support server]({{LINK}})",
   "WEBSITE": "[Website]({{URL}})",
