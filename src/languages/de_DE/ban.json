@@ -1,10 +1,10 @@
 {
   "DESCRIPTION": "Ban a user.",
   "USAGE": "ban <user> [reason] [time]",
-  "TITLE": "BANNED",
-  "MISSING_USER": "I can't punish someone not in this server.",
-  "TOO_POWERFUL": "I am unable to ban this user due to their power.",
-  "DESC": "You have been banned from {{NAME}}.",
-  "BAN_BY": "Banned by:",
-  "SUCCESS": "*<@{{USER}}> was successfully banned*."
+  "TITLE": "GEBANNT",
+  "MISSING_USER": "Ich kann niemanden bestrafen, der nicht auf diesem Server ist.",
+  "TOO_POWERFUL": "Dieser Benutzer steht über mir, den kann ich nicht bannen.",
+  "DESC": "Du wurdest von {{NAME}} gebannt.",
+  "BAN_BY": "Gebannt von:",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich gebannt*."
 }
