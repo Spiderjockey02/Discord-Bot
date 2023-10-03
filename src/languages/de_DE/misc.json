@@ -2,7 +2,7 @@
 	"ERROR_MESSAGE": "Folgender Fehler ist aufgetreten: `{{ERROR}}`. Wenn dieser Fehler weiterhin auftritt, kontaktiere bitte den Support.",
 	"FETCHING": "{{EMOJI}} ruft {{ITEM}} ab...",
 	"INCORRECT_FORMAT": "Bitte benutze das Format: `{{EXAMPLE}}`. \n\n**Format**: `<> = benötigt, [] = optional`",
-	"GENERATING_IMAGE": "{{EMOJI}} Generating your image..",
+	"GENERATING_IMAGE": "{{EMOJI}} Erstelle dein Bild..",
 	"NO_REASON": "Es wurde kein Grund angegeben.",
 	"WAITED_TOO_LONG": "Du hast nicht rechtzeitig geantwortet",
 	"CANCELLED": "Auswahl aufgehoben",
