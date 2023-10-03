@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Create a fake Twitter tweet.",
-  "USAGE": "twitter [user] <text>",
-  "TOO_LONG": "Your message must not be more than 60 characters."
+  "DESCRIPTION": "Erstelle einen gefälschten Twitter Tweet.",
+  "USAGE": "Twitter [user] <text>",
+  "TOO_LONG": "Deine Nachricht darf nicht mehr als 60 Zeichen lang sein."
 }
