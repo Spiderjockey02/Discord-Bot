@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "reroll a giveaway.",
+  "DESCRIPTION": "Verlose eine Verlosung erneut.",
   "USAGE": "g-reroll <messageID>",
-  "SUCCESS_GIVEAWAY": "Success! Giveaway re-rolled!",
-  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again.",
-  "CONGRAT": "🎉 New winner(s): {winners}! Congratulations!",
-  "ERROR": "No valid participations, no winners can be chosen!"
+  "SUCCESS_GIVEAWAY": "Erfolgreich! Verlosung erneut verlost!",
+  "UNKNOWN_GIVEAWAY": "Kein Giveaway mit der ID: `{{ID}}` gefunden. Bitte überprüfe es und versuche es erneut.",
+  "CONGRAT": "🎉 Neuer Gewinner(in): {winners}! Herzlichen Glückwunsch!",
+  "ERROR": "Keine gültigen Teilnahmen; keine Gewinner*innen wurden gefunden!"
 }
