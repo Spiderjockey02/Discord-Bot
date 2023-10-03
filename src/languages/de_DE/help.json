@@ -1,15 +1,15 @@
 {
-  "DESCRIPTION": "Sends information about all the commands that I can do.",
-  "USAGE": "help [command]",
-  "AUTHOR": "Available commands",
-  "PREFIX_DESC": "**Prefix:** `{{PREFIX}}` (You can also use <@!{{ID}}> as a prefix)",
-  "INFO_DESC": "**Type `{{PREFIX}}{{USAGE}}` for command specific information.**",
-  "TITLE": "`Command: {{COMMAND}}`",
-  "DESC": "**Description:** {{DESC}}",
-  "ALIAS": "**Aliases:** {{ALIAS}}",
-  "COOLDOWN": "**Cooldown:** {{CD}} seconds",
-  "USE": "**Usage:** {{USAGE}}",
-  "EXAMPLE": "**Example:** {{EX}}",
-  "LAYOUT": "\n**Layout**: `<> = required, [] = optional`",
-  "NO_COMMAND": "That is not a command."
+  "DESCRIPTION": "Sendet Informationen über alle Befehle, die ich ausführen kann.",
+  "USAGE": "Hilfe [command]",
+  "AUTHOR": "Verfügbare Befehle",
+  "PREFIX_DESC": "**Präfix:** `{{PREFIX}}` (Du kannst <@!{{ID}}> als Präfix verwenden)",
+  "INFO_DESC": "**Gib `{{PREFIX}}{{USAGE}}` für befehlsspezifische Informationen.**",
+  "TITLE": "`Befehl: {{COMMAND}}`",
+  "DESC": "**Beschreibung:** {{DESC}}",
+  "ALIAS": "**Aliase:** {{ALIAS}}",
+  "COOLDOWN": "**Abklingzeit:** {{CD}} Sekunden",
+  "USE": "**Nutzung:** {{USAGE}}",
+  "EXAMPLE": "**Beispiel:** {{EX}}",
+  "LAYOUT": "\n**Format**: `<> = erforderlich, [] = optional`",
+  "NO_COMMAND": "Dies ist kein Befehl."
 }
