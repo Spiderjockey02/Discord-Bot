@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Shutdowns the bot.",
-  "USAGE": "shutdown",
-  "SUCCESS": "Oh.. ok goodbye :disappointed_relieved:"
+  "DESCRIPTION": "Fährt den Bot herunter",
+  "USAGE": "Herunterfahren",
+  "SUCCESS": "Oh.. ok tschüssi :disappointed_relieved:"
 }
