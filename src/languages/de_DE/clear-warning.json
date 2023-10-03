@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Remove warnings from a user.",
+  "DESCRIPTION": "Entferne alle Verwarnungen von einem Nutzer.",
   "USAGE": "clear-warning <user> [warning number]",
-  "CLEARED": "Warnings updated for <@{{MEMBER}}>"
+  "CLEARED": "Warnungen aktualisiert für <@{{MEMBER}}>"
 }
