@@ -1,4 +1,4 @@
 {
-  "DESCRIPTION": "Blurpify an image.",
-  "USAGE": "blurpify [file]"
+  "DESCRIPTION": "Bild verwischen.",
+  "USAGE": "verwischen [file]"
 }
