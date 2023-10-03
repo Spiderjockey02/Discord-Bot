@@ -1,11 +1,11 @@
 {
-  "DESCRIPTION": "Add a new tag to the server",
+  "DESCRIPTION": "Ein neues Tag zum Server hinzufügen",
   "USAGE": "tag-add <name> <response>",
-  "INVALID_NAME": "Please specify a name for the tag.",
-  "NAME_TOO_LONG": "Please shorten the name of the tag.",
-  "INVALID_RESP": "Please specify a response for the tag",
-  "NEED_PREMIUM": "You need premium to create more tags. Premium servers get up to `50` tags",
-  "MAX_TAGS": "You have exceeded the maximium tags.",
-  "SAME_NAME": "This tag has already been created.",
-  "TAGS_SAVED": "Tag has been saved with name: `{{TAG}}`."
+  "INVALID_NAME": "Bitte gib einen Namen für das Tag an.",
+  "NAME_TOO_LONG": "Bitte kürze den Namen des Tags.",
+  "INVALID_RESP": "Bitte geben Sie eine Antwort für das Tag an",
+  "NEED_PREMIUM": "Du benötigst Premium, um mehr Tags zu erstellen. Premium-Server erhalten bis zu `50` Tags",
+  "MAX_TAGS": "Du hast die maximalen Tags überschritten.",
+  "SAME_NAME": "Dieses Tag wurde bereits erstellt.",
+  "TAGS_SAVED": "Tag wurde mit dem Namen gespeichert: `{{TAG}}`."
 }
