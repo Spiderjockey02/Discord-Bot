@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Deafen a user.",
-  "USAGE": "deafen <user> [time]",
-  "NOT_VC": "I can't deafen someone not in a voice channel.",
-  "SUCCESS": "*<@{{USER}}> was successfully deafened*."
+  "DESCRIPTION": "Benutzer Ausgabe deaktiveren.",
+  "USAGE": "taub <user> [time]",
+  "NOT_VC": "Ich kann jemanden nicht taub machen, der nicht in einem Sprachkanal ist.",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich taub*."
 }
