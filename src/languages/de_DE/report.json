@@ -3,8 +3,8 @@
   "USAGE": "<user> [reason] melden",
   "AUTHOR": "~Mitglied gemeldet~",
   "MEMBER": "Mitglied:",
-  "BY": "Reported by:",
-  "IN": "Reported in:",
-  "REASON": "Reason:",
-  "SUCCESS": "*<@{{USER}}> has been successfully reported*."
+  "BY": "Gemeldet von:",
+  "IN": "Gemeldet in:",
+  "REASON": "Grund:",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich gemeldet*."
 }
