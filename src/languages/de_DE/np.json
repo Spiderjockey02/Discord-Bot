@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Shows the current song playing.",
+  "DESCRIPTION": "Zeigt die aktuelle Wiedergabe an.",
   "USAGE": "np",
-  "LIVE": "🔴 LIVE",
-  "AUTHOR": "» Now playing:"
+  "LIVE": ":rot_Kreis: LIVE",
+  "AUTHOR": "» Jetzt spielt:"
 }
