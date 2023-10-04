@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Displays the queue.",
-  "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "DESCRIPTION": "Zeigt die Warteschlange an.",
+  "USAGE": "warteschlange [pageNumber]",
+  "EMPTY": "Schlange ist leer",
+  "NAN": "Die Seite muss eine Zahl sein.",
+  "TOO_HIGH": "Es sind nur {{NUM}} Seiten verfügbar."
 }
