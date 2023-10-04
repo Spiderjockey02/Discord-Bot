@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Add a song to the playlist",
+  "DESCRIPTION": "Füge ein Lied zur Playlist hinzu",
   "USAGE": "p-add <playlist name> <song>",
-  "ERROR": "There was an error while searching: `{{ERROR}}`",
-  "NO_PLAYLIST": "No playlist found with name: `{{NAME}}`.",
-  "NO_SONG": "I couldn't find that song.",
-  "SUCCESS": "Added {{NUM}} new song(s) to playlist: `{{TITLE}}`."
+  "ERROR": "Beim Suchen ist ein Fehler aufgetreten: `{{ERROR}}`",
+  "NO_PLAYLIST": "Keine Wiedergabeliste mit Namen gefunden: `{{NAME}}`.",
+  "NO_SONG": "Ich konnte diesen Song nicht finden.",
+  "SUCCESS": "{{NUM}} neue Song(s) zur Wiedergabeliste hinzugefügt: `{{TITLE}}`."
 }
