@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "View a playlist",
-  "USAGE": "p-view <playlist name>",
-  "NO_PLAYLIST": "No playlist found",
-  "AVAIABLE": "Available playlists are `{{NAMES}}`."
+  "DESCRIPTION": "Wiedergabeliste anzeigen",
+  "USAGE": "p-Ansicht <playlist name>",
+  "NO_PLAYLIST": "Wiedergabeliste nicht gefunden",
+  "AVAIABLE": "Verfügbare Wiedergabelisten sind `{{NAMES}}`."
 }
