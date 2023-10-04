@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Load a playlist",
-  "USAGE": "p-load <playlist name>",
-  "QUEUE": "Queued **{{NUM}} songs** from **{{TITLE}}**.",
-  "NO_PLAYLIST": "No playlist found"
+  "DESCRIPTION": "Playlist laden",
+  "USAGE": "p-Load <playlist name>",
+  "QUEUE": "**{{NUM}} Songs** von **{{TITLE}}**.",
+  "NO_PLAYLIST": "Keine Playlist gefunden\\nKlicke auf den Hinzufügen-Button um eine zu erstellen"
 }
