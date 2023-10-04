@@ -1,10 +1,10 @@
 {
-  "DESCRIPTION": "Sets the player's pitch. If you input \"reset\", it will set the pitch back to default.",
-  "USAGE": "pitch",
-  "PITCH_OFF": "Reseting **pitch**. This may take a few seconds...",
-  "DESC_1": "Reset **pitch**",
-  "INVALID": "Amount must be a real number.",
-  "INCORRECT": "Pitch must be inbetween 0 and 10.",
-  "PITCH_ON": "Setting pitch to **{{NUM}}**. This may take a few seconds...",
-  "DESC_2": "Pitch set to: **{{NUM}}**"
+  "DESCRIPTION": "Legt die Tonhöhe des Spielers fest. Wenn Sie \"Zurücksetzen\" eingeben, wird die Tonhöhe wieder auf den Standardwert gesetzt.",
+  "USAGE": "teilungseinheit",
+  "PITCH_OFF": "**Pitch**. Dies kann einige Sekunden dauern...",
+  "DESC_1": "**Pitch** zurücksetzen",
+  "INVALID": "Betrag muss eine reale Zahl sein.",
+  "INCORRECT": "Die Tonhöhe muss zwischen 0 und 10 liegen.",
+  "PITCH_ON": "Setze Pitch auf **{{NUM}}**. Dies kann ein paar Sekunden dauern...",
+  "DESC_2": "Pitch gesetzt auf: **{{NUM}}**"
 }
