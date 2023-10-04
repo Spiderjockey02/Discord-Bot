@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "remove a song from the playlist",
+  "DESCRIPTION": "einen Titel aus der Playlist entfernen",
   "USAGE": "p-remove <playlist name> <position> [position]",
-  "SUCCESS": "Successfully updated playlist.",
-  "NO_PLAYLIST": "No playlist found"
+  "SUCCESS": "Wiedergabeliste erfolgreich aktualisiert.",
+  "NO_PLAYLIST": "Wiedergabeliste nicht gefunden"
 }
