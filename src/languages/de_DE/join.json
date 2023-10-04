@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Makes the bot join your voice channel.",
-  "USAGE": "join",
-  "NO_VC": "You're not in a voice channel that I can connect to.",
-  "JOIN": "I have successfully joined the channel.",
-  "MOVED": "I have successfully moved channel."
+  "DESCRIPTION": "Lass den Bot sich mit deinem aktuellen Sprachkanal verbinden.",
+  "USAGE": "beitreten",
+  "NO_VC": "Du bist in keinem Sprachkanal, mit dem ich dich verbinden kann.",
+  "JOIN": "Ich bin erfolgreich dem Kanal beigetreten.",
+  "MOVED": "Ich habe den Kanal erfolgreich verschoben."
 }
