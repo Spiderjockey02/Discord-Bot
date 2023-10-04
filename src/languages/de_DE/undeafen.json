@@ -1,6 +1,6 @@
 {
-  "DESCRIPTION": "Undeafen a user.",
+  "DESCRIPTION": "Entmuteneines Benutzers.",
   "USAGE": "undeafen <user>",
-  "NOT_VC": "I can't undeafen someone not in a voice channel.",
-  "SUCCESS": "*<@{{USER}}> was successfully undeafened*."
+  "NOT_VC": "Ich kann niemanden entmuten, der nicht in einem Voicekanal ist.",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich entmutet*."
 }
