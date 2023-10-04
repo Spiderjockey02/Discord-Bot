@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Fast forwards the player by your specified amount.",
-  "USAGE": "fast-forward <time>",
-  "LIVESTREAM": "You can't do that to a livestream.",
-  "TOO_LONG": "The song is only {{TIME}}.",
-  "DESC": "**Fast-forwarded `{{OLD}}` to: `{{NEW}}`.**"
+  "DESCRIPTION": "Schnelle Weiterleitungen des Spielers um den angegebenen Betrag.",
+  "USAGE": "schnell weiterleiten <time>",
+  "LIVESTREAM": "Du kannst das nicht mit einem Livesystem machen.",
+  "TOO_LONG": "Der Song ist nur {{TIME}}.",
+  "DESC": "**Fast-forwarded `{{OLD}}` zu: `{{NEW}}`.**"
 }
