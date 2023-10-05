@@ -14,8 +14,12 @@ class LevelManager {
 		// Check if this was triggered by an ignored channel
 		if (settings.LevelIgnoreChannel?.includes(channel.id)) return;
 
+		// Check if the member has an ignored role
 		const roles = member.roles.cache.map(r => r.id);
 		if (roles.some(r => settings.LevelIgnoreRoles?.includes(r))) return;
+
+		// Make sure it's actual message sent by the user
+		if (this.message.type != 0) return;
 
 		// Add a cooldown so people can't spam levels
 		if (!levelcd.has(member.id)) {
