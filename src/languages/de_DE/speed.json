@@ -1,8 +1,8 @@
 {
-  "DESCRIPTION": "Sets the player's playback speed.",
-  "USAGE": "speed <Number>",
-  "LIVESTREAM": "You can't change the time in a livestream.",
-  "INVALID": "Amount must be a real number between 1 and 10.",
-  "ON_SPD": "Updating playback speed. This may take a few seconds...",
-  "UPDATED": "Speed is {{NUM}}."
+  "DESCRIPTION": "Legt die Wiedergabegeschwindigkeit des Spielers fest.",
+  "USAGE": "geschwindigkeit <Number>",
+  "LIVESTREAM": "Du kannst die Zeit in einem Livesystem nicht ändern.",
+  "INVALID": "Der Betrag muss eine reale Zahl zwischen 1 und 10 sein.",
+  "ON_SPD": "Aktualisiere Wiedergabegeschwindigkeit. Dies kann einige Sekunden dauern...",
+  "UPDATED": "Geschwindigkeit ist {{NUM}}."
 }
