@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Sets the playing track's position to the specified position.",
-  "USAGE": "seek <time>",
-  "LIVESTREAM": "You can't change the time in a livestream.",
-  "INVALID": "Choose a time between 0 and {{TIME}}.",
-  "UPDATED": "Time moved to: `{{TIME}}`."
+  "DESCRIPTION": "Setzt die Position des Spielers auf die angegebene Position.",
+  "USAGE": "suche <time>",
+  "LIVESTREAM": "Du kannst die Zeit in einem Livesystem nicht ändern.",
+  "INVALID": "Wählen Sie eine Zeit zwischen 0 und {{TIME}}.",
+  "UPDATED": "Zeit verschoben zu: `{{TIME}}`."
 }
