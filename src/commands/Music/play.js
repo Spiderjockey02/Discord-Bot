@@ -106,7 +106,7 @@ class Play extends Command {
 		// Search for track
 		try {
 			res = await player.search(search, message.author);
-			if (res.loadType === 'LOAD_FAILED') {
+			if (res.loadType === 'error') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
@@ -114,12 +114,12 @@ class Play extends Command {
 			return message.channel.error('music/play:ERROR', { ERROR: err.message });
 		}
 		// Workout what to do with the results
-		if (res.loadType == 'NO_MATCHES') {
+		if (res.loadType == 'empty') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
 			return message.channel.error('music/play:NO_SONG');
 
-		} else if (res.loadType == 'PLAYLIST_LOADED') {
+		} else if (res.loadType == 'playlist') {
 			// Connect to voice channel if not already
 			if (player.state !== 'CONNECTED') player.connect();
 
