@@ -79,11 +79,15 @@ class Ready extends Event {
 		const users = await userSchema.find({});
 		if (users.length > 0) bot.logger.log(`Preparing ${users.length} users.`);
 		for (const { userID, premium, premiumSince, cmdBanned, rankImage } of users) {
-			const user = await bot.users.fetch(userID);
-			user.premium = premium;
-			user.premiumSince = premiumSince ?? 0;
-			user.cmdBanned = cmdBanned;
-			user.rankImage = rankImage ? Buffer.from(rankImage ?? '', 'base64') : '';
+			try {
+				const user = await bot.users.fetch(userID);
+				user.premium = premium;
+				user.premiumSince = premiumSince ?? 0;
+				user.cmdBanned = cmdBanned;
+				user.rankImage = rankImage ? Buffer.from(rankImage ?? '', 'base64') : '';
+			} catch (err) {
+				bot.logger.error(`${userID} is an invalid user ID.`);
+			}
 		}
 
 
