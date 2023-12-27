@@ -91,6 +91,7 @@ Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discor
 * **[josh_0242](https://github.com/ChaosArising)** - Slash Commands & Tags System.
 * **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, reddit, TikTok, Phub, Mixcloud etc).
 * **[topi314](https://github.com/topi314)** - [Lavalink plugin 2](https://github.com/topi314/LavaSrc) (Spotify, Apple Music, Deezer & Yandex)
+* **[topi314](https://github.com/topi314)** - [Lavalink plugin 3](https://github.com/topi314/LavaSearch) (Search module for LavaSrc)
 * **[thororen](https://github.com/thororen1234)** - Updated Music system to support new Lavalink v4.
 * **[Our translators](https://crowdin.com/project/egglord-discord-bot)** - Everyone over at Crowdin who helps make this bot multilingual.
 * Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).

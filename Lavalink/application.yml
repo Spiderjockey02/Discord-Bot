@@ -5,6 +5,7 @@ server: # REST and WS server
 lavalink:
   server:
     password: "youshallnotpass"
+    pluginsDir: "./plugins"
     playerUpdateInterval: 1 # How frequently to send player updates to clients, in seconds
     koe:
       useEpoll: true
@@ -38,10 +39,13 @@ plugins:
       # true = source enabled, false = source disabled
       getyarn: true # www.getyarn.io
       clypit: true # www.clyp.it
-      tts: true # speak:text to speak
+      tts: true # speak:Words to speak
       pornhub: true # should be self-explanatory
       reddit: true # should be self-explanatory
       ocremix: true # www.ocremix.org
+      tiktok: true # tiktok.com
+      mixcloud: true # mixcloud.com
+      soundgasm: true # soundgasm.net
   lavasrc:
     providers:
     sources:
