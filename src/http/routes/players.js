@@ -108,15 +108,15 @@ module.exports = (bot) => {
 			const guild = bot.guilds.cache.get(req.params.guildId),
 				data = await player.search(req.query.song, bot.users.cache.get(req.query.user));
 			// if song failed to be loaded
-			if (data.loadType === 'LOAD_FAILED') return res.status(400).json({ error: res.exception });
+			if (data.loadType === 'error') return res.status(400).json({ error: res.exception });
 
 			// Workout what to do with the results
-			if (data.loadType == 'NO_MATCHES') {
+			if (data.loadType == 'empty') {
 				// An error occured or couldn't find the track
 				if (!player.queue.current) player.destroy();
 				return res.status(400).json({ error: guild.translate('music/play:NO_SONG') });
 
-			} else if (data.loadType == 'PLAYLIST_LOADED') {
+			} else if (data.loadType == 'playlist') {
 				// Connect to voice channel if not already
 				if (player.state !== 'CONNECTED') player.connect();
 

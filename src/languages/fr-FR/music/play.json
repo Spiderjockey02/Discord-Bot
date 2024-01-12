@@ -7,5 +7,6 @@
   "NO_INPUT": "Merci de saisir un lien ou bien un titre.",
   "QUEUED": "En file d'attente **{{NUM}}** titres",
   "SONG_ADD": "Ajouté à la file d'attente : [{{TITLE}}]({{URL}})",
-  "NO_SONG": "Je ne trouve pas ce titre."
+  "NO_SONG": "Je ne trouve pas ce titre.",
+  "QUEUE": "File d'attente démarrée avec succès."
 }
