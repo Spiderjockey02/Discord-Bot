@@ -249,7 +249,7 @@ class Play extends Command {
 				if (!player.playing && !player.paused && player.queue.size == 0) {
 					try {
 						await player.play();
-						return interaction.followUp({ ephemeral: true, embeds: [channel.success('music/play:QUEUE', {}, true)] });
+						return interaction.followUp({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
 					} catch (err) {
 						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
