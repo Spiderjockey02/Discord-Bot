@@ -124,6 +124,16 @@ class Radio extends Command {
 				// An error occured or couldn't find the track
 				if (!player.queue.current) player.destroy();
 				return message.channel.error('music/play:NO_SONG');
+			case 'playlist':
+				// Connect to voice channel if not already
+				if (player.state !== 'CONNECTED') player.connect();
+				// Add songs to queue and then play the song(s) if not already
+				player.queue.add(res.tracks);
+				if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+	
+				return message.channel.send({ embeds: [new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }))] });
 			default:
 				// add track to queue and play
 				if (player.state !== 'CONNECTED') player.connect();
