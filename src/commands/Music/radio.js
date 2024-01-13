@@ -119,24 +119,24 @@ class Radio extends Command {
 
 		const res = await player.search(data[index].url, message.author);
 
-		if (res.loadType == 'empty') {
-			// An error occured or couldn't find the track
-			if (!player.queue.current) player.destroy();
-			return message.channel.error('music/play:NO_SONG');
-		} else {
-			// add track to queue and play
-			if (player.state !== 'CONNECTED') player.connect();
-			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
-				player.play();
-			} else {
-				embed = new EmbedBuilder()
-					.setColor(message.member.displayHexColor)
-					.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
-				message.channel.send({ embeds: [embed] });
-			}
+		switch (res.loadType) {
+			case 'empty':
+				// An error occured or couldn't find the track
+				if (!player.queue.current) player.destroy();
+				return message.channel.error('music/play:NO_SONG');
+			default:
+				// add track to queue and play
+				if (player.state !== 'CONNECTED') player.connect();
+				player.queue.add(res.tracks[0]);
+				if (!player.playing && !player.paused && !player.queue.size) {
+					player.play();
+				} else {
+					embed = new EmbedBuilder()
+						.setColor(message.member.displayHexColor)
+						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
+					message.channel.send({ embeds: [embed] });
+				}
 		}
-
 	}
 
 	/**
@@ -198,37 +198,36 @@ class Radio extends Command {
 		}
 
 		// Workout what to do with the results
-		if (res.loadType == 'empty') {
-			// An error occured or couldn't find the track
-			if (!player.queue.current) player.destroy();
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] });
-
-		} else if (res.loadType == 'playlist') {
-			// Connect to voice channel if not already
-			if (player.state !== 'CONNECTED') player.connect();
-			// Show how many songs have been added
-			const embed = new Embed(bot, guild)
-				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
-
-			// Add songs to queue and then play the song(s) if not already
-			player.queue.add(res.tracks);
-			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-
-			return interaction.reply({ embeds: [embed] });
-		} else {
-			// add track to queue and play
-			if (player.state !== 'CONNECTED') player.connect();
-			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
-				player.play();
-				return interaction.reply({ content: 'Successfully started queue.' });
-			} else {
+		switch (res.loadType) {
+            case 'empty':
+				if (!player.queue.current) player.destroy();
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', { ERROR: null }, true)] });
+            case 'playlist':
+				// Connect to voice channel if not already
+				if (player.state !== 'CONNECTED') player.connect();
+				// Show how many songs have been added
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
+
+				// Add songs to queue and then play the song(s) if not already
+				player.queue.add(res.tracks);
+				if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+
 				return interaction.reply({ embeds: [embed] });
-			}
+            default:
+				// add track to queue and play
+				if (player.state !== 'CONNECTED') player.connect();
+				player.queue.add(res.tracks[0]);
+				if (!player.playing && !player.paused && !player.queue.size) {
+					player.play();
+					return interaction.reply({ content: 'Successfully started queue.' });
+				} else {
+					const embed = new Embed(bot, guild)
+						.setColor(member.displayHexColor)
+						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					return interaction.reply({ embeds: [embed] });
+				}
 		}
 	}
 

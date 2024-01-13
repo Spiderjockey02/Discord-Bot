@@ -87,22 +87,23 @@ class TTS extends Command {
 		}
 
 		// Make sure there was results
-		if (res.loadType == 'empty') {
-			// An error occured or couldn't find the track
-			if (!player.queue.current) player.destroy();
-			return message.channel.error('music/play:NO_SONG');
-		} else {
-			// add track to queue and play
-			if (player.state !== 'CONNECTED') player.connect();
-			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
-				player.play();
-			} else {
-				const embed = new Embed(bot, message.guild)
-					.setColor(message.member.displayHexColor)
-					.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				message.channel.send({ embeds: [embed] });
-			}
+		switch (res.loadType) {
+			case 'empty':
+				// An error occured or couldn't find the track
+				if (!player.queue.current) player.destroy();
+				return message.channel.error('music/play:NO_SONG');
+			default:
+				// add track to queue and play
+				if (player.state !== 'CONNECTED') player.connect();
+				player.queue.add(res.tracks[0]);
+				if (!player.playing && !player.paused && !player.queue.size) {
+					player.play();
+				} else {
+					const embed = new Embed(bot, message.guild)
+						.setColor(message.member.displayHexColor)
+						.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					message.channel.send({ embeds: [embed] });
+				}
 		}
 	}
 
@@ -166,22 +167,23 @@ class TTS extends Command {
 		}
 
 		// Make sure there was results
-		if (res.loadType == 'empty') {
-			// An error occured or couldn't find the track
-			if (!player.queue.current) player.destroy();
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
-		} else {
-			// add track to queue and play
-			if (player.state !== 'CONNECTED') player.connect();
-			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
-				player.play();
-			} else {
-				const embed = new Embed(bot, guild)
-					.setColor(member.displayHexColor)
-					.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-				interaction.reply({ embeds: [embed] });
-			}
+		switch (res.loadType) {
+			case 'empty':
+				// An error occured or couldn't find the track
+				if (!player.queue.current) player.destroy();
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });
+			default:
+				// add track to queue and play
+				if (player.state !== 'CONNECTED') player.connect();
+				player.queue.add(res.tracks[0]);
+				if (!player.playing && !player.paused && !player.queue.size) {
+					player.play();
+				} else {
+					const embed = new Embed(bot, guild)
+						.setColor(member.displayHexColor)
+						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					interaction.reply({ embeds: [embed] });
+				}
 		}
 	}
 }
