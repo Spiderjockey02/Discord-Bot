@@ -130,7 +130,7 @@ class Radio extends Command {
 				// Add songs to queue and then play the song(s) if not already
 				player.queue.add(res.tracks);
 				if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-	
+
 				return message.channel.send({ embeds: [new Embed(bot, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }))] });
