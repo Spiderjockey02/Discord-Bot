@@ -99,10 +99,9 @@ class TTS extends Command {
 				if (!player.playing && !player.paused && !player.queue.size) {
 					player.play();
 				} else {
-					const embed = new Embed(bot, message.guild)
+					message.channel.send({ embeds: [new Embed(bot, message.guild)
 						.setColor(message.member.displayHexColor)
-						.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-					message.channel.send({ embeds: [embed] });
+						.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }))] });
 				}
 		}
 	}
