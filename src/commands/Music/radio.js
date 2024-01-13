@@ -77,7 +77,7 @@ class Radio extends Command {
 		if (!data[0]) return message.channel.send('No radio found with that name');
 
 		const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-		let embed = new Embed(bot, message.guild)
+		const embed = new Embed(bot, message.guild)
 			.setTitle(`Results for ${message.args.join(' ')}`)
 			.setColor(message.member.displayHexColor)
 			.setDescription(`${results}\n\n\tPick a number from 1-10 or cancel.\n`);
