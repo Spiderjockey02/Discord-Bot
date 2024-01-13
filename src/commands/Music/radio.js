@@ -133,7 +133,7 @@ class Radio extends Command {
 				} else {
 					message.channel.send({ embeds: [new EmbedBuilder()
 						.setColor(message.member.displayHexColor)
-						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`)] });
+						.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }))] });
 				}
 		}
 	}
