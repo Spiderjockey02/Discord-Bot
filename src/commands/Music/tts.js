@@ -179,10 +179,9 @@ class TTS extends Command {
 				if (!player.playing && !player.paused && !player.queue.size) {
 					player.play();
 				} else {
-					const embed = new Embed(bot, guild)
+					interaction.reply({ embeds: [new Embed(bot, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-					interaction.reply({ embeds: [embed] });
+						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }))] });
 				}
 		}
 	}

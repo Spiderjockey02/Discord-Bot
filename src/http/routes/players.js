@@ -119,15 +119,15 @@ module.exports = (bot) => {
 					if (player.state !== 'CONNECTED') player.connect();
 
 					// Show how many songs have been added
-					const embed = new Embed(bot, guild)
+					bot.channels.cache.get(player.textChannel)?.send({ embeds: [new Embed(bot, guild)
 						.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
-						.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }));
-					bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
+						.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }))] });
 
 					// Add songs to queue and then pLay the song(s) if not already
 					player.queue.add(data.tracks);
 					if (!player.playing && !player.paused && player.queue.totalSize === data.tracks.length) player.play();
 					res.status(200).json({ success: `Added ${data.tracks.length} songs to the queue.` });
+					break;
 				default: 
 					// add track to queue and play
 					if (player.state !== 'CONNECTED') player.connect();
@@ -135,10 +135,9 @@ module.exports = (bot) => {
 					if (!player.playing && !player.paused && !player.queue.size) {
 						player.play();
 					} else {
-						const embed = new Embed(bot, guild)
+						bot.channels.cache.get(player.textChannel)?.send({ embeds: [new Embed(bot, guild)
 							.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
-							.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: data.tracks[0].title, URL: data.tracks[0].uri }));
-						bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
+							.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: data.tracks[0].title, URL: data.tracks[0].uri }))] });
 					}
 					res.status(200).json({ success: `Added ${data.tracks[0].title} to the queue.` });
 			}

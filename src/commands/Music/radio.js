@@ -131,10 +131,9 @@ class Radio extends Command {
 				if (!player.playing && !player.paused && !player.queue.size) {
 					player.play();
 				} else {
-					embed = new EmbedBuilder()
+					message.channel.send({ embeds: [new EmbedBuilder()
 						.setColor(message.member.displayHexColor)
-						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`);
-					message.channel.send({ embeds: [embed] });
+						.setDescription(`Added to queue: [${res.tracks[0].title}](${res.tracks[0].uri})`)] });
 				}
 		}
 	}
@@ -205,28 +204,24 @@ class Radio extends Command {
             case 'playlist':
 				// Connect to voice channel if not already
 				if (player.state !== 'CONNECTED') player.connect();
-				// Show how many songs have been added
-				const embed = new Embed(bot, guild)
-					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
-
 				// Add songs to queue and then play the song(s) if not already
 				player.queue.add(res.tracks);
 				if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 
-				return interaction.reply({ embeds: [embed] });
+				return interaction.reply({ embeds: [new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }))] });
             default:
 				// add track to queue and play
 				if (player.state !== 'CONNECTED') player.connect();
 				player.queue.add(res.tracks[0]);
 				if (!player.playing && !player.paused && !player.queue.size) {
 					player.play();
-					return interaction.reply({ content: 'Successfully started queue.' });
+					return interaction.reply({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
 				} else {
-					const embed = new Embed(bot, guild)
+					return interaction.reply({ embeds: [new Embed(bot, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
-					return interaction.reply({ embeds: [embed] });
+						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }))] });
 				}
 		}
 	}
