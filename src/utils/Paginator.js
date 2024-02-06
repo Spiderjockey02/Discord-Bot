@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType } = require('discord.js');
-const timeout = 30 * 1000; // Timeout for button collector in milliseconds
+// Timeout for button collector in milliseconds
+const timeout = 30 * 1000;
 
 module.exports = async (bot, interaction, pages, userID) => {
 	let page = 0;
@@ -59,15 +60,22 @@ module.exports = async (bot, interaction, pages, userID) => {
 		last.setDisabled(page === pages.length - 1);
 
 		// Update message with new embed and buttons
-		await i.update({ embeds: [pages[page]], components: [buttons], ephemeral: true }).catch(() => {});
+		await i.update({ embeds: [pages[page]], components: [buttons], ephemeral: true }).catch((error) => {
+			bot.logger.error('Error updating message:', error);
+		});
 
-		buttonCollector.resetTimer(); // Reset collector timer
+		// Reset collector timer
+		buttonCollector.resetTimer();
 	});
 
 	// Handle collector end event
 	buttonCollector.on('end', async () => {
-		await interaction.editReply({ embeds: [pages[page]], components: [] }).catch(() => {}); // Edit interaction reply to remove buttons
+		// Edit interaction reply to remove buttons
+		await interaction.editReply({ embeds: [pages[page]], components: [] }).catch((error) => {
+			bot.logger.error('Error updating message:', error);
+		});
 	});
 
-	return msg; // Return the message
+	// Return the message
+	return msg;
 };
