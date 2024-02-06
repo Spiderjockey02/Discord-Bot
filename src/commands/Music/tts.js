@@ -78,7 +78,7 @@ class TTS extends Command {
 		let res;
 		try {
 			res = await player.search({ source: 'speak', query: message.args.join(' ') }, message.author);
-			if (res.loadType === 'LOAD_FAILED') {
+			if (res.loadType === 'error') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
@@ -87,7 +87,7 @@ class TTS extends Command {
 		}
 
 		// Make sure there was results
-		if (res.loadType == 'NO_MATCHES') {
+		if (res.loadType == 'empty') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
 			return message.channel.error('music/play:NO_SONG');
@@ -157,7 +157,7 @@ class TTS extends Command {
 		let res;
 		try {
 			res = await player.search({ source: 'speak', query: text }, member.user);
-			if (res.loadType === 'LOAD_FAILED') {
+			if (res.loadType === 'error') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
 			}
@@ -166,7 +166,7 @@ class TTS extends Command {
 		}
 
 		// Make sure there was results
-		if (res.loadType == 'NO_MATCHES') {
+		if (res.loadType == 'empty') {
 			// An error occured or couldn't find the track
 			if (!player.queue.current) player.destroy();
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_SONG', null, true)] });

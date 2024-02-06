@@ -7,5 +7,6 @@
   "NO_INPUT": "Please enter a song name/url",
   "QUEUED": "Queued **{{NUM}}** tracks",
   "SONG_ADD": "Added to queue: [{{TITLE}}]({{URL}})",
-  "NO_SONG": "I couldn't find that song."
+  "NO_SONG": "I couldn't find that song.",
+  "QUEUE": "Cola iniciada exitosamente."
 }

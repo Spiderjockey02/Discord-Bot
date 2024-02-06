@@ -108,41 +108,38 @@ module.exports = (bot) => {
 			const guild = bot.guilds.cache.get(req.params.guildId),
 				data = await player.search(req.query.song, bot.users.cache.get(req.query.user));
 			// if song failed to be loaded
-			if (data.loadType === 'LOAD_FAILED') return res.status(400).json({ error: res.exception });
+			switch (data.loadType) {
+				case 'error':
+					return res.status(400).json({ error: res.exception });
+				case 'empty':
+					// An error occured or couldn't find the track
+					if (!player.queue.current) player.destroy();
+					return res.status(400).json({ error: guild.translate('music/play:NO_SONG') });
+				case 'playlist':
+					if (player.state !== 'CONNECTED') player.connect();
 
-			// Workout what to do with the results
-			if (data.loadType == 'NO_MATCHES') {
-				// An error occured or couldn't find the track
-				if (!player.queue.current) player.destroy();
-				return res.status(400).json({ error: guild.translate('music/play:NO_SONG') });
-
-			} else if (data.loadType == 'PLAYLIST_LOADED') {
-				// Connect to voice channel if not already
-				if (player.state !== 'CONNECTED') player.connect();
-
-				// Show how many songs have been added
-				const embed = new Embed(bot, guild)
-					.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
-					.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }));
-				bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
-
-				// Add songs to queue and then pLay the song(s) if not already
-				player.queue.add(data.tracks);
-				if (!player.playing && !player.paused && player.queue.totalSize === data.tracks.length) player.play();
-				res.status(200).json({ success: `Added ${data.tracks.length} songs to the queue.` });
-			} else {
-				// add track to queue and play
-				if (player.state !== 'CONNECTED') player.connect();
-				player.queue.add(data.tracks[0]);
-				if (!player.playing && !player.paused && !player.queue.size) {
-					player.play();
-				} else {
-					const embed = new Embed(bot, guild)
+					// Show how many songs have been added
+					bot.channels.cache.get(player.textChannel)?.send({ embeds: [new Embed(bot, guild)
 						.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
-						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: data.tracks[0].title, URL: data.tracks[0].uri }));
-					bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
-				}
-				res.status(200).json({ success: `Added ${data.tracks[0].title} to the queue.` });
+						.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }))] });
+
+					// Add songs to queue and then pLay the song(s) if not already
+					player.queue.add(data.tracks);
+					if (!player.playing && !player.paused && player.queue.totalSize === data.tracks.length) player.play();
+					res.status(200).json({ success: `Added ${data.tracks.length} songs to the queue.` });
+					break;
+				default:
+					// add track to queue and play
+					if (player.state !== 'CONNECTED') player.connect();
+					player.queue.add(data.tracks[0]);
+					if (!player.playing && !player.paused && !player.queue.size) {
+						player.play();
+					} else {
+						bot.channels.cache.get(player.textChannel)?.send({ embeds: [new Embed(bot, guild)
+							.setColor(guild.members.cache.get(req.query.user)?.displayHexColor ?? bot.config.embedColor)
+							.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: data.tracks[0].title, URL: data.tracks[0].uri }))] });
+					}
+					res.status(200).json({ success: `Added ${data.tracks[0].title} to the queue.` });
 			}
 		} else {
 			res.status(400).json({ error: 'No music playing in that guild.' });
