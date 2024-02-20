@@ -134,7 +134,7 @@ class UserInfo extends Command {
 		if (contrib | support | dev) {
 			embed.addFields({
 				name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${contrib ? `<@${bot.config.Staff.ContributerRole}>` : ``}${support ? `, <@${bot.config.Staff.SupportRole}>` : ``}${dev ? `, <@${bot.config.Staff.DeveloperRole}>` : ``}`, inline: true
-			})
+			});
 		}
 		return embed;
 	}
