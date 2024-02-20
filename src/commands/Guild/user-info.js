@@ -11,12 +11,12 @@ const { Embed } = require('../../utils'),
 */
 class UserInfo extends Command {
 	/**
-   * @param {Client} client The instantiating client
-   * @param {CommandData} data The data for the command
-  */
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
+	*/
 	constructor(bot) {
 		super(bot, {
-			name:  'user-info',
+			name: 'user-info',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['userinfo', 'whois'],
@@ -37,8 +37,8 @@ class UserInfo extends Command {
 	/**
 	 * Function for receiving message.
 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command.
- 	 * @readonly
+	 * @param {message} message The message that ran the command.
+	 * @readonly
 	*/
 	async run(bot, message) {
 		// Get user
@@ -50,12 +50,12 @@ class UserInfo extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
+	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
@@ -97,6 +97,9 @@ class UserInfo extends Command {
 	*/
 	createEmbed(bot, guild, member) {
 		const roles = [...member.roles.cache.sort((a, b) => b.position - a.position).values()];
+		const contrib = bot.config.Staff.Contributers.includes(member.user.id);
+		const support = bot.config.Staff.Support.includes(member.user.id);
+		const dev = bot.config.Staff.Developers.includes(member.user.id);
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
@@ -125,6 +128,13 @@ class UserInfo extends Command {
 				{ name: bot.translate('guild/user-info:JOIN', {}, guild.settings?.Language), value: moment(member.joinedAt).format('lll'), inline: true },
 				{ name: bot.translate('guild/user-info:NICK', {}, guild.settings?.Language), value: member.nickname != null ? member.nickname : bot.translate('misc:NONE', {}, guild.settings?.Language), inline: true },
 				{ name: bot.translate('guild/user-info:ROLES', {}, guild.settings?.Language), value: `${roles.join(', ')}${(roles.length != member.roles.cache.size) ? '...' : '.'}` });
+		}
+
+		// Staff only vales
+		if (contrib | support | dev) {
+			embed.addFields({
+				name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${contrib ? `<@${bot.config.Staff.ContributerRole}>` : ``}${support ? `, <@${bot.config.Staff.SupportRole}>` : ``}${dev ? `, <@${bot.config.Staff.DeveloperRole}>` : ``}`, inline: true
+			})
 		}
 		return embed;
 	}
