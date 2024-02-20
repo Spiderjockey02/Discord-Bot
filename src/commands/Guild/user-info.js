@@ -124,16 +124,21 @@ class UserInfo extends Command {
 
 		// Guild only values
 		if (member.guild) {
+			const role = (roles.length != member.roles.cache.size) ? '...' : '.';
+			const nick = member.nickname != null ? member.nickname : bot.translate('misc:NONE', {}, guild.settings?.Language);
 			embed.addFields({ name: bot.translate('guild/user-info:ROLE', {}, guild.settings?.Language), value: `${member.roles.highest}`, inline: true },
 				{ name: bot.translate('guild/user-info:JOIN', {}, guild.settings?.Language), value: moment(member.joinedAt).format('lll'), inline: true },
-				{ name: bot.translate('guild/user-info:NICK', {}, guild.settings?.Language), value: member.nickname != null ? member.nickname : bot.translate('misc:NONE', {}, guild.settings?.Language), inline: true },
-				{ name: bot.translate('guild/user-info:ROLES', {}, guild.settings?.Language), value: `${roles.join(', ')}${(roles.length != member.roles.cache.size) ? '...' : '.'}` });
+				{ name: bot.translate('guild/user-info:NICK', {}, guild.settings?.Language), value: nick, inline: true },
+				{ name: bot.translate('guild/user-info:ROLES', {}, guild.settings?.Language), value: `${roles.join(', ')}${role}` });
 		}
 
 		// Staff only vales
 		if (contrib | support | dev) {
+			const cb = contrib ? `<@${bot.config.Staff.ContributerRole}>` : ``;
+			const sp = support ? `<@${bot.config.Staff.SupportRole}>` : ``;
+			const dv = dev ? `<@${bot.config.Staff.DeveloperRole}>` : ``;
 			embed.addFields(
-				{ name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${contrib ? `<@${bot.config.Staff.ContributerRole}>` : ``}${support ? `<@${bot.config.Staff.SupportRole}>` : ``}${dev ? `<@${bot.config.Staff.DeveloperRole}>` : ``}`, inline: true },
+				{ name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${cb}${sp}${dv}`, inline: true },
 			);
 		}
 		return embed;
