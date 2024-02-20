@@ -108,7 +108,12 @@ module.exports = Structure.extend('Player', Player => {
 		setSlowmo(value) {
 			if (value) {
 				this.setFilter({
+					equalizer: [
+						{ band: 1, gain: 0.3 },
+						{ band: 0, gain: 0.3 },
+					],
 					timescale: { speed: 0.7, pitch: 1.0, rate: 0.8 },
+					tremolo: { depth: 0.3, frequency: 14 },
 				});
 				this.slowmo = true;
 			} else {
