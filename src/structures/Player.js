@@ -12,8 +12,9 @@ module.exports = Structure.extend('Player', Player => {
 			// for filters
 			this.speed = 1;
 			this.bassboost = false;
+			this.eightD = false;
 			this.nightcore = false;
-            this.slowmo = false;
+			this.slowmo = false;
 			this.vaporwave = false;
 			// for Autoplay
 			this.autoplay = false;
@@ -42,6 +43,25 @@ module.exports = Structure.extend('Player', Player => {
 					],
 				});
 				this.bassboost = true;
+			}
+			return this;
+		}
+
+		// update eightD filter
+		setEightD(value) {
+			if (value) {
+				this.setFilter({
+					equalizer: [
+						{ band: 1, gain: 0.3 },
+						{ band: 0, gain: 0.3 },
+					],
+					rotation: { rotationHz: 0.2 },
+					tremolo: { depth: 0.3, frequency: 14 },
+				});
+				this.eightD = true;
+			} else {
+				this.resetFilter();
+				this.eightD = false;
 			}
 			return this;
 		}
@@ -122,6 +142,8 @@ module.exports = Structure.extend('Player', Player => {
 			this.speed = 1;
 			this.nightcore = false;
 			this.vaporwave = false;
+			this.slowmo = false;
+			this.eightD = false;
 			return this;
 		}
 
