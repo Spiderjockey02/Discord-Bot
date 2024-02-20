@@ -9,8 +9,8 @@ const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags
 */
 class Filters extends Command {
 	/**
-	   * @param {Client} client The instantiating client
-	   * @param {CommandData} data The data for the command
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
