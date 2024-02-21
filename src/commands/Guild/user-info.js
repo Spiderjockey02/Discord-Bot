@@ -99,9 +99,9 @@ class UserInfo extends Command {
 		const roles = [...member.roles.cache.sort((a, b) => b.position - a.position).values()];
 		const supportGuild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
 
-		let isContributor = false
-		let isSupport = false
-		let isDev = false
+		let isContributor = false;
+		let isSupport = false;
+		let isDev = false;
 		try {
 			isContributor = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
 			isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
