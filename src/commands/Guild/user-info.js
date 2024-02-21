@@ -97,9 +97,11 @@ class UserInfo extends Command {
 	*/
 	createEmbed(bot, guild, member) {
 		const roles = [...member.roles.cache.sort((a, b) => b.position - a.position).values()];
-		const contrib = bot.guilds.cache.get(bot.config.SupportServer.GuildID).members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributerRole);
-		const support = bot.guilds.cache.get(bot.config.SupportServer.GuildID).members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
-		const dev = bot.guilds.cache.get(bot.config.SupportServer.GuildID).members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+		const supportGuild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
+		const isContributor = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
+		const isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
+		const isDev = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
@@ -133,13 +135,11 @@ class UserInfo extends Command {
 		}
 
 		// Staff only vales
-		if (contrib | support | dev) {
-			const cb = contrib ? `<@${bot.config.Staff.ContributerRole}>` : ``;
-			const sp = support ? `<@${bot.config.Staff.SupportRole}>` : ``;
-			const dv = dev ? `<@${bot.config.Staff.DeveloperRole}>` : ``;
-			embed.addFields(
-				{ name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${cb}${sp}${dv}`, inline: true },
-			);
+		if (isContributor | isSupport | isDev) {
+			const contributer = isContributor ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.ContributorRole).name}` : ``;
+			const support = isSupport ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.SupportRole).name}` : ``;
+			const dev = isDev ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.DeveloperRole).name}` : ``;
+			embed.addFields({ name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${contributer} ${support} ${dev}`, inline: true });
 		}
 		return embed;
 	}
