@@ -98,10 +98,16 @@ class UserInfo extends Command {
 	createEmbed(bot, guild, member) {
 		const roles = [...member.roles.cache.sort((a, b) => b.position - a.position).values()];
 		const supportGuild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
-		const isContributor = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
-		const isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
-		const isDev = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
 
+		let isContributor = false
+		let isSupport = false
+		let isDev = false
+		try {
+			isContributor = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
+			isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
+			isDev = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+		} catch (err) {
+		}
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
