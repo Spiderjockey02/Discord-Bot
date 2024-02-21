@@ -37,7 +37,7 @@ const config = {
 		token: '123456789',
 	},
 	Staff: {
-		ContributerRole: "814645275544387705",
+		ContributorRole: "814645275544387705",
 		SupportRole: "740674583023321200",
 		DeveloperRole: "740682780467396705",
 	},
