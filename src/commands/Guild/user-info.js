@@ -107,6 +107,7 @@ class UserInfo extends Command {
 			isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
 			isDev = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
 		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`)
 		}
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
