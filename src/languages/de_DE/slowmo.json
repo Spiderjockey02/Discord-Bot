@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Schaltet den slowmo-Modus um.",
+  "USAGE": "slowmo",
+  "ON": "**slowmo**. Dies kann einige Sekunden dauern...",
+  "DESC_1": "**slowmo** aktiviert",
+  "OFF": "Deaktiviere **slowmo**. Dies kann ein paar Sekunden dauern...",
+  "DESC_2": "**slowmo** ausgeschaltet"
+}

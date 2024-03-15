@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Einen Benutzer entbannen.",
+  "USAGE": "entbannen <userID> [reason]",
+  "NO_ONE": "Es gibt niemanden zu bannen.",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich entbannt*.",
+  "MISSING": "Kein gebannter Benutzer mit ID: {{ID}}."
+}

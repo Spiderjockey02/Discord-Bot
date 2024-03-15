@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Recharge une commande.",
+  "USAGE": "reload <commande / événement>",
+  "SUCCESS": "La commande : `{{NAME}}` a été rechargée.",
+  "SUCCESS_EVENT": "L'événement : `{{NAME}}` a été rechargé.",
+  "INCORRECT_DETAILS": "{{NAME}} n'est ni une commande ni un événement."
+}

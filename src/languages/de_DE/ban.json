@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Ban a user.",
+  "USAGE": "ban <user> [reason] [time]",
+  "TITLE": "GEBANNT",
+  "MISSING_USER": "Ich kann niemanden bestrafen, der nicht auf diesem Server ist.",
+  "TOO_POWERFUL": "Dieser Benutzer steht über mir, den kann ich nicht bannen.",
+  "DESC": "Du wurdest von {{NAME}} gebannt.",
+  "BAN_BY": "Gebannt von:",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich gebannt*."
+}

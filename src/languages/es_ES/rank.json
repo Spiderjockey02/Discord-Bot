@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Shows your rank/Level.",
+  "USAGE": "level [username]",
+  "NO_MESSAGES": "You aren't ranked yet. Send some messages first, then try again.",
+  "NO_BOTS": "Bots are unable to gain XP.",
+  "MEMBER_MESSAGE": "That user isn't ranked yet. Encourage them to send a message"
+}

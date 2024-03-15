@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Reaktionsrolle anlegen",
+  "USAGE": "rr-add [channelID]",
+  "NEED_PREMIUM": "Du benötigst Premium, um mehr Reaktionsrollen zu erstellen. Premium-Server erhalten bis zu `10` Reaktionsrolle",
+  "MAX_RR": "Es gibt ein Maximum von 10 Reaktionsrollen pro Server auch mit Premium.",
+  "INCORRECT_EMOJIS": "Eine falsche Anzahl von Emojis wurde eingegeben",
+  "SEND_ROLES": "Bitte senden Sie eine Liste der Rollen unten (IDs oder Erwähnungen), getrennt mit einem Leerzeichen. Geben Sie **abbrechen** ein, um dies zu beenden.",
+  "SEND_EMOJIS": "Bitte sende deine Emojis unten. Die Bestellung wird mit der Reihenfolge der Rollen übereinstimmen, getrennt mit einem Raum. Tippe **Stornieren** um dies zu beenden",
+  "TITLE": "Reaktionsrollen:",
+  "REACT_BELOW": "Reagiere unten, um eine Rolle zu bekommen!"
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Rollendaten im Server bearbeiten",
+  "USAGE": "editiere Rolle <role name> <option> <value>",
+  "SUCCESS": "Rolle erfolgreich aktualisiert."
+}

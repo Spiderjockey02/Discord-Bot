@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Bewegt den angegebenen Song an die angegebene Position.",
+  "USAGE": "verschiebe <position> <new position>",
+  "INVALID": "Ungültige Nummer.",
+  "IS_PLAYING": "Ein bereits abgespieltes Lied kann nicht verschoben werden. Um den aktuellen Song-Typ zu überspringen: `{{PREFIX}}skip`",
+  "NOT_FOUND": "Dieser Song konnte nicht gefunden werden",
+  "MOVED_1": "**{{TITLE}}** an den Anfang der Warteschlange verschoben.",
+  "MOVED_2": "Verschiebe **{{TITLE}}** in die Position {{POS}}."
+}

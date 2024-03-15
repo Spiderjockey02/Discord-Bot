@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Displays the previous tracks that have been played.",
+  "USAGE": "previous [pageNumber]"
+}

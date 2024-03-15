@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Tag vom Server entfernen",
+  "USAGE": "tag-delete <name>",
+  "TAG_DELETED": "Tag: {{TAG}} wurde gelöscht.",
+  "NO_TAG": "Kein Tag mit Name: `{{TAG}}` wurde gefunden."
+}

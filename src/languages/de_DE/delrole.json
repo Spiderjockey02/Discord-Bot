@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Eine Rolle vom Server löschen.",
+  "USAGE": "delrole <role name>",
+  "MISSING": "Keine Rolle gefunden!",
+  "SUCCESS": "Rolle erfolgreich gelöscht: {{ROLE}}.",
+  "FAIL": "Rolle kann aufgrund von Berechtigungen nicht gelöscht werden."
+}

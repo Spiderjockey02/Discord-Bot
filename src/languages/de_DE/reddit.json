@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Senden Sie ein zufälliges Bild von einem ausgewählten Subreddit.",
+  "USAGE": "reddit <subreddit>",
+  "TITLE": "Aus {{TITLE}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

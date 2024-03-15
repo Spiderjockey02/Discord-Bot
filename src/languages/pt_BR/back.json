@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Plays the previous song in the queue.",
+  "USAGE": "back",
+  "NO_PREV": "There are no previous songs."
+}

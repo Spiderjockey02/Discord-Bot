@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Informieren Sie sich über ein Fortnite Konto.",
+  "USAGE": "vierzehn <kbm / gamepad / touch> <user>",
+  "FETCHING": "{{EMOJI}} ruft {{ITEM}} ab...",
+  "TITLE": "🖼️ Avatar für {{USER}}",
+  "DESC": "**Top Platzierungen**\n\n**Top 3's:** *{{TOP_3}}*\n**Top 5's:** *{{TOP_5}}*\n**Top 6's:** *{{TOP_6}}*\n**Top 12's:** *{{TOP_12}}*\n**Top 25's:** *{{TOP_25}}*",
+  "TOTAL": "Gesamtbewertung:",
+  "PLAYED": "Abgeschlossene Kämpfe:",
+  "WINS": "Gewonnen:",
+  "WINS_PRE": "Sieges-Prozentsatz: ",
+  "KILLS": "Tötungen: ",
+  "K/D": "Abschüsse/Tode: "
+}

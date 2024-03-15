@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Spielt den vorherigen Song in der Warteschlange ab.",
+  "USAGE": "zurück",
+  "NO_PREV": "Es gibt keine vorherigen Songs."
+}

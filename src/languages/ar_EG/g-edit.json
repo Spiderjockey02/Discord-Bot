@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "تعديل جيف اواي.",
+  "USAGE": "ز-تحرير <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "يجب أن يكون عدد الفائزين أقل من 10.",
+  "EDIT_GIVEAWAY": "تم بنجاح! سيتم تحديث الجيف اواي في أقل من {{TIME}} ثانية.",
+  "UNKNOWN_GIVEAWAY": "لم يتم العثور على جيف اواي مع معرف الرسالة: `{{ID}}`، الرجاء التحقق والمحاولة مرة أخرى."
+}

@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Erhalte Informationen über ein Steam-Konto.",
+  "USAGE": "steam <user>",
+  "AUTHOR": "Steam Services | {{NAME}}",
+  "STATE": [
+    "Offline",
+    "Online",
+    "Besetzt",
+    "Abwesend",
+    "Schlummer",
+    "Suche nach Handel",
+    "Suche nach Spiele"
+  ],
+  "DESC": "**Echter Name:** {{NAME}}\n**Status:** {{STATUS}}\n**Land:** :flag_{{FLAG}}:\n**Account erstellt:** {{TIME}}\n**Bans:** Urlaub: {{VAC_BANS}}, Spiel: {{GAME_BANS}}\n**Link:** [Link zum Profil] ({{URL}})"
+}

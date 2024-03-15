@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Schaltet den Nachtkernmodus um.",
+  "USAGE": "nettkern",
+  "ON": "**Nachtkern**. Dies kann ein paar Sekunden dauern...",
+  "DESC_1": "**Nachtkern** aktiviert",
+  "OFF": "Deaktiviere **Nachtkern**. Dies kann einige Sekunden dauern...",
+  "DESC_2": "**Nachtkern** ausgeschaltet"
+}

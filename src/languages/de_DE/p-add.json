@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Füge ein Lied zur Playlist hinzu",
+  "USAGE": "p-add <playlist name> <song>",
+  "ERROR": "Beim Suchen ist ein Fehler aufgetreten: `{{ERROR}}`",
+  "NO_PLAYLIST": "Keine Wiedergabeliste mit Namen gefunden: `{{NAME}}`.",
+  "NO_SONG": "Ich konnte diesen Song nicht finden.",
+  "SUCCESS": "{{NUM}} neue Song(s) zur Wiedergabeliste hinzugefügt: `{{TITLE}}`."
+}

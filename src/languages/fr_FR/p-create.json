@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Créer une liste de lecture",
+  "USAGE": "p-create <playlist name> <search query/link>",
+  "TOO_LONG": "Le nom de votre liste de lecture ne peut pas dépasser 32 caractères !",
+  "WAITING": "Ajout un/des titre(s) à la liste de lecture. Cela prendra effet dans quelques instants...",
+  "NO_PREM": "Seul la souscription d'un abonnement Premium pour le serveur permet de sauvegarder jusqu'à trois listes de lecture au lieu d'une.",
+  "MAX_PLAYLISTS": "Tu ne peux pas sauvegarder plus de liste de lecture. Maximum : 3",
+  "EXISTS": "Une liste de lecture existe déjà sous ce nom.",
+  "DESC_1": "Liste de lecture ajoutée : **{{TITLE}}**.",
+  "DESC_2": "Durée de la liste de lecture : {{NUM}}.",
+  "DESC_3": "\"Ajouté **{{NAME}}** ({{NUM}} titres) à **{{TITLE}}**.",
+  "FOOTER": "ID : {{ID}} • Titre : {{NUM}}/{{PREM}}",
+  "NO_SONG": "Je ne trouve pas ce titre."
+}

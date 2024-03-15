@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Reloads a command.",
+  "USAGE": "reload <command / event>",
+  "SUCCESS": "Command: `{{NAME}}` has been reloaded.",
+  "SUCCESS_EVENT": "Event: `{{NAME}}` has been reloaded.",
+  "INCORRECT_DETAILS": "{{NAME}} isn't a command nor event."
+}

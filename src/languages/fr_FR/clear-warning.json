@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Supprimer les avertissements concernant un membre.",
+  "USAGE": "clear-warning <user> [warning number]",
+  "CLEARED": "Les avertissements concernant <@{{MEMBER}}> ont été mis à jour"
+}

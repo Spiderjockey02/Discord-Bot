@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Flip a coin.",
+  "USAGE": "flip",
+  "HEADS": "Heads",
+  "TAILS": "Tails"
+}

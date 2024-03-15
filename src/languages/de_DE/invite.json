@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Sendet einen Einladungs-Link, um den Bot einzuladen.",
+  "USAGE": "einladen",
+  "LINK": "🤖 [Lade mich zu deinem Server ein]({{LINK}} 'Du weißt, dass du willst')"
+}

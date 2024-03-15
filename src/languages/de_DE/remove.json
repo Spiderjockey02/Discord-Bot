@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Entfernt einen Song aus der Warteschlange",
+  "USAGE": "<position> [position] entfernen",
+  "NAN": "Ungültige Nummer.",
+  "PLAYING": "Ein Lied, das bereits abgespielt wird, kann nicht entfernt werden. Um den Song-Typ zu überspringen: `{{PREFIX}}skip`",
+  "MISSING": "Dieser Song konnte nicht gefunden werden.",
+  "REMOVED": "**{{TITLE}}** aus der Warteschlange entfernt",
+  "INVALID": "Der Startbetrag muss größer als das Ende sein.",
+  "REMOVED_MULTI": "**{{NUM}}** aus der Warteschlange entfernt"
+}

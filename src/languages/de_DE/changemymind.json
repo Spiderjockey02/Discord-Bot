@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Erstelle ein Gedankenänderungsbild.",
+  "USAGE": "Gedankenänderung <text>",
+  "TOO_LONG": "Deine Nachricht darf nicht mehr als 80 Zeichen lang sein."
+}

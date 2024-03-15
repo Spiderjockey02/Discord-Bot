@@ -1,0 +1,8 @@
+{
+    "DESCRIPTION": "Toggles eightD mode.",
+    "USAGE": "eightD",
+    "ON": "Turning on **eightD**. This may take a few seconds...",
+    "DESC_1": "Turned on **eightD**",
+    "OFF": "Turning off **eightD**. This may take a few seconds...",
+    "DESC_2": "Turned off **eightD**"
+}

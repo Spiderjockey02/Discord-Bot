@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Schleppt den Song oder die Warteschlange.",
+  "USAGE": "schleife [Warteschlange / Song]",
+  "TRACK": "{{TOGGLE}} Track-Wiederholung.",
+  "QUEUE": "{{TOGGLE}} Warteschlange wiederholen."
+}

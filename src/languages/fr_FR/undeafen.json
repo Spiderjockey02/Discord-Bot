@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Rétablir le son pour un membre.",
+  "USAGE": "undeafen <user>",
+  "NOT_VC": "Je ne peux pas rendre sourd quelqu'un qui n'est pas connecté à un canal vocal.",
+  "SUCCESS": "*<@{{USER}}> n'est plus en sourdine*."
+}

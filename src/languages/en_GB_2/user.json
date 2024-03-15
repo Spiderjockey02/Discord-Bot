@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Edit a user's data",
+  "USAGE": "user <id> [premium / banned] [true / false]",
+  "SUCCESS_PREM": "Successfully updated user's premium.",
+  "SUCCESS_BAN": "Successfully updated user's global ban.",
+  "SUCCESS_RANK": "Successfully updated user's rank background.",
+  "SUCCESS_RESET": "Successfully reset user's data."
+}

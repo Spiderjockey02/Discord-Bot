@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Affiche le classement des niveaux du serveur.",
+  "USAGE": "leaderboard",
+  "TITLE": "Classement",
+  "EMPTY_TITLE": "Pas de classement",
+  "EMPTY_DESC": "Merci d'envoyer des messages pour obtenir de l'expérience.",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "**XP:** {{XP}} | **Niveau :** {{LEVEL}}"
+}

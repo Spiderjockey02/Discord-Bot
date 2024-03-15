@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Obtenir la météo.",
+  "USAGE": "weather <location>",
+  "TITLE": "Météo - {{LOC}}",
+  "DESC": "Les unités de température peuvent parfois être différentes",
+  "TEMP": "Température :",
+  "SKY": "Ciel :",
+  "HUMIDITY": "Humidité :",
+  "SPEED": "Vitesse du vent :",
+  "TIME": "Horaire d'observation :",
+  "DISPLAY": "Direction du vent :"
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Benutzer stummschalten.",
+  "USAGE": "mute <user> [time]",
+  "SUCCESS": "*<@{{USER}}> wurde stummgeschaltet*."
+}

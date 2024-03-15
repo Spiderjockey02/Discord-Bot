@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Blurpifier une image.",
+  "USAGE": "blurpify [file]"
+}

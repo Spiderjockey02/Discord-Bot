@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Skriptdatei ausführen.",
+  "USAGE": "Skript <file name> [...params]"
+}

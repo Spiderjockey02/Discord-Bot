@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Schnelle Weiterleitungen des Spielers um den angegebenen Betrag.",
+  "USAGE": "schnell weiterleiten <time>",
+  "LIVESTREAM": "Du kannst das nicht mit einem Livesystem machen.",
+  "TOO_LONG": "Der Song ist nur {{TIME}}.",
+  "DESC": "**Fast-forwarded `{{OLD}}` zu: `{{NEW}}`.**"
+}

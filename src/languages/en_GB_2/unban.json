@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Unban a user.",
+  "USAGE": "unban <userID> [reason]",
+  "NO_ONE": "There is no one to ban.",
+  "SUCCESS": "*<@{{USER}}> was successfully unbanned*.",
+  "MISSING": "No banned user with ID: {{ID}}."
+}

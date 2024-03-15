@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Recherche un GIF NSFW.",
+  "USAGE": "4k",
+  "FETCHING": "{{EMOJI}} Récupère l'image {{ITEM}}..."
+}

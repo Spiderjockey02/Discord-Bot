@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Informieren Sie sich über ein Fortnite Konto.",
+  "USAGE": "instagram <user>",
+  "UNKNOWN_USER": "Dieser Benutzername konnte nicht gefunden werden.",
+  "USERNAME": "Benutzername: ",
+  "FULL_NAME": "Voller Name: ",
+  "BIOGRAPHY": "Biografie: ",
+  "POSTS": "Beiträge: ",
+  "FOLLOWERS": "Follower: ",
+  "FOLLOWING": "Folgt: ",
+  "PRIVATE": "Privater Account: ",
+  "VERIFIED": "Verifizierter Account: "
+}

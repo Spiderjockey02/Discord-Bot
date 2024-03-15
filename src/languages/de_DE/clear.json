@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Lösche eine bestimmte Anzahl an Nachrichten.",
+  "USAGE": "clear <Number> [member]",
+  "NO_PREM": "Der Server muss Premium sein, um mehr als `200` Nachrichten zu löschen.",
+  "TITLE": "Nachrichtenbestätigung löschen",
+  "DESC": "Sie sind dabei, {{NUM}} Nachrichten von diesem Kanal zu löschen, bitte reagieren Sie, um diese Aktion zu bestätigen.",
+  "DEL_MSG": "Das Löschen von {{NUM}} Nachrichten dauert ungefähr {{TIME}} Sekunden.\nSENDE KEINE NACHRICHTEN NACHRICHTEN WÄHREND DAS PASSIERT.",
+  "SUCCESS": "{{NUM}} Nachrichten wurden erfolgreich gelöscht.",
+  "CON_CNC": "Erfolgreich abgebrochen",
+  "CON_TO": "Zeitüberschreitung der Bestätigung."
+}

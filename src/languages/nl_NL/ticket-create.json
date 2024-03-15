@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Creates a ticket",
+  "USAGE": "ticket-create [reason]",
+  "TICKET_EXISTS": "You already have a ticket channel",
+  "NO_SUPPORT_ROLE": "No support role has been created on this server yet.",
+  "NO_CATEGORY": "Please update the category channel ID.",
+  "TITLE": "✅ Success!",
+  "DESC": "Your ticket has been created: <#{{CHANNEL}}>",
+  "FIELD1": "Hey {{USERNAME}} !",
+  "FIELDT": "Our support team will contact you as soon as possible.",
+  "FIELD2": "Reason: ",
+  "TICKET": "Ticket: ",
+  "USER": "User: ",
+  "LOG_TITLE": "Ticket Opened!",
+  "COOLDOWN": "You can open a ticket in {{NUM}} minutes."
+}

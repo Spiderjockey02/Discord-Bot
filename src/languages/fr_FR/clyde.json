@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Créer un faux message Clyde.",
+  "USAGE": "clyde <text>",
+  "TOO_LONG": "Ton message ne peut pas dépasser 70 caractères."
+}

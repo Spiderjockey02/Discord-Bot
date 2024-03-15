@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Verlose eine Verlosung erneut.",
+  "USAGE": "g-reroll <messageID>",
+  "SUCCESS_GIVEAWAY": "Erfolgreich! Verlosung erneut verlost!",
+  "UNKNOWN_GIVEAWAY": "Kein Giveaway mit der ID: `{{ID}}` gefunden. Bitte überprüfe es und versuche es erneut.",
+  "CONGRAT": "🎉 Neuer Gewinner(in): {winners}! Herzlichen Glückwunsch!",
+  "ERROR": "Keine gültigen Teilnahmen; keine Gewinner*innen wurden gefunden!"
+}

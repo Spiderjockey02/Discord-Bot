@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Playlist löschen",
+  "USAGE": "p-Löschen <playlist name>",
+  "MISSING": "Konnte keine Playlist mit dem Namen finden: {{TITLE}}.",
+  "SUCCESS": "{{TITLE}} erfolgreich gelöscht."
+}

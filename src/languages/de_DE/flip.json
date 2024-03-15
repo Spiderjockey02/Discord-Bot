@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Wirf eine Münze.",
+  "USAGE": "werfen",
+  "HEADS": "Kopf",
+  "TAILS": "Zahl"
+}

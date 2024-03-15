@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Look up the weather in a certain area.",
+  "USAGE": "weather <location>",
+  "TITLE": "Weather - {{LOC}}",
+  "DESC": "Temperature units can may be differ some time",
+  "TEMP": "Temperature:",
+  "SKY": "Sky Text:",
+  "HUMIDITY": "Humidity:",
+  "SPEED": "Wind speed:",
+  "TIME": "Observation Time:",
+  "DISPLAY": "Wind Display:"
+}
