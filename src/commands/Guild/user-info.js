@@ -95,20 +95,22 @@ class UserInfo extends Command {
 	 * @param {user} GuildMember The member to get information of
 	 * @returns {embed}
 	*/
-	createEmbed(bot, guild, member) {
+	async createEmbed(bot, guild, member) {
 		const roles = [...member.roles.cache.sort((a, b) => b.position - a.position).values()];
 		const supportGuild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
+		let isContributor, isSupport, isDev = false;
 
-		let isContributor = false;
-		let isSupport = false;
-		let isDev = false;
 		try {
-			isContributor = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
-			isSupport = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
-			isDev = supportGuild.members.cache.get(member.user.id).roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+			const memberInSupportGuild = await supportGuild.members.fetch(member.user.id)
+			if (memberInSupportGuild !== null) {
+				isContributor = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
+				isSupport = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
+				isDev = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 		}
+
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
