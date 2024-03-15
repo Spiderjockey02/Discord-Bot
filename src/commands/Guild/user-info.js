@@ -101,7 +101,7 @@ class UserInfo extends Command {
 		let isContributor, isSupport, isDev = false;
 
 		try {
-			const memberInSupportGuild = await supportGuild.members.fetch(member.user.id)
+			const memberInSupportGuild = await supportGuild.members.fetch(member.user.id);
 			if (memberInSupportGuild !== null) {
 				isContributor = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
 				isSupport = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
