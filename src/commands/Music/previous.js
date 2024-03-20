@@ -124,7 +124,7 @@ class Previous extends Command {
 		const queue = player.previousTracks;
 		if (queue.size == 0) {
 			const embed = new Embed(bot, guild)
-				.setTitle('No previous tracks have been played');
+				.setTitle('music/queue:EMPTY');
 			return interaction.reply({ embeds: [embed] });
 		}
 
@@ -156,7 +156,7 @@ class Previous extends Command {
 			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, interaction, pages, member.id);
 			else return interaction.reply({ embeds: [pages[0]] });
 		} else {
-			if (page > pagesNum) return interaction.reply({ content: `There are only ${pagesNum} pages available.` });
+			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
