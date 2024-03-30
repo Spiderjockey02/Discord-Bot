@@ -9,8 +9,8 @@ const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags
 */
 class Pitch extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -34,10 +34,10 @@ class Pitch extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
   */
 	async run(bot, message) {
 		// check to make sure bot can play music based on permissions
@@ -47,7 +47,7 @@ class Pitch extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 
 		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
-			player.filters.clearFilters();
+			player.resetFilters();
 			const msg = await message.channel.send(message.translate('music/pitch:PITCH_OFF'));
 			const embed = new EmbedBuilder()
 				.setDescription(message.translate('music/pitch:DESC_1'));
@@ -69,12 +69,12 @@ class Pitch extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
+	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id);
@@ -88,7 +88,7 @@ class Pitch extends Command {
 		const player = bot.manager?.players.get(member.guild.id);
 
 		if (amount && ['reset', 'off'].includes(amount.toLowerCase())) {
-			player.filters.clearFilters();
+			player.resetFilters();
 			await interaction.reply(bot.translate('music/pitch:PITCH_OFF'));
 			const embed = new EmbedBuilder()
 				.setDescription(bot.translate('music/pitch:DESC_1'));
