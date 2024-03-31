@@ -29,9 +29,10 @@ class QueueEnd extends Event {
 			// Search for track
 			const channel = bot.channels.cache.get(player.textChannel);
 			const guild = bot.guilds.cache.get(player.guild);
+			const randomIndex = Math.floor(Math.random() * 23) + 2;
 			let res;
 			try {
-				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID};`, requester);
+				res = await bot.manager.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex};`, requester);
 				if (res.loadType === 'error') {
 					if (!player.queue.current) player.destroy();
 					throw res.exception;
@@ -42,11 +43,11 @@ class QueueEnd extends Event {
 
 			switch (res.loadType) {
 				case 'empty':
-				// An error occured or couldn't find the track
+					// An error occured or couldn't find the track
 					if (!player.queue.current) player.destroy();
 					return channel.error('music/play:NO_SONG');
 				case 'playlist': {
-				// Connect to voice channel if not already
+					// Connect to voice channel if not already
 					if (player.state !== 'CONNECTED') player.connect();
 
 					// Show how many songs have been added
@@ -61,7 +62,7 @@ class QueueEnd extends Event {
 					break;
 				}
 				default:
-				// add track to queue and play
+					// add track to queue and play
 					if (player.state !== 'CONNECTED') player.connect();
 					player.queue.add(res.tracks[0]);
 					if (!player.playing && !player.paused && !player.queue.size) {
