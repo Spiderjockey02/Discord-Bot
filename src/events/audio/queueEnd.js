@@ -1,7 +1,8 @@
 // Dependencies
 const { EmbedBuilder } = require('discord.js'),
 	{ Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+	Event = require('../../structures/Event'),
+	crypto = require('crypto');
 
 /**
  * Queue end event
@@ -29,10 +30,10 @@ class QueueEnd extends Event {
 			// Search for track
 			const channel = bot.channels.cache.get(player.textChannel);
 			const guild = bot.guilds.cache.get(player.guild);
-			const randomIndex = Math.floor(Math.random() * 23) + 2;
+			const randomIndex = crypto.randomInt(25);
 			let res;
 			try {
-				res = await bot.manager.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex};`, requester);
+				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex};`, requester);
 				if (res.loadType === 'error') {
 					if (!player.queue.current) player.destroy();
 					throw res.exception;
