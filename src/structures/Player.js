@@ -145,6 +145,7 @@ module.exports = Structure.extend('Player', Player => {
 				guildId: this.guild,
 			});
 			this.speed = 1;
+			this.bassboost = false;
 			this.nightcore = false;
 			this.vaporwave = false;
 			this.slowmo = false;
