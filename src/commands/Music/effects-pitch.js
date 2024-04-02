@@ -97,6 +97,13 @@ class Pitch extends Command {
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
+		// Not resetting or a number
+		if (amount !== "reset" && amount !== "reset" && isNaN(amount)) {
+			const embed = new EmbedBuilder()
+				.setDescription(bot.translate('music/pitch:INVALID'));
+			return interaction.editReply({ content: '​​ ', embeds: [embed] });
+		}
+
 		// No Value
 		if (!amount) {
 			player.setFilter({
