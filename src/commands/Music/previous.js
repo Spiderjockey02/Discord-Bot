@@ -51,13 +51,13 @@ class Previous extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE');
+		if (!player) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
 		if (queue.size == 0) {
 			const embed = new Embed(bot, message.guild)
-				.setTitle('No previous tracks have been played');
+				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
 			return message.channel.send({ embeds: [embed] });
 		}
 
@@ -77,10 +77,16 @@ class Previous extends Command {
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
+			// How many previous tracks there are
+			const previouslength = player.previousTracks.length;
+			// If the amount of prevous tracks is 1 use song else use songs
+			const songlength = previouslength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
+			// If there aren't previous tracks use nothing else use the tracks
+			const lasttracklength = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
 			const embed = new Embed(bot, message.guild)
-				.setAuthor({ name: `Previous Tracks - ${message.guild.name}`, iconURL: message.guild.iconURL() })
-				.setDescription(`**Last Track**: ${str == '' ? '  Nothing' : '\n\n' + str}`)
-				.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${player.previousTracks.length} song(s)` });
+				.setAuthor(bot.translate('music/previous:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
+				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
+				.setFooter(bot.translate('music/previous:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: previouslength, SONG: songlength }));
 			pages.push(embed);
 		}
 
@@ -89,8 +95,8 @@ class Previous extends Command {
 			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, message, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
-			if (isNaN(message.args[0])) return message.channel.send('Page must be a number.');
-			if (message.args[0] > pagesNum) return message.channel.send(`There are only ${pagesNum} pages available.`);
+			if (isNaN(message.args[0])) return message.channel.send(bot.translate('music/misc:NAN'));
+			if (message.args[0] > pagesNum) return message.channel.send(bot.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
 			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
 			return message.channel.send({ embeds: [pages[pageNum]] });
 		}
@@ -118,13 +124,13 @@ class Previous extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
 		if (queue.size == 0) {
 			const embed = new Embed(bot, guild)
-				.setTitle('music/queue:EMPTY');
+				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
 			return interaction.reply({ embeds: [embed] });
 		}
 
@@ -144,10 +150,16 @@ class Previous extends Command {
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
+			// How many previous tracks there are
+			const previouslength = player.previousTracks.length;
+			// If the amount of prevous tracks is 1 use song else use songs
+			const songlength = previouslength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
+			// If there aren't previous tracks use nothing else use the tracks
+			const lasttracklength = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
 			const embed = new Embed(bot, guild)
-				.setAuthor({ name: `Previous Tracks - ${guild.name}`, iconURL: guild.iconURL() })
-				.setDescription(`**Last Track**: ${str == '' ? '  Nothing' : '\n\n' + str}`)
-				.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${player.previousTracks.length} song(s)` });
+				.setAuthor(bot.translate('music/previous:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
+				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
+				.setFooter(bot.translate('music/previous:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: previouslength, SONG: songlength }));
 			pages.push(embed);
 		}
 
@@ -156,7 +168,7 @@ class Previous extends Command {
 			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, interaction, pages, member.id);
 			else return interaction.reply({ embeds: [pages[0]] });
 		} else {
-			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/queue:TOO_HIGH', { NUM: pagesNum }, true)] });
+			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pagesNum }, true)] });
 			const pageNum = page == 0 ? 1 : page - 1;
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}

@@ -1,4 +1,8 @@
 {
   "DESCRIPTION": "آهنگ قبلی که در لیست پخش شده بوده رو نشان میدهد.",
-  "USAGE": "previous [pageNumber]"
+  "USAGE": "previous [pageNumber]",
+  "TITLE": "آهنگ های قبلی - {{NAME}}",
+  "LAST_TRACK": "**آخرین آهنگ**: {{TRACK}}",
+  "PAGE": "صفحه {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
+  "PREVIOUS_TRACKS": "هیچ آهنگ قبلی پخش نشده است"
 }

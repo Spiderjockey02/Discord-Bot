@@ -1,7 +1,9 @@
 {
   "DESCRIPTION": "Displays the queue.",
   "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "EMPTY": "Warteschlange ist leer",
+  "TITLE": "Warteschlange - {{NAME}}",
+  "NOW_PLAYING": "**Wird gerade abgespielt**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Als Nächstes **: {{NEXT}}",
+  "PAGE": "Seite {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} Gesamtdauer",
+  "LOADED": "Warteschlange geladen"
 }

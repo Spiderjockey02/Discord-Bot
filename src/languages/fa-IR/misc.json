@@ -21,5 +21,6 @@
 	"ENABLED": "فعال",
 	"DISABLED": "غیر فعال",
 	"MISSING_CHANNEL": "من نمیتوانم چنل را پیدا کنم.",
-	"INVALID_FILE": "لطفا از یکی از این فرمت ها استفاده کنید: `png`, `jpeg`, `tiff`, `jpg`, `webp`."
+	"INVALID_FILE": "لطفا از یکی از این فرمت ها استفاده کنید: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
+	"NOTHING": "هیچ چی"
 }

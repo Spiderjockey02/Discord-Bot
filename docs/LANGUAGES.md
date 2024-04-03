@@ -33,22 +33,103 @@
   <a href="#scroll-credits">Credits</a>
 </p>
 <p align="center">
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
-  •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md">Privacy Policy</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ.md">FAQ</a>
   •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md">Contributing</a>
+  •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md">Commands</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CODE_OF_CONDUCT.md">Code of Conduct</a>
 </p>
 
-Contributing would be great as i'm a sole developer for this bot.
 
-You can help contribute by:
-* Translation language files (help with previous translations or make support for another language)
-* Optimization on files. (Know a better way on a function, make a pull request and I'll have a look)
-* Donating (Donating helps me stay motivated to providing open source code, that anyone can use)
+## :exclamation: Language Codes
+
+* :robot: Bot Language Codes | Discord Language Codes
+    * ar-EG | ar
+    * de-DE | de
+    * en-upside | n/a
+    * en-US | en 
+    * es-ES | es
+    * fa-IR | fa
+    * fr-FR | fr
+    * it-IT | it
+    * nl-NL | nl
+    * pt-BR | pt
+    * ru-RU | ru
+
+* :earth_americas: Language | Native Name
+    * Arabic | 	العربية
+    * German | Deutsch
+    * English Upside-Down | English Upside-Down
+    * English | English
+    * Spanish | Español
+    * Persian | فارسی
+    * French | Français
+    * Italian | Italiano
+    * Dutch | Nederlands
+    * Portuguese | Português
+    * Russian | Русский
+
+## :question: Code Formatting
+
+* :mag_right: **Name & Description Localization**
+```js
+nameLocalizations: [{
+	ar: '',
+	de: '',
+	es: '',
+    fa: '',
+	fr: '',
+	it: '',
+	nl: '',
+	pt: '',
+	ru: '',
+}],
+descriptionLocalizations: [{
+	ar: '',
+	de: '',
+	es: '',
+    fa: '',
+	fr: '',
+	it: '',
+	nl: '',
+	pt: '',
+	ru: '',
+}],
+```
+
+* :speech_balloon: **Option & Choice Localization**
+```js
+options: [{
+    nameLocalizations: [{
+        ar: '',
+	    de: '',
+	    es: '',
+        fa: '',
+	    fr: '',
+	    it: '',
+	    nl: '',
+	    pt: '',
+	    ru: '',
+    }],
+    descriptionLocalizations: [{
+	    ar: '',
+	    de: '',
+	    es: '',
+        fa: '',
+	    fr: '',
+	    it: '',
+	    nl: '',
+	    pt: '',
+	    ru: '',
+    }],
+    choices: [{
+        name_localizations: {}
+    }],
+}],
+```

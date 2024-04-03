@@ -9,8 +9,8 @@ const { Embed } = require('../../utils'),
 */
 class NowPlaying extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -26,11 +26,11 @@ class NowPlaying extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
+		*/
 	async run(bot, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
@@ -41,7 +41,7 @@ class NowPlaying extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player || !player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player || !player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Get current song information
 		const { title, requester, thumbnail, uri, duration } = player.queue.current;
@@ -65,11 +65,11 @@ class NowPlaying extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id),
@@ -84,7 +84,7 @@ class NowPlaying extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if(!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Get current song information
 		const { title, requester, thumbnail, uri, duration } = player.queue.current;

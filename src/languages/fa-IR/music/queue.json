@@ -2,6 +2,8 @@
   "DESCRIPTION": "نمایش لیست پخش.",
   "USAGE": "queue [pageNumber]",
   "EMPTY": "لیست پخش خالی است",
-  "NAN": "صفحه مورد نظر پیدا نشود .",
-  "TOO_HIGH": "فقط {{NUM}} صفحه موجود می باشد."
+  "TITLE": "صف - {{NAME}}",
+  "NOW_PLAYING": "**در حال پخش**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**تا بعدی**: {{NEXT}}",
+  "PAGE": "صفحه {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} کل مدت زمان",
+  "LOADED": "صف بارگذاری شده"
 }

@@ -1,5 +1,7 @@
 <h1 align="center">
   <br>
+  <img src="https://avatars.githubusercontent.com/u/97468814?s=200&v=4" alt=egglord />
+  <br>
   Egglord
   <br>
 </h1>
@@ -18,42 +20,61 @@
 </div>
 
 <p align="center">
-  <a href="#about">About</a>
+  <a href="#question-about">About</a>
   •
-  <a href="#Features">Features</a>
+  <a href="#exclamation-features">Features</a>
   •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
+  <a href="#memo-to-do">To-Do</a>
   •
-  <a href="#license">License</a>
+  <a href="#desktop_computer-my-other-projects">Installation</a>
   •
-  <a href="#credits">Credits</a>
+  <a href="#book-license">License</a>
+  •
+  <a href="#scroll-credits">Credits</a>
+</p>
+<p align="center">
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
+  •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md">Privacy Policy</a>
+  •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/FAQ.md">FAQ</a>
+  •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md">Commands</a>
+  •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md">Contributing</a>
+  •
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CODE_OF_CONDUCT.md">Code of Conduct</a>
 </p>
 
-## ❓ About
+<p align="center">
+  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
+</p>
+
+## :question: About
 
 Egglord is an open source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs.
 
-If you liked this repository, feel free to leave a star ⭐ to help promote Egglord!
+If you liked this repository, feel free to leave a star :star: to help promote Egglord!
 
-## ❗ Features
+## :exclamation: Features
 
 **140+** commands and counting across **13** different categories!
 
-*   🎉  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokemon` and **6** more!
-*   🎁  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete` and **2** more!
-*   💬  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **6** more!
-*   👑  **Host**: `reload`, `shutdown`, `addban`, `eval` and **10** more!
-*   🖼  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more!
-*   💰  **Level**: `leaderboard`, `rank`!
-*   ❔  **Misc**: `about`, `help`, `status`, `uptime`!
-*   🚓  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **16** more!
-*   🎵  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **29** more!
-*   🔞  **NSFW**: Total of **18** commands!
-* **Plugins**: `reaction roles`, `settings language`, `settings logs` and **4** more!
-*   🔎  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **3** more!
-* **Tag**: `Tag system`!
-*   ❓  **Ticket**: `t-(close | create |setup )`!
-*   **Full list** of commands: [here](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md).
+*   :tada:  **Fun**: `advice`, `fact`, `meme`, `reminder`, `pokemon` and **6** more!
+*   :gift:  **Giveaway**: `g-start`, `g-reroll`, `g-edit` and `g-delete` and **2** more!
+*   :speech_balloon:  **Guild**: `avatar`, `giveaway`, `server-info`, `poll`, and **6** more!
+*   :crown:  **Host**: `reload`, `shutdown`, `addban`, `eval` and **10** more!
+*   :framed_picture:  **Image**: `blurpify`, `changemymind`, `phcomment`, `stickbug`, `whowouldwin`, `threats`, and **10** more!
+*   :moneybag:  **Level**: `leaderboard`, `rank`!
+*   :grey_question:  **Misc**: `about`, `help`, `status`, `uptime`!
+*   :police_car:  **Moderation**: `ban`, `clear`, `kick`, `warn`, `report`, `unmute` and **16** more!
+*   :musical_note:  **Music**: `play`, `queue`, `shuffle`, `seek`, `lyrics` and **29** more!
+*   :underage:  **NSFW**: Total of **18** commands!
+*   :electric_plug: **Plugins**: `reaction roles`, `settings language`, `settings logs` and **4** more!
+*   :mag_right:  **Searcher**: `fortnite`, `weather`, `twitch`, `steam` and **3** more!
+*   :film_strip: **Tag**: `Tag system`!
+*   :ticket:  **Ticket**: `t-(close | create |setup )`!
+*   :books: **Full list** of commands: [here](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/COMMANDS.md).
 
 Egglord also comes packed with a variety of features, such as:
 
@@ -68,25 +89,25 @@ Egglord also comes packed with a variety of features, such as:
   * **Reaction roles**
   * And much more! There are over **40+** settings to tweak!
 
-
-## 📝 To-Do
+## :memo: To-Do
 
 Egglord is pretty much at the end of development now, it will only be updated for the following things:
 
-  * Bug fixes
-  * Code optimisation
-  * New discord features
+  * Bug fixes.
+  * Code optimisation.
+  * New discord features.
   * Suggestions I deem very good.
+  * Localization on Command Names, Descriptions, Options, and Choices.
 
-## 🖥️ My other projects
+## :desktop_computer: My other projects
  * [Auto poster](https://github.com/Spiderjockey02/auto-poster-and-notifications) - Allows your users to get notified when you post on another social media. (Youtube, twitch, twitter, reddit etc)
  * [erela.js-facebook](https://github.com/Spiderjockey02/erela.js-facebook) - Allows facebook videos to played with [erela.js](https://github.com/MenuDocs/erela.js) (A [lavalink](https://github.com/Freyacodes/Lavalink) client).
 
-## 📖 License
+## :book: License
 
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
-## 📜 Credits
+## :scroll: Credits
 * **[tovade](https://github.com/tovade)** - Initial Reaction Role System.
 * **[josh_0242](https://github.com/ChaosArising)** - Slash Commands & Tags System.
 * **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, reddit, TikTok, Phub, Mixcloud etc).

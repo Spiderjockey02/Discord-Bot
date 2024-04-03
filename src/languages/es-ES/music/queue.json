@@ -1,7 +1,9 @@
 {
   "DESCRIPTION": "Displays the queue.",
   "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "EMPTY": "La cola está vacía.",
+  "TITLE": "Cola - {{NAME}}",
+  "NOW_PLAYING": "**Reproduciendo ahora**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**A continuación**: {{NEXT}}",
+  "PAGE": "Página {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} duración total",
+  "LOADED": "Cola cargada"
 }

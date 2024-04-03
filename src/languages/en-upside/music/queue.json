@@ -2,6 +2,7 @@
   "DESCRIPTION": "˙ǝnǝnb ǝɥʇ sʎɐldsᴉp",
   "USAGE": "queue [ɹǝqɯnNǝƃɐd]",
   "EMPTY": "ʎʇdɯǝ sᴉ ǝnǝnQ",
-  "NAN": "˙ɹǝqɯnu ɐ ǝq ʇsnɯ ǝƃɐԀ",
-  "TOO_HIGH": "˙ǝlqɐlᴉɐʌɐ sǝƃɐd {{NUM}} ʎluo ǝɹɐ ǝɹǝɥ┴"
+  "NOW_PLAYING": "**ƃuᴉʎɐlԀ ʍoN**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**ʇxǝN d∩**: {{NEXT}}",
+  "PAGE": "ǝƃɐԀ {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} lɐʇoʇ uoᴉʇɐɹnp",
+  "LOADED": "ǝnǝnQ pǝpɐo˥"
 }
