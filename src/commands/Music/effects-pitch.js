@@ -98,7 +98,7 @@ class Pitch extends Command {
 		}
 
 		// Not resetting or a number
-		if (amount !== "reset" && amount !== "reset" && isNaN(amount)) {
+		if (!['reset', 'off'].includes(amount.toLowerCase()) && !isNaN(amount)) {
 			const embed = new EmbedBuilder()
 				.setDescription(bot.translate('music/pitch:INVALID'));
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
