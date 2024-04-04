@@ -1,5 +1,5 @@
 // Dependencies
-const { paginate } = require('../../utils'),
+const { paginate, functions: { checkMusic } } = require('../../utils'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
@@ -41,17 +41,14 @@ class Previous extends Command {
 	 * @param {message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(bot, message, settings) {
-		// Check if the member has role to interact with music plugin
-		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
-			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
-				return message.channel.error('misc:MISSING_ROLE');
-			}
-		}
+	async run(bot, message) {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player) return message.channel.error('music/misc:NO_QUEUE');
+
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(message.member, bot);
+		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
@@ -115,16 +112,12 @@ class Previous extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const page = args.get('page')?.value;
 
-		// Check if the member has role to interact with music plugin
-		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
-			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', { ERROR: null }, true)] });
-			}
-		}
-
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
+
+		// check for DJ role, same VC and that a song is actually playing
+		const playable = checkMusic(member, bot);
+		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
