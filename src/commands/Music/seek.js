@@ -9,8 +9,8 @@ const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags
 */
 class Seek extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	   * @param {Client} client The instantiating client
+	   * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -33,10 +33,10 @@ class Seek extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
+	   * Function for receiving message.
+	   * @param {bot} bot The instantiating client
+	   * @param {message} message The message that ran the command
+	   * @readonly
   */
 	async run(bot, message, settings) {
 		// check to make sure bot can play music based on permissions
@@ -65,19 +65,23 @@ class Seek extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
+	   * Function for receiving interaction.
+	   * @param {bot} bot The instantiating client
+	   * @param {interaction} interaction The interaction that ran the command
+	   * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
+	   * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId);
 		const command = bot.subCommands.get(`seek-${interaction.options.getSubcommand()}`);
-		if (command) {
-			command.callback(bot, interaction, guild, args);
-		} else {
-			interaction.reply({ content: 'Error', ephemeral: true });
+		try {
+			if (command) {
+				command.callback(bot, interaction, guild, args);
+			}
+		} catch (err) {
+			bot.logger.error(`Command: 'seek-${interaction.options.getSubcommand()}' has error: ${err.message}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 }

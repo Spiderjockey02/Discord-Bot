@@ -21,5 +21,6 @@
 	"DISABLED": "Disabled",
 	"MISSING_CHANNEL": "I was unable to find this channel.",
 	"INVALID_FILE": "Please use one of the following file types for images: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
-	"NOTHING": "لا شئ"
+	"NOTHING": "لا شئ",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

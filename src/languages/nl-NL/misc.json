@@ -21,5 +21,6 @@
 	"DISABLED": "Uitschakelen",
 	"MISSING_CHANNEL": "Ik kon dit kanaal niet vinden.",
 	"INVALID_FILE": "Gebruik een van de volgende bestandstypen voor afbeeldingen: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
-	"NOTHING": "Niets"
+	"NOTHING": "Niets",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

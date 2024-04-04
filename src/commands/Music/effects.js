@@ -8,8 +8,8 @@ const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require
 */
 class Effects extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	   * @param {Client} client The instantiating client
+	   * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -40,11 +40,15 @@ class Effects extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
+		const channel = guild.channels.cache.get(interaction.channelId);
 		const command = bot.subCommands.get(`effects-${interaction.options.getSubcommand()}`);
-		if (command) {
-			command.callback(bot, interaction, guild, args);
-		} else {
-			interaction.reply({ content: 'Error', ephemeral: true });
+		try {
+			if (command) {
+				command.callback(bot, interaction, guild, args);
+			}
+		} catch (err) {
+			bot.logger.error(`Command: 'effects-${interaction.options.getSubcommand()}' has error: ${err.message}.`);
+			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 }

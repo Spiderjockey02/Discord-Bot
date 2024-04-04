@@ -80,8 +80,8 @@ class Play extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' });
 		}
 
 		// Make sure something was entered
@@ -187,8 +187,8 @@ class Play extends Command {
 				selfDeafen: true,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: Player couldn't be created.`);
-			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' }, true)] });
 		}
 
 		// Search for track

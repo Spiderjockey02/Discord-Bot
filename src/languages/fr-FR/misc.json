@@ -21,5 +21,6 @@
 	"DISABLED": "Désactivé",
 	"MISSING_CHANNEL": "Je ne trouve pas ce salon.",
 	"INVALID_FILE": "Merci d'utiliser l'un des types de fichiers suivants pour les images: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
-	"NOTHING": "Rien"
+	"NOTHING": "Rien",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

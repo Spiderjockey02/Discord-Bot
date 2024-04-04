@@ -21,5 +21,6 @@
 	"DISABLED": "Отключено",
 	"MISSING_CHANNEL": "Я не смог найти этот канал.",
 	"INVALID_FILE": "Пожалуйста, используйте один из следующих типов файлов для изображений: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
-	"NOTHING": "Ничего"
+	"NOTHING": "Ничего",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

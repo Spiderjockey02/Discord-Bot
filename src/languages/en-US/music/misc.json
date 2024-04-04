@@ -3,5 +3,6 @@
     "SONGS": "Songs",
     "NAN": "Page must be a number",
     "TOO_HIGH": "There are only {{NUM}} pages available",
-    "NO_QUEUE": "There are currently no songs playing in this server"
+    "NO_QUEUE": "There are currently no songs playing in this server",
+    "SONG_TIMED": "You didn't choose a song in time."
 }
