@@ -100,9 +100,9 @@ class Previous extends Command {
 			}
 		} else {
 			const pageNum = parseInt(message.args[0]);
+			const pageIndex = Math.max(0, Math.min(pageNum - 1, pagesNum - 1));
 			if (isNaN(pageNum)) return message.channel.send(bot.translate('music/misc:NAN'));
 			if (pageNum > pagesNum) return message.channel.send(bot.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
-			const pageIndex = pageNum == 0 ? 0 : pageNum - 1;
 			return message.channel.send({ embeds: [pages[pageIndex]] });
 		}
 	}

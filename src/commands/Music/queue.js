@@ -80,13 +80,14 @@ class Queue extends Command {
 		const user = `<@${!requester.id ? requester : requester.id}>`;
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
-			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
-			// How many tracks there are queued
+			const start = i * 10;
+			const end = start + 10;
+			const str = songStrings.slice(start, end).join('');
+
 			const queuelength = player.queue.length;
-			// If the amount of queued tracks is 1 use song else use songs
 			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			// If there aren't queued tracks use nothing else use the tracks
 			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+
 			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.translate('music/queue:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
@@ -99,10 +100,11 @@ class Queue extends Command {
 			if (PageCheck(pages, pagesNum, player)) paginate(bot, message.channel, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
-			if (isNaN(message.args[0])) return message.channel.send(message.translate('music/misc:NAN'));
-			if (message.args[0] > pagesNum) return message.channel.send(message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }));
-			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
-			return message.channel.send({ embeds: [pages[pageNum]] });
+			const pageNum = parseInt(message.args[0]);
+			const pageIndex = Math.max(0, Math.min(pageNum - 1, pagesNum - 1));
+			if (isNaN(pageNum)) return message.channel.send(message.translate('music/misc:NAN'));
+			if (pageNum > pagesNum) return message.channel.send(message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }));
+			return message.channel.send({ embeds: [pages[pageIndex]] });
 		}
 	}
 
@@ -159,13 +161,14 @@ class Queue extends Command {
 		const user = `<@${!requester.id ? requester : requester.id}>`;
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
-			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
-			// How many tracks there are in queue
+			const start = i * 10;
+			const end = start + 10;
+			const str = songStrings.slice(start, end).join('');
+
 			const queuelength = player.queue.length;
-			// If the amount of queued tracks is 1 use song else use songs
 			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			// If there aren't queued tracks use nothing else use the tracks
 			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+
 			const embed = new Embed(bot, guild)
 				.setAuthor(bot.translate('music/queue:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
@@ -183,7 +186,7 @@ class Queue extends Command {
 			}
 		} else {
 			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pagesNum }, true)] });
-			const pageNum = page == 0 ? 1 : page - 1;
+			const pageNum = Math.max(0, Math.min(page - 1, pagesNum - 1));
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
 	}
