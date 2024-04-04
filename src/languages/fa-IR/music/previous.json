@@ -4,5 +4,6 @@
   "TITLE": "آهنگ های قبلی - {{NAME}}",
   "LAST_TRACK": "**آخرین آهنگ**: {{TRACK}}",
   "PAGE": "صفحه {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
-  "PREVIOUS_TRACKS": "هیچ آهنگ قبلی پخش نشده است"
+  "PREVIOUS_TRACKS": "هیچ آهنگ قبلی پخش نشده است",
+  "LOADED": "Loaded Previous Tracks"
 }

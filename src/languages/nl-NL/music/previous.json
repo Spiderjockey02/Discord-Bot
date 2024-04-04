@@ -4,5 +4,6 @@
   "TITLE": "Vorige nummers - {{NAME}}",
   "LAST_TRACK": "**Laatste nummer**: {{TRACK}}",
   "PAGE": "Bladzijde {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
-  "PREVIOUS_TRACKS": "Er zijn geen eerdere nummers afgespeeld"
+  "PREVIOUS_TRACKS": "Er zijn geen eerdere nummers afgespeeld",
+  "LOADED": "Loaded Previous Tracks"
 }

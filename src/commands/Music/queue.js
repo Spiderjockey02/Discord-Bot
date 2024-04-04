@@ -53,7 +53,7 @@ class Queue extends Command {
 
 		// Make sure queue is not empty
 		const queue = player.queue;
-		if (queue.size == 0) {
+		if (!queue?.size) {
 			const embed = new Embed(bot, message.guild)
 				.setTitle('music/queue:EMPTY');
 			return message.channel.send({ embeds: [embed] });
@@ -70,8 +70,9 @@ class Queue extends Command {
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
+			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
 				`);
 		}
 
@@ -85,7 +86,7 @@ class Queue extends Command {
 			// If the amount of queued tracks is 1 use song else use songs
 			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
 			// If there aren't queued tracks use nothing else use the tracks
-			const upnext = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
+			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
 			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.translate('music/queue:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
@@ -95,7 +96,7 @@ class Queue extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (pages.length == pagesNum && player.queue.length > 10) paginate(bot, message.channel, pages, message.author.id);
+			if (PageCheck(pages, pagesNum, player)) paginate(bot, message.channel, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			if (isNaN(message.args[0])) return message.channel.send(message.translate('music/misc:NAN'));
@@ -131,7 +132,7 @@ class Queue extends Command {
 
 		// Make sure queue is not empty
 		const queue = player.queue;
-		if (queue.size == 0) {
+		if (!queue?.size) {
 			const embed = new Embed(bot, guild)
 				.setTitle('music/queue:EMPTY');
 			return interaction.reply(embed);
@@ -148,8 +149,9 @@ class Queue extends Command {
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
+			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
 				`);
 		}
 
@@ -163,7 +165,7 @@ class Queue extends Command {
 			// If the amount of queued tracks is 1 use song else use songs
 			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
 			// If there aren't queued tracks use nothing else use the tracks
-			const upnext = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
+			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
 			const embed = new Embed(bot, guild)
 				.setAuthor(bot.translate('music/queue:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
@@ -173,7 +175,7 @@ class Queue extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
-			if (pages.length == pagesNum && player.queue.length > 10) {
+			if (PageCheck(pages, pagesNum, player)) {
 				paginate(bot, channel, pages, member.id);
 				return interaction.reply(bot.translate('music/queue:LOADED'));
 			} else {
@@ -185,6 +187,10 @@ class Queue extends Command {
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
 	}
+}
+
+function PageCheck(pages, pagesNum, player) {
+	return pages.length == pagesNum && player.queue.length > 10;
 }
 
 module.exports = Queue;

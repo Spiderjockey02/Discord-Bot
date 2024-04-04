@@ -4,5 +4,6 @@
   "TITLE": "Faixas anteriores - {{NAME}}",
   "LAST_TRACK": "**Última faixa**: {{TRACK}}",
   "PAGE": "Página {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
-  "PREVIOUS_TRACKS": "Nenhuma faixa anterior foi reproduzida"
+  "PREVIOUS_TRACKS": "Nenhuma faixa anterior foi reproduzida",
+  "LOADED": "Loaded Previous Tracks"
 }

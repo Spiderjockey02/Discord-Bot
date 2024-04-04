@@ -47,39 +47,43 @@ class Previous extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(message.member, bot);
-		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
+		const playable = typeof checkMusic(message.member, bot) === 'boolean';
+		if (!playable) {
+			return message.channel.error(playable);
+		}
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
-		if (queue.size == 0) {
+		if (!queue?.size) {
 			const embed = new Embed(bot, message.guild)
 				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
 			return message.channel.send({ embeds: [embed] });
 		}
 
 		// get total page number
-		let pagesNum = Math.ceil(player.previousTracks.length / 10);
-		if (pagesNum === 0) pagesNum = 1;
+		const pagesNum = Math.max(Math.ceil(player.previousTracks.length / 10), 1);
 
 		// fetch data to show on pages
 		const songStrings = [];
 		for (let i = 0; i < player.previousTracks.length; i++) {
 			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
+			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
 				`);
 		}
 		// create pages for pageinator
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
-			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
-			// How many previous tracks there are
+			const start = i * 10;
+			const end = start + 10;
+			const str = songStrings.slice(start, end).join('');
+
 			const previouslength = player.previousTracks.length;
-			// If the amount of prevous tracks is 1 use song else use songs
-			const songlength = previouslength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			// If there aren't previous tracks use nothing else use the tracks
-			const lasttracklength = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
+			const songTextKey = previouslength === 1 ? 'music/misc:SONG' : 'music/misc:SONGS';
+			const songlength = bot.translate(songTextKey);
+			const lasttracklength = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+
 			const embed = new Embed(bot, message.guild)
 				.setAuthor(bot.translate('music/previous:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
 				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
@@ -89,13 +93,17 @@ class Previous extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, message, pages, message.author.id);
-			else return message.channel.send({ embeds: [pages[0]] });
+			if (PageCheck(pages, pagesNum, player)) {
+				paginate(bot, message, pages, message.author.id);
+			} else {
+				return message.channel.send({ embeds: [pages[0]] });
+			}
 		} else {
-			if (isNaN(message.args[0])) return message.channel.send(bot.translate('music/misc:NAN'));
-			if (message.args[0] > pagesNum) return message.channel.send(bot.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
-			const pageNum = message.args[0] == 0 ? 1 : message.args[0] - 1;
-			return message.channel.send({ embeds: [pages[pageNum]] });
+			const pageNum = parseInt(message.args[0]);
+			if (isNaN(pageNum)) return message.channel.send(bot.translate('music/misc:NAN'));
+			if (pageNum > pagesNum) return message.channel.send(bot.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
+			const pageIndex = pageNum == 0 ? 0 : pageNum - 1;
+			return message.channel.send({ embeds: [pages[pageIndex]] });
 		}
 	}
 
@@ -116,39 +124,44 @@ class Previous extends Command {
 		const player = bot.manager?.players.get(guild.id);
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
-		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		const playable = typeof checkMusic(member, bot) === 'boolean';
+		if (!playable) {
+			return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
+		}
+
 
 		// Make sure at least one previous track is recorder is not empty
 		const queue = player.previousTracks;
-		if (queue.size == 0) {
+		if (!queue?.size) {
 			const embed = new Embed(bot, guild)
 				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
 			return interaction.reply({ embeds: [embed] });
 		}
 
 		// get total page number
-		let pagesNum = Math.ceil(player.previousTracks.length / 10);
-		if (pagesNum === 0) pagesNum = 1;
+		const pagesNum = Math.max(Math.ceil(player.previousTracks.length / 10), 1);
 
 		// fetch data to show on pages
 		const songStrings = [];
 		for (let i = 0; i < player.previousTracks.length; i++) {
 			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
+			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
 				`);
 		}
 		// create pages for pageinator
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
-			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
-			// How many previous tracks there are
+			const start = i * 10;
+			const end = start + 10;
+			const str = songStrings.slice(start, end).join('');
+
 			const previouslength = player.previousTracks.length;
-			// If the amount of prevous tracks is 1 use song else use songs
-			const songlength = previouslength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			// If there aren't previous tracks use nothing else use the tracks
-			const lasttracklength = str == '' ? ` ${bot.translate('misc:NOTHING')}` : '\n\n' + str;
+			const songTextKey = previouslength === 1 ? 'music/misc:SONG' : 'music/misc:SONGS';
+			const songlength = bot.translate(songTextKey);
+			const lasttracklength = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+
 			const embed = new Embed(bot, guild)
 				.setAuthor(bot.translate('music/previous:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
 				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
@@ -158,14 +171,24 @@ class Previous extends Command {
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
-			if (pages.length == pagesNum && player.previousTracks.length > 10) paginate(bot, interaction, pages, member.id);
-			else return interaction.reply({ embeds: [pages[0]] });
+			if (PageCheck(pages, pagesNum, player)) {
+				paginate(bot, interaction, pages, member.id);
+				return interaction.reply(bot.translate('music/previous:LOADED'));
+			} else {
+				return interaction.reply({ embeds: [pages[0]] });
+			}
 		} else {
-			if (page > pagesNum) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pagesNum }, true)] });
-			const pageNum = page == 0 ? 1 : page - 1;
+			const pageNum = Math.max(0, Math.min(page - 1, pagesNum - 1));
+			if (page > pagesNum) {
+				return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pagesNum }, true)] });
+			}
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
 	}
+}
+
+function PageCheck(pages, pagesNum, player) {
+	return pages.length == pagesNum && player.previousTracks.length > 10;
 }
 
 module.exports = Previous;

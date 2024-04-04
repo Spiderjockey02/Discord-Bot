@@ -4,5 +4,6 @@
   "TITLE": "الأغاني السابقة - {{NAME}}",
   "LAST_TRACK": "**المسار الأخير**: {{TRACK}}",
   "PAGE": "صفحة {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
-  "PREVIOUS_TRACKS": "لم يتم تشغيل أي مسارات سابقة"
+  "PREVIOUS_TRACKS": "لم يتم تشغيل أي مسارات سابقة",
+  "LOADED": "Loaded Previous Tracks"
 }
