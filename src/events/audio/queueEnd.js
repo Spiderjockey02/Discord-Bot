@@ -60,9 +60,9 @@ class QueueEnd extends Event {
 
 					// Add songs to queue and then pLay the song(s) if not already
 					player.queue.add(res.tracks);
-					if (!player.playing && !player.paused) player.play();
+					if (!player.playing && !player.paused) await player.play();
 					// Required to skip first track as it gets readded
-					player.stop(1);
+					player.stop();
 					break;
 				}
 				default:
