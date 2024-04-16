@@ -34,6 +34,7 @@ class QueueEnd extends Event {
 			let res;
 			try {
 				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex}`, requester);
+				if (res.loadType === 'playlist') res.tracks = res.playlist.tracks;
 				if (res.loadType === 'error') {
 					if (!player.queue.current) player.destroy();
 					throw res.exception;
@@ -59,7 +60,9 @@ class QueueEnd extends Event {
 
 					// Add songs to queue and then pLay the song(s) if not already
 					player.queue.add(res.tracks);
-					if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
+					if (!player.playing && !player.paused) player.play();
+					// Required to skip first track as it gets readded
+					player.stop(1);
 					break;
 				}
 				default:
