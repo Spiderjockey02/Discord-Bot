@@ -33,7 +33,7 @@ class QueueEnd extends Event {
 			const randomIndex = crypto.randomInt(25);
 			let res;
 			try {
-				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex};`, requester);
+				res = await player.search(`https://www.youtube.com/watch?v=${videoID}&list=RD${videoID}&index=${randomIndex}`, requester);
 				if (res.loadType === 'error') {
 					if (!player.queue.current) player.destroy();
 					throw res.exception;
