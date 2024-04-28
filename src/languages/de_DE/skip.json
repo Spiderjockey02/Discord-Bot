@@ -1,4 +1,6 @@
 {
   "DESCRIPTION": "Überspringt das aktuelle Lied.",
-  "USAGE": "überspringen"
+  "USAGE": "überspringen",
+  "SKIPPING_SONG": "Skipping song!",
+  "SKIPPING_SONGS": "Skipping {{NUM}} songs!"
 }
