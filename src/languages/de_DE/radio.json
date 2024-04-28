@@ -1,5 +1,8 @@
 {
   "DESCRIPTION": "Radio anhören",
   "USAGE": "radio",
-  "MISSING_RADIO": "Kein Radio mit diesem Namen gefunden"
+  "MISSING_RADIO": "Kein Radio mit diesem Namen gefunden",
+  "NAN": "The number you provided was too small or too big (1-{{MAX}}).",
+  "NUMBER_PICK": "{{RESULTS}}\n\n\tPick a number from 1-10 or cancel.\n",
+  "RESULTS_FOR": "Results for {{USER}}"
 }
