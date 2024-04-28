@@ -30,8 +30,8 @@ class Egglord extends Client {
 		});
 
 		/**
-			 * The logger file
-			   * @type {function}
+		 * The logger file
+		 * @type {function}
 		*/
 		this.logger = require('../utils/Logger');
 
