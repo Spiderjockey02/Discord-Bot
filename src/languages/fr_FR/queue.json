@@ -2,6 +2,8 @@
   "DESCRIPTION": "Liste les titres en attente.",
   "USAGE": "queue [pageNumber]",
   "EMPTY": "File d'attente vide",
-  "NAN": "Numéro_de_page doit être un nombre.",
-  "TOO_HIGH": "Il n'y a que {{NUM}} pages."
+  "TITLE": "Queue - {{NAME}}",
+  "NOW_PLAYING": "**Now Playing**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Up Next**: {{NEXT}}",
+  "PAGE": "Page {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} total duration",
+  "LOADED": "Loaded Queue"
 }
