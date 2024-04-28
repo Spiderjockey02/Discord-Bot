@@ -1,5 +1,5 @@
 const { Manager } = require('magmastream'),
-	{ LavalinkNodes: nodes, clientName } = require('../config');
+	{ LavalinkNodes: nodes } = require('../config');
 require('../structures/Player');
 
 /**
@@ -14,7 +14,7 @@ class AudioManager extends Manager {
 				const guild = bot.guilds.cache.get(id);
 				if (guild) guild.shard.send(payload);
 			},
-			clientName,
+			clientName: bot.user.username,
 			defaultSearchPlatform: 'youtube',
 		});
 	}

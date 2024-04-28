@@ -3,7 +3,6 @@ const { Colors } = require('discord.js');
 const config = {
 	ownerID: ['YourAccountID'],
 	token: 'YourBotToken',
-	clientName: 'EggLord',
 	// For looking up Twitch, Fortnite, Steam accounts
 	api_keys: {
 		// https://genius.com/developers
