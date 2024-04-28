@@ -40,15 +40,11 @@ class Effects extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId);
 		const command = bot.subCommands.get(`effects-${interaction.options.getSubcommand()}`);
-		try {
-			if (command) {
-				command.callback(bot, interaction, guild, args);
-			}
-		} catch (err) {
-			bot.logger.error(`Command: 'effects-${interaction.options.getSubcommand()}' has error: ${err.message}.`);
-			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
+		if (command) {
+			command.callback(bot, interaction, guild, args);
+		} else {
+			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }

@@ -67,7 +67,7 @@ class Previous extends Command {
 		const songStrings = [];
 		for (let i = 0; i < player.previousTracks.length; i++) {
 			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
-			const user = !song.requester.id ? song.requester : song.requester.id;
+			const user = song.requester.id ?? song.requester;
 			songStrings.push(
 				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
 				`);

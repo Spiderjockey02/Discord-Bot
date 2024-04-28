@@ -78,13 +78,13 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(member.guild.id);
-		const queuelength = player.queue.length;
-		const skiplength = !isNaN(amount) && amount > queuelength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
-		if (!isNaN(amount) && amount < queuelength) {
+		const queueLength = player.queue.length;
+		const skipLength = !isNaN(amount) && amount > queueLength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
+		if (!isNaN(amount) && amount < queueLength) {
 			player.stop(amount);
-			interaction.reply(skiplength);
+			interaction.reply({ content: skipLength });
 		} else {
-			interaction.reply({ content: skiplength });
+			interaction.reply({ content: skipLength });
 			player.stop();
 		}
 	}
