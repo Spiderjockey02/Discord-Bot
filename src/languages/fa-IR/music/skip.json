@@ -1,4 +1,6 @@
 {
   "DESCRIPTION": "رد کردن موزیک درحال پخش",
-  "USAGE": "skip"
+  "USAGE": "skip",
+  "SKIPPING_SONG": "Skipping song!",
+  "SKIPPING_SONGS": "Skipping {{NUM}} songs!"
 }

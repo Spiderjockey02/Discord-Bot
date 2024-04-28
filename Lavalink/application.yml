@@ -46,6 +46,9 @@ plugins:
       tiktok: true # tiktok.com
       mixcloud: true # mixcloud.com
       soundgasm: true # soundgasm.net
+  youtube:
+    enabled: true
+    clients: ["MUSIC", "ANDROID", "WEB"]
   lavasrc:
     providers:
     sources:

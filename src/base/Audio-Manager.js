@@ -14,6 +14,8 @@ class AudioManager extends Manager {
 				const guild = bot.guilds.cache.get(id);
 				if (guild) guild.shard.send(payload);
 			},
+			clientName: bot.user.username,
+			defaultSearchPlatform: 'youtube',
 		});
 	}
 }

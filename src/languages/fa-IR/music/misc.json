@@ -1,0 +1,8 @@
+{
+    "SONG": "ترانه",
+    "SONGS": "آهنگ ها",
+    "NAN": "صفحه باید یک عدد باشد",
+    "TOO_HIGH": "فقط {{NUM}} صفحه موجود است",
+    "NO_QUEUE": "در حال حاضر هیچ آهنگی در این سرور پخش نمی شود",
+    "SONG_TIMED": "You didn't choose a song in time."
+}

@@ -1,5 +1,8 @@
 {
   "DESCRIPTION": "گوش دادن به رادیو",
   "USAGE": "radio",
-  "MISSING_RADIO": "هیچ رادیو ای با این نام پیدا نشود"
+  "MISSING_RADIO": "هیچ رادیو ای با این نام پیدا نشود",
+  "NAN": "The number you provided was too small or too big (1-{{MAX}}).",
+  "NUMBER_PICK": "{{RESULTS}}\n\n\tPick a number from 1-10 or cancel.\n",
+  "RESULTS_FOR": "Results for {{USER}}"
 }

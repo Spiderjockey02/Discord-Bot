@@ -1,4 +1,9 @@
 {
   "DESCRIPTION": "˙pǝʎɐld uǝǝq ǝʌɐɥ ʇɐɥʇ sʞɔɐɹʇ snoᴉʌǝɹd ǝɥʇ sʎɐldsᴉp",
-  "USAGE": "previous [ɹǝqɯnNǝƃɐd]"
+  "USAGE": "previous [ɹǝqɯnNǝƃɐd]",
+  "TITLE": "sʞɔɐɹ┴ snoᴉʌǝɹԀ - {{NAME}}",
+  "LAST_TRACK": "**ʞɔɐɹ┴ ʇsɐ˥**: {{TRACK}}",
+  "PAGE": "ǝƃɐԀ {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
+  "PREVIOUS_TRACKS": "pǝʎɐld uǝǝq ǝʌɐɥ sʞɔɐɹʇ snoᴉʌǝɹd oN",
+  "LOADED": "sʞɔɐɹ┴ snoᴉʌǝɹԀ pǝpɐo˥"
 }

@@ -17,9 +17,10 @@
 	"SELF_PUNISH": "Tu ne peux pas te punir toi-même. C'est con...",
 	"MISSING_ROLE": "Tu n'as pas le rôle DJ.",
 	"NOT_VOICE": "Tu n'es pas dans le même salon vocal que moi.",
-	"NO_QUEUE": "Il n'y a actuellement aucune chanson en cours de lecture sur ce serveur.",
 	"ENABLED": "Activé",
 	"DISABLED": "Désactivé",
 	"MISSING_CHANNEL": "Je ne trouve pas ce salon.",
-	"INVALID_FILE": "Merci d'utiliser l'un des types de fichiers suivants pour les images: `png`, `jpeg`, `tiff`, `jpg`, `webp`."
+	"INVALID_FILE": "Merci d'utiliser l'un des types de fichiers suivants pour les images: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
+	"NOTHING": "Rien",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

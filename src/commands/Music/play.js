@@ -11,8 +11,8 @@ const { Embed } = require('../../utils'),
 */
 class Play extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	 * @param {Client} client The instantiating client
+	 * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -43,11 +43,11 @@ class Play extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
+	*/
 	async run(bot, message, settings) {
 		// make sure user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
@@ -80,8 +80,8 @@ class Play extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' });
 		}
 
 		// Make sure something was entered
@@ -148,12 +148,12 @@ class Play extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
+	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
@@ -187,8 +187,8 @@ class Play extends Command {
 				selfDeafen: true,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' }, true)] });
 		}
 
 		// Search for track
@@ -214,15 +214,15 @@ class Play extends Command {
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-r':
-					// Reverse the added tracks
+						// Reverse the added tracks
 						player.queue.add(res.playlist.tracks.reverse());
 						break;
 					case '-n':
-					// Add the tracks to the front of the queue
+						// Add the tracks to the front of the queue
 						player.queue.unshift(...res.playlist.tracks);
 						break;
 					case '-s':
-					// Shuffle the added songs
+						// Shuffle the added songs
 						player.queue.add(res.playlist.tracks.sort(() => Math.random() - 0.5));
 						break;
 					default:
@@ -230,16 +230,19 @@ class Play extends Command {
 				}
 
 				if (!player.playing && !player.paused && player.queue.totalSize === (res.playlist.tracks.length + 1)) player.play();
-				return interaction.followUp({ embeds: [new Embed(bot, guild)
-					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }))] });
+				return interaction.followUp({
+					embeds: [new Embed(bot, guild)
+						.setColor(member.displayHexColor)
+						.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 })),
+					],
+				});
 			default:
 				// add track to queue and play
 				if (player.state !== 'CONNECTED') player.connect();
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-n':
-					// Add the tracks to the front of the queue
+						// Add the tracks to the front of the queue
 						player.queue.unshift(res.tracks[0]);
 						break;
 					default:
@@ -292,7 +295,7 @@ class Play extends Command {
 				try {
 					videos = JSON.parse(html.split('{"itemSectionRenderer":{"contents":')[html.split('{"itemSectionRenderer":{"contents":').length - 1].split(',"continuations":[{')[0]);
 					fetched = true;
-				} catch {	fetched = false; }
+				} catch { fetched = false; }
 			}
 			if (!fetched) {
 				try {

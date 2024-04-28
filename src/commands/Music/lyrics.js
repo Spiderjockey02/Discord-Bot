@@ -9,8 +9,8 @@ const { Embed, paginate } = require('../../utils'),
 */
 class Lyrics extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	   * @param {Client} client The instantiating client
+	   * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -31,11 +31,11 @@ class Lyrics extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
+		*/
 	async run(bot, message) {
 		// Check that a song is being played
 		let song = message.args.join(' ');
@@ -44,13 +44,14 @@ class Lyrics extends Command {
 		if (song.length == 0) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(message.guild.id);
-			if (!player) return message.channel.error('misc:NO_QUEUE');
+			if (!player) return message.channel.error('music/misc:NO_QUEUE');
 			song = player.queue.current.title;
 		}
 
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name,
+		}));
 
 		// display lyrics
 		try {
@@ -86,7 +87,7 @@ class Lyrics extends Command {
 		if (!song) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(guild.id);
-			if (!player) return interaction.followUp({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+			if (!player) return interaction.followUp({ embeds: [channel.error('music/misc:NO_QUEUE', {}, true)] });
 			song = player.queue.current.title;
 		}
 

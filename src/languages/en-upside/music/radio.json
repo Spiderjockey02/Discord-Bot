@@ -1,5 +1,8 @@
 {
   "DESCRIPTION": "oᴉpɐɹ ǝɥʇ oʇ uǝʇsᴉ˥",
   "USAGE": "radio",
-  "MISSING_RADIO": "No radio found with that name"
+  "MISSING_RADIO": "ǝɯɐu ʇɐɥʇ ɥʇᴉʍ punoɟ oᴉpɐɹ oN",
+  "NAN": "(1-{{MAX}}) ƃᴉq ooʇ ɹo llɐɯs ooʇ sɐʍ pǝpᴉʌoɹd noʎ ɹǝqɯnu ǝɥ┴.",
+  "NUMBER_PICK": "{{RESULTS}}\n\n\t˙lǝɔuɐɔ ɹo 0Ɩ-Ɩ ɯoɹɟ ɹǝqɯnu ɐ ʞɔᴉԀ\n",
+  "RESULTS_FOR": "{{USER}} ɹoɟ sʇlnsǝɹ"
 }

@@ -1,0 +1,8 @@
+{
+    "SONG": "Canción",
+    "SONGS": "Canciones",
+    "NAN": "La página debe ser un número.",
+    "TOO_HIGH": "Solo hay {{NUM}} páginas disponibles",
+    "NO_QUEUE": "Actualmente no hay canciones reproduciéndose en este servidor",
+    "SONG_TIMED": "You didn't choose a song in time."
+}
