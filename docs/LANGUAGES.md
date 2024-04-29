@@ -33,31 +33,16 @@
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CODE_OF_CONDUCT.md">Code of Conduct</a>
 </p>
 
+Egglord currently supports 10+ languages by default but this can easily be increased by the addng your own language files to the correct directory.
 
-## :exclamation: Language Codes
-
-* :robot: Bot Language Codes | Discord Language Codes
-    * ar-EG | ar
-    * de-DE | de
-    * en-upside | n/a
-    * en-US | en 
-    * es-ES | es
-    * fa-IR | fa
-    * fr-FR | fr
-    * it-IT | it
-    * nl-NL | nl
-    * pt-BR | pt
-    * ru-RU | ru
-
-* :earth_americas: Language | Native Name
-    * Arabic | 	العربية
-    * German | Deutsch
-    * English Upside-Down | English Upside-Down
-    * English | English
-    * Spanish | Español
-    * Persian | فارسی
-    * French | Français
-    * Italian | Italiano
-    * Dutch | Nederlands
-    * Portuguese | Português
-    * Russian | Русский
+## :earth_americas: Supported Languages:
+* Arabic | العربية     (ar-EG)
+* German | Deutsch (de-DE)
+* English Upside-Down | English Upside-Down (en-upside)
+* English | English (en-US)
+* Spanish | Español (es-ES)
+* Persian | فارسی (fa-IR)
+* French | Français (fr-FR)
+* Italian | Italiano (it-IT)
+* Dutch | Nederlands (nl-NL)
+* Portuguese | Português (pt-BR)* Russian | Русский (ru-RU)
