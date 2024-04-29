@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Pause a giveaway",
+  "USAGE": "g-pause <messageID>",
+  "SUCCESS_GIVEAWAY": "Success! Giveaway paused!",
+  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again."
+}

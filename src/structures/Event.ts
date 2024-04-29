@@ -1,14 +1,20 @@
 // Dependencies
-const path = require('path');
+import path from "path";
 
 /**
  * Event structure
  * @abstract
  */
-class Event {
-	constructor(bot, name, {
+export default class Event {
+	conf: {
+		name: string 
+		category: string 
+		child?: string
+	}
+
+	constructor(name: string, {
 		dirname = false,
-		child = null,
+		child = undefined,
 	}) {
 		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
 		this.conf = { name, category, child };
@@ -21,9 +27,8 @@ class Event {
 	 * @readonly
 	*/
 	// eslint-disable-next-line no-unused-vars
-	async run(...args) {
-		throw new Error(`Event: ${this.name} does not have a run method`);
+	async run() {
+		throw new Error(`Event: ${this.conf.name} does not have a run method`);
 	}
 }
 
-module.exports = Event;

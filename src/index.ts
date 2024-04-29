@@ -1,5 +1,6 @@
 // Dependencies
 const { logger } = require('./utils');
+import { ShardingManager } from "discord.js";
 
 (async () => {
 
@@ -7,9 +8,6 @@ const { logger } = require('./utils');
 	const configCorrect = await require('./scripts/verify-config.js')(require('./config.js'));
 
 	if (!configCorrect) {
-		// This file is for sharding
-		const { ShardingManager } = require('discord.js');
-
 		// Create sharding manager
 		const manager = new ShardingManager('./src/bot.js', {
 			// Sharding options
@@ -21,7 +19,7 @@ const { logger } = require('./utils');
 		logger.log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-=');
 		try {
 			await manager.spawn();
-		} catch (err) {
+		} catch (err: any) {
 			logger.error(`Error loading shards: ${err.message}`);
 		}
 

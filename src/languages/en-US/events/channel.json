@@ -1,1 +1,9 @@
-{}
+{
+  "GUILD_TEXT": "Text",
+  "GUILD_VOICE": "Voice",
+  "GUILD_CATEGORY": "Category",
+  "GUILD_STAGE_VOICE": "Stage",
+  "GUILD_NEWS": "Annoucement",
+  "GUILD_STORE": "Store",
+  "CREATE": "channel created: {{CHANNEL}}"
+}

@@ -1,18 +1,25 @@
 // Dependencies
-const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, PermissionsBitField: { Flags: PermissionFlag } } = require('discord.js'),
-	{ GuildSchema } = require('../database/models'),
-	GiveawaysManager = require('./Giveaway-Manager'),
-	path = require('path'),
-	{ promisify } = require('util'),
-	{ get } = require('axios'),
-	readdir = promisify(require('fs').readdir);
-
+import {ActivityType, Client, Collection, GatewayIntentBits as FLAGS, Guild, Partials } from 'discord.js'
+import Logger from 'src/utils/Logger';
+import axios from 'axios';
+import GiveawaysManager from './Giveaway-Manager';
+import path from 'path'
+import { promisify } from 'util';
+import fs from 'fs'
+const readdir = promisify(fs.readdir)
 /**
  * Egglord custom client
  * @extends {Client}
 */
 
-class Egglord extends Client {
+export default class EgglordClient extends Client {
+	logger: Logger
+	giveawaysManager: GiveawaysManager
+	aliases: Collection<string, any>
+	commands: Collection<string, any>
+	subCommands: Collection<string, any>
+	interactions: Collection<string, any>
+	cooldowns: Collection<string, any>
 	constructor() {
 		super({
 			partials: [Partials.GuildMember, Partials.User, Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildScheduledEvent],
@@ -33,7 +40,7 @@ class Egglord extends Client {
 		 * The logger file
 		 * @type {function}
 		*/
-		this.logger = require('../utils/Logger');
+		this.logger = new Logger()
 
 		/**
 		 * The Giveaway manager
@@ -140,7 +147,7 @@ class Egglord extends Client {
 	 * @param {guild} guild The guild that kicked the bot
 	 * @returns {boolean}
 	*/
-	async DeleteGuild(guild) {
+	async DeleteGuild(guild: Guild) {
 		try {
 			await GuildSchema.findOneAndRemove({ guildID: guild.id });
 			return true;
@@ -161,7 +168,7 @@ class Egglord extends Client {
 		this.PresenceType = type;
 		try {
 			let j = 0;
-			setInterval(() => this.user.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/ram5s5' }), 10000);
+			setInterval(() => this.user?.setActivity(`${this.Activity[j++ % this.Activity.length]}`, { type: type, url: 'https://www.twitch.tv/ram5s5' }), 10000);
 		} catch (e) {
 			console.log(e);
 		}
@@ -270,13 +277,13 @@ class Egglord extends Client {
 	async fetch(endpoint, query = {}) {
 		try {
 			if (endpoint.startsWith('image') || endpoint == 'misc/qrcode') {
-				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data } = await axios.get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 					responseType: 'arraybuffer',
 				});
 				return data;
 			} else {
-				const { data } = await get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
+				const { data } = await axios.get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
 					headers: { 'Authorization': this.config.api_keys.masterToken },
 				});
 
@@ -295,5 +302,3 @@ class Egglord extends Client {
 		}
 	}
 }
-
-module.exports = Egglord;

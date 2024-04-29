@@ -1,3 +1,7 @@
+import GiveawaySchema from './Giveaway'
+
+export default {GiveawaySchema}
+
 module.exports = {
 	GuildSchema: require('./GuildSettings'),
 	RankSchema: require('./Level'),

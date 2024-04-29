@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const rankSchema = Schema({
 	userID: String,
@@ -7,4 +7,4 @@ const rankSchema = Schema({
 	Level: Number,
 });
 
-module.exports = model('Ranks', rankSchema);
+export default model('Ranks', rankSchema);

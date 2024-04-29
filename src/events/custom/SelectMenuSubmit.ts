@@ -23,6 +23,7 @@ class SelectMenuSubmit extends Event {
 		const guild = bot.guilds.cache.get(interaction.guildId),
 			channel = guild.channels.cache.get(interaction.channelId);
 
+		console.log(interaction);
 		switch (interaction.customId) {
 			case 'plugin_change': {
 				// Fetch slash command data

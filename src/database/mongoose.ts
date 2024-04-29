@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+import { Client } from "discord.js";
+import mongoose from "mongoose";
 
-module.exports = {
-	init: (bot) => {
+export default {
+	init: (bot: Client) => {
 		const dbOptions = {
 			useNewUrlParser: true,
 			autoIndex: false,

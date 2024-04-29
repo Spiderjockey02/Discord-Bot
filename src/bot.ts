@@ -1,8 +1,8 @@
 // Dependencies
-const Client = require('./base/Egglord.js');
+import EgglordClient from './base/Egglord'
 require('./structures');
 
-const bot = new Client(),
+const bot = new EgglordClient();
 	{ promisify } = require('util'),
 	readdir = promisify(require('fs').readdir),
 	path = require('path');

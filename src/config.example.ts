@@ -37,9 +37,9 @@ const config = {
 		token: '123456789',
 	},
 	Staff: {
-		ContributorRole: "814645275544387705",
-		SupportRole: "740674583023321200",
-		DeveloperRole: "740682780467396705",
+		ContributorRole: '766029837017153576',
+		SupportRole: '766029837017153576',
+		DeveloperRole: '766029837017153576',
 	},
 	LavalinkNodes: [
 		{ host: 'localhost', port: 5000, password: 'youshallnotpass' },

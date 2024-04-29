@@ -16,7 +16,13 @@ module.exports = (bot) => {
 				name: category,
 				commands: bot.commands.filter(c => c.help.category === category)
 					.sort((a, b) => a.help.name - b.help.name)
-					.map(c => c.help.name),
+					.map(c => ({ ...c,
+						conf: {
+							...c.conf,
+							userPermissions: c.conf.userPermissions.map(p => p.toString()),
+							botPermissions: c.conf.botPermissions.map(p => p.toString()),
+						},
+					})),
 			}));
 		res.status(200).json({ categories });
 	});

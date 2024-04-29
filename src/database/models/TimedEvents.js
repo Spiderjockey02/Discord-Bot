@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const timeEventSchema = Schema({
 	userID: String,
@@ -10,4 +10,4 @@ const timeEventSchema = Schema({
 	message: String,
 });
 
-module.exports = model('timedEvents', timeEventSchema);
+export default model('timedEvents', timeEventSchema);

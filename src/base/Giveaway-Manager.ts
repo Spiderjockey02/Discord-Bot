@@ -8,7 +8,7 @@ const Giveaway = require('../structures/Giveaway.js');
 /**
  * Giveaways Manager
  */
-class GiveawaysManager extends EventEmitter {
+export default class GiveawaysManager extends EventEmitter {
 	/**
      * @param {Discord.Client} client The Discord Client
      * @param {GiveawaysManagerOptions} [options] The manager options
@@ -526,5 +526,3 @@ class GiveawaysManager extends EventEmitter {
 		this.client.on('raw', (packet) => this._handleRawPacket(packet));
 	}
 }
-
-module.exports = GiveawaysManager;

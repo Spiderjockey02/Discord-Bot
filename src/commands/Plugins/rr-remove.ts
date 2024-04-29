@@ -1,6 +1,6 @@
 // Dependencies
 const Command = require('../../structures/Command.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	{ ReactionRoleSchema } = require('../../database/models');
 
 /**
@@ -19,11 +19,18 @@ class ReactionRoleRemove extends Command {
 			dirname: __dirname,
 			aliases: ['reactionroles-remove', 'rr-delete'],
 			userPermissions: [Flags.ManageGuild],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks],
 			description: 'Make reaction roles',
 			usage: 'reactionroles <messagelink>',
 			cooldown: 5000,
 			examples: ['reactionroles https://discord.com/channels/750822670505082971/761619652009787392/837657228055937054'],
+			slash: false,
+			isSubCmd: true,
+			options: [{
+				name: 'message_link',
+				description: 'The message url of the reaction role embed.',
+				type: ApplicationCommandOptionType.String,
+				required: true,
+			}],
 		});
 	}
 
@@ -66,6 +73,44 @@ class ReactionRoleRemove extends Command {
 			if (message.deletable) message.delete();
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+		}
+	}
+
+	/**
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @param {args} args The options provided in the command, if any
+	 * @readonly
+	*/
+	async callback(bot, interaction, guild, args) {
+		const messageLink = args.get('message_link').value,
+			channel = guild.channels.cache.get(interaction.channelId);
+
+		// fetch and validate message
+		const patt = /https?:\/\/(?:(?:canary|ptb|www)\.)?discord(?:app)?\.com\/channels\/(?:@me|(?<g>\d+))\/(?<c>\d+)\/(?<m>\d+)/g;
+		let msg;
+		if (patt.test(messageLink)) {
+			const stuff = messageLink.split('/');
+			try {
+				msg = await bot.guilds.cache.get(stuff[4])?.channels.cache.get(stuff[5])?.messages.fetch(stuff[6]);
+			} catch (err) {
+				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			}
+		} else {
+			return interaction.reply({ content: guild.translate('plugins/rr-add:INVALID'), ephemeral: true });
+		}
+
+		// delete message and then remove database
+		try {
+			await msg.delete();
+			await ReactionRoleSchema.findOneAndRemove({ messageID: msg.id,	channelID: msg.channel.id });
+			return interaction.reply({ content: guild.translate('plugins/rr-remove:SUCCESS'), ephemeral: true });
+		} catch (err) {
+			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }

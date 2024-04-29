@@ -42,6 +42,9 @@ class InteractionCreate extends Event {
 
 		// Check if it's a select menu submit
 		if (interaction.isStringSelectMenu()) return bot.emit('SelectMenuSubmit', interaction);
+
+		// Check if it's a role select menu submit
+		if (interaction.isRoleSelectMenu()) return bot.emit('RoleSelectMenu', interaction);
 	}
 }
 

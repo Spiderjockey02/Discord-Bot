@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const warningSchema = Schema({
 	userID: String,
@@ -8,4 +8,4 @@ const warningSchema = Schema({
 	IssueDate: String,
 });
 
-module.exports = model('Warnings', warningSchema);
+export default model('Warnings', warningSchema);

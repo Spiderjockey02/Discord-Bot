@@ -1,5 +1,6 @@
-const { Manager } = require('magmastream'),
-	{ LavalinkNodes: nodes } = require('../config');
+import type { Client } from 'discord.js';
+import { Manager } from 'magmastream'
+import config from '../config'
 require('../structures/Player');
 
 /**
@@ -7,14 +8,14 @@ require('../structures/Player');
  * @extends {Manager}
 */
 class AudioManager extends Manager {
-	constructor(bot) {
+	constructor(bot: Client) {
 		super({
-			nodes,
+			nodes: config.LavalinkNodes,
 			send: (id, payload) => {
 				const guild = bot.guilds.cache.get(id);
 				if (guild) guild.shard.send(payload);
 			},
-			clientName: bot.user.username,
+			clientName: bot.user?.username,
 			defaultSearchPlatform: 'youtube',
 		});
 	}

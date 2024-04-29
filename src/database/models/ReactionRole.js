@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const reactionRoleSchema = Schema({
 	guildID: String,
@@ -7,4 +7,4 @@ const reactionRoleSchema = Schema({
 	reactions: Array,
 });
 
-module.exports = model('ReactionRole', reactionRoleSchema);
+export default model('ReactionRole', reactionRoleSchema);

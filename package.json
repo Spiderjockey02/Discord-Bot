@@ -4,8 +4,11 @@
   "description": "This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)",
   "main": "src/index.js",
   "scripts": {
+    "build": "tsc",
+    "prestart": "npm run build",
     "start": "node .",
-    "replit": "npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH"
+    "replit": "npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH",
+    "studio": "npx prisma studio"
   },
   "engines": {
     "node": ">=16.x",
@@ -24,6 +27,7 @@
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
     "@prisma/client": "^5.13.0",
+    "@types/node": "^20.12.7",
     "axios": "^1.5.0",
     "canvacord": "^5.4.10",
     "chalk": "^4.1.2",
@@ -47,8 +51,11 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
     "eslint": "^8.50.0",
-    "prisma": "^5.13.0"
+    "prisma": "^5.13.0",
+    "typescript": "^5.4.5"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.4",

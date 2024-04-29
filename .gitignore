@@ -1,7 +1,7 @@
 node_modules
-config.js
+config.ts
 Lavalink/logs
-src/commands/Host/test.js
+src/commands/Host/test.ts
 src/utils/logs/roll-????.??.??.log
 jsdocs/
 *.traineddata
@@ -10,3 +10,5 @@ prisma/migrations
 
 # local env files
 .env
+
+/dist

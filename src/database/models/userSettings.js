@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const userSchema = Schema({
 	userID: String,
@@ -12,4 +12,4 @@ const userSchema = Schema({
 	cmdBanned: { type: Boolean, default: false },
 });
 
-module.exports = model('Users', userSchema);
+export default model('Users', userSchema);
