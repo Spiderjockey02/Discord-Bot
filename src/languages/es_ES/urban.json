@@ -1,7 +1,7 @@
 {
-  "DESCRIPTION": "Get the urban dictionary of a word.",
-  "USAGE": "urban <word>",
-  "INCORRECT_URBAN": "Phrase: `{{PHRASE}}` was not found on the urban dictionary.",
-  "TITLE": "Definition of {{WORD}}",
-  "DESC": "{{DEFINTION}}\n**Example:**\n{{EXAMPLES}}"
+  "DESCRIPTION": "Consigue el diccionario urbano de una palabra.",
+  "USAGE": "urbano <word>",
+  "INCORRECT_URBAN": "Frase: `{{PHRASE}}` no se encontró en el diccionario urbano.",
+  "TITLE": "Definición de {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Ejemplo:**\n{{EXAMPLES}}"
 }
