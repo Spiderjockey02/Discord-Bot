@@ -20,19 +20,6 @@
 </div>
 
 <p align="center">
-  <a href="#question-about">About</a>
-  •
-  <a href="#exclamation-features">Features</a>
-  •
-  <a href="#memo-to-do">To-Do</a>
-  •
-  <a href="#desktop_computer-my-other-projects">Installation</a>
-  •
-  <a href="#book-license">License</a>
-  •
-  <a href="#scroll-credits">Credits</a>
-</p>
-<p align="center">
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md">Privacy Policy</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/INSTALLATION.md">Installation</a>
@@ -74,62 +61,3 @@
     * Dutch | Nederlands
     * Portuguese | Português
     * Russian | Русский
-
-## :question: Code Formatting
-
-* :mag_right: **Name & Description Localization**
-```js
-nameLocalizations: [{
-	ar: '',
-	de: '',
-	es: '',
-    fa: '',
-	fr: '',
-	it: '',
-	nl: '',
-	pt: '',
-	ru: '',
-}],
-descriptionLocalizations: [{
-	ar: '',
-	de: '',
-	es: '',
-    fa: '',
-	fr: '',
-	it: '',
-	nl: '',
-	pt: '',
-	ru: '',
-}],
-```
-
-* :speech_balloon: **Option & Choice Localization**
-```js
-options: [{
-    nameLocalizations: [{
-        ar: '',
-	    de: '',
-	    es: '',
-        fa: '',
-	    fr: '',
-	    it: '',
-	    nl: '',
-	    pt: '',
-	    ru: '',
-    }],
-    descriptionLocalizations: [{
-	    ar: '',
-	    de: '',
-	    es: '',
-        fa: '',
-	    fr: '',
-	    it: '',
-	    nl: '',
-	    pt: '',
-	    ru: '',
-    }],
-    choices: [{
-        name_localizations: {}
-    }],
-}],
-```

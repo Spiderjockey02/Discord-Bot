@@ -21,19 +21,6 @@
 </div>
 
 <p align="center">
-  <a href="#question-about">About</a>
-  •
-  <a href="#exclamation-features">Features</a>
-  •
-  <a href="#memo-to-do">To-Do</a>
-  •
-  <a href="#desktop_computer-my-other-projects">Installation</a>
-  •
-  <a href="#book-license">License</a>
-  •
-  <a href="#scroll-credits">Credits</a>
-</p>
-<p align="center">
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md">Privacy Policy</a>
