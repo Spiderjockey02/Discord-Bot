@@ -6,3 +6,7 @@ src/utils/logs/roll-????.??.??.log
 jsdocs/
 *.traineddata
 .prettierrc
+prisma/migrations
+
+# local env files
+.env

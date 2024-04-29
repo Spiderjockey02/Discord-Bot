@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Guild {
+  // Guild ID
+  id          String    @id
+  language    String    @default("en-US")
+  isPremiumTo DateTime?
+  users       User[]
+  roles       Role[]
+  channels    Channel[]
+  ranks       Rank[]
+  warnings    Warning[]
+  giveaways   Giveaway[]
+  settings    Setting?
+}
+
+model User {
+  id              String      @id
+  isSupport       Boolean     @default(false)
+  isDev           Boolean     @default(false)
+  isContributor   Boolean     @default(false)
+  isPremiumTo     DateTime?
+  guilds          Guild[]
+  ranks           Rank[]
+  playlists       Playlist[]
+  warnings        Warning[]   @relation("user")
+  moderations     Warning[]   @relation("moderator")
+  hostedGiveaways Giveaway[]  @relation("hosted")
+  giveawaysWon    Giveaway[]  @relation("won")
+}
+
+model Role {
+  id                    String @id
+  guild                 Guild  @relation(fields: [guildId], references: [id])
+  guildId               String
+  levelSettings         LevelSystem?    @relation(fields: [levelSettingsId], references: [settingsId])
+  levelSettingsId       String?
+  welcomeSettings       WelcomeSystem?  @relation(fields: [welcomeSettingsId], references: [settingsId])
+  welcomeSettingsId     String?
+  musicSettings         MusicSystem?
+  moderatorSettings     ModerationSystem? @relation(fields: [moderatorSettingId], references: [settingsId])
+  moderatorSettingId    String?
+  ticketSetting         TicketSystem?
+  levelRewards          LevelRoleRewards?
+}
+
+model Channel {
+  id                  String            @id
+  guild               Guild             @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  guildId             String
+  levelSettings       LevelSystem?      @relation("ignored", fields: [levelSettingsId], references: [settingsId])
+  levelSettingsId     String?
+  levelAnnoucement    LevelSystem?      @relation("annoucement")
+  welcomeChannel      WelcomeSystem?
+  moderationSetting   ModerationSystem?
+  ticketSetting       TicketSystem?
+}
+
+model Rank {
+  guild     Guild   @relation(fields: [guildId], references: [id])
+  guildId   String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  level     Int     @default(0)
+  xp        Int     @default(0)
+
+  @@id([guildId, userId], name: "id")
+}
+
+model Playlist {
+  id          Int       @id   @default(autoincrement())
+  creator     User      @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  duration    String    @default("0")
+  name        String
+  songs       PlaylistSongs[]
+  thumbnail   String?
+  createdOn   DateTime  @default(now())
+}
+
+model PlaylistSongs {
+  id          Int       @id   @default(autoincrement())
+  playlist    Playlist  @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  playlistId  Int
+  artist      String?
+  duration    Int       @default(0)
+  title       String?
+}
+
+model Warning {
+  id           Int      @id   @default(autoincrement())
+  guild        Guild    @relation(fields: [guildId], references: [id])
+  guildId      String
+  user         User     @relation("user", fields: [userId], references: [id])
+  userId       String
+  moderator    User     @relation("moderator", fields: [moderatorId], references: [id])
+  moderatorId  String
+  reason       String?
+  createdOn    DateTime @default(now())
+}
+
+model Giveaway {
+  id          Int       @id   @default(autoincrement())
+  guild       Guild     @relation(fields: [guildId], references: [id])
+  guildId     String
+  hosted      User      @relation("hosted", fields: [hostedId], references: [id])
+  hostedId    String
+  createdOn   DateTime  @default(now())
+  endOn       DateTime
+  hasEnded    Boolean   @default(false)
+  winnerCount Int       @default(1)
+  winners     User[]    @relation("won")
+  prize       String
+}
+
+model Setting {
+  guild               Guild          @relation(fields: [guildId], references: [id])
+  guildId             String         @unique
+  levelSystem         LevelSystem?
+  welcomeSystem       WelcomeSystem?
+  musicSystem         MusicSystem?
+  moderationSystem    ModerationSystem?
+  ticketSystem        TicketSystem?
+}
+
+model LevelSystem {
+  settings                Setting     @relation(fields: [settingsId], references: [guildId])
+  settingsId              String      @id
+  annoucementType         LevelAnnoucementType
+	annoucementChannel      Channel?    @relation("annoucement", fields: [annoucementChannelId], references: [id])
+  annoucementChannelId    String?     @unique
+	annoucementMessage      String?
+	ignoredRoles            Role[]
+	ignoredChannels         Channel[]   @relation("ignored")
+	multiplier              Int         @default(1)
+	roleRewards             LevelRoleRewards[]
+}
+
+model LevelRoleRewards {
+  role            Role          @relation(fields: [roleId], references: [id])
+  roleId          String        @id
+  levelSystem     LevelSystem   @relation(fields: [levelSystemId], references: [settingsId])
+  levelSystemId   String 
+  level           Int           @default(1)
+}
+
+enum LevelAnnoucementType {
+  NONE
+  REPLY
+  CHANNEL
+}
+
+model WelcomeSystem {
+  settings              Setting   @relation(fields: [settingsId], references: [guildId])
+  settingsId            String    @id
+  joinMessageEnabled    Boolean   @default(false)
+  joinChannel           Channel?  @relation(fields: [joinChannelId], references: [id])
+  joinChannelId         String?   @unique
+  joinMessageText       String?
+  joinPrivateEnabled    Boolean   @default(false)
+  joinPrivateText       String?
+  joinRolesGive         Role[]
+  goodbyeEnabled        Boolean   @default(false)
+  goodbyeText           String?
+}
+
+model MusicSystem {
+  settings    Setting   @relation(fields: [settingsId], references: [guildId])
+  settingsId  String    @id
+  djRole      Role?     @relation(fields: [djRoleId], references: [id])
+  djRoleId    String?   @unique
+}
+
+model ModerationSystem {
+  settings          Setting     @relation(fields: [settingsId], references: [guildId])
+  settingsId        String      @id
+  loggingChannel    Channel?    @relation(fields: [loggingChannelId], references: [id])
+  loggingChannelId  String?     @unique
+  loggingEvents     ModerationLoggingEvents[]
+  moderatorRoles    Role[]
+}
+
+model ModerationLoggingEvents {
+  name                String    @id
+  moderationSystems   ModerationSystem[]
+}
+
+model TicketSystem {
+  settings        Setting   @relation(fields: [settingsId], references: [guildId])
+  settingsId      String    @id
+  supportRole     Role?     @relation(fields: [supportRoleId], references: [id])
+  supportRoleId   String?   @unique
+  channel         Channel?  @relation(fields: [channelId], references: [id])
+  channelId       String?   @unique
+}

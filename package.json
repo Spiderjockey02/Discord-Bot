@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "axios": "^1.5.0",
     "canvacord": "^5.4.10",
     "chalk": "^4.1.2",
@@ -46,7 +47,8 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "eslint": "^8.50.0"
+    "eslint": "^8.50.0",
+    "prisma": "^5.13.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.4",
