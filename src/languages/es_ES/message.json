@@ -9,6 +9,6 @@
   "GUILD_ONLY": "Este comando solo puede ser usado en un servidor.",
   "COMMAND_COOLDOWN": "Debes esperar {{NUM}} segundos entre cada comando.",
   "BANNED_USER": "Estás restringido de usar mis comandos.",
-  "BLACKLISTED_CHANNEL": "**{{USER}}**, that command is disabled in this channel.",
-  "NOT_NSFW_CHANNEL": "That command is only allowed in `NSFW` channels."
+  "BLACKLISTED_CHANNEL": "**{{USER}}**, ese comando esta deshabilitado en este canal.",
+  "NOT_NSFW_CHANNEL": "Ese comando solo está permitido en canales para mayores de edad."
 }
