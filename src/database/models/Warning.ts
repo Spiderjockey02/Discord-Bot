@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const warningSchema = Schema({
+const warningSchema = new Schema({
 	userID: String,
 	guildID: String,
 	Reason: String,

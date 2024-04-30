@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const timeEventSchema = Schema({
+const timeEventSchema = new Schema({
 	userID: String,
 	guildID: String,
 	type: String,

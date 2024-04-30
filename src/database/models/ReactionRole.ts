@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const reactionRoleSchema = Schema({
+const reactionRoleSchema = new Schema({
 	guildID: String,
 	messageID: String,
 	channelID: String,

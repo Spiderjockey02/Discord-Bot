@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const playlistSchema = Schema({
+const playlistSchema = new Schema({
 	name: String,
 	songs: Array,
 	timeCreated: Number,

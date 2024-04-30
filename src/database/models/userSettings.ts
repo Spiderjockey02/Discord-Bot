@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const userSchema = Schema({
+const userSchema = new Schema({
 	userID: String,
 	premium: { type: Boolean, default: false },
 	premiumSince: String,

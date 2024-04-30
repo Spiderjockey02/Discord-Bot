@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const rankSchema = Schema({
+const rankSchema = new Schema({
 	userID: String,
 	guildID: String,
 	Xp: Number,

@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const giveawaySchema = Schema({
+const giveawaySchema = new Schema({
 	messageId: String,
 	channelId: String,
 	guildId: String,

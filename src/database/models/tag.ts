@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const tagsSchema = Schema({
+const tagsSchema = new Schema({
 	guildID: String,
 	name: String,
 	response: String,

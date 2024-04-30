@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const guildSchema = Schema({
+const guildSchema = new Schema({
 	guildID: String,
 	guildName: String,
 	prefix: { type: String, default: require('../../assets/json/defaultGuildSettings.json').prefix },
