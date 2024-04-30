@@ -20,19 +20,6 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#question-about">About</a>
-  •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#exclamation-features">Features</a>
-  •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#memo-to-do">To-Do</a>
-  •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#desktop_computer-my-other-projects">Installation</a>
-  •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#book-license">License</a>
-  •
-  <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/README.md#scroll-credits">Credits</a>
-</p>
-<p align="center">
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/PRIVACY.md">Privacy Policy</a>
