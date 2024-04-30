@@ -45,4 +45,5 @@ Egglord currently supports 10+ languages by default but this can easily be incre
 * French | Français (fr-FR)
 * Italian | Italiano (it-IT)
 * Dutch | Nederlands (nl-NL)
-* Portuguese | Português (pt-BR)* Russian | Русский (ru-RU)
+* Portuguese | Português (pt-BR)
+* Russian | Русский (ru-RU)
