@@ -1,7 +1,7 @@
 {
 	"env": {
 		"node": true,
-		"es2022": true,
+		"es2022": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 2021,
@@ -20,7 +20,8 @@
 		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
 		"comma-dangle": ["error", "always-multiline"],
 		"comma-spacing": "error",
-		"@typescript-eslint/no-shadow": ["error"],
+		"no-shadow": "off",
+		"@typescript-eslint/no-shadow": ["error", { "builtinGlobals": false }],
 		"comma-style": "error",
 		"curly": ["error", "multi-line", "consistent"],
 		"dot-location": ["error", "property"],
@@ -35,7 +36,6 @@
 		"no-lonely-if": "error",
 		"no-multi-spaces": "error",
 		"no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1, "maxBOF": 0 }],
-		"no-shadow": "off",
 		"no-trailing-spaces": ["error"],
 		"no-var": "error",
 		"object-curly-spacing": ["error", "always"],
