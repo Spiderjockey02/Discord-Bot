@@ -1,18 +1,18 @@
 // Dependencies
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Dashboard command
  * @extends {Command}
 */
-class Dashboard extends Command {
+export default class Dashboard extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'dashboard',
 			guildOnly: true,
 			dirname: __dirname,
@@ -26,38 +26,37 @@ class Dashboard extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client, message) {
 		const row = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
 					.setLabel('Access the dashboard')
 					.setStyle(ButtonStyle.Link)
-					.setURL(`${bot.config.websiteURL}/dashboard/${message.guild.id}`),
+					.setURL(`${client.config.websiteURL}/dashboard/${message.guild.id}`),
 			);
 		message.channel.send({ content: 'There you go.', components: [row] });
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
+	async callback(client, interaction, guild) {
 		const row = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
 					.setLabel('Access the dashboard')
 					.setStyle(ButtonStyle.Link)
-					.setURL(`${bot.config.websiteURL}/dashboard/${guild.id}`),
+					.setURL(`${client.config.websiteURL}/dashboard/${guild.id}`),
 			);
 		interaction.reply({ content: 'There you go.', components: [row] });
 	}
 }
 
-module.exports = Dashboard;

@@ -1,19 +1,19 @@
 // Dependencies
 const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+	{ time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'), ;
+import Command from '../../structures/Command';
 
 /**
  * seek command
  * @extends {Command}
 */
-class Seek extends Command {
+export default class Seek extends Command {
 	/**
 	   * @param {Client} client The instantiating client
 	   * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'seek',
 			guildOnly: true,
 			dirname: __dirname,
@@ -23,7 +23,7 @@ class Seek extends Command {
 			cooldown: 3000,
 			examples: ['seek 1:00'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('seek-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('seek-')).map(c => ({
 				name: c.help.name.replace('seek-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -34,17 +34,17 @@ class Seek extends Command {
 
 	/**
 	   * Function for receiving message.
-	   * @param {bot} bot The instantiating client
+	   * @param {client} client The instantiating client
 	   * @param {message} message The message that ran the command
 	   * @readonly
   */
-	async run(bot, message, settings) {
-		// check to make sure bot can play music based on permissions
-		const playable = checkMusic(message.member, bot);
+	async run(client, message, settings) {
+		// check to make sure client can play music based on permissions
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure song isn't a stream
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM');
 
 		// Make sure a time was inputted
@@ -66,20 +66,19 @@ class Seek extends Command {
 
 	/**
 	   * Function for receiving interaction.
-	   * @param {bot} bot The instantiating client
+	   * @param {client} client The instantiating client
 	   * @param {interaction} interaction The interaction that ran the command
 	   * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	   * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`seek-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`seek-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = Seek;

@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Ticket command
  * @extends {Command}
 */
-class Ticket extends Command {
+export default class Ticket extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'ticket',
 			guildOnly: true,
 			dirname: __dirname,
@@ -30,7 +30,7 @@ class Ticket extends Command {
 					description: 'Create reaction embed',
 					type: ApplicationCommandOptionType.Subcommand,
 				},
-				...bot.subCommands.filter(c => c.help.category == 'Ticket' && c.help.name !== 'ticket').map(c => ({
+				...client.subCommands.filter(c => c.help.category == 'Ticket' && c.help.name !== 'ticket').map(c => ({
 					name: c.help.name.replace('ticket-', ''),
 					description: c.help.description,
 					type: ApplicationCommandOptionType.Subcommand,
@@ -42,17 +42,17 @@ class Ticket extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Add ticket reaction embed
 		if (message.args[0] == 'reaction') {
-			await this.sendReactionEmbed(bot, message.channel);
+			await this.sendReactionEmbed(client, message.channel);
 		} else {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle('ticket/ticket:TITLE')
 				.setDescription([
 					`\`${settings.prefix}t-<open|create> [reason]\` - ${message.translate('ticket/ticket-create:DESCRIPTION')}.`,
@@ -67,23 +67,23 @@ class Ticket extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const option = interaction.options.getSubcommand();
 
 		// Get the user's option and run it
 		if (option == 'reaction') {
-			await this.sendReactionEmbed(bot, interaction.channel);
+			await this.sendReactionEmbed(client, interaction.channel);
 			interaction.reply({ content: 'Created embed', ephermal: true });
 		} else {
-			const command = bot.subCommands.get(`ticket-${option}`);
+			const command = client.subCommands.get(`ticket-${option}`);
 			if (command) {
-				command.callback(bot, interaction, guild, args);
+				command.callback(client, interaction, guild, args);
 			} else {
 				interaction.reply({ content: 'Error' });
 			}
@@ -92,14 +92,14 @@ class Ticket extends Command {
 
 	/**
 	 * Function for sending reaction/button embed
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {channel} channel The channel that will show the embed
 	 * @readonly
 	*/
-	async sendReactionEmbed(bot, channel) {
+	async sendReactionEmbed(client, channel) {
 		const { guild } = channel;
 
-		const embed = new Embed(bot, guild)
+		const embed = new Embed(client, guild)
 			.setTitle('ticket/ticket:TITLE_REACT')
 			.setDescription(guild.translate('ticket/ticket:REACT_DESC', { PREFIX: guild.settings.prefix }));
 			// Create button
@@ -116,4 +116,3 @@ class Ticket extends Command {
 	}
 }
 
-module.exports = Ticket;

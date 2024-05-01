@@ -1,19 +1,19 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * skip command
  * @extends {Command}
 */
-class Skip extends Command {
+export default class Skip extends Command {
 	/**
 	   * @param {Client} client The instantiating client
 	   * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'skip',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,21 +35,21 @@ class Skip extends Command {
 
 	/**
 	   * Function for receiving message.
-	   * @param {bot} bot The instantiating client
+	   * @param {client} client The instantiating client
 	   * @param {message} message The message that ran the command
 	   * @readonly
   */
-	async run(bot, message) {
-		// check to make sure bot can play music based on permissions
-		const playable = checkMusic(message.member, bot);
+	async run(client, message) {
+		// check to make sure client can play music based on permissions
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		const amount = message.args[0];
 
 		// skip song
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		const queuelength = player.queue.length;
-		const skiplength = !isNaN(amount) && amount > queuelength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
+		const skiplength = !isNaN(amount) && amount > queuelength ? client.translate('music/skip:SKIPPING_SONG') : client.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
 		if (!isNaN(amount) && amount < queuelength) {
 			player.stop(parseInt(message.args[0]));
 			message.channel.send({ content: skiplength });
@@ -61,25 +61,25 @@ class Skip extends Command {
 
 	/**
 	   * Function for receiving interaction.
-	   * @param {bot} bot The instantiating client
+	   * @param {client} client The instantiating client
 	   * @param {interaction} interaction The interaction that ran the command
 	   * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	   * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			amount = args.get('amount')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// skip song
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		const queueLength = player.queue.length;
-		const skipLength = !isNaN(amount) && amount > queueLength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
+		const skipLength = !isNaN(amount) && amount > queueLength ? client.translate('music/skip:SKIPPING_SONG') : client.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
 		if (!isNaN(amount) && amount < queueLength) {
 			player.stop(amount);
 			interaction.reply({ content: skipLength });
@@ -90,4 +90,3 @@ class Skip extends Command {
 	}
 }
 
-module.exports = Skip;

@@ -1,19 +1,19 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * resume command
  * @extends {Command}
 */
-class Resume extends Command {
+export default class Resume extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'resume',
 			guildOnly: true,
 			dirname: __dirname,
@@ -28,16 +28,16 @@ class Resume extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
-		// check to make sure bot can play music based on permissions
-		const playable = checkMusic(message.member, bot);
+	async run(client, message, settings) {
+		// check to make sure client can play music based on permissions
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 
 		// The music is already resumed
 		if (!player.paused) return message.channel.error('music/resume:IS_RESUMED', { PREFIX: settings.prefix });
@@ -49,21 +49,21 @@ class Resume extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
+	async callback(client, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId);
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// The music is already resumed
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		if (!player.paused) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/resume:IS_RESUMED', {}, true)] });
 
 		// Resumes the music
@@ -72,4 +72,3 @@ class Resume extends Command {
 	}
 }
 
-module.exports = Resume;

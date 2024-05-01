@@ -1,19 +1,19 @@
 // Dependencies
 const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ functions: { checkMusic } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+	{ functions: { checkMusic } } = require('../../utils'), ;
+import Command from '../../structures/Command';
 
 /**
  * pitch command
  * @extends {Command}
 */
-class Pitch extends Command {
+export default class Pitch extends Command {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'effects-pitch',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,23 +35,23 @@ class Pitch extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {message} message The message that ran the command
 	 * @readonly
 		*/
-	async run(bot, message) {
-		// check to make sure bot can play music based on permissions
-		const playable = checkMusic(message.member, bot);
+	async run(client, message) {
+		// check to make sure client can play music based on permissions
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 
 		if (message.args[0] && (message.args[0].toLowerCase() == 'reset' || message.args[0].toLowerCase() == 'off')) {
 			player.resetFilters();
 			const msg = await message.channel.send(message.translate('music/pitch:PITCH_OFF'));
 			const embed = new EmbedBuilder()
 				.setDescription(message.translate('music/pitch:DESC_1'));
-			await bot.delay(5000);
+			await client.delay(5000);
 			return msg.edit({ content: '​​ ', embeds: [embed] });
 		}
 
@@ -64,43 +64,43 @@ class Pitch extends Command {
 		const msg = await message.channel.send(message.translate('music/pitch:PITCH_ON', { NUM: message.args[0] }));
 		const embed = new EmbedBuilder()
 			.setDescription(message.translate('music/pitch:DESC_2', { NUM: message.args[0] }));
-		await bot.delay(5000);
+		await client.delay(5000);
 		return msg.edit({ content: '​​ ', embeds: [embed] });
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const amount = args.get('amount')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 
 		// Reset
 		if (amount && ['reset', 'off'].includes(amount.toLowerCase())) {
 			player.resetFilters();
-			await interaction.reply(bot.translate('music/pitch:PITCH_OFF'));
+			await interaction.reply(client.translate('music/pitch:PITCH_OFF'));
 			const embed = new EmbedBuilder()
-				.setDescription(bot.translate('music/pitch:DESC_1'));
-			await bot.delay(5000);
+				.setDescription(client.translate('music/pitch:DESC_1'));
+			await client.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
 		// Not resetting or a number
 		if (!['reset', 'off'].includes(amount.toLowerCase()) && !isNaN(amount)) {
 			const embed = new EmbedBuilder()
-				.setDescription(bot.translate('music/pitch:INVALID'));
+				.setDescription(client.translate('music/pitch:INVALID'));
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
@@ -111,8 +111,8 @@ class Pitch extends Command {
 			});
 			await interaction.reply(guild.translate('music/pitch:PITCH_ON', { NUM: 2 }));
 			const embed = new EmbedBuilder()
-				.setDescription(bot.translate('music/pitch:DESC_2', { NUM: 2 }));
-			await bot.delay(5000);
+				.setDescription(client.translate('music/pitch:DESC_2', { NUM: 2 }));
+			await client.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
@@ -122,10 +122,9 @@ class Pitch extends Command {
 		});
 		await interaction.reply(guild.translate('music/pitch:PITCH_ON', { NUM: amount }));
 		const embed = new EmbedBuilder()
-			.setDescription(bot.translate('music/pitch:DESC_2', { NUM: amount }));
-		await bot.delay(5000);
+			.setDescription(client.translate('music/pitch:DESC_2', { NUM: amount }));
+		await client.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
 }
 
-module.exports = Pitch;

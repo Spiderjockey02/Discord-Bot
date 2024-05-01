@@ -1,26 +1,26 @@
 // Dependencies
 const { inspect } = require('util'),
-	{ EmbedBuilder, ApplicationCommandOptionType } = require ('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ EmbedBuilder, ApplicationCommandOptionType } = require ('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Eval command
  * @extends {Command}
 */
-class Eval extends Command {
+export default class Eval extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'eval',
 			ownerOnly: true,
 			dirname: __dirname,
 			description: 'Evaluates JS code.',
 			usage: 'eval <code>',
 			cooldown: 3000,
-			examples: ['eval bot.users.cache.get(\'184376969016639488\')'],
+			examples: ['eval client.users.cache.get(\'184376969016639488\')'],
 			slash: true,
 			options: [{
 				name: 'code',
@@ -33,12 +33,12 @@ class Eval extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Evaluated the code
 		const toEval = message.args.join(' ');
 		try {
@@ -60,19 +60,19 @@ class Eval extends Command {
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			toEval = args.get('code').value;
 
@@ -91,10 +91,9 @@ class Eval extends Command {
 				);
 			interaction.followUp({ embeds: [embed] });
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.followUp({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
 
-module.exports = Eval;

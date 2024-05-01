@@ -1,19 +1,19 @@
 // Dependencies
 const fs = require('fs'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Editrole command
  * @extends {Command}
 */
-class EditRole extends Command {
+export default class EditRole extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'role-edit',
 			guildOnly: true,
 			dirname: __dirname,
@@ -54,12 +54,12 @@ class EditRole extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -78,7 +78,7 @@ class EditRole extends Command {
 				case 'color':
 					fs.readFile('./src/assets/json/colours.json', async (err, data) => {
 						if (err) {
-							bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+							client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 							return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 						}
 
@@ -112,13 +112,13 @@ class EditRole extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const role = guild.roles.cache.get(args.get('role').value),
 			channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
@@ -130,7 +130,7 @@ class EditRole extends Command {
 				case 'colour':
 					fs.readFile('./src/assets/json/colours.json', async (err, data) => {
 						if (err) {
-							bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+							client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 							return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 						}
 
@@ -158,4 +158,3 @@ class EditRole extends Command {
 	}
 }
 
-module.exports = EditRole;

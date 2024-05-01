@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Clear command
  * @extends {Command}
 */
-class Clear extends Command {
+export default class Clear extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'clear',
 			guildOnly: true,
 			dirname: __dirname,
@@ -25,7 +25,7 @@ class Clear extends Command {
 			cooldown: 5000,
 			examples: ['clear 50 username', 'clear 10'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('clear-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('clear-')).map(c => ({
 				name: c.help.name.replace('clear-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -36,12 +36,12 @@ class Clear extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -59,7 +59,7 @@ class Clear extends Command {
 
 		// Confirmation for message deletion over 100
 		if (amount >= 100) {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle(message.translate('moderation/clear:TITLE'))
 				.setDescription(message.translate('moderation/clear:DESC', { NUM: amount }));
 
@@ -70,14 +70,14 @@ class Clear extends Command {
 						.setCustomId('success')
 						.setLabel('Confirm')
 						.setStyle(ButtonStyle.Success)
-						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
+						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['checkmark'] : '✅'),
 				)
 				.addComponents(
 					new ButtonBuilder()
 						.setCustomId('cancel')
 						.setLabel('Cancel')
 						.setStyle(ButtonStyle.Danger)
-						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
+						.setEmoji(message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['cross'] : '❌'),
 				);
 
 			// Send confirmation message
@@ -95,7 +95,7 @@ class Clear extends Command {
 					} else {
 						// Delete the messages
 						await i.reply(message.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
-						await bot.delay(5000);
+						await client.delay(5000);
 
 						let x = 0, y = 0;
 						const z = amount;
@@ -109,10 +109,10 @@ class Clear extends Command {
 								}
 
 								// delete the message
-								const delMessages = await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+								const delMessages = await message.channel.bulkDelete(messages, true).catch(err => client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 								y += delMessages.size;
 								x++;
-								await bot.delay(5000);
+								await client.delay(5000);
 							} catch (e) {
 								x = Math.ceil(amount / 100);
 							}
@@ -142,7 +142,7 @@ class Clear extends Command {
 				}
 
 				// delete the message
-				await message.channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+				await message.channel.bulkDelete(messages, true).catch(err => client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 				message.channel.success('moderation/clear:SUCCESS', { NUM: messages.size }).then(m => m.timedDelete({ timeout: 3000 }));
 			});
 		}
@@ -150,19 +150,18 @@ class Clear extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`clear-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`clear-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = Clear;

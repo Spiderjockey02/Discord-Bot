@@ -1,24 +1,24 @@
-// Dependencies
-const { time: { getTotalTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+import Command from '../../structures/Command';
+import { ApplicationCommandOptionType, Message, PermissionFlagsBits } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import { getTotalTime } from 'src/utils';
 
 /**
  * Giveaway edit command
  * @extends {Command}
 */
-class GiveawayEdit extends Command {
+export default class GiveawayEdit extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'g-edit',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-edit', 'gedit'],
-			userPermissions: [Flags.ManageGuild],
+			userPermissions: [PermissionFlagsBits.ManageGuild],
 			description: 'Edit a giveaway.',
 			usage: 'g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>',
 			cooldown: 2000,
@@ -59,12 +59,12 @@ class GiveawayEdit extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client: EgglordClient, message: Message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -80,27 +80,27 @@ class GiveawayEdit extends Command {
 
 		// Update giveaway
 		try {
-			await bot.giveawaysManager.edit(message.args[0], {
+			await client.giveawayManager.edit(message.args[0], {
 				newWinnerCount: parseInt(message.args[2]),
 				newPrize: message.args.slice(3).join(' '),
 				addTime: time,
 			});
-			message.channel.send(bot.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }));
+			message.channel.send(client.translate('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: client.giveawaysManager.options.updateCountdownEvery / 1000 }));
 		} catch (err) {
-			bot.logger.error(`Command: 'g-edit' has error: ${err}.`);
-			message.channel.send(bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: message.args[0] }));
+			client.logger.error(`Command: 'g-edit' has error: ${err}.`);
+			message.channel.send(client.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: message.args[0] }));
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			id = args.get('id').value,
 			winners = args.get('winners')?.value,
@@ -114,17 +114,16 @@ class GiveawayEdit extends Command {
 
 		// Update giveaway
 		try {
-			await bot.giveawaysManager.edit(id, {
-				newWinnerCount: winners ?? bot.giveawaysManager.giveaways.find(g => g.messageID == id).winnerCount,
-				newPrize: prize ?? bot.giveawaysManager.giveaways.find(g => g.messageID == id).prize,
+			await client.giveawaysManager.edit(id, {
+				newWinnerCount: winners ?? client.giveawaysManager.giveaways.find(g => g.messageID == id).winnerCount,
+				newPrize: prize ?? client.giveawaysManager.giveaways.find(g => g.messageID == id).prize,
 				addTime: time,
 			});
-			interaction.reply({ embeds: [channel.success('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: bot.giveawaysManager.options.updateCountdownEvery / 1000 }, true)] });
+			interaction.reply({ embeds: [channel.success('giveaway/g-edit:EDIT_GIVEAWAY', { TIME: client.giveawaysManager.options.updateCountdownEvery / 1000 }, true)] });
 		} catch (err) {
-			bot.logger.error(`Command: 'g-edit' has error: ${err}.`);
-			interaction.reply({ content: bot.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: id }), ephemeral: true });
+			client.logger.error(`Command: 'g-edit' has error: ${err}.`);
+			interaction.reply({ content: client.translate('giveaway/g-edit:UNKNOWN_GIVEAWAY', { ID: id }), ephemeral: true });
 		}
 	}
 }
 
-module.exports = GiveawayEdit;

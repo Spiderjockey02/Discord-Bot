@@ -1,20 +1,20 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	moment = require('moment'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Role-info command
  * @extends {Command}
 */
-class RoleInfo extends Command {
+export default class RoleInfo extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name:  'role-info',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,12 +35,12 @@ class RoleInfo extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Check to see if a role was mentioned
 		const roles = message.getRole();
 
@@ -51,41 +51,41 @@ class RoleInfo extends Command {
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/role-info:USAGE')) });
 		}
 
-		const embed = this.createEmbed(bot, message.guild, roles[0], message.author);
+		const embed = this.createEmbed(client, message.guild, roles[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const role = guild.roles.cache.get(args.get('role').value);
 		const user = interaction.member.user;
 
 		// send embed
-		const embed = this.createEmbed(bot, guild, role, user);
+		const embed = this.createEmbed(client, guild, role, user);
 		interaction.reply({ embeds: [embed] });
 	}
 
 	/**
 	 * Function for creating embed of role information.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {guild} Guild The guild the command was ran in
 	 * @param {role} Role The role to get information from
 	 * @param {user} User The user for embed#footer
 	 * @returns {embed}
 	*/
-	createEmbed(bot, guild, role, user) {
+	createEmbed(client, guild, role, user) {
 		// translate permissions
 		const permissions = role.permissions.toArray().map((p) => guild.translate(`permissions:${p}`)).join(' » ');
 
 		// Send information to channel
-		return new Embed(bot, guild)
+		return new Embed(client, guild)
 			.setColor(role.color)
 			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
 			.setDescription(guild.translate('guild/role-info:NAME', { NAME: role.name }))
@@ -104,4 +104,3 @@ class RoleInfo extends Command {
 	}
 }
 
-module.exports = RoleInfo;

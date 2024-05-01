@@ -1,18 +1,18 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Delrole command
  * @extends {Command}
 */
-class DelRole extends Command {
+export default class DelRole extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'role-delete',
 			guildOnly: true,
 			dirname: __dirname,
@@ -38,12 +38,12 @@ class DelRole extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -61,20 +61,20 @@ class DelRole extends Command {
 			const delRole = await role[0].delete();
 			message.channel.success('moderation/delrole:SUCCESS', { ROLE: delRole.name }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('moderation/delrole:FAIL');
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const role = guild.roles.cache.get(args.get('role').value),
 			channel = guild.channels.cache.get(interaction.channelId);
 
@@ -83,10 +83,9 @@ class DelRole extends Command {
 			const delRole = await role.delete();
 			interaction.reply({ embeds: [channel.success('moderation/delrole:SUCCESS', { ROLE: delRole.name }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 3000 }));
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('moderation/delrole:FAIL', {}, true)], ephemeral: true });
 		}
 	}
 }
 
-module.exports = DelRole;

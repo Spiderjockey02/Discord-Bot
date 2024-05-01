@@ -1,18 +1,18 @@
 // Dependencies
-const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Giveaway reroll command
  * @extends {Command}
 */
-class GiveawayReroll extends Command {
+export default class GiveawayReroll extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor(client) {
+		super(client, {
 			name: 'g-reroll',
 			guildOnly: true,
 			dirname: __dirname,
@@ -45,12 +45,12 @@ class GiveawayReroll extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -60,37 +60,37 @@ class GiveawayReroll extends Command {
 		// re-roll the giveaway
 		const messageID = message.args[0];
 		try {
-			await bot.giveawaysManager.reroll(messageID, {
-				winnerCount: !parseInt(message.args[1]) ? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount : parseInt(message.args[1]),
+			await client.giveawaysManager.reroll(messageID, {
+				winnerCount: !parseInt(message.args[1]) ? client.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount : parseInt(message.args[1]),
 				messages: {
 					congrat: message.translate('giveaway/g-reroll:CONGRAT'),
 					error: message.translate('giveaway/g-reroll:ERROR'),
 				},
 			});
-			message.channel.send(bot.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
+			message.channel.send(client.translate('giveaway/g-reroll:SUCCESS_GIVEAWAY'));
 		} catch (err) {
-			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
-			message.channel.send(bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			client.logger.error(`Command: 'g-reroll' has error: ${err}.`);
+			message.channel.send(client.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			messageID = args.get('messageID').value,
 			winners = args.get('winner')?.value;
 
 		// re-roll the giveaway
 		try {
-			await bot.giveawaysManager.reroll(messageID, {
-				winnerCount: winners ?? bot.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount,
+			await client.giveawaysManager.reroll(messageID, {
+				winnerCount: winners ?? client.giveawaysManager.giveaways.find(g => g.messageID == messageID)?.winnerCount,
 				messages: {
 					congrat: guild.translate('giveaway/g-reroll:CONGRAT'),
 					error: guild.translate('giveaway/g-reroll:ERROR'),
@@ -98,10 +98,10 @@ class GiveawayReroll extends Command {
 			});
 			interaction.reply({ embeds: [channel.success('giveaway/g-reroll:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
-			bot.logger.error(`Command: 'g-reroll' has error: ${err}.`);
-			interaction.reply({ content: bot.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
+			client.logger.error(`Command: 'g-reroll' has error: ${err}.`);
+			interaction.reply({ content: client.translate('giveaway/g-reroll:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }
 
-module.exports = GiveawayReroll;
+

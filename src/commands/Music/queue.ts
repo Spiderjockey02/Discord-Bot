@@ -1,19 +1,19 @@
 // Dependencies
 const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * queue command
  * @extends {Command}
 */
-class Queue extends Command {
+export default class Queue extends Command {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'queue',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,11 +35,11 @@ class Queue extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -48,13 +48,13 @@ class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		if (!player) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Make sure queue is not empty
 		const queue = player.queue;
 		if (!queue?.size) {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle('music/queue:EMPTY');
 			return message.channel.send({ embeds: [embed] });
 		}
@@ -85,19 +85,19 @@ class Queue extends Command {
 			const str = songStrings.slice(start, end).join('');
 
 			const queuelength = player.queue.length;
-			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+			const songlength = queuelength === 1 ? client.translate('music/misc:SONG') : client.translate('music/misc:SONGS');
+			const upnext = str ? '\n\n' + str : ` ${client.translate('misc:NOTHING')}`;
 
-			const embed = new Embed(bot, message.guild)
-				.setAuthor(bot.translate('music/queue:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
-				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter(bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
+			const embed = new Embed(client, message.guild)
+				.setAuthor(client.translate('music/queue:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
+				.setDescription(client.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
+				.setFooter(client.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
 			pages.push(embed);
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (PageCheck(pages, pagesNum, player)) paginate(bot, message.channel, pages, message.author.id);
+			if (PageCheck(pages, pagesNum, player)) paginate(client, message.channel, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			const pageNum = parseInt(message.args[0]);
@@ -110,13 +110,13 @@ class Queue extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		// Check if the member has role to interact with music plugin
 		const member = guild.members.cache.get(interaction.user.id);
 		const channel = guild.channels.cache.get(interaction.channelId);
@@ -129,13 +129,13 @@ class Queue extends Command {
 		}
 
 		// Check that a song is being played
-		const player = bot.manager?.players.get(guild.id);
+		const player = client.manager?.players.get(guild.id);
 		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;
 		if (!queue?.size) {
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setTitle('music/queue:EMPTY');
 			return interaction.reply(embed);
 		}
@@ -166,21 +166,21 @@ class Queue extends Command {
 			const str = songStrings.slice(start, end).join('');
 
 			const queuelength = player.queue.length;
-			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+			const songlength = queuelength === 1 ? client.translate('music/misc:SONG') : client.translate('music/misc:SONGS');
+			const upnext = str ? '\n\n' + str : ` ${client.translate('misc:NOTHING')}`;
 
-			const embed = new Embed(bot, guild)
-				.setAuthor(bot.translate('music/queue:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
-				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter(bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
+			const embed = new Embed(client, guild)
+				.setAuthor(client.translate('music/queue:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
+				.setDescription(client.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
+				.setFooter(client.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
 			pages.push(embed);
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
 			if (PageCheck(pages, pagesNum, player)) {
-				paginate(bot, channel, pages, member.id);
-				return interaction.reply(bot.translate('music/queue:LOADED'));
+				paginate(client, channel, pages, member.id);
+				return interaction.reply(client.translate('music/queue:LOADED'));
 			} else {
 				return interaction.reply({ embeds: [pages[0]] });
 			}
@@ -196,4 +196,3 @@ function PageCheck(pages, pagesNum, player) {
 	return pages.length == pagesNum && player.queue.length > 10;
 }
 
-module.exports = Queue;

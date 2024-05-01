@@ -1,18 +1,18 @@
-// Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+import { ApplicationCommandOptionType, Message } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Command from 'src/structures/Command';
 
 /**
  * Flip command
  * @extends {Command}
 */
-class RandomCaps extends Command {
+export default class RandomCaps extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'random-capitalisation',
 			dirname: __dirname,
 			description: 'Generate a random caps',
@@ -32,11 +32,11 @@ class RandomCaps extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client: EgglordClient, message: Message) {
 		const text = message.args.join(' '),
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 		message.channel.send({ content: rndCaps });
@@ -44,12 +44,12 @@ class RandomCaps extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const text = args.get('text').value,
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 
@@ -58,4 +58,3 @@ class RandomCaps extends Command {
 	}
 }
 
-module.exports = RandomCaps;

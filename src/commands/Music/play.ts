@@ -2,20 +2,20 @@
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	axios = require('axios'),
-	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
-	Command = require('../../structures/Command.js');
+	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape), ;
+import Command from '../../structures/Command';
 
 /**
  * play command
  * @extends {Command}
 */
-class Play extends Command {
+export default class Play extends Command {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'play',
 			guildOnly: true,
 			dirname: __dirname,
@@ -44,20 +44,20 @@ class Play extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// make sure user is in a voice channel
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
+		if (client.manager?.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != client.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
 		}
 
-		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		// Check if VC is full and client can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has(Flags.MoveMembers)) {
 			return message.channel.error('music/play:VC_FULL');
 		}
@@ -72,7 +72,7 @@ class Play extends Command {
 		// Create player
 		let player;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: message.member.voice.channel.id,
 				textChannel: message.channel.id,
@@ -80,7 +80,7 @@ class Play extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			client.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' });
 		}
 
@@ -124,7 +124,7 @@ class Play extends Command {
 			if (player.state !== 'CONNECTED') player.connect();
 
 			// Show how many songs have been added
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }));
 			message.channel.send({ embeds: [embed] });
@@ -139,7 +139,7 @@ class Play extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				const embed = new Embed(bot, message.guild)
+				const embed = new Embed(client, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 				message.channel.send({ embeds: [embed] });
@@ -149,13 +149,13 @@ class Play extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
 			flag = args.get('flag')?.value,
@@ -165,8 +165,8 @@ class Play extends Command {
 		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', null, true)] });
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', null, true)] });
+		if (client.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != client.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', null, true)] });
 		}
 
 		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
@@ -180,14 +180,14 @@ class Play extends Command {
 		// Create player
 		let player, res;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: guild.id,
 				voiceChannel: member.voice.channel.id,
 				textChannel: channel.id,
 				selfDeafen: true,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
+			client.logger.error(`Command: '${this.help.name}' has error: player couldn't be created`);
 			return interaction.followUp({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' }, true)] });
 		}
 
@@ -199,7 +199,7 @@ class Play extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
 
@@ -231,9 +231,9 @@ class Play extends Command {
 
 				if (!player.playing && !player.paused && player.queue.totalSize === (res.playlist.tracks.length + 1)) player.play();
 				return interaction.followUp({
-					embeds: [new Embed(bot, guild)
+					embeds: [new Embed(client, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 })),
+						.setDescription(client.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 })),
 					],
 				});
 			default:
@@ -254,19 +254,19 @@ class Play extends Command {
 						await player.play();
 						return interaction.followUp({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
 					} catch (err) {
-						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+						client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						return interaction.followUp({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 					}
 				} else {
-					const embed = new Embed(bot, guild)
+					const embed = new Embed(client, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+						.setDescription(client.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 					return interaction.followUp({ embeds: [embed] });
 				}
 		}
 	}
 
-	async autocomplete(bot, interaction) {
+	async autocomplete(client, interaction) {
 		// Get current input and make sure it's not 0
 		const searchQuery = interaction.options.getFocused(true).value;
 		if (searchQuery.length == 0 || searchQuery.startsWith('http')) return interaction.respond([]);
@@ -317,10 +317,9 @@ class Play extends Command {
 			// Send back the results to the user
 			interaction.respond(results.map(video => ({ name: video.title, value: interaction.commandName == 'play' ? video.url : video.title })));
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.respond([]);
 		}
 	}
 }
 
-module.exports = Play;

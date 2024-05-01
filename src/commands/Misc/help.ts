@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed, paginate } = require('../../utils'),
-	{ ApplicationCommandOptionType, GatewayIntentBits } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, GatewayIntentBits } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Help command
  * @extends {Command}
 */
-class Help extends Command {
+export default class Help extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'help',
 			dirname: __dirname,
 			description: 'Sends information about all the commands that I can do.',
@@ -33,43 +33,43 @@ class Help extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// show help embed
-		const embed = await this.createEmbed(bot, settings, message.channel, message.args[0], message.author);
+		const embed = await this.createEmbed(client, settings, message.channel, message.args[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
  	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId);
 		const command = args.get('command')?.value;
 
 		if (command) {
 			// Check if arg is command
-			if (bot.commands.get(command) || bot.commands.get(bot.aliases.get(command))) {
+			if (client.commands.get(command) || client.commands.get(client.aliases.get(command))) {
 				// arg was a command
-				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+				const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 				// Check if the command is allowed on the server
-				if (guild.settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(interaction.user.id)) {
-					const embed = new Embed(bot, channel.guild)
+				if (guild.settings.plugins.includes(cmd.help.category) || client.config.ownerID.includes(interaction.user.id)) {
+					const embed = new Embed(client, channel.guild)
 						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
 						.setDescription([
 							channel.guild.translate('misc/help:DESC', { DESC: channel.guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:DESCRIPTION`) }),
 							channel.guild.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
 							channel.guild.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
-							channel.guild.translate('misc/help:USE', { USAGE: guild.settings.prefix.concat(bot.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							channel.guild.translate('misc/help:USE', { USAGE: guild.settings.prefix.concat(client.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
 							channel.guild.translate('misc/help:EXAMPLE', { EX: `${guild.settings.prefix}${cmd.help.examples.join(`,\n ${guild.settings.prefix}`)}` }),
 							channel.guild.translate('misc/help:LAYOUT'),
 						].join('\n'));
@@ -81,7 +81,7 @@ class Help extends Command {
 				interaction.reply({ embeds: [channel.error('misc/help:NO_COMMAND', {}, true)] });
 			}
 		} else {
-			let categories = bot.commands.map(c => c.help.category).filter((v, i, a) => guild.settings.plugins.includes(v) && a.indexOf(v) === i);
+			let categories = client.commands.map(c => c.help.category).filter((v, i, a) => guild.settings.plugins.includes(v) && a.indexOf(v) === i);
 			const embeds = [],
 				slashCommands = await channel.guild.commands.fetch();
 
@@ -96,10 +96,10 @@ class Help extends Command {
 			for (const category of categories) {
 				// Check for MessageContent intent (if not don't show message prefix)
 				const desc = [];
-				if (bot.options.intents.has(GatewayIntentBits.MessageContent)) {
+				if (client.options.intents.has(GatewayIntentBits.MessageContent)) {
 					desc.push(...[
-						bot.translate('misc/help:PREFIX_DESC', { PREFIX: guild.settings.prefix, ID: bot.user.id }),
-						bot.translate('misc/help:INFO_DESC', { PREFIX: guild.settings.prefix, USAGE: bot.translate('misc/help:USAGE') }),
+						client.translate('misc/help:PREFIX_DESC', { PREFIX: guild.settings.prefix, ID: client.user.id }),
+						client.translate('misc/help:INFO_DESC', { PREFIX: guild.settings.prefix, USAGE: client.translate('misc/help:USAGE') }),
 						'',
 					]);
 				}
@@ -107,8 +107,8 @@ class Help extends Command {
 				// Show all commands in that category
 				desc.push(category.map((item) => {
 					return [
-						`**${item} [${bot.commands.filter(c => c.help.category === item).size}]:**`,
-						`${bot.commands
+						`**${item} [${client.commands.filter(c => c.help.category === item).size}]:**`,
+						`${client.commands
 							.filter(c => c.help.category === item && !c.conf.isSubCmd)
 							.sort((a, b) => a.help.name - b.help.name)
 							.map(c => {
@@ -126,26 +126,26 @@ class Help extends Command {
 					].join('\n');
 				}).join('\n'));
 
-				const embed = new Embed(bot, channel.guild)
-					.setAuthor({ name: bot.translate('misc/help:AUTHOR'), iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
+				const embed = new Embed(client, channel.guild)
+					.setAuthor({ name: client.translate('misc/help:AUTHOR'), iconURL: client.user.displayAvatarURL({ format: 'png' }) })
 					.setDescription(
 						desc.join('\n'),
 					);
 				embeds.push(embed);
 			}
-			paginate(bot, interaction, embeds, interaction.user.id);
+			paginate(client, interaction, embeds, interaction.user.id);
 		}
 	}
 
 	/**
 	 * Function for handling autocomplete
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @readonly
 	*/
-	autocomplete(bot, interaction) {
+	autocomplete(client, interaction) {
 		const input = interaction.options.getFocused(true).value,
-			commands = bot.commands.map(i => ({ name: i.help.name, isSubCmd: i.conf.isSubCmd }))
+			commands = client.commands.map(i => ({ name: i.help.name, isSubCmd: i.conf.isSubCmd }))
 				.filter(cmd => !cmd.isSubCmd && cmd.name.toLowerCase().startsWith(input.toLowerCase()))
 				.slice(0, 10);
 
@@ -154,35 +154,35 @@ class Help extends Command {
 	}
 
 	/**
-	 * Function for creating bot about embed.
-	 * @param {bot} bot The instantiating client
+	 * Function for creating client about embed.
+	 * @param {client} client The instantiating client
 	 * @param {guild} guild The guild the command was ran in
 	 * @param {channel} channel The channel the command was ran in
 	 * @param {command} command The command to show, if any
 	 * @param {user} user The user who ran the command
  	 * @returns {embed}
 	*/
-	async createEmbed(bot, settings, channel, command, user) {
+	async createEmbed(client, settings, channel, command, user) {
 		if (!command) {
 			// Show default help page
-			const embed = new Embed(bot, channel.guild)
-				.setAuthor({ name: bot.translate('misc/help:AUTHOR'), iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
+			const embed = new Embed(client, channel.guild)
+				.setAuthor({ name: client.translate('misc/help:AUTHOR'), iconURL: client.user.displayAvatarURL({ format: 'png' }) })
 				.setDescription([
-					bot.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: bot.user.id }),
-					bot.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: bot.translate('misc/help:USAGE') }),
+					client.translate('misc/help:PREFIX_DESC', { PREFIX: settings.prefix, ID: client.user.id }),
+					client.translate('misc/help:INFO_DESC', { PREFIX: settings.prefix, USAGE: client.translate('misc/help:USAGE') }),
 				].join('\n'));
 
 			// Determine what categories to show
-			let categories = bot.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
-			if (!channel.guild) categories = categories.filter(c => !bot.commands.filter(cmd => cmd.help.category === c).first().conf.guildOnly);
-			if (bot.config.ownerID.includes(user.id)) categories.push('Host');
+			let categories = client.commands.map(c => c.help.category).filter((v, i, a) => settings.plugins.includes(v) && a.indexOf(v) === i);
+			if (!channel.guild) categories = categories.filter(c => !client.commands.filter(cmd => cmd.help.category === c).first().conf.guildOnly);
+			if (client.config.ownerID.includes(user.id)) categories.push('Host');
 
 			// Create the help embed
 			const slashCommands = await channel.guild.commands.fetch();
 			categories
 				.sort((a, b) => a.category - b.category)
 				.forEach(category => {
-					const commands = bot.commands
+					const commands = client.commands
 						.filter(c => c.help.category === category && !c.conf.isSubCmd)
 						.sort((a, b) => a.help.name - b.help.name)
 						.map(c => {
@@ -198,7 +198,7 @@ class Help extends Command {
 							}
 						}).join(', ').slice(0, 1023);
 
-					const length = bot.commands
+					const length = client.commands
 						.filter(c => c.help.category === category).size;
 					if (category == 'NSFW' && !channel.nsfw) return;
 					embed.addFields({ name: `${category} [**${length}**]`, value: `${commands}.` });
@@ -207,18 +207,18 @@ class Help extends Command {
 			return embed;
 		} else if (command) {
 			// Check if arg is command
-			if (bot.commands.get(command) || bot.commands.get(bot.aliases.get(command))) {
+			if (client.commands.get(command) || client.commands.get(client.aliases.get(command))) {
 				// arg was a command
-				const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
+				const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 				// Check if the command is allowed on the server
-				if (settings.plugins.includes(cmd.help.category) || bot.config.ownerID.includes(user.id)) {
-					return new Embed(bot, channel.guild)
+				if (settings.plugins.includes(cmd.help.category) || client.config.ownerID.includes(user.id)) {
+					return new Embed(client, channel.guild)
 						.setTitle('misc/help:TITLE', { COMMAND: cmd.help.name })
 						.setDescription([
 							channel.guild.translate('misc/help:DESC', { DESC: channel.guild.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:DESCRIPTION`) }),
 							channel.guild.translate('misc/help:ALIAS', { ALIAS: (cmd.help.aliases.length >= 1) ? cmd.help.aliases.join(', ') : 'None' }),
 							channel.guild.translate('misc/help:COOLDOWN', { CD: cmd.conf.cooldown / 1000 }),
-							channel.guild.translate('misc/help:USE', { USAGE: settings.prefix.concat(bot.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
+							channel.guild.translate('misc/help:USE', { USAGE: settings.prefix.concat(client.translate(`${cmd.help.category.toLowerCase()}/${cmd.help.name}:USAGE`)) }),
 							channel.guild.translate('misc/help:EXAMPLE', { EX: `${settings.prefix}${cmd.help.examples.join(`,\n ${settings.prefix}`)}` }),
 							channel.guild.translate('misc/help:LAYOUT'),
 						].join('\n'));
@@ -229,9 +229,8 @@ class Help extends Command {
 				return channel.error('misc/help:NO_COMMAND', {}, true);
 			}
 		} else {
-			return channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('giveaway/g-start:USAGE')) }, true);
+			return channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(client.translate('giveaway/g-start:USAGE')) }, true);
 		}
 	}
 }
 
-module.exports = Help;

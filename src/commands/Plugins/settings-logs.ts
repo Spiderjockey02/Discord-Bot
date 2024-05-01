@@ -1,8 +1,8 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+	{ ChannelType } = require('discord-api-types/v10'), ;
+import Command from '../../structures/Command';
 
 // List of events
 const features = ['AUTOMODERATIONRULECREATE', 'AUTOMODERATIONRULEDELETE', 'CHANNELCREATE', 'CHANNELDELETE', 'CHANNELUPDATE', 'EMOJICREATE', 'EMOJIDELETE', 'EMOJIUPDATE',
@@ -16,13 +16,13 @@ const features = ['AUTOMODERATIONRULECREATE', 'AUTOMODERATIONRULEDELETE', 'CHANN
  * Set logs command
  * @extends {Command}
 */
-class SetLog extends Command {
+export default class SetLog extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'settings-logs',
 			guildOnly: true,
 			dirname: __dirname,
@@ -68,12 +68,12 @@ class SetLog extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -84,14 +84,14 @@ class SetLog extends Command {
 				await message.guild.updateGuild({ ModLog: message.args[0] });
 				message.channel.success('plugins/set-logs:TOGGLE', { TOGGLE: message.args[0] });
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0] == 'add' || message.args[0] == 'remove') {
 			const currentFeatures = settings.ModLogEvents ?? [];
 			if (!message.args[1] || !features.includes(message.args[1].toUpperCase())) {
 				// show logs
-				const embed = new Embed(bot, message.guild)
+				const embed = new Embed(client, message.guild)
 					.setTitle('plugins/set-logs:TITLE')
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('plugins/set-logs:DESC', { FEAT: features.join('`, `'), CUR_FEAT: currentFeatures.join('`, `') }));
@@ -106,7 +106,7 @@ class SetLog extends Command {
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					message.channel.success('plugins/set-logs:ADD_LOG', { LOG: `\`${events[0] ? events.join('`, `') : 'Nothing'}\`` });
 				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			} else if (message.args[0] == 'remove') {
@@ -120,7 +120,7 @@ class SetLog extends Command {
 					await message.guild.updateGuild({ ModLogEvents: currentFeatures });
 					message.channel.success('plugins/set-logs:REMOVED', { LOG: `\`${message.args.splice(1, message.args.length).join(' ').toUpperCase()}\`` });
 				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			}
@@ -130,17 +130,17 @@ class SetLog extends Command {
 				await message.guild.updateGuild({ ModLogChannel: channelID[0].id });
 				message.channel.success('plugins/set-logs:CHANNEL', { ID: channelID[0].id });
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0] == 'list') {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle('plugins/set-logs:TITLE_2')
 				.setDescription(message.translate('plugins/set-logs:DESC_2', { ID: settings.ModLogChannel, TOGGLE: settings.ModLog, FEAT: settings.ModLogEvents.join('`, `') }));
 			message.channel.send({ embeds: [embed] });
 		} else {
 			// if nothing was entered
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle('Logging plugin')
 				.setColor(message.member.displayHexColor)
 				.setDescription([
@@ -155,13 +155,13 @@ class SetLog extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const toggle = args.get('toggle')?.value,
 			channel = guild.channels.cache.get(args.get('channel')?.value),
 			add = args.get('add')?.value,
@@ -209,11 +209,11 @@ class SetLog extends Command {
 
 	/**
 	  * Function for handling autocomplete
-	  * @param {bot} bot The instantiating client
+	  * @param {client} client The instantiating client
 	  * @param {interaction} interaction The interaction that ran the command
 	  * @readonly
 	*/
-	autocomplete(bot, interaction) {
+	autocomplete(client, interaction) {
 		const option = interaction.options.getFocused(true);
 		let events = [];
 
@@ -233,4 +233,3 @@ class SetLog extends Command {
 	}
 }
 
-module.exports = SetLog;

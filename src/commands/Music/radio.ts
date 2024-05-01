@@ -1,20 +1,20 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ getStations } = require('radio-browser'),
-	Command = require('../../structures/Command.js');
+	{ getStations } = require('radio-browser'), ;
+import Command from '../../structures/Command';
 
 /**
  * radio command
  * @extends {Command}
 */
-class Radio extends Command {
+export default class Radio extends Command {
 	/**
 	   * @param {Client} client The instantiating client
 	   * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'radio',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,11 +35,11 @@ class Radio extends Command {
 
 	/**
 	   * Function for receiving message.
-	   * @param {bot} bot The instantiating client
+	   * @param {client} client The instantiating client
 	   * @param {message} message The message that ran the command
 	   * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -51,11 +51,11 @@ class Radio extends Command {
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
+		if (client.manager?.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != client.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
 		}
 
-		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		// Check if VC is full and client can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has(Flags.MoveMembers)) {
 			return message.channel.error('music/play:VC_FULL');
 		}
@@ -69,18 +69,18 @@ class Radio extends Command {
 			order: 'topclick',
 			hidebroken: true,
 			countrycodeexact: settings.language,
-			language: bot.languages.find((l) => l.name.includes(settings.Language)).nativeName,
+			language: client.languages.find((l) => l.name.includes(settings.Language)).nativeName,
 			by: 'name',
 			searchterm: message.args.join(' '),
 		});
 
-		if (!data[0]) return message.channel.send(bot.translate('music/radio:MISSING_RADIO'));
+		if (!data[0]) return message.channel.send(client.translate('music/radio:MISSING_RADIO'));
 
 		const results = data.map((track, index) => `${++index} - \`${track.name}\``).join('\n');
-		let embed = new Embed(bot, message.guild)
-			.setTitle(bot.translate('music/radio:NUMBER_PICK', { USER: message.args.join(' ') }))
+		let embed = new Embed(client, message.guild)
+			.setTitle(client.translate('music/radio:NUMBER_PICK', { USER: message.args.join(' ') }))
 			.setColor(message.member.displayHexColor)
-			.setDescription(bot.translate('music/radio:NUMBER_PICK', { RESULTS: results }));
+			.setDescription(client.translate('music/radio:NUMBER_PICK', { RESULTS: results }));
 		message.channel.send({ embeds: [embed] });
 
 		const filter = (m) => m.author.id === message.author.id && /^(\d+|cancel)$/i.test(m.content);
@@ -90,22 +90,22 @@ class Radio extends Command {
 		try {
 			collected = await message.channel.awaitMessages({ filter, max: 1, time: 30e3, errors: ['time'] });
 		} catch (e) {
-			return message.reply(bot.translate('music/misc:SONG_TIMED'));
+			return message.reply(client.translate('music/misc:SONG_TIMED'));
 		}
 
 		const first = collected.first().content;
 
 		if (first.toLowerCase() === 'cancel') {
 			if (!player.queue.current) player.destroy();
-			return message.channel.send(bot.translate('misc:CANCELLED_SELECTION'));
+			return message.channel.send(client.translate('misc:CANCELLED_SELECTION'));
 		}
 
 		const index = Number(first) - 1;
-		if (index < 0 || index > max - 1) return message.reply(bot.translate('music/radio:NAN', { MAX: max }));
+		if (index < 0 || index > max - 1) return message.reply(client.translate('music/radio:NAN', { MAX: max }));
 
 		let player;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: message.member.voice.channel.id,
 				textChannel: message.channel.id,
@@ -113,7 +113,7 @@ class Radio extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 
@@ -132,7 +132,7 @@ class Radio extends Command {
 			} else {
 				embed = new EmbedBuilder()
 					.setColor(message.member.displayHexColor)
-					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					.setDescription(client.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 				message.channel.send({ embeds: [embed] });
 			}
 		}
@@ -141,12 +141,12 @@ class Radio extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			input = args.get('station').value;
@@ -162,11 +162,11 @@ class Radio extends Command {
 		if (!member.voice.channel) return interaction.reply({ embeds: [channel.error('music/play:NOT_VC', {}, true)], ephemeral: true });
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ embeds: [channel.error('misc:NOT_VOICE', {}, true)], ephemeral: true });
+		if (client.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != client.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ embeds: [channel.error('misc:NOT_VOICE', {}, true)], ephemeral: true });
 		}
 
-		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		// Check if VC is full and client can't join doesn't have (Flags.ManageChannels)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has('MOVE_MEMBERS')) {
 			return interaction.reply({ embeds: [channel.error('music/play:VC_FULL', {}, true)], ephemeral: true });
 		}
@@ -174,14 +174,14 @@ class Radio extends Command {
 		// Create player
 		let player, res;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: guild.id,
 				voiceChannel: member.voice.channel.id,
 				textChannel: channel.id,
 				selfDeafen: true,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
@@ -193,7 +193,7 @@ class Radio extends Command {
 				throw res.exception;
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:ERROR', { ERROR: err.message }, true)] });
 		}
 
@@ -207,9 +207,9 @@ class Radio extends Command {
 			// Connect to voice channel if not already
 			if (player.state !== 'CONNECTED') player.connect();
 			// Show how many songs have been added
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/play:QUEUED', { NUM: res.tracks.length }));
+				.setDescription(client.translate('music/play:QUEUED', { NUM: res.tracks.length }));
 
 			// Add songs to queue and then play the song(s) if not already
 			player.queue.add(res.tracks);
@@ -222,11 +222,11 @@ class Radio extends Command {
 			player.queue.add(res.tracks[0]);
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
-				return interaction.reply(bot.translate('music/play:QUEUE'));
+				return interaction.reply(client.translate('music/play:QUEUE'));
 			} else {
-				const embed = new Embed(bot, guild)
+				const embed = new Embed(client, guild)
 					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+					.setDescription(client.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 				return interaction.reply({ embeds: [embed] });
 			}
 		}
@@ -234,17 +234,16 @@ class Radio extends Command {
 
 	/**
 	 * Function for handling autocomplete
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @readonly
 	*/
-	async autocomplete(bot, interaction) {
+	async autocomplete(client, interaction) {
 		const input = interaction.options.getFocused(true).value,
-			radios = await bot.fetch('info/radio', { search: input });
+			radios = await client.fetch('info/radio', { search: input });
 
 		// Send back the responses
 		interaction.respond(radios.map(i => ({ name: i.name, value: i.audio })));
 	}
 }
 
-module.exports = Radio;

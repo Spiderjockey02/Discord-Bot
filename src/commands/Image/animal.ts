@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Cat command
  * @extends {Command}
 */
-class Animal extends Command {
+export default class Animal extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'animal',
 			dirname: __dirname,
 			aliases: ['meow'],
@@ -33,20 +33,20 @@ class Animal extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
-	async run(bot, message) {
-		// send 'waiting' message to show bot has recieved message
+	async run(client, message) {
+		// send 'waiting' message to show client has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
 
-		const imageURL = await bot.fetch('misc/animal', { name: message.args[0] });
+		const imageURL = await client.fetch('misc/animal', { name: message.args[0] });
 
 		msg.delete();
 		// send image
-		const embed = new Embed(bot, message.guild)
+		const embed = new Embed(client, message.guild)
 			.setColor(3426654)
 			.setImage(imageURL);
 		message.channel.send({ embeds: [embed] });
@@ -54,42 +54,41 @@ class Animal extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			name = args.get('name')?.value;
 
 		await interaction.reply({ content: guild.translate('misc:GENERATING_IMAGE', {
-			EMOJI: bot.customEmojis['loading'] }) });
+			EMOJI: client.customEmojis['loading'] }) });
 
 		try {
-			const imageURL = await bot.fetch('misc/animal', { name });
+			const imageURL = await client.fetch('misc/animal', { name });
 			if (imageURL.error) throw new Error(imageURL.error);
 			// send image
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setColor(3426654)
 				.setImage(imageURL[Math.floor((Math.random() * imageURL.length))].imageURL);
 			interaction.editReply({ content: ' ', embeds: [embed] });
 		} catch(err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.editReply({ content: ' ', embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
-	async autocomplete(bot, interaction) {
+	async autocomplete(client, interaction) {
 		// Get current input and make sure it's not 0
 		const searchQuery = interaction.options.getFocused(true).value;
 		if (searchQuery.length == 0) return interaction.respond([]);
 
 		// Fetch animal list and filter based on 'startsWith'
-		const animalList = await bot.fetch('misc/animal/raw');
+		const animalList = await client.fetch('misc/animal/raw');
 		const slctdAnimals = animalList.filter(i => i.toLowerCase().startsWith(searchQuery.toLowerCase())).slice(0, 10);
 		interaction.respond(slctdAnimals.map(i => ({ name: i, value: i })));
 	}
 }
 
-module.exports = Animal;

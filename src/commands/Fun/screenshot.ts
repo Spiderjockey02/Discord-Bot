@@ -1,20 +1,21 @@
-// Dependencies
-const Puppeteer = require('puppeteer'),
-	{ AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	validUrl = require('valid-url'),
-	Command = require('../../structures/Command.js');
+import Puppeteer from 'puppeteer';
+import { AttachmentBuilder, ApplicationCommandOptionType, PermissionFlagsBits, Message, CommandInteraction, Guild } from 'discord.js';
+import validURL from 'valid-url';
+import Command from 'src/structures/Command';
+import EgglordClient from 'src/base/Egglord';
+import { Setting } from '@prisma/client';
 
 /**
  * Screenshot command
  * @extends {Command}
 */
-class Screenshot extends Command {
+export default class Screenshot extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'screenshot',
 			dirname: __dirname,
 			aliases: ['ss'],
@@ -35,12 +36,12 @@ class Screenshot extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client: EgglordClient, message: Message, settings: Setting) {
 		// make sure a website was entered
 		if (!message.args[0]) {
 			if (message.deletable) message.delete();
@@ -48,23 +49,23 @@ class Screenshot extends Command {
 		}
 
 		// make sure URl is valid
-		if (!validUrl.isUri(message.args[0])) {
+		if (!validURL.isUri(message.args[0])) {
 			if (message.deletable) message.delete();
 			return message.channel.error('fun/screenshot:INVALID_URL');
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (!bot.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw && message.guild) {
+		if (!client.adultSiteList.includes(require('url').parse(message.args[0]).host) && !message.channel.nsfw && message.guild) {
 			if (message.deletable) message.delete();
 			return message.channel.error('fun/screenshot:BLACKLIST_WEBSITE');
 		}
 
-		// send 'waiting' message to show bot has recieved message
+		// send 'waiting' message to show client has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// make screenshot
-		const data = await this.fetchScreenshot(bot, message.args[0]);
+		const data = await this.fetchScreenshot(client, message.args[0]);
 		if (!data) {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' });
 		} else {
@@ -76,25 +77,25 @@ class Screenshot extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client: EgglordClient, interaction: CommandInteraction, guild: Guild, args: any) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			url = args.get('url').value;
 
 		// make sure URl is valid
-		if (!validUrl.isUri(url)) return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
+		if (!validURL.isUri(url)) return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
+		if (!client.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
 
 		// display phrases' definition
 		await interaction.deferReply();
-		const data = await this.fetchScreenshot(bot, url);
+		const data = await this.fetchScreenshot(client, url);
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)], ephemeral: true });
 		} else {
@@ -103,22 +104,22 @@ class Screenshot extends Command {
 		}
 	}
 
-	async reply(bot, interaction, channel, message) {
+	async reply(client, interaction, channel, message) {
 		const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
 		if (!message.content.match(urlRegex)) return interaction.reply({ embeds: [channel.error('That is not a website', {}, true)], ephermal: true });
 		const url = message.content.match(urlRegex)[0];
 
 		// make sure URl is valid
-		if (!validUrl.isUri(url)) {
+		if (!validURL.isUri(url)) {
 			return interaction.reply({ embeds: [channel.error('fun/screenshot:INVALID_URL', {}, true)], ephermal: true });
 		}
 
 		// Make sure website is not NSFW in a non-NSFW channel
-		if (!bot.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
+		if (!client.adultSiteList.includes(require('url').parse(url).host) && !channel.nsfw) return interaction.reply({ embeds: [channel.error('fun/screenshot:BLACKLIST_WEBSITE', {}, true)], ephermal: true });
 
 		// display phrases' definition
 		await interaction.deferReply();
-		const data = await this.fetchScreenshot(bot, url);
+		const data = await this.fetchScreenshot(client, url);
 		if (!data) {
 			interaction.editReply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: 'Failed to fetch screenshot' }, true)] });
 		} else {
@@ -129,11 +130,11 @@ class Screenshot extends Command {
 
 	/**
 	 * Function for creating the screenshot of the URL.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {string} URL The URL to screenshot from
 	 * @returns {embed}
 	*/
-	async fetchScreenshot(bot, URL) {
+	async fetchScreenshot(client: EgglordClient, URL: string) {
 		// try and create screenshot
 		let data;
 		try {
@@ -141,14 +142,13 @@ class Screenshot extends Command {
 			const page = await browser.newPage();
 			await page.setViewport({ width: 1280, height: 720 });
 			await page.goto(URL);
-			await bot.delay(1500);
+			await client.delay(1500);
 			data = await page.screenshot();
 			await browser.close();
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 		}
 		return data;
 	}
 }
 
-module.exports = Screenshot;

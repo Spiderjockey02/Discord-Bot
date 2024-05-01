@@ -1,19 +1,19 @@
 // Dependencies
 const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Rank: rank } = require('canvacord'),
-	Command = require('../../structures/Command.js');
+	{ Rank: rank } = require('canvacord'), ;
+import Command from '../../structures/Command';
 
 /**
  * Rank command
  * @extends {Command}
 */
-class Rank extends Command {
+export default class Rank extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'rank',
 			guildOnly: true,
 			dirname: __dirname,
@@ -35,21 +35,21 @@ class Rank extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client, message) {
 		// Get user
 		const members = await message.getMember();
 
-		// send 'waiting' message to show bot has recieved message
+		// send 'waiting' message to show client has recieved message
 		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(bot, message.guild, message.author, members[0], message.channel);
+			const res = await this.createRankCard(client, message.guild, message.author, members[0], message.channel);
 			msg.delete();
 			if (typeof (res) == 'object' && !res.description) {
 				await message.channel.send({ files: [res] });
@@ -60,49 +60,49 @@ class Rank extends Command {
 			}
 		} catch (err) {
 			msg.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(bot, guild, interaction.user, member, channel);
+			const res = await this.createRankCard(client, guild, interaction.user, member, channel);
 			if (res.attachment && res.name == 'RankCard.png') {
 				await interaction.reply({ files: [res] });
 			} else {
 				await interaction.reply({ embeds: [res] });
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
 	/**
  	 * Function for fetching meme embed.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
 	 * @param {guild} guild The guild the command ran in
 	 * @param {author} User The user who ran the command
  	 * @param {target} guildMember The member who's rank is being checked
  	 * @param {channel} channel The channel the command ran in
  	 * @returns {embed}
 	*/
-	async createRankCard(bot, guild, author, target, channel) {
-		// make sure it's not a bot
-		if (target.user.bot) return channel.error('level/rank:NO_BOTS', null, true);
+	async createRankCard(client, guild, author, target, channel) {
+		// make sure it's not a client
+		if (target.user.client) return channel.error('level/rank:NO_clientS', null, true);
 
 		// sort and find user
 		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
@@ -135,4 +135,3 @@ class Rank extends Command {
 	}
 }
 
-module.exports = Rank;

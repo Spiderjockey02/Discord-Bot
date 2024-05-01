@@ -1,18 +1,18 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * effects command
  * @extends {Command}
 */
-class Effects extends Command {
+export default class Effects extends Command {
 	/**
 	   * @param {Client} client The instantiating client
 	   * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'effects',
 			guildOnly: true,
 			dirname: __dirname,
@@ -22,7 +22,7 @@ class Effects extends Command {
 			cooldown: 3000,
 			examples: ['bb 8', 'bb'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('effects-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('effects-')).map(c => ({
 				name: c.help.name.replace('effects-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -33,20 +33,19 @@ class Effects extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`effects-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`effects-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = Effects;

@@ -1,19 +1,21 @@
+import EgglordClient from 'src/base/Egglord';
+
 // Dependencies
 const	{ ApplicationCommandOptionType } = require('discord.js'),
-	{ userSchema } = require('../../database/models'),
-	Command = require('../../structures/Command.js');
+	{ userSchema } = require('../../database/models'), ;
+import Command from '../../structures/Command';
 
 /**
  * Lavalink command
  * @extends {Command}
 */
-class UserBan extends Command {
+export default class UserBan extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'user-ban',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -39,15 +41,15 @@ class UserBan extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client: EgglordClient, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
-			user = bot.users.cache.get(args.get('user').value),
+			user = client.users.cache.get(args.get('user').value),
 			bannedStatus = args.get('banned').value;
 
 		// Make sure user isn't trying to punish themselves
@@ -71,4 +73,3 @@ class UserBan extends Command {
 	}
 }
 
-module.exports = UserBan;

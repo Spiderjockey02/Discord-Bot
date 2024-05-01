@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * TTS command
  * @extends {Command}
 */
-class TTS extends Command {
+export default class TTS extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'tts',
 			guildOnly: true,
 			dirname: __dirname,
@@ -34,11 +34,11 @@ class TTS extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Check if the member has role to interact with music plugin
 		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
 			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
@@ -50,11 +50,11 @@ class TTS extends Command {
 		if (!message.member.voice.channel) return message.channel.error('music/play:NOT_VC');
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(message.guild.id)) {
-			if (message.member.voice.channel.id != bot.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
+		if (client.manager?.players.get(message.guild.id)) {
+			if (message.member.voice.channel.id != client.manager?.players.get(message.guild.id).voiceChannel) return message.channel.error('misc:NOT_VOICE');
 		}
 
-		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		// Check if VC is full and client can't join doesn't have (Flags.ManageChannels)
 		if (message.member.voice.channel.full && !message.member.voice.channel.permissionsFor(message.guild.members.me).has(Flags.MoveMembers)) {
 			return message.channel.error('music/play:VC_FULL');
 		}
@@ -62,7 +62,7 @@ class TTS extends Command {
 		// Create player
 		let player;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: message.member.voice.channel.id,
 				textChannel: message.channel.id,
@@ -70,7 +70,7 @@ class TTS extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 
@@ -98,7 +98,7 @@ class TTS extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				const embed = new Embed(bot, message.guild)
+				const embed = new Embed(client, message.guild)
 					.setColor(message.member.displayHexColor)
 					.setDescription(message.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 				message.channel.send({ embeds: [embed] });
@@ -108,13 +108,13 @@ class TTS extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
 			text = args.get('text').value;
@@ -130,11 +130,11 @@ class TTS extends Command {
 		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NOT_VC', null, true)] });
 
 		// Check that user is in the same voice channel
-		if (bot.manager?.players.get(guild.id)) {
-			if (member.voice.channel.id != bot.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', null, true)] });
+		if (client.manager?.players.get(guild.id)) {
+			if (member.voice.channel.id != client.manager?.players.get(guild.id).voiceChannel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NOT_VOICE', null, true)] });
 		}
 
-		// Check if VC is full and bot can't join doesn't have (Flags.ManageChannels)
+		// Check if VC is full and client can't join doesn't have (Flags.ManageChannels)
 		if (member.voice.channel.full && !member.voice.channel.permissionsFor(guild.members.me).has(Flags.MoveMembers)) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:VC_FULL', null, true)] });
 		}
@@ -142,14 +142,14 @@ class TTS extends Command {
 		// Create player
 		let player;
 		try {
-			player = bot.manager.create({
+			player = client.manager.create({
 				guild: guild.id,
 				voiceChannel: member.voice.channel.id,
 				textChannel: channel.id,
 				selfDeafen: true,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 
@@ -177,7 +177,7 @@ class TTS extends Command {
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			} else {
-				const embed = new Embed(bot, guild)
+				const embed = new Embed(client, guild)
 					.setColor(member.displayHexColor)
 					.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 				interaction.reply({ embeds: [embed] });
@@ -186,4 +186,3 @@ class TTS extends Command {
 	}
 }
 
-module.exports = TTS;

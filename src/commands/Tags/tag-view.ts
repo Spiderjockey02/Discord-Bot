@@ -1,20 +1,20 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ TagsSchema } = require('../../database/models/index.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Tag view command
  * @extends {Command}
 */
-class TagView extends Command {
+export default class TagView extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'tag-view',
 			guildOnly: true,
 			dirname: __dirname,
@@ -29,12 +29,12 @@ class TagView extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client, message) {
 		// view all tags on the server
 		try {
 			const tags = await TagsSchema.find({ guildID: message.guild.id });
@@ -50,7 +50,7 @@ class TagView extends Command {
 
 			// if no input was entered or tagName didn't match
 			if (tags != null) {
-				const resultEmbed = new Embed(bot, message.guild)
+				const resultEmbed = new Embed(client, message.guild)
 					.setTitle('tags/tag-view:TITLE', { NAME:message.guild.name });
 				tags.forEach(value => {
 					resultEmbed.addFields({ name: message.translate('tags/tag-view:TITLE', { NAME: value.name }), value: message.translate('tags/tag-view:RESP', { RESP: value.response }) });
@@ -60,11 +60,10 @@ class TagView extends Command {
 				return message.channel.error('tags/tag-view:NO_EXIST');
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 
 	}
 }
 
-module.exports = TagView;

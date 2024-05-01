@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * seekfastforward command
  * @extends {Command}
 */
-class SeekFastForward extends Command {
+export default class SeekFastForward extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'seek-fast_forward',
 			guildOnly: true,
 			dirname: __dirname,
@@ -36,17 +36,17 @@ class SeekFastForward extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client, message) {
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(message.member, bot);
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure song isn't a stream
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM');
 
 		// update the time
@@ -56,7 +56,7 @@ class SeekFastForward extends Command {
 			message.channel.send(message.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
 		} else {
 			player.seek(player.position + time);
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setColor(message.member.displayHexColor)
 				.setDescription(message.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			message.channel.send({ embeds: [embed] });
@@ -65,22 +65,22 @@ class SeekFastForward extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId);
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Make sure song isn't a stream
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		if (!player.queue.current.isSeekable) return interaction.reply({ embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)], ephemeral: true });
 
 		// update the time
@@ -90,7 +90,7 @@ class SeekFastForward extends Command {
 			interaction.reply(guild.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
 		} else {
 			player.seek(player.position + time);
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setColor(member.displayHexColor)
 				.setDescription(guild.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			interaction.reply({ embeds: [embed] });
@@ -98,4 +98,3 @@ class SeekFastForward extends Command {
 	}
 }
 
-module.exports = SeekFastForward;

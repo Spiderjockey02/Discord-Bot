@@ -1,19 +1,19 @@
 // Dependencies
 const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ colourNames } = require('../../assets/json/colours.json'),
-	Command = require('../../structures/Command.js');
+	{ colourNames } = require('../../assets/json/colours.json'), ;
+import Command from '../../structures/Command';
 
 /**
  * Addrole command
  * @extends {Command}
 */
-class AddRole extends Command {
+export default class AddRole extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'role-add',
 			guildOnly: true,
 			dirname: __dirname,
@@ -53,12 +53,12 @@ class AddRole extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -87,13 +87,13 @@ class AddRole extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			name = args.get('name').value,
 			color = args.get('colour').value,
@@ -106,18 +106,18 @@ class AddRole extends Command {
 			const role = await guild.roles.create({ name: name, reason: `Created by ${interaction.user.displayName}`, color, hoist });
 			interaction.reply({ embeds: [channel.success('moderation/addrole:SUCCESS', { ROLE: role.id }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 5000 }));
 		} catch (err) {
-			bot.logger.error(`Command: 'addrole' has error: ${err}.`);
+			client.logger.error(`Command: 'addrole' has error: ${err}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 
 	/**
 	 * Function for handling autocomplete
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @readonly
 	*/
-	autocomplete(bot, interaction) {
+	autocomplete(client, interaction) {
 		const input = interaction.options.getFocused(true).value,
 			colour = Object.keys(colourNames).filter(i => i.toLowerCase().startsWith(input.toLowerCase())).slice(0, 10);
 
@@ -126,4 +126,3 @@ class AddRole extends Command {
 	}
 }
 
-module.exports = AddRole;

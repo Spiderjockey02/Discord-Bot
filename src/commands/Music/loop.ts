@@ -1,19 +1,19 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Loop command
  * @extends {Command}
 */
-class Loop extends Command {
+export default class Loop extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'loop',
 			guildOnly: true,
 			dirname: __dirname,
@@ -45,16 +45,16 @@ class Loop extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client, message) {
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(message.member, bot);
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 
 		// Check what to loop (queue or song) - default to song
 		if (!message.args[0] || message.args[0].toLowerCase() == 'song') {
@@ -72,35 +72,34 @@ class Loop extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			type = args.get('type')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Check what to loop (queue or song) - default to song
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		if (!type || type == 'song') {
 			// (un)loop the song
 			player.setTrackRepeat(!player.trackRepeat);
 			const trackRepeat = guild.translate(`misc:${player.trackRepeat ? 'ENABLED' : 'DISABLED'}`);
-			return interaction.reply({ content: bot.translate('music/loop:TRACK', { TOGGLE: trackRepeat }) });
+			return interaction.reply({ content: client.translate('music/loop:TRACK', { TOGGLE: trackRepeat }) });
 		} else if (type == 'queue') {
 			// (un)loop the queue
 			player.setQueueRepeat(!player.queueRepeat);
 			const queueRepeat = guild.translate(`misc:${player.queueRepeat ? 'ENABLED' : 'DISABLED'}`);
-			return interaction.reply({ content: bot.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
+			return interaction.reply({ content: client.translate('music/loop:QUEUE', { TOGGLE: queueRepeat }) });
 		}
 	}
 }
 
-module.exports = Loop;

@@ -1,20 +1,20 @@
 // Dependencies
 const	{ Embed, time: { getReadableTime } } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * playlist create command
  * @extends {Command}
 */
-class PCreate extends Command {
+export default class PCreate extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'playlist-create',
 			guildOnly: true,
 			dirname: __dirname,
@@ -45,11 +45,11 @@ class PCreate extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		if (!message.args[1]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-create:USAGE')) });
 		if (message.args[0].length > 32) return msg.edit(message.translate('music/p-create:TOO_LONG'));
 
@@ -62,7 +62,7 @@ class PCreate extends Command {
 
 			// response from database
 			if (!playlists[0]) {
-				await this.savePlaylist(bot, message, settings, msg);
+				await this.savePlaylist(client, message, settings, msg);
 			} else if (playlists[0] && !message.author.premium) {
 				// User needs premium to save more playlists
 				return msg.edit(message.translate('music/p-create:NO_PREM'));
@@ -73,27 +73,27 @@ class PCreate extends Command {
 				// user can have save another playlist as they have premium
 				const exist = playlists.find(obj => obj.name == message.args[0]);
 				if (!exist) {
-					await this.savePlaylist(bot, message, message.args, settings, msg);
+					await this.savePlaylist(client, message, message.args, settings, msg);
 				} else {
 					msg.edit(message.translate('music/p-create:EXISTS'));
 				}
 			}
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			playlistName = args.get('name').value,
 			searchQuery = args.get('track').value;
@@ -105,7 +105,7 @@ class PCreate extends Command {
 
 			// response from database
 			if (!playlists[0]) {
-				const resp = await this.createPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+				const resp = await this.createPlaylist(client, channel, interaction.user, playlistName, searchQuery);
 				interaction.reply({ embeds: [resp] });
 			} else if (playlists[0] && !interaction.user.premium) {
 				// User needs premium to save more playlists
@@ -117,32 +117,32 @@ class PCreate extends Command {
 				// user can have save another playlist as they have premium
 				const exist = playlists.find(obj => obj.name == playlistName);
 				if (!exist) {
-					const resp = await this.createPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+					const resp = await this.createPlaylist(client, channel, interaction.user, playlistName, searchQuery);
 					interaction.reply({ embeds: [resp] });
 				} else {
 					await interaction.reply({ embeds: [channel.error('music/p-create:EXISTS', null, true)] });
 				}
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			await interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
 	/**
 	 * Function for creating the playlist
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {channel} channel The interaction that ran the command
 	 * @param {User} user The guild the interaction ran in
 	 * @param {string} playlistName The name of the playlist
 	 * @param {string} searchQuery The seqrch query for new track
 	 * @return {embed}
 	*/
-	async createPlaylist(bot, channel, user, playlistName, searchQuery) {
+	async createPlaylist(client, channel, user, playlistName, searchQuery) {
 		// Get songs to add to playlist
 		let res;
 		try {
-			res = await bot.manager.search(searchQuery, user);
+			res = await client.manager.search(searchQuery, user);
 		} catch (err) {
 			return channel.error('music/play:ERROR', { ERROR: err.message }, true);
 		}
@@ -156,7 +156,7 @@ class PCreate extends Command {
 				const tracks = res.playlist?.tracks.slice(0, user.premium ? 200 : 100) ?? res.tracks.slice(0, user.premium ? 200 : 100);
 				const thumbnail = res.playlist?.tracks[0]?.thumbnail ?? res.tracks[0]?.thumbnail ?? null;
 				const duration = res.playlist?.duration ?? res.tracks[0].duration;
-				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration, thumbnail });
+				return await this.savePlaylist(client, channel, user, playlistName, { tracks, duration, thumbnail });
 			}
 			case 'search': {
 			// Display the options for search
@@ -165,7 +165,7 @@ class PCreate extends Command {
 				if (res.tracks.length < max) max = res.tracks.length;
 
 				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-				const embed = new Embed(bot, channel.guild)
+				const embed = new Embed(client, channel.guild)
 					.setTitle('music/search:TITLE', { TITLE: searchQuery })
 					.setDescription(channel.guild.translate('music/search:DESC', { RESULTS: results }));
 				const search = await channel.send({ embeds: [embed] });
@@ -187,7 +187,7 @@ class PCreate extends Command {
 				// const thumbnail = res.tracks[index].thumbnail;
 				const duration = res.tracks[index].duration;
 				search.delete();
-				return await this.savePlaylist(bot, channel, user, playlistName, { tracks, duration });
+				return await this.savePlaylist(client, channel, user, playlistName, { tracks, duration });
 			}
 			default:
 				return channel.error('music/p-create:NO_SONG');
@@ -196,7 +196,7 @@ class PCreate extends Command {
 
 	/**
 	 * Function for saving the new playlist to the database
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {channel} channel The interaction that ran the command
 	 * @param {User} user The guild the interaction ran in
 	 * @param {string} playlistName The name of the playlist
@@ -206,7 +206,7 @@ class PCreate extends Command {
 	 * @param {integer} resData.duration The seqrch query for new track
 	 * @return {embed}
 	*/
-	async savePlaylist(bot, channel, user, playlistName, resData) {
+	async savePlaylist(client, channel, user, playlistName, resData) {
 		try {
 			// Save playlist to database
 			const newPlaylist = new PlaylistSchema({
@@ -220,7 +220,7 @@ class PCreate extends Command {
 			await newPlaylist.save();
 
 			// Show that playlist has been saved
-			const embed = new Embed(bot, channel.guild)
+			const embed = new Embed(client, channel.guild)
 				.setAuthor({ name: newPlaylist.name, iconURL: user.displayAvatarURL() })
 				.setDescription([
 					channel.guild.translate('music/p-create:DESC_1', { TITLE: playlistName }),
@@ -231,10 +231,9 @@ class PCreate extends Command {
 				.setTimestamp();
 			return embed;
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 	}
 }
 
-module.exports = PCreate;

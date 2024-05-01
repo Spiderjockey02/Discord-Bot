@@ -1,19 +1,19 @@
 // Dependencies
 const	{ TagsSchema } = require('../../database/models/index.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Tag edit command
  * @extends {Command}
 */
-class TagEdit extends Command {
+export default class TagEdit extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'tag-edit',
 			guildOnly: true,
 			dirname: __dirname,
@@ -28,12 +28,12 @@ class TagEdit extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -54,7 +54,7 @@ class TagEdit extends Command {
 					message.guild.guildTags.push(message.args[2]);
 				});
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else if (message.args[0].toLowerCase() == 'edit') {
@@ -67,7 +67,7 @@ class TagEdit extends Command {
 					message.channel.success('tags/tag-edit:UPDATED_RESP', { NAME: message.args[2] });
 				});
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else {
@@ -76,4 +76,3 @@ class TagEdit extends Command {
 	}
 }
 
-module.exports = TagEdit;

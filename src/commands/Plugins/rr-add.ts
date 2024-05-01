@@ -1,5 +1,5 @@
 // Dependencies
-const Command = require('../../structures/Command.js'),
+const import Command from '../../structures/Command';,
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags }, ActionRowBuilder, RoleSelectMenuBuilder } = require('discord.js'),
 	{ ChannelType } = require('discord-api-types/v10'),
 	{ Embed } = require('../../utils');
@@ -8,13 +8,13 @@ const Command = require('../../structures/Command.js'),
  * Reaction role add command
  * @extends {Command}
 */
-class ReactionRoleAdd extends Command {
+export default class ReactionRoleAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'rr-add',
 			guildOnly: true,
 			dirname: __dirname,
@@ -42,18 +42,18 @@ class ReactionRoleAdd extends Command {
 		});
 	}
 
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(args.get('channel')?.value ?? interaction.channelId);
 		const name = args.get('name').value;
 
 		// Make sure channel is a text channel and permission
-		if (!channel.permissionsFor(bot.user).has(Flags.ViewChannel) || !channel.isTextBased()) {
+		if (!channel.permissionsFor(client.user).has(Flags.ViewChannel) || !channel.isTextBased()) {
 			return interaction.reply({ embeds: [channel.error('misc:MISSING_CHANNEL', null, true)], ephemeral: true });
-		} else if (!channel.permissionsFor(bot.user).has(Flags.SendMessages)) {
+		} else if (!channel.permissionsFor(client.user).has(Flags.SendMessages)) {
 			return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:SendMessages') }, true)], ephemeral: true });
-		} else if (!channel.permissionsFor(bot.user).has(Flags.EmbedLinks)) {
+		} else if (!channel.permissionsFor(client.user).has(Flags.EmbedLinks)) {
 			return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:EmbedLinks') }, true)], ephemeral: true });
-		} else if (!channel.permissionsFor(bot.user).has(Flags.AddReactions)) {
+		} else if (!channel.permissionsFor(client.user).has(Flags.AddReactions)) {
 			return interaction.reply({ embeds: [channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: guild.translate('permissions:AddReactions') }, true)], ephemeral: true });
 		}
 
@@ -70,4 +70,4 @@ class ReactionRoleAdd extends Command {
 	}
 }
 
-module.exports = ReactionRoleAdd;
+

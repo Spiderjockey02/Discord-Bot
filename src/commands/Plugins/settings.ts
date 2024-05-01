@@ -1,18 +1,18 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Giveaway start command
  * @extends {Command}
 */
-class Settings extends Command {
+export default class Settings extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'settings',
 			guildOnly: true,
 			dirname: __dirname,
@@ -23,7 +23,7 @@ class Settings extends Command {
 			cooldown: 30000,
 			examples: ['giveaway start 1m 1 nitro', 'giveaway reroll 1021725995901911080'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('settings-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('settings-')).map(c => ({
 				name: c.help.name.replace('settings-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -34,20 +34,19 @@ class Settings extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`settings-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`settings-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = Settings;

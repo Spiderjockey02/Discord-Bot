@@ -1,18 +1,18 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags }, ApplicationCommandType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags }, ApplicationCommandType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Reload command
  * @extends {Command}
 */
-class Reload extends Command {
+export default class Reload extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'reload-misc',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -34,13 +34,13 @@ class Reload extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const feature = args.get('feature').value,
 			channel = guild.channels.cache.get(interaction.channelId);
 		let successCount = 0;
@@ -49,28 +49,28 @@ class Reload extends Command {
 		switch (feature) {
 			case 'language':
 				try {
-					bot.translations = await require('../../helpers/LanguageManager')();
+					client.translations = await require('../../helpers/LanguageManager')();
 				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 				}
 				break;
 			case 'interactions':
-				await interaction.reply({ content: `=-=-=-=-=-=-=- Loading interactions for ${bot.guilds.cache.size} guilds -=-=-=-=-=-=-=` });
+				await interaction.reply({ content: `=-=-=-=-=-=-=- Loading interactions for ${client.guilds.cache.size} guilds -=-=-=-=-=-=-=` });
 
 				// Upload per server interactions
-				for (const g of [...bot.guilds.cache.values()]) {
+				for (const g of [...client.guilds.cache.values()]) {
 					const enabledPlugins = g.settings.plugins;
 					const cmdsToUpload = [];
 					for (const plugin of enabledPlugins) {
-						const data = await bot.loadInteractionGroup(plugin, g);
+						const data = await client.loadInteractionGroup(plugin, g);
 						if (Array.isArray(data)) cmdsToUpload.push(...data);
 
 					}
 
 					// For the "Host" commands
-					if (g.id == bot.config.SupportServer.GuildID) {
-						const cmds = await bot.loadInteractionGroup('Host', g);
+					if (g.id == client.config.SupportServer.GuildID) {
+						const cmds = await client.loadInteractionGroup('Host', g);
 						for (const cmd of cmds) {
 							cmd.defaultMemberPermissions = [Flags.Administrator];
 						}
@@ -79,16 +79,16 @@ class Reload extends Command {
 
 					// get context menus
 					try {
-						await bot.guilds.cache.get(g.id)?.commands.set(cmdsToUpload);
-						bot.logger.log('Loaded interactions for guild: ' + g.name);
+						await client.guilds.cache.get(g.id)?.commands.set(cmdsToUpload);
+						client.logger.log('Loaded interactions for guild: ' + g.name);
 						successCount++;
 					} catch (err) {
-						bot.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
+						client.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 					}
 				}
 
 				// Upload global interactions
-				bot.application.commands.set([{ name: 'Add to Queue', type: ApplicationCommandType.Message },
+				client.application.commands.set([{ name: 'Add to Queue', type: ApplicationCommandType.Message },
 					{ name: 'Translate', type: ApplicationCommandType.Message },
 					{ name: 'OCR', type: ApplicationCommandType.Message },
 					{ name: 'Avatar', type: ApplicationCommandType.User },
@@ -98,7 +98,7 @@ class Reload extends Command {
 					{ name: 'Report', type: ApplicationCommandType.User },
 				]);
 
-				interaction.editReply({ content: `Successfully updated ${successCount}/${bot.guilds.cache.size} servers' interactions.` });
+				interaction.editReply({ content: `Successfully updated ${successCount}/${client.guilds.cache.size} servers' interactions.` });
 				break;
 			default:
 
@@ -106,4 +106,3 @@ class Reload extends Command {
 	}
 }
 
-module.exports = Reload;

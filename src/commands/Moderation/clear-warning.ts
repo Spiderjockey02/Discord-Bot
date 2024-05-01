@@ -1,19 +1,19 @@
 // Dependencies
 const { WarningSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * ClearWarning command
  * @extends {Command}
 */
-class ClearWarning extends Command {
+export default class ClearWarning extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'clear-warning',
 			guildOnly: true,
 			dirname: __dirname,
@@ -44,12 +44,12 @@ class ClearWarning extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -73,7 +73,7 @@ class ClearWarning extends Command {
 
 			// check if a warning number was entered
 			if (message.args[1] - 1 <= warns.length) {
-				// Delete item from database as bot didn't crash
+				// Delete item from database as client didn't crash
 				await WarningSchema.findByIdAndRemove(warns[message.args[1] - 1]._id);
 			} else {
 				await WarningSchema.deleteMany({ userID: members[0].user.id, guildID: message.guild.id });
@@ -81,20 +81,20 @@ class ClearWarning extends Command {
 			message.channel.send(message.translate('moderation/clear-warning:CLEARED', { MEMBER: members[0] }));
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user').value),
 			channel = guild.channels.cache.get(interaction.channelId),
 			num = args.get('warn-num').value;
@@ -109,17 +109,16 @@ class ClearWarning extends Command {
 
 			// check if a warning number was entered
 			if (num - 1 <= warns.length) {
-				// Delete item from database as bot didn't crash
+				// Delete item from database as client didn't crash
 				await WarningSchema.findByIdAndRemove(warns[num - 1]._id);
 			} else {
 				await WarningSchema.deleteMany({ userID: member.user.id, guildID: guild.id });
 			}
 			interaction.reply(guild.translate('moderation/clear-warning:CLEARED', { MEMBER: member }));
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
 
-module.exports = ClearWarning;

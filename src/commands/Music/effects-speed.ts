@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * speed command
  * @extends {Command}
 */
-class Speed extends Command {
+export default class Speed extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'effects-speed',
 			guildOnly: true,
 			dirname: __dirname,
@@ -37,17 +37,17 @@ class Speed extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
-		// check to make sure bot can play music based on permissions
-		const playable = checkMusic(message.member, bot);
+	async run(client, message) {
+		// check to make sure client can play music based on permissions
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure song isn't a stream
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		if (!player.queue.current.isSeekable) return message.channel.error('music/speed:LIVESTREAM');
 
 		// Make sure Number is a number
@@ -57,35 +57,35 @@ class Speed extends Command {
 		try {
 			player.setSpeed(message.args[0]);
 			const msg = await message.channel.send(message.translate('music/speed:ON_SPD'));
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setDescription(message.translate('music/speed:UPDATED', { NUM: message.args[0] }));
-			await bot.delay(5000);
+			await client.delay(5000);
 			return msg.edit({ content: ' ', embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			speed = args.get('speed').value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 
 		// Make sure song isn't a stream
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/speed:LIVESTREAM', { ERROR: null }, true)] });
@@ -94,15 +94,14 @@ class Speed extends Command {
 		try {
 			player.setSpeed(speed);
 			await interaction.reply({ content: guild.translate('music/speed:ON_SPD') });
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setDescription(guild.translate('music/speed:UPDATED', { NUM: speed }));
-			await bot.delay(5000);
+			await client.delay(5000);
 			return interaction.editReply({ content: ' ', embeds: [embed] });
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }
 
-module.exports = Speed;

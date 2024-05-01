@@ -1,20 +1,20 @@
 // Dependencies
 const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ promisify, inspect } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	Command = require('../../structures/Command.js');
+	readdir = promisify(require('fs').readdir), ;
+import Command from '../../structures/Command';
 
 /**
  * Script command
  * @extends {Command}
 */
-class Script extends Command {
+export default class Script extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'script',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -22,7 +22,7 @@ class Script extends Command {
 			description: 'Runs a script file.',
 			usage: 'script <file name> [...params]',
 			cooldown: 3000,
-			examples: ['script updateGuildSlashCommands bot'],
+			examples: ['script updateGuildSlashCommands client'],
 			slash: false,
 			options: [{
 				name: 'track',
@@ -36,11 +36,11 @@ class Script extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client, message) {
 		const scripts = (await readdir('./src/scripts')).filter((v, i, a) => a.indexOf(v) === i);
 
 		// No script was entered
@@ -58,7 +58,7 @@ class Script extends Command {
 				message.channel.send('```js\n' + `${inspect(resp).substring(0, 1990)}` + '```');
 			} catch (err) {
 				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else {
@@ -68,14 +68,13 @@ class Script extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction) {
+	async callback(client, interaction) {
 		interaction.reply({ content: 'This is currently unavailable.' });
 	}
 }
 
-module.exports = Script;

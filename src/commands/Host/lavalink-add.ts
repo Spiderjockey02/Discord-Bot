@@ -1,19 +1,19 @@
 // Dependencies
 const	{ ApplicationCommandOptionType } = require('discord.js'),
-	{ Node } = require('magmastream'),
-	Command = require('../../structures/Command.js');
+	{ Node } = require('magmastream'), ;
+import Command from '../../structures/Command';
 
 /**
  * Lavalink command
  * @extends {Command}
 */
-class LavalinkAdd extends Command {
+export default class LavalinkAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'lavalink-add',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -45,13 +45,13 @@ class LavalinkAdd extends Command {
 
 	/**
    * Function for receiving interaction.
-   * @param {bot} bot The instantiating client
+   * @param {client} client The instantiating client
    * @param {interaction} interaction The interaction that ran the command
    * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
    * @readonly
   */
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			host = args.get('host')?.value ?? 'localhost',
 			password = args.get('password')?.value ?? 'youshallnotpass',
@@ -64,10 +64,9 @@ class LavalinkAdd extends Command {
 			})).connect();
 			interaction.reply({ embeds: [channel.success('host/node:ADDED_NODE', null, true)] });
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 }
 
-module.exports = LavalinkAdd;

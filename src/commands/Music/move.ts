@@ -1,19 +1,19 @@
 // Dependencies
 const { functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Move command
  * @extends {Command}
 */
-class Move extends Command {
+export default class Move extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'move',
 			guildOnly: true,
 			dirname: __dirname,
@@ -41,17 +41,17 @@ class Move extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(message.member, bot);
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure positions are number(s)
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/move:INVALID'));
 
 		// Can't move currently playing song
@@ -77,23 +77,23 @@ class Move extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			pos1 = args.get('position').value,
 			pos2 = args.get('newposition').value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 
 		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 
@@ -101,7 +101,7 @@ class Move extends Command {
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(0, 0, song);
-			return interaction.reply(bot.translate('music/move:MOVED_1', { TITLE: song.title }));
+			return interaction.reply(client.translate('music/move:MOVED_1', { TITLE: song.title }));
 		} else if (pos2) {
 			if (pos2 == 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
 			if ((pos2 > player.queue.length) || !player.queue[pos2]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
@@ -113,4 +113,3 @@ class Move extends Command {
 	}
 }
 
-module.exports = Move;

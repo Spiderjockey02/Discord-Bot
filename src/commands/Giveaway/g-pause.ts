@@ -1,18 +1,19 @@
-// Dependencies
-const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+import { ApplicationCommandOptionType, Message, PermissionFlagsBits } from 'discord.js';
+import Command from '../../structures/Command';
+import EgglordClient from 'src/base/Egglord';
+import { Setting } from '@prisma/client';
 
 /**
  * Giveaway pause command
  * @extends {Command}
 */
-class GiveawayPause extends Command {
+export default class GiveawayPause extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'g-pause',
 			guildOnly: true,
 			dirname: __dirname,
@@ -37,12 +38,12 @@ class GiveawayPause extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client: EgglordClient, message: Message, settings: Setting) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -52,35 +53,33 @@ class GiveawayPause extends Command {
 		// Pause the giveaway
 		const messageID = message.args[0];
 		try {
-			await bot.giveawaysManager.pause(messageID);
-			message.channel.send(bot.translate('giveaway/g-pause:SUCCESS_GIVEAWAY'));
+			await client.giveawayManager.pause(messageID);
+			message.channel.send(client.translate('giveaway/g-pause:SUCCESS_GIVEAWAY'));
 		} catch (err) {
-			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			message.channel.send(bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			client.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			message.channel.send(client.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			messageID = args.get('id').value;
 
 		// Pause the giveaway
 		try {
-			await bot.giveawaysManager.pause(messageID);
+			await client.giveawaysManager.pause(messageID);
 			interaction.reply({ embeds: [channel.success('giveaway/g-pause:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
-			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			interaction.reply({ content: bot.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
+			client.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			interaction.reply({ content: client.translate('giveaway/g-pause:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }
-
-module.exports = GiveawayPause;

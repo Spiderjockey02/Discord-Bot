@@ -1,7 +1,7 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 const platforms = { pc: 'uplay', xbox: 'xbl', ps4: 'psn' };
 const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
@@ -10,13 +10,13 @@ const regions = { eu: 'emea', na: 'ncsa', as: 'apac' };
  * R6 command
  * @extends {Command}
 */
-class Rainbow6Siege extends Command {
+export default class Rainbow6Siege extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'r6',
 			dirname: __dirname,
 			description: 'Gets statistics on a Rainbow 6 Account.',
@@ -49,12 +49,12 @@ class Rainbow6Siege extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Get platforms and regions (just make it easier for users to use this command)
 		let player, platform, region;
 
@@ -66,9 +66,9 @@ class Rainbow6Siege extends Command {
 			player = message.args[0];
 		}
 
-		// send 'waiting' message to show bot has recieved message
+		// send 'waiting' message to show client has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// Get platform
 		platform = platforms['pc'];
@@ -92,7 +92,7 @@ class Rainbow6Siege extends Command {
 		}
 
 		// display stats
-		const resp = await this.fetchUserData(bot, message.guild, message.channel, player, platform, region);
+		const resp = await this.fetchUserData(client, message.guild, message.channel, player, platform, region);
 		msg.delete();
 		if (resp.color && resp.color == 15158332) {
 			message.channel.send({ embeds: [resp] }).then(m => m.timedDelete({ timeout:10000 }));
@@ -103,20 +103,20 @@ class Rainbow6Siege extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			username = args.get('username').value,
 			platform = args.get('platform')?.value ?? 'uplay',
 			region = args.get('region')?.value ?? 'eu';
 
 		// display stats
-		const resp = await this.fetchUserData(bot, guild, channel, username, platform, region);
+		const resp = await this.fetchUserData(client, guild, channel, username, platform, region);
 		if (resp.color && resp.color == 15158332) {
 			interaction.reply({ embeds: [resp], ephermal: true });
 		} else {
@@ -126,7 +126,7 @@ class Rainbow6Siege extends Command {
 
 	/**
 	 * Function for fetching/creating instagram embed.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {guild} guild The guild the command was ran in
 	 * @param {channel} channel The channel the command was ran in
 	 * @param {string} player The player name to search
@@ -134,13 +134,13 @@ class Rainbow6Siege extends Command {
 	 * @param {string} region The region the player is from
 	 * @returns {embed}
 	*/
-	async fetchUserData(bot, guild, channel, player, platform, region) {
+	async fetchUserData(client, guild, channel, player, platform, region) {
 		if (platform === 'xbl') player = player.replace('_', '');
-		const playerData = await bot.fetch('games/r6', { username: player, platform: platform, region: region });
+		const playerData = await client.fetch('games/r6', { username: player, platform: platform, region: region });
 		if (playerData.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: playerData.error }, true);
 
-		return new Embed(bot, guild)
-			.setAuthor({ name: player, iconURL: bot.user.displayAvatarURL() })
+		return new Embed(client, guild)
+			.setAuthor({ name: player, iconURL: client.user.displayAvatarURL() })
 			.setDescription(guild.translate('searcher/r6:DESC', { REGION: region.toUpperCase(), PLATFORM: platform.toUpperCase() }))
 			.setThumbnail(playerData.profileURL)
 			.addFields(
@@ -164,4 +164,3 @@ class Rainbow6Siege extends Command {
 	}
 }
 
-module.exports = Rainbow6Siege;

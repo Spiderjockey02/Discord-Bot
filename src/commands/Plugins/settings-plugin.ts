@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, StringSelectMenuBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ActionRowBuilder, StringSelectMenuBuilder, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * set plugin command
  * @extends {Command}
 */
-class SetPlugin extends Command {
+export default class SetPlugin extends Command {
 	/**
  * @param {Client} client The instantiating client
  * @param {CommandData} data The data for the command
 */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'settings-plugin',
 			guildOnly: true,
 			dirname: __dirname,
@@ -30,21 +30,21 @@ class SetPlugin extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Get all the command categories
-		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
+		const defaultPlugins = client.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
 
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
 		// Make sure something was entered
 		if (!message.args[0]) {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setTitle('Plugins')
 				.setDescription([
 					`Available plugins: \`${defaultPlugins.filter(item => !settings.plugins.includes(item)).join('`, `') }\`.`,
@@ -63,12 +63,12 @@ class SetPlugin extends Command {
 
 				// Fetch slash command data
 				for (const plugin of settings.plugins) {
-					const g = await bot.loadInteractionGroup(plugin, message.guild);
+					const g = await client.loadInteractionGroup(plugin, message.guild);
 					if (Array.isArray(g)) data.push(...g);
 				}
 
 				try {
-					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
+					await client.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
 					console.log(err.requestBody.json.map(i => i.name));
@@ -81,12 +81,12 @@ class SetPlugin extends Command {
 				settings.plugins.splice(settings.plugins.indexOf(message.args[0]), 1);
 				// Fetch slash command data
 				for (const plugin of settings.plugins) {
-					const g = await bot.loadInteractionGroup(plugin, message.guild);
+					const g = await client.loadInteractionGroup(plugin, message.guild);
 					if (Array.isArray(g)) data.push(...g);
 				}
 
 				try {
-					await bot.guilds.cache.get(message.guild.id)?.commands.set(data);
+					await client.guilds.cache.get(message.guild.id)?.commands.set(data);
 				} catch (err) {
 					console.log(err);
 					console.log(err.requestBody.json.map(i => i.name));
@@ -97,7 +97,7 @@ class SetPlugin extends Command {
 			try {
 				await message.guild.updateGuild({ plugins: settings.plugins });
 			} catch (err) {
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 		} else {
@@ -106,13 +106,13 @@ class SetPlugin extends Command {
 	}
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
-		const defaultPlugins = bot.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
+	async callback(client, interaction, guild) {
+		const defaultPlugins = client.commands.map(c => c.help.category).filter((v, i, a) => a.indexOf(v) === i && v != 'Host');
 
 		const row = new ActionRowBuilder()
 			.addComponents(
@@ -134,4 +134,3 @@ class SetPlugin extends Command {
 	}
 }
 
-module.exports = SetPlugin;

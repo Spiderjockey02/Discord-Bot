@@ -1,19 +1,19 @@
 // Dependencies
 const	{ ApplicationCommandOptionType } = require('discord.js'),
-	{ userSchema } = require('../../database/models'),
-	Command = require('../../structures/Command.js');
+	{ userSchema } = require('../../database/models'), ;
+import Command from '../../structures/Command';
 
 /**
  * Lavalink command
  * @extends {Command}
 */
-class UserPremium extends Command {
+export default class UserPremium extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'user-premium',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -39,15 +39,15 @@ class UserPremium extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
-			user = bot.users.cache.get(args.get('user').value),
+			user = client.users.cache.get(args.get('user').value),
 			premiumStatus = args.get('premium').value;
 
 		try {
@@ -71,4 +71,3 @@ class UserPremium extends Command {
 	}
 }
 
-module.exports = UserPremium;

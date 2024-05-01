@@ -1,19 +1,20 @@
 // Dependencies
-const max = 100000,
-	{ EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+import EgglordClient from 'src/base/Egglord';
+import Command from '../../structures/Command';
+import { Message, EmbedBuilder, ApplicationCommandOptionType } from 'discord.js';
+const max = 100000;
 
 /**
  * Random command
  * @extends {Command}
 */
-class Random extends Command {
+export default class Random extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'random-num',
 			dirname: __dirname,
 			description: 'Replies with a random number.',
@@ -43,18 +44,18 @@ class Random extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client: EgglordClient, message: Message<true>, settings) {
 
 		// Random number and facts command
 		const num1 = parseInt(message.args[0]),
 			num2 = parseInt(message.args[1]);
 
-		// Make sure both entries are there
+		// Make sure clienth entries are there
 		if (!num1 || !num2) {
 			if (message.deletable) message.delete();
 			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) });
@@ -69,20 +70,20 @@ class Random extends Command {
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
 		const embed = new EmbedBuilder()
-			.setColor(bot.config.embedColor)
+			.setColor(client.config.embedColor)
 			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
 		message.channel.send({ embeds: [embed] });
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			settings = guild.settings,
 			num1 = args.get('min').value,
@@ -90,12 +91,11 @@ class Random extends Command {
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(bot.translate('fun/random:USAGE')) }, true)], ephemeral: true });
+			interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(client.translate('fun/random:USAGE')) }, true)], ephemeral: true });
 		}
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return interaction.reply({ embeds: [{ color: bot.config.embedColor, description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		return interaction.reply({ embeds: [{ color: client.config.embedColor, description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
 	}
 }
 
-module.exports = Random;

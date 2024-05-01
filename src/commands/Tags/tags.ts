@@ -1,18 +1,18 @@
 // Dependencies
-const { PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Tags command
  * @extends {Command}
 */
-class Tags extends Command {
+export default class Tags extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'tags',
 			guildOnly: true,
 			dirname: __dirname,
@@ -27,12 +27,12 @@ class Tags extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -44,17 +44,17 @@ class Tags extends Command {
 		message.args.shift();
 		switch (option) {
 			case 'add':
-				await bot.commands.get('tag-add').run(bot, message, settings);
+				await client.commands.get('tag-add').run(client, message, settings);
 				break;
 			case 'delete':
 			case 'del':
-				await bot.commands.get('tag-delete').run(bot, message, settings);
+				await client.commands.get('tag-delete').run(client, message, settings);
 				break;
 			case 'edit':
-				await bot.commands.get('tag-edit').run(bot, message, settings);
+				await client.commands.get('tag-edit').run(client, message, settings);
 				break;
 			case 'view':
-				await bot.commands.get('tag-view').run(bot, message, settings);
+				await client.commands.get('tag-view').run(client, message, settings);
 				break;
 			default:
 			// delete message
@@ -63,4 +63,3 @@ class Tags extends Command {
 	}
 }
 
-module.exports = Tags;

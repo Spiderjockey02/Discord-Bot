@@ -1,18 +1,18 @@
 // Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+const { ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Addrole command
  * @extends {Command}
 */
-class Role extends Command {
+export default class Role extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'role',
 			guildOnly: true,
 			dirname: __dirname,
@@ -24,7 +24,7 @@ class Role extends Command {
 			cooldown: 5000,
 			examples: ['addrole Test #FF0000 true'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('role-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('role-')).map(c => ({
 				name: c.help.name.replace('role-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -35,19 +35,18 @@ class Role extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`role-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`role-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = Role;

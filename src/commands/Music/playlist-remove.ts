@@ -1,19 +1,19 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * playlist remove command
  * @extends {Command}
 */
-class PRemove extends Command {
+export default class PRemove extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'playlist-remove',
 			guildOnly: true,
 			dirname: __dirname,
@@ -54,11 +54,11 @@ class PRemove extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-remove:USAGE')) });
 
@@ -69,7 +69,7 @@ class PRemove extends Command {
 			// if an error occured
 			if (err) {
 				if (message.deletable) message.delete();
-				bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 			}
 
@@ -87,7 +87,7 @@ class PRemove extends Command {
 					message.channel.success('music/p-remove:SUCCESS');
 				} catch (err) {
 					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 			} else {
@@ -97,4 +97,3 @@ class PRemove extends Command {
 	}
 }
 
-module.exports = PRemove;

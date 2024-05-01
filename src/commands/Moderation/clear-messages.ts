@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ActionRowBuilder, ButtonBuilder, ButtonStyle, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Clear command
  * @extends {Command}
 */
-class Clear extends Command {
+export default class Clear extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'clear-messages',
 			guildOnly: true,
 			dirname: __dirname,
@@ -53,13 +53,13 @@ class Clear extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(args.get('user')?.value),
 			channel = guild.channels.cache.get(interaction.channelId),
 			amount = args.get('number').value;
@@ -69,7 +69,7 @@ class Clear extends Command {
 
 		// Confirmation for message deletion over 100
 		if (amount >= 100) {
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setTitle(guild.translate('moderation/clear:TITLE'))
 				.setDescription(guild.translate('moderation/clear:DESC', { NUM: amount }));
 
@@ -80,14 +80,14 @@ class Clear extends Command {
 						.setCustomId('success')
 						.setLabel('Confirm')
 						.setStyle(ButtonStyle.Success)
-						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['checkmark'] : '✅'),
+						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['checkmark'] : '✅'),
 				)
 				.addComponents(
 					new ButtonBuilder()
 						.setCustomId('cancel')
 						.setLabel('Cancel')
 						.setStyle(ButtonStyle.Danger)
-						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['cross'] : '❌'),
+						.setEmoji(channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['cross'] : '❌'),
 				);
 
 			// Send confirmation message
@@ -104,7 +104,7 @@ class Clear extends Command {
 					} else {
 						// Delete the messages
 						await i.reply(guild.translate('moderation/clear:DEL_MSG', { TIME: Math.ceil(amount / 100) * 5, NUM: amount }));
-						await bot.delay(5000);
+						await client.delay(5000);
 
 						let x = 0, y = 0;
 						const z = amount;
@@ -117,10 +117,10 @@ class Clear extends Command {
 								}
 
 								// delete the message
-								const delMessages = await channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+								const delMessages = await channel.bulkDelete(messages, true).catch(err => client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 								y += delMessages.size;
 								x++;
-								await bot.delay(5000);
+								await client.delay(5000);
 							} catch (e) {
 								x = Math.ceil(amount / 100);
 							}
@@ -147,11 +147,10 @@ class Clear extends Command {
 				if (member) messages = messages.filter((m) => m.author.id == member[0].user.id);
 
 				// delete the message
-				await channel.bulkDelete(messages, true).catch(err => bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
+				await channel.bulkDelete(messages, true).catch(err => client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`));
 				interaction.reply({ embeds: [channel.success('moderation/clear:SUCCESS', { NUM: messages.size }, true)] });
 			});
 		}
 	}
 }
 
-module.exports = Clear;

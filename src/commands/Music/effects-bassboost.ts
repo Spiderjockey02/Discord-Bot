@@ -1,19 +1,19 @@
 // Dependencies
 const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ functions: { checkMusic } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+	{ functions: { checkMusic } } = require('../../utils'), ;
+import Command from '../../structures/Command';
 
 /**
  * Bassboost command
  * @extends {Command}
 */
-class Bassboost extends Command {
+export default class Bassboost extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'effects-bassboost',
 			guildOnly: true,
 			dirname: __dirname,
@@ -36,25 +36,25 @@ class Bassboost extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client, message) {
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(message.member, bot);
+		const playable = checkMusic(message.member, client);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 
 		// update player's bassboost
-		const player = bot.manager?.players.get(message.guild.id);
+		const player = client.manager?.players.get(message.guild.id);
 		let msg, embed;
 		if (!message.args[0]) {
 			player.setBassboost(!player.bassboost);
 			msg = await message.channel.send(message.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`));
 			embed = new EmbedBuilder()
 				.setDescription(message.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
-			await bot.delay(5000);
+			await client.delay(5000);
 			return msg.edit({ content: '​​ ', embeds: [embed] });
 		}
 
@@ -66,36 +66,36 @@ class Bassboost extends Command {
 		msg = await message.channel.send(message.translate('music/bassboost:SET_BB', { DB: message.args[0] }));
 		embed = new EmbedBuilder()
 			.setDescription(message.translate('music/bassboost:DESC_3', { DB: message.args[0] }));
-		await bot.delay(5000);
+		await client.delay(5000);
 		return msg.edit({ content: '​​ ', embeds: [embed] });
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			amount = args.get('amount')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// update player's bassboost
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		let embed;
 		if (!amount) {
 			player.setBassboost(!player.bassboost);
 			await interaction.reply({ content: guild.translate(`music/bassboost:${player.bassboost ? 'ON' : 'OFF'}_BB`) });
 			embed = new EmbedBuilder()
 				.setDescription(guild.translate(`music/bassboost:DESC_${player.bassboost ? '1' : '2'}`));
-			await bot.delay(5000);
+			await client.delay(5000);
 			return interaction.editReply({ content: '​​ ', embeds: [embed] });
 		}
 
@@ -103,10 +103,9 @@ class Bassboost extends Command {
 		player.setBassboost(amount / 10);
 		await interaction.reply({ content: guild.translate('music/bassboost:SET_BB', { DB: amount }) });
 		embed = new EmbedBuilder()
-			.setDescription(bot.translate('music/bassboost:DESC_3', { DB: amount }));
-		await bot.delay(5000);
+			.setDescription(client.translate('music/bassboost:DESC_3', { DB: amount }));
+		await client.delay(5000);
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
 }
 
-module.exports = Bassboost;

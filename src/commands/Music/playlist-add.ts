@@ -1,20 +1,20 @@
 // Dependencies
 const { PlaylistSchema } = require('../../database/models'),
 	{ Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * playlist add command
  * @extends {Command}
 */
-class PAdd extends Command {
+export default class PAdd extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'playlist-add',
 			guildOnly: true,
 			dirname: __dirname,
@@ -45,46 +45,46 @@ class PAdd extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// make sure something was entered
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/p-add:USAGE')) });
 
-		const resp = await this.addToPlaylist(bot, message.channel, message.author, message.args[0], message.args.slice(1).join(' '));
+		const resp = await this.addToPlaylist(client, message.channel, message.author, message.args[0], message.args.slice(1).join(' '));
 		message.channel.send({ embeds: [resp] });
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			playlistName = args.get('name').value,
 			searchQuery = args.get('track').value;
 
 		// Fetch playlist
-		const resp = await this.addToPlaylist(bot, channel, interaction.user, playlistName, searchQuery);
+		const resp = await this.addToPlaylist(client, channel, interaction.user, playlistName, searchQuery);
 		interaction.reply({ embeds: [resp] });
 	}
 
 	/**
 	 * Function for editing the playlist
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {channel} channel The interaction that ran the command
 	 * @param {User} user The guild the interaction ran in
 	 * @param {string} playlistName The name of the playlist
 	 * @param {string} searchQuery The seqrch query for new track
 	 * @return {embed}
 	*/
-	async addToPlaylist(bot, channel, user, playlistName, searchQuery) {
+	async addToPlaylist(client, channel, user, playlistName, searchQuery) {
 		let playlist;
 		try {
 			playlist = await PlaylistSchema.findOne({
@@ -92,7 +92,7 @@ class PAdd extends Command {
 				creator: user.id,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 		}
 
@@ -102,7 +102,7 @@ class PAdd extends Command {
 		// Get songs to add to playlist
 		let res;
 		try {
-			res = await bot.manager.search(searchQuery, user);
+			res = await client.manager.search(searchQuery, user);
 		} catch (err) {
 			return channel.error('music/p-add:ERROR', { ERROR: err.message }, true);
 		}
@@ -121,7 +121,7 @@ class PAdd extends Command {
 					await playlist.save();
 					return channel.success('music/p-add:SUCCESS', { NUM: newTracks.length, TITLE: playlistName }, true);
 				} catch (err) {
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 				}
 			case 'search': {
@@ -131,7 +131,7 @@ class PAdd extends Command {
 				if (res.tracks.length < max) max = res.tracks.length;
 
 				const results = res.tracks.slice(0, max).map((track, index) => `${++index} - \`${track.title}\``).join('\n');
-				const embed = new Embed(bot, channel.guild)
+				const embed = new Embed(client, channel.guild)
 					.setTitle('music/search:TITLE', { TITLE: playlistName })
 					.setDescription(channel.guild.translate('music/search:DESC', { RESULTS: results }));
 				channel.send({ embeds: [embed] });
@@ -160,4 +160,3 @@ class PAdd extends Command {
 	}
 }
 
-module.exports = PAdd;

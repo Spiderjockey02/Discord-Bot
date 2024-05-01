@@ -1,17 +1,17 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+const	{ Embed } = require('../../utils'), ;
+import Command from '../../structures/Command';
 /**
  * Lavalink command
  * @extends {Command}
 */
-class LavalinkList extends Command {
+export default class LavalinkList extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'lavalink-list',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -25,16 +25,16 @@ class LavalinkList extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
+	async callback(client, interaction, guild) {
 		// show list of available nodes
-		const embed = new Embed(bot, guild)
+		const embed = new Embed(client, guild)
 			.setTitle('Lavalink nodes:')
-			.setDescription(bot.manager.nodes.map((node, index, array) => {
+			.setDescription(client.manager.nodes.map((node, index, array) => {
 				return `${array.map(({ options }) => options.host).indexOf(index) + 1}.) **${node.options.host}** (Uptime: ${node.stats.uptime ? this.uptime(node.stats.uptime) : 'Not connected'})`;
 			}).join('\n'));
 		return interaction.reply({ embeds: [embed] });
@@ -64,4 +64,3 @@ class LavalinkList extends Command {
 	}
 }
 
-module.exports = LavalinkList;

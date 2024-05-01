@@ -2,20 +2,20 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js'),
 	{ userSchema } = require('../../database/models'),
 	moment = require('moment'),
-	axios = require('axios'),
-	Command = require('../../structures/Command.js');
+	axios = require('axios'), ;
+import Command from '../../structures/Command';
 
 /**
  * User command
  * @extends {Command}
 */
-class User extends Command {
+export default class User extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'user',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -24,7 +24,7 @@ class User extends Command {
 			cooldown: 3000,
 			examples: ['user 184376969016639488 premium true'],
 			slash: true,
-			options: bot.subCommands.filter(c => c.help.name.startsWith('user-')).map(c => ({
+			options: client.subCommands.filter(c => c.help.name.startsWith('user-')).map(c => ({
 				name: c.help.name.replace('user-', ''),
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
@@ -35,18 +35,18 @@ class User extends Command {
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		let user;
 		try {
-			user = await bot.users.fetch(message.args[0]);
+			user = await client.users.fetch(message.args[0]);
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('Invalid user ID.');
 		}
 		if (!user) return;
@@ -64,7 +64,7 @@ class User extends Command {
 					'',
 					`Premium: \`${user.premium}\`${user.premium ? ` (${(new Date(parseInt(user.premiumSince)).toLocaleString()).split(',')[0]})` : ''}.`,
 					`Is banned: \`${user.cmdBanned}\``,
-					`No. of mutual servers: \`${bot.guilds.cache.filter(g => g.members.cache.get(user.id)).size}\``,
+					`No. of mutual servers: \`${client.guilds.cache.filter(g => g.members.cache.get(user.id)).size}\``,
 				].join('\n'));
 			return message.channel.send({ embeds: [embed] });
 		}
@@ -89,7 +89,7 @@ class User extends Command {
 					message.channel.success('host/user:SUCCESS_PREM').then(m => m.timedDelete({ timeout: 10000 }));
 				} catch (err) {
 					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
@@ -110,7 +110,7 @@ class User extends Command {
 					message.channel.success('host/user:SUCCESS_BAN').then(m => m.timedDelete({ timeout: 10000 }));
 				} catch (err) {
 					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
@@ -133,7 +133,7 @@ class User extends Command {
 						message.channel.success('host/user:SUCCESS_RANK').then(m => m.timedDelete({ timeout: 10000 }));
 					} catch (err) {
 						if (message.deletable) message.delete();
-						bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+						client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 						message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 					}
 				} else {
@@ -149,7 +149,7 @@ class User extends Command {
 					message.channel.success('host/user:SUCCESS_RESET').then(m => m.timedDelete({ timeout: 10000 }));
 				} catch (err) {
 					if (message.deletable) message.delete();
-					bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+					client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 					message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 				}
 				break;
@@ -161,19 +161,18 @@ class User extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
-		const command = bot.subCommands.get(`user-${interaction.options.getSubcommand()}`);
+	async callback(client, interaction, guild, args) {
+		const command = client.subCommands.get(`user-${interaction.options.getSubcommand()}`);
 		if (command) {
-			command.callback(bot, interaction, guild, args);
+			command.callback(client, interaction, guild, args);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}
 	}
 }
 
-module.exports = User;

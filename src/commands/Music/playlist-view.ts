@@ -1,20 +1,20 @@
 // Dependencies
 const	{ Embed, time: { getReadableTime }, paginate } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * playlist view command
  * @extends {Command}
 */
-class PView extends Command {
+export default class PView extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'playlist-view',
 			guildOnly: true,
 			dirname: __dirname,
@@ -39,11 +39,11 @@ class PView extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client, message) {
 		// Find all playlists made by the user
 		let playlists;
 		try {
@@ -52,7 +52,7 @@ class PView extends Command {
 			});
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 
@@ -80,7 +80,7 @@ class PView extends Command {
 				let n = 1;
 				for (let i = 0; i < pagesNum; i++) {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
-					const embed = new Embed(bot, message.guild)
+					const embed = new Embed(client, message.guild)
 						.setAuthor({ name: message.author.displayName, iconURL: message.author.displayAvatarURL() })
 						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
@@ -88,7 +88,7 @@ class PView extends Command {
 						.setTimestamp()
 						.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${playlist.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration` });
 					pages.push(embed);
-					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, message.channel, pages, message.author.id);
+					if (i == pagesNum - 1 && pagesNum > 1) paginate(client, message.channel, pages, message.author.id);
 					else if (pagesNum == 1) message.channel.send({ embeds: [embed] });
 				}
 			} else {
@@ -99,12 +99,12 @@ class PView extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			playlistName = args.get('name')?.value;
 
@@ -115,7 +115,7 @@ class PView extends Command {
 				creator: interaction.user.id,
 			});
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			return interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 
@@ -139,7 +139,7 @@ class PView extends Command {
 				let n = 1;
 				for (let i = 0; i < pagesNum; i++) {
 					const str = `${playlist.songs.slice(i * 10, i * 10 + 10).map(song => `**${n++}.** ${song.title} \`[${getReadableTime(song.duration)}]\``).join('\n')}`;
-					const embed = new Embed(bot, guild)
+					const embed = new Embed(client, guild)
 						.setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL() })
 						.setThumbnail(playlist.thumbnail)
 						.setTitle(playlist.name)
@@ -147,7 +147,7 @@ class PView extends Command {
 						.setTimestamp(playlist.timeCreated)
 						.setFooter({ text: `Page ${i + 1}/${pagesNum} | ${playlist.songs.length} songs | ${getReadableTime(totalQueueDuration)} total duration` });
 					pages.push(embed);
-					if (i == pagesNum - 1 && pagesNum > 1) paginate(bot, interaction, pages, interaction.user.id);
+					if (i == pagesNum - 1 && pagesNum > 1) paginate(client, interaction, pages, interaction.user.id);
 					else if (pagesNum == 1) interaction.reply({ embeds: [embed] });
 				}
 			} else {
@@ -157,4 +157,3 @@ class PView extends Command {
 	}
 }
 
-module.exports = PView;

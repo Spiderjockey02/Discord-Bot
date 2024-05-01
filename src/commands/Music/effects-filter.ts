@@ -1,19 +1,19 @@
 // Dependencies
 const { EmbedBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ functions: { checkMusic } } = require('../../utils'),
-	Command = require('../../structures/Command.js');
+	{ functions: { checkMusic } } = require('../../utils'), ;
+import Command from '../../structures/Command';
 
 /**
  * Filters command
  * @extends {Command}
 */
-class Filters extends Command {
+export default class Filters extends Command {
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'effects-filter',
 			guildOnly: true,
 			dirname: __dirname,
@@ -37,23 +37,23 @@ class Filters extends Command {
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			filter = args.get('filter').value;
 
 		// check for DJ role, same VC and that a song is actually playing
-		const playable = checkMusic(member, bot);
+		const playable = checkMusic(member, client);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
 		// Toggle the filter
-		const player = bot.manager?.players.get(member.guild.id);
+		const player = client.manager?.players.get(member.guild.id);
 		if (filter == 'reset') {
 			player.resetFilter();
 		} else {
@@ -63,10 +63,9 @@ class Filters extends Command {
 		await interaction.reply({ content: guild.translate(`music/${filter}:${player[filter] ? 'ON' : 'OFF'}`) });
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
-		await bot.delay(5000);
+		await client.delay(5000);
 		if (player.nightcore) player.speed = 1.2;
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
 }
 
-module.exports = Filters;

@@ -1,23 +1,23 @@
-// Dependencies
-const	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+import Command from 'src/structures/Command';
+import { ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Giveaway delete command
  * @extends {Command}
 */
-class GiveawayDelete extends Command {
+export default class GiveawayDelete extends Command {
 	/**
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'g-delete',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['giveaway-delete', 'gdelete'],
-			userPermissions: [Flags.ManageGuild],
+			userPermissions: [PermissionFlagsBits.ManageGuild],
 			description: 'Delete a giveaway',
 			usage: 'g-delete <messageID>',
 			cooldown: 2000,
@@ -37,12 +37,12 @@ class GiveawayDelete extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
   */
-	async run(bot, message, settings) {
+	async run(client: EgglordClient, message: Message, settings: Setting) {
 		// Delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -52,35 +52,34 @@ class GiveawayDelete extends Command {
 		// Delete the giveaway
 		const messageID = message.args[0];
 		try {
-			await bot.giveawaysManager.delete(messageID);
-			message.channel.send(bot.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
+			await client.giveawaysManager.delete(messageID);
+			message.channel.send(client.translate('giveaway/g-delete:SUCCESS_GIVEAWAY'));
 		} catch (err) {
-			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			message.channel.send(bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
+			client.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			message.channel.send(client.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }));
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			messageID = args.get('messageID').value;
 
 		// Delete the giveaway
 		try {
-			await bot.giveawaysManager.delete(messageID);
+			await client.giveawaysManager.delete(messageID);
 			interaction.reply({ embeds: [channel.success('giveaway/g-delete:SUCCESS_GIVEAWAY', {}, true)] });
 		} catch (err) {
-			bot.logger.error(`Command: 'g-delete' has error: ${err}.`);
-			interaction.reply({ content: bot.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
+			client.logger.error(`Command: 'g-delete' has error: ${err}.`);
+			interaction.reply({ content: client.translate('giveaway/g-delete:UNKNOWN_GIVEAWAY', { ID: messageID }), ephemeral: true });
 		}
 	}
 }
 
-module.exports = GiveawayDelete;

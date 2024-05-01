@@ -1,19 +1,19 @@
 // Dependencies
 const	{ TagsSchema } = require('../../database/models/index.js'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ PermissionsBitField: { Flags } } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Tag delete command
  * @extends {Command}
 */
-class TagDelete extends Command {
+export default class TagDelete extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'tag-delete',
 			guildOnly: true,
 			dirname: __dirname,
@@ -28,12 +28,12 @@ class TagDelete extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// delete message
 		if (settings.ModerationClearToggle && message.deletable) message.delete();
 
@@ -50,10 +50,9 @@ class TagDelete extends Command {
 				message.channel.error('tags/tag-delete:NO_TAG', { TAG: message.args[0] });
 			}
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 }
 
-module.exports = TagDelete;

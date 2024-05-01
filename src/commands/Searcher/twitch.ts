@@ -1,19 +1,19 @@
 // Dependencies
 const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	{ ApplicationCommandOptionType } = require('discord.js'), ;
+import Command from '../../structures/Command';
 
 /**
  * Twitch command
  * @extends {Command}
 */
-class Twitch extends Command {
+export default class Twitch extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'twitch',
 			dirname: __dirname,
 			description: 'Get information on a twitch account.',
@@ -32,59 +32,59 @@ class Twitch extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
 	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Get information on twitch accounts
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/twitch:USAGE')) });
 		const user = message.args[0];
 
-		// send 'waiting' message to show bot has recieved message
+		// send 'waiting' message to show client has recieved message
 		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis['loading'] : '', ITEM: this.help.name }));
+			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
 
 		// fetch data
 		try {
-			const embed = await this.fetchTwitchData(bot, message.channel, user);
+			const embed = await this.fetchTwitchData(client, message.channel, user);
 			msg.delete();
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
 			if (message.deletable) message.delete();
 			msg.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
  	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
  	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			user = args.get('username').value;
 
 		try {
-			const embed = await this.fetchTwitchData(bot, channel, user);
+			const embed = await this.fetchTwitchData(client, channel, user);
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
 		}
 	}
 
-	async fetchTwitchData(bot, channel, username) {
-		const twitch = await bot.fetch('socials/twitch', { username: username });
+	async fetchTwitchData(client, channel, username) {
+		const twitch = await client.fetch('socials/twitch', { username: username });
 		if (twitch.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: twitch.error }, true);
 
-		const embed = new Embed(bot, channel.guild)
+		const embed = new Embed(client, channel.guild)
 			.setTitle(twitch.display_name)
 			.setURL(`https://twitch.tv/${twitch.login}`)
 			.setThumbnail(twitch.profile_image_url)
@@ -104,4 +104,3 @@ class Twitch extends Command {
 	}
 }
 
-module.exports = Twitch;

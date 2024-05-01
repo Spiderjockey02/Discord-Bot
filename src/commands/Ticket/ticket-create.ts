@@ -1,20 +1,20 @@
 // Dependencies
 const { Embed } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Command = require('../../structures/Command.js');
+	{ ChannelType } = require('discord-api-types/v10'), ;
+import Command from '../../structures/Command';
 
 /**
  * Ticket create command
  * @extends {Command}
 */
-class TicketCreate extends Command {
+export default class TicketCreate extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'ticket-create',
 			guildOnly: true,
 			dirname: __dirname,
@@ -40,12 +40,12 @@ class TicketCreate extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @param {settings} settings The settings of the channel the command ran in
  	 * @readonly
 	*/
-	async run(bot, message, settings) {
+	async run(client, message, settings) {
 		// Check if a ticket channel is already open
 		if (message.guild.channels.cache.find(channel => channel.name == `ticket-${message.author.id}`)) {
 			return message.channel.error('ticket/ticket-create:TICKET_EXISTS');
@@ -58,7 +58,7 @@ class TicketCreate extends Command {
 		const perms = [
 			{ id: message.author, allow: [Flags.SendMessages, Flags.ViewChannel] },
 			{ id: message.guild.roles.everyone, deny: [Flags.SendMessages, Flags.ViewChannel] },
-			{ id: bot.user, allow: [Flags.SendMessages, Flags.ViewChannel, Flags.EmbedLinks] },
+			{ id: client.user, allow: [Flags.SendMessages, Flags.ViewChannel, Flags.EmbedLinks] },
 		];
 		if (message.guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: [Flags.SendMessages, Flags.ViewChannel] });
 
@@ -72,13 +72,13 @@ class TicketCreate extends Command {
 			});
 
 			// reply to user saying that channel has been created
-			const successEmbed = new Embed(bot, message.guild)
+			const successEmbed = new Embed(client, message.guild)
 				.setTitle('ticket/ticket-create:TITLE')
 				.setDescription(message.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
 			message.channel.send({ embeds: [successEmbed] }).then(m => m.timedDelete({ timeout:10000 }));
 
 			// Add message to ticket channel
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setColor(0xFF5555)
 				.addFields(
 					{ name: message.translate('ticket/ticket-create:FIELD1', { USERNAME: message.author.displayName }), value: message.translate('ticket/ticket-create:FIELDT') },
@@ -88,23 +88,23 @@ class TicketCreate extends Command {
 			channel.send({ content: `${message.author}${message.guild.roles.cache.get(settings.TicketSupportRole) ? `, <@&${settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
 			// run ticketcreate event
-			bot.emit('ticketCreate', channel, embed);
+			client.emit('ticketCreate', channel, embed);
 		} catch (err) {
 			if (message.deletable) message.delete();
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
 		}
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild, args) {
+	async callback(client, interaction, guild, args) {
 		const reason = args.get('reason')?.value ?? guild.translate('misc:NO_REASON'),
 			{ settings } = guild;
 		let channel = guild.channels.cache.get(interaction.channelId);
@@ -118,7 +118,7 @@ class TicketCreate extends Command {
 		const perms = [
 			{ id: interaction.user, allow: [Flags.SendMessages, Flags.ViewChannel] },
 			{ id: guild.roles.everyone, deny: [Flags.SendMessages, Flags.ViewChannel] },
-			{ id: bot.user, allow: [Flags.SendMessages, Flags.ViewChannel, Flags.EmbedLinks] },
+			{ id: client.user, allow: [Flags.SendMessages, Flags.ViewChannel, Flags.EmbedLinks] },
 		];
 		if (guild.roles.cache.get(settings.TicketSupportRole)) perms.push({ id: settings.TicketSupportRole, allow: [Flags.SendMessages, Flags.ViewChannel] });
 
@@ -132,13 +132,13 @@ class TicketCreate extends Command {
 			});
 
 			// reply to user saying that channel has been created
-			const successEmbed = new Embed(bot, guild)
+			const successEmbed = new Embed(client, guild)
 				.setTitle('ticket/ticket-create:TITLE')
 				.setDescription(guild.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
 			interaction.reply({ embeds: [successEmbed], ephermal: true });
 
 			// Add message to ticket channel
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setColor(0xFF5555)
 				.addFields(
 					{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: interaction.user.displayName }), value: guild.translate('ticket/ticket-create:FIELDT') },
@@ -148,12 +148,11 @@ class TicketCreate extends Command {
 			channel.send({ content: `${interaction.user}${guild.roles.cache.get(settings.TicketSupportRole) ? `, <@&${settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
 			// run ticketcreate event
-			bot.emit('ticketCreate', channel, embed);
+			client.emit('ticketCreate', channel, embed);
 		} catch (err) {
-			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
+			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
 			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 		}
 	}
 }
 
-module.exports = TicketCreate;

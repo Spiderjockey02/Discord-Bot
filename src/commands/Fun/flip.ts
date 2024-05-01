@@ -1,17 +1,18 @@
-// Dependencies
-const	Command = require('../../structures/Command.js');
+import EgglordClient from 'src/base/Egglord';
+import Command from 'src/structures/Command';
+import { CommandInteraction, Guild, Message } from 'discord.js';
 
 /**
  * Flip command
  * @extends {Command}
 */
-class Flip extends Command {
+export default class Flip extends Command {
 	/**
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor(bot) {
-		super(bot, {
+	constructor() {
+		super({
 			name: 'flip',
 			dirname: __dirname,
 			description: 'Flip a coin.',
@@ -23,13 +24,13 @@ class Flip extends Command {
 
 	/**
  	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(client: EgglordClient, message: Message<true>) {
 		const num = Math.round(Math.random()),
-			emoji = message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis[['head', 'tail'][num]] : '',
+			emoji = message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis[['head', 'tail'][num]] : '',
 			result = message.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
 		// send result
@@ -38,20 +39,18 @@ class Flip extends Command {
 
 	/**
  	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
+ 	 * @param {client} client The instantiating client
  	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(bot, interaction, guild) {
+	async callback(client: EgglordClient, interaction: CommandInteraction, guild: Guild) {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			num = Math.round(Math.random()),
-			emoji = channel.checkPerm('USE_EXTERNAL_EMOJIS') ? bot.customEmojis[['head', 'tail'][num]] : '',
+			emoji = channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis[['head', 'tail'][num]] : '',
 			result = guild.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
 		// send result
 		return interaction.reply({ content: `${emoji} ${result}` });
 	}
 }
-
-module.exports = Flip;
