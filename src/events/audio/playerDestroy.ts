@@ -1,16 +1,18 @@
-// Dependencies
-const	Event = require('../../structures/Event');
+import { Player } from 'magmastream';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Player destroy event
  * @event AudioManager#PlayerDestroy
  * @extends {Event}
 */
-class PlayerDestroy extends Event {
-	constructor(...args) {
-		super(...args, {
+export class PlayerDestroy extends Event {
+	constructor() {
+		super({
+			name: 'playerDestroy',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -20,9 +22,7 @@ class PlayerDestroy extends Event {
 	 * @param {Player} player The player that was destroyed
 	 * @readonly
 	*/
-	async run(bot, player) {
+	async run(bot: EgglordClient, player: Player) {
 		if (bot.config.debug) bot.logger.log(`Lavalink player destroyed in guild: ${player.guild}.`);
 	}
 }
-
-module.exports = PlayerDestroy;

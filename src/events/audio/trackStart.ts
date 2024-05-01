@@ -1,6 +1,7 @@
-// Dependencies
-const	{ Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import { User } from 'discord.js';
+import { Player, Track } from 'magmastream';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Track start event
@@ -8,10 +9,11 @@ const	{ Embed } = require('../../utils'),
  * @extends {Event}
 */
 class TrackStart extends Event {
-	constructor(...args) {
-		super(...args, {
+	constructor() {
+		super({
+			name: 'trackStart',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -22,10 +24,10 @@ class TrackStart extends Event {
 	 * @param {Track} track The track that started
 	 * @readonly
 	*/
-	async run(bot, player, track) {
+	async run(bot: EgglordClient, player: Player, track: Track) {
 		// When a song starts
 		const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
-			.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
+			.setColor(bot.guilds.cache.get(player.guild)?.members.cache.get((track.requester as User).id)?.displayHexColor)
 			.setTitle('music/np:AUTHOR')
 			.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 

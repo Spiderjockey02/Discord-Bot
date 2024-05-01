@@ -1,17 +1,20 @@
 // Dependencies
-const { EmbedBuilder } = require('discord.js'),
-	Event = require('../../structures/Event');
+import { EmbedBuilder } from 'discord.js';
+import { Player } from 'magmastream';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Queue end event
  * @event AudioManager#QueueEnd
  * @extends {Event}
 */
-class QueueEnd extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class QueueEnd extends Event {
+	constructor() {
+		super({
+			name: 'queueEnd',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -22,7 +25,7 @@ class QueueEnd extends Event {
 	 * @param {Track} track The track that just ended causing the queue to end aswell.
 	 * @readonly
 	*/
-	async run(bot, player) {
+	async run(bot: EgglordClient, player: Player) {
 		// When the queue has finished
 		player.timeout = setTimeout(() => {
 
@@ -37,5 +40,3 @@ class QueueEnd extends Event {
 		}, 180000);
 	}
 }
-
-module.exports = QueueEnd;

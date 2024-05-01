@@ -1,17 +1,20 @@
 // Dependencies
-const { EmbedBuilder } = require('discord.js'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { EmbedBuilder } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import { Player } from 'magmastream';
 
 /**
  * Player move event
  * @event AudioManager#PlayerMove
  * @extends {Event}
 */
-class PlayerMove extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class PlayerMove extends Event {
+	constructor() {
+		super({
+			name: 'playerMove',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -23,11 +26,11 @@ class PlayerMove extends Event {
 	 * @param {VoiceChannel} newChannel The player after the move
 	 * @readonly
 	*/
-	async run(bot, player, oldChannel, newChannel) {
+	async run(bot: EgglordClient, player: Player, _oldChannel: string, newChannel: string) {
 		// Voice channel updated
 		if (!newChannel) {
 			const embed = new EmbedBuilder()
-				.setDescription(bot.guilds.cache.get(player.guild).translate('music/dc:KICKED'));
+				.setDescription(bot.guilds.cache.get(player.guild)?.translate('music/dc:KICKED'));
 			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
 			player.destroy();
 		} else {
@@ -38,5 +41,3 @@ class PlayerMove extends Event {
 		}
 	}
 }
-
-module.exports = PlayerMove;

@@ -1,16 +1,18 @@
-// Dependencies
-const	Event = require('../../structures/Event');
+import { Node } from 'magmastream';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Node error event
  * @event AudioManager#NodeError
  * @extends {Event}
 */
-class NodeError extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class NodeError extends Event {
+	constructor() {
+		super({
+			name: 'nodeError',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -21,9 +23,7 @@ class NodeError extends Event {
 	 * @param {Error} error The error that occured on the node
 	 * @readonly
 	*/
-	async run(bot, node, error) {
+	async run(bot: EgglordClient, node: Node, error: Error) {
 		bot.logger.error(`Lavalink node: '${node.options.identifier}', has error: '${error.message}'.`);
 	}
 }
-
-module.exports = NodeError;

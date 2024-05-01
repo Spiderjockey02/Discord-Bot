@@ -1,16 +1,18 @@
-// Dependencies
-const	Event = require('../../structures/Event');
+import { Player, Track } from 'magmastream';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Track end event
  * @event AudioManager#TrackEnd
  * @extends {Event}
 */
-class TrackEnd extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class TrackEnd extends Event {
+	constructor() {
+		super({
+			name: 'trackEnd',
 			dirname: __dirname,
-			child: 'manager',
+			child: 'audioManager',
 		});
 	}
 
@@ -21,10 +23,8 @@ class TrackEnd extends Event {
 	 * @param {Track} track The track that ended
 	 * @readonly
 	*/
-	async run(bot, player, track) {
+	async run(_bot: EgglordClient, player: Player, track: Track) {
 		// when track finishes add to previous songs array
 		player.addPreviousSong(track);
 	}
 }
-
-module.exports = TrackEnd;
