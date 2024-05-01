@@ -1,30 +1,30 @@
-// Dependencies
-const Event = require('../../structures/Event');
+import { GuildMember, MessageReaction } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Giveaway reaction removed event
  * @event GiveawaysManager#GiveawayReactionRemoved
  * @extends {Event}
 */
-class GiveawayReactionRemoved extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GiveawayReactionRemoved extends Event {
+	constructor() {
+		super({
+			name: 'giveawayReactionRemoved',
 			dirname: __dirname,
-			child: 'giveawaysManager',
+			child: 'giveawayManager',
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Giveaway} giveaway The giveaway object
 	 * @param {GuildMember} member The member that added the reaction
 	 * @param {MessageReaction} reaction The reaction object
 	 * @readonly
 	*/
-	async run(bot, giveaway, member, reaction) {
-		if (bot.config.debug) bot.logger.debug(`member: ${member.user.id} removed reaction ${reaction._emoji.name} to giveaway`);
+	async run(client: EgglordClient, _giveaway: Giveaway, member: GuildMember, reaction: MessageReaction) {
+		if (client.config.debug) client.logger.debug(`member: ${member.user.id} removed reaction ${reaction.emoji.name} to giveaway`);
 	}
 }
-
-module.exports = GiveawayReactionRemoved;

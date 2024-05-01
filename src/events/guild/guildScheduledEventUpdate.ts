@@ -1,29 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, GuildScheduledEvent } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Guild event update event
  * @event Egglord#guildScheduledEventUpdate
  * @extends {Event}
 */
-class GuildScheduledEventUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildScheduledEventUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.GuildScheduledEventUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {guildScheduledEvent} oldGuildEvent The guild event before update
 	 * @param {guildScheduledEvent} newGuildEvent The guild event after update
 	 * @readonly
 	*/
-	async run(bot, oldGuildEvent, newGuildEvent) {
+	async run(client: EgglordClient, oldGuildEvent: GuildScheduledEvent, newGuildEvent: GuildScheduledEvent) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Event: ${newGuildEvent.name} has been updated in guild: ${newGuildEvent.guild.id}.`);
+		if (client.config.debug) client.logger.debug(`Event: ${newGuildEvent.name} has been updated in guild: ${newGuildEvent.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = newGuildEvent.guild.settings;
@@ -31,7 +32,7 @@ class GuildScheduledEventUpdate extends Event {
 
 		// Check if event guildEventCreate is for logging
 		if (settings.ModLogEvents?.includes('EVENTUPDATE') && settings.ModLog) {
-			const embed = new Embed(bot, newGuildEvent.guild)
+			const embed = new Embed(client, newGuildEvent.guild)
 				.setColor(15158332);
 			// guild event name has changed
 			if (oldGuildEvent.name != newGuildEvent.name) {
@@ -62,18 +63,15 @@ class GuildScheduledEventUpdate extends Event {
 
 			embed.setDescription(`**Event: ${newGuildEvent.name} has been updated.**`)
 				.setFooter({ text: newGuildEvent.guild.translate('misc:ID', { ID: newGuildEvent.guild.id }) })
-				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newGuildEvent.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == newGuildEvent.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newGuildEvent.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == newGuildEvent.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
-}
-
-module.exports = GuildScheduledEventUpdate;

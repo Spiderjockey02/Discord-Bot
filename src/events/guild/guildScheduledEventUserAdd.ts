@@ -1,32 +1,33 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, GuildScheduledEvent, User } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Guild event user join event
  * @event Egglord#guildScheduledEventUserAdd
  * @extends {Event}
 */
-class GuildScheduledEventUserAdd extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildScheduledEventUserAdd extends Event {
+	constructor() {
+		super({
+			name: Events.GuildScheduledEventUserAdd,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {guildScheduledEvent} guildEvent The guild event the user joined
 	 * @param {User} user The user who joined the event
 	 * @readonly
 	*/
-	async run(bot, guildEvent, user) {
+	async run(client: EgglordClient, guildEvent: GuildScheduledEvent, user: User) {
 		// Ignore the event if the user that joined was the creator of the event
 		if (user.id == guildEvent.creatorId) return;
 
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`User: ${user.displayName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
+		if (client.config.debug) client.logger.debug(`User: ${user.displayName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = guildEvent.guild.settings;
@@ -34,7 +35,7 @@ class GuildScheduledEventUserAdd extends Event {
 
 		// Check if event guildEventCreate is for logging
 		if (settings.ModLogEvents?.includes('EVENTUSERADD') && settings.ModLog) {
-			const embed = new Embed(bot, guildEvent.guild)
+			const embed = new Embed(client, guildEvent.guild)
 				.setDescription([
 					`${user.displayName} joined event: [${guildEvent.name}](${guildEvent})`,
 					'',
@@ -42,18 +43,16 @@ class GuildScheduledEventUserAdd extends Event {
 				].join('\n'))
 				.setColor(3066993)
 				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
-				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${guildEvent.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guildEvent.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guildEvent.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == guildEvent.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = GuildScheduledEventUserAdd;

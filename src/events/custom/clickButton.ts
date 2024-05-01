@@ -1,32 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ Collection, PermissionsBitField: { Flags: PermFlag } } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	cooldowns = new Collection(),
-	Event = require('../../structures/Event');
+import { ButtonInteraction, Collection, PermissionsBitField } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import { EgglordEmbed } from 'src/utils';
+const cooldowns = new Collection<string, number>();
+import Event from 'src/structures/Event';
 
 /**
  * Click button event
  * @event Egglord#ClickButton
  * @extends {Event}
 */
-class ClickButton extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ClickButton extends Event {
+	constructor() {
+		super({
+			name: 'clickButton',
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {ButtonInteraction} button The button that was pressed
 	 * @readonly
 	*/
-	async run(bot, button) {
-		const { customId: ID, guildId, channelId, member } = button,
-			guild = bot.guilds.cache.get(guildId),
-			channel = bot.channels.cache.get(channelId);
+	async run(client: EgglordClient, button: ButtonInteraction<'cached'>) {
+		const { customId: ID, guild, channel, member } = button;
 
 		// buttons are only used for ticket embed (for now)
 		if (ID == 'crt_ticket') {
@@ -34,8 +32,9 @@ class ClickButton extends Event {
 			const now = Date.now();
 			const cooldownAmount = 3600000;
 
-			if (cooldowns.has(member.user.id)) {
-				const expirationTime = cooldowns.get(member.user.id) + cooldownAmount;
+			const userCooldown = cooldowns.get(member.user.id);
+			if (userCooldown) {
+				const expirationTime = userCooldown + cooldownAmount;
 
 				if (now < expirationTime) {
 					const timeLeft = (expirationTime - now) / 1000 / 60;
@@ -52,7 +51,7 @@ class ClickButton extends Event {
 			const perms = [
 				{ id: member.user, allow: [PermFlag.SendMessages, PermFlag.ViewChannel] },
 				{ id: guild.roles.everyone, deny: [PermFlag.SendMessages, PermFlag.ViewChannel] },
-				{ id: bot.user, allow: [PermFlag.SendMessages, PermFlag.ViewChannel, PermFlag.EmbedLinks] },
+				{ id: client.user, allow: [PermFlag.SendMessages, PermFlag.ViewChannel, PermFlag.EmbedLinks] },
 			];
 			if (guild.roles.cache.get(guild.settings.TicketSupportRole)) perms.push({ id: guild.settings.TicketSupportRole, allow: [PermFlag.SendMessages, PermFlag.ViewChannel] });
 
@@ -64,7 +63,7 @@ class ClickButton extends Event {
 					permissionOverwrites: perms });
 
 				// reply to user saying that channel has been created
-				const successEmbed = new Embed(bot, guild)
+				const successEmbed = new Embed(client, guild)
 					.setTitle('ticket/ticket-create:TITLE')
 					.setDescription(guild.translate('ticket/ticket-create:DESC', { CHANNEL: channel.id }));
 
@@ -75,7 +74,7 @@ class ClickButton extends Event {
 				});
 
 				// Add message to ticket channel
-				const embed = new Embed(bot, guild)
+				const embed = new Embed(client, guild)
 					.setColor(0xFF5555)
 					.addFields(
 						{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: member.user.displayName }), value: guild.translate('ticket/ticket-create:FIELDT') },
@@ -85,10 +84,10 @@ class ClickButton extends Event {
 				c.send({ content: `${member.user}${guild.roles.cache.get(guild.settings.TicketSupportRole) ? `, <@&${guild.settings.TicketSupportRole}>` : ''}.`, embeds: [embed] });
 
 				// run ticketcreate event
-				await bot.emit('ticketCreate', channel, embed);
-			} catch (err) {
-				console.log(err);
-				bot.logger.error(`Command: '${this.conf.name}' has error: ${err.message}.`);
+				await client.emit('ticketCreate', channel, embed);
+			} catch (err: any) {
+				console.log(err: any);
+				client.logger.error(`Command: '${this.conf.name}' has error: ${err.message}.`);
 			}
 
 
@@ -97,5 +96,3 @@ class ClickButton extends Event {
 		}
 	}
 }
-
-module.exports = ClickButton;

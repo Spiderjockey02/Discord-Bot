@@ -1,29 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, GuildEmoji } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Emoji update event
  * @event Egglord#EmojiUpdate
  * @extends {Event}
 */
-class EmojiUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class EmojiUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.GuildEmojiUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {GuildEmoji} oldEmoji The emoji before the update
 	 * @param {GuildEmoji} newEmoji The emoji after the update
 	 * @readonly
 	*/
-	async run(bot, oldEmoji, newEmoji) {
+	async run(client: EgglordClient, oldEmoji: GuildEmoji, newEmoji: GuildEmoji) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Emoji: ${newEmoji.name} has been updated in guild: ${newEmoji.guild.id}.`);
+		if (client.config.debug) client.logger.debug(`Emoji: ${newEmoji.name} has been updated in guild: ${newEmoji.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = newEmoji.guild.settings;
@@ -35,7 +36,7 @@ class EmojiUpdate extends Event {
 
 			// emoji name change
 			if (oldEmoji.name != newEmoji.name) {
-				embed = new Embed(bot, newEmoji.guild)
+				embed = new Embed(client, newEmoji.guild)
 					.setDescription('**Emoji name update**')
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newEmoji.id}` })
@@ -61,7 +62,7 @@ class EmojiUpdate extends Event {
 					for (const role of [...rolesRemoved.values()]) {
 						roleRemovedString.push(role.toString());
 					}
-					embed = new Embed(bot, newEmoji.guild)
+					embed = new Embed(client, newEmoji.guild)
 						.setDescription('**Emoji roles updated**')
 						.setColor(15105570)
 						.setFooter({ text: `ID: ${newEmoji.id}` })
@@ -77,10 +78,10 @@ class EmojiUpdate extends Event {
 			if (updated) {
 				// Find channel and send message
 				try {
-					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newEmoji.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newEmoji.guild.id) bot.addEmbed(modChannel.id, [embed]);
-				} catch (err) {
-					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newEmoji.guild.id} logging channel`));
+					if (modChannel && modChannel.guild.id == newEmoji.guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+				} catch (err: any) {
+					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
 			}
 		}

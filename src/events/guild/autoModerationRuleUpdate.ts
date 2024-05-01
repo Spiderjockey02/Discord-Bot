@@ -1,27 +1,28 @@
-// Dependencies
-const	{ Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import { AutoModerationRule, Events } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Channel create event
  * @event Egglord#AutoModerationRuleUpdate
  * @extends {Event}
 */
-class AutoModerationRuleUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class AutoModerationRuleUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.AutoModerationRuleUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
    * Function for receiving event.
-   * @param {bot} bot The instantiating client
+   * @param {client} client The instantiating client
    * @param {?AutoModerationRule} oldAutoModerationRule The auto moderation rule before the update
    * @param {AutoModerationRule} newAutoModerationRule The auto moderation rule after the update
    * @readonly
   */
-	async run(bot, oldAutoModerationRule, newAutoModerationRule) {
+	async run(client: EgglordClient, _oldAutoModerationRule: AutoModerationRule, newAutoModerationRule: AutoModerationRule) {
 		const { guild } = newAutoModerationRule;
 
 		// Check if event AutoModerationRuleUpdate is for logging
@@ -36,13 +37,11 @@ class AutoModerationRuleUpdate extends Event {
 			// Check if actions has changed
 
 			try {
-				const modChannel = await bot.channels.fetch(guild.settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(guild.settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = AutoModerationRuleUpdate;

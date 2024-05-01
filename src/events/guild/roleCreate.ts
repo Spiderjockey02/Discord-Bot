@@ -1,28 +1,29 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, Role } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Role create event
  * @event Egglord#RoleCreate
  * @extends {Event}
 */
-class RoleCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class RoleCreate extends Event {
+	constructor() {
+		super({
+			name: Events.GuildRoleCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Role} role The role that was created
 	 * @readonly
 	*/
-	async run(bot, role) {
+	async run(client: EgglordClient, role: Role) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Role: ${role.name} has been created in guild: ${role.guild.id}.`);
+		if (client.config.debug) client.logger.debug(`Role: ${role.name} has been created in guild: ${role.guild.id}.`);
 
 		// Get server settings / if no settings then return
 		const settings = role.guild.settings;
@@ -30,7 +31,7 @@ class RoleCreate extends Event {
 
 		// Check if event roleCreate is for logging
 		if (settings.ModLogEvents?.includes('ROLECREATE') && settings.ModLog) {
-			const embed = new Embed(bot, role.guild)
+			const embed = new Embed(client, role.guild)
 				.setDescription(`**Role: ${role} (${role.name}) was created**`)
 				.setColor(3066993)
 				.setFooter({ text: `ID: ${role.id}` })
@@ -39,13 +40,11 @@ class RoleCreate extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${role.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == role.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${role.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == role.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = RoleCreate;

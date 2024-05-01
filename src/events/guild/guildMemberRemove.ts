@@ -1,31 +1,29 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ RankSchema } = require('../../database/models'),
-	varSetter = require('../../helpers/variableSetter'),
-	Event = require('../../structures/Event');
-
+import { Events, GuildMember } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 /**
  * Guild member remove event
  * @event Egglord#GuildMemberRemove
  * @extends {Event}
 */
-class GuildMemberRemove extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildMemberRemove extends Event {
+	constructor() {
+		super({
+			name: Events.GuildMemberRemove,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {GuildMember} member The member that has left/been kicked from a guild
 	 * @readonly
 	*/
-	async run(bot, member) {
+	async run(client: EgglordClient, member: GuildMember) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Member: ${member.user.displayName} has left guild: ${member.guild.id}.`);
-		if (member.user.id == bot.user.id) return;
+		if (client.config.debug) client.logger.debug(`Member: ${member.user.displayName} has left guild: ${member.guild.id}.`);
+		if (member.user.id == client.user.id) return;
 
 		// Get server settings / if no settings then return
 		const settings = member.guild.settings;
@@ -33,7 +31,7 @@ class GuildMemberRemove extends Event {
 
 		// Check if event guildMemberRemove is for logging
 		if (settings.ModLogEvents?.includes('GUILDMEMBERREMOVE') && settings.ModLog) {
-			const embed = new Embed(bot, member.guild)
+			const embed = new Embed(client, member.guild)
 				.setDescription(`${member.toString()}\nMember count: ${member.guild.memberCount}`)
 				.setColor(15158332)
 				.setFooter({ text: `ID: ${member.id}` })
@@ -44,26 +42,25 @@ class GuildMemberRemove extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == member.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 
 		// Welcome plugin (give roles and message)
 		if (settings.welcomePlugin) {
 			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
-			if (channel && settings.welcomeGoodbyeToggle) channel.send(varSetter(settings.welcomeGoodbyeText, member, channel, member.guild)).catch(e => bot.logger.error(e.message));
+			if (channel && settings.welcomeGoodbyeToggle) channel.send(varSetter(settings.welcomeGoodbyeText, member, channel, member.guild)).catch(e => client.logger.error(e.message));
 		}
 
 		// Remove member's rank
 		try {
 			await RankSchema.findOneAndRemove({ userID: member.user.id,	guildID: member.guild.id });
-		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err: any) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 	}
 }
 
-module.exports = GuildMemberRemove;

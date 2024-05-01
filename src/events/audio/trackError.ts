@@ -1,5 +1,5 @@
 import Event from 'src/structures/Event';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, TextBasedChannel } from 'discord.js';
 import EgglordClient from 'src/base/Egglord';
 import { Player, Track, TrackExceptionEvent, UnresolvedTrack } from 'magmastream';
 
@@ -19,23 +19,26 @@ export default class TrackError extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Player} player The player that's track errored
 	 * @param {Track} track The track that errored
 	 * @param {Object} payload The information about the error
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, player: Player, _track: Track | UnresolvedTrack, payload: TrackExceptionEvent) {
+	async run(client: EgglordClient, player: Player, _track: Track | UnresolvedTrack, payload: TrackExceptionEvent) {
 		// when a track causes an error
-		if (bot.config.debug) bot.logger.log(`Track error: ${payload.exception?.message} in guild: ${player.guild}.`);
+		if (client.config.debug) client.logger.log(`Track error: ${payload.exception?.message} in guild: ${player.guild}.`);
 
 		// reset player filter (might be the cause)
-		player.resetFilter();
+		player.filters.clearFilters();
 
 		// send embed
+		if (player.textChannel == null) return;
+		const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
+
 		const embed = new EmbedBuilder()
 			.setColor(15158332)
 			.setDescription(`An error has occured on playback: \`${payload.exception?.message}\``);
-		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
+		channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
 	}
 }

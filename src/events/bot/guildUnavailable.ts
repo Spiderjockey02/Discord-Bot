@@ -1,28 +1,30 @@
-// Variables
-const unavailableGuilds = [],
-	Event = require('../../structures/Event');
+import { Events, Guild } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
+const unavailableGuilds: string[] = [];
 
 /**
  * Guild unavailable event
  * @event Egglord#GuildUnavailable
  * @extends {Event}
 */
-class GuildUnavailable extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildUnavailable extends Event {
+	constructor() {
+		super({
+			name: Events.GuildUnavailable,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Guild} guild The guild that has become unavailable
 	 * @readonly
 	*/
-	async run(bot, guild) {
+	async run(client: EgglordClient, guild: Guild) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Guild: ${guild.name} has become unavailable.`);
+		if (client.config.debug) client.logger.debug(`Guild: ${guild.name} has become unavailable.`);
 
 		// only show error once an hour
 		if (unavailableGuilds.includes(guild.id)) {
@@ -32,10 +34,8 @@ class GuildUnavailable extends Event {
 				// 1 hour interval
 			}, 60 * 60 * 1000);
 		} else {
-			bot.logger.log(`[GUILD UNAVAILABLE] ${guild.name} (${guild.id}).`);
+			client.logger.log(`[GUILD UNAVAILABLE] ${guild.name} (${guild.id}).`);
 			unavailableGuilds.push(guild.id);
 		}
 	}
 }
-
-module.exports = GuildUnavailable;

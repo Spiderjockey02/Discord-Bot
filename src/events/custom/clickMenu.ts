@@ -1,37 +1,37 @@
-// Dependencies
-const	{ Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder, ChannelType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * click menu event
  * @event Egglord#ClickMenu
  * @extends {Event}
 */
-class ClickMenu extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ClickMenu extends Event {
+	constructor() {
+		super({
+			name: 'clickMenu',
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {CommandInteraction} interaction The context menu clicked
 	 * @readonly
 	*/
-	async run(bot, interaction) {
-		const guild = bot.guilds.cache.get(interaction.guildId),
-			channel = bot.channels.cache.get(interaction.channelId);
+	async run(client: EgglordClient, interaction: UserContextMenuCommandInteraction | MessageContextMenuCommandInteraction) {
+		const guild = client.guilds.cache.get(interaction.guildId),
+			channel = client.channels.cache.get(interaction.channelId);
 
 		// Check to see if user is in 'cooldown'
-		if (!bot.cooldowns.has(interaction.commandName)) {
-			bot.cooldowns.set(interaction.commandName, new Collection());
+		if (!client.cooldowns.has(interaction.commandName)) {
+			client.cooldowns.set(interaction.commandName, new Collection());
 		}
 
 		const now = Date.now(),
-			timestamps = bot.cooldowns.get(interaction.commandName),
+			timestamps = client.cooldowns.get(interaction.commandName),
 			cooldownAmount = (interaction.user.premium ? 2250 : 3000);
 
 		if (timestamps.has(interaction.user.id)) {
@@ -44,15 +44,15 @@ class ClickMenu extends Event {
 		}
 
 		// Run context menu
-		if (bot.config.debug) bot.logger.debug(`Context menu: ${interaction.commandName} was ran by ${interaction.user.displayName}.`);
+		if (client.config.debug) client.logger.debug(`Context menu: ${interaction.commandName} was ran by ${interaction.user.displayName}.`);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		switch (interaction.commandName) {
 			case 'Avatar':
-				bot.commands.get('avatar').reply(bot, interaction, channel, interaction.targetId);
+				client.commands.get('avatar').reply(client, interaction, channel, interaction.targetId);
 				break;
 			case 'Userinfo':
-				if (interaction.commandName == 'Userinfo') bot.commands.get('user-info').reply(bot, interaction, channel, interaction.targetId);
+				if (interaction.commandName == 'Userinfo') client.commands.get('user-info').reply(client, interaction, channel, interaction.targetId);
 				break;
 			case 'Translate': {
 				// Only allow this to show in server channels
@@ -64,15 +64,15 @@ class ClickMenu extends Event {
 
 				// translate message to server language
 				try {
-					const res = await bot.fetch('info/translate', { text: message.content, lang: bot.languages.find(lan => lan.name == guild.settings.Language).nativeName });
+					const res = await client.fetch('info/translate', { text: message.content, lang: client.languages.find(lan => lan.name == guild.settings.Language).nativeName });
 
 					interaction.reply({
-						content: `Translated to \`${bot.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${res}`,
+						content: `Translated to \`${client.languages.find(lan => lan.name == guild.settings.Language).nativeName}\`: ${res}`,
 						allowedMentions: { parse: [] },
 					});
-				} catch (err) {
-					console.log(err);
-					bot.logger.error(`Command: 'Translate' has error: ${err.message}.`);
+				} catch (err: any) {
+					console.log(err: any);
+					client.logger.error(`Command: 'Translate' has error: ${err.message}.`);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 				}
 				break;
@@ -85,7 +85,7 @@ class ClickMenu extends Event {
 				if (!message.attachments.first()?.url) return interaction.followUp({ embeds: [channel.error('events/custom:NO_ATTACH', {}, true)], ephemeral: true });
 
 				// Get text from image
-				const res = await bot.fetch('misc/get-text', { url: message.attachments.first().url });
+				const res = await client.fetch('misc/get-text', { url: message.attachments.first().url });
 
 				// Make sure text was actually retrieved
 				if (!res) return interaction.followUp({ embeds: [channel.error('events/custom:NO_TEXT_FROM_ATTACH', {}, true)], ephemeral: true });
@@ -98,7 +98,7 @@ class ClickMenu extends Event {
 
 				const message = await channel.messages.fetch(interaction.targetId);
 				const args = new Map().set('track', { value: message.content });
-				bot.commands.get('play').callback(bot, interaction, guild, args);
+				client.commands.get('play').callback(client, interaction, guild, args);
 				break;
 			}
 			case 'Screenshot': {
@@ -106,7 +106,7 @@ class ClickMenu extends Event {
 				const message = await channel.messages.fetch(interaction.targetId);
 				if (!message.content) return interaction.reply({ embeds: [channel.error('events/custom:NO_TRANS', {}, true)], ephemeral: true });
 
-				bot.commands.get('screenshot').reply(bot, interaction, channel, message);
+				client.commands.get('screenshot').reply(client, interaction, channel, message);
 				break;
 			}
 			case 'Report': {
@@ -136,4 +136,3 @@ class ClickMenu extends Event {
 	}
 }
 
-module.exports = ClickMenu;

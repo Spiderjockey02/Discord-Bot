@@ -18,11 +18,11 @@ export class PlayerDestroy extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Player} player The player that was destroyed
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, player: Player) {
-		if (bot.config.debug) bot.logger.log(`Lavalink player destroyed in guild: ${player.guild}.`);
+	async run(client: EgglordClient, player: Player) {
+		if (client.config.debug) client.logger.log(`Lavalink player destroyed in guild: ${player.guild}.`);
 	}
 }

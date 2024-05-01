@@ -1,63 +1,63 @@
-// Dependencies
-const	{ Embed } = require('../../utils'),
-	{ AutoModerationActionType, AutoModerationRuleKeywordPresetType } = require('discord-api-types/v10'),
-	Event = require('../../structures/Event');
+import { AutoModerationAction, AutoModerationActionType, AutoModerationRule, AutoModerationRuleKeywordPresetType, AutoModerationTriggerMetadata, Events } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Channel create event
  * @event Egglord#AutoModerationRuleCreate
  * @extends {Event}
 */
-class AutoModerationRuleCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class AutoModerationRuleCreate extends Event {
+	constructor() {
+		super({
+			name: Events.AutoModerationRuleCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
    * Function for receiving event.
-   * @param {bot} bot The instantiating client
+   * @param {client} client The instantiating client
    * @param {AutoModerationRule} autoModerationRule The created auto moderation rule
    * @readonly
   */
-	async run(bot, { actions, name, guild, creatorId, exemptChannels, exemptRoles, triggerMetadata }) {
-		bot.logger.debug(`Guild: ${guild.id} has added a new auto moderation rule: ${name}.`);
+	async run(client: EgglordClient, { actions, name, guild, creatorId, exemptChannels, exemptRoles, triggerMetadata }: AutoModerationRule) {
+		client.logger.debug(`Guild: ${guild.id} has added a new auto moderation rule: ${name}.`);
 
 		// Check if event AutoModerationRuleCreate is for logging
 		if (guild.settings.ModLogEvents?.includes('AUTOMODERATIONRULECREATE') && guild.settings.ModLog) {
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setTitle(`Auto-mod rule created: ${name}.`)
 				.setColor(3066993)
 				.addFields(
 					{ name: 'Exempt channels:', value: `${exemptChannels.length > 0 ? exemptChannels.map(c => `${c}`).join(',') : 'No exempt channels.'}`, inline: true },
 					{ name: 'Exempt roles:', value: `${exemptRoles.length > 0 ? exemptRoles.map(r => `${r}`).join(',') : 'No exempt roles.'}`, inline: true },
-					{ name: 'Punishment:', value: `${actions.length > 0 ? actions.map(a => this.punishmentParser(bot, a)).join(',\n') : 'No action required.'}` },
+					{ name: 'Punishment:', value: `${actions.length > 0 ? actions.map(a => this.punishmentParser(client, a)).join(',\n') : 'No action required.'}` },
 					{ name: 'Trigger:', value: this.triggerParser(triggerMetadata).join(',\n') },
 				)
-				.setFooter({ text: bot.users.cache.get(creatorId).displayName, iconURL: bot.users.cache.get(creatorId).displayAvatarURL() });
+				.setFooter({ text: client.users.cache.get(creatorId)?.displayName, iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
 
 			try {
-				const modChannel = await bot.channels.fetch(guild.settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(guild.settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 
 	/**
 	 * Function for parsing action of an auto moderation rule
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {AutoModerationAction} action The action of this auto moderation rule.
 	 * @return {string}
 	*/
-	punishmentParser(bot, action) {
+	punishmentParser(client: EgglordClient, action: AutoModerationAction) {
 		switch (action.type) {
 			case AutoModerationActionType.BlockMessage:
 				return 'Type: `Block message`';
 			case AutoModerationActionType.SendAlertMessage:
-				return `Type: \`Send Alert Message\` to ${bot.channels.cache.get(action.metadata.channelId)}`;
+				return `Type: \`Send Alert Message\` to ${client.channels.cache.get(action.metadata.channelId)}`;
 			case AutoModerationActionType.Timeout:
 				return `Type: \`Member Timeout\` for ${action.metadata.durationSeconds}s`;
 		}
@@ -65,11 +65,11 @@ class AutoModerationRuleCreate extends Event {
 
 	/**
 	 * Function for parsing triggers of an auto moderation rule
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {AutoModerationTriggerMetadata} triggerMetadata The trigger metadata of the rule.
 	 * @return {string}
 	*/
-	triggerParser(triggerMetadata) {
+	triggerParser(triggerMetadata: AutoModerationTriggerMetadata) {
 		const triggers = [];
 
 		// Check for keyword filtering
@@ -114,5 +114,3 @@ class AutoModerationRuleCreate extends Event {
 		return triggers;
 	}
 }
-
-module.exports = AutoModerationRuleCreate;

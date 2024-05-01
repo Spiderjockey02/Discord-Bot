@@ -1,28 +1,28 @@
-// Dependencies
-const	Event = require('../../structures/Event');
+import { Events } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Raw event
  * @event Egglord#Raw
  * @extends {Event}
 */
-class Raw extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class Raw extends Event {
+	constructor() {
+		super({
+			name: Events.Raw,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {data} data The raw data from discord itself
 	 * @readonly
 	*/
-	async run(bot, data) {
+	async run(client: EgglordClient, data: any) {
 		// Used for the music plugin
-		bot.manager?.updateVoiceState(data);
+		client.audioManager?.updateVoiceState(data);
 	}
 }
-
-module.exports = Raw;

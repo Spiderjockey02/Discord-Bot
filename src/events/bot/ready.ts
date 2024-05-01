@@ -1,131 +1,91 @@
-const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
-	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Event = require('../../structures/Event'),
-	AudioManager = require('../../base/Audio-Manager');
+import EgglordClient from 'src/base/Egglord';
+import AudioManager from 'src/base/Audio-Manager';
+import Event from 'src/structures/Event';
+import http from 'src/http';
+import { Events, Guild, PermissionFlagsBits } from 'discord.js';
 
 /**
  * Ready event
  * @event Egglord#Ready
  * @extends {Event}
 */
-class Ready extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class Ready extends Event {
+	constructor() {
+		super({
+			name: Events.ClientReady,
 			dirname: __dirname,
-			once: true,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @readonly
 	*/
-	async run(bot) {
+	async run(client: EgglordClient) {
 		// Load up audio player
 		try {
-			bot.manager = new AudioManager(bot);
-			bot.manager.init(bot.user.id);
-		} catch (err) {
-			bot.logger.error(`Audio manager failed to load due to error: ${err.message}`);
+			client.audioManager = new AudioManager(client);
+			client.audioManager?.init(client.user.id);
+		} catch (err: any) {
+			client.logger.error(`Audio manager failed to load due to error: ${err.message}`);
 		}
 
-		// set up webserver
+		// Run the HTTP API server
 		try {
-			await require('../../http')(bot);
-		} catch (err) {
+			await http(client);
+		} catch (err: any) {
 			console.log(err.message);
 		}
 
-		// webhook manager (loop every 10secs)
-		setInterval(async () => {
-			await require('../../helpers/webhookManager')(bot);
-		}, 10000);
-
-		// Fetch and prepare guild for settings etc
-		for (const guild of [...bot.guilds.cache.values()]) {
-			// Sort out guild settings
-			await guild.fetchSettings();
-			if (guild.settings.plugins.includes('Level')) await guild.fetchLevels();
-
-			// Append tags to guild specific arrays
-			if (guild.settings.PrefixTags) {
-				TagsSchema.find({ guildID: guild.id }).then(result => {
-					result.forEach(value => {
-						guild.guildTags.push(value.name);
-					});
-				});
-			}
+		// Delete server settings on servers that removed the client while it was offline
+		const guildsOnDB = await client.databaseHandler.guildManager.fetchAll();
+		const guildsRemovedWhenOffline = 0;
+		for (const guildOnDB of guildsOnDB) {
+			const guild = client.guilds.cache.get(guildOnDB.id);
+			if (guild == undefined) client.emit('guildDelete', { id: guildOnDB.id, name: guildOnDB.name } as Guild);
 		}
+		if (guildsRemovedWhenOffline > 0) client.logger.ready(`Number of guilds left when offline: ${guildsRemovedWhenOffline}.`);
 
-		// Delete server settings on servers that removed the bot while it was offline
-		const data = await GuildSchema.find({});
-		if (data.length > bot.guilds.cache.size) {
-			// A server kicked the bot when it was offline
-			const guildCount = [];
-			// Get bot guild ID's
-			for (let i = 0; i < bot.guilds.cache.size; i++) {
-				guildCount.push([...bot.guilds.cache.values()][i].id);
-			}
-			// Now check database for bot guild ID's
-			for (const guild of data) {
-				if (!guildCount.includes(guild.guildID)) {
-					bot.emit('guildDelete', { id: guild.guildID, name: guild.guildName });
-				}
-			}
-		}
-
-		bot.logger.ready('All guilds have been initialized.');
-
-		// check for custom users
-		const users = await userSchema.find({});
-		if (users.length > 0) bot.logger.log(`Preparing ${users.length} users.`);
-		for (const { userID, premium, premiumSince, cmdBanned, rankImage } of users) {
+		// Check for any user-specific features
+		const usersOnDB = await client.databaseHandler.userManager.fetchAll();
+		if (usersOnDB.length > 0) client.logger.log(`Preparing ${usersOnDB.length} users.`);
+		for (const userOnDB of usersOnDB) {
 			try {
-				const user = await bot.users.fetch(userID);
-				user.premium = premium;
-				user.premiumSince = premiumSince ?? 0;
-				user.cmdBanned = cmdBanned;
-				user.rankImage = rankImage ? Buffer.from(rankImage ?? '', 'base64') : '';
-			} catch (err) {
-				bot.logger.error(`${userID} is an invalid user ID.`);
+				const user = await client.users.fetch(userOnDB.id);
+				user.isPremiumTo = userOnDB.isPremiumTo;
+				user.isContributor = userOnDB.isContributor;
+				user.isDev = userOnDB.isDev;
+				user.isSupport = userOnDB.isSupport;
+			} catch (err: any) {
+				client.logger.error(`Failed to fetch user ID: ${userOnDB.id}`);
 			}
-		}
-
-
-		// enable time event handler (in case of bot restart)
-		try {
-			await require('../../helpers/TimedEventsManager')(bot);
-		} catch (err) {
-			console.log(err);
 		}
 
 		// Make sure 'SupportServer' has Host commands
-		if (bot.config.SupportServer.GuildID) {
-			const guild = bot.guilds.cache.get(bot.config.SupportServer.GuildID);
+		if (client.config.supportServer.guildId) {
+			const guild = client.guilds.cache.get(client.config.supportServer.guildId);
 			if (guild) {
 				// Check if Main server already have 'Host' commands
 				const guildCmds = await guild.commands.fetch();
 				if (!(guildCmds.find(cmd => cmd.name == 'reload'))) {
 					// Add host commands to Support server as they don't have them
-					const cmds = await bot.loadInteractionGroup('Host', guild.id);
+					const cmds = await client.loadInteractionGroup('Host', guild.id);
 					for (const cmd of cmds) {
-						cmd.defaultMemberPermissions = [Flags.Administrator];
+						cmd.defaultMemberPermissions = [PermissionFlagsBits.Administrator];
 					}
-					if (Array.isArray(cmds)) await bot.guilds.cache.get(guild.id)?.commands.set(cmds);
-					bot.logger.log(`Added Host commands to Support server: ${guild.id}.`);
+					if (Array.isArray(cmds)) await client.guilds.cache.get(guild.id)?.commands.set(cmds);
+					client.logger.log(`Added Host commands to Support server: ${guild.id}.`);
 				}
 			} else {
-				bot.logger.error('Bot is not in Support server.');
+				client.logger.error('client is not in Support server.');
 			}
 		}
 
-
-		// LOG ready event
-		bot.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-		bot.logger.ready(`${bot.user.displayName}, ready to serve [${bot.users.cache.size}] users in [${bot.guilds.cache.size}] servers.`);
-		bot.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+		// LOG that the client is ready to be interacted with
+		client.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+		client.logger.ready(`${client.user.displayName}, ready to serve [${client.guilds.cache.size}] servers.`);
+		client.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
 	}
 }
 
-module.exports = Ready;

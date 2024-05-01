@@ -1,33 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, GuildChannel } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Channel create event
  * @event Egglord#ChannelCreate
  * @extends {Event}
 */
-class ChannelCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ChannelCreate extends Event {
+	constructor() {
+		super({
+			name: Events.ChannelCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {GuildChannel} channel The channel that was created
 	 * @readonly
 	*/
-	async run(bot, channel) {
+	async run(client: EgglordClient, channel: GuildChannel) {
 		const { type, guild, name } = channel;
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${type == ChannelType.DM ? channel.recipient.displayName : name} has been created${type == ChannelType.DM ? '' : ` in guild: ${guild.id}`}. (${type})`);
-
-		// Make sure the channel isn't a DM
-		if (type == 'dm') return;
+		if (client.config.debug) client.logger.debug(`Channel: ${name} has been created in guild: ${guild.id}. (${type})`);
 
 		// Get server settings / if no settings then return
 		const settings = guild.settings;
@@ -39,22 +36,20 @@ class ChannelCreate extends Event {
 
 		// Check if event channelCreate is for logging
 		if (settings.ModLogEvents?.includes('CHANNELCREATE') && settings.ModLog) {
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setDescription(`**${guild.translate(`events/channel:${type}`)} ${guild.translate('events/channel:CREATE', { CHANNEL: channel.toString() })}**`)
 				.setColor(3066993)
 				.setFooter({ text: guild.translate('misc:ID', { ID: channel.id }) })
-				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL() })
+				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${channel.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${channel.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = ChannelCreate;

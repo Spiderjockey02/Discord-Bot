@@ -1,13 +1,15 @@
-// Dependencies
-const Event = require('../../structures/Event');
+import { Events, Snowflake } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * shard ready event
  * @extends {Event}
 */
-class ShardReady extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ShardReady extends Event {
+	constructor() {
+		super({
+			name: Events.ShardReady,
 			dirname: __dirname,
 		});
 	}
@@ -15,13 +17,11 @@ class ShardReady extends Event {
 	/**
 	 * Function for receiving event.
 	 * @event Egglord#shardReady
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {?Set<Snowflake>} unavailableGuilds Set of unavailable guild ids, if any
 	 * @readonly
 	*/
-	async run(bot, shardID, unavailableGuilds) {
-		bot.logger.ready(`Shard: ${shardID} has became ready with: ${(unavailableGuilds || new Set()).size} unavailable guilds.`);
+	async run(client: EgglordClient, shardID: number, unavailableGuilds: Set<Snowflake>) {
+		client.logger.ready(`Shard: ${shardID} has became ready with: ${unavailableGuilds.size} unavailable guilds.`);
 	}
 }
-
-module.exports = ShardReady;

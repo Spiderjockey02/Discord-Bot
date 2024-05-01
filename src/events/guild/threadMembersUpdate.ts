@@ -1,32 +1,32 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
-
+import Event from 'src/structures/Event';
+import { Collection, Events, Snowflake, ThreadMember } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 /**
  * Thread members update event
  * @event Egglord#ThreadMembersUpdate
  * @extends {Event}
 */
-class ThreadMembersUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ThreadMembersUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.ThreadMemberUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Collection<Snowflake, ThreadMember>} oldMembers The members before the update
 	 * @param {Collection<Snowflake, ThreadMember>} newMembers The members after the update
 	 * @readonly
 	*/
-	async run(bot, oldMembers, newMembers) {
+	async run(client: EgglordClient, oldMembers: Collection<Snowflake, ThreadMember>, newMembers: Collection<Snowflake, ThreadMember>) {
 		// Get thread
 		const thread = oldMembers.first()?.thread ?? newMembers.first().thread;
 
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Thread: ${thread.name} member count has been updated in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
+		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} member count has been updated in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
 
 		// Get server settings / if no settings then return
 		const settings = thread.guild.settings;
@@ -49,7 +49,7 @@ class ThreadMembersUpdate extends Event {
 					}
 
 					// create embed
-					const embed = new Embed(bot, thread.guild)
+					const embed = new Embed(client, thread.guild)
 						.setDescription(`**Thread members updated in ${thread.toString()}**`)
 						.setColor(15105570)
 						.setFooter({ text: `ID: ${thread.id}` })
@@ -61,15 +61,13 @@ class ThreadMembersUpdate extends Event {
 
 					// Find channel and send message
 					try {
-						const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${thread.guildId} logging channel`));
-						if (modChannel && modChannel.guild.id == thread.guildId) bot.addEmbed(modChannel.id, [embed]);
-					} catch (err) {
-						bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+						const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${thread.guildId} logging channel`));
+						if (modChannel && modChannel.guild.id == thread.guildId) client.addEmbed(modChannel.id, [embed]);
+					} catch (err: any) {
+						client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 					}
 				}
 			}
 		}
 	}
 }
-
-module.exports = ThreadMembersUpdate;

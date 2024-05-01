@@ -1,41 +1,41 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ReactionRoleSchema } = require('../../database/models'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, MessageReaction, User } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message reaction add event
  * @event Egglord#MessageReactionAdd
  * @extends {Event}
 */
-class MessageReactionAdd extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageReactionAdd extends Event {
+	constructor() {
+		super({
+			name: Events.MessageReactionAdd,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {MessageReaction} reaction The reaction object
 	 * @param {User} user The user that added the reaction
 	 * @readonly
 	*/
-	async run(bot, reaction, user) {
+	async run(client: EgglordClient, reaction: MessageReaction, user: User) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Message reaction added${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
+		if (client.config.debug) client.logger.debug(`Message reaction added${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
 
-		// Make sure it's not a BOT and in a guild
-		if (user.bot) return;
+		// Make sure it's not a client and in a guild
+		if (user.client) return;
 		if (!reaction.message.guild) return;
 
 		// If reaction needs to be fetched
 		try {
 			if (reaction.partial) await reaction.fetch();
 			if (reaction.message.partial) await reaction.message.fetch();
-		} catch (err) {
-			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err: any) {
+			return client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
 		// Get server settings / if no settings then return
@@ -64,20 +64,20 @@ class MessageReactionAdd extends Event {
 					} else {
 						return await member.roles.remove(rreaction.roleID);
 					}
-				} catch (err) {
-					const channel = await bot.channels.fetch(dbReaction.channelID).catch(() => bot.logger.error(`Missing channel for reaction role in guild: ${guild.id}`));
+				} catch (err: any) {
+					const channel = await client.channels.fetch(dbReaction.channelID).catch(() => client.logger.error(`Missing channel for reaction role in guild: ${guild.id}`));
 					if (channel) channel.error(`I am missing permission to give ${member} the role: ${guild.roles.cache.get(rreaction.roleID)}`);
 				}
 			}
 		}
 
 
-		// make sure the message author isn't the bot
-		if (reaction.message.author.id == bot.user.id) return;
+		// make sure the message author isn't the client
+		if (reaction.message.author.id == client.user.id) return;
 
 		// Check if event messageReactionAdd is for logging
 		if (settings.ModLogEvents?.includes('MESSAGEREACTIONADD') && settings.ModLog) {
-			const embed = new Embed(bot, reaction.message.guild)
+			const embed = new Embed(client, reaction.message.guild)
 				.setDescription(`**${user.toString()} reacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(3066993)
 				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
@@ -86,13 +86,12 @@ class MessageReactionAdd extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${reaction.message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == reaction.message.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${reaction.message.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == reaction.message.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
 
-module.exports = MessageReactionAdd;

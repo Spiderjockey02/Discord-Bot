@@ -18,12 +18,12 @@ export default class NodeDisconnect extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Node} node The node that was connected
 	 * @param {Object} reason The reason for the node disconnect
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, node: Node, reason: { code?: number, reason?: string }) {
-		bot.logger.error(`Lavalink node: ${node.options.identifier} has disconnect, reason: ${(reason.reason) ? reason.reason : 'unspecified'}.`);
+	async run(client: EgglordClient, node: Node, reason: { code?: number, reason?: string }) {
+		client.logger.error(`Lavalink node: ${node.options.identifier} has disconnect, reason: ${(reason.reason) ? reason.reason : 'unspecified'}.`);
 	}
 }

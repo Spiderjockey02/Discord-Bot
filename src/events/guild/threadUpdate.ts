@@ -1,29 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Collection, Events, Snowflake, ThreadChannel, ThreadMember } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Thread update event
  * @event Egglord#ThreadUpdate
  * @extends {Event}
 */
-class ThreadUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ThreadUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.ThreadUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {ThreadChannel} oldThread The thread before the update
 	 * @param {ThreadChannel} newThread The thread after the update
 	 * @readonly
 	*/
-	async run(bot, oldThread, newThread) {
+	async run(client: EgglordClient, oldThread: ThreadChannel, newThread: ThreadChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type.split('_')[1]})`);
+		if (client.config.debug) client.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type.split('_')[1]})`);
 
 		// Get server settings / if no settings then return
 		const settings = newThread.guild.settings;
@@ -35,7 +36,7 @@ class ThreadUpdate extends Event {
 
 			// thread name change
 			if (oldThread.name != newThread.name) {
-				embed = new Embed(bot, newThread.guild)
+				embed = new Embed(client, newThread.guild)
 					.setDescription(`**Thread name changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newThread.id}` })
@@ -50,7 +51,7 @@ class ThreadUpdate extends Event {
 
 			// thread archive state change
 			if (oldThread.archived != newThread.archived) {
-				embed = new Embed(bot, newThread.guild)
+				embed = new Embed(client, newThread.guild)
 					.setDescription(`**Thread archive state changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newThread.id}` })
@@ -66,14 +67,12 @@ class ThreadUpdate extends Event {
 			// Find channel and send message
 			if (updated) {
 				try {
-					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newThread.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newThread.guild.id) bot.addEmbed(modChannel.id, [embed]);
-				} catch (err) {
-					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newThread.guild.id} logging channel`));
+					if (modChannel && modChannel.guild.id == newThread.guild.id) client.addEmbed(modChannel.id, [embed]);
+				} catch (err: any) {
+					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
 			}
 		}
 	}
 }
-
-module.exports = ThreadUpdate;

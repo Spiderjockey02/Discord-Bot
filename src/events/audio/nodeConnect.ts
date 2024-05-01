@@ -1,4 +1,3 @@
-// Dependencies
 import { Node } from 'magmastream';
 import EgglordClient from 'src/base/Egglord';
 import Event from 'src/structures/Event';
@@ -19,11 +18,11 @@ export default class NodeConnect extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Node} node The node that was connected
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, node: Node) {
-		bot.logger.ready(`Lavalink node: ${node.options.identifier} has connected.`);
+	async run(client: EgglordClient, node: Node) {
+		client.logger.ready(`Lavalink node: ${node.options.identifier} has connected.`);
 	}
 }

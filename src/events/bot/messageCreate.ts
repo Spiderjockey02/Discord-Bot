@@ -1,56 +1,52 @@
-// Dependencies
-const { Collection, PermissionsBitField, EmbedBuilder } = require('discord.js'),
-	{ time: { getReadableTime }, functions: { genInviteLink } } = require('../../utils'),
-	{ TagsSchema } = require('../../database/models'),
-	AutoModeration = require('../../helpers/autoModeration'),
-	LevelManager = require('../../helpers/levelSystem'),
-	Event = require('../../structures/Event');
+import { Events, Collection, PermissionsBitField, EmbedBuilder, Message } from 'discord.js';
+import Event from 'src/structures/Event';
+import LevelManager from 'src/helpers/levelSystem';
+import { getReadableTime } from 'src/utils';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message create event
  * @event Egglord#MessageCreate
  * @extends {Event}
 */
-class MessageCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageCreate extends Event {
+	constructor() {
+		super({
+			name: Events.MessageCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(bot, message) {
-		// record how many messages the bot see
-		bot.messagesSent++;
-
-		// Should not respond to bots
-		if (message.author.bot) return;
+	async run(client: EgglordClient, message: Message) {
+		// Should not respond to clients
+		if (message.author.client) return;
 
 		// Get server settings
 		const settings = message.guild?.settings ?? require('../../assets/json/defaultGuildSettings.json');
 		if (Object.keys(settings).length == 0) return;
 
-		// Check if bot was mentioned
-		if (new RegExp(`/<@(!?)${bot.user.id}>/g`).test(message.content)) {
+		// Check if client was mentioned
+		if (new RegExp(`/<@(!?)${client.user.id}>/g`).test(message.content)) {
 			const embed = new EmbedBuilder()
-				.setAuthor({ name: bot.user.displayName, iconURL: bot.user.displayAvatarURL({ format: 'png' }) })
-				.setThumbnail(bot.user.displayAvatarURL({ format: 'png' }))
+				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL({ format: 'png' }) })
+				.setThumbnail(client.user.displayAvatarURL({ format: 'png' }))
 				.setDescription([
-					message.translate('events/message:INTRO', { USER: bot.user.displayName }),
-					message.translate('events/message:INFO', { UPTIME: getReadableTime(bot.uptime), GUILDS: bot.guilds.cache.size, USERS: bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString(), CMDS: bot.commands.size }),
+					message.translate('events/message:INTRO', { USER: client.user.displayName }),
+					message.translate('events/message:INFO', { UPTIME: getReadableTime(client.uptime), GUILDS: client.guilds.cache.size, USERS: client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString(), CMDS: client.commands.size }),
 					message.translate('events/message:PREFIX', { PREFIX: settings.prefix }),
 				].join('\n\n'))
 				.addFields(
 					{ name: message.translate('events/message:LINKS'),
 						value: [
-							message.translate('events/message:ADD', { INVITE: genInviteLink(bot) }),
-							message.translate('events/message:SUPPORT', { LINK: bot.config.SupportServer.link }),
-							message.translate('events/message:WEBSITE', { URL: bot.config.websiteURL }),
+							message.translate('events/message:ADD', { INVITE: genInviteLink(client) }),
+							message.translate('events/message:SUPPORT', { LINK: client.config.SupportServer.link }),
+							message.translate('events/message:WEBSITE', { URL: client.config.websiteURL }),
 						].join('\n') },
 				);
 			return message.channel.send({ embeds: [embed] });
@@ -58,19 +54,19 @@ class MessageCreate extends Event {
 
 		// Check if the message was @someone
 		if (['@someone', '@person'].includes(message.content)) {
-			if (message.channel.type == 'dm') return message.channel.error('events/message:GUILD_ONLY');
+			if (message.guild == null) return message.channel.error('events/message:GUILD_ONLY');
 			await message.guild.members.fetch();
-			return message.channel.send({ embeds: [{ color: bot.config.embedColor, description:`Random user selected: ${message.guild.members.cache.random().user}.` }] });
+			return message.channel.send({ embeds: [{ color: client.config.embedColor, description:`Random user selected: ${message.guild.members.cache.random()?.user}.` }] });
 		}
 
 		// Check if message was a command
 		const args = message.content.split(/ +/);
-		if ([settings.prefix, `<@!${bot.user.id}>`].find(p => message.content.startsWith(p))) {
+		if ([settings.prefix, `<@!${client.user.id}>`].find(p => message.content.startsWith(p))) {
 			const command = args.shift().slice(settings.prefix.length).toLowerCase();
-			let cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
-			if (!cmd && message.content.startsWith(`<@!${bot.user.id}>`)) {
+			let cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+			if (!cmd && message.content.startsWith(`<@!${client.user.id}>`)) {
 				// check to see if user is using mention as prefix
-				cmd = bot.commands.get(args[0]) || bot.commands.get(bot.aliases.get(args[0]));
+				cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
 				args.shift();
 				if (!cmd) return;
 			} else if (!cmd) {
@@ -112,22 +108,22 @@ class MessageCreate extends Event {
 			if (!settings.plugins.includes(cmd.help.category) && cmd.help.category != 'Host') return;
 
 			// Make sure user does not have access to ownerOnly commands
-			if (cmd.conf.ownerOnly && !bot.config.ownerID.includes(message.author.id)) {
+			if (cmd.conf.ownerOnly && !client.config.ownerID.includes(message.author.id)) {
 				if (message.deletable) message.delete();
 				return message.channel.send('Nice try').then(m => m.timedDelete({ timeout:5000 }));
 			}
 
 			// check permissions
 			if (message.guild) {
-				// check bot permissions
+				// check client permissions
 				let neededPermissions = [];
 				cmd.conf.botPermissions.forEach((perm) => {
 					if ([PermissionsBitField.Flags.Speak, PermissionsBitField.Flags.Connect].includes(perm)) {
 						if (!message.member.voice.channel) return;
-						if (!message.member.voice.channel.permissionsFor(bot.user).has(perm)) {
+						if (!message.member.voice.channel.permissionsFor(client.user).has(perm)) {
 							neededPermissions.push(perm);
 						}
-					} else if (!message.channel.permissionsFor(bot.user).has(perm)) {
+					} else if (!message.channel.permissionsFor(client.user).has(perm)) {
 						neededPermissions.push(perm);
 					}
 				});
@@ -135,7 +131,7 @@ class MessageCreate extends Event {
 				if (neededPermissions.length > 0) {
 					const perms = new PermissionsBitField();
 					neededPermissions.forEach((item) => perms.add(BigInt(item)));
-					bot.logger.error(`Missing permission: \`${perms.toArray().join(', ')}\` in [${message.guild.id}].`);
+					client.logger.error(`Missing permission: \`${perms.toArray().join(', ')}\` in [${message.guild.id}].`);
 					if (message.deletable) message.delete();
 					return message.channel.error('misc:MISSING_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.translate(`permissions:${p}`)).join(', ') });
 				}
@@ -157,12 +153,12 @@ class MessageCreate extends Event {
 			}
 
 			// Check to see if user is in 'cooldown'
-			if (!bot.cooldowns.has(cmd.help.name)) {
-				bot.cooldowns.set(cmd.help.name, new Collection());
+			if (!client.cooldowns.has(cmd.help.name)) {
+				client.cooldowns.set(cmd.help.name, new Collection());
 			}
 
 			const now = Date.now();
-			const timestamps = bot.cooldowns.get(cmd.help.name);
+			const timestamps = client.cooldowns.get(cmd.help.name);
 			const cooldownAmount = (message.author.premium ? cmd.conf.cooldown * 0.75 : cmd.conf.cooldown);
 
 			if (timestamps.has(message.author.id)) {
@@ -176,26 +172,25 @@ class MessageCreate extends Event {
 			}
 
 			// run the command
-			bot.commandsUsed++;
-			if (bot.config.debug) bot.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.displayName}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
-			cmd.run(bot, message, settings);
+			client.commandsUsed++;
+			if (client.config.debug) client.logger.debug(`Command: ${cmd.help.name} was ran by ${message.author.displayName}${!message.guild ? ' in DM\'s' : ` in guild: ${message.guild.id}`}.`);
+			cmd.run(client, message, settings);
 			timestamps.set(message.author.id, now);
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 		} else if (message.guild) {
 			if (settings.plugins.includes('Moderation')) {
 				try {
-					const moderated = await new AutoModeration(bot, message).check();
+					const moderated = await new AutoModeration(client, message).check();
 					// This makes sure that if the auto-mod punished member, level plugin would not give XP
-					if (settings.plugins.includes('Level') && !moderated) return new LevelManager(bot, message).check();
-				} catch (err) {
-					console.log(err);
-					bot.logger.error(`Event: 'message' has error: ${err.message}.`);
+					if (settings.plugins.includes('Level') && !moderated) return new LevelManager(client, message).check();
+				} catch (err: any) {
+					console.log(err: any);
+					client.logger.error(`Event: 'message' has error: ${err.message}.`);
 				}
 			} else if (settings.plugins.includes('Level')) {
-				new LevelManager(bot, message).check();
+				new LevelManager(client, message).check();
 			}
 		}
 	}
 }
 
-module.exports = MessageCreate;

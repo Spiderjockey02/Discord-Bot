@@ -1,57 +1,57 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ReactionRoleSchema, GiveawaySchema } = require('../../database/models'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { ChannelType, Events, Message } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message delete event
  * @event Egglord#MessageDelete
  * @extends {Event}
 */
-class MessageDelete extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageDelete extends Event {
+	constructor() {
+		super({
+			name: Events.MessageDelete,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Message} message The deleted message
 	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client: EgglordClient, message: Message) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
+		if (client.config.debug) client.logger.debug(`Message has been deleted${!message.guild ? '' : ` in guild: ${message.guild.id}`}.`);
 
 		// Make sure the message wasn't deleted in a Dm channel
-		if (message.channel.type == 'dm') return;
+		if (message.channel.type == ChannelType.DM) return;
 
 		// If someone leaves the server and the server has default discord messages, it gets removed but says message content is null (Don't know why)
 		if (!message.content && message.attachments.size == 0 && message.embeds[0]) return;
 
 		// if the message is a partial or a webhook return
-		if (message.partial || message.webhookID) return;
+		if (message.partial || message.webhookId) return;
 
 		// Check if the message was a giveaway/reaction role embed
 		try {
 			// check reaction roles
 			const rr = await ReactionRoleSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
-			if (rr) bot.logger.log('A reaction role embed was deleted.');
+			if (rr) client.logger.log('A reaction role embed was deleted.');
 
 			// check giveaways
 			const g = await GiveawaySchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
 			if (g) {
-				await bot.giveawaysManager.delete(message.id);
-				bot.logger.log('A giveaway embed was deleted.');
+				await client.giveawaysManager.delete(message.id);
+				client.logger.log('A giveaway embed was deleted.');
 			}
-		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err: any) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
-		// Make sure its not the bot
-		if (message.author.id == bot.user.id) return;
+		// Make sure its not the client
+		if (message.author.id == client.user.id) return;
 
 		// Get server settings / if no settings then return
 		const settings = message.guild?.settings ?? [];
@@ -71,7 +71,7 @@ class MessageDelete extends Event {
 			}
 
 			// Basic message construct
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter({ text: `Author: ${message.author.id} | Message: ${message.id}` })
@@ -88,13 +88,11 @@ class MessageDelete extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == message.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == message.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = MessageDelete;

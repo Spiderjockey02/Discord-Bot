@@ -1,37 +1,37 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	moment = require('moment'),
-	Event = require('../../structures/Event');
+import { ModalSubmitInteraction } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * modal submit event
  * @event Egglord#ModalSubmit
  * @extends {Event}
 */
-class ModalSubmit extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ModalSubmit extends Event {
+	constructor() {
+		super({
+			name: 'modalSubmit',
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {ModalSubmitInteraction} interaction The member that was warned
 	 * @readonly
 	*/
-	async run(bot, interaction) {
+	async run(client: EgglordClient, interaction: ModalSubmitInteraction<'cached'>) {
 		if (!interaction.guild) return interaction.reply({ content: 'Server only' });
 		const { guild, member } = interaction;
 
-		const reason = interaction.fields.fields.get('reportReason').value;
+		const reason = interaction.fields.fields.get('reportReason')?.value;
 		const channel = guild.channels.cache.get(guild.settings.ModLogChannel);
 
 		if (!channel) return interaction.reply({ content: 'No channel set for logging' });
 
 		if (guild.settings.ModLogEvents?.includes('REPORT')) {
-			const embed = new Embed(bot, guild)
+			const embed = new Embed(client, guild)
 				.setTitle(`Reported ${interaction.customId.split('_')[1]}`)
 				.setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL() })
 				.addFields(
@@ -43,7 +43,7 @@ class ModalSubmit extends Event {
 			// Add custom fields
 			switch (interaction.customId.split('_')[1]) {
 				case 'user': {
-					const user = await bot.users.fetch(interaction.customId.split('_')[2]);
+					const user = await client.users.fetch(interaction.customId.split('_')[2]);
 					embed.addFields(
 						{ name: 'Tag:', value: user.displayName, inline: true },
 						{ name: 'Created at:', value: moment(user.createdAt).format('lll'), inline: true },
@@ -78,4 +78,3 @@ class ModalSubmit extends Event {
 	}
 }
 
-module.exports = ModalSubmit;

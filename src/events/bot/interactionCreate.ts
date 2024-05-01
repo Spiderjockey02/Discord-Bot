@@ -1,51 +1,56 @@
-// Dependencies
-const Event = require('../../structures/Event');
+import { BaseInteraction, CommandInteraction, ComponentType, Events, InteractionType, MessageComponentInteraction } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Interaction create event
  * @event Egglord#InteractionCreate
  * @extends {Event}
 */
-class InteractionCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class InteractionCreate extends Event {
+	constructor() {
+		super({
+			name: Events.InteractionCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Interaction} interaction The interaction recieved (slash, button, context menu & select menu etc)
 	 * @readonly
 	*/
-	async run(bot, interaction) {
-		const channel = bot.channels.cache.get(interaction.channelId);
+	async run(client: EgglordClient, interaction: BaseInteraction) {
 
-		// Make sure user is not on banned list
-		if (interaction.user.cmdBanned && !interaction.isAutocomplete()) return interaction.reply({ embeds: [channel.error('events/message:BANNED_USER', null, true)] });
-
-		// Check if it's message context menu
-		if (interaction.isMessageContextMenuCommand() || interaction.isUserContextMenuCommand()) return bot.emit('clickMenu', interaction);
-
-		// Check if it's autocomplete
-		if(interaction.isAutocomplete()) return bot.emit('autoComplete', interaction);
-
-		// Check if it's a button
-		if (interaction.isButton()) return bot.emit('clickButton', interaction);
-
-		// Check if it's a slash command
-		if (interaction.isCommand()) return bot.emit('slashCreate', interaction);
-
-		// Check if it's a modal submitted
-		if (interaction.isModalSubmit()) return bot.emit('modalSubmit', interaction);
-
-		// Check if it's a select menu submit
-		if (interaction.isStringSelectMenu()) return bot.emit('SelectMenuSubmit', interaction);
-
-		// Check if it's a role select menu submit
-		if (interaction.isRoleSelectMenu()) return bot.emit('RoleSelectMenu', interaction);
+		switch (interaction.type) {
+			case InteractionType.ApplicationCommandAutocomplete:
+				client.emit('autoComplete', interaction);
+				break;
+			case InteractionType.ApplicationCommand: {
+				if ([ApplicationCommandType.User, ApplicationCommandType.Message].includes((interaction as CommandInteraction).commandType)) {
+					client.emit('clickMenu', interaction);
+				} else {
+					client.emit('slashCreate', interaction);
+				}
+				break;
+			}
+			case InteractionType.ModalSubmit:
+				client.emit('modalSubmit', interaction);
+				break;
+			case InteractionType.MessageComponent: {
+				switch ((interaction as MessageComponentInteraction).componentType) {
+					case ComponentType.RoleSelect:
+						client.emit('RoleSelectMenu', interaction);
+						break;
+					case ComponentType.StringSelect:
+						client.emit('SelectMenuSubmit', interaction);
+						break;
+					case ComponentType.Button:
+						client.emit('clickButton', interaction);
+						break;
+				}
+			}
+		}
 	}
 }
-
-module.exports = InteractionCreate;

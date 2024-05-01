@@ -1,29 +1,28 @@
-// Dependencies
-const Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import EgglordClient from 'src/base/Egglord';
+import { Events } from 'discord.js';
 
 /**
  * Shard error event
  * @event Egglord#ShardError
  * @extends {Event}
 */
-class ShardError extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ShardError extends Event {
+	constructor() {
+		super({
+			name: Events.ShardError,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Error} error The error encountered
 	 * @param {number} shardID The shard id that disconnected
 	 * @readonly
 	*/
-	async run(bot, error, shardID) {
-		console.log(error);
-		bot.logger.error(`Shard: ${shardID} encounted error: ${error}`);
+	async run(client: EgglordClient, error: Error, shardID: number) {
+		client.logger.error(`Shard: ${shardID} encounted error: ${error}`);
 	}
 }
-
-module.exports = ShardError;

@@ -1,34 +1,35 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Collection, Events, Message, MessageReaction, Snowflake } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message reaction remove all event
  * @event Egglord#MessageReactionRemoveAll
  * @extends {Event}
 */
-class MessageReactionRemoveAll extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageReactionRemoveAll extends Event {
+	constructor() {
+		super({
+			name: Events.MessageReactionRemoveAll,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Message} message The message the reactions were removed from
 	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(client: EgglordClient, message: Message, reactions: Collection<(string|Snowflake), MessageReaction>) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Message all reactions removed ${!message.guild ? '' : ` in guild: ${message.guild.id}`}`);
+		if (client.config.debug) client.logger.debug(`Message all reactions removed ${!message.guild ? '' : ` in guild: ${message.guild.id}`}`);
 
 		// If message needs to be fetched
 		try {
 			if (message.partial) await message.fetch();
-		} catch (err) {
-			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err: any) {
+			return client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
 		// Get server settings / if no settings then return
@@ -37,20 +38,18 @@ class MessageReactionRemoveAll extends Event {
 
 		// Check if event messageReactionRemove is for logging
 		if (settings.ModLogEvents?.includes('MESSAGEREACTIONREMOVEALL') && settings.ModLog) {
-			const embed = new Embed(bot, message.guild)
+			const embed = new Embed(client, message.guild)
 				.setDescription(`**All reactions removed from [this message](${message.url})** `)
 				.setColor(15158332)
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == message.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == message.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = MessageReactionRemoveAll;

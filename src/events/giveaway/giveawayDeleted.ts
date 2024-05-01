@@ -1,5 +1,5 @@
-// Dependencies
-const	Event = require('../../structures/Event');
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Giveaway deleted event
@@ -7,22 +7,23 @@ const	Event = require('../../structures/Event');
  * @extends {Event}
 */
 class GiveawayDeleted extends Event {
-	constructor(...args) {
-		super(...args, {
+	constructor() {
+		super({
+			name: 'GiveawayDeleted',
 			dirname: __dirname,
-			child: 'giveawaysManager',
+			child: 'giveawayManager',
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Giveaway} giveaway The giveaway object
 	 * @param {Array<GuildMember>} winners The member that added the reaction
 	 * @readonly
 	*/
-	async run(bot, giveaway) {
-		if (bot.config.debug) bot.logger.debug(`Giveaway was deleted in ${giveaway.guild.id}.`);
+	async run(client: EgglordClient, giveaway: Giveaway) {
+		if (client.config.debug) client.logger.debug(`Giveaway was deleted in ${giveaway.guild.id}.`);
 	}
 }
 

@@ -1,31 +1,33 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ChannelType } = require('discord-api-types/v10'),
-	Event = require('../../structures/Event');
-
+import Event from 'src/structures/Event';
+import { ChannelType, DMChannel, Events, GuildChannel } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Channel update event
  * @event Egglord#ChannelDelete
  * @extends {Event}
 */
-class ChannelUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class ChannelUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.ChannelUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {GuildChannel|DMChannel} oldChannel The channel before the update
 	 * @param {GuildChannel|DMChannel} newChannel The channel after the update
 	 * @readonly
 	*/
-	async run(bot, oldChannel, newChannel) {
+	async run(client: EgglordClient, oldChannel: DMChannel | GuildChannel, newChannel: DMChannel | GuildChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Channel: ${newChannel.type == ChannelType.DM ? newChannel.recipient.displayName : newChannel.name} has been updated${newChannel.type == ChannelType.DM ? '' : ` in guild: ${newChannel.guild.id}`}. (${ChannelType[newChannel.type]})`);
+		if (client.config.debug) client.logger.debug(`Channel: ${newChannel.type == ChannelType.DM ? newChannel.recipient?.displayName : newChannel.name} has been updated${newChannel.type == ChannelType.DM ? '' : ` in guild: ${newChannel.guild.id}`}. (${ChannelType[newChannel.type]})`);
+
+		// Ignore if a DM channel
+		if (newChannel.type == ChannelType.DM || oldChannel.type == ChannelType.DM) return;
 
 		// Get server settings / if no settings then return
 		const settings = newChannel.guild?.settings;
@@ -37,7 +39,7 @@ class ChannelUpdate extends Event {
 
 			// Channel name change
 			if (oldChannel.name != newChannel.name) {
-				embed = new Embed(bot, newChannel.guild)
+				embed = new Embed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
@@ -52,7 +54,7 @@ class ChannelUpdate extends Event {
 
 			// channel topic (description) change
 			if (oldChannel.topic != newChannel.topic) {
-				embed = new Embed(bot, newChannel.guild)
+				embed = new Embed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
@@ -66,7 +68,7 @@ class ChannelUpdate extends Event {
 			}
 
 			if (oldChannel.rtcRegion != newChannel.rtcRegion) {
-				embed = new Embed(bot, newChannel.guild)
+				embed = new Embed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
@@ -93,23 +95,23 @@ class ChannelUpdate extends Event {
 			}));
 
 			if (permDiff.size) {
-				embed = new Embed(bot, newChannel.guild)
+				embed = new Embed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
 					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 					.setTimestamp();
 				for (const permID of permDiff.keys()) {
-					// load both overwrites into variables
-					const oldPerm = oldChannel.permissionOverwrites.cache.get(permID) || {};
-					const newPerm = newChannel.permissionOverwrites.cache.get(permID) || {};
+					// load clienth overwrites into variables
+					const oldPerm = oldChannel.permissionOverwrites.cache.get(permID);
+					const newPerm = newChannel.permissionOverwrites.cache.get(permID);
 					const oldBitfields = {
-						allowed: oldPerm.allow ? oldPerm.allow.bitfield : 0,
-						denied: oldPerm.deny ? oldPerm.deny.bitfield : 0,
+						allowed: oldPerm?.allow ? oldPerm.allow.bitfield : 0,
+						denied: oldPerm?.deny ? oldPerm.deny.bitfield : 0,
 					};
 					const newBitfields = {
-						allowed: newPerm.allow ? newPerm.allow.bitfield : 0,
-						denied: newPerm.deny ? newPerm.deny.bitfield : 0,
+						allowed: newPerm?.allow ? newPerm.allow.bitfield : 0,
+						denied: newPerm?.deny ? newPerm.deny.bitfield : 0,
 					};
 					// load roles / guildmember for that overwrite
 					let role;
@@ -141,14 +143,12 @@ class ChannelUpdate extends Event {
 			if (updated) {
 				// Find channel and send message
 				try {
-					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newChannel.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newChannel.guild.id) bot.addEmbed(modChannel.id, [embed]);
-				} catch (err) {
-					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newChannel.guild.id} logging channel`));
+					if (modChannel && modChannel.guild.id == newChannel.guild.id) client.addEmbed(modChannel.id, [embed]);
+				} catch (err: any) {
+					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
 			}
 		}
 	}
 }
-
-module.exports = ChannelUpdate;

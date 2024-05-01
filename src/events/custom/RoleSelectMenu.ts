@@ -13,11 +13,11 @@ class RoleSelectMenu extends Event {
 	}
 	/**
    * Function for receiving event.
-   * @param {bot} bot The instantiating client
+   * @param {client} client The instantiating client
    * @param {ModalSubmitInteraction} interaction The member that was warned
    * @readonly
   */
-	async run(bot, interaction) {
+	async run(client, interaction) {
 		const id = interaction.customId.split('-')[1];
 
 		interaction.reply({ content: 'done' });

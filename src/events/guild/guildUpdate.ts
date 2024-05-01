@@ -1,29 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, Guild } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Guild update event
  * @event Egglord#GuildUpdate
  * @extends {Event}
 */
-class GuildUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.GuildUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Guild} oldGuild The guild before the update
 	 * @param {Guild} newGuild The guild after the update
 	 * @readonly
 	*/
-	async run(bot, oldGuild, newGuild) {
+	async run(client: EgglordClient, oldGuild: Guild, newGuild: Guild) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Guild: ${newGuild.name} has been updated.`);
+		if (client.config.debug) client.logger.debug(`Guild: ${newGuild.name} has been updated.`);
 
 		// Get server settings / if no settings then return
 		const settings = newGuild.settings;
@@ -35,7 +36,7 @@ class GuildUpdate extends Event {
 
 			// Guild name change
 			if (oldGuild.name != newGuild.name) {
-				embed = new Embed(bot, newGuild)
+				embed = new Embed(client, newGuild)
 					.setDescription('**Server name changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addFields({ name: 'Before:', value: oldGuild.name })
@@ -48,7 +49,7 @@ class GuildUpdate extends Event {
 
 			// Server's boost level has changed
 			if (oldGuild.premiumTier != newGuild.premiumTier) {
-				embed = new Embed(bot, newGuild)
+				embed = new Embed(client, newGuild)
 					.setDescription(`**Server boost ${oldGuild.premiumTier < newGuild.premiumTier ? 'increased' : 'decreased'}**`)
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addFields({ name: 'Before:', value: oldGuild.premiumTier })
@@ -59,7 +60,7 @@ class GuildUpdate extends Event {
 
 			// Server has got a new banner
 			if (!oldGuild.banner && newGuild.banner) {
-				embed = new Embed(bot, newGuild)
+				embed = new Embed(client, newGuild)
 					.setDescription('**Server banner changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addFields({ name: 'Before:', value: oldGuild.banner })
@@ -70,7 +71,7 @@ class GuildUpdate extends Event {
 
 			// Server has made a AFK channel
 			if (!oldGuild.afkChannel && newGuild.afkChannel) {
-				embed = new Embed(bot, newGuild)
+				embed = new Embed(client, newGuild)
 					.setDescription('**Server AFK channel changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addFields({ name: 'Before:', value: oldGuild.afkChannel })
@@ -81,7 +82,7 @@ class GuildUpdate extends Event {
 
 			// Server now has a vanity URL
 			if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
-				embed = new Embed(bot, newGuild)
+				embed = new Embed(client, newGuild)
 					.setDescription('**Server Vanity URL changed**')
 					.setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() })
 					.addFields({ name: 'Before:', value: oldGuild.vanityURLCode })
@@ -93,14 +94,12 @@ class GuildUpdate extends Event {
 			if (updated) {
 				// Find channel and send message
 				try {
-					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newGuild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newGuild.id) bot.addEmbed(modChannel.id, [embed]);
-				} catch (err) {
-					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newGuild.id} logging channel`));
+					if (modChannel && modChannel.guild.id == newGuild.id) client.addEmbed(modChannel.id, [embed]);
+				} catch (err: any) {
+					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
 			}
 		}
 	}
 }
-
-module.exports = GuildUpdate;

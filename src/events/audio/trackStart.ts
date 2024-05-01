@@ -1,7 +1,8 @@
-import { User } from 'discord.js';
+import { TextBasedChannel } from 'discord.js';
 import { Player, Track } from 'magmastream';
 import EgglordClient from 'src/base/Egglord';
 import Event from 'src/structures/Event';
+import { delayedDelete } from 'src/utils/functions';
 
 /**
  * Track start event
@@ -19,20 +20,23 @@ class TrackStart extends Event {
 
 	/**
    * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Player} player The player that's track started
 	 * @param {Track} track The track that started
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, player: Player, track: Track) {
-		// When a song starts
-		const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
-			.setColor(bot.guilds.cache.get(player.guild)?.members.cache.get((track.requester as User).id)?.displayHexColor)
-			.setTitle('music/np:AUTHOR')
-			.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
+	async run(client: EgglordClient, player: Player, track: Track) {
+		if (player.textChannel !== null) {
+			const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
 
-		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
-			.then(m => m.timedDelete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+			// When a song starts
+			const embed = new Embed(client, client.guilds.cache.get(player.guild))
+				.setColor(client.guilds.cache.get(player.guild)?.members.cache.get(track.requester.id)?.displayHexColor)
+				.setTitle('music/np:AUTHOR')
+				.setDescription(`[${track.title}](${track.uri}) [${client.guilds.cache.get(player.guild)?.members.cache.get(track.requester.id)}]`);
+
+			channel.send({ embeds: [embed] }).then(m => delayedDelete(m, (track.duration < 6.048e+8) ? track.duration : 60000));
+		}
 
 		// clear timeout (for queueEnd event)
 		if (player.timeout != null) return clearTimeout(player.timeout);

@@ -1,13 +1,13 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import { Sticker } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import Event from 'src/structures/Event';
 
 /**
  * Sticker update event
  * @event Egglord#StickerUpdate
  * @extends {Event}
 */
-class StickerUpdate extends Event {
+export default class StickerUpdate extends Event {
 	constructor(...args) {
 		super(...args, {
 			dirname: __dirname,
@@ -16,14 +16,14 @@ class StickerUpdate extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Sticker} oldSticker The sticker before the update
 	 * @param {Sticker} newSticker The sticker after the update
 	 * @readonly
 	*/
-	async run(bot, oldSticker, newSticker) {
+	async run(client: EgglordClient, oldSticker: Sticker, newSticker: Sticker) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Sticker: ${newSticker.name} has been updated in guild: ${newSticker.guildId}. (${newSticker.type})`);
+		if (client.config.debug) client.logger.debug(`Sticker: ${newSticker.name} has been updated in guild: ${newSticker.guildId}. (${newSticker.type})`);
 
 		// Get server settings / if no settings then return
 		const settings = newSticker.guild.settings;
@@ -35,7 +35,7 @@ class StickerUpdate extends Event {
 
 			// sticker name change
 			if (oldSticker.name != newSticker.name) {
-				embed = new Embed(bot, newSticker.guild)
+				embed = new Embed(client, newSticker.guild)
 					.setDescription(`Sticker name changed of ${newSticker.name}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newSticker.id}` })
@@ -50,7 +50,7 @@ class StickerUpdate extends Event {
 
 			// sticker description change
 			if (oldSticker.description != newSticker.description) {
-				embed = new Embed(bot, newSticker.guild)
+				embed = new Embed(client, newSticker.guild)
 					.setDescription(`Sticker description changed of ${newSticker.name}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newSticker.id}` })
@@ -66,14 +66,13 @@ class StickerUpdate extends Event {
 			// Find channel and send message
 			if (updated) {
 				try {
-					const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newSticker.guildId} logging channel`));
-					if (modChannel && modChannel.guild.id == newSticker.guildId) bot.addEmbed(modChannel.id, [embed]);
-				} catch (err) {
-					bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newSticker.guildId} logging channel`));
+					if (modChannel && modChannel.guild.id == newSticker.guildId) client.addEmbed(modChannel.id, [embed]);
+				} catch (err: any) {
+					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}
 			}
 		}
 	}
 }
 
-module.exports = StickerUpdate;

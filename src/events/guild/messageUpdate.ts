@@ -1,29 +1,30 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, Message } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message update event
  * @event Egglord#MessageUpdate
  * @extends {Event}
 */
-class MessageUpdate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageUpdate extends Event {
+	constructor() {
+		super({
+			name: Events.MessageUpdate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Message} oldMessage The message before the update
 	 * @param {Message} newMessage The message after the update
 	 * @readonly
 	*/
-	async run(bot, oldMessage, newMessage) {
+	async run(client: EgglordClient, oldMessage: Message, newMessage: Message) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Message updated${!newMessage.guild ? '' : ` in guild: ${newMessage.guild.id}`}`);
+		if (client.config.debug) client.logger.debug(`Message updated${!newMessage.guild ? '' : ` in guild: ${newMessage.guild.id}`}`);
 
 		// make sure its not a DM
 		if (!newMessage.guild) return;
@@ -32,9 +33,9 @@ class MessageUpdate extends Event {
 		try {
 			if (oldMessage.partial) await oldMessage.fetch();
 			if (newMessage.partial) await newMessage.fetch();
-		} catch (err) {
+		} catch (err: any) {
 			if (err.message == 'Missing Access') return;
-			return bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			return client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
 		// only check for message content is different
@@ -46,7 +47,7 @@ class MessageUpdate extends Event {
 
 		// Check if event channelDelete is for logging
 		if (settings.ModLogEvents?.includes('MESSAGEUPDATE') && settings.ModLog) {
-			// shorten both messages when the content is larger then 1024 chars
+			// shorten clienth messages when the content is larger then 1024 chars
 			let oldShortened = false;
 			let oldContent = oldMessage.content;
 			if (oldContent.length > 1024) {
@@ -59,7 +60,7 @@ class MessageUpdate extends Event {
 				newContent = newContent.slice(0, 1020) + '...';
 				newShortened = true;
 			}
-			const embed = new Embed(bot, newMessage.guild)
+			const embed = new Embed(client, newMessage.guild)
 				.setDescription(`**Message of ${newMessage.author.toString()} edited in ${newMessage.channel.toString()}** [Jump to Message](${newMessage.url})`)
 				.setFooter({ text: `Author: ${newMessage.author.id} | Message: ${newMessage.id}` })
 				.setAuthor({ name: newMessage.author.displayName, iconURL: newMessage.author.displayAvatarURL() })
@@ -70,13 +71,11 @@ class MessageUpdate extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${newMessage.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == newMessage.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newMessage.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == newMessage.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = MessageUpdate;

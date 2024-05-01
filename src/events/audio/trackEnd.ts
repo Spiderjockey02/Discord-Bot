@@ -18,12 +18,12 @@ export default class TrackEnd extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Player} player The player that's track ended
 	 * @param {Track} track The track that ended
 	 * @readonly
 	*/
-	async run(_bot: EgglordClient, player: Player, track: Track) {
+	async run(_client: EgglordClient, player: Player, track: Track) {
 		// when track finishes add to previous songs array
 		player.addPreviousSong(track);
 	}

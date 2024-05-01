@@ -1,28 +1,29 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Events, Invite } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Invite create event
  * @event Egglord#InviteCreate
  * @extends {Event}
 */
-class InviteCreate extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class InviteCreate extends Event {
+	constructor() {
+		super({
+			name: Events.InviteCreate,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Invite} invite The invite that was created
 	 * @readonly
 	*/
-	async run(bot, invite) {
+	async run(client: EgglordClient, invite: Invite) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`Invite has been created in ${invite.channel ? `channel: ${invite.channel.id}` : `guild: ${invite.guild.id}`}.`);
+		if (client.config.debug) client.logger.debug(`Invite has been created in ${invite.channel ? `channel: ${invite.channel.id}` : `guild: ${invite.guild.id}`}.`);
 
 		// Get server settings / if no settings then return
 		const settings = invite.guild.settings;
@@ -30,7 +31,7 @@ class InviteCreate extends Event {
 
 		// Check if event guildMemberAdd is for logging
 		if (settings.ModLogEvents?.includes('INVITECREATE') && settings.ModLog) {
-			const embed = new Embed(bot, invite.guild)
+			const embed = new Embed(client, invite.guild)
 				.setDescription([
 					`Invite created ${invite.channel ? `in channel: ${invite.channel}` : ''}`,
 					`Code: \`${invite.code}\`.`,
@@ -45,13 +46,11 @@ class InviteCreate extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${invite.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == invite.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${invite.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == invite.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = InviteCreate;

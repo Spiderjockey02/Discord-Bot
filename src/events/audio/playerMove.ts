@@ -1,8 +1,8 @@
-// Dependencies
 import Event from 'src/structures/Event';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, TextBasedChannel } from 'discord.js';
 import EgglordClient from 'src/base/Egglord';
 import { Player } from 'magmastream';
+import { sleep } from 'src/utils';
 
 /**
  * Player move event
@@ -20,23 +20,27 @@ export default class PlayerMove extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Player} player The player that moved Voice channels
 	 * @param {VoiceChannel} oldChannel The player before the move
 	 * @param {VoiceChannel} newChannel The player after the move
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, player: Player, _oldChannel: string, newChannel: string) {
+	async run(client: EgglordClient, player: Player, _oldChannel: string, newChannel: string) {
+
 		// Voice channel updated
 		if (!newChannel) {
+			if (player.textChannel == null) return;
+			const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
+
 			const embed = new EmbedBuilder()
-				.setDescription(bot.guilds.cache.get(player.guild)?.translate('music/dc:KICKED'));
-			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
+				.setDescription(client.guilds.cache.get(player.guild)?.translate('music/dc:KICKED'));
+			channel.send({ embeds: [embed] });
 			player.destroy();
 		} else {
-			await player.setVoiceChannel(newChannel);
+			player.setVoiceChannel(newChannel);
 			player.pause(true);
-			await bot.delay(1000);
+			await sleep(1000);
 			player.pause(false);
 		}
 	}

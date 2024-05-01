@@ -1,39 +1,38 @@
-// Dependencies
-const dateFormat = require('dateformat'),
-	{ AttachmentBuilder } = require('discord.js'),
-	{ Embed } = require('../../utils'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { Collection, Events, Snowflake, Message, GuildTextBasedChannel } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Message delete bulk event
  * @event Egglord#MessageDeleteBulk
  * @extends {Event}
 */
-class MessageDeleteBulk extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class MessageDeleteBulk extends Event {
+	constructor() {
+		super({
+			name: Events.MessageBulkDelete,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Collection<Snowflake, Message>} message The deleted message
 	 * @readonly
 	*/
-	async run(bot, messages) {
+	async run(client: EgglordClient, messages: Collection<Snowflake, Message>, channel: GuildTextBasedChannel) {
 		// For debugging
-		if (bot.config.debug) bot.logger.debug(`${messages.size} messages have been deleted in channel: ${messages.first().channel.id}`);
+		if (client.config.debug) client.logger.debug(`${messages.size} messages have been deleted in channel: ${channel.id}`);
 
 		// Get server settings / if no settings then return
-		const settings = messages.first().channel.guild.settings;
+		const settings = channel.guild.settings;
 		if (Object.keys(settings).length == 0) return;
 
 		// Check if event messageDeleteBulk is for logging
 		if (settings.ModLogEvents?.includes('MESSAGEDELETEBULK') && settings.ModLog) {
 			// Create file of deleted messages
-			let humanLog = `**Deleted Messages from #${messages.first().channel.name} (${messages.first().channel.id}) in ${messages.first().guild.name} (${messages.first().guild.id})**`;
+			let humanLog = `**Deleted Messages from #${channel.name} (${channel.id}) in ${channel.guild.name} (${channel.guild.id})**`;
 
 			for (const message of [...messages.values()].reverse()) {
 				humanLog += `\r\n\r\n[${dateFormat(message.createdAt, 'ddd dd/mm/yyyy HH:MM:ss')}] ${message.author?.displayName ?? 'Unknown'} (${message.id})`;
@@ -42,12 +41,12 @@ class MessageDeleteBulk extends Event {
 
 			const attachment = new AttachmentBuilder(Buffer.from(humanLog, 'utf-8'), { name: 'DeletedMessages.txt' });
 			// Get modlog channel
-			const modChannel = messages.first().guild.channels.cache.get(settings.ModLogChannel);
+			const modChannel = channel.guild.channels.cache.get(settings.ModLogChannel);
 			if (modChannel) {
 				const msg = await modChannel.send({ files: [attachment] });
 
 				// embed
-				const embed = new Embed(bot, messages.first().guild.id)
+				const embed = new Embed(client, channel.guild.id)
 					.setDescription(`**Bulk deleted messages in ${messages.first().channel.toString()}**`)
 					.setColor(15158332)
 					.setFooter({ text: `Channel: ${messages.first().channel.id}` })
@@ -58,10 +57,8 @@ class MessageDeleteBulk extends Event {
 					)
 					.setTimestamp();
 
-				bot.addEmbed(modChannel.id, [embed]);
+				client.addEmbed(modChannel.id, [embed]);
 			}
 		}
 	}
 }
-
-module.exports = MessageDeleteBulk;

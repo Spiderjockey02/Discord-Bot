@@ -18,12 +18,12 @@ export default class NodeError extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {EgglordClient} client The instantiating client
 	 * @param {Node} node The node that was connected
 	 * @param {Error} error The error that occured on the node
 	 * @readonly
 	*/
-	async run(bot: EgglordClient, node: Node, error: Error) {
-		bot.logger.error(`Lavalink node: '${node.options.identifier}', has error: '${error.message}'.`);
+	async run(client: EgglordClient, node: Node, error: Error) {
+		client.logger.error(`Lavalink node: '${node.options.identifier}', has error: '${error.message}'.`);
 	}
 }

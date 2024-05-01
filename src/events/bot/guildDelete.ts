@@ -1,33 +1,32 @@
-// Dependencies
-const { GiveawaySchema, RankSchema, WarningSchema, ReactionRoleSchema } = require('../../database/models'),
-	{ ActivityType, EmbedBuilder, AttachmentBuilder } = require('discord.js'),
-	{ Canvas } = require('canvacord'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { EmbedBuilder, AttachmentBuilder, Events, Guild } from 'discord.js';
+import { Canvas } from 'canvacord';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Guild delete event
  * @event Egglord#GuildDelete
  * @extends {Event}
 */
-class GuildDelete extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GuildDelete extends Event {
+	constructor() {
+		super({
+			name: Events.GuildDelete,
 			dirname: __dirname,
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
-	 * @param {Guild} guild The guild that kicked the bot
+	 * @param {client} client The instantiating client
+	 * @param {Guild} guild The guild that kicked the client
 	 * @readonly
 	*/
-	async run(bot, guild) {
-		if (!bot.isReady() && !guild.available) return;
-		bot.logger.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`);
-		await bot.DeleteGuild(guild);
+	async run(client: EgglordClient, guild: Guild) {
+		if (!client.isReady() && !guild.available) return;
+		client.logger.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the client.`);
 
-		// Send message to channel that bot has left a server
+		// Send message to channel that client has left a server
 		let attachment;
 		try {
 			const embed = new EmbedBuilder()
@@ -37,64 +36,18 @@ class GuildDelete extends Event {
 				attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
 				embed.setImage('attachment://guildicon.png');
 			} else {
-				embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+				embed.setImage(guild.iconURL({ size: 1024 }));
 			}
 			embed.setDescription([
 				`Guild ID: ${guild.id ?? 'undefined'}`,
-				`Owner: ${bot.users.cache.get(guild.ownerId)?.tag}`,
+				`Owner: ${client.users.cache.get(guild.ownerId)?.tag}`,
 				`MemberCount: ${guild?.memberCount ?? 'undefined'}`,
 			].join('\n'));
 
-			const modChannel = await bot.channels.fetch(bot.config.SupportServer.GuildChannel).catch(() => bot.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-			if (modChannel) bot.addEmbed(modChannel.id, [embed, attachment]);
-		} catch (err) {
-			bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			const modChannel = await client.channels.fetch(client.config.supportServer.channelId).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed, attachment]);
+		} catch (err: any) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
-
-		// Clean up database (delete all guild data)
-		// Delete ranks from database
-		try {
-			const r = await RankSchema.deleteMany({
-				guildID: guild.id,
-			});
-			if (r.deletedCount >= 1) bot.logger.log(`Deleted ${r.deletedCount} ranks.`);
-		} catch (err) {
-			bot.logger.error(`Failed to delete Ranked data, error: ${err.message}`);
-		}
-
-		// Delete giveaways from database
-		try {
-			const g = await GiveawaySchema.deleteMany({
-				guildID: guild.id,
-			});
-			if (g.deletedCount >= 1) bot.logger.log(`Deleted ${g.deletedCount} giveaways.`);
-		} catch (err) {
-			bot.logger.error(`Failed to delete Giveaway data, error: ${err.message}`);
-		}
-
-		// Delete warnings from database
-		try {
-			const w = await WarningSchema.deleteMany({
-				guildID: guild.id,
-			});
-			if (w.deletedCount >= 1) bot.logger.log(`Deleted ${w.deletedCount} warnings.`);
-		} catch (err) {
-			bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
-		}
-
-		// Delete reaction roles from database
-		try {
-			const rr = await ReactionRoleSchema.deleteMany({
-				guildID: guild.id,
-			});
-			if (rr.deletedCount >= 1) bot.logger.log(`Deleted ${rr.deletedCount} reaction roles.`);
-		} catch (err) {
-			bot.logger.error(`Failed to delete Warning data, error: ${err.message}`);
-		}
-
-		// update bot's activity
-		bot.SetActivity(ActivityType.Watching, [`${bot.guilds.cache.size} servers!`, `${bot.users.cache.size} users!`]);
 	}
 }
-
-module.exports = GuildDelete;

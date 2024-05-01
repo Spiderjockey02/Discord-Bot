@@ -1,46 +1,45 @@
-// Dependencies
-const { EmbedBuilder } = require('discord.js'),
-	Event = require('../../structures/Event');
+import Event from 'src/structures/Event';
+import { EmbedBuilder, GuildMember } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * Giveaway rerolled event
  * @event GiveawaysManager#GiveawayRerolled
  * @extends {Event}
 */
-class GiveawayRerolled extends Event {
-	constructor(...args) {
-		super(...args, {
+export default class GiveawayRerolled extends Event {
+	constructor() {
+		super({
+			name: 'giveawayRerolled',
 			dirname: __dirname,
-			child: 'giveawaysManager',
+			child: 'giveawayManager',
 		});
 	}
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {Giveaway} giveaway The giveaway object
 	 * @param {Array<GuildMember>} winners The member that added the reaction
 	 * @readonly
 	*/
-	async run(bot, giveaway, winners) {
-		if (bot.config.debug) bot.logger.log('giveaway has rerolled');
+	async run(client: EgglordClient, giveaway: Giveaway, winners: GuildMember[]) {
+		if (client.config.debug) client.logger.log('giveaway has rerolled');
 
 		// DM members that they have won
 		for (const winner of winners) {
 			try {
 				const embed = new EmbedBuilder()
 					.setAuthor({ name: 'Giveaway winner', iconURL: winner.user.displayAvatarURL() })
-					.setThumbnail(bot.guilds.cache.get(giveaway.guildID).iconURL())
+					.setThumbnail(client.guilds.cache.get(giveaway.guildID)?.iconURL())
 					.setDescription([
 						`Prize: \`${giveaway.prize}\`.`,
 						`Message link: [link](https://discord.com/channels/${giveaway.guildID}/${giveaway.channelID}/${giveaway.messageID}).`,
 					].join('\n'));
 				await winner.send({ embeds: [embed] });
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = GiveawayRerolled;

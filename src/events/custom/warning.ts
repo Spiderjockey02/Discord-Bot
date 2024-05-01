@@ -17,12 +17,12 @@ class Warning extends Event {
 
 	/**
 	 * Function for receiving event.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {GuildMember} member The member that was warned
 	 * @param {WarningSchema} warning The warning
 	 * @readonly
 	*/
-	async run(bot, member, warning) {
+	async run(client, member, warning) {
 		// get settings
 		const settings = member.guild.settings;
 		if (Object.keys(settings).length == 0) return;
@@ -49,10 +49,10 @@ class Warning extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await bot.channels.fetch(settings.ModLogChannel).catch(() => bot.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == member.guild.id) bot.addEmbed(modChannel.id, [embed]);
-			} catch (err) {
-				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
+				if (modChannel && modChannel.guild.id == member.guild.id) client.addEmbed(modChannel.id, [embed]);
+			} catch (err: any) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
