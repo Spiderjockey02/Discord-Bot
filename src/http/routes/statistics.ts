@@ -1,25 +1,32 @@
 // Dependencies
-const express = require('express'),
-	{ ChannelType } = require('discord.js'),
-	router = express.Router();
+import { Router } from 'express';
+import EgglordClient from 'src/base/Egglord';
+import { ChannelType } from 'discord.js';
+const router = Router();
 
-module.exports = (bot) => {
+export function run(client: EgglordClient) {
 	// statistics page
-	router.get('/', async (req, res) => {
+	router.get('/', async (_req, res) => {
 
-		res.status(200).json({
-			guildCount: bot.guilds.cache.size,
-			cachedUsers: bot.users.cache.size,
-			totalMembers: bot.guilds.cache.map(g => g).reduce((a, b) => a + b.memberCount, 0),
+		const textChannelFilter = [ChannelType.GuildCategory, ChannelType.GuildDirectory];
+		const voiceChannelFilter = [ChannelType.GuildVoice, ChannelType.GuildStageVoice];
+		const categoryChannelFilter = [ChannelType.GuildCategory];
+
+		res.json({
+			guildCount: client.guilds.cache.size,
+			userCount: client.users.cache.size,
 			uptime: Math.round(process.uptime() * 1000),
-			commandCount: bot.commands.size,
+			commandCount: client.commandManager.commands.size,
 			memoryUsed: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
-			textChannels: bot.channels.cache.filter(c => [ChannelType.GuildAnnouncement, ChannelType.GuildText].includes(c.type)).size,
-			voiceChannels: bot.channels.cache.filter(c => [ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(c.type)).size,
-			MessagesSeen: bot.messagesSent,
-			CommandsRan: bot.commandsUsed,
-			ping: Math.round(bot.ws.ping),
-			Lavalink: bot.manager.nodes.map(node => ({
+			channels: {
+				text: client.channels.cache.filter(c => !textChannelFilter.includes(c.type)).size,
+				category: client.channels.cache.filter(c => categoryChannelFilter.includes(c.type)).size,
+				voice: client.channels.cache.filter(c => voiceChannelFilter.includes(c.type)).size,
+			},
+			MessagesSeen: 0,
+			CommandsRan: 0,
+			ping: Math.round(client.ws.ping),
+			Lavalink: client.audioManager?.nodes.map(node => ({
 				name: node.options.identifier,
 				stats: node.stats,
 			})),
@@ -27,4 +34,4 @@ module.exports = (bot) => {
 	});
 
 	return router;
-};
+}

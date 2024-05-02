@@ -1,103 +1,100 @@
-// Dependencies
-const express = require('express'),
-	router = express.Router();
+import { Router } from 'express';
+import EgglordClient from 'src/base/Egglord';
+const router = Router();
 
 // Guild page
-module.exports = function(bot) {
+export function run(client: EgglordClient) {
+
 	// Get basic information on guild
 	router.get('/:guildId', async (req, res) => {
+		// Get the guild
+		const guild = client.guilds.cache.get(req.params.guildId);
+		if (!guild) return res.status(400).json({ error: 'Guild not found!' });
 
-		// fetch guild's basic information
-		const guild = bot.guilds.cache.get(req.params.guildId);
-		if (guild) {
-			const { id, name, icon } = guild;
-			const members = await guild.members.fetch();
-			const users = members.filter(m => !m.user.bot).size;
-			const bots = members.size - users;
-			return res.status(200).json({ id, name, icon, totalMembers: members.size, users, bots });
-		}
-		res.status(400).json({ error: 'Guild not found!' });
+		const { id, name, icon } = guild;
+		const members = await guild.members.fetch();
+		const users = members.filter(m => !m.user.bot).size;
+		const bots = members.size - users;
+		return res.json({ id, name, icon, totalMembers: members.size, users, bots });
 	});
 
 	// Get list of members in guild
 	router.get('/:guildId/members', async (req, res) => {
+		// Get the guild
+		const guild = client.guilds.cache.get(req.params.guildId);
+		if (!guild) return res.status(400).json({ error: 'Guild not found!' });
 
-		// fetch member list of guild
-		const guild = bot.guilds.cache.get(req.params.guildId);
-		if (guild) {
-			await guild.members.fetch();
-
-			// check if an ID query was made
-			let members = guild.members.cache.map(member => ({
-				user: member.user.displayName,
-				id: member.user.id,
-				avatar: member.user.displayAvatarURL({ size: 128 }),
-			}));
-
-			// check for ID query
-			if (req.query.ID) members = members.filter(mem => mem.id == req.query.ID);
-
-			// check if any member are left
-			if (!members[0]) {
-				res.status(400).json({ error: 'No members found!' });
-			} else {
-				return res.status(200).json({ members });
+		// Check if a specific userId was entered
+		const userId = req.query.userId;
+		if (typeof userId == 'string') {
+			try {
+				const guildMember = await guild.members.fetch(userId);
+				return res.json({ members: [
+					{ user: guildMember.user.displayName, id: guildMember.id, avatar: guildMember.displayAvatarURL({ size: 128 }) },
+				] }) ;
+			} catch (error) {
+				client.logger.error(`Failed to lookup user with Id: ${userId}`);
+				return res.json({ error: `No user with ID: ${userId} is in this guild.` });
 			}
 		}
-		res.status(400).json({ error: 'Guild not found!' });
+
+		// Fetch all members
+		await guild.members.fetch();
+		const members = guild.members.cache.map(member => ({
+			user: member.user.displayName,
+			id: member.user.id,
+			avatar: member.user.displayAvatarURL({ size: 128 }),
+		}));
+
+		res.json({ members });
 	});
 
 	// get list of channels (plus ability for TYPE & PERMS filtering)
 	router.get('/:guildId/channels', async (req, res) => {
+		// Get the guild
+		const guild = client.guilds.cache.get(req.params.guildId);
+		if (!guild)	return res.status(400).json({ error: 'Guild not found!' });
 
-		// fetch member list of guild
-		const guild = bot.guilds.cache.get(req.params.guildId);
-		if (guild) {
-			let channels = guild.channels.cache.map(channel => ({
-				type: channel.type,
-				id: channel.id,
-				name: channel.name,
-				parentID: channel.parentId || null,
-			}));
+		let channels = guild.channels.cache.map(channel => ({
+			type: channel.type,
+			id: channel.id,
+			name: channel.name,
+			parentID: channel.parentId,
+		}));
 
-			// check for type query
-			if (req.query.type) channels = channels.filter(c => c.type == req.query.type);
-
-			// check for permission query
-			if (req.query.perms) {
-				channels = channels.filter(channel => {
-					const ch = guild.channels.cache.get(channel.id);
-					return ch.permissionsFor(bot.user).has(BigInt(parseInt(req.query.perms))) ? true : false;
-				});
-			}
-
-			// check if any member are left
-			if (!channels[0]) {
-				res.status(400).json({ error: 'No channels found!' });
+		// Check for channel type query
+		const channelType = req.query.type;
+		if (typeof channelType == 'string')		{
+			if (Number.parseInt(channelType) > 0 && Number.parseInt(channelType) < 15) {
+				channels = channels.filter(c => c.type == Number.parseInt(channelType));
 			} else {
-				res.status(200).json({ channels });
+				return res.json({ error: 'Channel type must be between 0 and 15.' });
 			}
-		} else {
-			res.status(400).json({ error: 'Guild not found!' });
 		}
+
+		// check for permission query
+		const permissions = req.query.perms;
+		if (typeof permissions == 'string') {
+			channels = channels.filter(channel => {
+				const ch = guild.channels.cache.get(channel.id);
+				return ch?.permissionsFor(client.user)?.has(BigInt(permissions)) ? true : false;
+			});
+		}
+
+		res.json({ channels });
 	});
 
 	router.get('/:guildId/refresh', async (req, res) => {
-		const guild = bot.guilds.cache.get(req.params.guildId);
+		const guild = client.guilds.cache.get(req.params.guildId);
+		if (!guild)	return res.status(400).json({ error: 'Guild not found!' });
 
-		if (guild) {
-			try {
-				await guild.fetchSettings();
-				res.json({ success: 'Successfully reloaded guild settings' });
-			} catch (e) {
-				res.json({ error: `An error occured refreshing guild: ${req.params.guildId} settings.` });
-			}
-		} else {
-			res.json({ error: `No guild was found with the ID: ${req.params.guildId}` });
+		try {
+			await guild.fetchSettings();
+			res.json({ success: 'Successfully reloaded guild settings' });
+		} catch (e) {
+			res.json({ error: `An error occured refreshing guild: ${req.params.guildId} settings.` });
 		}
-
 	});
 
-
 	return router;
-};
+}

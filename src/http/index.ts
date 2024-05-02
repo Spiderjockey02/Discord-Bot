@@ -1,65 +1,61 @@
-const express = require('express'),
-	app = express(),
-	{ API } = require('../config'),
-	{ promisify } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import EgglordClient from 'src/base/Egglord';
+import { ExtendedRequest, ExtendedResponse } from 'src/types';
+import config from '../config';
+const app = express();
 
-module.exports = async bot => {
-	const routes = (await readdir('./src/http/routes')).filter((v, i, a) => a.indexOf(v) === i),
-		endpoints = [];
-
+export default async function(client: EgglordClient) {
 	// IP logger
-	app.use(function(req, res, next) {
-		if (req.originalUrl !== '/favicon.ico' || bot.config.debug) {
-			bot.logger.log(`IP: ${req.connection.remoteAddress.slice(7)} -> ${req.originalUrl}`);
-		}
-		next();
-	});
-
-	// Token system
-	app.use((req, res, next) => {
-		if (API.secure && API.token !== req.query.token) {
-			return res.json({ error: 'Invalid API token' });
-		}
-		next();
-	});
-
-	// Get all routes
-	for (const route of routes) {
-		if (route !== 'index.js') {
-			app.use(`/${route.replace('.js', '')}`, require(`./routes/${route}`)(bot));
-			endpoints.push(`${route.replace('.js', '')}:`, ...(require(`./routes/${route}`)(bot).stack.map(item => `\t ${item.route.path}`).filter((v, i, a) => a.indexOf(v) === i && v !== '/')));
-		}
-	}
-
-	// Create web server
 	app
 		.use(cors())
 		.disable('x-powered-by')
-		.get('/', (req, res) => {
-			res
-				.type('text/plain')
-				.send([
-					`API server for ${bot.user.displayName}`,
-					'Endpoints:',
-					endpoints.join('\n'),
-				].join('\n'));
+		.use((req, res, next) => {
+			if (req.originalUrl !== '/favicon.ico' || config.debug) {
+				// Handle custom rate limits
+				const newReq = req as ExtendedRequest;
+				const newRes = res as ExtendedResponse;
+
+				// Add time to request
+				newReq._startTime = new Date().getTime();
+				newReq._endTime = 0;
+
+				// Add time to response
+				newRes._startTime = new Date().getTime();
+				newRes._endTime = 0;
+
+				// Run logger
+				client.logger.connection(newReq, newRes);
+			}
+			next();
 		})
+		.use((req, res, next) => {
+			if (config.API.secure && config.API.token !== req.query.token) {
+				return res.json({ error: 'Invalid API token' });
+			}
+			next();
+		})
+		.use('/api/commands', (await import('./routes/commands')).run(client))
+		.use('/api/guilds', (await import('./routes/guilds')).run(client))
+		.use('/api/logs', (await import('./routes/logs')).run())
+		.use('/api/players', (await import('./routes/players')).run(client))
+		.use('/api/statistics', (await import('./routes/statistics')).run(client))
+		.use('/api/users', (await import('./routes/users')).run(client))
 		// Make sure web scrapers aren't used
-		.get('/robots.txt', function(req, res) {
+		.get('/robots.txt', function(_req, res) {
 			res
 				.type('text/plain')
 				.send('User-agent: *\ndisallow: /');
 		})
-		.get('*', async function(req, res) {
+		.get('*', async function(_req, res) {
 			res.send('No data here. Go away!');
 		})
 		// Run the server
-		.listen(API.port, () => {
-			bot.logger.ready(`Statistics API has loaded on port:${API.port}`);
+		.listen(config.API.port, () => {
+			client.logger.ready(`Statistics API has loaded on port:${config.API.port}`);
 		})
 		.on('error', (err) => {
-			bot.logger.error(`Error with starting HTTP API: ${err.message}`);
+			client.logger.error(`Error with starting HTTP API: ${err.message}`);
 		});
-};
+}
+

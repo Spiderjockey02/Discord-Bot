@@ -1,21 +1,22 @@
 // Dependencies
-const express = require('express'),
-	router = express.Router();
+import { Router } from 'express';
+import EgglordClient from 'src/base/Egglord';
+const router = Router();
 
 // Command page
-module.exports = (bot) => {
+export function run(client: EgglordClient) {
 	// List of all commands
-	router.get('/', (req, res) => {
+	router.get('/', (_req, res) => {
 
 		// show list of commands
-		const categories = bot.commands
+		const categories = client.commandManager.commands
 			.map(c => c.help.category)
 			.filter((v, i, a) => a.indexOf(v) === i)
-			.sort((a, b) => a - b)
+			.sort((a, b) => a.localeCompare(b))
 			.map(category => ({
 				name: category,
-				commands: bot.commands.filter(c => c.help.category === category)
-					.sort((a, b) => a.help.name - b.help.name)
+				commands: client.commandManager.commands.filter(c => c.help.category === category)
+					.sort((a, b) => a.help.name.localeCompare(b.help.name))
 					.map(c => ({ ...c,
 						conf: {
 							...c.conf,
@@ -28,9 +29,9 @@ module.exports = (bot) => {
 	});
 
 	// JSON view of all commands
-	router.get('/json', (req, res) => {
+	router.get('/json', (_req, res) => {
 
-		res.status(200).json([...bot.commands.map(c => Object.assign(c, { conf: {
+		res.status(200).json([...client.commandManager.commands.map(c => Object.assign(c, { conf: {
 			botPermissions: c.conf.botPermissions.map(i => Number(i)),
 			userPermissions: c.conf.userPermissions.map(i => Number(i)),
 		} }))]);
@@ -40,16 +41,18 @@ module.exports = (bot) => {
 	router.get('/:command', (req, res) => {
 
 		// check if command exists
-		if (bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command))) {
-			const command = bot.commands.get(req.params.command) || bot.commands.get(bot.aliases.get(req.params.command));
-			command.conf.botPermissions = command.conf.botPermissions.map(i => Number(i));
-			command.conf.userPermissions = command.conf.userPermissions.map(i => Number(i));
-
-			res.status(200).json({ command });
+		const command = client.commandManager.commands.get(req.params.command);
+		if (command !== undefined) {
+			res
+				.status(200)
+				.json({ command: { ...command, conf: {
+					botPermissions: command.conf.botPermissions.map(i => Number(i)),
+					userPermissions:command.conf.userPermissions.map(i => Number(i)),
+				} } });
 		} else {
 			res.status(400).json({ error: 'Invalid command!' });
 		}
 	});
 
 	return router;
-};
+}
