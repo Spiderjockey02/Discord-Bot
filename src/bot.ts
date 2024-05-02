@@ -1,11 +1,12 @@
 // Dependencies
-import EgglordClient from './base/Egglord'
-require('./structures');
+import EgglordClient from './base/Egglord';
+import { promisify } from 'util';
+import fs from 'fs';
+import Event from './structures/Event';
+import('./extensions');
 
-const bot = new EgglordClient();
-	{ promisify } = require('util'),
-	readdir = promisify(require('fs').readdir),
-	path = require('path');
+const readdir = promisify(fs.readdir),
+	client = new EgglordClient();
 
 // Load commands
 (async () => {
@@ -15,72 +16,64 @@ const bot = new EgglordClient();
 	// load events
 	await loadEvents();
 
-	// load translations
-	bot.translations = await require('./helpers/LanguageManager')();
-
-	// Connect bot to database
-	bot.mongoose.init(bot);
-
-	// load up adult site block list
-	bot.fetchAdultSiteList();
-
-	// Connect bot to discord API
-	const token = bot.config.token;
-	bot.login(token).catch(e => bot.logger.error(e.message));
+	// Connect client to discord API
+	const token = client.config.token;
+	client.login(token).catch(e => client.logger.error(e.message));
 })();
 
 // load commands
 async function loadCommands() {
-	const cmdFolders = (await readdir('./src/commands/')).filter((v, i, a) => a.indexOf(v) === i);
-	bot.logger.log('=-=-=-=-=-=-=- Loading command(s): 137 -=-=-=-=-=-=-=');
-	// loop through each category
-	cmdFolders.forEach(async (dir) => {
-		if (bot.config.disabledPlugins.includes(dir) || dir == 'command.example.js') return;
-		const commands = (await readdir('./src/commands/' + dir + '/')).filter((v, i, a) => a.indexOf(v) === i);
-		// loop through each command in the category
-		commands.forEach((file) => {
-			if (bot.config.disabledCommands.includes(file.replace('.js', ''))) return;
-			try {
-				const cmd = new (require(`./commands/${dir}/${file}`))(bot);
-				cmd.load(bot);
-			} catch (err) {
-				if (bot.config.debug) console.log(err);
-				bot.logger.error(`Unable to load command ${file}: ${err}`);
+	if (fs.existsSync(`${process.cwd()}/dist/commands/`)) {
+		const folders = (await readdir(`${process.cwd()}/dist/commands/`)).filter((v, i, a) => a.indexOf(v) === i);
+
+		client.logger.log('=-=-=-=-=-=-=- Loading commands: -=-=-=-=-=-=-=');
+		let cmdCount = 0;
+		for (const folder of folders) {
+			if (folder == 'command.example.js') return;
+
+			const commands = (await readdir(`${process.cwd()}/dist/commands/${folder}/`)).filter((v, i, a) => a.indexOf(v) === i);
+			for (const command of commands) {
+				const cmd = await import(`${process.cwd()}/dist/commands/${folder}/${command}`);
+				client.commandManager.add(new cmd());
+				cmdCount++;
 			}
-		});
-	});
+		}
+
+		client.logger.log(`=-=-=-=-=-=-=- Loaded: ${cmdCount} commands -=-=-=-=-=-=-=`);
+	} else {
+		client.logger.error('No Commands found to load.');
+	}
 }
 
 // load events
 async function loadEvents() {
-	const evtFolder = await readdir('./src/events/');
-	bot.logger.log('=-=-=-=-=-=-=- Loading events(s): 44 -=-=-=-=-=-=-=');
-	evtFolder.forEach(async folder => {
-		const folders = await readdir('./src/events/' + folder + '/');
-		folders.forEach(async file => {
-			delete require.cache[file];
-			const { name } = path.parse(file);
-			try {
-				const event = new (require(`./events/${folder}/${file}`))(bot, name);
-				bot.logger.log(`Loading Event: ${name}`);
+	const folders = await readdir(`${process.cwd()}/dist/events/`);
+	client.logger.log('=-=-=-=-=-=-=- Loading events: -=-=-=-=-=-=-=');
 
-				// Make sure the right manager gets the event
-				if (event.conf.child) {
-					bot[event.conf.child].on(name, (...args) => event.run(bot, ...args));
-				} else {
-					bot.on(name, (...args) => event.run(bot, ...args));
-				}
-			} catch (err) {
-				bot.logger.error(`Failed to load Event: ${name} error: ${err.message}`);
+	// Fetch all events
+	for (const folder of folders) {
+		const events = await readdir(`${process.cwd()}/dist/events/${folder}/`);
+		for (const event of events) {
+			const t = (await import(`${process.cwd()}/dist/events/${folder}/${event}`)).default;
+			const evt = new t() as Event;
+			// Check what mananager should handle the event
+			client.logger.log(`Loading Event: ${evt.conf.name}`);
+			if (evt.conf.child == undefined) client.on(evt.conf.name, (...args) => evt.run(client, ...args));
+			switch (evt.conf.child) {
+				case 'audioManager':
+					client.audioManager?.on(evt.conf.name, (...args) => evt.run(client, ...args));
+					break;
+					/*
+				case 'giveawayManager':
+					client.giveawayManager.on(evt.conf.name, (...args) => evt.run(client, ...args));
+					break;
+				*/
 			}
-		});
-	});
+		}
+	}
 }
 
 // handle unhandledRejection errors
-process.on('unhandledRejection', err => {
-	bot.logger.error(`Unhandled promise rejection: ${err.message}.`);
-
-	// show full error if debug mode is on
-	console.log(err);
+process.on('unhandledRejection', (err: any) => {
+	client.logger.error(`Unhandled promise rejection: ${err.message}.`);
 });

@@ -1,18 +1,21 @@
 // Dependencies
-const { logger } = require('./utils');
-import { ShardingManager } from "discord.js";
+import { Logger } from './utils';
+import { ShardingManager } from 'discord.js';
+import { validateConfig } from './scripts/verify-config';
+import config from './config';
+const logger = new Logger();
 
 (async () => {
 
 	// This is to verify the config file
-	const configCorrect = await require('./scripts/verify-config.js')(require('./config.js'));
+	const configCorrect = await validateConfig(config);
 
 	if (!configCorrect) {
 		// Create sharding manager
-		const manager = new ShardingManager('./src/bot.js', {
+		const manager = new ShardingManager(`${process.cwd()}/dist/bot.js`, {
 			// Sharding options
 			totalShards: 'auto',
-			token: require('./config.js').token,
+			token: config.token,
 		});
 
 		// Spawn your shards
@@ -28,7 +31,7 @@ import { ShardingManager } from "discord.js";
 			logger.log(`Shard ${shard.id} launched`);
 		});
 	} else {
-		logger.error('Please fix your errors before loading the bot.');
+		logger.error('Please fix your errors before loading the client.');
 		process.exit();
 	}
 })();
