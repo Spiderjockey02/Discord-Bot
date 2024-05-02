@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
-import { Events, GuildScheduledEvent } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { Events, GuildScheduledEvent, GuildScheduledEventEntityType } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Guild event update event
@@ -24,15 +25,14 @@ export default class GuildScheduledEventUpdate extends Event {
 	*/
 	async run(client: EgglordClient, oldGuildEvent: GuildScheduledEvent, newGuildEvent: GuildScheduledEvent) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Event: ${newGuildEvent.name} has been updated in guild: ${newGuildEvent.guild.id}.`);
+		if (client.config.debug) client.logger.debug(`Event: ${newGuildEvent.name} has been updated in guild: ${newGuildEvent.guild?.id}.`);
 
-		// Get server settings / if no settings then return
-		const settings = newGuildEvent.guild.settings;
-		if (Object.keys(settings).length == 0) return;
 
 		// Check if event guildEventCreate is for logging
-		if (settings.ModLogEvents?.includes('EVENTUPDATE') && settings.ModLog) {
-			const embed = new Embed(client, newGuildEvent.guild)
+		const moderationSettings = newGuildEvent.guild?.settings?.moderationSystem;
+		const language = newGuildEvent.guild?.language;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, newGuildEvent.guild)
 				.setColor(15158332);
 			// guild event name has changed
 			if (oldGuildEvent.name != newGuildEvent.name) {
@@ -44,11 +44,11 @@ export default class GuildScheduledEventUpdate extends Event {
 			}
 			// guild event start date has changed
 			if (oldGuildEvent.scheduledStartAt != newGuildEvent.scheduledStartAt) {
-				embed.addFields({ name: 'Start time change', value: `${oldGuildEvent.scheduledStartAt.toLocaleString(settings.Language)} -> ${newGuildEvent.scheduledStartAt.toLocaleString(settings.Language)}` });
+				embed.addFields({ name: 'Start time change', value: `${oldGuildEvent.scheduledStartAt?.toLocaleString(language)} -> ${newGuildEvent.scheduledStartAt?.toLocaleString(language)}` });
 			}
 			// guild event end date has changed
 			if (oldGuildEvent.scheduledEndAt != newGuildEvent.scheduledEndAt) {
-				embed.addFields({ name: 'End time change', value: `${oldGuildEvent.scheduledEndAt.toLocaleString(settings.Language)} -> ${newGuildEvent.scheduledEndAt.toLocaleString(settings.Language)}` });
+				embed.addFields({ name: 'End time change', value: `${oldGuildEvent.scheduledEndAt?.toLocaleString(language)} -> ${newGuildEvent.scheduledEndAt?.toLocaleString(language)}` });
 			}
 			// guild event has changed status
 			if (oldGuildEvent.status != newGuildEvent.status) {
@@ -56,8 +56,8 @@ export default class GuildScheduledEventUpdate extends Event {
 			}
 			// guild event has changed location
 			if (oldGuildEvent.entityType != newGuildEvent.entityType) {
-				const oldEntityType = (['STAGE_INSTANCE', 'VOICE'].includes(oldGuildEvent.entityType)) ? oldGuildEvent.channel : oldGuildEvent.entityType;
-				const newEntityType = (['STAGE_INSTANCE', 'VOICE'].includes(newGuildEvent.entityType)) ? newGuildEvent.channel : newGuildEvent.entityType;
+				const oldEntityType = ([GuildScheduledEventEntityType.StageInstance, GuildScheduledEventEntityType.Voice].includes(oldGuildEvent.entityType)) ? oldGuildEvent.channel : oldGuildEvent.entityType;
+				const newEntityType = ([GuildScheduledEventEntityType.StageInstance, GuildScheduledEventEntityType.Voice].includes(newGuildEvent.entityType)) ? newGuildEvent.channel : newGuildEvent.entityType;
 				embed.addFields({ name: 'Type change', value: `${oldEntityType} -> ${newEntityType}` });
 			}
 
@@ -68,10 +68,12 @@ export default class GuildScheduledEventUpdate extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newGuildEvent.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == newGuildEvent.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await newGuildEvent.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
+}

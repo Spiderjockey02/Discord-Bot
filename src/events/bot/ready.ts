@@ -1,8 +1,8 @@
-import EgglordClient from 'src/base/Egglord';
-import AudioManager from 'src/base/Audio-Manager';
-import Event from 'src/structures/Event';
-import http from 'src/http';
-import { Events, Guild, PermissionFlagsBits } from 'discord.js';
+import { Event } from '../../structures';
+import AudioManager from '../../base/Audio-Manager';
+import EgglordClient from '../../base/Egglord';
+import http from '../../http';
+import { Events, Guild } from 'discord.js';
 
 /**
  * Ready event
@@ -28,6 +28,7 @@ export default class Ready extends Event {
 			client.audioManager = new AudioManager(client);
 			client.audioManager?.init(client.user.id);
 		} catch (err: any) {
+			console.log(err);
 			client.logger.error(`Audio manager failed to load due to error: ${err.message}`);
 		}
 
@@ -35,6 +36,7 @@ export default class Ready extends Event {
 		try {
 			await http(client);
 		} catch (err: any) {
+			console.log(err);
 			console.log(err.message);
 		}
 
@@ -63,8 +65,9 @@ export default class Ready extends Event {
 		}
 
 		// Make sure 'SupportServer' has Host commands
-		if (client.config.supportServer.guildId) {
-			const guild = client.guilds.cache.get(client.config.supportServer.guildId);
+		/*
+		if (client.config.SupportServer.GuildID) {
+			const guild = client.guilds.cache.get(client.config.SupportServer.GuildID);
 			if (guild) {
 				// Check if Main server already have 'Host' commands
 				const guildCmds = await guild.commands.fetch();
@@ -81,7 +84,7 @@ export default class Ready extends Event {
 				client.logger.error('client is not in Support server.');
 			}
 		}
-
+		*/
 		// LOG that the client is ready to be interacted with
 		client.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
 		client.logger.ready(`${client.user.displayName}, ready to serve [${client.guilds.cache.size}] servers.`);

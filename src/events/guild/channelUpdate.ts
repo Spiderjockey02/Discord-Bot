@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
-import { ChannelType, DMChannel, Events, GuildChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { BaseGuildTextChannel, BaseGuildVoiceChannel, ChannelType, DMChannel, Events, GuildChannel, OverwriteType } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel update event
@@ -29,21 +30,18 @@ export default class ChannelUpdate extends Event {
 		// Ignore if a DM channel
 		if (newChannel.type == ChannelType.DM || oldChannel.type == ChannelType.DM) return;
 
-		// Get server settings / if no settings then return
-		const settings = newChannel.guild?.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event channelDelete is for logging
-		if (settings.ModLogEvents?.includes('CHANNELUPDATE') && settings.ModLog) {
+		const moderationSettings = newChannel.guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			let embed, updated = false;
 
 			// Channel name change
 			if (oldChannel.name != newChannel.name) {
-				embed = new Embed(client, newChannel.guild)
+				embed = new EgglordEmbed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} name changed of ${newChannel.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
-					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() ?? '' })
 					.addFields(
 						{ name: 'Old:', value: `${oldChannel.name}`, inline: true },
 						{ name: 'New:', value: `${newChannel.name}`, inline: true },
@@ -53,32 +51,36 @@ export default class ChannelUpdate extends Event {
 			}
 
 			// channel topic (description) change
-			if (oldChannel.topic != newChannel.topic) {
-				embed = new Embed(client, newChannel.guild)
-					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newChannel.id}` })
-					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
-					.addFields(
-						{ name: 'Old:', value: `${oldChannel.topic ? oldChannel.topic : '*empty topic*'}`, inline: true },
-						{ name: 'New:', value: `${newChannel.topic ? newChannel.topic : '*empty topic*'}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
+			if (oldChannel instanceof BaseGuildTextChannel && newChannel instanceof BaseGuildTextChannel) {
+				if (oldChannel.topic != newChannel.topic) {
+					embed = new EgglordEmbed(client, newChannel.guild)
+						.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} topic changed of ${newChannel.toString()}**`)
+						.setColor(15105570)
+						.setFooter({ text: `ID: ${newChannel.id}` })
+						.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() ?? '' })
+						.addFields(
+							{ name: 'Old:', value: `${oldChannel.topic ? oldChannel.topic : '*empty topic*'}`, inline: true },
+							{ name: 'New:', value: `${newChannel.topic ? newChannel.topic : '*empty topic*'}`, inline: true },
+						)
+						.setTimestamp();
+					updated = true;
+				}
 			}
 
-			if (oldChannel.rtcRegion != newChannel.rtcRegion) {
-				embed = new Embed(client, newChannel.guild)
-					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newChannel.id}` })
-					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
-					.addFields(
-						{ name: 'Old:', value: `${oldChannel.rtcRegion}`, inline: true },
-						{ name: 'New:', value: `${newChannel.rtcRegion}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
+			if (oldChannel instanceof BaseGuildVoiceChannel && newChannel instanceof BaseGuildVoiceChannel) {
+				if (oldChannel.rtcRegion != newChannel.rtcRegion) {
+					embed = new EgglordEmbed(client, newChannel.guild)
+						.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} region changed of ${newChannel.toString()}**`)
+						.setColor(15105570)
+						.setFooter({ text: `ID: ${newChannel.id}` })
+						.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() ?? undefined })
+						.addFields(
+							{ name: 'Old:', value: `${oldChannel.rtcRegion}`, inline: true },
+							{ name: 'New:', value: `${newChannel.rtcRegion}`, inline: true },
+						)
+						.setTimestamp();
+					updated = true;
+				}
 			}
 
 			// Check for permission change
@@ -95,11 +97,11 @@ export default class ChannelUpdate extends Event {
 			}));
 
 			if (permDiff.size) {
-				embed = new Embed(client, newChannel.guild)
+				embed = new EgglordEmbed(client, newChannel.guild)
 					.setDescription(`**${newChannel.type === ChannelType.GuildCategory ? 'Category' : 'Channel'} permissions changed of ${newChannel.toString()}**\n*note:* check [docs](https://discordapp.com/developers/docs/topics/permissions) to see what the numbers mean`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newChannel.id}` })
-					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
+					.setAuthor({ name: newChannel.guild.name, iconURL: newChannel.guild.iconURL() ?? undefined })
 					.setTimestamp();
 				for (const permID of permDiff.keys()) {
 					// load clienth overwrites into variables
@@ -116,11 +118,11 @@ export default class ChannelUpdate extends Event {
 					// load roles / guildmember for that overwrite
 					let role;
 					let member;
-					if (oldPerm.type == 'role' || newPerm.type == 'role') {
-						role = newChannel.guild.roles.cache.get(newPerm.id || oldPerm.id);
+					if (oldPerm?.type == OverwriteType.Role || newPerm?.type == OverwriteType.Role) {
+						role = newChannel.guild.roles.cache.get((newPerm?.id || oldPerm?.id) as string);
 					}
-					if (oldPerm.type == 'member' || newPerm.type == 'member') {
-						member = await newChannel.guild.members.fetch(newPerm.id || oldPerm.id);
+					if (oldPerm?.type == OverwriteType.Member || newPerm?.type == OverwriteType.Member) {
+						member = await newChannel.guild.members.fetch((newPerm?.id || oldPerm?.id) as string);
 					}
 					// make text about what changed
 					let value = '';
@@ -133,7 +135,7 @@ export default class ChannelUpdate extends Event {
 					if (!value.length) value = 'Overwrite got deleted';
 					// add field to embed
 					embed.addFields({
-						'name': role ? role.name + ` (ID: ${role.id}):` : member.user.displayName + ` (ID: ${member.id}):`,
+						'name': role ? role.name + ` (ID: ${role.id}):` : member?.user.displayName + ` (ID: ${member?.id}):`,
 						'value': value,
 					});
 				}
@@ -143,8 +145,9 @@ export default class ChannelUpdate extends Event {
 			if (updated) {
 				// Find channel and send message
 				try {
-					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newChannel.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newChannel.guild.id) client.addEmbed(modChannel.id, [embed]);
+					if (moderationSettings.loggingChannelId == null || embed == undefined) return;
+					const modChannel = await newChannel.guild.channels.fetch(moderationSettings.loggingChannelId);
+					if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 				} catch (err: any) {
 					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}

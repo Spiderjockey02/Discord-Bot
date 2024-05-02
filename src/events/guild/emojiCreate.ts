@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Events, GuildEmoji } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Emoji create event
@@ -25,23 +26,21 @@ export default class EmojiCreate extends Event {
 		// For debugging
 		if (client.config.debug) client.logger.debug(`Emoji: ${emoji.name} has been created in guild: ${emoji.guild.id}.`);
 
-		// Get server settings / if no settings then return
-		const settings = emoji.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event emojiCreate is for logging
-		if (settings.ModLogEvents?.includes('EMOJICREATE') && settings.ModLog) {
-			const embed = new Embed(client, emoji.guild)
+		const moderationSettings = emoji.guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, emoji.guild)
 				.setDescription(`**Emoji: ${emoji} (${emoji.name}) was created**`)
 				.setColor(3066993)
 				.setFooter({ text: `ID: ${emoji.id}` })
-				.setAuthor({ name: emoji.guild.name, iconURL: emoji.guild.iconURL() })
+				.setAuthor({ name: emoji.guild.name, iconURL: emoji.guild.iconURL() ?? undefined })
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${emoji.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == emoji.guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await emoji.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

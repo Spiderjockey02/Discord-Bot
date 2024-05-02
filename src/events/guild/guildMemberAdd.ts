@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
-import { Events, GuildMember } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { BaseGuildTextChannel, Events, GuildMember } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Guild member add event
@@ -26,13 +27,10 @@ export default class GuildMemberAdd extends Event {
 		if (client.config.debug) client.logger.debug(`Member: ${member.user.displayName} has joined guild: ${member.guild.id}.`);
 		if (member.user.id == client.user.id) return;
 
-		// Get server settings / if no settings then return
-		const settings = member.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event guildMemberAdd is for logging
-		if (settings.ModLogEvents?.includes('GUILDMEMBERADD') && settings.ModLog) {
-			const embed = new Embed(client, member.guild)
+		const moderationSettings = member.guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, member.guild)
 				.setDescription(`${member}\nMember count: ${member.guild.memberCount}`)
 				.setColor(3066993)
 				.setFooter({ text: `ID: ${member.id}` })
@@ -42,26 +40,31 @@ export default class GuildMemberAdd extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${member.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == member.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await member.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 
 		// Welcome plugin (give roles and message)
-		if (settings.welcomePlugin) {
-			const channel = member.guild.channels.cache.get(settings.welcomeMessageChannel);
-			if (channel) channel.send(varSetter(settings.welcomeMessageText, member, channel, member.guild)).catch(e => client.logger.error(e.message));
-			// Send private message to user
-			if (settings.welcomePrivateToggle) member.send(settings.welcomePrivateText.replace('{user}', member.user).replace('{server}', member.guild.name)).catch(e => client.logger.error(e.message));
+		const welcomeSettings = member.guild.settings?.welcomeSystem;
+		if (welcomeSettings) {
+			// Send welcome message to new user
+			if (welcomeSettings.joinMessageEnabled && welcomeSettings.joinChannelId) {
+				const welcomeChannel = member.guild.channels.cache.get(welcomeSettings.joinChannelId) as BaseGuildTextChannel;
+				welcomeChannel.send(welcomeSettings.joinMessageText);
+			}
 
-			// Add role to user
-			try {
-				if (settings.welcomeRoleToggle) await member.roles.add(settings.welcomeRoleGive);
-			} catch (err: any) {
-				console.log(settings.welcomeRoleGive);
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			// Send DM to new user
+			if (welcomeSettings.joinPrivateEnabled) {
+				member.send(welcomeSettings.joinPrivateText);
+			}
+
+			// Add roles to new user
+			if (welcomeSettings.joinRolesGive.length > 0) {
+				member.roles.add(welcomeSettings.joinRolesGive.map(i => i.id));
 			}
 		}
 	}

@@ -1,6 +1,6 @@
-import { BaseInteraction, CommandInteraction, ComponentType, Events, InteractionType, MessageComponentInteraction } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { ApplicationCommandType, BaseInteraction, CommandInteraction, ComponentType, Events, InteractionType, MessageComponentInteraction } from 'discord.js';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Interaction create event

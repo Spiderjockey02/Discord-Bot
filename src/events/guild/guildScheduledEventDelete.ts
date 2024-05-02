@@ -1,6 +1,7 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import EgglordClient from '../../base/Egglord';
+import { Event } from '../../structures';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Guild event delete event
@@ -23,15 +24,12 @@ export default class GuildScheduledEventDelete extends Event {
 	*/
 	async run(client: EgglordClient, guildEvent: GuildScheduledEvent) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Event: ${guildEvent.name} has been deleted in guild: ${guildEvent.guild.id}.`);
-
-		// Get server settings / if no settings then return
-		const settings = guildEvent.guild.settings;
-		if (Object.keys(settings).length == 0) return;
+		if (client.config.debug) client.logger.debug(`Event: ${guildEvent.name} has been deleted in guild: ${guildEvent.guild?.id}.`);
 
 		// Check if event guildEventCreate is for logging
-		if (settings.ModLogEvents?.includes('EVENTDELETE') && settings.ModLog) {
-			const embed = new Embed(client, guildEvent.guild)
+		const moderationSettings = guildEvent.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, guildEvent.guild)
 				.setDescription(`**Event: ${guildEvent.name} has been deleted.**`)
 				.setColor(15158332)
 				.setFooter({ text: guildEvent.guild.translate('misc:ID', { ID: guildEvent.guild.id }) })
@@ -40,8 +38,9 @@ export default class GuildScheduledEventDelete extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guildEvent.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guildEvent.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await guildEvent.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

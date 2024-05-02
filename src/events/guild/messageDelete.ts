@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { ChannelType, Events, Message } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Message delete event
@@ -34,34 +35,12 @@ export default class MessageDelete extends Event {
 		// if the message is a partial or a webhook return
 		if (message.partial || message.webhookId) return;
 
-		// Check if the message was a giveaway/reaction role embed
-		try {
-			// check reaction roles
-			const rr = await ReactionRoleSchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
-			if (rr) client.logger.log('A reaction role embed was deleted.');
-
-			// check giveaways
-			const g = await GiveawaySchema.findOneAndRemove({ messageID: message.id,	channelID: message.channel.id });
-			if (g) {
-				await client.giveawaysManager.delete(message.id);
-				client.logger.log('A giveaway embed was deleted.');
-			}
-		} catch (err: any) {
-			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-		}
-
 		// Make sure its not the client
 		if (message.author.id == client.user.id) return;
 
-		// Get server settings / if no settings then return
-		const settings = message.guild?.settings ?? [];
-		if (Object.keys(settings).length == 0) return;
-
-		// Check if ModLog plugin is active
-		if (message.content.startsWith(settings.prefix)) return;
-
 		// Check if event messageDelete is for logging
-		if (settings.ModLogEvents?.includes('MESSAGEDELETE') && settings.ModLog) {
+		const moderationSettings = message.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			// shorten message if it's longer then 1024
 			let shortened = false;
 			let content = message.content;
@@ -71,7 +50,7 @@ export default class MessageDelete extends Event {
 			}
 
 			// Basic message construct
-			const embed = new Embed(client, message.guild)
+			const embed = new EgglordEmbed(client, message.guild)
 				.setDescription(`**Message from ${message.author.toString()} deleted in ${message.channel.toString()}**`)
 				.setColor(15158332)
 				.setFooter({ text: `Author: ${message.author.id} | Message: ${message.id}` })
@@ -88,8 +67,9 @@ export default class MessageDelete extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == message.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await message.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

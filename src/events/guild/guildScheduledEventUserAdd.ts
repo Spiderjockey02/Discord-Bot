@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Events, GuildScheduledEvent, User } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Guild event user join event
@@ -27,15 +28,12 @@ export default class GuildScheduledEventUserAdd extends Event {
 		if (user.id == guildEvent.creatorId) return;
 
 		// For debugging
-		if (client.config.debug) client.logger.debug(`User: ${user.displayName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild.id}.`);
-
-		// Get server settings / if no settings then return
-		const settings = guildEvent.guild.settings;
-		if (Object.keys(settings).length == 0) return;
+		if (client.config.debug) client.logger.debug(`User: ${user.displayName} has joined event: ${guildEvent.name} in guild: ${guildEvent.guild?.id}.`);
 
 		// Check if event guildEventCreate is for logging
-		if (settings.ModLogEvents?.includes('EVENTUSERADD') && settings.ModLog) {
-			const embed = new Embed(client, guildEvent.guild)
+		const moderationSettings = guildEvent.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, guildEvent.guild)
 				.setDescription([
 					`${user.displayName} joined event: [${guildEvent.name}](${guildEvent})`,
 					'',
@@ -48,8 +46,9 @@ export default class GuildScheduledEventUserAdd extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guildEvent.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guildEvent.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await guildEvent.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

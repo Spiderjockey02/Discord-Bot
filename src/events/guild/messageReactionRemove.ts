@@ -1,6 +1,7 @@
 import { Events, MessageReaction, User } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import EgglordClient from '../../base/Egglord';
+import { Event } from '../../structures';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Message reaction remove event
@@ -40,13 +41,10 @@ export default class MessageReactionRemove extends Event {
 		// make sure the message author isn't the client
 		if (reaction.message.author?.id == client.user.id) return;
 
-		// Get server settings / if no settings then return
-		const settings = reaction.message.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event messageReactionRemove is for logging
-		if (settings.ModLogEvents?.includes('MESSAGEREACTIONREMOVE') && settings.ModLog) {
-			const embed = new Embed(client, reaction.message.guild)
+		const moderationSettings = reaction.message.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, reaction.message.guild)
 				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
 				.setColor(15158332)
 				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
@@ -55,8 +53,9 @@ export default class MessageReactionRemove extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${reaction.message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == reaction.message.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await reaction.message.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

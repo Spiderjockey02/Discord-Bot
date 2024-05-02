@@ -1,6 +1,6 @@
-import { Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { CloseEvent, Events } from 'discord.js';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Shard disconnect event

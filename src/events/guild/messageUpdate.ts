@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Events, Message } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Message update event
@@ -41,12 +42,9 @@ export default class MessageUpdate extends Event {
 		// only check for message content is different
 		if (oldMessage.content == newMessage.content || !newMessage.content || !oldMessage.content) return;
 
-		// Get server settings / if no settings then return
-		const settings = newMessage.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event channelDelete is for logging
-		if (settings.ModLogEvents?.includes('MESSAGEUPDATE') && settings.ModLog) {
+		const moderationSettings = newMessage.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			// shorten clienth messages when the content is larger then 1024 chars
 			let oldShortened = false;
 			let oldContent = oldMessage.content;
@@ -60,7 +58,7 @@ export default class MessageUpdate extends Event {
 				newContent = newContent.slice(0, 1020) + '...';
 				newShortened = true;
 			}
-			const embed = new Embed(client, newMessage.guild)
+			const embed = new EgglordEmbed(client, newMessage.guild)
 				.setDescription(`**Message of ${newMessage.author.toString()} edited in ${newMessage.channel.toString()}** [Jump to Message](${newMessage.url})`)
 				.setFooter({ text: `Author: ${newMessage.author.id} | Message: ${newMessage.id}` })
 				.setAuthor({ name: newMessage.author.displayName, iconURL: newMessage.author.displayAvatarURL() })
@@ -71,8 +69,9 @@ export default class MessageUpdate extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newMessage.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == newMessage.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await newMessage.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

@@ -1,13 +1,13 @@
 import { Player } from 'magmastream';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Player destroy event
  * @event AudioManager#PlayerDestroy
  * @extends {Event}
 */
-export class PlayerDestroy extends Event {
+export default class PlayerDestroy extends Event {
 	constructor() {
 		super({
 			name: 'playerDestroy',

@@ -1,8 +1,8 @@
-import Event from 'src/structures/Event';
-import { EmbedBuilder, TextBasedChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { EmbedBuilder, GuildTextBasedChannel } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
 import { Player } from 'magmastream';
-import { sleep } from 'src/utils';
+import { setTimeout } from 'timers/promises';
 
 /**
  * Player move event
@@ -31,16 +31,16 @@ export default class PlayerMove extends Event {
 		// Voice channel updated
 		if (!newChannel) {
 			if (player.textChannel == null) return;
-			const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
+			const channel = client.channels.cache.get(player.textChannel) as GuildTextBasedChannel;
 
 			const embed = new EmbedBuilder()
-				.setDescription(client.guilds.cache.get(player.guild)?.translate('music/dc:KICKED'));
+				.setDescription(channel.guild.translate('music/dc:KICKED'));
 			channel.send({ embeds: [embed] });
 			player.destroy();
 		} else {
 			player.setVoiceChannel(newChannel);
 			player.pause(true);
-			await sleep(1000);
+			await setTimeout(1000);
 			player.pause(false);
 		}
 	}

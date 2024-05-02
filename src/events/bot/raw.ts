@@ -1,6 +1,6 @@
 import { Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Raw event
@@ -10,7 +10,7 @@ import Event from 'src/structures/Event';
 export default class Raw extends Event {
 	constructor() {
 		super({
-			name: Events.Raw,
+			name: Events.Raw as any,
 			dirname: __dirname,
 		});
 	}

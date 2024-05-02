@@ -1,6 +1,6 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { EmbedBuilder, TextBasedChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
 import { Player, Track, TrackExceptionEvent, UnresolvedTrack } from 'magmastream';
 
 /**
@@ -39,6 +39,6 @@ export default class TrackError extends Event {
 		const embed = new EmbedBuilder()
 			.setColor(15158332)
 			.setDescription(`An error has occured on playback: \`${payload.exception?.message}\``);
-		channel.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 15000 }));
+		channel.send({ embeds: [embed] });
 	}
 }

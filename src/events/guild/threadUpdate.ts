@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
-import { Collection, Events, Snowflake, ThreadChannel, ThreadMember } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { Events, ThreadChannel } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Thread update event
@@ -24,23 +25,20 @@ export default class ThreadUpdate extends Event {
 	*/
 	async run(client: EgglordClient, oldThread: ThreadChannel, newThread: ThreadChannel) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type.split('_')[1]})`);
-
-		// Get server settings / if no settings then return
-		const settings = newThread.guild.settings;
-		if (Object.keys(settings).length == 0) return;
+		if (client.config.debug) client.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type})`);
 
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents?.includes('THREADUPDATE') && settings.ModLog) {
+		const moderationSettings = newThread.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			let embed, updated = false;
 
 			// thread name change
 			if (oldThread.name != newThread.name) {
-				embed = new Embed(client, newThread.guild)
+				embed = new EgglordEmbed(client, newThread.guild)
 					.setDescription(`**Thread name changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newThread.id}` })
-					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
+					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.name}`, inline: true },
 						{ name: 'New:', value: `${newThread.name}`, inline: true },
@@ -51,11 +49,11 @@ export default class ThreadUpdate extends Event {
 
 			// thread archive state change
 			if (oldThread.archived != newThread.archived) {
-				embed = new Embed(client, newThread.guild)
+				embed = new EgglordEmbed(client, newThread.guild)
 					.setDescription(`**Thread archive state changed of ${newThread.toString()}**`)
 					.setColor(15105570)
 					.setFooter({ text: `ID: ${newThread.id}` })
-					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() })
+					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
 					.addFields(
 						{ name: 'Old:', value: `${oldThread.archived}`, inline: true },
 						{ name: 'New:', value: `${newThread.archived}`, inline: true },
@@ -67,8 +65,9 @@ export default class ThreadUpdate extends Event {
 			// Find channel and send message
 			if (updated) {
 				try {
-					const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${newThread.guild.id} logging channel`));
-					if (modChannel && modChannel.guild.id == newThread.guild.id) client.addEmbed(modChannel.id, [embed]);
+					if (moderationSettings.loggingChannelId == null || embed == undefined) return;
+					const modChannel = await newThread.guild.channels.fetch(moderationSettings.loggingChannelId);
+					if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 				} catch (err: any) {
 					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 				}

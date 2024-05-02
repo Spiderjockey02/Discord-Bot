@@ -1,6 +1,6 @@
 import { Player, Track } from 'magmastream';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Track end event
@@ -23,8 +23,9 @@ export default class TrackEnd extends Event {
 	 * @param {Track} track The track that ended
 	 * @readonly
 	*/
-	async run(_client: EgglordClient, player: Player, track: Track) {
+	async run(_client: EgglordClient, _player: Player, track: Track) {
 		// when track finishes add to previous songs array
-		player.addPreviousSong(track);
+		// player.addPreviousSong(track);
+		console.log(track);
 	}
 }

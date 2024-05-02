@@ -1,6 +1,6 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Collection, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder, ChannelType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * click menu event
@@ -71,7 +71,7 @@ export default class ClickMenu extends Event {
 						allowedMentions: { parse: [] },
 					});
 				} catch (err: any) {
-					console.log(err: any);
+					console.log(err);
 					client.logger.error(`Command: 'Translate' has error: ${err.message}.`);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 				}

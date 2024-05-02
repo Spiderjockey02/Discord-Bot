@@ -1,6 +1,7 @@
 import { AutoModerationRule, Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel create event
@@ -26,8 +27,9 @@ export default class AutoModerationRuleUpdate extends Event {
 		const { guild } = newAutoModerationRule;
 
 		// Check if event AutoModerationRuleUpdate is for logging
-		if (guild.settings.ModLogEvents?.includes('AUTOMODERATIONRULEUPDATE') && guild.settings.ModLog) {
-
+		const moderationSettings = guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, guild);
 			// Check if exempt channels has changed
 
 			// Check if exempt roles has changed
@@ -37,8 +39,9 @@ export default class AutoModerationRuleUpdate extends Event {
 			// Check if actions has changed
 
 			try {
-				const modChannel = await client.channels.fetch(guild.settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

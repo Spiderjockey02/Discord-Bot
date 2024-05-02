@@ -1,6 +1,6 @@
 import { Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Error event
@@ -22,7 +22,7 @@ export default class ErrorEvent extends Event {
 	 * @readonly
 	*/
 	async run(client: EgglordClient, err: Error) {
-		console.log(err: any);
+		console.log(err);
 		client.logger.error(`client encountered an error: ${err.message}.`);
 	}
 }

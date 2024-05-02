@@ -1,6 +1,6 @@
 import { ModalSubmitInteraction } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import EgglordClient from '../../base/Egglord';
+import { Event } from '../../structures';
 
 /**
  * modal submit event

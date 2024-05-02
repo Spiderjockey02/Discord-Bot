@@ -1,7 +1,7 @@
 import { AutoModerationRule, Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
-import { EgglordEmbed } from 'src/utils';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel create event
@@ -26,16 +26,17 @@ export default class AutoModerationRuleDelete extends Event {
 		client.logger.debug(`Guild: ${guild.id} has removed a new auto moderation rule: ${name}.`);
 
 		// Check if event AutoModerationRuleCreate is for logging
-		if (guild.settings.ModLogEvents?.includes('AUTOMODERATIONRULEDELETE') && guild.settings.ModLog) {
+		const moderationSettings = guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			const embed = new EgglordEmbed(client, guild)
 				.setTitle(`Auto-mod rule deleted: ${name}.`)
 				.setColor(15158332)
-				.setFooter({ text: client.users.cache.get(creatorId)?.displayName, iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
-
+				.setFooter({ text: client.users.cache.get(creatorId)?.displayName ?? '', iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
 
 			try {
-				const modChannel = await client.channels.fetch(guild.settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

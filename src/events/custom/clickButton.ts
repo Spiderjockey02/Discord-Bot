@@ -1,8 +1,8 @@
 import { ButtonInteraction, Collection, PermissionsBitField } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import { EgglordEmbed } from 'src/utils';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 const cooldowns = new Collection<string, number>();
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 
 /**
  * Click button event
@@ -86,7 +86,7 @@ export default class ClickButton extends Event {
 				// run ticketcreate event
 				await client.emit('ticketCreate', channel, embed);
 			} catch (err: any) {
-				console.log(err: any);
+				console.log(err);
 				client.logger.error(`Command: '${this.conf.name}' has error: ${err.message}.`);
 			}
 

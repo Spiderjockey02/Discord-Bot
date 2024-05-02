@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Collection, Events, Message, MessageReaction, Snowflake } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Message reaction remove all event
@@ -21,7 +22,7 @@ export default class MessageReactionRemoveAll extends Event {
 	 * @param {Message} message The message the reactions were removed from
 	 * @readonly
 	*/
-	async run(client: EgglordClient, message: Message, reactions: Collection<(string|Snowflake), MessageReaction>) {
+	async run(client: EgglordClient, message: Message, _reactions: Collection<(string|Snowflake), MessageReaction>) {
 		// For debugging
 		if (client.config.debug) client.logger.debug(`Message all reactions removed ${!message.guild ? '' : ` in guild: ${message.guild.id}`}`);
 
@@ -32,21 +33,19 @@ export default class MessageReactionRemoveAll extends Event {
 			return client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 		}
 
-		// Get server settings / if no settings then return
-		const settings = message.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event messageReactionRemove is for logging
-		if (settings.ModLogEvents?.includes('MESSAGEREACTIONREMOVEALL') && settings.ModLog) {
-			const embed = new Embed(client, message.guild)
+		const moderationSettings = message.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, message.guild)
 				.setDescription(`**All reactions removed from [this message](${message.url})** `)
 				.setColor(15158332)
 				.setTimestamp();
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${message.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == message.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await message.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

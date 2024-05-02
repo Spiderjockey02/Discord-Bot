@@ -1,6 +1,6 @@
 import { AutocompleteInteraction } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import EgglordClient from '../../base/Egglord';
+import { Event } from '../../structures';
 
 /**
  * Auto-complete event

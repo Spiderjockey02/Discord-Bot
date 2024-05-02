@@ -45,7 +45,7 @@ class SelectMenuSubmit extends Event {
 					await guild.commands.set(data);
 					interaction.reply({ embeds: [channel.success('plugins/set-plugin:ADDED', { PLUGINS: interaction.values }, true)] });
 				} catch (err: any) {
-					console.log(err: any);
+					console.log(err);
 					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
 				}
 				break;

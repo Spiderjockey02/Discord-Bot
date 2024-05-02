@@ -1,8 +1,7 @@
-// Dependencies
-import { Events, EmbedBuilder, AttachmentBuilder, ActivityType, Guild } from 'discord.js';
-import Event from 'src/structures/Event';
-import { Canvas } from 'canvacord';
-import EgglordClient from 'src/base/Egglord';
+import { Events, EmbedBuilder, AttachmentBuilder, Guild } from 'discord.js';
+import { Event } from '../../structures';
+import ImageManipulator from '../../helpers/ImageManipulator';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Guild create event
@@ -41,11 +40,11 @@ export default class GuildCreate extends Event {
 			.setTitle(`[GUILD JOIN] ${guild.name}`);
 		let attachment;
 		if (guild.icon == null) {
-			const icon = await Canvas.guildIcon(guild.name, 128);
+			const icon = await ImageManipulator.guildIcon(guild.name, 128);
 			attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
 			embed.setImage('attachment://guildicon.png');
 		} else {
-			embed.setImage(guild.iconURL({ dynamic: true, size: 1024 }));
+			embed.setImage(guild.iconURL({ size: 1024 }));
 		}
 		embed.setDescription([
 			`Guild ID: ${guild.id ?? 'undefined'}`,
@@ -54,26 +53,7 @@ export default class GuildCreate extends Event {
 		].join('\n'));
 
 		// Find channel and send message
-		const modChannel = await client.channels.fetch(client.config.supportServer.channelId).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
+		const modChannel = await client.channels.fetch(client.config.SupportServer.GuildChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 		if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed, attachment]);
-
-		// update client's activity
-		client.SetActivity(ActivityType.Watching, [`${client.guilds.cache.size} servers!`, `${client.users.cache.size} users!`]);
-
-		// get slash commands for category
-		const enabledPlugins = guild.settings.plugins;
-		const data = [];
-		for (const plugin of enabledPlugins) {
-			const g = await client.loadInteractionGroup(plugin, guild);
-			if (Array.isArray(g)) data.push(...g);
-		}
-
-		// upload slash commands to guild
-		try {
-			await client.guilds.cache.get(guild.id)?.commands.set(data);
-			client.logger.log('Loaded Interactions for guild: ' + guild.name);
-		} catch (err: any) {
-			client.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
-		}
 	}
 }

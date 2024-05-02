@@ -1,6 +1,6 @@
 import { Events, Snowflake } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * shard ready event
@@ -22,6 +22,6 @@ export default class ShardReady extends Event {
 	 * @readonly
 	*/
 	async run(client: EgglordClient, shardID: number, unavailableGuilds: Set<Snowflake>) {
-		client.logger.ready(`Shard: ${shardID} has became ready with: ${unavailableGuilds.size} unavailable guilds.`);
+		client.logger.ready(`Shard: ${shardID} has became ready with: ${unavailableGuilds?.size ?? 0} unavailable guilds.`);
 	}
 }

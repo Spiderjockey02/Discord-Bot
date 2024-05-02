@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
-import { Collection, Events, Snowflake, ThreadMember } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import { AnyThreadChannel, Collection, Events, Snowflake, ThreadMember } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 /**
  * Thread members update event
  * @event Egglord#ThreadMembersUpdate
@@ -23,17 +24,14 @@ export default class ThreadMembersUpdate extends Event {
 	*/
 	async run(client: EgglordClient, oldMembers: Collection<Snowflake, ThreadMember>, newMembers: Collection<Snowflake, ThreadMember>) {
 		// Get thread
-		const thread = oldMembers.first()?.thread ?? newMembers.first().thread;
+		const thread = oldMembers.first()?.thread ?? newMembers.first()?.thread as AnyThreadChannel;
 
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} member count has been updated in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
-
-		// Get server settings / if no settings then return
-		const settings = thread.guild.settings;
-		if (Object.keys(settings).length == 0) return;
+		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} member count has been updated in guild: ${thread.guildId}. (${thread.type})`);
 
 		// Check if event channelDelete is for logging
-		if (settings.ModLogEvents?.includes('THREADMEMBERSUPDATE') && settings.ModLog) {
+		const moderationSettings = thread.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
 			// emoji role update
 			if (oldMembers.size != newMembers.size) {
 				const memberAdded = newMembers.filter(x => !oldMembers.get(x.id));
@@ -49,11 +47,11 @@ export default class ThreadMembersUpdate extends Event {
 					}
 
 					// create embed
-					const embed = new Embed(client, thread.guild)
+					const embed = new EgglordEmbed(client, thread.guild)
 						.setDescription(`**Thread members updated in ${thread.toString()}**`)
 						.setColor(15105570)
 						.setFooter({ text: `ID: ${thread.id}` })
-						.setAuthor({ name: thread.guild.name, iconURL: thread.guild.iconURL() })
+						.setAuthor({ name: thread.guild.name, iconURL: thread.guild.iconURL() ?? undefined })
 						.addFields(
 							{ name: `Added members [${memberAdded.size}]:`, value: `${memberAddedString.length == 0 ? '*None*' : memberAddedString.join('\n ')}`, inline: true },
 							{ name: `Removed member [${memberRemoved.size}]:`, value: `${memberRemovedString.length == 0 ? '*None*' : memberRemovedString.join('\n ')}`, inline: true })
@@ -61,8 +59,9 @@ export default class ThreadMembersUpdate extends Event {
 
 					// Find channel and send message
 					try {
-						const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${thread.guildId} logging channel`));
-						if (modChannel && modChannel.guild.id == thread.guildId) client.addEmbed(modChannel.id, [embed]);
+						if (moderationSettings.loggingChannelId == null) return;
+						const modChannel = await thread.guild.channels.fetch(moderationSettings.loggingChannelId);
+						if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 					} catch (err: any) {
 						client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 					}

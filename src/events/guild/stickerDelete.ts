@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Events, Sticker } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Sticker delete event
@@ -25,13 +26,10 @@ export default class StickerDelete extends Event {
 		// For debugging
 		if (client.config.debug) client.logger.debug(`Sticker: ${sticker.name} has been deleted in guild: ${sticker.guildId}. (${sticker.type})`);
 
-		// Get server settings / if no settings then return
-		const settings = sticker.guild.settings;
-		if (Object.keys(settings).length == 0) return;
-
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents?.includes('STICKERDELETE') && settings.ModLog) {
-			const embed = new Embed(client, sticker.guild)
+		const moderationSettings = sticker.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, sticker.guild)
 				.setDescription(`**Sticker deleted: ${sticker.name}**`)
 				.setColor(15158332)
 				.setImage(`https://cdn.discordapp.com/stickers/${sticker.id}.png`)
@@ -41,13 +39,12 @@ export default class StickerDelete extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${sticker.guildId} logging channel`));
-				if (modChannel && modChannel.guild.id == sticker.guildId) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await sticker.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
 		}
 	}
 }
-
-module.exports = StickerDelete;

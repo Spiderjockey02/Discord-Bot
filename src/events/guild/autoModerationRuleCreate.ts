@@ -1,6 +1,7 @@
 import { AutoModerationAction, AutoModerationActionType, AutoModerationRule, AutoModerationRuleKeywordPresetType, AutoModerationTriggerMetadata, Events } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel create event
@@ -25,21 +26,23 @@ export default class AutoModerationRuleCreate extends Event {
 		client.logger.debug(`Guild: ${guild.id} has added a new auto moderation rule: ${name}.`);
 
 		// Check if event AutoModerationRuleCreate is for logging
-		if (guild.settings.ModLogEvents?.includes('AUTOMODERATIONRULECREATE') && guild.settings.ModLog) {
-			const embed = new Embed(client, guild)
+		const moderationSettings = guild.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, guild)
 				.setTitle(`Auto-mod rule created: ${name}.`)
 				.setColor(3066993)
 				.addFields(
-					{ name: 'Exempt channels:', value: `${exemptChannels.length > 0 ? exemptChannels.map(c => `${c}`).join(',') : 'No exempt channels.'}`, inline: true },
-					{ name: 'Exempt roles:', value: `${exemptRoles.length > 0 ? exemptRoles.map(r => `${r}`).join(',') : 'No exempt roles.'}`, inline: true },
+					{ name: 'Exempt channels:', value: `${exemptChannels.size > 0 ? exemptChannels.map(c => `${c}`).join(',') : 'No exempt channels.'}`, inline: true },
+					{ name: 'Exempt roles:', value: `${exemptRoles.size > 0 ? exemptRoles.map(r => `${r}`).join(',') : 'No exempt roles.'}`, inline: true },
 					{ name: 'Punishment:', value: `${actions.length > 0 ? actions.map(a => this.punishmentParser(client, a)).join(',\n') : 'No action required.'}` },
 					{ name: 'Trigger:', value: this.triggerParser(triggerMetadata).join(',\n') },
 				)
-				.setFooter({ text: client.users.cache.get(creatorId)?.displayName, iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
+				.setFooter({ text: client.users.cache.get(creatorId)?.displayName ?? '', iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
 
 			try {
-				const modChannel = await client.channels.fetch(guild.settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}
@@ -57,6 +60,7 @@ export default class AutoModerationRuleCreate extends Event {
 			case AutoModerationActionType.BlockMessage:
 				return 'Type: `Block message`';
 			case AutoModerationActionType.SendAlertMessage:
+				if (action.metadata.channelId == null) return '';
 				return `Type: \`Send Alert Message\` to ${client.channels.cache.get(action.metadata.channelId)}`;
 			case AutoModerationActionType.Timeout:
 				return `Type: \`Member Timeout\` for ${action.metadata.durationSeconds}s`;

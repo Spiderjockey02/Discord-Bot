@@ -1,6 +1,6 @@
 import { Events, Guild } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 const unavailableGuilds: string[] = [];
 
 /**

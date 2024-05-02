@@ -1,6 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Events, ThreadChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
+import { EgglordEmbed } from '../../utils';
 /**
  * Thread delete event
  * @event Egglord#ThreadDelete
@@ -22,19 +23,16 @@ export default class ThreadDelete extends Event {
 	*/
 	async run(client: EgglordClient, thread: ThreadChannel) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} has been deleted in guild: ${thread.guildId}. (${thread.type.split('_')[1]})`);
-
-		// Get server settings / if no settings then return
-		const settings = thread.guild.settings;
-		if (Object.keys(settings).length == 0) return;
+		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} has been deleted in guild: ${thread.guildId}. (${thread.type})`);
 
 		// Check if event channelCreate is for logging
-		if (settings.ModLogEvents?.includes('THREADDELETE') && settings.ModLog) {
-			const embed = new Embed(client, thread.guild)
+		const moderationSettings = thread.guild?.settings?.moderationSystem;
+		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
+			const embed = new EgglordEmbed(client, thread.guild)
 				.setDescription([
-					`**${thread.type.split('_')[1].toLowerCase()} thread deleted: ${thread.toString()}**`,
+					`**${thread.type} thread deleted: ${thread.toString()}**`,
 					'',
-					`Owner: ${client.users.cache.get(thread.ownerId)?.displayName}`,
+					`Owner: ${client.users.cache.get(thread.ownerId ?? '')?.displayName}`,
 				].join('\n'))
 				.setColor(15158332)
 				.setFooter({ text: thread.guild.translate('misc:ID', { ID: thread.id }) })
@@ -43,8 +41,9 @@ export default class ThreadDelete extends Event {
 
 			// Find channel and send message
 			try {
-				const modChannel = await client.channels.fetch(settings.ModLogChannel).catch(() => client.logger.error(`Error fetching guild: ${thread.guild.id} logging channel`));
-				if (modChannel && modChannel.guild.id == thread.guild.id) client.addEmbed(modChannel.id, [embed]);
+				if (moderationSettings.loggingChannelId == null) return;
+				const modChannel = await thread.guild.channels.fetch(moderationSettings.loggingChannelId);
+				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
 			} catch (err: any) {
 				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
 			}

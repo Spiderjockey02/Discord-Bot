@@ -1,6 +1,6 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { Collection, Events, Snowflake, ThreadChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Thread list sync event
@@ -23,7 +23,7 @@ export default class ThreadListSync extends Event {
 	*/
 	async run(client: EgglordClient, threads: Collection<Snowflake, ThreadChannel>) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`${threads.size} thread(s) have now been synced in guild: ${threads.first().guildId}`);
+		if (client.config.debug) client.logger.debug(`${threads.size} thread(s) have now been synced in guild: ${threads.first()?.guildId}`);
 
 		for (const thread of threads) {
 			try {

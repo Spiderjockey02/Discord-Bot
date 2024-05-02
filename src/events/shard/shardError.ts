@@ -1,5 +1,5 @@
-import Event from 'src/structures/Event';
-import EgglordClient from 'src/base/Egglord';
+import { Event } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 import { Events } from 'discord.js';
 
 /**

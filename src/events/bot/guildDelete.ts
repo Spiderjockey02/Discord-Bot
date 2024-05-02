@@ -1,7 +1,7 @@
-import Event from 'src/structures/Event';
+import { Event } from '../../structures';
 import { EmbedBuilder, AttachmentBuilder, Events, Guild } from 'discord.js';
-import { Canvas } from 'canvacord';
-import EgglordClient from 'src/base/Egglord';
+import ImageManipulator from '../../helpers/ImageManipulator';
+import EgglordClient from '../../base/Egglord';
 
 /**
  * Guild delete event
@@ -32,7 +32,7 @@ export default class GuildDelete extends Event {
 			const embed = new EmbedBuilder()
 				.setTitle(`[GUILD LEAVE] ${guild.name}`);
 			if (guild.icon == null) {
-				const icon = await Canvas.guildIcon(guild.name ?? 'undefined', 128);
+				const icon = await ImageManipulator.guildIcon(guild.name ?? 'undefined', 128);
 				attachment = new AttachmentBuilder(icon, { name: 'guildicon.png' });
 				embed.setImage('attachment://guildicon.png');
 			} else {
@@ -44,7 +44,7 @@ export default class GuildDelete extends Event {
 				`MemberCount: ${guild?.memberCount ?? 'undefined'}`,
 			].join('\n'));
 
-			const modChannel = await client.channels.fetch(client.config.supportServer.channelId).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
+			const modChannel = await client.channels.fetch(client.config.SupportServer.GuildChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed, attachment]);
 		} catch (err: any) {
 			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
