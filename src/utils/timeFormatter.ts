@@ -1,4 +1,4 @@
-module.exports.read24hrFormat = (text) => {
+export function read24hrFormat(text: string) {
 	// set values to 0
 	let j, k, ms;
 	j = k = ms = 0;
@@ -19,12 +19,12 @@ module.exports.read24hrFormat = (text) => {
 	} else {
 		throw new TypeError('Final value is greater than Number can hold.');
 	}
-};
+}
 
-module.exports.getReadableTime = (ms) => {
+export function getReadableTime(ms: number) {
 	if (!ms || ms && !isFinite(ms)) {throw new TypeError('You need to pass a total number of milliseconds! (That number cannot be greater than Number limits)');}
 	if (typeof ms !== 'number') {throw new TypeError(`You need to pass a number! Instead received: ${typeof ms}`);}
-	const t = this.getTimeObject(ms);
+	const t = getTimeObject(ms);
 	const reply = [];
 	if (t.years) 	reply.push(`${t.years} yrs`);
 	if (t.months) reply.push(`${t.months} mo`);
@@ -33,9 +33,9 @@ module.exports.getReadableTime = (ms) => {
 	if (t.minutes) reply.push(`${t.minutes} min`);
 	if (t.seconds) reply.push(`${t.seconds} sec`);
 	return reply.length > 0 ? reply.join(', ') : '0sec';
-};
+}
 
-module.exports.getTimeObject = (ms) => {
+export function getTimeObject(ms: number) {
 	if (!ms || typeof ms !== 'number' || !isFinite(ms)) throw new TypeError('Final value is greater than Number can hold or you provided invalid argument.');
 	const result = {
 		years: 0,
@@ -95,17 +95,17 @@ module.exports.getTimeObject = (ms) => {
 		result.months = result.months - (Math.floor(result.months / 12) * 12);
 	}
 	return result;
-};
+}
 
 
 // comvert time format (1m) to ms - for timed commands
-module.exports.getTotalTime = (timeFormat) => {
+export function getTotalTime(timeFormat: string) {
 	// Make sure it ends with the correct time delimiter
 	if (!timeFormat.endsWith('d') && !timeFormat.endsWith('h') && !timeFormat.endsWith('m') && !timeFormat.endsWith('s')) {
 		return { error: 'time:INCORRECT_DELIMITERS' };
 	}
 	// make sure its a number infront of the time delimiter
-	if (isNaN(timeFormat.slice(0, -1))) return { error: 'time:INVALID_TIME' };
+	if (parseInt(timeFormat.slice(0, -1))) return { error: 'time:INVALID_TIME' };
 
 	// convert timeFormat to milliseconds
 	const time = require('ms')(timeFormat);
@@ -115,4 +115,4 @@ module.exports.getTotalTime = (timeFormat) => {
 
 	// return time to requested command
 	return { success: time };
-};
+}

@@ -1,12 +1,13 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType } = require('discord.js');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ComponentType, Embed, Message } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 // Timeout for button collector in milliseconds
 const timeout = 30 * 1000;
 
-module.exports = async (bot, interaction, pages, userID) => {
+export default async function(client: EgglordClient, interaction: ChatInputCommandInteraction | Message<true>, pages: Array<Embed>, userID: string) {
 	let page = 0;
 
 	// Function to create a button with specified properties
-	const createButton = (customId, label, style, disabled = false) => new ButtonBuilder().setCustomId(customId).setLabel(label).setStyle(style).setDisabled(disabled);
+	const createButton = (customId:string, label: string, style: number, disabled = false) => new ButtonBuilder().setCustomId(customId).setLabel(label).setStyle(style).setDisabled(disabled);
 
 	// Create buttons for navigation
 	const first = createButton('pagefirst', '⏮', ButtonStyle.Secondary, true);
@@ -16,16 +17,16 @@ module.exports = async (bot, interaction, pages, userID) => {
 	const last = createButton('pagelast', '⏭', ButtonStyle.Secondary);
 
 	// Create action row containing navigation buttons
-	const buttons = new ActionRowBuilder().addComponents([first, prev, pageCount, next, last]);
+	const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents([first, prev, pageCount, next, last]);
 
 	let msg;
 
-	if (interaction instanceof CommandInteraction) {
+	if (interaction instanceof ChatInputCommandInteraction) {
 		msg = await (interaction.deferred
 			? interaction.followUp({ embeds: [pages[page]], components: [buttons], fetchReply: true })
 			: interaction.reply({ embeds: [pages[page]], components: [buttons], fetchReply: true }));
 	} else {
-		msg = await interaction.send({ embeds: [pages[page]], components: [buttons] });
+		msg = await interaction.channel.send({ embeds: [pages[page]], components: [buttons] });
 	}
 
 	const buttonCollector = await msg.createMessageComponentCollector({ componentType: ComponentType.Button, time: timeout });
@@ -60,8 +61,8 @@ module.exports = async (bot, interaction, pages, userID) => {
 		last.setDisabled(page === pages.length - 1);
 
 		// Update message with new embed and buttons
-		await i.update({ embeds: [pages[page]], components: [buttons], ephemeral: true }).catch((error) => {
-			bot.logger.error('Error updating message:', error);
+		await i.update({ embeds: [pages[page]], components: [buttons] }).catch((error) => {
+			client.logger.error(`Error updating message: ${error}`);
 		});
 
 		// Reset collector timer
@@ -70,12 +71,20 @@ module.exports = async (bot, interaction, pages, userID) => {
 
 	// Handle collector end event
 	buttonCollector.on('end', async () => {
-		// Edit interaction reply to remove buttons
-		await interaction.editReply({ embeds: [pages[page]], components: [] }).catch((error) => {
-			bot.logger.error('Error updating message:', error);
-		});
+
+		if (interaction instanceof ChatInputCommandInteraction) {
+			// Edit interaction reply to remove buttons
+			await interaction.editReply({ embeds: [pages[page]], components: [] }).catch((error) => {
+				client.logger.error(`Error updating message: ${error}`);
+			});
+		} else {
+			// Edit interaction reply to remove buttons
+			await interaction.edit({ embeds: [pages[page]], components: [] }).catch((error) => {
+				client.logger.error(`Error updating message: ${error}`);
+			});
+		}
 	});
 
 	// Return the message
 	return msg;
-};
+}

@@ -1,31 +1,30 @@
-import { Client, EmbedBuilder, Guild } from 'discord.js'
+import { BaseGuild, EmbedBuilder } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
 
 /**
  * EgglordEmbed
  * @extends {MessageEmbed}
 */
 export default class EgglordEmbed extends EmbedBuilder {
-	bot: Client
-	guild: Guild
+	client: EgglordClient;
+	guild: BaseGuild;
 
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {?guild} guild The guild of which the embed will be sent to
 	 * @param {CommandData} data The data of the embed
 	*/
-	constructor(bot: Client, guild: Guild, data = {}) {
+	constructor(client: EgglordClient, guild: BaseGuild, data = {}) {
 		super(data);
-		this.bot = bot;
+		this.client = client;
 		this.guild = guild;
-		this.setColor(bot.config.embedColor)
+		this.setColor(client.config.embedColor)
 			.setTimestamp();
 	}
 
 	// Language translator for title
-	// @over
-	setTitle(key, args) {
-		const language = this.guild.settings?.Language ?? require('../assets/json/defaultGuildSettings.json').Language;
-		this.data.title = this.bot.translate(key, args, language) ? this.bot.translate(key, args, language) : key;
+	setTitle(key: string, args?: { [key: string]: string }) {
+		this.data.title = this.guild.translate(key, args);
 		return this;
 	}
 }
