@@ -1,4 +1,4 @@
-module.exports.parseVideo = (data) => {
+export default function parseVideo(data: any) {
 	if (!data || !data.videoRenderer) return;
 	let title = '';
 	try {
@@ -7,7 +7,7 @@ module.exports.parseVideo = (data) => {
 		try {
 			title = decodeURIComponent(title);
 		} catch (e) {
-			// @ts-ignore
+			title = '';
 		}
 
 		return {
@@ -17,4 +17,4 @@ module.exports.parseVideo = (data) => {
 	} catch (e) {
 		return undefined;
 	}
-};
+}

@@ -1,38 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
-import path from 'path'
-import { ApplicationCommandOptionType as CommandOptionType, PermissionsBitField, Message, Client, Guild } from 'discord.js'
+import path from 'path';
+import { PermissionsBitField, Message, Guild, AutocompleteInteraction, ApplicationCommandOption, CommandInteractionOptionResolver, ChatInputCommandInteraction } from 'discord.js';
+import EgglordClient from 'src/base/Egglord';
+import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from 'src/types/Structure';
+import { Setting } from '@prisma/client';
 
 /**
  * Command structure
- * @abstract
- */
+*/
 export default class Command {
-	help: { 
-		name: string
-		category: string
-		aliases: string[]
-		description: string
-		usage: string
-		examples: string[]
-	}
-	conf: { 
-		guildOnly: boolean
-		userPermissions: bigint[]
-		botPermissions: bigint[]
-		nsfw: boolean
-		ownerOnly: boolean
-		cooldown: number
-		slash: boolean
-		isSubCmd: boolean
-		options: any
-	}
+	help: CommandHelpInterface;
+	conf: CommandConfInterface;
 	constructor({
 		name = '',
 		guildOnly = false,
 		dirname = '',
 		aliases = new Array<string>(),
 		botPermissions = [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
-		userPermissions = new Array(),
+		userPermissions = new Array<bigint>(),
 		examples = new Array<string>(),
 		nsfw = false,
 		ownerOnly = false,
@@ -41,58 +27,42 @@ export default class Command {
 		usage = '',
 		slash = false,
 		isSubCmd = false,
-		options = new Array(),
-	}) {
-		const category = (dirname ? dirname.split(path.sep)[parseInt(dirname.split(path.sep).length - 1, 10)] : 'Other');
+		options = new Array<ApplicationCommandOption>(),
+	}: CommandConstruct) {
+		const category = (dirname ? dirname.split(path.sep).pop() ?? 'Other' : 'Other');
 		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, isSubCmd, options };
 		this.help = { name, category, aliases, description, usage, examples };
 	}
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
-	 * @param {message} message The message that ran the command
+	 * @param {client} _client The instantiating client
+	 * @param {message} _message The message that ran the command
 	 * @readonly
 	*/
-	async run(_bot: Client, _message: Message) {
+	async run(_client: EgglordClient, _message: Message<true>, _settings?: Setting): Promise<any> {
 		throw new Error(`Command: ${this.help.name} does not have a run method`);
 	}
 
 	/**
 	 * Function for receiving interaction.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(_bot: Client, _message: Message, _guild: Guild) {
+	async callback(_client: EgglordClient, _interaction: ChatInputCommandInteraction<'cached'>, _guild?: Guild, _args?: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>) {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
 
 	/**
-	 * Function for loading commands to the bot.
+	 * Function for receiving interaction.
+	 * @param {client} client The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	load(bot: Client) {
-		const cmd = new (require(`../commands/${this.help.category}${path.sep}${this.help.name}.js`))(bot);
-		bot.logger.log(`Loading Command: ${cmd.help.name}.`);
-
-		// Check if it's a subCommand or not
-		if (cmd.conf.isSubCmd) {
-			bot.subCommands.set(cmd.help.name, cmd);
-		} else {
-			bot.commands.set(cmd.help.name, cmd);
-			cmd.help.aliases.forEach((alias) => {
-				bot.aliases.set(alias, cmd.help.name);
-			});
-		}
-	}
-
-	/**
-	 * Function for unloading commands to the bot.
-	 * @readonly
-	*/
-	unload() {
-		delete require.cache[require.resolve(`../commands/${this.help.category}${path.sep}${this.help.name}.js`)];
+	async autocomplete(_client: EgglordClient, _interaction: AutocompleteInteraction) {
+		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
 }

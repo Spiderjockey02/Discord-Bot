@@ -1,30 +1,37 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
 import EgglordClient from 'src/base/Egglord';
-import { EventConstructor } from 'src/types/Structure';
+import { ExtendedClientEvents, IEventAudio, IEventBase, IEventGiveaway, IEventGuild } from 'src/types/Structure';
 
 /**
  * Event structure
 */
 export default class Event {
-	conf: {
-		name: string
-		category: string
-		child?: string
-	};
+	conf: IEventAudio | IEventGiveaway | IEventGuild;
 
-	constructor({ name, dirname = '', child }: EventConstructor) {
-		const category = (dirname ? dirname.split(path.sep)[dirname.split(path.sep).length - 1] : 'Other');
-		this.conf = { name, category, child };
+	constructor({ name, dirname = '', child }: Partial<IEventBase> & { name: ExtendedClientEvents, child?: 'audioManager' | 'giveawayManager', dirname: string }) {
+		const category = (dirname ? dirname.split(path.sep).pop() ?? 'Other' : 'Other');
+		switch (child) {
+			case 'audioManager':
+				this.conf = { name, dirname, category, child } as IEventAudio;
+				break;
+			case 'giveawayManager':
+				this.conf = { name, dirname, category, child } as IEventGiveaway;
+				break;
+			default:
+				this.conf = { name, dirname, category, child: undefined } as IEventGuild;
+				break;
+		}
 	}
 
 	/**
 	 * Function for receiving message.
-	 * @param {bot} bot The instantiating client
+	 * @param {client} client The instantiating client
 	 * @param {message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(_client: EgglordClient, ..._args) {
+	async run(_client: EgglordClient, ..._args: any): Promise<any> {
 		throw new Error(`Event: ${this.conf.name} does not have a run method`);
 	}
 }
