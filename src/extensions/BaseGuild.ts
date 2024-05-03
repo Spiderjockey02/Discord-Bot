@@ -1,5 +1,5 @@
 import { BaseGuild } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../base/Egglord';
 
 // Add custom stuff to Guild
 export default Object.defineProperties(BaseGuild.prototype, {
@@ -32,6 +32,10 @@ export default Object.defineProperties(BaseGuild.prototype, {
 	// Append the settings to guild
 	settings: {
 		value: {},
+		writable: true,
+	},
+	level: {
+		value: null,
 		writable: true,
 	},
 });

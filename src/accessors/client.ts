@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { Logger } from '../utils';
 import GuildManager from './Guild';
 import UserManager from './User';
-import RankManager from './Rank';
 const LoggerClass = new Logger();
 
 // Main prisma client
@@ -24,11 +23,9 @@ const client = new PrismaClient()
 class DatabaseHandler {
 	guildManager: GuildManager;
 	userManager: UserManager;
-	rankManager: RankManager;
 	constructor() {
 		this.guildManager = new GuildManager();
 		this.userManager = new UserManager();
-		this.rankManager = new RankManager();
 	}
 }
 

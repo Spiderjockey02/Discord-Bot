@@ -1,6 +1,7 @@
 import Discord from 'discord.js';
 import { User as UserDB, Guild as GuildDB, Prisma } from '@prisma/client';
 import EgglordClient from 'src/base/Egglord';
+import LevelManager from 'src/helpers/LevelManager';
 
 const fullSettings = Prisma.validator<Prisma.SettingDefaultArgs>()({
 	include: { ticketSystem: true, levelSystem: true,
@@ -33,6 +34,10 @@ declare module 'discord.js' {
     client: EgglordClient
     isCurrentlyPlayingMusic: () => boolean | string
     fetchSettings:() => Promise<Prisma.SettingGetPayload<typeof fullSettings>>
+  }
+
+  interface Guild {
+    levels: LevelManager | null
   }
 
   interface GuildMember {
