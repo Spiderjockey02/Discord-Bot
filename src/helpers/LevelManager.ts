@@ -49,6 +49,9 @@ export default class LevelManager {
 
 		// Check for response to be sent
 		if (levelHasChanged) {
+			// For debugged
+			if (message.guild.client.config.debug) message.guild.client.logger.debug(`${message.author.displayName} just leveled up to ${userRank.level} in guild: ${message.guild.name}`);
+
 			// Check how to send the message
 			switch (levelSettings.annoucementType) {
 				case 'CHANNEL': {
@@ -66,13 +69,7 @@ export default class LevelManager {
 		}
 
 		// Update the database and manage cooldown
-		await updateRank(userRank);
-		this.cooldown.add(message.author.id);
-
-		setTimeout(() => {
-			this.cooldown.delete(message.author.id);
-			// Only gain XP every 1 minute
-		}, CONSTANTS.INTERVAL_BETWEEN_XP);
+		this.addRank(userRank);
 		return true;
 	}
 
@@ -82,5 +79,18 @@ export default class LevelManager {
 		} else {
 			return fetchByUserAndGuild(userId, this.guildId);
 		}
+	}
+
+	async addRank(userRank: Rank) {
+		// Add to database, cooldown and cache
+		await updateRank(userRank);
+		this.cooldown.add(userRank.userId);
+		this.cache.set(userRank.userId, userRank);
+
+		// Remove user from cooldown after X time (default 1 minute)
+		setTimeout(() => {
+			this.cooldown.delete(userRank.userId);
+			// Only gain XP every 1 minute
+		}, CONSTANTS.INTERVAL_BETWEEN_XP);
 	}
 }
