@@ -57,7 +57,7 @@ export default class LevelManager {
 				case 'CHANNEL': {
 					if (levelSettings.annoucementChannelId) {
 						const channel = message.guild.channels.cache.get(levelSettings.annoucementChannelId) as GuildTextBasedChannel;
-						if (channel) channel.send(levelSettings.annoucementMessage);
+						if (channel) channel.send(levelSettings.annoucementMessage.replace('{user}', `${message.member}`).replace('{level}', `${userRank.level}`));
 					}
 					break;
 				}
@@ -65,6 +65,20 @@ export default class LevelManager {
 					message.reply(levelSettings.annoucementMessage);
 					break;
 				}
+			}
+
+			// Give the user their role rewards (if neededed)
+			const roles = levelSettings.roleRewards;
+			if (roles.length > 0) {
+
+				// Check what roles to give
+				const giveRoles: string[] = [];
+				for (const role of roles) {
+					if (role.level < userRank.level) giveRoles.push(role.roleId);
+				}
+
+				// Add roles to user
+				message.member?.roles.add(giveRoles);
 			}
 		}
 
