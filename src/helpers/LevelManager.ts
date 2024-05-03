@@ -2,6 +2,7 @@ import { Rank } from '@prisma/client';
 import { Collection, GuildTextBasedChannel, Message, MessageType } from 'discord.js';
 import fetchLevelSettings from '../accessors/Settings';
 import { fetchByUserAndGuild, createRank, updateRank } from '../accessors/Rank';
+import CONSTANTS from '../utils/CONSTANTS';
 
 export default class LevelManager {
 	cache: Collection<string, Rank>;
@@ -30,7 +31,7 @@ export default class LevelManager {
 		if (this.cooldown.has(message.author.id)) return false;
 
 		// Calculate how much XP to give to user
-		const xpAdd = Math.round((Math.floor(Math.random() * 7) + 8) * (levelSettings?.multiplier ?? 1));
+		const xpAdd = Math.round(Math.floor(CONSTANTS.XP_GAINED() * (levelSettings?.multiplier ?? 1)));
 
 		// Fetch user from cache or database if doesn't exist create the document
 		let userRank = await this.fetch(message.author.id);
@@ -71,7 +72,7 @@ export default class LevelManager {
 		setTimeout(() => {
 			this.cooldown.delete(message.author.id);
 			// Only gain XP every 1 minute
-		}, 60_000);
+		}, CONSTANTS.INTERVAL_BETWEEN_XP);
 		return true;
 	}
 
