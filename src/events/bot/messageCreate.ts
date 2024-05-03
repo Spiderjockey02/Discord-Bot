@@ -21,13 +21,18 @@ export default class MessageCreate extends Event {
 	 * @param {Message} message The message that ran the command
 	 * @readonly
 	*/
-	async run(_client: EgglordClient, message: Message<true>) {
+	async run(_client: EgglordClient, message: Message) {
 		// Should not respond to clients
-		if (message.author.client) return;
+		if (message.author.bot) return;
 
-		// Level system
-		const settings = message.guild.settings;
-		if (settings?.levelSystem) message.guild.levels?.check(message);
+		// Check if a command was ran
+		message.guild?.client.commandManager.verify(message);
+
+		// Guild-only systems
+		if (message.guild) {
+			const settings = message.guild.settings;
+			if (settings?.levelSystem) message.guild.levels?.check(message as Message<true>);
+		}
 	}
 }
 
