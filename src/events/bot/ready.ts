@@ -2,7 +2,8 @@ import { Event } from '../../structures';
 import AudioManager from '../../base/Audio-Manager';
 import EgglordClient from '../../base/Egglord';
 import http from '../../http';
-import { Events, Guild } from 'discord.js';
+import { Events } from 'discord.js';
+import LevelManager from '../../helpers/LevelManager';
 
 /**
  * Ready event
@@ -40,14 +41,20 @@ export default class Ready extends Event {
 			console.log(err.message);
 		}
 
-		// Delete server settings on servers that removed the client while it was offline
+		// Get server settings on servers that removed the client while it was offline
 		const guildsOnDB = await client.databaseHandler.guildManager.fetchAll();
-		const guildsRemovedWhenOffline = 0;
-		for (const guildOnDB of guildsOnDB) {
-			const guild = client.guilds.cache.get(guildOnDB.id);
-			if (guild == undefined) client.emit('guildDelete', { id: guildOnDB.id, name: guildOnDB.name } as Guild);
+		for (const guild of guildsOnDB) {
+			// Check if guild is with this bot
+			const cachedGuild = client.guilds.cache.get(guild.id);
+			if (cachedGuild) {
+
+				// Check for all the settings
+				const settings = await client.databaseHandler.guildManager.fetchSettingsById(cachedGuild.id);
+				cachedGuild.settings = settings;
+				console.log(settings?.levelSystem);
+				cachedGuild.levels = (settings?.levelSystem) ? new LevelManager(client, cachedGuild.id) : null;
+			}
 		}
-		if (guildsRemovedWhenOffline > 0) client.logger.ready(`Number of guilds left when offline: ${guildsRemovedWhenOffline}.`);
 
 		// Check for any user-specific features
 		const usersOnDB = await client.databaseHandler.userManager.fetchAll();

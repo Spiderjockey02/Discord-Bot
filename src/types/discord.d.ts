@@ -37,7 +37,7 @@ declare module 'discord.js' {
   }
 
   interface Guild {
-    levels: LevelManager | null
+    levels: null | LevelManager
   }
 
   interface GuildMember {
