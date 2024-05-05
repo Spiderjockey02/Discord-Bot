@@ -75,6 +75,7 @@ class Weather extends Command {
 		const embed = new Embed(bot, channel.guild)
 			.setTitle(channel.guild.translate('searcher/weather:TITLE', { LOC: `${weather.location.name}, ${weather.location.country}` }))
 			.setDescription(channel.guild.translate('searcher/weather:DESC'))
+			.setThumbnail(`https:${weather.current.condition.icon}`)
 			.addFields(
 				{ name: channel.guild.translate('searcher/weather:TEMP'), value: `${weather.current.temp_c}°C`, inline: true },
 				{ name: channel.guild.translate('searcher/weather:SKY'), value: weather.current.condition.text, inline: true },
