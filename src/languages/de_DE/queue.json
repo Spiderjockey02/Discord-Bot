@@ -2,8 +2,8 @@
   "DESCRIPTION": "Zeigt die Warteschlange an.",
   "USAGE": "warteschlange [pageNumber]",
   "EMPTY": "Schlange ist leer",
-  "TITLE": "Queue - {{NAME}}",
-  "NOW_PLAYING": "**Now Playing**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Up Next**: {{NEXT}}",
-  "PAGE": "Page {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} total duration",
-  "LOADED": "Loaded Queue"
+  "TITLE": "Warteschlange - {{NAME}}",
+  "NOW_PLAYING": "**Jetzt spielt**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Als Nächstes**: {{NEXT}}",
+  "PAGE": "Seite {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} Gesamtdauer",
+  "LOADED": "Warteschlange geladen"
 }
