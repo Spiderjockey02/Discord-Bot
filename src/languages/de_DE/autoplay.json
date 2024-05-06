@@ -1,5 +1,5 @@
 {
   "DESCRIPTION": "Schaltet Autoplay-Modus um.",
   "USAGE": "automatisch abspielen",
-  "RESP": "Autoplay mode is now {{TOGGLE}}."
+  "RESP": "Autoplay-Modus ist jetzt {{TOGGLE}}."
 }
