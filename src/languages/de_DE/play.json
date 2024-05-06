@@ -8,5 +8,5 @@
   "QUEUED": "Warteschlange **{{NUM}}** Tracks",
   "SONG_ADD": "Zur Warteschlange hinzugefügt: [{{TITLE}}]({{URL}})",
   "NO_SONG": "Ich konnte diesen Song nicht finden.",
-  "QUEUE": "Successfully started queue."
+  "QUEUE": "Warteschlange erfolgreich gestartet."
 }
