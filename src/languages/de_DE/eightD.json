@@ -1,8 +1,8 @@
 {
-    "DESCRIPTION": "Toggles eightD mode.",
-    "USAGE": "eightD",
-    "ON": "Turning on **eightD**. This may take a few seconds...",
-    "DESC_1": "Turned on **eightD**",
-    "OFF": "Turning off **eightD**. This may take a few seconds...",
-    "DESC_2": "Turned off **eightD**"
+    "DESCRIPTION": "Schaltetden achtD moduls um.",
+    "USAGE": "achtD",
+    "ON": "Schalte **achtD** ein. Dies kann einige Sekunden dauern...",
+    "DESC_1": "**achtD** eingeschaltet",
+    "OFF": "Schalte **achtD** aus. Dies kann einige Sekunden dauern...",
+    "DESC_2": "**achtD** ausgeschaltet"
 }
