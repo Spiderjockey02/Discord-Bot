@@ -1,10 +1,6 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@middleware/*": ["./src/middleware/*"],
-    },
     "rootDir": "./src",
     "types": ["node"],
     "outDir": "./dist",
@@ -31,7 +27,11 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "verbatimModuleSyntax": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@structures": ["./structures/index"],
+    },
   },
   "exclude": ["node_modules"],
 }

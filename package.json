@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This is my first Discord bot made using [discord.js](https://github.com/discordjs/discord.js)",
   "main": "dist/index.js",
+  "_moduleAliases": {
+    "@structures": "./dist/structures/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
@@ -27,6 +30,7 @@
   "homepage": "https://github.com/Spiderjockey02/Discord-Bot#readme",
   "dependencies": {
     "@prisma/client": "^5.13.0",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^20.12.7",
     "axios": "^1.5.0",
     "canvacord": "^6.0.2",
@@ -39,6 +43,7 @@
     "i18next": "^23.5.1",
     "i18next-fs-backend": "^2.3.1",
     "magmastream": "^2.4.0",
+    "module-alias": "^2.2.3",
     "moment": "^2.29.1",
     "mongoose": "^7.5.2",
     "on-finished": "^2.4.1",

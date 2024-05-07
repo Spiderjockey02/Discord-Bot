@@ -1,8 +1,9 @@
 // Dependencies
+import 'module-alias/register';
 import { Logger } from './utils';
 import { ShardingManager } from 'discord.js';
 import { validateConfig } from './scripts/verify-config';
-import config from './config';
+// import config from './config';
 const logger = new Logger();
 
 (async () => {
@@ -22,8 +23,8 @@ const logger = new Logger();
 		logger.log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-=');
 		try {
 			await manager.spawn();
-		} catch (err: any) {
-			logger.error(`Error loading shards: ${err.message}`);
+		} catch (err: unknown) {
+			logger.error(`Error loading shards: ${(err as Error).message}`);
 		}
 
 		// Emitted when a shard is created
