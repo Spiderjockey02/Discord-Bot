@@ -4,6 +4,7 @@ import EgglordClient from '../../base/Egglord';
 import http from '../../http';
 import { Events } from 'discord.js';
 import LevelManager from '../../helpers/LevelManager';
+import TicketManager from '../../helpers/TicketManager';
 
 /**
  * Ready event
@@ -51,8 +52,18 @@ export default class Ready extends Event {
 				// Check for all the settings
 				const settings = await client.databaseHandler.guildManager.fetchSettingsById(cachedGuild.id);
 				cachedGuild.settings = settings;
-				console.log(settings?.levelSystem);
-				cachedGuild.levels = (settings?.levelSystem) ? new LevelManager(client, cachedGuild.id) : null;
+
+				// Level system
+				if (settings?.levelSystem) {
+					client.logger.debug(`Guild: ${guild.id} has enabled the level system.`);
+					cachedGuild.levels = new LevelManager(client, cachedGuild.id);
+				}
+
+				// Ticket system
+				if (settings?.ticketSystem) {
+					client.logger.debug(`Guild: ${guild.id} has enabled the ticket system.`);
+					cachedGuild.tickets = new TicketManager(client, cachedGuild.id);
+				}
 			}
 		}
 

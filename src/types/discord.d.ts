@@ -1,7 +1,7 @@
 import Discord from 'discord.js';
 import { User as UserDB, Guild as GuildDB, Prisma } from '@prisma/client';
-import EgglordClient from 'src/base/Egglord';
 import LevelManager from 'src/helpers/LevelManager';
+import TicketManager from 'src/helpers/TicketManager';
 
 const fullSettings = Prisma.validator<Prisma.SettingDefaultArgs>()({
 	include: { ticketSystem: true, levelSystem: true,
@@ -20,6 +20,19 @@ const fullSettings = Prisma.validator<Prisma.SettingDefaultArgs>()({
 
 
 declare module 'discord.js' {
+
+  export interface Client {
+    logger: Logger;
+    commandManager: CommandManager;
+    config: typeof config;
+    audioManager?: AudioManager;
+    databaseHandler: DatabaseHandler;
+    languageManager: LanguageManager;
+    customEmojis: typeof customEmojis;
+    webhookManger: WebhookManager;
+    translate: (key: string, args?: {[key: string]: string | number}) => string
+  }
+
   // Extend DM Channel
   interface DMChannel {
     error: (key: string, args: string, returnValue: boolean) => void
@@ -28,16 +41,16 @@ declare module 'discord.js' {
   }
 
   // Extend Guild
-  interface BaseGuild extends GuildDB {
+  interface Guild extends GuildDB {
     translate: (key: string, args?: {[key: string]: string | number}) => string
     settings: Prisma.SettingGetPayload<typeof fullSettings> | null
-    client: EgglordClient
     isCurrentlyPlayingMusic: () => boolean | string
     fetchSettings:() => Promise<Prisma.SettingGetPayload<typeof fullSettings>>
   }
 
   interface Guild {
     levels: null | LevelManager
+    tickets: null | TicketManager
   }
 
   interface GuildMember {
@@ -46,15 +59,7 @@ declare module 'discord.js' {
 
   interface User extends UserDB {}
 
-  interface BaseGuildVoiceChannel {
-    checkPerm: (perm: PermissionFlagsBits) => boolean
-  }
-
-  interface BaseGuildTextChannel {
-    checkPerm: (perm: PermissionFlagsBits) => boolean
-  }
-
-  interface ThreadChannel {
+  interface GuildChannel {
     checkPerm: (perm: PermissionFlagsBits) => boolean
   }
 

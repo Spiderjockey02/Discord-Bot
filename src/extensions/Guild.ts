@@ -1,12 +1,12 @@
-import { BaseGuild } from 'discord.js';
+import { Guild } from 'discord.js';
 import EgglordClient from '../base/Egglord';
 
 // Add custom stuff to Guild
-export default Object.defineProperties(BaseGuild.prototype, {
+export default Object.defineProperties(Guild.prototype, {
 	// Used for translating strings
 	translate: {
 		value: function(key: string, args: {[key: string]: string | number}) {
-			const language = this.client.translations.get(this.settings.Language);
+			const language = this.client.languageManager.get(this.settings?.Language ?? 'en-US');
 			if (!language) return 'Invalid language set in data.';
 			return language(key, args);
 		},
@@ -35,6 +35,10 @@ export default Object.defineProperties(BaseGuild.prototype, {
 		writable: true,
 	},
 	level: {
+		value: null,
+		writable: true,
+	},
+	tickets: {
 		value: null,
 		writable: true,
 	},
