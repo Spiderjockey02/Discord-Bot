@@ -5,6 +5,7 @@ const { ActivityType, Client, Collection, GatewayIntentBits: FLAGS, Partials, Pe
 	path = require('path'),
 	{ promisify } = require('util'),
 	{ get } = require('axios'),
+	AudioManager = require('./Audio-Manager'),
 	readdir = promisify(require('fs').readdir);
 
 /**
@@ -35,6 +36,7 @@ class Egglord extends Client {
 		*/
 		this.logger = require('../utils/Logger');
 
+		this.manager = new AudioManager(this);
 		/**
 		 * The Giveaway manager
 		 * @type {GiveawaysManager}
