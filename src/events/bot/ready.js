@@ -1,7 +1,7 @@
 const { GuildSchema, userSchema, TagsSchema } = require('../../database/models'),
 	{ PermissionsBitField: { Flags } } = require('discord.js'),
-	Event = require('../../structures/Event'),
-	AudioManager = require('../../base/Audio-Manager');
+	Event = require('../../structures/Event');
+
 
 /**
  * Ready event
@@ -24,7 +24,6 @@ class Ready extends Event {
 	async run(bot) {
 		// Load up audio player
 		try {
-			bot.manager = new AudioManager(bot);
 			bot.manager.init(bot.user.id);
 		} catch (err) {
 			bot.logger.error(`Audio manager failed to load due to error: ${err.message}`);
