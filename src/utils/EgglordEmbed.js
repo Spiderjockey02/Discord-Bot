@@ -15,6 +15,7 @@ class EgglordEmbed extends EmbedBuilder {
 		this.bot = bot;
 		this.guild = guild;
 		this.setColor(bot.config.embedColor)
+			.setFooter({ text: '©CSJGamingTV', iconURL: 'https://csjgaming.com/wp-content/uploads/2021/01/cropped-CSJmain-32x32.png' })
 			.setTimestamp();
 	}
 
