@@ -37,9 +37,14 @@ const config = {
 		token: '123456789',
 	},
 	Staff: {
-		ContributorRole: "814645275544387705",
-		SupportRole: "740674583023321200",
-		DeveloperRole: "740682780467396705",
+		OwnerRole: "177566090686103552",
+		DiscordManagerRole: "432034666833510400",
+		CommunityManagerRole: "922941676274720789",
+		AdministratorRole: "922983138467123200",
+		ModeratorRole: "922941664677486642",
+		TrialModeratorRole:"1075589258959667322",
+		DeveloperRole: "922983778677301259",
+		LegendsRole: "1037545381044703295",
 	},
 	LavalinkNodes: [
 		{ host: 'localhost', port: 5000, password: 'youshallnotpass' },
