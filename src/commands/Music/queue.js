@@ -89,9 +89,9 @@ class Queue extends Command {
 			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
 
 			const embed = new Embed(bot, message.guild)
-				.setAuthor(bot.translate('music/queue:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
+				.setAuthor({ name: bot.translate('music/queue:TITLE', { NAME: message.guild.name }), iconURL: message.guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter(bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
+				.setFooter({ text: bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
 			pages.push(embed);
 		}
 
@@ -102,8 +102,8 @@ class Queue extends Command {
 		} else {
 			const pageNum = parseInt(message.args[0]);
 			const pageIndex = Math.max(0, Math.min(pageNum - 1, pagesNum - 1));
-			if (isNaN(pageNum)) return message.channel.send(message.translate('music/misc:NAN'));
-			if (pageNum > pagesNum) return message.channel.send(message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }));
+			if (isNaN(pageNum)) return message.channel.send({ content: message.translate('music/misc:NAN') });
+			if (pageNum > pagesNum) return message.channel.send({ content: message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }) });
 			return message.channel.send({ embeds: [pages[pageIndex]] });
 		}
 	}
@@ -137,7 +137,7 @@ class Queue extends Command {
 		if (!queue?.size) {
 			const embed = new Embed(bot, guild)
 				.setTitle('music/queue:EMPTY');
-			return interaction.reply(embed);
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		// get total page number
@@ -170,9 +170,9 @@ class Queue extends Command {
 			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
 
 			const embed = new Embed(bot, guild)
-				.setAuthor(bot.translate('music/queue:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
+				.setAuthor({ name: bot.translate('music/queue:TITLE', { NAME: guild.name }), iconURL: guild.iconURL() })
 				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter(bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }));
+				.setFooter({ text: bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
 			pages.push(embed);
 		}
 
@@ -180,7 +180,7 @@ class Queue extends Command {
 		if (!page) {
 			if (PageCheck(pages, pagesNum, player)) {
 				paginate(bot, channel, pages, member.id);
-				return interaction.reply(bot.translate('music/queue:LOADED'));
+				return interaction.reply({ content: bot.translate('music/queue:LOADED') });
 			} else {
 				return interaction.reply({ embeds: [pages[0]] });
 			}
