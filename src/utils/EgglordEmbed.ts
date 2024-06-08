@@ -1,5 +1,5 @@
-import { BaseGuild, EmbedBuilder } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { Guild, EmbedBuilder } from 'discord.js';
+import EgglordClient from '../base/Egglord';
 
 /**
  * EgglordEmbed
@@ -7,14 +7,14 @@ import EgglordClient from 'src/base/Egglord';
 */
 export default class EgglordEmbed extends EmbedBuilder {
 	client: EgglordClient;
-	guild: BaseGuild;
+	guild: Guild | null;
 
 	/**
 	 * @param {Client} client The instantiating client
 	 * @param {?guild} guild The guild of which the embed will be sent to
 	 * @param {CommandData} data The data of the embed
 	*/
-	constructor(client: EgglordClient, guild: BaseGuild, data = {}) {
+	constructor(client: EgglordClient, guild: Guild | null, data = {}) {
 		super(data);
 		this.client = client;
 		this.guild = guild;
@@ -24,7 +24,7 @@ export default class EgglordEmbed extends EmbedBuilder {
 
 	// Language translator for title
 	setTitle(key: string, args?: { [key: string]: string }) {
-		this.data.title = this.guild.translate(key, args);
+		this.data.title = this.client.languageManager.translate(this.guild, key, args);
 		return this;
 	}
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BaseGuildTextChannel, ChannelType, DMChannel, Message, EmbedBuilder, Guild } from 'discord.js';
+import { BaseGuildTextChannel, ChannelType, DMChannel, Message } from 'discord.js';
 import config from '../config';
 import Logger from './Logger';
 const logger = new Logger();
@@ -29,22 +29,6 @@ export function CalcLevenDist(str1 = '', str2 = '') {
 		}
 	}
 	return track[str2.length][str1.length];
-}
-
-export function errorEmbed(guild: Guild, key: string, args?: {[key: string]: string}) {
-	const emoji = guild.client.customEmojis['cross'];
-	const embed = new EmbedBuilder()
-		.setColor(15158332)
-		.setDescription(`${emoji} ${guild.translate(key, args) ?? key}`);
-	return embed;
-}
-
-export function successEmbed(guild: Guild, key: string, args?: {[key: string]: string}) {
-	const emoji = guild.client.customEmojis['checkmark'];
-	const embed = new EmbedBuilder()
-		.setColor(3066993)
-		.setDescription(`${emoji} ${guild.translate(key, args) ?? key}`);
-	return embed;
 }
 
 export function delayedDelete(message: Message, ms: number) {
