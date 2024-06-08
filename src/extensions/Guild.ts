@@ -3,14 +3,6 @@ import EgglordClient from '../base/Egglord';
 
 // Add custom stuff to Guild
 export default Object.defineProperties(Guild.prototype, {
-	// Used for translating strings
-	translate: {
-		value: function(key: string, args: {[key: string]: string | number}) {
-			const language = this.client.languageManager.get(this.settings?.Language ?? 'en-US');
-			if (!language) return 'Invalid language set in data.';
-			return language(key, args);
-		},
-	},
 	// Check if music is already playing in the guild
 	isCurrentlyPlayingMusic: {
 		value: function() {
