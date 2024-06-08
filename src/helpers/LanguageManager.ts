@@ -2,14 +2,15 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import path from 'path';
 import { promises as fs } from 'fs';
-import { LocaleString } from 'discord.js';
+import { Guild, LocaleString } from 'discord.js';
+import config from '../config';
 
 export default class languageManager extends Map<LocaleString, any> {
-
 	constructor() {
 		super();
 		this.init();
 	}
+
 	async walkDirectory(dir: string, namespaces: string[] = [], folderName = '') {
 		const files = await fs.readdir(dir);
 
@@ -52,5 +53,20 @@ export default class languageManager extends Map<LocaleString, any> {
 		for (const language of languages) {
 			this.set(language as LocaleString, i18next.getFixedT(language));
 		}
+	}
+
+	getLanguages() {
+		return this.keys;
+	}
+
+	getFallback() {
+		return config.fallbackLanguage ?? 'en-US';
+	}
+
+	translate(guild: Guild | null, key: string, args?: {[key: string]: string | number}) {
+		const languageCode = guild?.settings?.language as LocaleString;
+		const language = this.get(languageCode ?? this.getFallback());
+		if (!language) return 'Invalid language set in data.';
+		return language(key, args) as string;
 	}
 }
