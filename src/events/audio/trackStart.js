@@ -29,7 +29,7 @@ class TrackStart extends Event {
 			.setTitle('music/np:AUTHOR')
 			.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 
-		const message = await bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).catch(() => {});
+		const message = await bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).catch();
 
 		player.setNowPlayingMessage(message);
 
