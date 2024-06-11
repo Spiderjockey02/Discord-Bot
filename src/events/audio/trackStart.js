@@ -29,8 +29,9 @@ class TrackStart extends Event {
 			.setTitle('music/np:AUTHOR')
 			.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
 
-		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
-			.then(m => m.timedDelete({ timeout: (track.duration < 6.048e+8) ? track.duration : 60000 }));
+		const message = await bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] }).catch();
+
+		player.setNowPlayingMessage(message);
 
 		// clear timeout (for queueEnd event)
 		if (player.timeout != null) return clearTimeout(player.timeout);

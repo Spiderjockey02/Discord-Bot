@@ -16,8 +16,6 @@ module.exports = Structure.extend('Player', Player => {
 			this.nightcore = false;
 			this.slowmo = false;
 			this.vaporwave = false;
-			// for Autoplay
-			this.autoplay = false;
 		}
 
 		// update bassboost filter
