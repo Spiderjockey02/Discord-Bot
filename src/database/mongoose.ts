@@ -1,8 +1,8 @@
-import { Client } from "discord.js";
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import EgglordClient from '../base/Egglord';
 
 export default {
-	init: (bot: Client) => {
+	init: (client: EgglordClient) => {
 		const dbOptions = {
 			useNewUrlParser: true,
 			autoIndex: false,
@@ -10,16 +10,16 @@ export default {
 			family: 4,
 			useUnifiedTopology: true,
 		};
-		mongoose.connect(bot.config.MongoDBURl, dbOptions);
+		mongoose.connect(client.config.MongoDBURl, dbOptions);
 		mongoose.Promise = global.Promise;
 		mongoose.connection.on('connected', () => {
-			bot.logger.ready('MongoDB successfully connected');
+			client.logger.ready('MongoDB successfully connected');
 		});
 		mongoose.connection.on('err', (err) => {
-			bot.logger.error(`MongoDB has encountered an error: \n ${err.stack}`);
+			client.logger.error(`MongoDB has encountered an error: \n ${err.stack}`);
 		});
 		mongoose.connection.on('disconnected', () => {
-			bot.logger.error('MongoDB disconnected');
+			client.logger.error('MongoDB disconnected');
 		});
 	},
 	async ping() {
