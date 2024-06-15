@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
 const router = Router();
 
 // Guild page

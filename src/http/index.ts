@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import EgglordClient from 'src/base/Egglord';
-import { ExtendedRequest, ExtendedResponse } from 'src/types';
+import EgglordClient from '../base/Egglord';
+import { ExtendedRequest, ExtendedResponse } from '../types';
 import config from '../config';
 const app = express();
 
