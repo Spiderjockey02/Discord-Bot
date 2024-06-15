@@ -29,7 +29,7 @@ export default class GuildUnavailable extends Event {
 		// only show error once an hour
 		if (unavailableGuilds.includes(guild.id)) {
 			// remove guild from array after an error
-			setTimeout(function() {
+			setTimeout(() => {
 				unavailableGuilds.splice(unavailableGuilds.indexOf(guild.id), 1);
 				// 1 hour interval
 			}, 60 * 60 * 1000);

@@ -1,7 +1,6 @@
 import { AutoModerationRule, Events } from 'discord.js';
-import { Event } from '../../structures';
+import { Event, EgglordEmbed } from '../../structures';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel create event
@@ -24,27 +23,29 @@ export default class AutoModerationRuleUpdate extends Event {
    * @readonly
   */
 	async run(client: EgglordClient, _oldAutoModerationRule: AutoModerationRule, newAutoModerationRule: AutoModerationRule) {
+		client.logger.debug(`Guild: ${newAutoModerationRule.guild.id} has updated an auto moderation rule: ${newAutoModerationRule.name}.`);
+
 		const { guild } = newAutoModerationRule;
 
 		// Check if event AutoModerationRuleUpdate is for logging
 		const moderationSettings = guild.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, guild);
-			// Check if exempt channels has changed
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// Check if exempt roles has changed
+		const embed = new EgglordEmbed(client, guild);
+		// Check if exempt channels has changed
 
-			// Check if punishment has changed
+		// Check if exempt roles has changed
 
-			// Check if actions has changed
+		// Check if punishment has changed
 
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		// Check if actions has changed
+
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

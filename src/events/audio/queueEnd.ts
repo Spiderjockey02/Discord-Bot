@@ -32,14 +32,13 @@ export default class QueueEnd extends Event {
 			if (player.textChannel == undefined) return;
 			const textChannel = guild.channels.cache.get(player.textChannel) as TextBasedChannel;
 
-
 			// Don't leave channel if 24/7 mode is active
 			// if (player.twentyFourSeven) return;
 			const vcName = player.voiceChannel ? guild.channels.cache.get(player.voiceChannel)?.name ?? 'unknown' : 'unknown';
 
 			// const vcName = client.channels.cache.get(player.voiceChannel)?.name ?? 'unknown';
 			const embed = new EmbedBuilder()
-				.setDescription(guild.translate('music/dc:INACTIVE', { VC: vcName }));
+				.setDescription(client.languageManager.translate(guild, 'music/dc:INACTIVE', { VC: vcName }));
 
 			textChannel?.send({ embeds: [embed] });
 			player.destroy();

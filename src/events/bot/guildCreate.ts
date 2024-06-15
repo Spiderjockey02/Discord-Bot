@@ -30,8 +30,8 @@ export default class GuildCreate extends Event {
 		try {
 			// Create guild settings and fetch cache.
 			await guild.fetchSettings();
-		} catch (err: any) {
-			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 
 		// Send message to channel that client has joined a server

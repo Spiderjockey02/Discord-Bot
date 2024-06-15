@@ -1,7 +1,6 @@
-import { Events, GuildBan } from 'discord.js';
+import { Colors, Events, GuildBan } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { Event } from '../../structures';
-import { EgglordEmbed } from '../../utils';
+import { Event, EgglordEmbed } from '../../structures';
 
 /**
  * Guild ban remove event
@@ -19,7 +18,7 @@ export default class GuildBanRemove extends Event {
 	/**
 	 * Function for receiving event.
 	 * @param {client} client The instantiating client
-	 * @param {GuildBan} ban The ban that was removed
+	 * @param {GuildBan} guildBan The ban that was removed
 	 * @readonly
 	*/
 	async run(client: EgglordClient, guildBan: GuildBan) {
@@ -34,27 +33,27 @@ export default class GuildBanRemove extends Event {
 		}
 
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Member: ${user.displayName} has been unbanned in guild: ${guild.id}.`);
+		client.logger.debug(`Member: ${user.displayName} has been unbanned in guild: ${guild.id}.`);
 
 		// Check if event guildBanRemove is for logging
 		const moderationSettings = guild.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, guild)
-				.setDescription(`User: ${user}`)
-				.setColor(15158332)
-				.setAuthor({ name: 'User unbanned:', iconURL: user.displayAvatarURL() })
-				.setThumbnail(user.displayAvatarURL())
-				.setTimestamp()
-				.setFooter({ text: `ID: ${user.id}` });
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
+		const embed = new EgglordEmbed(client, guild)
+			.setDescription(client.languageManager.translate(guild, 'events/guild:USER', { USER: `${user}` }))
+			.setColor(Colors.Red)
+			.setAuthor({ name: client.languageManager.translate(guild, 'events/guild:USER_UNBAN'), iconURL: user.displayAvatarURL() })
+			.setThumbnail(user.displayAvatarURL())
+			.setTimestamp()
+			.setFooter({ text: client.languageManager.translate(guild, 'misc:ID', { ID: user.id }) });
 
-			// Find channel and send message
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		// Find channel and send message
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel && modChannel.guild.id == guild.id) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
+
 }

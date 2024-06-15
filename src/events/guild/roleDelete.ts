@@ -1,7 +1,6 @@
-import { Event } from '../../structures';
-import { Events, Role } from 'discord.js';
+import { Event, EgglordEmbed } from '../../structures';
+import { Colors, Events, Role } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 /**
  * Role delete event
@@ -24,26 +23,25 @@ export default class RoleDelete extends Event {
 	*/
 	async run(client: EgglordClient, role: Role) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Role: ${role.name} has been deleted in guild: ${role.guild.id}.`);
-
+		client.logger.debug(`Role: ${role.name} has been deleted in guild: ${role.guild.id}.`);
 
 		const moderationSettings = role.guild?.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, role.guild)
-				.setDescription(`**Role: ${role} (${role.name}) was deleted**`)
-				.setColor(15158332)
-				.setFooter({ text: `ID: ${role.id}` })
-				.setAuthor({ name: role.guild.name, iconURL: role.guild.iconURL() ?? undefined })
-				.setTimestamp();
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// Find channel and send message
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await role.guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		const embed = new EgglordEmbed(client, role.guild)
+			.setDescription(client.languageManager.translate(role.guild, 'events/role:DELETE_DESC', { ROLE: `${role}`, NAME: role.name }))
+			.setColor(Colors.Red)
+			.setFooter({ text: client.languageManager.translate(role.guild, 'misc:ID', { ID: role.id }) })
+			.setAuthor({ name: role.guild.name, iconURL: role.guild.iconURL() ?? undefined })
+			.setTimestamp();
+
+		// Find channel and send message
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await role.guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

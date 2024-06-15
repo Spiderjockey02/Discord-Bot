@@ -1,8 +1,7 @@
-import { Guild, TextBasedChannel, User } from 'discord.js';
+import { TextBasedChannel } from 'discord.js';
 import { Player, Track } from 'magmastream';
-import { Event } from '../../structures';
+import { Event, EgglordEmbed } from '../../structures';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 /**
  * Track start event
@@ -28,13 +27,14 @@ export default class TrackStart extends Event {
 	async run(client: EgglordClient, player: Player, track: Track) {
 		if (player.textChannel !== null) {
 			const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
-			const requester = track.requester as User;
+			const requester = track.requester;
+			const member = client.guilds.cache.get(player.guild)?.members.cache.get(requester?.id ?? '');
 
 			// When a song starts
-			const embed = new EgglordEmbed(client, client.guilds.cache.get(player.guild) as Guild)
-				.setColor(client.guilds.cache.get(player.guild)?.members.cache.get(requester?.id)?.displayHexColor ?? null)
+			const embed = new EgglordEmbed(client, client.guilds.cache.get(player.guild) ?? null)
+				.setColor(member?.displayHexColor ?? null)
 				.setTitle('music/np:AUTHOR')
-				.setDescription(`[${track.title}](${track.uri}) [${client.guilds.cache.get(player.guild)?.members.cache.get(requester?.id)}]`);
+				.setDescription(`[${track.title}](${track.uri}) [${member}]`);
 
 			channel.send({ embeds: [embed] });
 		}

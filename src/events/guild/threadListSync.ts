@@ -23,13 +23,13 @@ export default class ThreadListSync extends Event {
 	*/
 	async run(client: EgglordClient, threads: Collection<Snowflake, ThreadChannel>) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`${threads.size} thread(s) have now been synced in guild: ${threads.first()?.guildId}`);
+		client.logger.debug(`${threads.size} thread(s) have now been synced in guild: ${threads.first()?.guildId}`);
 
 		for (const thread of threads) {
 			try {
-				await thread.join();
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+				thread.join();
+			} catch (err) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 			}
 		}
 	}

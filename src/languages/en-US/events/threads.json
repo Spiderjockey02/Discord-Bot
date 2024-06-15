@@ -1,0 +1,9 @@
+{
+  "NAME_DESC": "**Thread name changed of {{NAME}}**",
+  "ARCHIVE_DESC": "**Thread archive state changed of {{NAME}}**",
+  "UPDATE_DESC": "**Thread members updated in {{NAME}}**",
+  "ADDED_MEM": "Added members [{{NUM}}]:",
+  "REMOVE_MEM": "Removed member [{{NUM}}]:",
+  "DELETE_DESC": "**{{TYPE}} thread deleted: {{NAME}}**\n\nOwner: {{USERNAME}}",
+  "CREATE_DESC": "**{{TYPE}} thread created: {{NAME}}**\n\nOwner: {{USERNAME}}"
+}
