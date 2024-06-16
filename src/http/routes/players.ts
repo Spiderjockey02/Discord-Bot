@@ -1,7 +1,7 @@
 import { BaseGuildTextChannel, Guild, GuildTextBasedChannel, User } from 'discord.js';
 import { Router } from 'express';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
+import { EgglordEmbed } from '../../structures';
 const router = Router();
 
 export function run(client: EgglordClient) {
@@ -101,7 +101,7 @@ export function run(client: EgglordClient) {
 			case 'empty':
 				// An error occured or couldn't find the track
 				if (!player.queue.current) player.destroy();
-				return res.status(400).json({ error: guild.translate('music/play:NO_SONG') });
+				return res.status(400).json({ error: client.languageManager.translate(guild, 'music/play:NO_SONG') });
 			case 'playlist':
 				if (player.state !== 'CONNECTED') player.connect();
 
@@ -111,9 +111,13 @@ export function run(client: EgglordClient) {
 
 				if (player.textChannel) {
 					const textChannel = guild.channels.cache.get(player.textChannel) as GuildTextBasedChannel;
-					textChannel.send({ embeds: [new EgglordEmbed(client, guild)
+					const embed = new EgglordEmbed(client, guild)
 						.setColor(guild.members.cache.get(user.id)?.displayHexColor ?? client.config.embedColor)
-						.setDescription(guild.translate('music/play:QUEUED', { NUM: result.tracks.length }))] });
+						.setDescription(
+							client.languageManager.translate(guild, 'music/play:QUEUED', { NUM: result.tracks.length }),
+						);
+
+					textChannel.send({ embeds: [embed] });
 				}
 
 				res.status(200).json({ success: `Added ${result.tracks.length} songs to the queue.` });
@@ -126,9 +130,13 @@ export function run(client: EgglordClient) {
 					player.play();
 				} else if (player.textChannel) {
 					const textChannel = guild.channels.cache.get(player.textChannel) as GuildTextBasedChannel;
-					textChannel.send({ embeds: [new EgglordEmbed(client, guild)
+					const embed = new EgglordEmbed(client, guild)
 						.setColor(guild.members.cache.get(user.id)?.displayHexColor ?? client.config.embedColor)
-						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: result.tracks[0].title, URL: result.tracks[0].uri }))] });
+						.setDescription(
+							client.languageManager.translate(guild, 'music/play:SONG_ADD', { TITLE: result.tracks[0].title, URL: result.tracks[0].uri }),
+						);
+
+					textChannel.send({ embeds: [embed] });
 				}
 				res.status(200).json({ success: `Added ${result.tracks[0].title} to the queue.` });
 		}
@@ -161,7 +169,9 @@ export function run(client: EgglordClient) {
 			res.status(200).json({ success: `Removed ${title} from the queue` });
 			if (player.textChannel) {
 				const textChannel = client.channels.cache.get(player.textChannel) as BaseGuildTextChannel;
-				textChannel?.send(guild.translate('music/remove:REMOVED', { TITLE: title }));
+				textChannel?.send({
+					content: client.languageManager.translate(guild, 'music/remove:REMOVED', { TITLE: title }),
+				});
 			}
 		} else {
 			// Validate
@@ -181,7 +191,9 @@ export function run(client: EgglordClient) {
 			res.status(200).json({ success: `Removed ${songsToRemove + 1} songs from the queue` });
 			if (player.textChannel) {
 				const textChannel = client.channels.cache.get(player.textChannel) as BaseGuildTextChannel;
-				textChannel?.send(guild.translate(guild.translate('music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 })));
+				textChannel?.send({
+					content: client.languageManager.translate(guild, 'music/remove:REMOVED_MULTI', { NUM: songsToRemove + 1 }),
+				});
 			}
 		}
 	});

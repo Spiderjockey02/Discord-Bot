@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
-import { PermissionsBitField, Message, Guild, AutocompleteInteraction, ApplicationCommandOption, CommandInteractionOptionResolver, ChatInputCommandInteraction } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from 'src/types/Structure';
+import { PermissionFlagsBits, Message, Guild, AutocompleteInteraction, ApplicationCommandOption, ChatInputCommandInteraction } from 'discord.js';
+import EgglordClient from '../base/Egglord';
+import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from '../types/Structure';
 import { Setting } from '@prisma/client';
 
 /**
@@ -13,11 +13,11 @@ export default class Command {
 	help: CommandHelpInterface;
 	conf: CommandConfInterface;
 	constructor({
-		name = '',
+		name,
 		guildOnly = false,
 		dirname = '',
 		aliases = new Array<string>(),
-		botPermissions = [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
+		botPermissions = [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 		userPermissions = new Array<bigint>(),
 		examples = new Array<string>(),
 		nsfw = false,
@@ -40,7 +40,7 @@ export default class Command {
 	 * @param {message} _message The message that ran the command
 	 * @readonly
 	*/
-	async run(_client: EgglordClient, _message: Message<true>, _settings?: Setting): Promise<any> {
+	async run(_client: EgglordClient, _message: Message, _settings?: Setting): Promise<any> {
 		throw new Error(`Command: ${this.help.name} does not have a run method`);
 	}
 
@@ -51,7 +51,7 @@ export default class Command {
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(_client: EgglordClient, _interaction: ChatInputCommandInteraction<'cached'>, _guild?: Guild, _args?: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>) {
+	async callback(_client: EgglordClient, _interaction: ChatInputCommandInteraction<'cached'>, _guild?: Guild): Promise<any> {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
 

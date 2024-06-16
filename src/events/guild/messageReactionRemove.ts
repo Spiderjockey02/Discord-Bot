@@ -1,7 +1,6 @@
-import { Events, MessageReaction, User } from 'discord.js';
+import { Colors, Events, MessageReaction, User } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { Event } from '../../structures';
-import { EgglordEmbed } from '../../utils';
+import { Event, EgglordEmbed } from '../../structures';
 
 /**
  * Message reaction remove event
@@ -25,7 +24,7 @@ export default class MessageReactionRemove extends Event {
 	*/
 	async run(client: EgglordClient, reaction: MessageReaction, user: User) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Message reaction removed${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
+		client.logger.debug(`Message reaction removed${!reaction.message.guild ? '' : ` in guild: ${reaction.message.guild.id}`}`);
 
 		// Make sure it's not a client and in a guild
 		if (user.client || !reaction.message.guild) return;
@@ -34,8 +33,8 @@ export default class MessageReactionRemove extends Event {
 		try {
 			if (reaction.partial) await reaction.fetch();
 			if (reaction.message.partial) await reaction.message.fetch();
-		} catch (err: any) {
-			return client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err) {
+			return client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 
 		// make sure the message author isn't the client
@@ -43,22 +42,21 @@ export default class MessageReactionRemove extends Event {
 
 		// Check if event messageReactionRemove is for logging
 		const moderationSettings = reaction.message.guild?.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, reaction.message.guild)
-				.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
-				.setColor(15158332)
-				.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
-				.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
-				.setTimestamp();
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
+		const embed = new EgglordEmbed(client, reaction.message.guild)
+			.setDescription(`**${user.toString()} unreacted with ${reaction.emoji.toString()} to [this message](${reaction.message.url})** `)
+			.setColor(Colors.Red)
+			.setFooter({ text: `User: ${user.id} | Message: ${reaction.message.id} ` })
+			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
+			.setTimestamp();
 
-			// Find channel and send message
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await reaction.message.guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		// Find channel and send message
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await reaction.message.guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

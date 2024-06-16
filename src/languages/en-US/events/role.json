@@ -1,1 +1,7 @@
-{}
+{
+  "NAME_DESC": "**Role name of {{ROLE}} ({{NAME}}) changed**",
+  "COLOUR_DESC": "**Role colour of {{ROLE}} ({{COLOUR}}) changed**",
+  "PERM_DESC": "**Role permissions of {{ROLE}} ({{NAME}}) changed**\n[What those numbers mean](https://discordapi.com/permissions.html#{{perm}})",
+  "DELETE_DESC": "**Role: {{ROLE}} ({{NAME}}) was deleted**",
+  "CREATE_DESC": "**Role: {{ROLE}} ({{NAME}}) was created**"
+}

@@ -1,7 +1,6 @@
-import { Events, Sticker } from 'discord.js';
+import { APIEmbed, Colors, Events, Guild, JSONEncodable, Sticker } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { Event } from '../../structures';
-import { EgglordEmbed } from '../../utils';
+import { Event, EgglordEmbed } from '../../structures';
 
 /**
  * Sticker update event
@@ -25,53 +24,51 @@ export default class StickerUpdate extends Event {
 	*/
 	async run(client: EgglordClient, oldSticker: Sticker, newSticker: Sticker) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Sticker: ${newSticker.name} has been updated in guild: ${newSticker.guildId}. (${newSticker.type})`);
+		client.logger.debug(`Sticker: ${newSticker.name} has been updated in guild: ${newSticker.guildId}. (${newSticker.type})`);
 
 		// Check if event channelCreate is for logging
 		const moderationSettings = newSticker.guild?.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			let embed, updated = false;
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// sticker name change
-			if (oldSticker.name != newSticker.name) {
-				embed = new EgglordEmbed(client, newSticker.guild)
-					.setDescription(`Sticker name changed of ${newSticker.name}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newSticker.id}` })
-					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() ?? undefined })
-					.addFields(
-						{ name: 'Old:', value: `${oldSticker.name}`, inline: true },
-						{ name: 'New:', value: `${newSticker.name}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
-			}
+		// sticker name change
+		if (oldSticker.name != newSticker.name) {
+			const embed = new EgglordEmbed(client, newSticker.guild)
+				.setDescription(client.languageManager.translate(newSticker.guild, 'events/sticker:NAME_DESC', { NAME: newSticker.name }))
+				.setColor(Colors.Orange)
+				.setFooter({ text: client.languageManager.translate(newSticker.guild, 'misc:ID', { ID: newSticker.id }) })
+				.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() ?? undefined })
+				.addFields(
+					{ name: client.languageManager.translate(newSticker.guild, 'misc:OLD'), value: `${oldSticker.name}`, inline: true },
+					{ name: client.languageManager.translate(newSticker.guild, 'misc:NEW'), value: `${newSticker.name}`, inline: true },
+				)
+				.setTimestamp();
+			this.sendEmbed(client, newSticker.guild, embed, moderationSettings.loggingChannelId);
+		}
 
-			// sticker description change
-			if (oldSticker.description != newSticker.description) {
-				embed = new EgglordEmbed(client, newSticker.guild)
-					.setDescription(`Sticker description changed of ${newSticker.name}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newSticker.id}` })
-					.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() ?? undefined })
-					.addFields(
-						{ name: 'Old:', value: `${oldSticker.description}`, inline: true },
-						{ name: 'New:', value: `${newSticker.description}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
-			}
+		// sticker description change
+		if (oldSticker.description != newSticker.description) {
+			const embed = new EgglordEmbed(client, newSticker.guild)
+				.setDescription(client.languageManager.translate(newSticker.guild, 'events/sticker:DESC_DESC', { NAME: newSticker.name }))
+				.setColor(Colors.Orange)
+				.setFooter({ text: client.languageManager.translate(newSticker.guild, 'misc:ID', { ID: newSticker.id }) })
+				.setAuthor({ name: newSticker.guild.name, iconURL: newSticker.guild.iconURL() ?? undefined })
+				.addFields(
+					{ name: client.languageManager.translate(newSticker.guild, 'misc:OLD'), value: `${oldSticker.description}`, inline: true },
+					{ name: client.languageManager.translate(newSticker.guild, 'misc:NEW'), value: `${newSticker.description}`, inline: true },
+				)
+				.setTimestamp();
+			this.sendEmbed(client, newSticker.guild, embed, moderationSettings.loggingChannelId);
+		}
+	}
 
-			// Find channel and send message
-			if (updated) {
-				try {
-					if (moderationSettings.loggingChannelId == null || embed == undefined) return;
-					const modChannel = await newSticker.guild.channels.fetch(moderationSettings.loggingChannelId);
-					if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-				} catch (err: any) {
-					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-				}
-			}
+	async sendEmbed(client: EgglordClient, guild: Guild, embed: JSONEncodable<APIEmbed>, loggingChannelId: string | null) {
+		// Find channel and send message
+		try {
+			if (loggingChannelId == null || embed == undefined) return;
+			const modChannel = await guild.channels.fetch(loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

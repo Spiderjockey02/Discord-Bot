@@ -1,1 +1,16 @@
-{}
+{
+  "USER_BAN": "User banned:",
+  "USER_UNBAN": "User unbanned:",
+  "USER_JOIN": "User joined:",
+  "MEMBER_ADD_DESC": "{{MEMBER}}\nMember count: {{COUNT}}",
+  "USER_LEFT": "User left:",
+  "JOIN_AT": "Joined at:",
+  "EVENT_START_DESC": "**Event: {{NAME}} has been created.**\nStarts at: {{START_AT}}\nEnds at {{END_AT}}",
+
+  "NAME_DESC": "**Server name changed**",
+  "BANNER_DESC": "**Server banner changed**",
+  "AFK_DESC": "**Server AFK channel changed**",
+  "VANITY_DESC": "**Server Vanity URL changed**",
+  "INCR_BOOSTER_DESC": "**Server boost increased**",
+  "DECRE_BOOSTER_DESC": "**Server boost decreased**"
+}

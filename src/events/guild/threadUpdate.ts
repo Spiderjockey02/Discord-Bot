@@ -1,7 +1,6 @@
-import { Event } from '../../structures';
-import { Events, ThreadChannel } from 'discord.js';
+import { Event, EgglordEmbed } from '../../structures';
+import { APIEmbed, Colors, Events, Guild, JSONEncodable, ThreadChannel } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 /**
  * Thread update event
@@ -25,53 +24,51 @@ export default class ThreadUpdate extends Event {
 	*/
 	async run(client: EgglordClient, oldThread: ThreadChannel, newThread: ThreadChannel) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type})`);
+		client.logger.debug(`Thread: ${newThread.name} has been updated in guild: ${newThread.guildId}. (${newThread.type})`);
 
 		// Check if event channelCreate is for logging
 		const moderationSettings = newThread.guild?.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			let embed, updated = false;
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// thread name change
-			if (oldThread.name != newThread.name) {
-				embed = new EgglordEmbed(client, newThread.guild)
-					.setDescription(`**Thread name changed of ${newThread.toString()}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newThread.id}` })
-					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
-					.addFields(
-						{ name: 'Old:', value: `${oldThread.name}`, inline: true },
-						{ name: 'New:', value: `${newThread.name}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
-			}
+		// thread name change
+		if (oldThread.name != newThread.name) {
+			const embed = new EgglordEmbed(client, newThread.guild)
+				.setDescription(client.languageManager.translate(newThread.guild, 'events/threads:NAME_DESC', { NAME: `${newThread}` }))
+				.setColor(Colors.Orange)
+				.setFooter({ text: client.languageManager.translate(newThread.guild, 'misc:ID', { ID: newThread.id }) })
+				.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
+				.addFields(
+					{ name: client.languageManager.translate(newThread.guild, 'misc:OLD'), value: `${oldThread.name}`, inline: true },
+					{ name: client.languageManager.translate(newThread.guild, 'misc:NEW'), value: `${newThread.name}`, inline: true },
+				)
+				.setTimestamp();
+			this.sendEmbed(client, newThread.guild, embed, moderationSettings.loggingChannelId);
+		}
 
-			// thread archive state change
-			if (oldThread.archived != newThread.archived) {
-				embed = new EgglordEmbed(client, newThread.guild)
-					.setDescription(`**Thread archive state changed of ${newThread.toString()}**`)
-					.setColor(15105570)
-					.setFooter({ text: `ID: ${newThread.id}` })
-					.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
-					.addFields(
-						{ name: 'Old:', value: `${oldThread.archived}`, inline: true },
-						{ name: 'New:', value: `${newThread.archived}`, inline: true },
-					)
-					.setTimestamp();
-				updated = true;
-			}
+		// thread archive state change
+		if (oldThread.archived != newThread.archived) {
+			const embed = new EgglordEmbed(client, newThread.guild)
+				.setDescription(client.languageManager.translate(newThread.guild, 'events/threads:ARCHIVE_DESC', { NAME: `${newThread}` }))
+				.setColor(Colors.Orange)
+				.setFooter({ text: client.languageManager.translate(newThread.guild, 'misc:ID', { ID: newThread.id }) })
+				.setAuthor({ name: newThread.guild.name, iconURL: newThread.guild.iconURL() ?? undefined })
+				.addFields(
+					{ name: client.languageManager.translate(newThread.guild, 'misc:OLD'), value: `${oldThread.archived}`, inline: true },
+					{ name: client.languageManager.translate(newThread.guild, 'misc:NEW'), value: `${newThread.archived}`, inline: true },
+				)
+				.setTimestamp();
+			this.sendEmbed(client, newThread.guild, embed, moderationSettings.loggingChannelId);
+		}
+	}
 
-			// Find channel and send message
-			if (updated) {
-				try {
-					if (moderationSettings.loggingChannelId == null || embed == undefined) return;
-					const modChannel = await newThread.guild.channels.fetch(moderationSettings.loggingChannelId);
-					if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-				} catch (err: any) {
-					client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-				}
-			}
+	async sendEmbed(client: EgglordClient, guild: Guild, embed: JSONEncodable<APIEmbed>, loggingChannelId: string | null) {
+		// Find channel and send message
+		try {
+			if (loggingChannelId == null || embed == undefined) return;
+			const modChannel = await guild.channels.fetch(loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

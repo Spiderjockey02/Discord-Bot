@@ -1,0 +1,6 @@
+{
+  "NAME_DESC": "**Sticker name changed of {{NAME}}**",
+  "DESC_DESC": "**Sticker description changed of {{NAME}}**",
+  "DELETE_DESC": "**Sticker deleted: {{NAME}}**",
+  "CREATE_DESC": "**Sticker created: {{NAME}}**\nCreated by: {{USER}}"
+}

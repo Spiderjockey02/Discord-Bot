@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Collection, EmbedBuilder, GuildChannel, Message, OverwriteResolvable, PermissionFlagsBits, TextChannel, User } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Collection, Colors, EmbedBuilder, GuildChannel, Message, OverwriteResolvable, PermissionFlagsBits, TextChannel, User } from 'discord.js';
+import EgglordClient from '../base/Egglord';
 import { ticketSettingType } from '../types/database';
-import { EgglordEmbed } from '../utils';
 import { setTimeout } from 'timers/promises';
+import { EgglordEmbed } from '../structures';
 
 export default class TicketManager {
 	cache: Collection<string, string>;
@@ -49,10 +49,10 @@ export default class TicketManager {
 
 		// Create the embed
 		const embed = new EmbedBuilder()
-			.setColor(0xFF5555)
+			.setColor(Colors.Orange)
 			.addFields(
-				{ name: guild.translate('ticket/ticket-create:FIELD1', { USERNAME: user.displayName }), value: guild.translate('ticket/ticket-create:FIELDT') },
-				{ name: guild.translate('ticket/ticket-create:FIELD2'), value: `${reason}` },
+				{ name: this.client.languageManager.translate(guild, 'ticket/ticket-create:FIELD1', { USERNAME: user.displayName }), value: this.client.languageManager.translate(guild, 'ticket/ticket-create:FIELDT') },
+				{ name: 'ticket/ticket-create:FIELD2', value: `${reason}` },
 			)
 			.setTimestamp();
 
@@ -119,7 +119,7 @@ export default class TicketManager {
 
 		const embed = new EgglordEmbed(this.client, channel.guild)
 			.setTitle('ticket/ticket:TITLE_REACT')
-			.setDescription(channel.guild.translate('ticket/ticket:REACT_DESC'));
+			.setDescription(this.client.languageManager.translate(channel.guild, 'ticket/ticket:REACT_DESC'));
 			// Create button
 		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(

@@ -46,8 +46,8 @@ export default class GuildDelete extends Event {
 
 			const modChannel = await client.channels.fetch(client.config.SupportServer.GuildChannel).catch(() => client.logger.error(`Error fetching guild: ${guild.id} logging channel`));
 			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed, attachment]);
-		} catch (err: any) {
-			client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

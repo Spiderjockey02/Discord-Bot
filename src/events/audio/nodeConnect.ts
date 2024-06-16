@@ -1,5 +1,5 @@
 import { Node } from 'magmastream';
-import { Event } from '../../structures';
+import { Event, EgglordEmbed } from '@structures';
 import EgglordClient from '../../base/Egglord';
 
 /**
@@ -24,5 +24,21 @@ export default class NodeConnect extends Event {
 	*/
 	async run(client: EgglordClient, node: Node) {
 		client.logger.ready(`Lavalink node: ${node.options.identifier} has connected.`);
+
+		// Send to support server for logging
+		if (!client.config.SupportServer.GuildChannel) return;
+
+		// Make sure the channel is a Text-based channel
+		const channel = client.channels.cache.get(client.config.SupportServer.GuildChannel);
+		if (!channel?.isTextBased()) return;
+
+		const embed = new EgglordEmbed(client, null)
+			.setTitle(`Node Connected: ${node.options.identifier}`)
+			.addFields({
+				name: 'd',
+				value: '',
+			});
+
+		channel.send({ embeds: [embed] });
 	}
 }

@@ -1,7 +1,6 @@
-import { ChannelType, DMChannel, Events, GuildChannel } from 'discord.js';
+import { ChannelType, Colors, DMChannel, Events, GuildChannel } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { Event } from '../../structures';
-import { EgglordEmbed } from '../../utils';
+import { Event, EgglordEmbed } from '../../structures';
 
 /**
  * Channel delete event
@@ -24,7 +23,7 @@ export default class ChannelDelete extends Event {
 	*/
 	async run(client: EgglordClient, channel: DMChannel | GuildChannel) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Channel: ${channel.type == ChannelType.DM ? channel.recipient?.displayName : channel.name} has been deleted${channel.type == ChannelType.DM ? '' : ` in guild: ${channel.guild.id}`}. (${ChannelType[channel.type]})`);
+		client.logger.debug(`Channel: ${channel.type == ChannelType.DM ? channel.recipient?.displayName : channel.name} has been deleted${channel.type == ChannelType.DM ? '' : ` in guild: ${channel.guild.id}`}. (${ChannelType[channel.type]})`);
 
 		// Don't really know but a check for DM must be made
 		if (channel.type == ChannelType.DM) return;
@@ -34,25 +33,25 @@ export default class ChannelDelete extends Event {
 
 		// IF it's a ticket channel and TICKET logging is enabled then don't show CHANNELDELETE log
 		const regEx = /ticket-\d{18}/g;
-		if (regEx.test(channel.name) && moderationSettings?.loggingEvents.find(l => l.name == this.conf.name)) return client.emit('ticketClose', channel);
+		if (regEx.test(channel.name)) return;
 
 		// Check if event channelDelete is for logging
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, channel.guild)
-				.setDescription(`**${ChannelType[channel.type]} channel deleted: ${'#' + channel.name}**`)
-				.setColor(15158332)
-				.setFooter({ text: `ID: ${channel.id}` })
-				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
-				.setTimestamp();
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// Find channel and send message
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await channel.guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		const embed = new EgglordEmbed(client, channel.guild)
+			.setDescription(client.languageManager.translate(channel.guild, 'events/channel:DELETE_TITLE', { TYPE: ChannelType[channel.type], NAME: channel.name }))
+			.setColor(Colors.Red)
+			.setFooter({ text: client.languageManager.translate(channel.guild, 'misc:ID', { ID: channel.id }) })
+			.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
+			.setTimestamp();
+
+		// Find channel and send message
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await channel.guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

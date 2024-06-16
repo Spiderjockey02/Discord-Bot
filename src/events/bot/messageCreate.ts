@@ -29,11 +29,11 @@ export default class MessageCreate extends Event {
 		message.guild?.client.commandManager.verify(message);
 
 		// Guild-only systems
-		if (message.guild !== null) {
+		if (message.inGuild()) {
 			const settings = message.guild.settings;
 			if (settings?.levelSystem) {
-				if (await message.guild.levels?.validate(message as Message<true>)) {
-					message.guild.levels?.calculateXP(message as Message<true>);
+				if (await message.guild.levels?.validate(message)) {
+					message.guild.levels?.calculateXP(message);
 				}
 			}
 		}

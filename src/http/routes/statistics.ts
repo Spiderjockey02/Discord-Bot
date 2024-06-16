@@ -1,13 +1,11 @@
-// Dependencies
 import { Router } from 'express';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../../base/Egglord';
 import { ChannelType } from 'discord.js';
 const router = Router();
 
 export function run(client: EgglordClient) {
 	// statistics page
 	router.get('/', async (_req, res) => {
-
 		const textChannelFilter = [ChannelType.GuildCategory, ChannelType.GuildDirectory];
 		const voiceChannelFilter = [ChannelType.GuildVoice, ChannelType.GuildStageVoice];
 		const categoryChannelFilter = [ChannelType.GuildCategory];

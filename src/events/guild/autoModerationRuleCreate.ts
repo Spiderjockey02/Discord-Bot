@@ -1,7 +1,6 @@
-import { AutoModerationAction, AutoModerationActionType, AutoModerationRule, AutoModerationRuleKeywordPresetType, AutoModerationTriggerMetadata, Events } from 'discord.js';
-import { Event } from '../../structures';
+import { AutoModerationAction, AutoModerationActionType, AutoModerationRule, AutoModerationRuleKeywordPresetType, AutoModerationTriggerMetadata, Colors, Events, Guild } from 'discord.js';
+import { Event, EgglordEmbed } from '../../structures';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 /**
  * Channel create event
@@ -27,63 +26,71 @@ export default class AutoModerationRuleCreate extends Event {
 
 		// Check if event AutoModerationRuleCreate is for logging
 		const moderationSettings = guild.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, guild)
-				.setTitle(`Auto-mod rule created: ${name}.`)
-				.setColor(3066993)
-				.addFields(
-					{ name: 'Exempt channels:', value: `${exemptChannels.size > 0 ? exemptChannels.map(c => `${c}`).join(',') : 'No exempt channels.'}`, inline: true },
-					{ name: 'Exempt roles:', value: `${exemptRoles.size > 0 ? exemptRoles.map(r => `${r}`).join(',') : 'No exempt roles.'}`, inline: true },
-					{ name: 'Punishment:', value: `${actions.length > 0 ? actions.map(a => this.punishmentParser(client, a)).join(',\n') : 'No action required.'}` },
-					{ name: 'Trigger:', value: this.triggerParser(triggerMetadata).join(',\n') },
-				)
-				.setFooter({ text: client.users.cache.get(creatorId)?.displayName ?? '', iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		// Parse lists
+		const exemptChannelsParsed = exemptChannels.size > 0 ? exemptChannels.map(c => `${c}`).join(',') : client.languageManager.translate(guild, 'events/automoderation:NO_EXEMPT_CHANNELS');
+		const exemptRolesParsed = exemptRoles.size > 0 ? exemptRoles.map(r => `${r}`).join(',') : client.languageManager.translate(guild, 'events/automoderation:NO_EXEMPT_ROLES');
+		const punishments = actions.length > 0 ? actions.map(action => this.punishmentParser(client, guild, action)).join(',\n') : client.languageManager.translate(guild, 'events/automoderation:NO_PUNISHMENT');
+
+		const embed = new EgglordEmbed(client, guild)
+			.setTitle('guild/automoderation:CREATE_TITLE', { name })
+			.setColor(Colors.Green)
+			.addFields(
+				{ name: client.languageManager.translate(guild, 'events/automoderation:EXEMPT_CHANNEL'), value: exemptChannelsParsed, inline: true },
+				{ name: client.languageManager.translate(guild, 'events/automoderation:EXEMPT_ROLES'), value: exemptRolesParsed, inline: true },
+				{ name: client.languageManager.translate(guild, 'events/automoderation:PUNISHMENT'), value: punishments },
+				{ name: client.languageManager.translate(guild, 'events/automoderation:TRIGGER'), value: this.triggerParser(client, guild, triggerMetadata).join(',\n') },
+			)
+			.setFooter({ text: client.users.cache.get(creatorId)?.displayName ?? '', iconURL: client.users.cache.get(creatorId)?.displayAvatarURL() });
+
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
+
 	}
 
 	/**
 	 * Function for parsing action of an auto moderation rule
 	 * @param {client} client The instantiating client
+	 * @param {Guild} guild The guild
 	 * @param {AutoModerationAction} action The action of this auto moderation rule.
 	 * @return {string}
 	*/
-	punishmentParser(client: EgglordClient, action: AutoModerationAction) {
+	punishmentParser(client: EgglordClient, guild: Guild, action: AutoModerationAction) {
 		switch (action.type) {
 			case AutoModerationActionType.BlockMessage:
-				return 'Type: `Block message`';
+				return client.languageManager.translate(guild, 'events/automoderation:BLOCK_MESSAGE');
 			case AutoModerationActionType.SendAlertMessage:
 				if (action.metadata.channelId == null) return '';
-				return `Type: \`Send Alert Message\` to ${client.channels.cache.get(action.metadata.channelId)}`;
+				return client.languageManager.translate(guild, 'events/automoderation:SEND_ALERT', { CHANNEL: `${client.channels.cache.get(action.metadata.channelId)}` });
 			case AutoModerationActionType.Timeout:
-				return `Type: \`Member Timeout\` for ${action.metadata.durationSeconds}s`;
+				return client.languageManager.translate(guild, 'events/automoderation:TIMEOUT', { DURATION: `${action.metadata.durationSeconds}` });
 		}
 	}
 
 	/**
 	 * Function for parsing triggers of an auto moderation rule
 	 * @param {client} client The instantiating client
+	 * @param {Guild} guild The guild
 	 * @param {AutoModerationTriggerMetadata} triggerMetadata The trigger metadata of the rule.
 	 * @return {string}
 	*/
-	triggerParser(triggerMetadata: AutoModerationTriggerMetadata) {
+	triggerParser(client: EgglordClient, guild: Guild, triggerMetadata: AutoModerationTriggerMetadata) {
 		const triggers = [];
 
 		// Check for keyword filtering
 		if (triggerMetadata.keywordFilter.length > 0) {
-			triggers.push(`Keywords: ${triggerMetadata.keywordFilter.join(', ')}`);
+			triggers.push(client.languageManager.translate(guild, 'events/automoderation:KEYWORDS', { WORDS: triggerMetadata.keywordFilter.join(', ') }));
 		}
 
 		// Check for regex pattern filtering
 		if (triggerMetadata.regexPatterns.length > 0) {
-			triggers.push(`Regex: ${triggerMetadata.regexPatterns.join(', ')}`);
+			triggers.push(client.languageManager.translate(guild, 'events/automoderation:REGEX', { REGEX: triggerMetadata.regexPatterns.join(', ') }));
 		}
 
 		// Check if any presets have been given (Profanity, SexualContent, Slurs)
@@ -92,27 +99,27 @@ export default class AutoModerationRuleCreate extends Event {
 			for (const presets of triggerMetadata.presets) {
 				switch (presets) {
 					case AutoModerationRuleKeywordPresetType.Profanity:
-						temp.push('Profanity');
+						temp.push(client.languageManager.translate(guild, 'events/automoderation:PROFANITY'));
 						break;
 					case AutoModerationRuleKeywordPresetType.SexualContent:
-						temp.push('Sexual Content');
+						temp.push(client.languageManager.translate(guild, 'events/automoderation:SEXUAL_CONTENT'));
 						break;
 					case AutoModerationRuleKeywordPresetType.Slurs:
-						temp.push('Slurs');
+						temp.push(client.languageManager.translate(guild, 'events/automoderation:SLURS'));
 						break;
 				}
 			}
-			triggers.push(`Presets: ${temp.join(', ')}`);
+			triggers.push(client.languageManager.translate(guild, 'events/automoderation:PRESETS', { VALUES: temp.join(', ') }));
 		}
 
 		// Check for words that should be ignored from they keyword filtering
 		if (triggerMetadata.allowList.length > 0) {
-			triggers.push(`Whitelisted words: ${triggerMetadata.allowList.join(', ')}`);
+			triggers.push(client.languageManager.translate(guild, 'events/automoderation:WHITELIST_WORDS', { WORDS: triggerMetadata.allowList.join(', ') }));
 		}
 
 		// The maximum number of mentions per a message
 		if (triggerMetadata.mentionTotalLimit) {
-			triggers.push(`Maximum mentions: ${triggerMetadata.mentionTotalLimit}`);
+			triggers.push(client.languageManager.translate(guild, 'events/automoderation:MAX_MENTIONS', { NUMBER: triggerMetadata.mentionTotalLimit }));
 		}
 
 		return triggers;

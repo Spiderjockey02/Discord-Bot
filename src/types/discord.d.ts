@@ -30,19 +30,10 @@ declare module 'discord.js' {
     languageManager: LanguageManager;
     customEmojis: typeof customEmojis;
     webhookManger: WebhookManager;
-    translate: (key: string, args?: {[key: string]: string | number}) => string
-  }
-
-  // Extend DM Channel
-  interface DMChannel {
-    error: (key: string, args: string, returnValue: boolean) => void
-    success: (key: string, args: string, returnValue: boolean) => void
-    checkPerm:() => true
   }
 
   // Extend Guild
   interface Guild extends GuildDB {
-    translate: (key: string, args?: {[key: string]: string | number}) => string
     settings: Prisma.SettingGetPayload<typeof fullSettings> | null
     isCurrentlyPlayingMusic: () => boolean | string
     fetchSettings:() => Promise<Prisma.SettingGetPayload<typeof fullSettings>>

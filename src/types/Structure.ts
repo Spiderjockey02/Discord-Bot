@@ -23,9 +23,9 @@ export interface CommandConfInterface {
 }
 
 export interface CommandConstruct {
-  name?: string
+  name: string
   guildOnly?: boolean
-  dirname?: string
+  dirname: string
   aliases?: string[]
   botPermissions?: bigint[]
   userPermissions?: bigint[]
@@ -41,7 +41,7 @@ export interface CommandConstruct {
 }
 
 export type giveawayEvents = 'endedGiveawayReactionAdded' | 'giveawayDeleted' | 'giveawayEnded' | 'giveawayReactionAdded' | 'giveawayReactionRemoved' | 'giveawayReolled'
-export type ExtendedClientEvents = keyof ClientEvents | keyof ManagerEvents | giveawayEvents | 'slashCreate' | 'ticketCreate' | 'ticketClose'
+export type ExtendedClientEvents = keyof ClientEvents | keyof ManagerEvents | giveawayEvents | 'ticketCreate' | 'ticketClose' | 'slashCreate'
 
 export interface IEventBase {
   name: ExtendedClientEvents

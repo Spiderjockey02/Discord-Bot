@@ -1,7 +1,7 @@
-import { Event } from '../../structures';
-import { Events, ThreadChannel } from 'discord.js';
+import { Event, EgglordEmbed } from '../../structures';
+import { Colors, Events, ThreadChannel } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
+
 /**
  * Thread delete event
  * @event Egglord#ThreadDelete
@@ -23,30 +23,29 @@ export default class ThreadDelete extends Event {
 	*/
 	async run(client: EgglordClient, thread: ThreadChannel) {
 		// For debugging
-		if (client.config.debug) client.logger.debug(`Thread: ${thread.name} has been deleted in guild: ${thread.guildId}. (${thread.type})`);
+		client.logger.debug(`Thread: ${thread.name} has been deleted in guild: ${thread.guildId}. (${thread.type})`);
 
 		// Check if event channelCreate is for logging
 		const moderationSettings = thread.guild?.settings?.moderationSystem;
-		if (moderationSettings && moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) {
-			const embed = new EgglordEmbed(client, thread.guild)
-				.setDescription([
-					`**${thread.type} thread deleted: ${thread.toString()}**`,
-					'',
-					`Owner: ${client.users.cache.get(thread.ownerId ?? '')?.displayName}`,
-				].join('\n'))
-				.setColor(15158332)
-				.setFooter({ text: thread.guild.translate('misc:ID', { ID: thread.id }) })
-				.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
-				.setTimestamp();
+		if (!moderationSettings || !moderationSettings.loggingEvents.find(l => l.name == this.conf.name)) return;
 
-			// Find channel and send message
-			try {
-				if (moderationSettings.loggingChannelId == null) return;
-				const modChannel = await thread.guild.channels.fetch(moderationSettings.loggingChannelId);
-				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
-			}
+		const creator = client.users.cache.get(thread.ownerId ?? '');
+		const embed = new EgglordEmbed(client, thread.guild)
+			.setDescription(
+				client.languageManager.translate(thread.guild, 'events/threads:DELETE_DESC', { TYPE: thread.type, NAME: `${thread}`, USERNAME: `${creator?.displayName}` }),
+			)
+			.setColor(Colors.Red)
+			.setFooter({ text: client.languageManager.translate(thread.guild, 'misc:ID', { ID: thread.id }) })
+			.setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
+			.setTimestamp();
+
+		// Find channel and send message
+		try {
+			if (moderationSettings.loggingChannelId == null) return;
+			const modChannel = await thread.guild.channels.fetch(moderationSettings.loggingChannelId);
+			if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
+		} catch (err) {
+			client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 		}
 	}
 }

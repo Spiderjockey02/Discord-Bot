@@ -1,0 +1,22 @@
+{
+  "CREATE_TITLE": "Auto-mod rule created: {{name}}.",
+  "EXEMPT_CHANNEL": "Exempt channels:",
+  "NO_EXEMPT_CHANNELS": "No exempt channels.",
+  "EXEMPT_ROLES": "Exempt roles:",
+  "NO_EXEMPT_ROLES": "No exempt roles.",
+  "PUNISHMENT": "Punishment:",
+  "NO_PUNISHMENT": "No action required.",
+  "TRIGGER": "Trigger:",
+  "BLOCK_MESSAGE": "Type: `Block message`",
+  "SEND_ALERT": "Type: `Send Alert Message` to {{CHANNEL}}",
+  "TIMEOUT": "Type: `Member Timeout` for {{DURATION}}s",
+  "KEYWORDS": "Keywords: {{WORDS}}",
+  "REGEX": "Regex: {{REGEX}}",
+  "PROFANITY": "Profanity",
+  "SEXUAL_CONTENT": "Sexual Content",
+  "SLURS": "Slurs",
+  "PRESETS": "Presets: {{VALUES}}.",
+  "WHITELIST_WORDS": "Whitelisted words: {{WORDS}}.",
+  "MAX_MENTIONS": "Maximum mentions: {{NUMBER}}.",
+  "DELETE_TITLE": "Auto-mod rule deleted: {{name}}."
+}
