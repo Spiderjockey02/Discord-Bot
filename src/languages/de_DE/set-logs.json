@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Aktualisiere das Log-Plugin.",
+  "USAGE": "set-Logs <option> [data]",
+  "TOGGLE": "Das Logging Plugin wurde auf `{{TOGGLE}} `gesetzt.",
+  "TITLE": "Protokollierungsfunktionen:",
+  "DESC": "Verfügbare Features: `{{FEAT}}`.\n\nAktuelle Features: `{{CUR_FEAT}}`.",
+  "ADD_LOG": "Hinzugefügt: {{LOG}} zum Loggen.",
+  "REM_LOG": "Hinzugefügt: {{LOG}} zum Loggen.",
+  "CHANNEL": "Logging-Kanal aktualisiert auf: <#{{ID}}>",
+  "TITLE_2": "Protokollinformationen",
+  "DESC_2": "**Kanal:** <#{{ID}}>\n**Aktiviert:** {{TOGGLE}}\n\n**Feature logging:** `{{FEAT}}`."
+}

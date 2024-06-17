@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "يرسل ميمز عشوائية.",
+  "USAGE": "meme",
+  "TITLE": "من {{SUBREDDIT}}",
+  "FOOTER": "👍 {{UPVOTES}}   👎 {{DOWNVOTES}}"
+}

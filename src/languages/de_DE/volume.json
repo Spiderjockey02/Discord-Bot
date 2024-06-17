@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Ändert die Lautstärke des Songs",
+  "USAGE": "lautstärke <Number>",
+  "CURRENT": "🔊 Das aktuelle Volume ist: **{{NUM}}%**.",
+  "UPDATED": "🔊 Player Sound gesetzt auf **{{NUM}}%**.",
+  "TOO_HIGH": "Bitte geben Sie eine Zahl zwischen 0 und 1000 ein."
+}

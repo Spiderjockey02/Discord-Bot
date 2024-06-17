@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Spielt einen Song.",
+  "USAGE": "abspielen <link / song name>",
+  "NOT_VC": "Du bist in keinem Sprachkanal, mit dem ich dich verbinden kann.",
+  "INVALID_FILE": "Dieses Dateiformat wird nicht unterstützt.",
+  "ERROR": "Beim Suchen ist ein Fehler aufgetreten: `{{ERROR}}`",
+  "NO_INPUT": "Bitte geben Sie einen Titelname/Url ein",
+  "QUEUED": "Warteschlange **{{NUM}}** Tracks",
+  "SONG_ADD": "Zur Warteschlange hinzugefügt: [{{TITLE}}]({{URL}})",
+  "NO_SONG": "Ich konnte diesen Song nicht finden.",
+  "QUEUE": "Warteschlange erfolgreich gestartet."
+}

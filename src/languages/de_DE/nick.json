@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Den Nicknamen eines Benutzers ändern.",
+  "USAGE": "nick <user> <name>",
+  "TOO_POWERFUL": "Der Nickname dieses Benutzers kann aufgrund seiner Stärke nicht geändert werden.",
+  "ENTER_NICKNAME": "Bitte gib einen Spitznamen ein.",
+  "LONG_NICKNAME": "Der Nickname muss kürzer als 32 Zeichen sein.",
+  "SUCCESS": "*Der Nickname von <@{{USER}} >.* wurde erfolgreich geändert"
+}

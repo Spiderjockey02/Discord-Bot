@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Erhalte Songtexte auf einem Song.",
+  "USAGE": "songtext [song]",
+  "NO_LYRICS": "Keine Liedtexte gefunden",
+  "FOOTER": "{{TAG}} angefordert"
+}

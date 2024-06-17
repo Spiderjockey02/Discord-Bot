@@ -1,0 +1,14 @@
+{
+    "ONE_DAY": "1 jour",
+    "DAYS": "{{amount}} jours",
+    "ONE_HOUR": "1 heure",
+    "HOURS": "{{amount}} heures",
+    "ONE_MINUTE": "1 minute",
+    "MINUTES": "{{amount}} minutes",
+    "ONE_SECOND": "1 seconde",
+    "SECONDS": "{{amount}} secondes",
+    "NOT_NUMBER": "Doit correspondre à un nombre.",
+    "INCORRECT_DELIMITERS": "Merci d'utiliser une des bases de temps suivantes : `d`,  `h`,  `m`, `s`.",
+    "MAX_TIME": "Ne peut pas être supérieur à 10 jours.",
+    "INVALID_TIME": "Une durée non valide a été saisie. (Exemple: 1m ou 16h)"
+}

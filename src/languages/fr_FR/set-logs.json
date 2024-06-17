@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Paramétrage du Plugin d'Audit.",
+  "USAGE": "set-logs <option> [data]",
+  "TOGGLE": "Le plug-in d'Audit est désormais `{{TOGGLE}}`.",
+  "TITLE": "Fonctionnalités d'Audit :",
+  "DESC": "Fonctionnalités disponibles : `{{FEAT}}`.\n\nFonctionnalités actuelles : `{{CUR_FEAT}}`.",
+  "ADD_LOG": "Audit ajouté : {{LOG}}.",
+  "REM_LOG": "Audit enlevé : {{LOG}}.",
+  "CHANNEL": "Les logs des Audits actifs apparaitront dans le salon : <#{{ID}}>",
+  "TITLE_2": "Informations sur les Audits",
+  "DESC_2": "**Salon :** <#{{ID}}>\n**Actif :** {{TOGGLE}}\n\n**Audit disponibles :** `{{FEAT}}`."
+}

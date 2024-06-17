@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Playlist laden",
+  "USAGE": "p-Load <playlist name>",
+  "QUEUE": "**{{NUM}} Songs** von **{{TITLE}}**.",
+  "NO_PLAYLIST": "Keine Playlist gefunden\\nKlicke auf den Hinzufügen-Button um eine zu erstellen"
+}

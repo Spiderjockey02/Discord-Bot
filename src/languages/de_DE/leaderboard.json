@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Zeigt die Rangliste des Servers an.",
+  "USAGE": "Rangliste",
+  "TITLE": "Rangliste",
+  "EMPTY_TITLE": "Keine Daten vorhanden",
+  "EMPTY_DESC": "Bitte gibe etwas in den Chat ein, um Erfahrungspunkte zu sammeln.",
+  "FIELD_TITLE": "{{POS}}. {{NAME}}",
+  "FIELD_DATA": "**XP:** {{XP}} | **Level:** {{LEVEL}}"
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Stellt den Spieler um den angegebenen Betrag zurück.",
+  "USAGE": "zurückspulen <time>",
+  "LIVESTREAM": "Du kannst keinen Liestream zurücklegen.",
+  "INVALID": "Ein Lied darf nicht weniger als 0 Sekunden lang sein",
+  "NEW_TIME": "**Wiedergebundene `{{OLD}}` zu: `{{NEW}}`.**"
+}

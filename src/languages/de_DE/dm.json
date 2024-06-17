@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "DM an einen Benutzer",
+  "USAGE": "dm <user> <message>",
+  "TITLE": "DM erhalten von Gilde: {{NAME}}",
+  "SUCCESS": "DM erfolgreich an {{TAG}} gesendet."
+}

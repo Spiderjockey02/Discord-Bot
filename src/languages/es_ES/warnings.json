@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Display number of warnings a user has.",
+  "USAGE": "warnings [user]",
+  "NO_WARNINGS": "This user has not been warned before.",
+  "TITLE": "{{USER}}'s warning list."
+}

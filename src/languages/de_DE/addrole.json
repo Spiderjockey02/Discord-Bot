@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Fügt dem Server eine neue Rolle hinzu",
+  "USAGE": "addrole <role name> [hex color] [hoist]",
+  "MAX_NAME": "Der Rollenname ist größer als das Zeichenlimit von `100`.",
+  "BOOLEAN": "Regeln müssen entweder `true` oder `false` sein.",
+  "INVALID": "Ungültige Farbe.",
+  "MAX_ROLES": "Es gibt bereits die maximale Anzahl an Rollen auf diesem Server (250).",
+  "SUCCESS": "Rolle: <@&{{ROLE}}> erfolgreich erstellt."
+}

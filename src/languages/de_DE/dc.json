@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Trennt den Bot vom Sprachkanal.",
+  "USAGE": "dc",
+  "LEFT": "Ich habe den Sprachkanal erfolgreich verlassen.",
+  "INACTIVE": "Ich verließ 🔉 **{{VC}}** weil ich zu lange inaktiv war.",
+  "KICKED": "Die Warteschlange wurde beendet, da ich vom Sprachkanal gekickt wurde"
+}

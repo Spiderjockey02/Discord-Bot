@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Crée une modification de mon image d'esprit.",
+  "USAGE": "changemymind <text>",
+  "TOO_LONG": "Ton message ne peut pas dépasser 80 caractères."
+}

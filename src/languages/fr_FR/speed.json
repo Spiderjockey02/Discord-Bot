@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Défini la vitesse de lecture.",
+  "USAGE": "speed <Number>",
+  "LIVESTREAM": "Flux audio en direct, impossible de modifier la vitesse de lecture sur un Stream.",
+  "INVALID": "La valeur doit être un entier entre 1 et 10.",
+  "ON_SPD": "Mise à jour de la vitesse de lecture. Cela prendra effet dans quelques instants...",
+  "UPDATED": "La vitesse de lecture est {{NUM}}."
+}

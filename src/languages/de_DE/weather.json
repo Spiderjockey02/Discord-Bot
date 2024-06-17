@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Schau das Wetter in einer bestimmten Gegend an.",
+  "USAGE": "wetter <location>",
+  "TITLE": "Wetter - {{LOC}}",
+  "DESC": "Temperatureinheiten können einige Zeit unterschiedlich sein",
+  "TEMP": "Temperatur:",
+  "SKY": "Himmelstext:",
+  "HUMIDITY": "Luftfeuchtigkeit:",
+  "SPEED": "Windgeschwindigkeit:",
+  "TIME": "Letzte Messung:",
+  "DISPLAY": "Windanzeige:"
+}

@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Create a whowouldwin image.",
+  "USAGE": "whowouldwin <user1> [user2]"
+}

@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Ferme le salon du ticket",
+  "USAGE": "ticket-close",
+  "NOT_SUPPORT": "Tu n'as pas la permission de clôturer ce ticket.",
+  "NOT_TICKET": "Ce n'est pas un salon ticket.",
+  "TITLE": "Le ticket est fermé !",
+  "TICKET": "Ticket : ",
+  "USER": "Membre : ",
+  "SUCCESS": "Salon du ticket supprimé avec succès",
+  "MISSING_TICKET": "Vous n'avez pas de ticket à clôturer."
+}

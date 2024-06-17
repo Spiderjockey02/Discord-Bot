@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "einen Titel aus der Playlist entfernen",
+  "USAGE": "p-remove <playlist name> <position> [position]",
+  "SUCCESS": "Wiedergabeliste erfolgreich aktualisiert.",
+  "NO_PLAYLIST": "Wiedergabeliste nicht gefunden"
+}

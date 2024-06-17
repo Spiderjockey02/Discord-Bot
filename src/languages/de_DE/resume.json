@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Setzt die Musik fort.",
+  "USAGE": "fortsetzen",
+  "IS_RESUMED": "Ich spiele bereits, `{{PREFIX}}pause, um das Lied zu pausieren.",
+  "SUCCESS": "Erfolgreich fortsetzen"
+}

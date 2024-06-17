@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Responde con un número aleatorio.",
+  "USAGE": "random <LowNum> <HighNum>",
+  "RESPONSE": "🎲 Número aleatorio: {{NUMBER}}"
+}

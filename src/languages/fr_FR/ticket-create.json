@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Créer un ticket",
+  "USAGE": "ticket-create [reason]",
+  "TICKET_EXISTS": "Tu as déjà un ticket d'ouvert",
+  "NO_SUPPORT_ROLE": "Aucun rôle de support n'a encore été créé sur ce serveur.",
+  "NO_CATEGORY": "Merci de configurer l'ID d'une catégorie pour les salons réservés aux tickets.",
+  "TITLE": "✅ Succès !",
+  "DESC": "Ton ticket a été créé : <#{{CHANNEL}}>",
+  "FIELD1": "{{USERNAME}} !",
+  "FIELDT": "Notre équipe d'assistance te contactera dans les plus brefs délais.",
+  "FIELD2": "Motif : ",
+  "TICKET": "Ticket : ",
+  "USER": "Membre : ",
+  "LOG_TITLE": "Le ticket est ouvert !",
+  "COOLDOWN": "Tu pourra ouvrir un ticket dans {{NUM}} minutes."
+}

@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Legt die Wiedergabegeschwindigkeit des Spielers fest.",
+  "USAGE": "geschwindigkeit <Number>",
+  "LIVESTREAM": "Du kannst die Zeit in einem Livesystem nicht ändern.",
+  "INVALID": "Der Betrag muss eine reale Zahl zwischen 1 und 10 sein.",
+  "ON_SPD": "Aktualisiere Wiedergabegeschwindigkeit. Dies kann einige Sekunden dauern...",
+  "UPDATED": "Geschwindigkeit ist {{NUM}}."
+}

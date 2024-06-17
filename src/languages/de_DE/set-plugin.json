@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Plugins ein- und ausschalten",
+  "USAGE": "set-Plugin <option>",
+  "ADDED": "{{PLUGINS}} zu Gilds Plugins hinzugefügt.",
+  "REMOVED": "{{PLUGINS}} von den Plugins von Gilde entfernt.",
+  "INVALID": "Kein unterstütztes Plugin"
+}

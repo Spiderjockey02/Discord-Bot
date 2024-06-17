@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "رابط الرسالة:",
+  "USAGE": "تذكير <time> <information>",
+  "MESSAGE": "سوف أذكرك بـ `{{INFO}}` في حوالي {{TIME}}.",
+  "TITLE": "التذكير",
+  "FOOTER": "تذكير منذ {{TIME}}.",
+  "RESPONSE": "\n**مذكر:**\n {USER} تذكيرك: {{INFO}}",
+  "MSG_LINK": "رابط الرسالة"
+}

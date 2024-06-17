@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Obtener una captura de pantalla de un sitio web.",
+  "USAGE": "captura de pantalla <url>",
+  "INVALID_URL": "Es una URL incorrecta.",
+  "BLACKLIST_WEBSITE": "No puede ver estos sitios web en un canal que no seaNSFW."
+}

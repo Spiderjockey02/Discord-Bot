@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Bassboost das Lied",
+  "USAGE": "bassboost [value]",
+  "ON_BB": "**Bassboost**. Dies kann einige Sekunden dauern...",
+  "DESC_1": "**Bassboost** aktiviert",
+  "OFF_BB": "**Bassboost**. Dies kann ein paar Sekunden dauern...",
+  "DESC_2": "**Bassboost** ausgeschaltet",
+  "INVALID": "Betrag muss eine reale Zahl sein.",
+  "SET_BB": "Setze Bassboost auf **{{DB}}dB**. Dies kann einige Sekunden dauern...",
+  "DESC_3": "Bassboost auf **{{DB}} ** gesetzt"
+}

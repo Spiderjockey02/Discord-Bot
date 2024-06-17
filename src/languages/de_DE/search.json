@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Sucht nach einem Song.",
+  "USAGE": "suchen <link / song name>",
+  "NOT_VC": "Du bist in keinem Sprachkanal, mit dem ich dich verbinden kann.",
+  "NO_INPUT": "Bitte geben Sie einen Titelname/Url ein",
+  "ERROR": "Beim Suchen ist ein Fehler aufgetreten: `{{ERROR}}`",
+  "NO_SONG": "Ich kann diesen Song nicht finden.",
+  "TITLE": "Ergebnisse für {{TITLE}}",
+  "DESC": "{{RESULTS}}\n\n\tWähle eine Zahl von 1-10 oder Abbrechen.\n",
+  "INVALID": "Die angegebene Nummer war zu klein oder zu groß (1-{{NUM}}).",
+  "ADDED": "Zur Warteschlange hinzugefügt: [{{TITLE}}]"
+}
