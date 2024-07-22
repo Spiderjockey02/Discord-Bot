@@ -36,7 +36,8 @@ export default class TrackStart extends Event {
 				.setTitle('music/np:AUTHOR')
 				.setDescription(`[${track.title}](${track.uri}) [${member}]`);
 
-			channel.send({ embeds: [embed] });
+			const message = await channel.send({ embeds: [embed] });
+			player.setNowPlayingMessage(message);
 		}
 
 		// clear timeout (for queueEnd event)
