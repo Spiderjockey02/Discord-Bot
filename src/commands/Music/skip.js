@@ -49,12 +49,11 @@ class Skip extends Command {
 		// skip song
 		const player = bot.manager?.players.get(message.guild.id);
 		const queuelength = player.queue.length;
-		const skiplength = !isNaN(amount) && amount > queuelength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
 		if (!isNaN(amount) && amount < queuelength) {
-			player.stop(parseInt(message.args[0]));
-			message.channel.send({ content: skiplength });
+			player.stop(parseInt(amount));
+			message.channel.send({ content: `${bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount })}` });
 		} else {
-			message.channel.send({ content: skiplength });
+			message.channel.send({ content: `${bot.translate('music/skip:SKIPPING_SONG')}` });
 			player.stop();
 		}
 	}
@@ -79,12 +78,11 @@ class Skip extends Command {
 		// skip song
 		const player = bot.manager?.players.get(member.guild.id);
 		const queueLength = player.queue.length;
-		const skipLength = !isNaN(amount) && amount > queueLength ? bot.translate('music/skip:SKIPPING_SONG') : bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount });
 		if (!isNaN(amount) && amount < queueLength) {
 			player.stop(amount);
-			interaction.reply({ content: skipLength });
+			interaction.reply({ content: `${bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount })}` });
 		} else {
-			interaction.reply({ content: skipLength });
+			interaction.reply({ content: `${bot.translate('music/skip:SKIPPING_SONG')}` });
 			player.stop();
 		}
 	}
