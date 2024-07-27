@@ -52,7 +52,7 @@
 
 ## :question: About
 
-Egglord is an open source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs.
+Egglord is an open-source, fully customizable Discord bot that is constantly growing. You can invite it to your Discord server using [this](https://discord.com/oauth2/authorize?client_id=647203942903840779&permissions=485846102&scope=bot) link! Also, you can join the official [Egglord Support Server](https://discord.gg/8g6zUQu) for all questions, suggestions, and assistance! It comes packaged with a variety of commands and a multitude of settings that can be tailored to your server's specific needs.
 
 If you liked this repository, feel free to leave a star :star: to help promote Egglord!
 
@@ -101,18 +101,19 @@ Egglord is pretty much at the end of development now, it will only be updated fo
 
 ## :desktop_computer: My other projects
  * [Auto poster](https://github.com/Spiderjockey02/auto-poster-and-notifications) - Allows your users to get notified when you post on another social media. (Youtube, twitch, twitter, reddit etc)
- * [erela.js-facebook](https://github.com/Spiderjockey02/erela.js-facebook) - Allows facebook videos to played with [erela.js](https://github.com/MenuDocs/erela.js) (A [lavalink](https://github.com/Freyacodes/Lavalink) client).
+ * [erela.js-facebook](https://github.com/Spiderjockey02/erela.js-facebook) - Allows facebook videos to be played with [erela.js](https://github.com/MenuDocs/erela.js) (A [lavalink](https://github.com/Freyacodes/Lavalink) client).
 
 ## :book: License
 
 Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discord-Bot/blob/master/LICENSE) license.
 
 ## :scroll: Credits
-* **[tovade](https://github.com/tovade)** - Initial Reaction Role System.
-* **[josh_0242](https://github.com/ChaosArising)** - Slash Commands & Tags System.
-* **[duncte123#1245](https://github.com/duncte123)** - [Lavalink plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, reddit, TikTok, Phub, Mixcloud etc).
-* **[topi314](https://github.com/topi314)** - [Lavalink plugin 2](https://github.com/topi314/LavaSrc) (Spotify, Apple Music, Deezer & Yandex)
-* **[topi314](https://github.com/topi314)** - [Lavalink plugin 3](https://github.com/topi314/LavaSearch) (Search module for LavaSrc)
+* **[tovade](https://github.com/tovade)** - Initial reaction role system.
+* **[josh_0242](https://github.com/ChaosArising)** - Initial slash commands & tags system.
 * **[thororen](https://github.com/thororen1234)** - Updated Music system to support new Lavalink v4.
+* **[duncte123#1245](https://github.com/duncte123)** - [Skybot plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, Reddit, TikTok, Phub, Mixcloud etc).
+* **[topi314](https://github.com/topi314)** - [LavaSrc plugin](https://github.com/topi314/LavaSrc) (Spotify, Apple Music, Deezer & Yandex)
+* **[topi314](https://github.com/topi314)** - [LavaSearch plugin](https://github.com/topi314/LavaSearch) (Search module for LavaSrc)
+* **[lavalink-devs](https://github.com/lavalink-devs)** - [Youtube source plugin](https://github.com/lavalink-devs/youtube-source) (Add Youtube support back onto lavalink)
 * **[Our translators](https://crowdin.com/project/egglord-discord-bot)** - Everyone over at Crowdin who helps make this bot multilingual.
-* Want to be on this list, aswell? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
+* Want to be on this list, as well? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).
