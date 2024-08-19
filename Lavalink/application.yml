@@ -49,6 +49,9 @@ plugins:
       soundgasm: true # soundgasm.net
       pixeldrain: true # pixeldrain.com
   youtube:
+    pot:
+      token: ""
+      visitorData: ""
     enabled: true
     allowSearch: true
     allowDirectVideoIds: true
