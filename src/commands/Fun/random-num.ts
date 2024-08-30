@@ -1,7 +1,6 @@
-// Dependencies
-import EgglordClient from 'src/base/Egglord';
-import Command from '../../structures/Command';
-import { Message, EmbedBuilder, ApplicationCommandOptionType } from 'discord.js';
+import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
+import EgglordClient from '../../base/Egglord';
+import { ApplicationCommandOptionType, Message, ChatInputCommandInteraction } from 'discord.js';
 const max = 100000;
 
 /**
@@ -9,10 +8,6 @@ const max = 100000;
  * @extends {Command}
 */
 export default class Random extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
 	constructor() {
 		super({
 			name: 'random-num',
@@ -42,60 +37,44 @@ export default class Random extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
-	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-  */
-	async run(client: EgglordClient, message: Message<true>, settings) {
+	async run(client: EgglordClient, message: Message) {
 
 		// Random number and facts command
 		const num1 = parseInt(message.args[0]),
 			num2 = parseInt(message.args[1]);
 
-		// Make sure clienth entries are there
-		if (!num1 || !num2) {
-			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) });
-		}
-
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
 			if (message.deletable) message.delete();
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('fun/random:USAGE')) });
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('misc:INCORRECT_FORMAT', { EXAMPLE: client.languageManager.translate(message.guild, 'fun/random:USAGE') });
+			return message.channel.send({ embeds: [embed] });
 		}
 
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		const embed = new EmbedBuilder()
+		const embed = new EgglordEmbed(client, message.guild)
 			.setColor(client.config.embedColor)
-			.setDescription(message.translate('fun/random:RESPONSE', { NUMBER: r }));
+			.setDescription(client.languageManager.translate(message.guild, 'fun/random:RESPONSE', { NUMBER: r }));
+
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			settings = guild.settings,
-			num1 = args.get('min').value,
-			num2 = args.get('max').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const num1 = interaction.options.getInteger('min', true),
+			num2 = interaction.options.getInteger('max', true);
 
 		// Make sure they follow correct rules
 		if ((num2 < num1) || (num1 === num2) || (num2 > max) || (num1 < 0)) {
-			interaction.reply({ embeds: [channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(client.translate('fun/random:USAGE')) }, true)], ephemeral: true });
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('misc:INCORRECT_FORMAT', { EXAMPLE:	client.languageManager.translate(interaction.guild, 'fun/random:USAGE') });
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
+
 		// send result
 		const r = Math.floor(Math.random() * (num2 - num1) + num1) + 1;
-		return interaction.reply({ embeds: [{ color: client.config.embedColor, description: guild.translate('fun/random:RESPONSE', { NUMBER: r }) }] });
+		const embed = new EgglordEmbed(client, null)
+			.setDescription(client.languageManager.translate(interaction.guild, 'fun/random:RESPONSE', { NUMBER: r }));
+		return interaction.reply({ embeds: [embed] });
 	}
 }
-

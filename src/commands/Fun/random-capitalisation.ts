@@ -1,16 +1,12 @@
-import { ApplicationCommandOptionType, Message } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Command from 'src/structures/Command';
+import { Command } from '../../structures';
+import EgglordClient from '../../base/Egglord';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message } from 'discord.js';
 
 /**
  * Flip command
  * @extends {Command}
 */
 export default class RandomCaps extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
 	constructor() {
 		super({
 			name: 'random-capitalisation',
@@ -30,31 +26,18 @@ export default class RandomCaps extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
-	async run(client: EgglordClient, message: Message) {
+	async run(_client: EgglordClient, message: Message) {
 		const text = message.args.join(' '),
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 		message.channel.send({ content: rndCaps });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const text = args.get('text').value,
+
+	async callback(_client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const text = interaction.options.getString('text', true),
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 
 		// send result
 		return interaction.reply({ content: rndCaps });
 	}
 }
-

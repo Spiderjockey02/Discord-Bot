@@ -1,16 +1,12 @@
-import { CommandInteraction, Guild } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Command from 'src/structures/Command';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import Command from '../../structures/Command';
 
 /**
  * Random command
  * @extends {Command}
 */
 export default class Random extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
 	constructor() {
 		super({
 			name: 'random',
@@ -23,18 +19,19 @@ export default class Random extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client: EgglordClient, interaction: CommandInteraction, guild: Guild, args: any) {
-		const command = client.subCommands.get(`random-${interaction.options.getSubcommand()}`);
+	async run(client: EgglordClient, message: Message) {
+		const command = client.commandManager.subCommands.get(`random-${message.args[0]}`);
 		if (command) {
-			command.callback(client, interaction, guild, args);
+			command.run(client, message);
+		} else {
+			message.channel.send({ content: 'error' });
+		}
+	}
+
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const command = client.commandManager.subCommands.get(`random-${interaction.options}`);
+		if (command) {
+			command.callback(client, interaction);
 		} else {
 			interaction.reply({ content: 'Error', ephemeral: true });
 		}

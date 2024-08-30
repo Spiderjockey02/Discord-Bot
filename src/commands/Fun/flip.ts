@@ -1,16 +1,12 @@
-import EgglordClient from 'src/base/Egglord';
-import Command from 'src/structures/Command';
-import { CommandInteraction, Guild, Message } from 'discord.js';
+import EgglordClient from '../../base/Egglord';
+import { Command, EgglordEmbed } from '../../structures';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 
 /**
  * Flip command
  * @extends {Command}
 */
 export default class Flip extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
 	constructor() {
 		super({
 			name: 'flip',
@@ -22,35 +18,23 @@ export default class Flip extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-  */
-	async run(client: EgglordClient, message: Message<true>) {
+	async run(client: EgglordClient, message: Message) {
 		const num = Math.round(Math.random()),
-			emoji = message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis[['head', 'tail'][num]] : '',
-			result = message.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
+			emoji = client.customEmojis[['head', 'tail'][num] as 'head' | 'tail'],
+			result = client.languageManager.translate(message.guild, `fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
-		// send result
-		message.channel.send({ content: `${emoji} ${result}` });
+		const embed = new EgglordEmbed(client, null)
+			.setDescription(`${emoji} ${result}`);
+		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @readonly
-	*/
-	async callback(client: EgglordClient, interaction: CommandInteraction, guild: Guild) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			num = Math.round(Math.random()),
-			emoji = channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis[['head', 'tail'][num]] : '',
-			result = guild.translate(`fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const num = Math.round(Math.random()),
+			emoji = client.customEmojis[['head', 'tail'][num] as 'head' | 'tail'],
+			result = client.languageManager.translate(interaction.guild, `fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);
 
-		// send result
-		return interaction.reply({ content: `${emoji} ${result}` });
+		const embed = new EgglordEmbed(client, null)
+			.setDescription(`${emoji} ${result}`);
+		interaction.reply({ embeds: [embed] });
 	}
 }

@@ -1,17 +1,10 @@
-import { Setting } from '@prisma/client';
-import { CommandInteraction, Guild, Message, TextBasedChannel } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
-import Command from 'src/structures/Command';
+import EgglordClient from '../../base/Egglord';
+import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
+import { fetchFromAPI } from '../../utils';
+import { ChatInputCommandInteraction, Guild, Message } from 'discord.js';
+const memes = ['meme', 'memes', 'dankmemes', 'ComedyCemetery'];
 
-/**
- * Meme command
- * @extends {Command}
-*/
 export default class Meme extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
 	constructor() {
 		super({
 			name: 'meme',
@@ -23,50 +16,55 @@ export default class Meme extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client: EgglordClient, message: Message<true>, settings: Setting) {
-		// send 'waiting' message to show client has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
+	async run(client: EgglordClient, message: Message) {
+		// send 'waiting' message to show bot has recieved message
+		const msg = await message.channel.send({
+			content: client.languageManager.translate(message.guild, 'misc:FETCHING', {
+				EMOJI: client.customEmojis['loading'], ITEM: this.help.name }),
+		});
 
-		// Retrieve a random meme
-		const embed = await this.fetchMeme(client, message.channel, settings);
+		const meme = await fetchFromAPI('info/reddit', { sub: memes[Math.floor((Math.random() * memes.length))] });
+		if (meme.error) {
+			client.logger.error(`Command: '${this.help.name}' has error: ${meme.message}.`);
+
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: meme.message });
+			return message.channel.send({ embeds: [embed] });
+		}
+
+		const embed = new EgglordEmbed(client, message.guild)
+			.setTitle('searcher/reddit:TITLE', { TITLE: meme.sub.name })
+			.setURL(meme.permalink)
+			.setImage(meme.thumbnail)
+			.setFooter({ text: client.languageManager.translate(message.guild, 'searcher/reddit:FOOTER', {
+				UPVOTES: meme.votes.upvotes.toLocaleString(message.guild?.settings?.language ?? client.languageManager.getFallback()),
+				DOWNVOTES: meme.votes.downvotes.toLocaleString(message.guild?.settings?.language ?? client.languageManager.getFallback()) }),
+			});
 
 		// Send the meme to channel
 		msg.delete();
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
-	*/
-	async callback(client: EgglordClient, interaction: CommandInteraction<'cached'>, guild: Guild) {
-		const settings = guild.settings;
-		const embed = await this.fetchMeme(client, interaction.channel);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>, guild: Guild) {
+		const meme = await fetchFromAPI('info/reddit', { sub: memes[Math.floor((Math.random() * memes.length))] });
+		if (meme.error) {
+			client.logger.error(`Command: '${this.help.name}' has error: ${meme.message}.`);
+
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: meme.message });
+			interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		const embed = new EgglordEmbed(client, guild)
+			.setTitle('searcher/reddit:TITLE', { TITLE: meme.sub.name })
+			.setURL(meme.permalink)
+			.setImage(meme.thumbnail)
+			.setFooter({ text: client.languageManager.translate(guild, 'searcher/reddit:FOOTER', {
+				UPVOTES: meme.votes.upvotes.toLocaleString(guild?.settings?.language ?? client.languageManager.getFallback()),
+				DOWNVOTES: meme.votes.downvotes.toLocaleString(guild?.settings?.language ?? client.languageManager.getFallback()) }),
+			});
+
 		return interaction.reply({ embeds: [embed] });
 	}
-
-	/**
- 	 * Function for fetching meme embed.
- 	 * @param {client} client The instantiating client
-	 * @param {guild} guild The guild the command ran in
- 	 * @param {settings} guildSettings The settings of the guild
- 	 * @returns {embed}
-	*/
-	async fetchMeme(client: EgglordClient, channel: TextBasedChannel) {
-		const subreddits = ['meme', 'memes', 'dankmemes', 'ComedyCemetery'];
-
-		return await client.commands.get('reddit').fetchPost(client, channel, subreddits[Math.floor(Math.random() * subreddits.length)], 'hot');
-	}
 }
-
