@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ComponentType, Embed, Message } from 'discord.js';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../base/Egglord';
 // Timeout for button collector in milliseconds
 const timeout = 30 * 1000;
 

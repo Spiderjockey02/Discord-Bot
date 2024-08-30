@@ -2,7 +2,7 @@
 import EgglordClient from './base/Egglord';
 import { promisify } from 'util';
 import fs from 'fs';
-import Event from './structures/Event';
+import { Command, Event } from './structures';
 import('./extensions');
 
 const readdir = promisify(fs.readdir),
@@ -28,14 +28,21 @@ async function loadCommands() {
 
 		client.logger.log('=-=-=-=-=-=-=- Loading commands: -=-=-=-=-=-=-=');
 		let cmdCount = 0;
+
 		for (const folder of folders) {
 			if (folder == 'command.example.js') return;
 
 			const commands = (await readdir(`${process.cwd()}/dist/commands/${folder}/`)).filter((v, i, a) => a.indexOf(v) === i);
 			for (const command of commands) {
-				const cmd = await import(`${process.cwd()}/dist/commands/${folder}/${command}`);
-				client.commandManager.add(new cmd());
-				cmdCount++;
+				try {
+					const file = (await import(`${process.cwd()}/dist/commands/${folder}/${command}`)).default;
+					const cmd = new file() as Command;
+					client.logger.log(`Loading Command: ${cmd.help.name}`);
+					client.commandManager.add(cmd);
+					cmdCount++;
+				} catch (err: any) {
+					client.logger.error(`Failed to load Command: ${command} due to: ${err.message}`);
+				}
 			}
 		}
 
@@ -54,26 +61,27 @@ async function loadEvents() {
 	for (const folder of folders) {
 		const events = await readdir(`${process.cwd()}/dist/events/${folder}/`);
 		for (const event of events) {
-			const t = (await import(`${process.cwd()}/dist/events/${folder}/${event}`)).default;
-			const evt = new t() as Event;
-			// Check what mananager should handle the event
-			client.logger.log(`Loading Event: ${evt.conf.name}`);
-			if (evt.conf.child == undefined) client.on(evt.conf.name, (...args) => evt.run(client, ...args));
-			switch (evt.conf.child) {
-				case 'audioManager':
-					client.audioManager?.on(evt.conf.name, (...args) => evt.run(client, ...args));
-					break;
-					/*
-				case 'giveawayManager':
-					client.giveawayManager.on(evt.conf.name, (...args) => evt.run(client, ...args));
-					break;
-				*/
+			try {
+				const file = (await import(`${process.cwd()}/dist/events/${folder}/${event}`)).default;
+				const evt = new file() as Event;
+
+				// Check what mananager should handle the event
+				client.logger.log(`Loading Event: ${evt.conf.name}`);
+				if (evt.conf.child == undefined) client.on(evt.conf.name, (...args) => evt.run(client, ...args));
+				switch (evt.conf.child) {
+					case 'audioManager':
+						client.audioManager?.on(evt.conf.name, (...args) => evt.run(client, ...args));
+						break;
+						/*
+					case 'giveawayManager':
+						client.giveawayManager.on(evt.conf.name, (...args) => evt.run(client, ...args));
+						break;
+					*/
+				}
+			} catch (err: any) {
+				client.logger.error(`Failed to load Event: ${event} due to: ${err.message}`);
 			}
+
 		}
 	}
 }
-
-// handle unhandledRejection errors
-process.on('unhandledRejection', (err: any) => {
-	client.logger.error(`Unhandled promise rejection: ${err.message}.`);
-});

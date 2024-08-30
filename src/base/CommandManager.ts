@@ -1,5 +1,5 @@
-import { ApplicationCommandPermissionType, Collection, Message } from 'discord.js';
-import Command from 'src/structures/Command';
+import { ApplicationCommandOptionType, ApplicationCommandPermissionType, Collection, Message, PermissionsBitField } from 'discord.js';
+import { Command, ErrorEmbed } from '../structures';
 import EgglordClient from './Egglord';
 import { Setting } from '@prisma/client';
 
@@ -57,31 +57,45 @@ export default class CommandManager {
 
 		// Follow the rules of the application command
 		if (applicationCommand) {
-			const permissions = await applicationCommand.permissions.fetch({});
+			const permissionOverwrites = await message.client.application.commands.permissions.fetch({ guild: `${message.guild?.id}` });
+			const cmdPermissions = permissionOverwrites.get(applicationCommand.id);
 
-			for (const permission of permissions) {
+			for (const permission of cmdPermissions ?? []) {
 				switch (permission.type) {
 					case ApplicationCommandPermissionType.Channel:
 						// Check for banned channels
-						if (message.channel.id == permission.id && permission.permission == false) {
+						if (message.channel.id == permission.id && !permission.permission) {
 							return message.channel.send('You can\'t run this command in this channel');
 						}
 						break;
 					case ApplicationCommandPermissionType.Role:
-						// Check for banned  role
+						// Check for banned role
 						break;
 					case ApplicationCommandPermissionType.User:
-						if (message.author.id == permission.id && permission.permission == false) {
+						if (message.author.id == permission.id && !permission.permission) {
 							return message.channel.send('You are blocked from running this command in this server.');
 						}
 						break;
 				}
 			}
+		} else if (message.inGuild()) {
+			const neededPermissions: bigint[] = [];
+			command.conf.userPermissions.forEach((perm) => {
+				if (message.member && !message.channel.permissionsFor(message.member).has(perm)) {
+					neededPermissions.push(perm);
+				}
+			});
 
-		} else {
-			// Isn't an application command so follow it's own rules (No overwrites)
+			if (neededPermissions.length > 0) {
+				const perms = new PermissionsBitField();
+				neededPermissions.forEach((item) => perms.add(item));
+				if (message.deletable) message.delete();
+
+				const embed = new ErrorEmbed(message.client, message.guild)
+					.setMessage('misc:USER_PERMISSION', { PERMISSIONS: perms.toArray().map((p) => message.client.languageManager.translate(message.guild, `permissions:${p}`)).join(', ') });
+				return message.channel.send({ embeds: [embed] });
+			}
 		}
-
 
 		// Run the command
 		command.run(message.client as EgglordClient, message as Message<true>, settings as Setting);
@@ -90,7 +104,37 @@ export default class CommandManager {
 		// Remove from user from cooldown once finished
 		setTimeout(() => {
 			this.cooldowns.delete(message.author.id);
-		}, (message.author.isPremiumTo !== null ? command.conf.cooldown * 0.75 : command.conf.cooldown));
+		}, message.author.isPremiumTo !== null ? command.conf.cooldown * 0.75 : command.conf.cooldown);
 		return true;
+	}
+
+	getArgs(command: Command, message: Message) {
+		const options = command.conf.options;
+		const args = message.content.split(' ').slice(1);
+
+		const response: {[key: string]: any} = {};
+		for (const option of options) {
+			const arg = args[options.indexOf(option)];
+
+			switch (option.type) {
+				case ApplicationCommandOptionType.User: {
+					const user = message.guild?.members.cache.get(arg);
+					if (!user) return message.channel.send(`${arg} is not a valid user.`);
+					response[option.name] = user;
+					break;
+				}
+				case ApplicationCommandOptionType.Role: {
+					const role = message.guild?.roles.cache.get(arg);
+					if (!role) return message.channel.send(`${arg} is not a valid role.`);
+					response[option.name] = role;
+					break;
+				}
+				case ApplicationCommandOptionType.String:
+					response[option.name] = args;
+					break;
+			}
+		}
+
+		return response;
 	}
 }

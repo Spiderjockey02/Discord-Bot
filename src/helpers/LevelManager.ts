@@ -4,7 +4,7 @@ import fetchLevelSettings from '../accessors/Settings';
 import { fetchByUserAndGuild, createRank, updateRank } from '../accessors/Rank';
 import CONSTANTS from '../utils/CONSTANTS';
 import { levelSettingType } from '../types/database';
-import EgglordClient from 'src/base/Egglord';
+import EgglordClient from '../base/Egglord';
 
 export default class LevelManager {
 	cache: Collection<string, Rank>;

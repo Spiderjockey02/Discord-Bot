@@ -1,7 +1,6 @@
-import { Event } from '../../structures';
+import { Event, EgglordEmbed } from '../../structures';
 import { APIEmbed, ChannelType, Colors, Events, Guild, GuildChannel, GuildMember, GuildTextBasedChannel, JSONEncodable, VoiceState } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 import { setTimeout } from 'timers/promises';
 
 /**

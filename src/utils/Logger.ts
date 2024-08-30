@@ -4,7 +4,7 @@ import moment from 'moment';
 import fileLog from 'simple-node-logger';
 import onFinished from 'on-finished';
 import CONSTANTS from './CONSTANTS';
-import { ExtendedRequest, ExtendedResponse } from 'src/types';
+import { ExtendedRequest, ExtendedResponse } from '../types';
 const log = fileLog.createRollingFileLogger({
 	logDirectory: './src/utils/logs',
 	fileNamePattern: 'roll-<DATE>.log',
@@ -14,6 +14,16 @@ const log = fileLog.createRollingFileLogger({
 type LoggerType = 'log' | 'warn' | 'error' | 'debug' | 'cmd' | 'ready'
 
 export default class Logger {
+	level: number;
+	constructor() {
+		this.level = 0;
+	}
+
+	setLevel(level: number) {
+		this.level = level;
+		return this.level;
+	}
+
 	log(content: string, type: LoggerType = 'log') {
 		const timestamp = `[${moment().format('HH:mm:ss:SSS')}]:`;
 		switch (type) {

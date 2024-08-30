@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
-import EgglordClient from 'src/base/Egglord';
-import { ExtendedClientEvents, IEventAudio, IEventBase, IEventGiveaway, IEventGuild } from 'src/types/Structure';
+import EgglordClient from '../base/Egglord';
+import { ExtendedClientEvents, IEventAudio, IEventBase, IEventGiveaway, IEventGuild } from '../types/Structure';
 
 /**
  * Event structure

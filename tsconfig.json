@@ -1,15 +1,10 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@middleware/*": ["./src/middleware/*"],
-    },
-    "rootDir": "./src",
     "types": ["node"],
     "outDir": "./dist",
     "lib": [
-    "es2020"
+      "es2020"
     ],
     "target": "es2020",
     "skipLibCheck": true,
@@ -31,7 +26,12 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "verbatimModuleSyntax": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@structures": ["./structures/index"],
+    },
   },
   "exclude": ["node_modules"],
 }
