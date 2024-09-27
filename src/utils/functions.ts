@@ -46,13 +46,13 @@ export async function fetchFromAPI(endpoint: string, query = {}) {
 	try {
 		if (endpoint.startsWith('image') || endpoint == 'misc/qrcode') {
 			const { data } = await axios.get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
-				headers: { 'Authorization': config.api_keys.masterToken },
+				headers: { 'Authorization': config.masterAPIKey },
 				responseType: 'arraybuffer',
 			});
 			return data;
 		} else {
 			const { data } = await axios.get(`https://api.egglord.dev/api/${endpoint}?${new URLSearchParams(query)}`, {
-				headers: { 'Authorization': config.api_keys.masterToken },
+				headers: { 'Authorization': config.masterAPIKey },
 			});
 
 			// Check if error or not

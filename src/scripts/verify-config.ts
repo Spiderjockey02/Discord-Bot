@@ -84,10 +84,10 @@ export async function validateConfig(config: typeof Config) {
 		}
 	}
 
-	if (config.api_keys.masterToken) {
+	if (config.masterAPIKey) {
 		try {
 			await axios.get('https://api.egglord.dev/api/info/validate', {
-				headers: { 'Authorization': config.api_keys.masterToken },
+				headers: { 'Authorization': config.masterAPIKey },
 			});
 			logger.ready(`${chalk.green('✓')} API is online`);
 		} catch (e: any) {

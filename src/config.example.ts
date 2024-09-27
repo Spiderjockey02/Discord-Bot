@@ -1,17 +1,10 @@
-const { Colors } = require('discord.js');
+import { Colors } from 'discord.js';
 
-const config = {
-	ownerID: ['YourAccountID'],
+export default {
+	ownerId: 'YourAccountID',
 	token: 'YourBotToken',
-	// For looking up Twitch, Fortnite, Steam accounts
-	api_keys: {
-		// https://genius.com/developers
-		genius: 'genuisAPI-KEY',
-		// https://api.amethyste.moe/
-		amethyste: 'amethysteAPI-Key',
-		// https://api.egglord.dev/settings
-		masterToken: '',
-	},
+	// For looking up Twitch, Fortnite, Steam accounts (https://api.egglord.dev/settings)
+	masterAPIKey: '',
 	// add plugins/commands here if you don't want them loaded in the bot.
 	disabledCommands: [],
 	disabledPlugins: [],
@@ -51,5 +44,3 @@ const config = {
 	// This will spam your console if you enable this but will help with bug fixing
 	debug: false,
 };
-
-module.exports = config;
