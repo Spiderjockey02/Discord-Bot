@@ -8,8 +8,8 @@ import { ChatInputCommandInteraction, Message } from 'discord.js';
  * @extends {Command}
 */
 export default class Fact extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'fact',
 			dirname: __dirname,
 			aliases: ['facts'],
@@ -21,6 +21,8 @@ export default class Fact extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		const fact = await fetchFromAPI('misc/random-fact');
 		if (fact.error) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${fact.message}.`);

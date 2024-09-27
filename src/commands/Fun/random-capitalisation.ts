@@ -7,8 +7,8 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message } fr
  * @extends {Command}
 */
 export default class RandomCaps extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'random-capitalisation',
 			dirname: __dirname,
 			description: 'Generate a random caps',
@@ -27,6 +27,8 @@ export default class RandomCaps extends Command {
 	}
 
 	async run(_client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		const text = message.args.join(' '),
 			rndCaps = text.toLowerCase().split('').map(c => Math.random() < 0.5 ? c : c.toUpperCase()).join('');
 		message.channel.send({ content: rndCaps });

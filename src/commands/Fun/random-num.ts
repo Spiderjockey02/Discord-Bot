@@ -8,8 +8,8 @@ const max = 100000;
  * @extends {Command}
 */
 export default class Random extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'random-num',
 			dirname: __dirname,
 			description: 'Replies with a random number.',
@@ -38,6 +38,7 @@ export default class Random extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
 
 		// Random number and facts command
 		const num1 = parseInt(message.args[0]),

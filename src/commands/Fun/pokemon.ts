@@ -8,8 +8,8 @@ import EgglordClient from '../../base/Egglord';
  * @extends {Command}
 */
 export default class Pokemon extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'pokemon',
 			dirname: __dirname,
 			description: 'Get information on a pokemon.',
@@ -27,6 +27,8 @@ export default class Pokemon extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		// TODO - update to something like message.getArgs('pokemon')
 		const pokemon = message.getArgs()[0];
 
@@ -51,19 +53,19 @@ export default class Pokemon extends Command {
 		}
 	}
 
-	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>, guild: Guild) {
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
 		const pokemon = interaction.options.getString('pokemon', true);
 
 		// Search for pokemon
 		try {
-			const embed = await this.fetchPokemonData(client, guild, pokemon);
-			return interaction.reply({ embeds: [embed] });
+			const embed = await this.fetchPokemonData(client, interaction.guild, pokemon);
+			interaction.reply({ embeds: [embed] });
 		} catch (err: any) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
 			const embed = new ErrorEmbed(client, interaction.guild)
 				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
 
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 

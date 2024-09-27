@@ -7,8 +7,8 @@ import { ChatInputCommandInteraction, Message } from 'discord.js';
  * @extends {Command}
 */
 export default class Flip extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'flip',
 			dirname: __dirname,
 			description: 'Flip a coin.',
@@ -19,6 +19,8 @@ export default class Flip extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		const num = Math.round(Math.random()),
 			emoji = client.customEmojis[['head', 'tail'][num] as 'head' | 'tail'],
 			result = client.languageManager.translate(message.guild, `fun/flip:${num < 0.5 ? 'HEADS' : 'TAILS'}`);

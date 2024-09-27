@@ -1,12 +1,12 @@
 import EgglordClient from '../../base/Egglord';
 import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
 import { fetchFromAPI } from '../../utils';
-import { ChatInputCommandInteraction, Guild, Message } from 'discord.js';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 const memes = ['meme', 'memes', 'dankmemes', 'ComedyCemetery'];
 
 export default class Meme extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'meme',
 			dirname: __dirname,
 			description: 'Sends a random meme.',
@@ -17,6 +17,8 @@ export default class Meme extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		// send 'waiting' message to show bot has recieved message
 		const msg = await message.channel.send({
 			content: client.languageManager.translate(message.guild, 'misc:FETCHING', {
@@ -46,7 +48,7 @@ export default class Meme extends Command {
 		message.channel.send({ embeds: [embed] });
 	}
 
-	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>, guild: Guild) {
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
 		const meme = await fetchFromAPI('info/reddit', { sub: memes[Math.floor((Math.random() * memes.length))] });
 		if (meme.error) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${meme.message}.`);
@@ -56,13 +58,13 @@ export default class Meme extends Command {
 			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
-		const embed = new EgglordEmbed(client, guild)
+		const embed = new EgglordEmbed(client, interaction.guild)
 			.setTitle('searcher/reddit:TITLE', { TITLE: meme.sub.name })
 			.setURL(meme.permalink)
 			.setImage(meme.thumbnail)
-			.setFooter({ text: client.languageManager.translate(guild, 'searcher/reddit:FOOTER', {
-				UPVOTES: meme.votes.upvotes.toLocaleString(guild?.settings?.language ?? client.languageManager.getFallback()),
-				DOWNVOTES: meme.votes.downvotes.toLocaleString(guild?.settings?.language ?? client.languageManager.getFallback()) }),
+			.setFooter({ text: client.languageManager.translate(interaction.guild, 'searcher/reddit:FOOTER', {
+				UPVOTES: meme.votes.upvotes.toLocaleString(interaction.guild?.settings?.language ?? client.languageManager.getFallback()),
+				DOWNVOTES: meme.votes.downvotes.toLocaleString(interaction.guild?.settings?.language ?? client.languageManager.getFallback()) }),
 			});
 
 		return interaction.reply({ embeds: [embed] });

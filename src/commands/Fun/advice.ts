@@ -8,8 +8,8 @@ import EgglordClient from '../../base/Egglord';
  * @extends {Command}
 */
 export default class AdviceCommand extends Command {
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'advice',
 			dirname: __dirname,
 			description: 'Get some random advice',
@@ -20,6 +20,8 @@ export default class AdviceCommand extends Command {
 	}
 
 	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		const advice = await fetchFromAPI('misc/advice');
 		if (advice.error) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${advice.error}.`);
@@ -35,6 +37,7 @@ export default class AdviceCommand extends Command {
 	}
 
 	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+
 		const advice = await fetchFromAPI('misc/advice');
 		if (advice.error) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${advice.error}.`);
