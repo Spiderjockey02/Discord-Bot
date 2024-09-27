@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import EgglordClient from '../../base/Egglord';
+import { EmbedBuilder } from 'discord.js';
 const router = Router();
 
 // Guild page
@@ -82,6 +83,25 @@ export function run(client: EgglordClient) {
 		}
 
 		res.json({ channels });
+	});
+
+	router.post('/:guildId/channels/:channelId/embed', async (req, res) => {
+		// Get the channel
+		const channel = client.channels.cache.get(req.params.channelId);
+		if (!channel)	return res.status(400).json({ error: 'Channel not found!' });
+
+		// Ensure the channel is from the correct guild
+		if (!channel.isDMBased() && channel.guildId !== req.params.guildId) return res.status(400).json({ error: 'Channel is not from this guild' });
+
+		// Try and create and then send the embed
+		try {
+			const embed = new EmbedBuilder(req.body);
+			if (channel.isSendable()) await channel.send({ embeds: [embed] });
+			res.json({ success: 'Successfully sent embed' });
+		} catch (err: any) {
+			console.log(err);
+			res.json({ error: err.message });
+		}
 	});
 
 	router.get('/:guildId/refresh', async (req, res) => {
