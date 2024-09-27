@@ -20,16 +20,17 @@ const logger = new Logger();
 
 		// Spawn your shards
 		logger.log('=-=-=-=-=-=-=- Loading shard(s) -=-=-=-=-=-=-=');
-		try {
-			await manager.spawn();
-		} catch (err: any) {
-			logger.error(`Error loading shards: ${err.message}`);
-		}
 
 		// Emitted when a shard is created
 		manager.on('shardCreate', (shard) => {
 			logger.log(`Shard ${shard.id} launched`);
 		});
+
+		try {
+			await manager.spawn();
+		} catch (err: any) {
+			logger.error(`Error loading shards: ${err.message}`);
+		}
 	} else {
 		logger.error('Please fix your errors before loading the client.');
 		process.exit();

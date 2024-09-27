@@ -46,7 +46,7 @@ async function loadCommands() {
 			}
 		}
 
-		client.logger.log(`=-=-=-=-=-=-=- Loaded: ${cmdCount} commands -=-=-=-=-=-=-=`);
+		client.logger.ready(`=-=-=-=-=-=-=- Loaded: ${cmdCount} commands -=-=-=-=-=-=-=`);
 	} else {
 		client.logger.error('No Commands found to load.');
 	}
@@ -56,6 +56,7 @@ async function loadCommands() {
 async function loadEvents() {
 	const folders = await readdir(`${process.cwd()}/dist/events/`);
 	client.logger.log('=-=-=-=-=-=-=- Loading events: -=-=-=-=-=-=-=');
+	let evtCount = 0;
 
 	// Fetch all events
 	for (const folder of folders) {
@@ -78,10 +79,13 @@ async function loadEvents() {
 						break;
 					*/
 				}
+				evtCount++;
 			} catch (err: any) {
 				client.logger.error(`Failed to load Event: ${event} due to: ${err.message}`);
 			}
 
 		}
 	}
+
+	client.logger.ready(`=-=-=-=-=-=-=- Loaded: ${evtCount} events -=-=-=-=-=-=-=`);
 }
