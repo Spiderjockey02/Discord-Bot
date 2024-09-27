@@ -49,7 +49,7 @@ export default class CommandManager {
 		// Check if command is guildOnly but has been ran in DM
 		if (command.conf.guildOnly && message.guild == null) {
 			if (message.deletable) message.delete();
-			return message.channel.send('events/message:GUILD_ONLY');
+			return message.channel.isSendable() ? message.channel.send('events/message:GUILD_ONLY') : null;
 		}
 
 		const applicationCommands = await message.guild?.commands.fetch();
@@ -65,7 +65,7 @@ export default class CommandManager {
 					case ApplicationCommandPermissionType.Channel:
 						// Check for banned channels
 						if (message.channel.id == permission.id && !permission.permission) {
-							return message.channel.send('You can\'t run this command in this channel');
+							return message.channel.isSendable() ? message.channel.send('You can\'t run this command in this channel') : null;
 						}
 						break;
 					case ApplicationCommandPermissionType.Role:
@@ -73,7 +73,7 @@ export default class CommandManager {
 						break;
 					case ApplicationCommandPermissionType.User:
 						if (message.author.id == permission.id && !permission.permission) {
-							return message.channel.send('You are blocked from running this command in this server.');
+							return message.channel.isSendable() ? message.channel.send('You are blocked from running this command in this server.') : null;
 						}
 						break;
 				}
@@ -119,13 +119,13 @@ export default class CommandManager {
 			switch (option.type) {
 				case ApplicationCommandOptionType.User: {
 					const user = message.guild?.members.cache.get(arg);
-					if (!user) return message.channel.send(`${arg} is not a valid user.`);
+					if (!user) return message.channel.isSendable() ? message.channel.send(`${arg} is not a valid user.`) : null;
 					response[option.name] = user;
 					break;
 				}
 				case ApplicationCommandOptionType.Role: {
 					const role = message.guild?.roles.cache.get(arg);
-					if (!role) return message.channel.send(`${arg} is not a valid role.`);
+					if (!role) return message.channel.isSendable() ? message.channel.send(`${arg} is not a valid role.`) : null;
 					response[option.name] = role;
 					break;
 				}
@@ -136,5 +136,13 @@ export default class CommandManager {
 		}
 
 		return response;
+	}
+
+	get(cmd: string) {
+		return this.commands.get(cmd) || this.subCommands.get(cmd) || this.aliases.get(cmd);
+	}
+
+	allNames() {
+		return [...this.commands.keys(), ...this.subCommands.keys(), ...this.aliases.keys()];
 	}
 }
