@@ -3,10 +3,24 @@ import EgglordClient from './base/Egglord';
 import { promisify } from 'util';
 import fs from 'fs';
 import { Command, Event } from './structures';
+import { ActivityType, GatewayIntentBits as FLAGS, Partials } from 'discord.js';
 import('./extensions');
 
 const readdir = promisify(fs.readdir),
-	client = new EgglordClient();
+	client = new EgglordClient({
+		partials: [Partials.GuildMember, Partials.User, Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildScheduledEvent],
+		intents: [FLAGS.AutoModerationConfiguration, FLAGS.AutoModerationExecution, FLAGS.Guilds, FLAGS.GuildMembers, FLAGS.GuildBans, FLAGS.GuildEmojisAndStickers,
+			FLAGS.GuildMessages, FLAGS.GuildMessageReactions, FLAGS.DirectMessages, FLAGS.GuildVoiceStates, FLAGS.GuildInvites,
+			FLAGS.GuildScheduledEvents, FLAGS.MessageContent, FLAGS.GuildModeration],
+		presence: {
+			status: 'online',
+			activities: [{
+				name: 'my mention',
+				type: ActivityType.Listening,
+				url: 'https://www.twitch.tv/ram5s5',
+			}],
+		},
+	});
 
 // Load commands
 (async () => {
