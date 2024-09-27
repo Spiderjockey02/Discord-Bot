@@ -63,7 +63,7 @@ export default class languageManager extends Map<LocaleString, any> {
 		return config.fallbackLanguage ?? 'en-US';
 	}
 
-	translate(guild: Guild | null, key: string, args?: {[key: string]: string | number}) {
+	translate(guild: Guild | null, key: string, args?: {[key: string]: any}) {
 		const languageCode = guild?.settings?.language as LocaleString;
 		const language = this.get(languageCode ?? this.getFallback());
 		if (!language) return 'Invalid language set in data.';
