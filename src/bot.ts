@@ -50,7 +50,7 @@ async function loadCommands() {
 			for (const command of commands) {
 				try {
 					const file = (await import(`${process.cwd()}/dist/commands/${folder}/${command}`)).default;
-					const cmd = new file() as Command;
+					const cmd = new file(client) as Command;
 					client.logger.log(`Loading Command: ${cmd.help.name}`);
 					client.commandManager.add(cmd);
 					cmdCount++;
