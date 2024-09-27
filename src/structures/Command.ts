@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
-import { PermissionFlagsBits, Message, Guild, AutocompleteInteraction, ApplicationCommandOption, ChatInputCommandInteraction } from 'discord.js';
+import { PermissionFlagsBits, Message, AutocompleteInteraction, ApplicationCommandOption, ChatInputCommandInteraction } from 'discord.js';
 import EgglordClient from '../base/Egglord';
 import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from '../types/Structure';
 import { Setting } from '@prisma/client';
@@ -12,7 +12,7 @@ import { Setting } from '@prisma/client';
 export default class Command {
 	help: CommandHelpInterface;
 	conf: CommandConfInterface;
-	constructor({
+	constructor(_client: EgglordClient, {
 		name,
 		guildOnly = false,
 		dirname = '',
@@ -51,7 +51,7 @@ export default class Command {
 	 * @param {guild} guild The guild the interaction ran in
 	 * @readonly
 	*/
-	async callback(_client: EgglordClient, _interaction: ChatInputCommandInteraction<'cached'>, _guild?: Guild): Promise<any> {
+	async callback(_client: EgglordClient, _interaction: ChatInputCommandInteraction<'cached'>): Promise<any> {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
 
@@ -64,5 +64,14 @@ export default class Command {
 	*/
 	async autocomplete(_client: EgglordClient, _interaction: AutocompleteInteraction) {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
+	}
+
+	async load(client: EgglordClient) {
+		const command = (await import(`${process.cwd()}/dist/commands/${this.help.category}/${this.help.name}`)).default;
+		client.commandManager.add(new command() as Command);
+	}
+
+	async unload() {
+		delete require.cache[require.resolve(`${process.cwd()}/dist/commands/${this.help.category}${path.sep}${this.help.name}.js`)];
 	}
 }
