@@ -10,6 +10,7 @@ export default async function(client: EgglordClient) {
 	app
 		.use(cors())
 		.disable('x-powered-by')
+		.use(express.json())
 		.use((req, res, next) => {
 			if (req.originalUrl !== '/favicon.ico' || config.debug) {
 				// Handle custom rate limits
