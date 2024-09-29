@@ -1,7 +1,7 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Guild, Message } from 'discord.js';
+import { fetchFromAPI } from '../../utils';
 
 /**
  * Steam command
@@ -12,8 +12,8 @@ export default class Steam extends Command {
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'steam',
 			dirname: __dirname,
 			description: 'Get information on a Steam account.',
@@ -30,46 +30,18 @@ export default class Steam extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
-	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
-		// Steam config
-		if (!message.args[0])	return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/steam:USAGE')) });
+	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
 
-		// send 'waiting' message to show client has recieved message
-		const msg = await message.channel.send(message.translate('searcher/fortnite:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
-
-		// data
-		const token = client.config.api_keys.steam;
-		const resp = await this.fetchSteamData(client, message.guild, message.channel, token, message.args.join(' '));
-		// fetch user data
-		msg.delete();
+		const resp = await this.fetchSteamData(client, message.guild, message.args.join(' '));
 		message.channel.send({ embeds: [resp] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			username = args.get('username').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const username = interaction.options.getString('username', true);
 
 		// fetch steam account
-		const token = client.config.api_keys.steam;
-		const resp = await this.fetchSteamData(client, guild, channel, token, username);
-
-		// send data
+		const resp = await this.fetchSteamData(client, interaction.guild, username);
 		interaction.reply({ embeds: [resp] });
 	}
 
@@ -82,24 +54,30 @@ export default class Steam extends Command {
 	 * @param {string} username The username to search
 	 * @returns {embed}
 	*/
-	async fetchSteamData(client, guild, channel, token, username) {
-		const steam = await client.fetch('socials/steam', { username: username });
-		if (steam.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: steam.error }, true);
+	async fetchSteamData(client: EgglordClient, guild: Guild | null, username: string) {
+		try {
+			const steam = await fetchFromAPI('socials/steam', { username });
+			if (steam.error) throw new Error(steam.error);
 
-		// display data
-		return new Embed(client, guild)
-			.setColor(0x0099ff)
-			.setAuthor({ name: guild.translate('searcher/steam:AUTHOR', { NAME: steam.realname }), iconURL: steam.avatar })
-			.setThumbnail(steam.avatar)
-			.setDescription(guild.translate('searcher/steam:DESC', {
-				NAME: steam.realname || 'Unknown',
-				STATUS: steam.status,
-				FLAG: steam.countryCode ? steam.countryCode.toLowerCase() : 'white',
-				TIME: `<t:${steam.createdAt}:F>`,
-				GAME_BANS: steam.bans.NumberOfGameBans, VAC_BANS: steam.bans.NumberOfVACBans,
-				URL: steam.url,
-			}))
-			.setTimestamp();
+			// display data
+			return new EgglordEmbed(client, guild)
+				.setAuthor({ name: client.languageManager.translate(guild, 'searcher/steam:AUTHOR', { NAME: steam.realname }), iconURL: steam.avatar })
+				.setThumbnail(steam.avatar)
+				.setDescription(client.languageManager.translate(guild, 'searcher/steam:DESC', {
+					NAME: steam.realname || 'Unknown',
+					STATUS: steam.status,
+					FLAG: steam.countryCode ? steam.countryCode.toLowerCase() : 'white',
+					TIME: `<t:${steam.createdAt}:F>`,
+					GAME_BANS: steam.bans.NumberOfGameBans, VAC_BANS: steam.bans.NumberOfVACBans,
+					URL: steam.url,
+				}))
+				.setTimestamp();
+		} catch (err: any) {
+			client.logger.error(err.message);
+
+			return new ErrorEmbed(client, guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+		}
 	}
 }
 

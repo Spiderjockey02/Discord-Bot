@@ -1,7 +1,7 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Guild, Message } from 'discord.js';
+import { fetchFromAPI } from '../../utils';
 
 /**
  * Weather command
@@ -12,8 +12,8 @@ export default class Weather extends Command {
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'weather',
 			dirname: __dirname,
 			description: 'Look up the weather in a certain area.',
@@ -30,61 +30,47 @@ export default class Weather extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
-	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('searcher/weather:USAGE')) });
-
-		// send 'waiting' message to show client has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: `${this.help.name}` }));
+	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
 
 		// Display weather
-		const embed = await this.fetchWeatherData(client, message.channel, message.args[0]);
-		msg.delete();
+		const embed = await this.fetchWeatherData(client, message.guild, message.args[0]);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			location = args.get('location').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const location = interaction.options.getString('location', true);
 
 		// Display weather
-		const embed = await this.fetchWeatherData(client, channel, location);
+		const embed = await this.fetchWeatherData(client, interaction.guild, location);
 		interaction.reply({ embeds: [embed] });
 	}
 
-	async fetchWeatherData(client, channel, location) {
-		const weather = await client.fetch('info/weather', { location: location });
-		if (weather.error) return channel.error('misc:ERROR_MESSAGE', { ERROR: weather.error }, true);
+	async fetchWeatherData(client: EgglordClient, guild: Guild | null, location: string) {
+		try {
+			const weather = await fetchFromAPI('info/weather', { location: location });
+			if (weather.error) throw new Error(weather.error);
 
-		// Display weather at location
-		const embed = new Embed(client, channel.guild)
-			.setTitle(channel.guild.translate('searcher/weather:TITLE', { LOC: `${weather.location.name}, ${weather.location.country}` }))
-			.setDescription(channel.guild.translate('searcher/weather:DESC'))
-			.addFields(
-				{ name: channel.guild.translate('searcher/weather:TEMP'), value: `${weather.current.temp_c}°C`, inline: true },
-				{ name: channel.guild.translate('searcher/weather:SKY'), value: weather.current.condition.text, inline: true },
-				{ name: channel.guild.translate('searcher/weather:HUMIDITY'), value: `${weather.current.humidity}%`, inline: true },
-				{ name: channel.guild.translate('searcher/weather:SPEED'), value: `${weather.current.wind_mph}mph`, inline: true },
-				{ name: channel.guild.translate('searcher/weather:TIME'), value: new Date(weather.current.last_updated).toUTCString(), inline: true },
-				{ name: channel.guild.translate('searcher/weather:DISPLAY'), value: weather.current.wind_dir, inline: true },
-			);
+			// Display weather at location
+			const embed = new EgglordEmbed(client, guild)
+				.setTitle(client.languageManager.translate(guild, 'searcher/weather:TITLE', { LOC: `${weather.location.name}, ${weather.location.country}` }))
+				.setDescription(client.languageManager.translate(guild, 'searcher/weather:DESC'))
+				.addFields(
+					{ name: client.languageManager.translate(guild, 'searcher/weather:TEMP'), value: `${weather.current.temp_c}°C`, inline: true },
+					{ name: client.languageManager.translate(guild, 'searcher/weather:SKY'), value: weather.current.condition.text, inline: true },
+					{ name: client.languageManager.translate(guild, 'searcher/weather:HUMIDITY'), value: `${weather.current.humidity}%`, inline: true },
+					{ name: client.languageManager.translate(guild, 'searcher/weather:SPEED'), value: `${weather.current.wind_mph}mph`, inline: true },
+					{ name: client.languageManager.translate(guild, 'searcher/weather:TIME'), value: new Date(weather.current.last_updated).toUTCString(), inline: true },
+					{ name: client.languageManager.translate(guild, 'searcher/weather:DISPLAY'), value: weather.current.wind_dir, inline: true },
+				);
 
-		return embed;
+			return embed;
+		} catch (err: any) {
+			client.logger.error(err.message);
+
+			return new ErrorEmbed(client, guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+		}
 	}
 }
 
