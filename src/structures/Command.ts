@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
-import { PermissionFlagsBits, Message, AutocompleteInteraction, ApplicationCommandOption, ChatInputCommandInteraction } from 'discord.js';
+import { PermissionFlagsBits, Message, AutocompleteInteraction, ChatInputCommandInteraction, ApplicationCommandOptionData } from 'discord.js';
 import EgglordClient from '../base/Egglord';
 import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from '../types/Structure';
 import { Setting } from '@prisma/client';
@@ -27,7 +27,7 @@ export default class Command {
 		usage = '',
 		slash = false,
 		isSubCmd = false,
-		options = new Array<ApplicationCommandOption>(),
+		options = new Array<ApplicationCommandOptionData>(),
 	}: CommandConstruct) {
 		const category = (dirname ? dirname.split(path.sep).pop() ?? 'Other' : 'Other');
 		this.conf = { guildOnly, userPermissions, botPermissions, nsfw, ownerOnly, cooldown, slash, isSubCmd, options };

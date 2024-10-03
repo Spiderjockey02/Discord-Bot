@@ -1,4 +1,4 @@
-import { ApplicationCommandOption, ClientEvents } from 'discord.js';
+import { ApplicationCommandOptionData, ClientEvents } from 'discord.js';
 import { ManagerEvents } from'magmastream';
 
 export interface CommandHelpInterface {
@@ -19,7 +19,7 @@ export interface CommandConfInterface {
   cooldown: number
   slash: boolean
   isSubCmd: boolean
-  options: ApplicationCommandOption[]
+  options: ApplicationCommandOptionData[]
 }
 
 export interface CommandConstruct {
@@ -37,7 +37,7 @@ export interface CommandConstruct {
   usage?: string
   slash?: boolean
   isSubCmd?: boolean
-  options?: ApplicationCommandOption[]
+  options?: ApplicationCommandOptionData[]
 }
 
 export type giveawayEvents = 'endedGiveawayReactionAdded' | 'giveawayDeleted' | 'giveawayEnded' | 'giveawayReactionAdded' | 'giveawayReactionRemoved' | 'giveawayReolled'

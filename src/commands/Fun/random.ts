@@ -1,4 +1,4 @@
-import { ApplicationCommandOption, ApplicationCommandOptionType, ChatInputCommandInteraction, Message } from 'discord.js';
+import { ApplicationCommandOptionData, ApplicationCommandOptionType, ChatInputCommandInteraction, Message } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
 import Command from '../../structures/Command';
 
@@ -21,7 +21,7 @@ export default class Random extends Command {
 				description: c.help.description,
 				type: ApplicationCommandOptionType.Subcommand,
 				options: c.conf.options,
-			})) as ApplicationCommandOption[],
+			})) as ApplicationCommandOptionData[],
 		});
 	}
 
