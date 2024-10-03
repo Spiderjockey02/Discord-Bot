@@ -1,6 +1,6 @@
-// Dependencies
-const { ApplicationCommandOptionType, PermissionsBitField: { Flags }, ApplicationCommandType } = require('discord.js'), ;
+import EgglordClient from 'base/Egglord';
 import Command from '../../structures/Command';
+import { ApplicationCommandDataResolvable, ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, PermissionFlagsBits } from 'discord.js';
 
 /**
  * Reload command
@@ -11,8 +11,8 @@ export default class Reload extends Command {
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'reload-misc',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -32,57 +32,63 @@ export default class Reload extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const feature = args.get('feature').value,
-			channel = guild.channels.cache.get(interaction.channelId);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const feature = interaction.options.getString('feature', true);
 		let successCount = 0;
 
 		// loop through each guild
 		switch (feature) {
-			case 'language':
-				try {
-					client.translations = await require('../../helpers/LanguageManager')();
-				} catch (err) {
-					client.logger.error(`Command: '${this.help.name}' has error: ${err}.`);
-					interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
-				}
-				break;
 			case 'interactions':
 				await interaction.reply({ content: `=-=-=-=-=-=-=- Loading interactions for ${client.guilds.cache.size} guilds -=-=-=-=-=-=-=` });
 
 				// Upload per server interactions
-				for (const g of [...client.guilds.cache.values()]) {
-					const enabledPlugins = g.settings.plugins;
-					const cmdsToUpload = [];
-					for (const plugin of enabledPlugins) {
-						const data = await client.loadInteractionGroup(plugin, g);
-						if (Array.isArray(data)) cmdsToUpload.push(...data);
+				for (const guild of [...client.guilds.cache.values()]) {
+					const activeCommands = await client.commandManager.fetchByGuildId(guild.id);
 
+					const commandData: ApplicationCommandDataResolvable[] = [];
+					for (const cmd of activeCommands) {
+						// Get the command
+						const command = client.commandManager.get(cmd.name);
+						if (command == undefined) break;
+
+						// If it is a slash command then start parsing it, ready for deployment
+						if (command.conf.slash) {
+							const item: ApplicationCommandDataResolvable = {
+								name: command.help.name,
+								description: command.help.description,
+								nsfw: command.conf.nsfw,
+								defaultMemberPermissions: command.conf.userPermissions.length >= 1 ? command.conf.userPermissions : PermissionFlagsBits.SendMessages,
+								options: [],
+							};
+							if (command.conf.options.length > 0) item.options = command.conf.options;
+							commandData.push(item);
+						}
 					}
 
 					// For the "Host" commands
-					if (g.id == client.config.SupportServer.GuildID) {
-						const cmds = await client.loadInteractionGroup('Host', g);
-						for (const cmd of cmds) {
-							cmd.defaultMemberPermissions = [Flags.Administrator];
+					if (guild.id == client.config.SupportServer.GuildID) {
+						const cmds = await client.commandManager.commands.filter(c => c.help.category == 'Host');
+						for (const cmd of [...cmds.values()]) {
+							if (cmd.conf.slash) {
+								const item: ApplicationCommandDataResolvable = {
+									name: cmd.help.name,
+									description: cmd.help.description,
+									nsfw: cmd.conf.nsfw,
+									defaultMemberPermissions: PermissionFlagsBits.Administrator,
+									options: [],
+								};
+								if (cmd.conf.options.length > 0) item.options = cmd.conf.options;
+								commandData.push(item);
+							}
 						}
-						if (Array.isArray(cmds)) cmdsToUpload.push(...cmds);
 					}
 
 					// get context menus
 					try {
-						await client.guilds.cache.get(g.id)?.commands.set(cmdsToUpload);
-						client.logger.log('Loaded interactions for guild: ' + g.name);
+						await client.guilds.cache.get(guild.id)?.commands.set(commandData);
+						client.logger.log(`Loaded interactions for guild: ${guild.name}`);
 						successCount++;
-					} catch (err) {
+					} catch (err: any) {
 						client.logger.error(`Failed to load interactions for guild: ${guild.id} due to: ${err.message}.`);
 					}
 				}

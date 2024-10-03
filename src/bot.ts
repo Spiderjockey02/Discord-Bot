@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import fs from 'fs';
 import { Command, Event } from './structures';
 import { ActivityType, GatewayIntentBits as FLAGS, Partials } from 'discord.js';
+import { addToDatabase, fetchAllCommands } from './accessors/Command';
 import('./extensions');
 
 const readdir = promisify(fs.readdir),
@@ -43,6 +44,7 @@ async function loadCommands() {
 		client.logger.log('=-=-=-=-=-=-=- Loading commands: -=-=-=-=-=-=-=');
 		let cmdCount = 0;
 
+		// Load commands from file system
 		for (const folder of folders) {
 			if (folder == 'command.example.js') return;
 
@@ -52,13 +54,22 @@ async function loadCommands() {
 					const file = (await import(`${process.cwd()}/dist/commands/${folder}/${command}`)).default;
 					const cmd = new file(client) as Command;
 					client.logger.log(`Loading Command: ${cmd.help.name}`);
-					client.commandManager.add(cmd);
+					await client.commandManager.add(cmd);
 					cmdCount++;
 				} catch (err: any) {
 					client.logger.error(`Failed to load Command: ${command} due to: ${err.message}`);
 				}
 			}
 		}
+
+		// Ensure the commands are saved to the database (so servers know what commands to run and have access to)
+		const commandsFromDB = await fetchAllCommands();
+		const commandsMissingFromDB = [...client.commandManager.commands.keys()].filter(localCommand => !commandsFromDB.map(c => c.name).includes(localCommand));
+
+		for (const command of commandsMissingFromDB) {
+			await addToDatabase(command);
+		}
+
 
 		client.logger.ready(`=-=-=-=-=-=-=- Loaded: ${cmdCount} commands -=-=-=-=-=-=-=`);
 	} else {

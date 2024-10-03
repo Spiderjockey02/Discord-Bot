@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ApplicationCommandPermissionType, Collect
 import { Command, ErrorEmbed } from '../structures';
 import EgglordClient from './Egglord';
 import { Setting } from '@prisma/client';
+import GuildManager from '../accessors/Guild';
 
 export default class CommandManager {
 	aliases: Collection<string, Command>;
@@ -144,5 +145,9 @@ export default class CommandManager {
 
 	allNames() {
 		return [...this.commands.keys(), ...this.subCommands.keys(), ...this.aliases.keys()];
+	}
+
+	async fetchByGuildId(guildId: string) {
+		return new GuildManager().fetchCommandsById(guildId);
 	}
 }

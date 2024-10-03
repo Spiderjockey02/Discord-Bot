@@ -63,5 +63,17 @@ export default class GuildManager {
 			},
 		});
 	}
+
+	async fetchCommandsById(guildId: string) {
+		return client.command.findMany({
+			where: {
+				guild: {
+					some: {
+						id: guildId,
+					},
+				},
+			},
+		});
+	}
 }
 

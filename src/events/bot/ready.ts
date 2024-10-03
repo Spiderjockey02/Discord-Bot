@@ -2,7 +2,7 @@ import { Event } from '../../structures';
 import AudioManager from '../../base/Audio-Manager';
 import EgglordClient from '../../base/Egglord';
 import http from '../../http';
-import { Events } from 'discord.js';
+import { ApplicationCommandDataResolvable, Events, PermissionFlagsBits } from 'discord.js';
 import LevelManager from '../../helpers/LevelManager';
 import TicketManager from '../../helpers/TicketManager';
 
@@ -29,17 +29,16 @@ export default class Ready extends Event {
 		try {
 			client.audioManager = new AudioManager(client);
 			client.audioManager?.init(client.user.id);
-		} catch (err: any) {
+		} catch (err) {
 			console.log(err);
-			client.logger.error(`Audio manager failed to load due to error: ${err.message}`);
+			client.logger.error(`Audio manager failed to load due to error: ${err}`);
 		}
 
 		// Run the HTTP API server
 		try {
 			await http(client);
-		} catch (err: any) {
+		} catch (err) {
 			console.log(err);
-			console.log(err.message);
 		}
 
 		// Get server settings on servers that removed the client while it was offline
@@ -77,32 +76,39 @@ export default class Ready extends Event {
 				user.isContributor = userOnDB.isContributor;
 				user.isDev = userOnDB.isDev;
 				user.isSupport = userOnDB.isSupport;
-			} catch (err: any) {
+			} catch {
 				client.logger.error(`Failed to fetch user ID: ${userOnDB.id}`);
 			}
 		}
 
 		// Make sure 'SupportServer' has Host commands
-		/*
 		if (client.config.SupportServer.GuildID) {
 			const guild = client.guilds.cache.get(client.config.SupportServer.GuildID);
 			if (guild) {
-				// Check if Main server already have 'Host' commands
-				const guildCmds = await guild.commands.fetch();
-				if (!(guildCmds.find(cmd => cmd.name == 'reload'))) {
-					// Add host commands to Support server as they don't have them
-					const cmds = await client.loadInteractionGroup('Host', guild.id);
-					for (const cmd of cmds) {
-						cmd.defaultMemberPermissions = [PermissionFlagsBits.Administrator];
+				const cmds = await client.commandManager.commands.filter(c => c.help.category == 'Host');
+				const commandData = [];
+
+				for (const cmd of [...cmds.values()]) {
+					if (cmd.conf.slash) {
+						const item: ApplicationCommandDataResolvable = {
+							name: cmd.help.name,
+							description: cmd.help.description,
+							nsfw: cmd.conf.nsfw,
+							defaultMemberPermissions: PermissionFlagsBits.Administrator,
+							options: [],
+						};
+						if (cmd.conf.options.length > 0) item.options = cmd.conf.options;
+						commandData.push(item);
 					}
-					if (Array.isArray(cmds)) await client.guilds.cache.get(guild.id)?.commands.set(cmds);
-					client.logger.log(`Added Host commands to Support server: ${guild.id}.`);
 				}
+
+				await guild.commands.set(commandData);
+				client.logger.log(`Owner-only commands have been loaded in server: ${guild.id}.`);
 			} else {
-				client.logger.error('client is not in Support server.');
+				client.logger.error('Client is not in Support server.');
 			}
 		}
-		*/
+
 		// LOG that the client is ready to be interacted with
 		client.logger.ready('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
 		client.logger.ready(`${client.user.displayName}, ready to serve [${client.guilds.cache.size}] servers.`);

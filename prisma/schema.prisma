@@ -24,7 +24,9 @@ model Guild {
   ranks         Rank[]
   warnings      Warning[]
   giveaways     Giveaway[]
+  commands      Command[]
   settings      Setting?
+  APIToken      String?
 }
 
 model GuildMember {
@@ -160,6 +162,7 @@ model Setting {
 model LevelSystem {
   settings             Setting              @relation(fields: [settingsId], references: [guildId])
   settingsId           String               @id
+  enabled              Boolean              @default(true)
   annoucementType      LevelAnnoucementType
   annoucementChannel   Channel?             @relation("annoucement", fields: [annoucementChannelId], references: [id])
   annoucementChannelId String?              @unique
@@ -189,6 +192,7 @@ enum LevelAnnoucementType {
 model WelcomeSystem {
   settings           Setting  @relation(fields: [settingsId], references: [guildId])
   settingsId         String   @id
+  enabled            Boolean  @default(true)
   joinMessageEnabled Boolean  @default(false)
   joinChannel        Channel? @relation(fields: [joinChannelId], references: [id])
   joinChannelId      String?  @unique
@@ -210,6 +214,7 @@ model MusicSystem {
 model ModerationSystem {
   settings         Setting                   @relation(fields: [settingsId], references: [guildId])
   settingsId       String                    @id
+  enabled          Boolean                   @default(true)
   loggingChannel   Channel?                  @relation(fields: [loggingChannelId], references: [id])
   loggingChannelId String?                   @unique
   loggingEvents    ModerationLoggingEvents[]
@@ -217,19 +222,21 @@ model ModerationSystem {
 }
 
 model ModerationLoggingEvents {
-  name              ModerationLoggingEventEnum @id
+  name            String    @id
   moderationSystems ModerationSystem[]
 }
 
-enum ModerationLoggingEventEnum {
-  autoModerationRuleCreate
+model TicketSystem {
+  settings        Setting   @relation(fields: [settingsId], references: [guildId])
+  settingsId      String    @id
+  enabled         Boolean   @default(true)
+  supportRole     Role?     @relation(fields: [supportRoleId], references: [id])
+  supportRoleId   String?   @unique
+  category        Channel?  @relation(fields: [categoryId], references: [id])
+  categoryId      String?   @unique
 }
 
-model TicketSystem {
-  settings      Setting  @relation(fields: [settingsId], references: [guildId])
-  settingsId    String   @id
-  supportRole   Role?    @relation(fields: [supportRoleId], references: [id])
-  supportRoleId String?  @unique
-  category       Channel? @relation(fields: [categoryId], references: [id])
-  categoryId     String?  @unique
+model Command {
+  name      String          @id
+  guild     Guild[]       
 }
