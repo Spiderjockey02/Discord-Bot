@@ -41,7 +41,7 @@ export interface CommandConstruct {
 }
 
 export type giveawayEvents = 'endedGiveawayReactionAdded' | 'giveawayDeleted' | 'giveawayEnded' | 'giveawayReactionAdded' | 'giveawayReactionRemoved' | 'giveawayReolled'
-export type ExtendedClientEvents = keyof ClientEvents | keyof ManagerEvents | giveawayEvents | 'ticketCreate' | 'ticketClose' | 'slashCreate' | 'autoComplete'
+export type ExtendedClientEvents = keyof ClientEvents | keyof ManagerEvents | giveawayEvents | 'ticketCreate' | 'ticketClose' | 'slashCreate' | 'autoComplete' | 'menuClick'
 
 export interface IEventBase {
   name: ExtendedClientEvents

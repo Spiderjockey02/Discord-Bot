@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Dependencies
 import path from 'path';
-import { PermissionFlagsBits, Message, AutocompleteInteraction, ChatInputCommandInteraction, ApplicationCommandOptionData } from 'discord.js';
+import { PermissionFlagsBits, Message, AutocompleteInteraction, ChatInputCommandInteraction, ApplicationCommandOptionData, UserContextMenuCommandInteraction } from 'discord.js';
 import EgglordClient from '../base/Egglord';
 import { CommandConfInterface, CommandConstruct, CommandHelpInterface } from '../types/Structure';
 import { Setting } from '@prisma/client';
@@ -63,6 +63,10 @@ export default class Command {
 	 * @readonly
 	*/
 	async autocomplete(_client: EgglordClient, _interaction: AutocompleteInteraction) {
+		throw new Error(`Command: ${this.help.name} does not have a callback method`);
+	}
+
+	reply(_client: EgglordClient, _interaction: UserContextMenuCommandInteraction) {
 		throw new Error(`Command: ${this.help.name} does not have a callback method`);
 	}
 

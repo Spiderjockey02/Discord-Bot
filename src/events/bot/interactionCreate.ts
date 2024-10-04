@@ -29,7 +29,7 @@ export default class InteractionCreate extends Event {
 				break;
 			case InteractionType.ApplicationCommand: {
 				if ([ApplicationCommandType.User, ApplicationCommandType.Message].includes((interaction as CommandInteraction).commandType)) {
-					client.emit('clickMenu', interaction);
+					client.emit('menuClick', interaction);
 				} else {
 					client.emit('slashCreate', interaction);
 				}
