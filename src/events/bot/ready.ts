@@ -85,25 +85,30 @@ export default class Ready extends Event {
 		if (client.config.SupportServer.GuildID) {
 			const guild = client.guilds.cache.get(client.config.SupportServer.GuildID);
 			if (guild) {
-				const cmds = await client.commandManager.commands.filter(c => c.help.category == 'Host');
-				const commandData = [];
+				// Make sure the commands don't already exist in the support server
+				const commandsInGuild = await guild.commands.fetch();
+				if (commandsInGuild.find(c => c.name == 'reload') == undefined) {
+					const cmds = await client.commandManager.commands.filter(c => c.help.category == 'Host');
+					const commandData = [];
 
-				for (const cmd of [...cmds.values()]) {
-					if (cmd.conf.slash) {
-						const item: ApplicationCommandDataResolvable = {
-							name: cmd.help.name,
-							description: cmd.help.description,
-							nsfw: cmd.conf.nsfw,
-							defaultMemberPermissions: PermissionFlagsBits.Administrator,
-							options: [],
-						};
-						if (cmd.conf.options.length > 0) item.options = cmd.conf.options;
-						commandData.push(item);
+					for (const cmd of [...cmds.values()]) {
+						if (cmd.conf.slash) {
+							const item: ApplicationCommandDataResolvable = {
+								name: cmd.help.name,
+								description: cmd.help.description,
+								nsfw: cmd.conf.nsfw,
+								defaultMemberPermissions: PermissionFlagsBits.Administrator,
+								options: [],
+							};
+							if (cmd.conf.options.length > 0) item.options = cmd.conf.options;
+							commandData.push(item);
+						}
 					}
+
+					await guild.commands.set(commandData);
+					client.logger.log(`Owner-only commands have been loaded in server: ${guild.id}.`);
 				}
 
-				await guild.commands.set(commandData);
-				client.logger.log(`Owner-only commands have been loaded in server: ${guild.id}.`);
 			} else {
 				client.logger.error('Client is not in Support server.');
 			}
