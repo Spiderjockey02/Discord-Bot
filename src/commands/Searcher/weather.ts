@@ -1,6 +1,6 @@
 import EgglordClient from 'base/Egglord';
 import { Command, EgglordEmbed, ErrorEmbed } from '../../structures';
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, Guild, Message } from 'discord.js';
+import { ApplicationCommandOptionType, AutocompleteInteraction, ChatInputCommandInteraction, Guild, Message } from 'discord.js';
 import { fetchFromAPI } from '../../utils';
 
 /**
@@ -26,6 +26,7 @@ export default class Weather extends Command {
 				description: 'The location to gather the weather of.',
 				type: ApplicationCommandOptionType.String,
 				required: true,
+				autocomplete: true,
 			}],
 		});
 	}
@@ -44,6 +45,21 @@ export default class Weather extends Command {
 		// Display weather
 		const embed = await this.fetchWeatherData(client, interaction.guild, location);
 		interaction.reply({ embeds: [embed] });
+	}
+
+	/**
+	 * Function for handling autocomplete
+	 * @param {client} client The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @readonly
+	*/
+	async autocomplete(_client: EgglordClient, interaction: AutocompleteInteraction) {
+		const input = interaction.options.getFocused(true).value;
+		if (input.length == 0) return;
+
+		// Fetch from the API and return the results
+		const data = await fetchFromAPI('info/place', { location: input });
+		interaction.respond(data.map((i: any) => ({ name: i.name, value: i.name })));
 	}
 
 	async fetchWeatherData(client: EgglordClient, guild: Guild | null, location: string) {
