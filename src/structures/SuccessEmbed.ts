@@ -21,7 +21,7 @@ export default class SuccessEmbed extends EmbedBuilder {
 	setMessage(key: string, args?: {[key: string]: string}) {
 		const translation = this.client.languageManager.translate(this.guild, key, args);
 
-		this.data.description = `${this.client.customEmojis['cross']} ${translation}`;
+		this.data.description = `${this.client.customEmojis['checkmark']} ${translation}`;
 		return this;
 	}
 }
