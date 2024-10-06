@@ -1,72 +1,48 @@
-// Dependencies
-const	{ ApplicationCommandOptionType } = require('discord.js'),
-	{ userSchema } = require('../../database/models'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, ErrorEmbed, SuccessEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 
-/**
- * Lavalink command
- * @extends {Command}
-*/
 export default class UserPremium extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'user-premium',
 			ownerOnly: true,
 			dirname: __dirname,
-			description: 'Interact with the Lavalink nodes',
-			usage: 'lavalink [list | add | remove] <information>',
+			description: 'Update the user\'s premium status',
+			usage: 'user premium [user] [Date]',
 			cooldown: 3000,
 			slash: false,
 			isSubCmd: true,
 			options: [{
 				name: 'user',
-				description: 'The user to update banned status',
+				description: 'The user',
 				type: ApplicationCommandOptionType.User,
 				required: true,
 			},
 			{
 				name: 'premium',
-				description: 'The banned status',
-				type: ApplicationCommandOptionType.Boolean,
+				description: 'The day when premium will run out',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			}],
 		});
 	}
 
-	/**
-	 * Function for receiving interaction.
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
-	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			user = client.users.cache.get(args.get('user').value),
-			premiumStatus = args.get('premium').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const	user = interaction.options.getUser('user', true),
+			premiumStatus = interaction.options.getString('premium', true);
 
 		try {
-			const resp = await userSchema.findOne({ userID: user.id	});
-			const time = Date.now();
-			if (!resp) {
-				await (new userSchema({
-					userID: user.id,
-					premium: premiumStatus,
-					premiumSince: time,
-				})).save();
-			} else {
-				await userSchema.findOneAndUpdate({ userID: user.id }, { premium: premiumStatus, premiumSince: Date.now() });
-			}
-			user.premium = premiumStatus;
-			user.premiumSince = time;
-			interaction.reply({ embeds: [channel.success('host/user:SUCCESS_PREM', null, true)] });
-		} catch (err) {
-			interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+			await client.databaseHandler.userManager.update(user.id, { isPremiumTo: new Date(premiumStatus) });
+			user.isPremiumTo = new Date(premiumStatus);
+
+			const embed = new SuccessEmbed(client, interaction.guild)
+				.setMessage('host/user:SUCCESS_PREM');
+			interaction.reply({ embeds: [embed] });
+		} catch (err: any) {
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 }

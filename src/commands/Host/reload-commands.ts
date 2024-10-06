@@ -1,6 +1,6 @@
-// Dependencies
-const { ApplicationCommandOptionType } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, ErrorEmbed, SuccessEmbed } from '../../structures';
+import { ApplicationCommandOptionType, AutocompleteInteraction, ChatInputCommandInteraction, Message } from 'discord.js';
 
 /**
  * Reload command
@@ -11,8 +11,8 @@ export default class Reload extends Command {
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'reload-commands',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -32,66 +32,61 @@ export default class Reload extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
-		// delete message
-		if (message.deletable) message.delete();
-
-		// Checks to see if a command was specified
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/reload:USAGE')) });
+	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
 
 		// checks to make sure command exists
 		const commandName = message.args[0].toLowerCase();
-		if (client.commands.has(commandName) || client.commands.get(client.aliases.get(commandName))) {
-			// Finds command
-			const cmd = client.commands.get(commandName) || client.commands.get(client.aliases.get(commandName));
+		const cmd = client.commandManager.get(commandName);
 
+		if (cmd !== undefined) {
 			// reloads command
 			try {
 				cmd.unload();
-				cmd.load(client);
-				return message.channel.success('host/reload:SUCCESS', { NAME: commandName }).then(m => m.timedDelete({ timeout: 8000 }));
-			} catch (err) {
+				await cmd.load(client);
+
+				const embed = new SuccessEmbed(client, message.guild)
+					.setMessage('host/reload:SUCCESS', { NAME: cmd.help.name });
+				message.channel.send({ embeds: [embed] });
+			} catch (err: any) {
 				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+
+				const embed = new ErrorEmbed(client, message.guild)
+					.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+				message.channel.send({ embeds: [embed] });
 			}
 		} else {
-			return message.channel.error('host/reload:INCORRECT_DETAILS', { NAME: commandName });
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('host/reload:INCORRECT_DETAILS', { NAME: commandName });
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const cmdName = args.get('command').value,
-			channel = guild.channels.cache.get(interaction.channelId);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const cmdName = interaction.options.getString('command', true);
 
 		// Find apparent command
-		const cmd = client.commands.get(cmdName) || client.commands.get(client.aliases.get(cmdName)) || client.subCommands.get(cmdName);
+		const cmd = client.commandManager.get(cmdName);
 		if (cmd) {
 			// reloads command
 			try {
 				cmd.unload();
-				cmd.load(client);
-				interaction.reply({ embeds: [channel.success('host/reload:SUCCESS', { NAME: cmdName }, true)], fetchReply: true }).then(m => m.timedDelete({ timeout: 8000 }));
-			} catch (err) {
+				await cmd.load(client);
+
+				const embed = new SuccessEmbed(client, interaction.guild)
+					.setMessage('host/reload:SUCCESS', { NAME: cmdName });
+				interaction.reply({ embeds: [embed] });
+			} catch (err: any) {
 				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+
+				const embed = new ErrorEmbed(client, interaction.guild)
+					.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+				interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		} else {
-			interaction.reply({ embeds: [channel.error(`${cmdName} is not a command name nor alias of a command.`, null, true)], ephemeral: true });
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('host/reload:INCORRECT_DETAILS', { NAME: cmdName });
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 
@@ -101,8 +96,8 @@ export default class Reload extends Command {
 	 * @param {interaction} interaction The interaction that ran the command
 	 * @readonly
 	*/
-	async autocomplete(client, interaction) {
-		const cmds = [...client.commands.map(i => i.help.name), ...client.subCommands.map(i => i.help.name)].sort(),
+	async autocomplete(client: EgglordClient, interaction: AutocompleteInteraction) {
+		const cmds = client.commandManager.allNames().sort(),
 			input = interaction.options.getFocused(true).value;
 		const selectedEvents = cmds.filter(i => i.toLowerCase().startsWith(input)).slice(0, 10);
 

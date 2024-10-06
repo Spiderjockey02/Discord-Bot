@@ -1,19 +1,16 @@
-// Dependencies
-const { inspect } = require('util'),
-	{ EmbedBuilder, ApplicationCommandOptionType } = require ('discord.js'), ;
-import Command from '../../structures/Command';
+import { inspect } from 'util';
+import { EmbedBuilder, ApplicationCommandOptionType, ChatInputCommandInteraction, Message } from 'discord.js';
+import { Command, ErrorEmbed } from '../../structures';
+import EgglordClient from 'base/Egglord';
+
 
 /**
  * Eval command
  * @extends {Command}
 */
 export default class Eval extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'eval',
 			ownerOnly: true,
 			dirname: __dirname,
@@ -31,20 +28,15 @@ export default class Eval extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
+	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
+
 		// Evaluated the code
 		const toEval = message.args.join(' ');
 		try {
 			if (toEval) {
 				const hrStart = process.hrtime(),
-					evaluated = await eval(toEval, { depth: 0 }),
+					evaluated = await eval(toEval),
 					hrDiff = process.hrtime(hrStart);
 
 				const embed = new EmbedBuilder()
@@ -56,30 +48,28 @@ export default class Eval extends Command {
 					);
 				message.channel.send({ embeds: [embed] });
 			} else {
-				message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('host/eval:USAGE')) });
+				const embed = new ErrorEmbed(client, message.guild)
+					.setMessage('misc:INCORRECT_FORMAT', { EXAMPLE: client.languageManager.translate(message.guild, 'host/eval:USAGE') });
+
+				message.channel.send({ embeds: [embed] });
 			}
-		} catch (err) {
+		} catch (err: any) {
 			if (message.deletable) message.delete();
 			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 
-	/**
-	 * Function for receiving interaction.
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			toEval = args.get('code').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const toEval = interaction.options.getString('code', true);
 
 		try {
-			await interaction.deferReply();
 			const hrStart = process.hrtime(),
-				evaluated = await eval(toEval, { depth: 0 }),
+				evaluated = await eval(toEval),
 				hrDiff = process.hrtime(hrStart);
 
 			const embed = new EmbedBuilder()
@@ -89,11 +79,13 @@ export default class Eval extends Command {
 					{ name: 'Time:\n', value: `*Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''} ${hrDiff[1] / 1000000}ms.*`, inline: true },
 					{ name: 'Type:\n', value: `${typeof (evaluated)}`, inline: true },
 				);
-			interaction.followUp({ embeds: [embed] });
-		} catch (err) {
+			interaction.reply({ embeds: [embed] });
+		} catch (err: any) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			interaction.followUp({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 }
-

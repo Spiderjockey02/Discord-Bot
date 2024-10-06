@@ -1,58 +1,42 @@
-// Dependencies
-const	{ ApplicationCommandOptionType, EmbedBuilder } = require('discord.js'),
-	moment = require('moment'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import moment from 'moment';
 
-/**
- * Lavalink command
- * @extends {Command}
-*/
 export default class UserBan extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'user-info',
 			ownerOnly: true,
 			dirname: __dirname,
-			description: 'Interact with the Lavalink nodes',
-			usage: 'lavalink [list | add | remove] <information>',
+			description: 'Check the information of a user.',
+			usage: 'user [@user]',
 			cooldown: 3000,
 			slash: false,
 			isSubCmd: true,
 			options: [{
 				name: 'user',
-				description: 'The user to update banned status',
+				description: 'The user to check',
 				type: ApplicationCommandOptionType.User,
 				required: true,
 			}],
 		});
 	}
 
-	/**
-	 * Function for receiving interaction.
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
-	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const user = client.users.cache.get(args.get('user').value);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const user = interaction.options.getUser('user', true);
 
 		const embed = new EmbedBuilder()
 			.setTitle('User Information:')
-			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL({ dynamic: true, size: 1024 }) })
-			.setThumbnail(user.displayAvatarURL({ dynamic: true, size: 1024 }))
+			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL({ forceStatic: false, size: 1024 }) })
+			.setThumbnail(user.displayAvatarURL({ forceStatic: false, size: 1024 }))
 			.setDescription([
 				`Username: \`${user.displayName}\``,
 				`ID: \`${user.id}\``,
 				`Creation Date: \`${moment(user.createdAt).format('lll')}\``,
 				'',
-				`Premium: \`${user.premium}\`${user.premium ? ` (${(new Date(parseInt(user.premiumSince)).toLocaleString()).split(',')[0]})` : ''}.`,
-				`Is banned: \`${user.cmdBanned}\``,
+				`Premium: \`${user.isPremiumTo == null ? 'True' : 'False'}\`${user.isPremiumTo ? ` (${(new Date(user.isPremiumTo).toLocaleString()).split(',')[0]})` : ''}.`,
+				`Is banned: \`${user.isBanned}\``,
 				`No. of mutual servers: \`${client.guilds.cache.filter(g => g.members.cache.get(user.id)).size}\``,
 			].join('\n'));
 		interaction.reply({ embeds: [embed] });
