@@ -32,7 +32,7 @@ export default class EgglordEmbed extends EmbedBuilder {
 		const normalizedFields = normalizeArray(fields);
 
 		for (const field of normalizedFields) {
-			field.name = this.client.languageManager.translate(this.guild, field.name);
+			field.name = field.name.match(/(\w+:[A-Z_]+|\w+\/\w+:[A-Z_]+)/g) ? this.client.languageManager.translate(this.guild, field.name) : field.name;
 		}
 
 		if (this.data.fields) this.data.fields.push(...normalizedFields);
