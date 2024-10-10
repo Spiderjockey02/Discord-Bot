@@ -1,7 +1,7 @@
 import { Prisma, Rank } from '@prisma/client';
 import { Collection, GuildMember, GuildTextBasedChannel, Message, MessageType } from 'discord.js';
 import fetchLevelSettings from '../accessors/Settings';
-import { fetchByUserAndGuild, createRank, updateRank } from '../accessors/Rank';
+import { fetchByUserAndGuild, createRank, updateRank, fetchByGuildId } from '../accessors/Rank';
 import CONSTANTS from '../utils/CONSTANTS';
 import { levelSettingType } from '../types/database';
 import EgglordClient from '../base/Egglord';
@@ -132,6 +132,17 @@ export default class LevelManager {
 		} else {
 			return fetchByUserAndGuild(userId, this.guildId);
 		}
+	}
+
+	/**
+	 * Fetch the user's position for the guild's leaderboard
+	 * @param {string} userId The user's id
+	 * @return {Promise< number>}
+	*/
+	async fetchUsersPosition(userId: string) {
+		const ranks = await fetchByGuildId(this.guildId);
+		const sortedRanks = ranks.sort((a, b) => a.xp - b.xp);
+		return sortedRanks.findIndex((r) => r.memberId == userId);
 	}
 
 	/**

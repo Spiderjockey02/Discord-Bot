@@ -1,24 +1,21 @@
-// Dependencies
-const { AttachmentBuilder, ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	{ Rank: rank } = require('canvacord'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, ErrorEmbed } from '../../structures';
+import { ApplicationCommandOptionType, AttachmentBuilder, ChatInputCommandInteraction, GuildMember, Message, PermissionFlagsBits, User } from 'discord.js';
+import { RankCardBuilder, Font } from 'canvacord';
+Font.loadDefault();
 
 /**
  * Rank command
  * @extends {Command}
 */
 export default class Rank extends Command {
-	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
-	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'rank',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['lvl', 'level'],
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AttachFiles],
+			botPermissions: [PermissionFlagsBits.AttachFiles],
 			description: 'Shows your rank/Level.',
 			usage: 'level [username]',
 			cooldown: 3000,
@@ -33,61 +30,51 @@ export default class Rank extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
+	async run(client: EgglordClient, message: Message<true>) {
 		// Get user
 		const members = await message.getMember();
 
 		// send 'waiting' message to show client has recieved message
-		const msg = await message.channel.send(message.translate('misc:FETCHING', {
-			EMOJI: message.channel.checkPerm('USE_EXTERNAL_EMOJIS') ? client.customEmojis['loading'] : '', ITEM: this.help.name }));
+		const msg = await message.channel.send(
+			client.languageManager.translate(message.guild, 'misc:FETCHING', {
+				EMOJI: client.customEmojis['loading'], ITEM: this.help.name }));
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(client, message.guild, message.author, members[0], message.channel);
+			const res = await this.createRankCard(client, members[0], message.author);
 			msg.delete();
-			if (typeof (res) == 'object' && !res.description) {
+			if (res instanceof AttachmentBuilder) {
 				await message.channel.send({ files: [res] });
-			} else if (res.description) {
-				await message.channel.send({ embeds: [res] });
 			} else {
-				await message.channel.send(res);
+				await message.channel.send({ embeds: [res] });
 			}
-		} catch (err) {
+		} catch (err: any) {
 			msg.delete();
 			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+			return message.channel.send({ embeds: [embed] });
 		}
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const channel = guild.channels.cache.get(interaction.channelId),
-			member = guild.members.cache.get(args.get('user')?.value) ?? interaction.member;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const targetMember = interaction.options.getMember('user') ?? interaction.member;
 
 		// Retrieve Rank from databse
 		try {
-			const res = await this.createRankCard(client, guild, interaction.user, member, channel);
-			if (res.attachment && res.name == 'RankCard.png') {
+			const res = await this.createRankCard(client, targetMember, interaction.user);
+			if (res instanceof AttachmentBuilder) {
 				await interaction.reply({ files: [res] });
 			} else {
 				await interaction.reply({ embeds: [res] });
 			}
-		} catch (err) {
+		} catch (err: any) {
 			client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-			return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)] });
+
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 
@@ -100,34 +87,36 @@ export default class Rank extends Command {
  	 * @param {channel} channel The channel the command ran in
  	 * @returns {embed}
 	*/
-	async createRankCard(client, guild, author, target, channel) {
-		// make sure it's not a client
-		if (target.user.client) return channel.error('level/rank:NO_clientS', null, true);
-
-		// sort and find user
-		const res = guild.levels.sort(({ Xp: a }, { Xp: b }) => b - a);
-		const user = res.find(doc => doc.userID == target.user.id);
-
-		// if they haven't send any messages
-		if (!user) {
-			if (author.id == target.user.id) return channel.error('level/rank:NO_MESSAGES', null, true);
-			return channel.error('level/rank:MEMBER_MESSAGE', null, true);
+	async createRankCard(client: EgglordClient, targetMember: GuildMember, user: User) {
+		// make sure it's not a bot
+		if (targetMember.user.bot) {
+			const embed = new ErrorEmbed(client, targetMember.guild)
+				.setMessage('level/rank:NO_BOTS');
+			return embed;
 		}
 
-		// Get rank
-		const rankScore = res.indexOf(res.find(i => i.userID == target.user.id));
+		// Find the user's stats on the database
+		const rank = await targetMember.guild.levels?.fetch(targetMember.id);
+
+		// if they haven't send any messages
+		if (!rank) {
+			const embed = new ErrorEmbed(client, targetMember.guild)
+				.setMessage(targetMember.id == user.id ? 'level/rank:NO_MESSAGES' : 'level/rank:MEMBER_MESSAGE');
+			return embed;
+		}
+
+		// Get their position from the leaderboard
+		const rankScore = await targetMember.guild.levels?.fetchUsersPosition(targetMember.id) ?? -1;
 
 		// create rank card
-		const rankcard = new rank()
-			.setAvatar(target.user.displayAvatarURL({ extension: 'png', forceStatic: true, size: 1024 }))
-			.setCurrentXP(user.Level == 1 ? user.Xp : (user.Xp - (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
-			.setLevel(user.Level)
+		const rankcard = new RankCardBuilder()
+			.setAvatar(targetMember.user.displayAvatarURL({ extension: 'png', forceStatic: true, size: 1024 }))
+			.setCurrentXP(rank.level == 1 ? rank.xp : (rank.xp - (5 * ((rank.level - 1) ** 2) + 50 * (rank.level - 1) + 100)))
+			.setLevel(rank.level)
 			.setRank(rankScore + 1)
-			.setRequiredXP((5 * (user.Level ** 2) + 50 * user.Level + 100) - (user.Level == 1 ? 0 : (5 * ((user.Level - 1) ** 2) + 50 * (user.Level - 1) + 100)))
-			.setStatus(target.presence?.status ?? 'dnd')
-			.setProgressBar(['#FFFFFF', '#DF1414'], 'GRADIENT')
-			.setUsername(target.user.displayName);
-		if (target.user.rankImage && target.user.premium) rankcard.setBackground('IMAGE', target.user.rankImage);
+			.setRequiredXP((5 * (rank.level ** 2) + 50 * rank.level + 100) - (rank.level == 1 ? 0 : (5 * ((rank.level - 1) ** 2) + 50 * (rank.level - 1) + 100)))
+			.setStatus(targetMember.presence?.status ?? 'dnd')
+			.setUsername(targetMember.user.displayName);
 
 		// create rank card
 		const buffer = await rankcard.build();
