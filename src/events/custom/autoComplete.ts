@@ -40,6 +40,8 @@ export default class AutoComplete extends Event {
 				return client.commandManager.get(`reload-${interaction.options.getSubcommand()}`)?.autocomplete(client, interaction);
 			case 'settings':
 				return client.commandManager.get('settings-logs')?.autocomplete(client, interaction);
+			case 'weather':
+				return client.commandManager.get('weather')?.autocomplete(client, interaction);
 			default:
 				interaction.respond([{ name: 'error', value: 'error fetching results' }]);
 		}
