@@ -1,5 +1,7 @@
 // Dependencies
-const	import Command from '../../structures/Command';;
+import EgglordClient from '../../base/Egglord';
+import Command from '../../structures/Command';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 
 /**
  * Emoji-list command
@@ -10,8 +12,8 @@ export default class EmojiList extends Command {
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'emoji-list',
 			guildOnly: true,
 			dirname: __dirname,
@@ -23,28 +25,15 @@ export default class EmojiList extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
-		const emojiList = message.translate('guild/emoji-list:MESSAGE', { GUILD: message.guild.name, EMOJIS: message.guild.emojis.cache.map(e => e.toString()).join(' ') });
+	async run(client: EgglordClient, message: Message<true>) {
+		const emojiList = client.languageManager.translate(message.guild, 'guild/emoji-list:MESSAGE', { GUILD: message.guild?.name, EMOJIS: message.guild?.emojis.cache.map(e => e.toString()).join(' ') });
 		message.channel.send({ content:  emojiList });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild) {
-		const emojiList = guild.translate('guild/emoji-list:MESSAGE', { GUILD: guild.name, EMOJIS: guild.emojis.cache.map(e => e.toString()).join(' ') });
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const guild = interaction.guild;
+		const emojiList = client.languageManager.translate(guild, 'guild/emoji-list:MESSAGE', { GUILD: guild?.name, EMOJIS: guild?.emojis.cache.map(e => e.toString()).join(' ') });
 		interaction.reply({ content: emojiList });
 	}
 }
-
 

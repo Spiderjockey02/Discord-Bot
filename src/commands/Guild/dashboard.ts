@@ -1,18 +1,10 @@
-// Dependencies
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, Message } from 'discord.js';
+import { Command } from '../../structures';
+import EgglordClient from '../../base/Egglord';
 
-/**
- * Dashboard command
- * @extends {Command}
-*/
 export default class Dashboard extends Command {
-	/**
-   * @param {Client} client The instantiating client
-   * @param {CommandData} data The data for the command
-  */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'dashboard',
 			guildOnly: true,
 			dirname: __dirname,
@@ -24,14 +16,8 @@ export default class Dashboard extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
-		const row = new ActionRowBuilder()
+	async run(client: EgglordClient, message: Message<true>) {
+		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(
 				new ButtonBuilder()
 					.setLabel('Access the dashboard')
@@ -41,20 +27,13 @@ export default class Dashboard extends Command {
 		message.channel.send({ content: 'There you go.', components: [row] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild) {
-		const row = new ActionRowBuilder()
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(
 				new ButtonBuilder()
 					.setLabel('Access the dashboard')
 					.setStyle(ButtonStyle.Link)
-					.setURL(`${client.config.websiteURL}/dashboard/${guild.id}`),
+					.setURL(`${client.config.websiteURL}/dashboard/${interaction.guildId}`),
 			);
 		interaction.reply({ content: 'There you go.', components: [row] });
 	}

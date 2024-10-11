@@ -1,8 +1,7 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	moment = require('moment'),
-	{ ApplicationCommandOptionType } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, EgglordEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message, Role, User } from 'discord.js';
+import moment from 'moment';
 
 /**
  * Role-info command
@@ -13,8 +12,8 @@ export default class RoleInfo extends Command {
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name:  'role-info',
 			guildOnly: true,
 			dirname: __dirname,
@@ -33,74 +32,50 @@ export default class RoleInfo extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
+	async run(client: EgglordClient, message: Message<true>) {
 		// Check to see if a role was mentioned
 		const roles = message.getRole();
 
-		// Make sure it's a role on the server
-		if (!roles[0]) {
-			if (message.deletable) message.delete();
-			// Make sure a poll was provided
-			return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/role-info:USAGE')) });
-		}
-
-		const embed = this.createEmbed(client, message.guild, roles[0], message.author);
+		const embed = this.createEmbed(client, roles[0], message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const role = guild.roles.cache.get(args.get('role').value);
-		const user = interaction.member.user;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const role = interaction.options.getRole('role', true);
 
 		// send embed
-		const embed = this.createEmbed(client, guild, role, user);
+		const embed = this.createEmbed(client, role, interaction.user);
+		console.log(embed.data.fields);
 		interaction.reply({ embeds: [embed] });
 	}
 
 	/**
 	 * Function for creating embed of role information.
 	 * @param {client} client The instantiating client
-	 * @param {guild} Guild The guild the command was ran in
 	 * @param {role} Role The role to get information from
 	 * @param {user} User The user for embed#footer
 	 * @returns {embed}
 	*/
-	createEmbed(client, guild, role, user) {
+	createEmbed(client: EgglordClient, role: Role, user: User) {
 		// translate permissions
-		const permissions = role.permissions.toArray().map((p) => guild.translate(`permissions:${p}`)).join(' » ');
-
+		const permissions = role.permissions.toArray().map((p) => role.client.languageManager.translate(role.guild, `permissions:${p}`)).join(' » ');
 		// Send information to channel
-		return new Embed(client, guild)
+		return new EgglordEmbed(client, role.guild)
 			.setColor(role.color)
 			.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() })
-			.setDescription(guild.translate('guild/role-info:NAME', { NAME: role.name }))
+			.setDescription(client.languageManager.translate(role.guild, 'guild/role-info:NAME', { NAME: role.name }))
 			.addFields(
-				{ name: guild.translate('guild/role-info:MEMBERS'), value: role.members.size.toLocaleString(guild.settings.Language), inline: true },
-				{ name: guild.translate('guild/role-info:COLOR'), value: role.hexColor, inline: true },
-				{ name: guild.translate('guild/role-info:POSITION'), value: `${role.position}`, inline: true },
-				{ name: guild.translate('guild/role-info:MENTION'), value: `<@&${role.id}>`, inline: true },
-				{ name: guild.translate('guild/role-info:HOISTED'), value: `${role.hoist}`, inline: true },
-				{ name: guild.translate('guild/role-info:MENTIONABLE'), value: `${role.mentionable}`, inline: true },
-				{ name: guild.translate('guild/role-info:PERMISSION'), value: permissions },
-				{ name: guild.translate('guild/role-info:CREATED'), value: moment(role.createdAt).format('lll') },
+				{ name: 'djhkgdhgj', value: role.members.size.toLocaleString(role.guild.settings?.language), inline: true },
+				{ name: `${client.languageManager.translate(role.guild, 'guild/role-info:COLOR')}`, value: role.hexColor, inline: true },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:POSITION'), value: `${role.position}`, inline: true },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:MENTION'), value: `<@&${role.id}>`, inline: true },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:HOISTED'), value: `${role.hoist}`, inline: true },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:MENTIONABLE'), value: `${role.mentionable}`, inline: true },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:PERMISSION'), value: permissions },
+				{ name: client.languageManager.translate(role.guild, 'guild/role-info:CREATED'), value: moment(role.createdAt).format('lll') },
 			)
 			.setTimestamp()
-			.setFooter({ text: guild.translate('guild/role-info:FOOTER', { MEMBER: user.displayName, ID: role.id }) });
+			.setFooter({ text: client.languageManager.translate(role.guild, 'guild/role-info:FOOTER', { MEMBER: user.displayName, ID: role.id }) });
 	}
 }
 

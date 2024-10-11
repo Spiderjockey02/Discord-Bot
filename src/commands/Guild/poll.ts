@@ -1,7 +1,6 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, EgglordEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message, PermissionFlagsBits } from 'discord.js';
 
 /**
  * Poll command
@@ -12,12 +11,12 @@ export default class Poll extends Command {
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name:  'poll',
 			guildOnly: true,
 			dirname: __dirname,
-			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.AddReactions],
+			botPermissions: [PermissionFlagsBits.AddReactions],
 			description: 'Create a poll for users to answer.',
 			usage: 'poll <question>',
 			cooldown: 2000,
@@ -34,51 +33,29 @@ export default class Poll extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
-		if (settings.ModerationClearToggle && message.deletable) message.delete();
-
-		// Make sure a poll was provided
-		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('guild/poll:USAGE')) });
-
+	async run(client: EgglordClient, message: Message<true>) {
 		// Send poll to channel
-		const embed = new Embed(client, message.guild)
+		const embed = new EgglordEmbed(client, message.guild)
 			.setTitle('guild/poll:TITLE', { USER: message.author.displayName })
 			.setDescription(message.args.join(' '))
-			.setFooter({ text: message.guild.translate('guild/poll:FOOTER') });
+			.setFooter({ text: client.languageManager.translate(message.guild, 'guild/poll:FOOTER') });
 		message.channel.send({ embeds: [embed] }).then(async (msg) => {
 			// Add reactions to message
-			await msg.react('✅');
-			await msg.react('❌');
+			await Promise.all([msg.react('✅'), msg.react('❌')]);
 		});
 	}
 
-	/**
-	 * Function for receiving interaction.
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
-	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const text = args.get('poll').value;
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const text = interaction.options.getString('poll', true);
 
 		// Send poll to channel
-		const embed = new Embed(client, guild)
+		const embed = new EgglordEmbed(client, interaction.guild)
 			.setTitle('guild/poll:TITLE', { USER: interaction.user.displayName })
 			.setDescription(text)
-			.setFooter({ text: guild.translate('guild/poll:FOOTER') });
+			.setFooter({ text: client.languageManager.translate(interaction.guild, 'guild/poll:FOOTER') });
 		interaction.reply({ embeds: [embed],	fetchReply: true }).then(async (msg) => {
 			// Add reactions to message
-			await msg.react('✅');
-			await msg.react('❌');
+			await Promise.all([msg.react('✅'), msg.react('❌')]);
 		});
 	}
 }

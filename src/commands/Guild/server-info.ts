@@ -1,7 +1,7 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	moment = require('moment'), ;
-import Command from '../../structures/Command';
+import { Command, EgglordEmbed } from '../../structures';
+import EgglordClient from 'base/Egglord';
+import { ChatInputCommandInteraction, GatewayIntentBits, Guild, Message, User } from 'discord.js';
+import moment from 'moment';
 
 /**
  * Server-info command
@@ -12,8 +12,8 @@ export default class ServerInfo extends Command {
    * @param {Client} client The instantiating client
    * @param {CommandData} data The data for the command
   */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name:  'server-info',
 			guildOnly: true,
 			dirname: __dirname,
@@ -25,66 +25,60 @@ export default class ServerInfo extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
+	async run(client: EgglordClient, message: Message<true>) {
 		// Sort roles by position
 		const embed = await this.createEmbed(client, message.guild, message.author);
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild) {
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
 		const user = interaction.member.user;
 
 		// send embed
-		const embed = await this.createEmbed(client, guild, user);
+		const embed = await this.createEmbed(client, interaction.guild, user);
 		interaction.reply({ embeds: [embed] });
 	}
 
-	/**
-	 * Function for creating embed of server information.
-	 * @param {client} client The instantiating client
-	 * @param {guild} Guild The guild the command was ran in
-	 * @param {user} User The user for embed#footer
-	 * @returns {embed}
-	*/
-	async createEmbed(client, guild, user) {
+	async createEmbed(client: EgglordClient, guild: Guild, user: User) {
+		const member = guild.members.cache;
 		const roles = [...guild.roles.cache.sort((a, b) => b.position - a.position).values()];
 		while (roles.join(', ').length >= 1021) {
 			roles.pop();
 		}
 
+		// Format the guild's features for better readability
+		const guildFeatures = (guild.features.length == 0) ? client.languageManager.translate(guild, 'misc:NONE') : guild.features.map(c => client.languageManager.translate(guild, `features:${c}`)).join(', ');
+
+		// Check the guild member's statuses
+		let memberDesc = '';
+		if (client.options.intents.has(GatewayIntentBits.GuildPresences)) {
+			memberDesc = client.languageManager.translate(guild, 'guild/server-info:MEMBER_DESC', {
+				ONLINE: member.filter(m => m.presence?.status === 'online').size, IDLE: member.filter(m => m.presence?.status === 'idle').size, DND: member.filter(m => m.presence?.status === 'dnd').size, HUMANS: member.filter(m => !m.user.client).size,
+			});
+		} else {
+			memberDesc = client.languageManager.translate(guild, 'guild/server-info:MEMBER_DESC_NO_INTENT', {
+				BOTS: member.filter(m => m.user.client).size, HUMANS: member.filter(m => !m.user.client).size,
+			});
+		}
+
+
 		// Send server information
-		const member = guild.members.cache;
-		return new Embed(client, guild)
-			.setAuthor({ name: guild.translate('guild/server-info:AUTHOR', { NAME: guild.name }), iconURL: guild.iconURL() })
-			.setColor(3447003)
+
+		return new EgglordEmbed(client, guild)
+			.setAuthor({ name: client.languageManager.translate(guild, 'guild/server-info:AUTHOR', { NAME: guild.name }), iconURL: guild.iconURL() ?? undefined })
 			.setThumbnail(guild.iconURL())
 			.addFields(
-				{ name: guild.translate('guild/server-info:NAME'), value: `\`${guild.name}\``, inline: true },
-				{ name: guild.translate('guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.displayName)}\``, inline: true },
-				{ name: guild.translate('guild/server-info:ID'), value: `\`${guild.id}\``, inline: true },
-				{ name: guild.translate('guild/server-info:CREATED'), value: `\`${moment(guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
-				{ name: guild.translate('guild/server-info:VERIFICATION'), value: `\`${guild.verificationLevel}\``, inline: true },
-				{ name: guild.translate('guild/server-info:MEMBER', { NUM: guild.memberCount }), value: guild.translate('guild/server-info:MEMBER_DESC', {
-					ONLINE: member.filter(m => m.presence?.status === 'online').size.toLocaleString(guild.settings.Language), IDLE: member.filter(m => m.presence?.status === 'idle').size.toLocaleString(guild.settings.Language), DND: member.filter(m => m.presence?.status === 'dnd').size.toLocaleString(guild.settings.Language), clientS: member.filter(m => m.user.client).size.toLocaleString(guild.settings.Language), HUMANS: member.filter(m => !m.user.client).size.toLocaleString(guild.settings.Language),
-				}), inline: true },
-				{ name: guild.translate('guild/server-info:FEATURES'), value: `\`${(guild.features.length == 0) ? guild.translate('misc:NONE') : guild.features.toString().toLowerCase().replace(/,/g, ', ')}\``, inline: true },
-				{ name: guild.translate('guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:NAME'), value: `\`${guild.name}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:OWNER'), value: `\`${await guild.fetchOwner().then(m => m.user.displayName)}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:ID'), value: `\`${guild.id}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:CREATED'), value: `\`${moment(guild.createdAt).format('MMMM Do YYYY')}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:VERIFICATION'), value: `\`${guild.verificationLevel}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:MEMBER', { NUM: guild.memberCount }), value: memberDesc, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:FEATURES'), value: `\`${guildFeatures}\``, inline: true },
+				{ name: client.languageManager.translate(guild, 'guild/server-info:ROLES', { NUM: guild.roles.cache.size }), value: `${roles.join(', ')}${(roles.length != guild.roles.cache.size) ? '...' : '.'}` },
 			)
 			.setTimestamp()
-			.setFooter({ text: guild.translate('guild/server-info:FOOTER', { USER: user.displayName }) });
+			.setFooter({ text: client.languageManager.translate(guild, 'guild/server-info:FOOTER', { USER: user.displayName }) });
 	}
 }
 

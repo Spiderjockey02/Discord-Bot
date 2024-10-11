@@ -1,20 +1,14 @@
-// Dependencies
-const { Embed } = require('../../utils'),
-	{ ApplicationCommandOptionType, GuildMember } = require('discord.js'),
-	{ ChannelType } = require('discord-api-types/v10'), ;
-import Command from '../../structures/Command';
+import EgglordClient from '../../base/Egglord';
+import { Command, EgglordEmbed } from '../../structures';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message, Guild, User, UserContextMenuCommandInteraction } from 'discord.js';
 
 /**
  * Avatar command
  * @extends {Command}
 */
 export default class Avatar extends Command {
-	/**
-   * @param {Client} client The instantiating client
-   * @param {CommandData} data The data for the command
-  */
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'avatar',
 			guildOnly: true,
 			dirname: __dirname,
@@ -33,73 +27,43 @@ export default class Avatar extends Command {
 		});
 	}
 
-	/**
-	 * Function for receiving message.
-	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
+	async run(client: EgglordClient, message: Message<true>) {
 		// Get avatar embed
 		const members = await message.getMember();
-		const embed = this.avatarEmbed(client, message.guild, members[0]);
+		const embed = this.createAvatarEmbed(client, message.guild, members[0].user);
 
 		// send embed
 		message.channel.send({ embeds: [embed] });
 	}
 
-	/**
- 	 * Function for receiving slash command.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild, args) {
-		const member = guild.members.cache.get(args.get('user')?.value ?? interaction.user.id);
-		const embed = this.avatarEmbed(client, guild, member);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const user = interaction.options.getUser('user') ?? interaction.user;
+		const embed = this.createAvatarEmbed(client, interaction.guild, user);
 
 		// send embed
 		return interaction.reply({ embeds: [embed] });
 	}
 
-	/**
-	 * Function for receiving context menu
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @param {args} args The options provided in the command, if any
-	 * @readonly
-	*/
-	reply(client, interaction, channel, userID) {
-		let member;
-		if (channel.type == ChannelType.DM) {
-			member = new GuildMember(client, { user: client.users.cache.get(userID) });
-		} else {
-			member = channel.guild.members.cache.get(userID);
-		}
-
-		// send embed
-		const embed = this.avatarEmbed(client, false, member);
+	reply(client: EgglordClient, interaction: UserContextMenuCommandInteraction) {
+		const embed = this.createAvatarEmbed(client, null, interaction.targetUser);
 		return interaction.reply({ embeds: [embed] });
 	}
 
 	/**
 	 * Function for creating avatar embed.
-	 * @param {client} client The instantiating client
-	 * @param {guild} guild The guild the command ran in
-	 * @param {member} GuildMember The guildMember to get the avatar from
+	 * @param {EgglordClient} client The instantiating client
+	 * @param {Guild|null} guild The guild the command ran in
+	 * @param {User} user The guildMember to get the avatar from
 	 * @returns {embed}
 	*/
-	avatarEmbed(client, guild, member) {
-		return new Embed(client, guild)
-			.setTitle('guild/avatar:AVATAR_TITLE', { USER: member.user.displayName })
+	createAvatarEmbed(client: EgglordClient, guild: Guild | null, user: User) {
+		return new EgglordEmbed(client, guild)
+			.setTitle('guild/avatar:AVATAR_TITLE', { USER: user.displayName })
 			.setDescription([
-				`${client.translate('guild/avatar:AVATAR_DESCRIPTION')}`,
-				`[png](${member.user.displayAvatarURL({ format: 'png', size: 1024 })}) | [jpg](${member.user.displayAvatarURL({ format: 'jpg', size: 1024 })}) | [gif](${member.user.displayAvatarURL({ format: 'gif', size: 1024, dynamic: true })}) | [webp](${member.user.displayAvatarURL({ format: 'webp', size: 1024 })})`,
+				`${client.languageManager.translate(guild, 'guild/avatar:AVATAR_DESCRIPTION')}`,
+				`[png](${user.displayAvatarURL({ extension: 'png', size: 1024 })}) | [jpg](${user.displayAvatarURL({ extension: 'jpg', size: 1024 })}) | [gif](${user.displayAvatarURL({ extension: 'gif', size: 1024 })}) | [webp](${user.displayAvatarURL({ extension: 'webp', size: 1024 })})`,
 			].join('\n'))
-			.setImage(`${member.user.displayAvatarURL({ dynamic: true, size: 1024 })}`);
+			.setImage(`${user.displayAvatarURL({ forceStatic: false, size: 1024 })}`);
 	}
 }
 
