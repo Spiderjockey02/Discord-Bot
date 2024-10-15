@@ -57,7 +57,7 @@ export default class LevelManager {
 
 		// Fetch user from cache or database if doesn't exist create the document
 		let userRank = await this.fetch(message.author.id);
-		if (!userRank) userRank = await createRank(message.author.id, this.guildId);
+		if (userRank == null) userRank = await createRank(message.author.id, this.guildId);
 
 		// Add XP to User
 		userRank.xp += xpAdd;
@@ -88,9 +88,9 @@ export default class LevelManager {
 					break;
 				}
 			}
-			this.addRank(userRank);
 			this.checkRoleRewards(userRank.level, message.member ?? undefined);
 		}
+		this.saveUsersRank(userRank);
 	}
 
 	/**
@@ -130,7 +130,10 @@ export default class LevelManager {
 		if (this.cache.has(userId)) {
 			return this.cache.get(userId) ?? null;
 		} else {
-			return fetchByUserAndGuild(userId, this.guildId);
+			const user = await fetchByUserAndGuild(userId, this.guildId);
+			if (user == null) return null;
+			this.cache.set(userId, user);
+			return user;
 		}
 	}
 
@@ -149,7 +152,7 @@ export default class LevelManager {
 	 * Add the user's rank to cache, database and to cooldown
 	 * @param {Rank} userRank The rank to interact with
 	*/
-	private async addRank(userRank: Rank) {
+	private async saveUsersRank(userRank: Rank) {
 		// Add to database, cooldown and cache
 		await updateRank(userRank);
 		this.cooldown.add(userRank.memberId);
