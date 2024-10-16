@@ -1,85 +1,90 @@
-import { PermissionFlagsBits } from 'discord.js';
-import Command from '../../structures/Command';
+import EgglordClient from '../../base/Egglord';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message, PermissionFlagsBits } from 'discord.js';
+import { Command, ErrorEmbed } from '../../structures';
 
-/**
- * Ticket close command
- * @extends {Command}
-*/
 export default class TicketClose extends Command {
-	/**
- * @param {Client} client The instantiating client
- * @param {CommandData} data The data for the command
-*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'ticket-close',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['t-close'],
 			userPermissions: [PermissionFlagsBits.ManageChannels],
-			botPermissions: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.ManageChannels],
+			botPermissions: [PermissionFlagsBits.ManageChannels],
 			description: 'Closes the current ticket channel',
 			usage: 'ticket-close',
 			cooldown: 3000,
 			slash: false,
 			isSubCmd: true,
+			options: [
+				{
+					name: 'transcript',
+					type: ApplicationCommandOptionType.Boolean,
+					description: 'Whether or not to make a transcript of this ticket.',
+				},
+			],
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
-	 * @param {settings} settings The settings of the channel the command ran in
- 	 * @readonly
-	*/
-	async run(client, message, settings) {
+	async run(client: EgglordClient, message: Message<true>) {
+		const channel = message.channel,
+			generateTranscript = Boolean(message.args[0]);
+
 		// will close the current ticket channel
 		const regEx = /ticket-\d{18}/g;
-		if (regEx.test(message.channel.name)) {
+		if (channel && regEx.test(channel.name)) {
 			try {
-				if (message.member.roles.cache.get(settings.TicketSupportRole) || message.member.permissionsIn(message.channel).has(Flags.ManageChannels)) {
-					// delete channel
-					await message.channel.delete();
+				const supportRole = message.guild.settings?.ticketSystem?.supportRoleId;
+				if ((supportRole && message.member?.roles.cache.get(supportRole)) || message.member?.permissionsIn(channel).has(PermissionFlagsBits.ManageChannels)) {
+				// delete channel
+					await message.guild.tickets?.delete(channel, generateTranscript);
 				} else {
-					return message.channel.error('ticket/ticket-close:NOT_SUPPORT');
+					const embed = new ErrorEmbed(client, message.guild)
+						.setMessage('ticket/ticket-close:NOT_SUPPORT');
+					message.channel.send({ embeds: [embed] });
 				}
-			} catch (err) {
-				if (message.deletable) message.delete();
+			} catch (err: any) {
 				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				return message.channel.error('misc:ERROR_MESSAGE', { ERROR: err.message });
+
+				const embed = new ErrorEmbed(client, message.guild)
+					.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+				message.channel.send({ embeds: [embed] });
 			}
 		} else {
-			message.channel.error('ticket/ticket-close:NOT_TICKET');
+			const embed = new ErrorEmbed(client, message.guild)
+				.setMessage('ticket/ticket-close:NOT_TICKET');
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 
-	/**
-	 * Function for receiving interaction.
-	 * @param {client} client The instantiating client
-	 * @param {interaction} interaction The interaction that ran the command
-	 * @param {guild} guild The guild the interaction ran in
-	 * @readonly
-	*/
-	async callback(client, interaction, { settings }) {
-		const channel = interaction.guild.channels.cache.get(interaction.channelId);
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const channel = interaction.channel,
+			generateTranscript = interaction.options.getBoolean('transcript') ?? false;
 
 		// will close the current ticket channel
 		const regEx = /ticket-\d{18}/g;
-		if (regEx.test(channel.name)) {
+		if (channel && regEx.test(channel.name)) {
 			try {
-				if (interaction.member.roles.cache.get(settings.TicketSupportRole) || interaction.member.permissionsIn(channel).has(Flags.ManageChannels)) {
+				const supportRole = interaction.guild.settings?.ticketSystem?.supportRoleId;
+				if ((supportRole && interaction.member.roles.cache.get(supportRole)) || interaction.member.permissionsIn(channel).has(PermissionFlagsBits.ManageChannels)) {
 					// delete channel
-					await interaction.channel.delete();
+					await interaction.guild.tickets?.delete(channel, generateTranscript);
 				} else {
-					interaction.reply({ embeds: [channel.error('ticket/ticket-close:NOT_SUPPORT', {}, true)] });
+					const embed = new ErrorEmbed(client, interaction.guild)
+						.setMessage('ticket/ticket-close:NOT_SUPPORT');
+					interaction.reply({ embeds: [embed], ephemeral: true });
 				}
-			} catch (err) {
+			} catch (err: any) {
 				client.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
-				interaction.reply({ embeds: [channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true)], ephemeral: true });
+
+				const embed = new ErrorEmbed(client, interaction.guild)
+					.setMessage('misc:ERROR_MESSAGE', { ERROR: err.message });
+				interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		} else {
-			interaction.reply({ embeds: [channel.error('ticket/ticket-close:NOT_TICKET', { }, true)], ephemeral: true });
+			const embed = new ErrorEmbed(client, interaction.guild)
+				.setMessage('ticket/ticket-close:NOT_TICKET');
+			interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 	}
 }

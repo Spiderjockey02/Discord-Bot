@@ -1,7 +1,6 @@
-import { Event } from '../../structures';
-import { TextChannel, User } from 'discord.js';
+import { Event, EgglordEmbed } from '../../structures';
+import { Colors, TextChannel, User } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
-import { EgglordEmbed } from '../../utils';
 
 export default class TicketCreate extends Event {
 	constructor() {
@@ -20,11 +19,11 @@ export default class TicketCreate extends Event {
 
 			const embed = new EgglordEmbed(client, channel.guild)
 				.setTitle('ticket/ticket-create:LOG_TITLE')
-				.setColor(3066993)
+				.setColor(Colors.Green)
 				.addFields(
-					{ name: channel.guild.translate('ticket/ticket-create:TICKET'), value: channel.toString() },
-					{ name: channel.guild.translate('ticket/ticket-create:USER'), value: `${user}`, inline: true },
-					{ name: channel.guild.translate('ticket/ticket-create:FIELD2'), value: `${reason}`, inline: true },
+					{ name: client.languageManager.translate(channel.guild, 'ticket/ticket-create:TICKET'), value: `${channel}` },
+					{ name: client.languageManager.translate(channel.guild, 'ticket/ticket-create:USER'), value: `${user}`, inline: true },
+					{ name: client.languageManager.translate(channel.guild, 'ticket/ticket-create:FIELD2'), value: `${reason}`, inline: true },
 				)
 				.setTimestamp();
 
@@ -32,8 +31,8 @@ export default class TicketCreate extends Event {
 				if (moderationSettings.loggingChannelId == null) return;
 				const modChannel = await channel.guild.channels.fetch(moderationSettings.loggingChannelId);
 				if (modChannel) client.webhookManger.addEmbed(modChannel.id, [embed]);
-			} catch (err: any) {
-				client.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			} catch (err) {
+				client.logger.error(`Event: '${this.conf.name}' has error: ${err}.`);
 			}
 		}
 	}
