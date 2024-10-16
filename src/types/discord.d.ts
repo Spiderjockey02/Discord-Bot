@@ -18,7 +18,6 @@ const fullSettings = Prisma.validator<Prisma.SettingDefaultArgs>()({
 	},
 });
 
-
 declare module 'discord.js' {
 
   export interface Client {
@@ -30,6 +29,10 @@ declare module 'discord.js' {
     languageManager: LanguageManager;
     customEmojis: typeof customEmojis;
     webhookManger: WebhookManager;
+    statistics: {
+      messages: number
+      commands: number
+    };
   }
 
   // Extend Guild

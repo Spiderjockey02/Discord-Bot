@@ -33,6 +33,9 @@ export default class SlashCreate extends Event {
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Add to the command statistics
+		client.statistics.commands++;
+
 		// Make sure NSFW commands are only being run in a NSFW channel
 		if (channel instanceof ThreadChannel || (!channel.nsfw && cmd.conf.nsfw)) {
 			const embed = new ErrorEmbed(client, guild)

@@ -53,7 +53,7 @@ export default class About extends Command {
 				{ name: 'misc/about:CHANNELS', value: client.languageManager.translate(guild, 'misc/about:CHANNELS_DESC', { CHANNELS: client.channels.cache.size, TEXT: textBasedChannelSize, VOICE: voiceBasedChannelSize, DM: client.channels.cache.filter(channel => channel.type === ChannelType.DM).size }), inline: true },
 				{ name: 'misc/about:PROCESS', value:	client.languageManager.translate(guild, 'misc/about:PROCESS_DESC', { RAM: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), NODE: process.version.slice(1).split('.')[0], DISCORD: version }), inline: true },
 				{ name: 'misc/about:SERVERS', value: client.languageManager.translate(guild, 'misc/about:SERVERS_DESC', { SERVERS: client.guilds.cache.size, SHARDS: client.ws.shards.size }), inline: true },
-				{ name: 'misc/about:MESSAGES', value: client.languageManager.translate(guild, 'misc/about:MESSAGES_DESC', { MESSAGES: client.messagesReceived, MSGSEC: (client.messagesReceived / (client.uptime / 1000)).toFixed(2) }), inline: true },
+				{ name: 'misc/about:MESSAGES', value: client.languageManager.translate(guild, 'misc/about:MESSAGES_DESC', { MESSAGES: client.statistics.messages, MSGSEC: (client.statistics.messages / (client.uptime / 1000)).toFixed(2) }), inline: true },
 				{ name: 'misc/about:UPTIME', value: `${client.uptime}`, inline: true },
 			);
 	}

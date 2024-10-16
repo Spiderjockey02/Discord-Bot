@@ -21,8 +21,7 @@ export function run(client: EgglordClient) {
 				category: client.channels.cache.filter(c => categoryChannelFilter.includes(c.type)).size,
 				voice: client.channels.cache.filter(c => voiceChannelFilter.includes(c.type)).size,
 			},
-			MessagesSeen: 0,
-			CommandsRan: 0,
+			statistics: client.statistics,
 			ping: Math.round(client.ws.ping),
 			Lavalink: client.audioManager?.nodes.map(node => ({
 				name: node.options.identifier,

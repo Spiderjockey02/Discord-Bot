@@ -21,6 +21,10 @@ export default class EgglordClient extends Client<true> {
 	languageManager: LanguageManager;
 	customEmojis: typeof customEmojis;
 	webhookManger: WebhookManager;
+	statistics: {
+		messages: number
+		commands: number
+	};
 	constructor(options: ClientOptions) {
 		super(options);
 
@@ -31,5 +35,10 @@ export default class EgglordClient extends Client<true> {
 		this.commandManager = new CommandManager();
 		this.databaseHandler = new DatabaseHandler();
 		this.config = config;
+
+		this.statistics = {
+			messages: 0,
+			commands: 0,
+		};
 	}
 }
