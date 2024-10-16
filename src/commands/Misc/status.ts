@@ -1,6 +1,6 @@
-// Dependencies
-const { Embed } = require('../../utils'), ;
-import Command from '../../structures/Command';
+import EgglordClient from 'base/Egglord';
+import { Command, EgglordEmbed } from '../../structures';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 
 /**
  * Status command
@@ -11,8 +11,8 @@ export default class Status extends Command {
  	 * @param {Client} client The instantiating client
  	 * @param {CommandData} data The data for the command
 	*/
-	constructor() {
-		super({
+	constructor(client: EgglordClient) {
+		super(client, {
 			name: 'status',
 			dirname: __dirname,
 			aliases: ['stat', 'ping'],
@@ -23,42 +23,31 @@ export default class Status extends Command {
 		});
 	}
 
-	/**
- 	 * Function for receiving message.
- 	 * @param {client} client The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
-	*/
-	async run(client, message) {
-		// Get information on the services the client provide
-		const m = await message.channel.send(message.translate('misc/status:PONG'));
+	async run(client: EgglordClient, message: Message) {
+		if (!message.channel.isSendable()) return;
 
-		const embed = new Embed(client, message.guild)
+		// Get information on the services the client provide
+		const msg = await message.channel.send(client.languageManager.translate(message.guild, 'misc/status:PONG'));
+
+		const embed = new EgglordEmbed(client, message.guild)
 			.addFields(
-				{ name: client.translate('misc/status:PING'), value: `\`${m.createdTimestamp - message.createdTimestamp}ms\``, inline: true },
-				{ name: client.translate('misc/status:CLIENT'), value: `\`${Math.round(client.ws.ping)}ms\``, inline: true },
-				{ name: client.translate('misc/status:MONGO'), value:  `\`${Math.round(await client.mongoose.ping())}ms\``, inline: true },
+				{ name: 'misc/status:PING', value: `\`${msg.createdTimestamp - message.createdTimestamp}ms\``, inline: true },
+				{ name: 'misc/status:CLIENT', value: `\`${Math.round(client.ws.ping)}ms\``, inline: true },
+				// { name: 'misc/status:MONGO', value:  `\`${Math.round(await client.mongoose.ping())}ms\``, inline: true },
 			)
 			.setTimestamp();
 		await message.channel.send({ embeds: [embed] });
-		m.delete();
+		msg.delete();
 	}
 
-	/**
- 	 * Function for receiving interaction.
- 	 * @param {client} client The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
-	*/
-	async callback(client, interaction, guild) {
-		const msg = await interaction.reply({ content: guild.translate('misc/status:PONG'), fetchReply: true });
+	async callback(client: EgglordClient, interaction: ChatInputCommandInteraction<'cached'>) {
+		const msg = await interaction.reply({ content: client.languageManager.translate(interaction.guild, 'misc/status:PONG'), fetchReply: true });
 
-		const embed = new Embed(client, guild)
+		const embed = new EgglordEmbed(client, interaction.guild)
 			.addFields(
-				{ name: client.translate('misc/status:PING'), value: `\`${msg.createdTimestamp - interaction.createdTimestamp}ms\``, inline: true },
-				{ name: client.translate('misc/status:CLIENT'), value: `\`${Math.round(client.ws.ping)}ms\``, inline: true },
-				{ name: client.translate('misc/status:MONGO'), value:  `\`${Math.round(await client.mongoose.ping())}ms\``, inline: true },
+				{ name: 'misc/status:PING', value: `\`${msg.createdTimestamp - msg.createdTimestamp}ms\``, inline: true },
+				{ name: 'misc/status:CLIENT', value: `\`${Math.round(client.ws.ping)}ms\``, inline: true },
+				// { name: 'misc/status:MONGO', value:  `\`${Math.round(await client.mongoose.ping())}ms\``, inline: true },
 			)
 			.setTimestamp();
 		await interaction.editReply({ content: '‎', embeds: [embed] });
