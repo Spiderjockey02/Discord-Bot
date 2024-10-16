@@ -7,6 +7,9 @@ export default class WebhookManager {
 	constructor(client: EgglordClient) {
 		this.embedCollection = new Collection();
 		this.client = client;
+
+		// Send all the embeds in 15 second intervals
+		setInterval(() => this.sendEmbeds(), 15_000);
 	}
 
 	/**
@@ -50,15 +53,14 @@ export default class WebhookManager {
 				const repeats = Math.ceil(this.embedCollection.get(channelId)?.length ?? 0 / 10);
 				for (let j = 0; j < repeats; j++) {
 				// Get embeds and files to upload via webhook
-					const embeds = this.embedCollection.get(channelId)?.slice(j * 10, (j * 10) + 10).map(f => f[0]);
-					const files = this.embedCollection.get(channelId)?.slice(j * 10, (j * 10) + 10).map(f => f[1]);
+					const embeds = this.embedCollection.get(channelId)?.map(f => f[0]).filter(f => f !== undefined);
+					const files = this.embedCollection.get(channelId)?.map(f => f[1]).filter(f => f !== undefined);
 					if (!embeds || !files) return;
 
 					// send webhook message
 					await webhook.send({
-						embeds: embeds,
-						// @ts-ignore
-						files: files,
+						embeds: embeds.slice(j * 10, (j * 10) + 10),
+						files: files.slice(j * 10, (j * 10) + 10),
 					});
 				}
 				// delete from collection once sent
