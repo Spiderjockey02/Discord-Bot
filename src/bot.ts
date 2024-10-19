@@ -96,7 +96,7 @@ async function loadEvents() {
 				if (evt.conf.child == undefined) client.on(evt.conf.name, (...args) => evt.run(client, ...args));
 				switch (evt.conf.child) {
 					case 'audioManager':
-						client.audioManager?.on(evt.conf.name, (...args) => evt.run(client, ...args));
+						client.audioManager.on(evt.conf.name, (...args) => evt.run(client, ...args));
 						break;
 						/*
 					case 'giveawayManager':

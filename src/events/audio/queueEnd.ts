@@ -1,4 +1,4 @@
-import { EmbedBuilder, TextBasedChannel } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { Player } from 'magmastream';
 import { Event } from '../../structures';
 import EgglordClient from '../../base/Egglord';
@@ -30,13 +30,13 @@ export default class QueueEnd extends Event {
 			if (!guild) return;
 
 			if (player.textChannel == undefined) return;
-			const textChannel = guild.channels.cache.get(player.textChannel) as TextBasedChannel;
+			const textChannel = guild.channels.cache.get(player.textChannel);
+			if (textChannel == undefined || !textChannel.isSendable()) return;
 
 			// Don't leave channel if 24/7 mode is active
 			// if (player.twentyFourSeven) return;
 			const vcName = player.voiceChannel ? guild.channels.cache.get(player.voiceChannel)?.name ?? 'unknown' : 'unknown';
 
-			// const vcName = client.channels.cache.get(player.voiceChannel)?.name ?? 'unknown';
 			const embed = new EmbedBuilder()
 				.setDescription(client.languageManager.translate(guild, 'music/dc:INACTIVE', { VC: vcName }));
 

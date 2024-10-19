@@ -24,7 +24,7 @@ declare module 'discord.js' {
     logger: Logger;
     commandManager: CommandManager;
     config: typeof config;
-    audioManager?: AudioManager;
+    audioManager: AudioManager;
     databaseHandler: DatabaseHandler;
     languageManager: LanguageManager;
     customEmojis: typeof customEmojis;

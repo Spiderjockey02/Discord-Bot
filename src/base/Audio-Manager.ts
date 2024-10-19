@@ -14,7 +14,6 @@ export default class AudioManager extends Manager {
 				const guild = client.guilds.cache.get(id);
 				if (guild) guild.shard.send(payload);
 			},
-			clientName: client.user?.username,
 			defaultSearchPlatform: 'youtube',
 		});
 	}

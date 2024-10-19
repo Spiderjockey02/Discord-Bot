@@ -23,6 +23,6 @@ export default class PlayerDestroy extends Event {
 	 * @readonly
 	*/
 	async run(client: EgglordClient, player: Player) {
-		if (client.config.debug) client.logger.log(`Lavalink player destroyed in guild: ${player.guild}.`);
+		client.logger.debug(`Lavalink player destroyed in guild: ${player.guild}.`);
 	}
 }

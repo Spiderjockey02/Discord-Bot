@@ -23,6 +23,6 @@ export default class PlayerCreate extends Event {
 	 * @readonly
 	*/
 	async run(client: EgglordClient, player: Player) {
-		if (client.config.debug) client.logger.log(`Lavalink player created in guild: ${player.guild}.`);
+		client.logger.debug(`Lavalink player created in guild: ${player.guild}.`);
 	}
 }

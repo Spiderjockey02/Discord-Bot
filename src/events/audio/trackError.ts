@@ -1,5 +1,4 @@
 import { Event, EgglordEmbed } from '../../structures';
-import { Colors, TextBasedChannel } from 'discord.js';
 import EgglordClient from '../../base/Egglord';
 import { Player, Track, TrackExceptionEvent, UnresolvedTrack } from 'magmastream';
 
@@ -27,17 +26,17 @@ export default class TrackError extends Event {
 	*/
 	async run(client: EgglordClient, player: Player, _track: Track | UnresolvedTrack, payload: TrackExceptionEvent) {
 		// when a track causes an error
-		if (client.config.debug) client.logger.log(`Track error: ${payload.exception?.message} in guild: ${player.guild}.`);
+		client.logger.debug(`Track error: ${payload.exception?.message} in guild: ${player.guild}.`);
 
 		// reset player filter (might be the cause)
 		player.filters.clearFilters();
 
 		// send embed
 		if (player.textChannel == null) return;
-		const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
+		const channel = client.channels.cache.get(player.textChannel);
+		if (channel == undefined || !channel.isSendable()) return;
 
-		const embed = new EgglordEmbed(client, null)
-			.setColor(Colors.Red)
+		const embed = new EgglordEmbed(client, client.guilds.cache.get(player.guild) ?? null)
 			.setDescription(`An error has occured on playback: \`${payload.exception?.message}\``);
 		channel.send({ embeds: [embed] });
 	}

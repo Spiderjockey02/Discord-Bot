@@ -1,4 +1,3 @@
-import { TextBasedChannel } from 'discord.js';
 import { Player, Track } from 'magmastream';
 import { Event, EgglordEmbed } from '../../structures';
 import EgglordClient from '../../base/Egglord';
@@ -26,7 +25,9 @@ export default class TrackStart extends Event {
 	*/
 	async run(client: EgglordClient, player: Player, track: Track) {
 		if (player.textChannel !== null) {
-			const channel = client.channels.cache.get(player.textChannel) as TextBasedChannel;
+			const channel = client.channels.cache.get(player.textChannel);
+			if (channel == undefined || !channel.isSendable()) return;
+
 			const requester = track.requester;
 			const member = client.guilds.cache.get(player.guild)?.members.cache.get(requester?.id ?? '');
 

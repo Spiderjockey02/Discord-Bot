@@ -16,7 +16,7 @@ export default class EgglordClient extends Client<true> {
 	logger: Logger;
 	commandManager: CommandManager;
 	config: typeof config;
-	audioManager?: AudioManager;
+	audioManager: AudioManager;
 	databaseHandler: DatabaseHandler;
 	languageManager: LanguageManager;
 	customEmojis: typeof customEmojis;
@@ -34,6 +34,7 @@ export default class EgglordClient extends Client<true> {
 		this.languageManager = new LanguageManager();
 		this.commandManager = new CommandManager();
 		this.databaseHandler = new DatabaseHandler();
+		this.audioManager = new AudioManager(this);
 		this.config = config;
 
 		this.statistics = {
