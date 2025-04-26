@@ -8,17 +8,6 @@
 
 <h3 align=center>A fully customizable bot built with <a href=https://github.com/discordjs/discord.js>discord.js</a></h3>
 
-
-<div align=center>
-
- [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Spiderjockey02_Discord-Bot&metric=ncloc)](https://sonarcloud.io/dashboard?id=Spiderjockey02_Discord-Bot)
-[![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
-![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fapi.egglord.dev%2F)
-[![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
-
-</div>
-
 <p align="center">
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
   •
@@ -32,6 +21,16 @@
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md">Contributing</a>
 </p>
+
+<div align=center>
+
+[![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Spiderjockey02_Discord-Bot&metric=ncloc)](https://sonarcloud.io/dashboard?id=Spiderjockey02_Discord-Bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
+![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fapi.egglord.dev%2F)
+[![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
+
+</div>
 
 # Contributor Covenant Code of Conduct
 
@@ -103,9 +102,9 @@ members of the project's leadership.
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+available at <https://www.contributor-covenant.org/version/1/4/code-of-conduct.html>
 
 [homepage]: https://www.contributor-covenant.org
 
 For answers to common questions about this code of conduct, see
-https://www.contributor-covenant.org/faq
+<https://www.contributor-covenant.org/faq>

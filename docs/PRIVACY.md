@@ -8,17 +8,6 @@
 
 <h3 align=center>A fully customizable bot built with <a href=https://github.com/discordjs/discord.js>discord.js</a></h3>
 
-
-<div align=center>
-
- [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Spiderjockey02_Discord-Bot&metric=ncloc)](https://sonarcloud.io/dashboard?id=Spiderjockey02_Discord-Bot)
-[![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
-![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fapi.egglord.dev%2F)
-[![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
-
-</div>
-
 <p align="center">
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/LANGUAGES.md">Languages</a>
   •
@@ -32,6 +21,16 @@
   •
   <a href="https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CODE_OF_CONDUCT.md">Code of Conduct</a>
 </p>
+
+<div align=center>
+
+[![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Spiderjockey02_Discord-Bot&metric=ncloc)](https://sonarcloud.io/dashboard?id=Spiderjockey02_Discord-Bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/badge/master)](https://www.codefactor.io/repository/github/spiderjockey02/discord-bot/overview/master)
+![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fapi.egglord.dev%2F)
+[![Crowdin](https://badges.crowdin.net/egglord-discord-bot/localized.svg)](https://crowdin.com/project/egglord-discord-bot)
+
+</div>
 
 # Privacy Policy
 
@@ -62,6 +61,6 @@ _(Note that this list may not be complete. If marked with a asterisk_ (`*`) _the
 - levels _(User ID)_
 - Giveaways _(Winner's user ID)_
 
-I, ***I am Ben#6686***, (as the bot developer) _will not be liable or responsible for damages of_ ***any*** _kind_ (including, without limitation, damages caused, loss of information or data, or any other indirect, incidental, special or consequential damages) arising out of the use of this bot, even if advised of the possibility of such damages.
+I, _**I am Ben#6686**_, (as the bot developer) _will not be liable or responsible for damages of_ _**any**_ _kind_ (including, without limitation, damages caused, loss of information or data, or any other indirect, incidental, special or consequential damages) arising out of the use of this bot, even if advised of the possibility of such damages.
 
 It is recommended to inform users of your Discord guild that the bot may collect their **END USER DATA**.
