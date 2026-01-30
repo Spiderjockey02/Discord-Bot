@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Editer un concours.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "Le Nombre_de_gagnants doit être inférieur à 10.",
+  "EDIT_GIVEAWAY": "Le concours va être mis à jour dans moins de {{TIME}} seconds.",
+  "UNKNOWN_GIVEAWAY": "Pas de concours trouvé avec l'ID message : `{{ID}}`, merci de vérifier et essayer à nouveau."
+}

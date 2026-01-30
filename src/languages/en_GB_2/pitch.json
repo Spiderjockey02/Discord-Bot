@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Sets the player's pitch. If you input \"reset\", it will set the pitch back to default.",
+  "USAGE": "pitch",
+  "PITCH_OFF": "Reseting **pitch**. This may take a few seconds...",
+  "DESC_1": "Reset **pitch**",
+  "INVALID": "Amount must be a real number.",
+  "INCORRECT": "Pitch must be inbetween 0 and 10.",
+  "PITCH_ON": "Setting pitch to **{{NUM}}**. This may take a few seconds...",
+  "DESC_2": "Pitch set to: **{{NUM}}**"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Visualiser une liste de lecture",
+  "USAGE": "p-view <playlist name>",
+  "NO_PLAYLIST": "Liste de lecture non trouvée",
+  "AVAIABLE": "Les listes de lecture disponibles sont `{{NAMES}}`."
+}

@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Informations sur un membre du serveur.",
+  "USAGE": "server-info",
+  "AUTHOR": "Informations - {{NAME}}",
+  "NAME": "Nom du serveur :",
+  "OWNER": "Propriétaire :",
+  "ID": "ID du serveur :",
+  "CREATED": "Création :",
+  "REGION": "Région :",
+  "VERIFICATION": "Modération :",
+  "MEMBER": "Membres [{{NUM}}] :",
+  "MEMBER_DESC": "`{{ONLINE}} en ligne, {{IDLE}} hors-ligne et {{DND}} Bannis \n{{BOTS}} bots, {{HUMANS}} humains`",
+  "FEATURES": "Fonctionnalités actives :",
+  "ROLES": "Rôles [{{NUM}}] :",
+  "FOOTER": "Requête : {{USER}}"
+}

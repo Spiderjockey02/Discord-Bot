@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Liste les émojis du serveur",
+  "USAGE": "emojilist",
+  "MESSAGE": "**{{GUILD}}'s emoji's:**\n{{EMOJIS}}"
+}

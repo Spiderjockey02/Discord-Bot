@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Déconnecte le Bot du salon vocal.",
+  "USAGE": "dc",
+  "LEFT": "J'ai quitté le salon vocal.",
+  "INACTIVE": "Je quitte 🔉 **{{VC}}** car je suis inactif depuis trop longtemps.",
+  "KICKED": "La file d'attente s'est terminée car j'ai été expulsé du salon vocal"
+}

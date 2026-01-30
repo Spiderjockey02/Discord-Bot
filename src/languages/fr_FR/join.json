@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Invite le Bot à te rejoindre dans un salon vocal.",
+  "USAGE": "join",
+  "NO_VC": "Tu n'es pas dans un salon vocal auquel j'ai accès.",
+  "JOIN": "J'ai rejoint le salon vocal avec succès.",
+  "MOVED": "J'ai changé de salon vocal."
+}

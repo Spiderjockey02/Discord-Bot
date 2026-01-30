@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Ajoute un nouveau rôle au serveur",
+  "USAGE": "addrole <nom du rôle> [couleur hexadécimal] [hoist]",
+  "MAX_NAME": "Le nom du rôle est trop long, limité à `100` caractères.",
+  "BOOLEAN": "*Hoist* doit être soit `true` soit `false`.",
+  "INVALID": "Code couleur invalide, la valeur doit être en hexadécimal.",
+  "MAX_ROLES": "Le nombre maximum de rôles sur ce serveur est atteint (250).",
+  "SUCCESS": "Rôle : <@&{{ROLE}}> crée avec succès."
+}

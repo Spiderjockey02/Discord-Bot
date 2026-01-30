@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Add a song to the playlist",
+  "USAGE": "p-add <playlist name> <song>",
+  "ERROR": "There was an error while searching: `{{ERROR}}`",
+  "NO_PLAYLIST": "No playlist found with name: `{{NAME}}`.",
+  "NO_SONG": "I couldn't find that song.",
+  "SUCCESS": "Added {{NUM}} new song(s) to playlist: `{{TITLE}}`."
+}

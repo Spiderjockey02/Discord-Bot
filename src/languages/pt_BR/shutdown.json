@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Shutdowns the bot.",
+  "USAGE": "shutdown",
+  "SUCCESS": "Oh.. ok goodbye :disappointed_relieved:"
+}

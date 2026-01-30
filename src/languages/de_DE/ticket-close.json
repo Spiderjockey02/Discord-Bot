@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Schließe den aktuellen Ticket-Kanal",
+  "USAGE": "Ticketschließung",
+  "NOT_SUPPORT": "Du hast nicht die Berechtigung, diesen Kanal zu schließen.",
+  "NOT_TICKET": "Das ist kein Ticket-Kanal.",
+  "TITLE": "Ticket geschlossen!",
+  "TICKET": "Ticket: ",
+  "USER": "Benutzer: ",
+  "SUCCESS": "Kanal wurde gelöscht",
+  "MISSING_TICKET": "Du hast kein Ticket, um es zu schließen."
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Bearbeite ein Giveaway.",
+  "USAGE": "g-bearbeite <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "Die Anzahl der Gewinner muss kleiner als 10 sein.",
+  "EDIT_GIVEAWAY": "Erfolgreich! Giveaway wird in weniger als {{TIME}} Sekunden aktualisiert.",
+  "UNKNOWN_GIVEAWAY": "Kein Giveaway mit der ID: `{{ID}}` gefunden. Bitte überprüfe es und versuche es erneut."
+}

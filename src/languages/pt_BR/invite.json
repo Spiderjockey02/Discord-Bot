@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Send an invite link so people can add me to their server.",
+  "USAGE": "invite",
+  "LINK": "🤖 [Invite me to your server]({{LINK}} 'You know you want to')"
+}

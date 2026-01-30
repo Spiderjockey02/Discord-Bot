@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Add a suggestion to bot",
+  "USAGE": "suggestion <title> - <description> - <plugin>"
+}

@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Zeigt die zuvor abgespielten Tracks an.",
+  "USAGE": "vorherige [pageNumber]",
+  "TITLE": "Vorherige Titel - {{NAME}}",
+  "LAST_TRACK": "**Letzter Titel**: {{TRACK}}",
+  "PAGE": "Seite {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
+  "PREVIOUS_TRACKS": "Keine vorherigen Titel wurden abgespielt",
+  "LOADED": "Vorherige Tracks geladen"
+}

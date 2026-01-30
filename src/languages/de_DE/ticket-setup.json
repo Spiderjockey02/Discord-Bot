@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Ticket-Plugin einrichten",
+  "USAGE": "Ticketeinstellung",
+  "TITLE": "Ticket-Einrichtungshilfe",
+  "NOT_CATEGORY": "Das ist keine Kategorie.",
+  "UPDATED_CATEGORY": "Ticketkategorie aktualisiert zu: `{{NAME}}`.",
+  "NOT_ROLE": "Das ist keine Rolle.",
+  "UPDATED_ROLE": "Support-Rolle aktualisiert: {ROLE}."
+}

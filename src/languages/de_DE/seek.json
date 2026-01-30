@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Setzt die Position des Spielers auf die angegebene Position.",
+  "USAGE": "suche <time>",
+  "LIVESTREAM": "Du kannst die Zeit in einem Livesystem nicht ändern.",
+  "INVALID": "Wählen Sie eine Zeit zwischen 0 und {{TIME}}.",
+  "UPDATED": "Zeit verschoben zu: `{{TIME}}`."
+}

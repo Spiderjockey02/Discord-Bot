@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Sendet Informationen über alle Befehle, die ich ausführen kann.",
+  "USAGE": "Hilfe [command]",
+  "AUTHOR": "Verfügbare Befehle",
+  "PREFIX_DESC": "**Präfix:** `{{PREFIX}}` (Du kannst <@!{{ID}}> als Präfix verwenden)",
+  "INFO_DESC": "**Gib `{{PREFIX}}{{USAGE}}` für befehlsspezifische Informationen.**",
+  "TITLE": "`Befehl: {{COMMAND}}`",
+  "DESC": "**Beschreibung:** {{DESC}}",
+  "ALIAS": "**Aliase:** {{ALIAS}}",
+  "COOLDOWN": "**Abklingzeit:** {{CD}} Sekunden",
+  "USE": "**Nutzung:** {{USAGE}}",
+  "EXAMPLE": "**Beispiel:** {{EX}}",
+  "LAYOUT": "\n**Format**: `<> = erforderlich, [] = optional`",
+  "NO_COMMAND": "Dies ist kein Befehl."
+}

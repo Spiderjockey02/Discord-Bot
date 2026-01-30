@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Finds an image based on the topic.",
+  "USAGE": "image <topic>"
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Delete a role from the server.",
+  "USAGE": "delrole <role name>",
+  "MISSING": "No role found!",
+  "SUCCESS": "Successfully deleted role: {{ROLE}}.",
+  "FAIL": "Unable to delete role possible due to permissions."
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Hol dir ein Wort aus dem städtischen Wörterbuch.",
+  "USAGE": "städtisch <word>",
+  "INCORRECT_URBAN": "Ausdruck: `{{PHRASE}}` wurde leider im städtischen Wörterbuch nicht gefunden.",
+  "TITLE": "Definition von {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Beispiel:**\n{{EXAMPLES}}"
+}

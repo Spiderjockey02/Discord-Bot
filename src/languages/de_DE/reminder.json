@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Link zur Nachricht:",
+  "USAGE": "Erinnerung <time> <information>",
+  "MESSAGE": "Ich erinnere dich in {{TIME}} an `{{INFO}}`.",
+  "TITLE": "Erinnerung",
+  "FOOTER": "Erinnerung von vor {{TIME}}.",
+  "RESPONSE": "\n**ERINNERUNG:**\n {USER} deine Erinnerung: {{INFO}}",
+  "MSG_LINK": "Link zur Nachricht"
+}

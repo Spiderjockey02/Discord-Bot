@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Erstelle einen falschen Pornhub Kommentar.",
+  "USAGE": "phKommentar [user] <text>",
+  "TOO_LONG": "Deine Nachricht darf nicht mehr als 70 Zeichen lang sein."
+}

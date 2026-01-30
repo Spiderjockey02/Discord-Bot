@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Moves the specified song to the specified position.",
+  "USAGE": "move <position> <new position>",
+  "INVALID": "Invalid number.",
+  "IS_PLAYING": "Cannot move a song that is already playing. To skip the current playing song type: `{{PREFIX}}skip`",
+  "NOT_FOUND": "Song not found",
+  "MOVED_1": "Moved **{{TITLE}}** to the beginning of the queue.",
+  "MOVED_2": "Moved **{{TITLE}}** to the position {{POS}}."
+}

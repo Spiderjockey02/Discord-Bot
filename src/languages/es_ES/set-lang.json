@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Choose the language for the bot.",
+  "USAGE": "setlang <language>",
+  "MISSING_LANG": "Please enter a valid language between theses: {{list}}",
+  "SUCCESS": "The language of this server is now {{NAME}}!"
+}

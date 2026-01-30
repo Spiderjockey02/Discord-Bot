@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Create a change my mind image.",
+  "USAGE": "changemymind <text>",
+  "TOO_LONG": "Your message must not be more than 80 characters."
+}

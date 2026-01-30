@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Active le mode Autoplay.",
+  "USAGE": "autoplay",
+  "RESP": "Autoplay mode is now {{TOGGLE}}."
+}

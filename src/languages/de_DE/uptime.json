@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Ruft die Betriebszeit des Bots ab.",
+  "USAGE": "Laufzeit",
+  "DESC": "📶 Ich bin seit {{TIME}} online."
+}

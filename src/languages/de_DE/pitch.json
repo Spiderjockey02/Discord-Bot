@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Legt die Tonhöhe des Spielers fest. Wenn Sie \"Zurücksetzen\" eingeben, wird die Tonhöhe wieder auf den Standardwert gesetzt.",
+  "USAGE": "teilungseinheit",
+  "PITCH_OFF": "**Pitch**. Dies kann einige Sekunden dauern...",
+  "DESC_1": "**Pitch** zurücksetzen",
+  "INVALID": "Betrag muss eine reale Zahl sein.",
+  "INCORRECT": "Die Tonhöhe muss zwischen 0 und 10 liegen.",
+  "PITCH_ON": "Setze Pitch auf **{{NUM}}**. Dies kann ein paar Sekunden dauern...",
+  "DESC_2": "Pitch gesetzt auf: **{{NUM}}**"
+}

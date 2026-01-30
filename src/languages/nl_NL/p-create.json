@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Create a playlist",
+  "USAGE": "p-create <playlist name> <search query/link>",
+  "TOO_LONG": "Playlist title must be less than 32 characters!",
+  "WAITING": "Adding song(s) to your playlist. This might take a few seconds...",
+  "NO_PREM": "Premium allows you to save up to 3 playlists instead of 1.",
+  "MAX_PLAYLISTS": "You are unable to save anymore playlists. Max: 3",
+  "EXISTS": "A playlist already exists with that name.",
+  "DESC_1": "Created a playlist with name: **{{TITLE}}**.",
+  "DESC_2": "Playlist duration: {{NUM}}.",
+  "DESC_3": "Added **{{NAME}}** ({{NUM}} tracks) to **{{TITLE}}**.",
+  "FOOTER": "ID: {{ID}} • Songs: {{NUM}}/{{PREM}}",
+  "NO_SONG": "I couldn't find that song."
+}

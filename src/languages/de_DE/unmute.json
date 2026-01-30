@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Benutzer entmuten.",
+  "USAGE": "entmute <user>",
+  "SUCCESS": "*<@{{USER}}> wurde unmuted*."
+}

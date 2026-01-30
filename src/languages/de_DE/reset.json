@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Setzt alle Filter zurück.",
+  "USAGE": "zurücksetzen",
+  "OFF": "Schalte **Filter aus**. Dies kann einige Sekunden dauern...",
+  "DESC_2": "**Filter** deaktiviert"
+}

@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Obtenir des information sur un rôle.",
+  "USAGE": "role-info <role>",
+  "NAME": "Rôle | {{NAME}}",
+  "MEMBERS": "Membres :",
+  "COLOR": "Couleur :",
+  "POSITION": "Position :",
+  "MENTION": "Mention :",
+  "HOISTED": "Visible :",
+  "MENTIONABLE": "Mentionnable :",
+  "PERMISSION": "Permissions :",
+  "CREATED": "Date de création :",
+  "FOOTER": "Requête : {{MEMBER}} | Role ID: {{ID}}"
+}

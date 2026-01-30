@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Get information on a role.",
+  "USAGE": "role-info <role>",
+  "NAME": "Role | {{NAME}}",
+  "MEMBERS": "Members:",
+  "COLOR": "Color:",
+  "POSITION": "Position:",
+  "MENTION": "Mention:",
+  "HOISTED": "Hoisted:",
+  "MENTIONABLE": "Mentionable:",
+  "PERMISSION": "Key permissions:",
+  "CREATED": "Created at:",
+  "FOOTER": "Requested by {{MEMBER}} | Role ID: {{ID}}"
+}

@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Searches for a song.",
+  "USAGE": "search <link / song name>",
+  "NOT_VC": "You're not in a voice channel that I can connect to.",
+  "NO_INPUT": "Please enter a song name/url",
+  "ERROR": "There was an error while searching: `{{ERROR}}`",
+  "NO_SONG": "I can't find that song.",
+  "TITLE": "Results for {{TITLE}}",
+  "DESC": "{{RESULTS}}\n\n\tPick a number from 1-10 or cancel.\n",
+  "INVALID": "The number you provided was too small or too big (1-{{NUM}}).",
+  "ADDED": "Added to queue: [{{TITLE}}]"
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Makes the bot join your voice channel.",
+  "USAGE": "join",
+  "NO_VC": "You're not in a voice channel that I can connect to.",
+  "JOIN": "I have successfully joined the channel.",
+  "MOVED": "I have successfully moved channel."
+}

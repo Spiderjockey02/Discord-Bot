@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Get information on a twitch account.",
+  "USAGE": "twitch <user>",
+  "BIO": "Biography: ",
+  "NO_BIO": "This user doesn't have a biography.",
+  "TOTAL": "Total Views: ",
+  "FOLLOWERS": "Followers: ",
+  "NOT_FOUND": "Twitch user not found.",
+  "STREAMING": "**{{TITLE}}** for {{NUM}} viewers"
+}

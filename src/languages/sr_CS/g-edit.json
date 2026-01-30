@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Edit a giveaway.",
+  "USAGE": "g-edit <messageID> <AddedTime> <newWinnerCount> <NewPrize>",
+  "INCORRECT_WINNER_COUNT": "Winner count must be less than 10.",
+  "EDIT_GIVEAWAY": "Success! Giveaway will updated in less than {{TIME}} seconds.",
+  "UNKNOWN_GIVEAWAY": "No giveaway found with Message ID: `{{ID}}`, please check and try again."
+}

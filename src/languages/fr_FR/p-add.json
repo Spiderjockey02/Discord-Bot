@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Ajoute un titre à une liste de lecture",
+  "USAGE": "p-add <playlist name> <song>",
+  "ERROR": "Une erreur s'est produite lors de la recherche : `{{ERROR}}`",
+  "NO_PLAYLIST": "Je ne trouve pas de liste de lecture avec ce nom : {{NAME}}.",
+  "NO_SONG": "Je ne trouve pas ce titre.",
+  "SUCCESS": "Ajout de {{NUM}} nouvelle(s) chanson(s) à la playlist : `{{TITLE}}`."
+}

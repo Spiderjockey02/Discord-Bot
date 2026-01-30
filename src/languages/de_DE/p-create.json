@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Wiedergabeliste erstellen",
+  "USAGE": "p-create <playlist name> <search query/link>",
+  "TOO_LONG": "Der Titel der Playlist muss weniger als 32 Zeichen lang sein!",
+  "WAITING": "Lied(e) zu deiner Wiedergabeliste hinzufügen. Dies kann ein paar Sekunden dauern...",
+  "NO_PREM": "Mit Premium können Sie bis zu 3 Playlisten anstelle von 1 speichern.",
+  "MAX_PLAYLISTS": "Du kannst keine Wiedergabelisten mehr speichern. Max: 3",
+  "EXISTS": "Eine Wiedergabeliste mit diesem Namen existiert bereits.",
+  "DESC_1": "Playlist mit Namen erstellt: **{{TITLE}}**.",
+  "DESC_2": "Playlist-Dauer: {{NUM}}.",
+  "DESC_3": "**{{NAME}}** ({{NUM}} Tracks) zu **{{TITLE}} ** hinzugefügt.",
+  "FOOTER": "ID: {{ID}} • Songs: {{NUM}}/{{PREM}}",
+  "NO_SONG": "Ich konnte diesen Song nicht finden."
+}

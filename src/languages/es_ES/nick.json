@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Change the nickname of a user.",
+  "USAGE": "nick <user> <name>",
+  "TOO_POWERFUL": "I am unable to change that user's nickname due to their power.",
+  "ENTER_NICKNAME": "Please enter a nickname.",
+  "LONG_NICKNAME": "Nickname must be shorter than 32 characters.",
+  "SUCCESS": "*Successfully changed nickname of <@{{USER}}>.*"
+}

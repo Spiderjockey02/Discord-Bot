@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Retirer un titre de la file d'attente",
+  "USAGE": "remove <position> [position]",
+  "NAN": "Nombre invalide.",
+  "PLAYING": "Impossible de supprimer un titre en cours de lecture. Pour passer au titre suivant : `{{PREFIX}}skip`",
+  "MISSING": "Je ne trouve pas ce titre.",
+  "REMOVED": "**{{TITLE}}** supprimé de la liste",
+  "INVALID": "Le nombre de départ doit être supérieur à celui de la fin.",
+  "REMOVED_MULTI": "**{{NUM}}** titres supprimés de la liste"
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Sets the playing track's position to the specified position.",
+  "USAGE": "seek <time>",
+  "LIVESTREAM": "You can't change the time in a livestream.",
+  "INVALID": "Choose a time between 0 and {{TIME}}.",
+  "UPDATED": "Time moved to: `{{TIME}}`."
+}

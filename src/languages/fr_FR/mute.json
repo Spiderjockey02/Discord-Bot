@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Rendre muet un membre.",
+  "USAGE": "mute <user> [time]",
+  "SUCCESS": "*<@{{USER}}> est désormais muet*."
+}

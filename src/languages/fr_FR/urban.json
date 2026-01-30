@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Obtenir la définition d'un mot/phrase d'Argot.",
+  "USAGE": "urbain <word>",
+  "INCORRECT_URBAN": "La phrase: `{{PHRASE}}` n'a pas été trouvée dans le dictionnaire d'Argot.",
+  "TITLE": "Définition de {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**Exemple :**\n{{EXAMPLES}}"
+}

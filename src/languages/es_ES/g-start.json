@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Empieza un sorteo",
+  "USAGE": "g-start <time><Number of winners><prize>",
+  "PRIZE_TOO_LONG": "El premio debe tener menos de 256 caracteres.",
+  "TITLE": "🎉🎉 **SORTEO** 🎉🎉",
+  "ENDED": "🎉🎉 **SORTEO TERMINADO** 🎉🎉",
+  "TIME_REMAINING": "Tiempo restante: **{duration}**!",
+  "INVITE_PARTICIPATE": "¡Reacciona con 🎉 para participar!",
+  "WIN_MESSAGE": "¡Enhorabuena, {winners}! ¡Has ganado **{this.prize}}**!",
+  "FOOTER": "{this.winnerCount} ganador(es)",
+  "NO_WINNER": "Sorteo cancelado, no hay participaciones válidas.",
+  "WINNERS": "ganador(es)",
+  "END_AT": "Termina en",
+  "HOSTED": "Comenzada por: {this.hostedBy}"
+}

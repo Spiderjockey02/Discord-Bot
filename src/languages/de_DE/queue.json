@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Zeigt die Warteschlange an.",
+  "USAGE": "warteschlange [pageNumber]",
+  "EMPTY": "Schlange ist leer",
+  "TITLE": "Warteschlange - {{NAME}}",
+  "NOW_PLAYING": "**Jetzt spielt**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Als Nächstes**: {{NEXT}}",
+  "PAGE": "Seite {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} Gesamtdauer",
+  "LOADED": "Warteschlange geladen"
+}

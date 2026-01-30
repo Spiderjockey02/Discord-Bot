@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Créer une image personnalisée.",
+  "USAGE": "generate <option> [image]",
+  "DESC": "**1 Image est nécessaire**:\n`{{IMG_1}}`. \n**2 images sont nécessaires**:\n`{{IMG_2}}`.",
+  "NEED_2IMG": "Merci de saisir 2 valeurs. (Images et/ou membre)"
+}
