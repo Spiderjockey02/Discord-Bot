@@ -1,14 +1,13 @@
-/* eslint-disable space-before-function-paren */
 const { ChannelType } = require('discord-api-types/v10');
 
 module.exports = {
-	checkMusic: function (member, bot) {
+	checkMusic: function(member, bot) {
 		// Check that a song is being played
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!player) return member.guild.translate('music/misc:NO_QUEUE');
+		if (!player) return member.guild.translate('misc:NO_QUEUE');
 
 		// Check that user is in the same voice channel
-		if (member.voice?.channel?.id !== player.voiceChannel) return member.guild.translate('misc:NOT_VOICE');
+		if (member.voice?.channel?.id !== player.voiceChannelId) return member.guild.translate('misc:NOT_VOICE');
 
 		// Check if the member has role to interact with music plugin
 		if (member.guild.roles.cache.get(member.guild.settings.MusicDJRole)) {
@@ -18,10 +17,10 @@ module.exports = {
 		}
 		return true;
 	},
-	checkNSFW: function (channel) {
+	checkNSFW: function(channel) {
 		return channel.nsfw || channel.type == ChannelType.DM;
 	},
-	CalcLevenDist: function (str1 = '', str2 = '') {
+	CalcLevenDist: function(str1 = '', str2 = '') {
 		const track = Array(str2.length + 1).fill(null).map(() =>
 			Array(str1.length + 1).fill(null));
 		for (let i = 0; i <= str1.length; i += 1) {
