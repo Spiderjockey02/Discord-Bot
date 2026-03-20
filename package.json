@@ -53,5 +53,13 @@
     "erlpack": "github:discord/erlpack",
     "utf-8-validate": "^6.0.3",
     "zlib-sync": "^0.1.8"
+  },
+  "overrides": {
+    "axios": "$axios",
+    "follow-redirects": ">=1.15.6",
+    "form-data": ">=4.0.4",
+    "nth-check": ">=2.0.1",
+    "json5": ">=2.2.2",
+    "undici": ">=6.24.0"
   }
 }
