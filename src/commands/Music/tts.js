@@ -94,8 +94,9 @@ class TTS extends Command {
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
+			const idle = !player.playing && !player.paused && !player.queue.current;
 			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
+			if (idle) {
 				player.play();
 			} else {
 				const embed = new Embed(bot, message.guild)
@@ -173,9 +174,11 @@ class TTS extends Command {
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
+			const idle = !player.playing && !player.paused && !player.queue.current;
 			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
+			if (idle) {
 				player.play();
+				interaction.reply({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
 			} else {
 				const embed = new Embed(bot, guild)
 					.setColor(member.displayHexColor)

@@ -1,6 +1,6 @@
 // Dependencies
-const { Embed, time: { read24hrFormat, getReadableTime }, functions: { checkMusic } } = require('../../utils'),
-	{ ApplicationCommandOptionType, EmbedBuilder, PermissionsBitField: { Flags } } = require('discord.js'),
+const { Embed, time: { read24hrFormat }, functions: { checkMusic } } = require('../../utils'),
+	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -17,12 +17,12 @@ class SeekTo extends Command {
 			name: 'seek-to',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['rw'],
+			aliases: ['seekto'],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Sets the playing track\'s position to the specified position.',
-			usage: 'rewind <time>',
+			usage: 'seek-to <time>',
 			cooldown: 3000,
-			examples: ['rw 1:00', 'rw 1:32:00'],
+			examples: ['seekto 1:00', 'seekto 1:32:00'],
 			slash: false,
 			isSubCmd: true,
 			options: [{
@@ -40,7 +40,7 @@ class SeekTo extends Command {
  	 * @param {message} message The message that ran the command
  	 * @readonly
   */
-	async run(bot, message) {
+	async run(bot, message, settings) {
 		// check to make sure bot can play music based on permissions
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
@@ -48,18 +48,22 @@ class SeekTo extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 
 		// Make sure song isn't a stream
-		if (!player.queue.current.isSeekable) return message.channel.error('music/rewind:LIVESTREAM');
+		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVESTREAM');
+
+		// Make sure a time was inputted
+		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) });
 
 		// update the time
-		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
+		const time = read24hrFormat(message.args[0]);
 
-		if (time + player.position <= 0) {
-			message.channel.send(message.translate('music/rewind:INVALID'));
+		if (player.queue.current.duration && time > player.queue.current.duration) {
+			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
-			player.seek(player.position - time);
+			player.seek(time);
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(message.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			message.channel.send({ embeds: [embed] });
 		}
 	}
@@ -80,17 +84,21 @@ class SeekTo extends Command {
 		const playable = checkMusic(member, bot);
 		if (typeof (playable) !== 'boolean') return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
 
-		// update the time
+		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(member.guild.id);
+		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:LIVESTREAM', { ERROR: null }, true)] });
+
+		// update the time
 		const time = read24hrFormat(args.get('time').value);
 
-		if (time > player.queue.current.duration) {
+		if (player.queue.current.duration && time > player.queue.current.duration) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }, true)] });
 		} else {
 			player.seek(time);
-			const embed = new EmbedBuilder()
+			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(bot.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
+				.setDescription(guild.translate('music/seek:UPDATED', { TIME: new Date(time).toISOString().slice(14, 19) }));
 			interaction.reply({ embeds: [embed] });
 		}
 	}

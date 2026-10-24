@@ -17,7 +17,7 @@ class Playlist extends Command {
 			name: 'playlist',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['playlist-add'],
+			aliases: [],
 			description: 'Add a song to the playlist',
 			usage: 'p-add <playlist name> <song>',
 			cooldown: 3000,

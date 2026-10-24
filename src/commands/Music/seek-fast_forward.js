@@ -47,18 +47,20 @@ class SeekFastForward extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(message.guild.id);
+		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
 		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM');
 
 		// update the time
-		const time = read24hrFormat(message.args[0] ?? '10');
+		const time = read24hrFormat(message.args[0] ?? '10'),
+			newTime = player.currentPosition + time;
 
-		if (time + player.position >= player.queue.current.duration) {
+		if (player.queue.current.duration && newTime >= player.queue.current.duration) {
 			message.channel.send(message.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
 		} else {
-			player.seek(player.position + time);
+			player.seek(newTime);
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(message.translate('music/fast-forward:DESC', { NEW: new Date(newTime).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			message.channel.send({ embeds: [embed] });
 		}
 	}
@@ -81,18 +83,20 @@ class SeekFastForward extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(member.guild.id);
+		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)], ephemeral: true });
 		if (!player.queue.current.isSeekable) return interaction.reply({ embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)], ephemeral: true });
 
 		// update the time
-		const time = read24hrFormat(args.get('time')?.value ?? '10');
+		const time = read24hrFormat(args.get('time')?.value ?? '10'),
+			newTime = player.currentPosition + time;
 
-		if (time + player.position >= player.queue.current.duration) {
+		if (player.queue.current.duration && newTime >= player.queue.current.duration) {
 			interaction.reply(guild.translate('music/fast-forward:TOO_LONG', { TIME: new Date(player.queue.current.duration).toISOString().slice(14, 19) }));
 		} else {
-			player.seek(player.position + time);
+			player.seek(newTime);
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(guild.translate('music/fast-forward:DESC', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(guild.translate('music/fast-forward:DESC', { NEW: new Date(newTime).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			interaction.reply({ embeds: [embed] });
 		}
 	}

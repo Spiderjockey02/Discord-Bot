@@ -120,8 +120,18 @@ class Tidal {
 			thumbnail: Tidal.coverUrl(song.coverArt),
 			isSeekable: true,
 			provider: 'tidal',
-			getStream: () => this.getStream(id),
 		};
+	}
+
+	// Plain-text lyrics for a Tidal track ID, or null. Synced (LRC) lyrics have their timestamps stripped.
+	async getLyrics(id) {
+		const data = await this.request('getLyrics', { id: String(id) });
+		const text = (data.lyrics?.value || '')
+			.split('\n')
+			.map(line => line.replace(/^(\[\d+:\d+(?:[.:]\d+)?\])+\s*/, '').trimEnd())
+			.join('\n')
+			.trim();
+		return text || null;
 	}
 
 	// Tidal cover IDs are UUIDs that map straight to their public image CDN

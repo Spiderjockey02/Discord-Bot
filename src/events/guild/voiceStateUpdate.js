@@ -1,5 +1,6 @@
 // Dependencies
 const { Embed } = require('../../utils'),
+	{ ChannelType } = require('discord.js'),
 	Event = require('../../structures/Event');
 
 /**
@@ -79,60 +80,43 @@ class VoiceStateUpdate extends Event {
 			}
 		}
 
-		// Only keep the bot in the voice channel by its self for 3 minutes
 		const player = bot.manager?.players.get(newState.guild.id);
+		if (!player || player.destroyed) return;
 
-		if (!player) return;
-
-		// The bot was moved to another channel or disconnected by someone
-		if (newState.id == bot.user.id && oldState.channelId && oldState.channelId !== newState.channelId) {
-			return bot.manager.emit('playerMove', player, oldState.channelId, newState.channelId);
-		}
-		if (!newState.guild.members.cache.get(bot.user.id).voice.channelId) player.destroy();
-
-		// Check for stage channel audience change
-		if (newState.id == bot.user.id && channel?.type == 'GUILD_STAGE_VOICE') {
-			if (!oldState.channelId) {
-				try {
-					await newState.guild.members.me.voice.setSuppressed(false).then(() => console.log(null));
-				} catch (err) {
-					player.pause(true);
-				}
-			} else if (oldState.suppress !== newState.suppress) {
-				player.pause(newState.suppress);
+		if (newState.id == bot.user.id) {
+			// The bot was moved to another channel or disconnected by someone
+			if (oldState.channelId && oldState.channelId !== newState.channelId) {
+				bot.manager.emit('playerMove', player, oldState.channelId, newState.channelId);
+				if (!newState.channelId) return;
 			}
-		}
 
-
-		if (oldState.id === bot.user.id) return;
-		if (!oldState.guild.members.cache.get(bot.user.id).voice.channelId) return;
-
-		// Don't leave channel if 24/7 mode is active
-		if (player.twentyFourSeven) return;
-
-		// Make sure the bot is in the voice channel that 'activated' the event
-		if (oldState.guild.members.cache.get(bot.user.id).voice.channelId === oldState.channelId) {
-			if (oldState.guild.members.me.voice?.channel && oldState.guild.members.me.voice.channel.members.filter(m => !m.user.bot).size === 0) {
-				const vcName = oldState.guild.members.me.voice.channel.name;
-				await bot.delay(180000);
-
-				// times up check if bot is still by themselves in VC (exluding bots)
-				const vcMembers = oldState.guild.members.me.voice.channel?.members.size;
-				if (!vcMembers || vcMembers === 1) {
-					const newPlayer = bot.manager?.players.get(newState.guild.id);
-					(newPlayer) ? player.destroy() : newState.guild.members.me.voice.disconnect();
-					const embed = new Embed(bot, newState.guild)
-					// eslint-disable-next-line no-inline-comments
-						.setDescription(`I left 🔉 **${vcName}** because I was inactive for too long.`); // If you are a [Premium](${bot.config.websiteURL}/premium) member, you can disable this by typing ${settings.prefix}24/7.`);
+			// Check for stage channel audience change
+			if (channel?.type == ChannelType.GuildStageVoice) {
+				if (!oldState.channelId || oldState.channelId !== newState.channelId) {
 					try {
-						const c = bot.channels.cache.get(player.textChannel);
-						if (c) c.send({ embeds: [embed] }).then(m => m.timedDelete({ timeout: 60000 }));
+						await newState.guild.members.me.voice.setSuppressed(false);
 					} catch (err) {
-						bot.logger.error(err.message);
+						player.pause(true, 'suppressed');
 					}
+				} else if (oldState.suppress !== newState.suppress) {
+					player.pause(newState.suppress, 'suppressed');
 				}
 			}
 		}
+
+		// Only updates for the bot's own voice channel matter from here
+		const botChannel = newState.guild.members.me?.voice.channel;
+		if (!botChannel || (oldState.channelId !== botChannel.id && newState.channelId !== botChannel.id)) return;
+
+		// Pause while nobody is listening, and leave after 3 minutes unless 24/7 mode is on
+		const alone = botChannel.members.filter(m => !m.user.bot).size === 0;
+		player.setAlone(alone, 180000, () => {
+			const embed = new Embed(bot, newState.guild)
+				.setDescription(`I left 🔉 **${botChannel.name}** because I was inactive for too long.`);
+			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
+				.then(m => m.timedDelete({ timeout: 60000 }))
+				.catch(err => bot.logger.error(err.message));
+		});
 	}
 }
 

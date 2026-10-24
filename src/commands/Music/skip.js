@@ -46,9 +46,13 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!isNaN(message.args[0]) && message.args[0] < player.queue.length) {
-			player.stop(parseInt(message.args[0]));
-			message.channel.send({ content: `Skipping ${message.args[0]} songs!` });
+		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+
+		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
+		const amount = parseInt(message.args[0]);
+		if (amount > 1 && amount <= player.queue.length) {
+			player.stop(amount);
+			message.channel.send({ content: `Skipping ${amount} songs!` });
 		} else {
 			message.channel.send({ content: 'Skipped song!' });
 			player.stop();
@@ -74,7 +78,10 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!isNaN(amount) && amount < player.queue.length) {
+		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)], ephemeral: true });
+
+		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
+		if (amount > 1 && amount <= player.queue.length) {
 			player.stop(amount);
 			interaction.reply({ content: `Skipping ${amount} songs!` });
 		} else {

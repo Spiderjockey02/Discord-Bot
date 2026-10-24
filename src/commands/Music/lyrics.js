@@ -1,6 +1,7 @@
 // Dependencies
 const { Embed, paginate } = require('../../utils'),
 	{ ApplicationCommandOptionType } = require('discord.js'),
+	fetchLyrics = require('../../base/music/Lyrics'),
 	Command = require('../../structures/Command.js');
 
 /**
@@ -38,14 +39,14 @@ class Lyrics extends Command {
   */
 	async run(bot, message) {
 		// Check that a song is being played
-		let song = message.args.join(' ');
+		let song = { title: message.args.join(' ') };
 
 		// Check if they want to get the lyrics from the currently played song
-		if (song.length == 0) {
+		if (!song.title) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(message.guild.id);
-			if (!player) return message.channel.error('misc:NO_QUEUE');
-			song = player.queue.current.title;
+			if (!player?.queue.current) return message.channel.error('misc:NO_QUEUE');
+			song = player.queue.current;
 		}
 
 		// send 'waiting' message to show bot has recieved message
@@ -78,16 +79,16 @@ class Lyrics extends Command {
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId);
-		let song = args.get('track')?.value;
+		let song = { title: args.get('track')?.value };
 
 		await interaction.deferReply();
 
 		// Check if they want to get the lyrics from the currently played song
-		if (!song) {
+		if (!song.title) {
 			// Check if a song is playing and use that song
 			const player = bot.manager?.players.get(guild.id);
-			if (!player) return interaction.followUp({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
-			song = player.queue.current.title;
+			if (!player?.queue.current) return interaction.followUp({ embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+			song = player.queue.current;
 		}
 
 		// display lyrics
@@ -104,22 +105,21 @@ class Lyrics extends Command {
 	}
 
 	async searchLyrics(bot, guild, song, author) {
-		// search for and send lyrics
-		const info = await bot.fetch('info/lyrics', { title: song });
+		// search for and send lyrics (Tidal for Tidal tracks, then LRCLIB, then the Egglord API)
+		const info = await fetchLyrics(bot, song);
 
 		// make sure lyrics were found
-		if (!info || !info.lyrics) return guild.translate('music/lyrics:NO_LYRICS');
+		if (!info) return guild.translate('music/lyrics:NO_LYRICS');
 
 		// create pages
-		let pagesNum = Math.ceil(info.lyrics.join('\n').length / 2048);
-		if (pagesNum === 0) pagesNum = 1;
+		const pagesNum = Math.max(1, Math.ceil(info.lyrics.length / 2048));
 
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const embed = new Embed(bot, guild)
-				.setTitle(info.name)
-				.setURL(info.url)
-				.setDescription(info.lyrics.join('\n').substring(i * 2048, (i + 1) * 2048))
+				.setTitle([info.artist, info.title].filter(Boolean).join(' - ').slice(0, 256))
+				.setURL(info.url || null)
+				.setDescription(info.lyrics.substring(i * 2048, (i + 1) * 2048))
 				.setTimestamp()
 				.setFooter({ text: guild.translate('music/lyrics:FOOTER', { TAG: author.displayName }), iconURL: author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }) });
 			pages.push(embed);

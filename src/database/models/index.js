@@ -4,6 +4,7 @@ module.exports = {
 	WarningSchema: require('./Warning'),
 	GiveawaySchema: require('./Giveaway'),
 	PlaylistSchema: require('./Playlist'),
+	PlayerStateSchema: require('./PlayerState'),
 	ReactionRoleSchema: require('./ReactionRole'),
 	timeEventSchema: require('./TimedEvents'),
 	TagsSchema: require('./tag'),

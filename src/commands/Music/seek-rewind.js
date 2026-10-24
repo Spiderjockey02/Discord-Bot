@@ -48,18 +48,20 @@ class SeekRewind extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 
 		// Make sure song isn't a stream
+		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
 		if (!player.queue.current.isSeekable) return message.channel.error('music/rewind:LIVESTREAM');
 
 		// update the time
-		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
+		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10'),
+			newTime = player.currentPosition - time;
 
-		if (time + player.position <= 0) {
+		if (newTime < 0) {
 			message.channel.send(message.translate('music/rewind:INVALID'));
 		} else {
-			player.seek(player.position - time);
+			player.seek(newTime);
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(message.translate('music/rewind:NEW_TIME', { NEW: new Date(newTime).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			message.channel.send({ embeds: [embed] });
 		}
 	}
@@ -82,18 +84,20 @@ class SeekRewind extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(member.guild.id);
+		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:LIVESTREAM', { ERROR: null }, true)] });
 
 		// update the time
-		const time = read24hrFormat(args.get('time')?.value ?? '10');
+		const time = read24hrFormat(args.get('time')?.value ?? '10'),
+			newTime = player.currentPosition - time;
 
-		if (time + player.position <= 0) {
+		if (newTime < 0) {
 			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/rewind:INVALID', { ERROR: null }, true)] });
 		} else {
-			player.seek(player.position - time);
+			player.seek(newTime);
 			const embed = new Embed(bot, guild)
 				.setColor(member.displayHexColor)
-				.setDescription(guild.translate('music/rewind:NEW_TIME', { NEW: new Date(player.position).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
+				.setDescription(guild.translate('music/rewind:NEW_TIME', { NEW: new Date(newTime).toISOString().slice(14, 19), OLD: getReadableTime(time) }));
 			interaction.reply({ embeds: [embed] });
 		}
 	}

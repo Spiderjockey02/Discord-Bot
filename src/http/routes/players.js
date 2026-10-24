@@ -19,7 +19,7 @@ module.exports = (bot) => {
 					vaporwave: player.vaporwave,
 				},
 				volume: player.volume,
-				queue: [player.queue.current, ...player.queue] });
+				queue: [player.queue.current, ...player.queue].filter(Boolean) });
 		} else {
 			// fetch guild's basic information
 			res.status(400).json({ error: 'No music playing in that guild.' });
@@ -60,19 +60,20 @@ module.exports = (bot) => {
 	router.get('/:guildId/filter', (req, res) => {
 		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
-			let filter = req.query.option;
-			if (['nightcore', 'bassboost', 'vaporwave', 'speed'].includes(filter)) {
-				filter = `set${filter.charAt(0).toUpperCase() + filter.slice(1)}`;
-				if (['bassboost', 'speed'].includes(filter)) {
+			const option = req.query.option;
+			if (['nightcore', 'bassboost', 'vaporwave', 'speed'].includes(option)) {
+				const setter = `set${option.charAt(0).toUpperCase() + option.slice(1)}`;
+				if (['bassboost', 'speed'].includes(option)) {
 					if (req.query.value && (Number(req.query.value) > 0)) {
-						player[filter](req.query.value);
+						player[setter](Number(req.query.value));
 					} else {
-						return res.status(400).json({ error: `Value for ${req.query.option} must be a number larger than 0.` });
+						return res.status(400).json({ error: `Value for ${option} must be a number larger than 0.` });
 					}
 				} else {
-					player[filter](`!player.${filter}`);
+					// Toggle the preset filter
+					player[setter](!player[option]);
 				}
-				res.status(200).json({ success: 'Successfully updated player\'s volume!' });
+				res.status(200).json({ success: 'Successfully updated player\'s filters!' });
 			} else {
 				res.status(400).json({ error: 'Please specify a filter to update.' });
 			}
@@ -86,6 +87,7 @@ module.exports = (bot) => {
 		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			player.pause(true);
+			res.status(200).json({ success: 'Successfully paused the player!' });
 		} else {
 			res.status(400).json({ error: 'No music playing in that guild.' });
 		}
@@ -96,6 +98,7 @@ module.exports = (bot) => {
 		const player = bot.manager?.players.get(req.params.guildId);
 		if (player) {
 			player.pause(false);
+			res.status(200).json({ success: 'Successfully resumed the player!' });
 		} else {
 			res.status(400).json({ error: 'No music playing in that guild.' });
 		}
@@ -107,10 +110,11 @@ module.exports = (bot) => {
 		if (player) {
 			const guild = bot.guilds.cache.get(req.params.guildId),
 				data = await player.search(req.query.song, bot.users.cache.get(req.query.user));
+			let idle;
 			// if song failed to be loaded
 			switch (data.loadType) {
 				case 'error':
-					return res.status(400).json({ error: res.exception });
+					return res.status(400).json({ error: data.exception?.message ?? 'Failed to load the song.' });
 				case 'empty':
 					// An error occured or couldn't find the track
 					if (!player.queue.current) player.destroy();
@@ -124,15 +128,17 @@ module.exports = (bot) => {
 						.setDescription(guild.translate('music/play:QUEUED', { NUM: data.tracks.length }))] });
 
 					// Add songs to queue and then pLay the song(s) if not already
+					idle = !player.playing && !player.paused && !player.queue.current;
 					player.queue.add(data.tracks);
-					if (!player.playing && !player.paused) player.play();
+					if (idle) player.play();
 					res.status(200).json({ success: `Added ${data.tracks.length} songs to the queue.` });
 					break;
 				default:
 					// add track to queue and play
 					if (player.state !== 'CONNECTED') player.connect();
+					idle = !player.playing && !player.paused && !player.queue.current;
 					player.queue.add(data.tracks[0]);
-					if (!player.playing && !player.paused && !player.queue.size) {
+					if (idle) {
 						player.play();
 					} else {
 						bot.channels.cache.get(player.textChannel)?.send({ embeds: [new Embed(bot, guild)

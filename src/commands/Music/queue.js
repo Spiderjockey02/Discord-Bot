@@ -1,7 +1,9 @@
 // Dependencies
 const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	Command = require('../../structures/Command.js'),
+	// Live/unknown streams have no duration
+	readDuration = (ms) => ms ? getReadableTime(ms) : 'LIVE';
 
 /**
  * queue command
@@ -49,7 +51,7 @@ class Queue extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player) return message.channel.error('misc:NO_QUEUE');
+		if (!player || !player.queue.current) return message.channel.error('misc:NO_QUEUE');
 
 		// Make sure queue is not empty
 		const queue = player.queue;
@@ -65,13 +67,13 @@ class Queue extends Command {
 
 		// fetch data to show on pages
 		const { title, requester, duration, uri } = player.queue.current;
-		const parsedDuration = getReadableTime(duration);
-		const parsedQueueDuration = getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const parsedDuration = readDuration(duration);
+		const parsedQueueDuration = readDuration(player.queue.reduce((prev, curr) => prev + (curr.duration || 0), 0) + (duration || 0));
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${readDuration(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
 				`);
 		}
 
@@ -121,14 +123,14 @@ class Queue extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player || !player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;
 		if (queue.size == 0) {
 			const embed = new Embed(bot, guild)
 				.setTitle('music/queue:EMPTY');
-			return interaction.reply(embed);
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		// get total page number
@@ -137,13 +139,13 @@ class Queue extends Command {
 
 		// fetch data to show on pages
 		const { title, requester, duration, uri } = player.queue.current;
-		const parsedDuration = getReadableTime(duration);
-		const parsedQueueDuration = getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const parsedDuration = readDuration(duration);
+		const parsedQueueDuration = readDuration(player.queue.reduce((prev, curr) => prev + (curr.duration || 0), 0) + (duration || 0));
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${readDuration(song.duration)}]\` • <@${!song.requester.id ? song.requester : song.requester.id}>
 				`);
 		}
 
@@ -162,8 +164,7 @@ class Queue extends Command {
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
 			if (pages.length == pagesNum && player.queue.length > 10) {
-				paginate(bot, channel, pages, member.id);
-				return interaction.reply('Loaded Queue');
+				return paginate(bot, interaction, pages, member.id);
 			} else {
 				return interaction.reply({ embeds: [pages[0]] });
 			}

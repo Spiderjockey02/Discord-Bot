@@ -5,6 +5,9 @@ const { Embed } = require('../../utils'),
 	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
 	Command = require('../../structures/Command.js');
 
+// Nothing is playing or about to play, so newly added tracks need playback started
+const isIdle = player => !player.playing && !player.paused && !player.queue.current;
+
 /**
  * play command
  * @extends {Command}
@@ -131,17 +134,19 @@ class Play extends Command {
 			// Show how many songs have been added
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }));
+				.setDescription(message.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length }));
 			message.channel.send({ embeds: [embed] });
 
 			// Add songs to queue and then pLay the song(s) if not already
+			const idle = isIdle(player);
 			player.queue.add(res.playlist.tracks);
-			if (!player.playing && !player.paused) player.play();
+			if (idle) player.play();
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
+			const idle = isIdle(player);
 			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
+			if (idle) {
 				player.play();
 			} else {
 				const embed = new Embed(bot, message.guild)
@@ -188,7 +193,7 @@ class Play extends Command {
 		await interaction.deferReply();
 
 		// Create player
-		let player, res;
+		let player, res, idle;
 		try {
 			player = bot.manager.create({
 				guild: guild.id,
@@ -221,6 +226,7 @@ class Play extends Command {
 			case 'playlist':
 				// Connect to voice channel if not already
 				if (player.state !== 'CONNECTED') player.connect();
+				idle = isIdle(player);
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-r':
@@ -239,13 +245,14 @@ class Play extends Command {
 						player.queue.add(res.playlist.tracks);
 				}
 
-				if (!player.playing && !player.paused) player.play();
+				if (idle) player.play();
 				return interaction.followUp({ embeds: [new Embed(bot, guild)
 					.setColor(member.displayHexColor)
-					.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }))] });
+					.setDescription(guild.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length }))] });
 			default:
 				// add track to queue and play
 				if (player.state !== 'CONNECTED') player.connect();
+				idle = isIdle(player);
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-n':
@@ -256,7 +263,7 @@ class Play extends Command {
 						player.queue.add(res.tracks[0]);
 				}
 
-				if (!player.playing && !player.paused && player.queue.size == 0) {
+				if (idle) {
 					try {
 						await player.play();
 						return interaction.followUp({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
@@ -267,7 +274,7 @@ class Play extends Command {
 				} else {
 					const embed = new Embed(bot, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 					return interaction.followUp({ embeds: [embed] });
 				}
 		}

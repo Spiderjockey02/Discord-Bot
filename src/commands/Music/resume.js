@@ -17,7 +17,7 @@ class Resume extends Command {
 			name: 'resume',
 			guildOnly: true,
 			dirname: __dirname,
-			aliases: ['previous', 'prev'],
+			aliases: ['unpause'],
 			botPermissions: [Flags.SendMessages, Flags.EmbedLinks, Flags.Speak],
 			description: 'Resumes the music.',
 			usage: 'resume',

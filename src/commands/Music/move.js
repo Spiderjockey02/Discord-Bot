@@ -51,27 +51,29 @@ class Move extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		// Make sure positions are number(s)
-		const player = bot.manager?.players.get(message.guild.id);
-		if (isNaN(message.args[0])) return message.channel.send(message.translate('music/move:INVALID'));
+		const player = bot.manager?.players.get(message.guild.id),
+			pos1 = Number(message.args[0]),
+			pos2 = message.args[1] !== undefined ? Number(message.args[1]) : null;
+		if (!Number.isInteger(pos1) || (pos2 !== null && !Number.isInteger(pos2))) return message.channel.send(message.translate('music/move:INVALID'));
 
 		// Can't move currently playing song
-		if (message.args[0] === 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
+		if (pos1 === 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
 
-		// Make sure number is position in the queue
-		if ((message.args[0] > player.queue.length) || (message.args[0] && !player.queue[message.args[0]])) return message.channel.error('music/move:NOT_FOUND');
+		// Make sure number is position in the queue (positions are 1-based)
+		if (pos1 < 0 || !player.queue[pos1 - 1]) return message.channel.error('music/move:NOT_FOUND');
 
-		if (!message.args[1]) {
-			const song = player.queue[message.args[0] - 1];
-			player.queue.splice(message.args[0] - 1, 1);
+		if (pos2 === null) {
+			const song = player.queue[pos1 - 1];
+			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(0, 0, song);
 			return message.channel.send(message.translate('music/move:MOVED_1', { TITLE: song.title }));
-		} else if (message.args[1]) {
-			if (message.args[1] == 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
-			if ((message.args[1] > player.queue.length) || !player.queue[message.args[1]]) return message.channel.error('music/move:NOT_FOUND');
-			const song = player.queue[message.args[0] - 1];
-			player.queue.splice(message.args[0] - 1, 1);
-			player.queue.splice(message.args[1] - 1, 0, song);
-			return message.channel.send(message.translate('music/move:MOVED_2', { TITLE: song.title, POS: message.args[1] }));
+		} else {
+			if (pos2 === 0) return message.channel.send(message.translate('music/move:IS_PLAYING', { PREFIX: settings.prefix }));
+			if (pos2 < 0 || !player.queue[pos2 - 1]) return message.channel.error('music/move:NOT_FOUND');
+			const song = player.queue[pos1 - 1];
+			player.queue.splice(pos1 - 1, 1);
+			player.queue.splice(pos2 - 1, 0, song);
+			return message.channel.send(message.translate('music/move:MOVED_2', { TITLE: song.title, POS: pos2 }));
 		}
 	}
 
@@ -87,7 +89,7 @@ class Move extends Command {
 		const member = guild.members.cache.get(interaction.user.id),
 			channel = guild.channels.cache.get(interaction.channelId),
 			pos1 = args.get('position').value,
-			pos2 = args.get('newposition').value;
+			pos2 = args.get('newposition')?.value;
 
 		// check for DJ role, same VC and that a song is actually playing
 		const playable = checkMusic(member, bot);
@@ -95,16 +97,17 @@ class Move extends Command {
 
 		const player = bot.manager?.players.get(member.guild.id);
 
-		if ((pos1 > player.queue.length) || (pos1 && !player.queue[pos1])) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
+		// Make sure number is position in the queue (positions are 1-based)
+		if (!player.queue[pos1 - 1]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 
 		if (!pos2) {
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(0, 0, song);
-			return interaction.reply(bot.translate('music/move:MOVED_1', { TITLE: song.title }));
-		} else if (pos2) {
+			return interaction.reply(guild.translate('music/move:MOVED_1', { TITLE: song.title }));
+		} else {
 			if (pos2 == 0) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:IS_PLAYING', {}, true)] });
-			if ((pos2 > player.queue.length) || !player.queue[pos2]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
+			if (!player.queue[pos2 - 1]) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/move:NOT_FOUND', {}, true)] });
 			const song = player.queue[pos1 - 1];
 			player.queue.splice(pos1 - 1, 1);
 			player.queue.splice(pos2 - 1, 0, song);

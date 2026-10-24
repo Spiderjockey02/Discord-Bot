@@ -46,6 +46,8 @@ const config = {
 		defaultSource: 'youtube',
 		// Maximum number of tracks loaded from one playlist or album
 		maxPlaylistSize: 100,
+		// Save queues to MongoDB so playback carries on where it was after the bot restarts
+		persistQueue: true,
 		// Fixes YouTube's "Sign in to confirm you're not a bot" on server IPs. Only one is used, in this order.
 		youtube: {
 			// As CLIENT.CONTEXT+TOKEN (e.g. web.gvs+abc...), a bare token is treated as web.gvs
@@ -54,6 +56,8 @@ const config = {
 			cookiesFromBrowser: '',
 			// Path to a Netscape cookies.txt export
 			cookiesFile: '',
+			// Force yt-dlp's YouTube client(s), e.g. 'web' or 'tv,web'. Leave empty for yt-dlp's defaults, which work best.
+			playerClient: '',
 		},
 		// Optional self-hosted SongLink/Odesli-compatible API (e.g. 'https://example.com/v1') for matching Spotify,
 		// Apple Music, Deezer and Tidal links exactly. Without it, Deezer and Apple Music links use their public APIs.

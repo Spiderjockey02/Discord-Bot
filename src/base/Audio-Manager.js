@@ -11,15 +11,17 @@ const {
 	entersState,
 	joinVoiceChannel,
 	StreamType,
+	VoiceConnectionDisconnectReason,
 	VoiceConnectionStatus,
 } = require('@discordjs/voice');
-const ffmpegPath = require('ffmpeg-static');
 const youtubedl = require('youtube-dl-exec');
+const ffmpegPath = require('./music/ffmpeg');
 const { Deezer, AppleMusic } = require('./music/Catalogs');
 const SongLink = require('./music/SongLink');
 const Spotify = require('./music/Spotify');
 const Tidal = require('./music/Tidal');
 const { normalizeTitle, isExactTrackMatch } = require('./music/TrackMatch');
+const PlayerStateSchema = require('../database/models/PlayerState');
 
 class Queue extends Array {
 	constructor() {
@@ -54,7 +56,16 @@ class Queue extends Array {
 
 const isUrl = value => /^https?:\/\//i.test(value);
 const number = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const RESOLVED_TTL = 30 * 60 * 1000;
+// How many times a track that stops early (dropped stream) is picked up again where it stopped
+const MAX_RECOVERIES = 3;
+const MAX_PREVIOUS_TRACKS = 50;
+// Providers whose tracks are streamed by the provider itself instead of resolved with yt-dlp
+const STREAM_PROVIDERS = new Set(['tidal', 'upload', 'streamdeck', 'soundcloud']);
+// Track fields kept when a track is saved (playlists, the queue across restarts)
+const SAVED_FIELDS = ['title', 'author', 'album', 'duration', 'uri', 'streamUrl', 'identifier', 'thumbnail', 'isSeekable',
+	'provider', 'query', 'preview', 'external', 'youtubeUri', 'sourceUri'];
 const MEDIA_EXTENSIONS = new Set(['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.aac', '.wma', '.opus', '.webm', '.mp4', '.mkv', '.avi', '.mov']);
 
 function hostMatches(value, pattern) {
@@ -154,20 +165,30 @@ class Player {
 		this.presetTimescale = null;
 		this.connection = null;
 		this.connecting = null;
-		this.startedAt = 0;
+		this.resource = null;
+		// Playback speed of the current resource, so its position can be worked out from the audio played
+		this.resourceRate = 1;
 		this.stopRequested = false;
-		this.ignoreNextIdle = false;
+		// Set when the current track couldn't be played, so it isn't repeated or re-queued
+		this.failed = false;
+		// Set when stop() already put the ended track back at the end of a looping queue
+		this.requeued = false;
+		this.restarting = false;
+		this.recoveries = 0;
+		// Bumped on every start, so a slow stream lookup that has been overtaken (skip, seek, stop) is dropped
+		this.startToken = 0;
+		// Why playback is paused: manual (pause command), alone (no listeners), suppressed (stage audience), ...
+		this.pauseReasons = new Set();
+		this.aloneTimeout = null;
 		this.destroyed = false;
+		this.pendingResolves = new WeakMap();
 		this.filters = { clearFilters: () => this.resetFilter() };
 
 		this.audioPlayer = createAudioPlayer();
 		this.audioPlayer.on(AudioPlayerStatus.Playing, () => {
 			this.playing = true;
-			this.paused = false;
-			this.startedAt = Date.now();
-		});
-		this.audioPlayer.on(AudioPlayerStatus.Paused, () => {
-			this.paused = true;
+			// A new resource (seek, filter change, next track) starts playing - keep it paused if it should be
+			if (this.pauseReasons.size) this.audioPlayer.pause(true);
 		});
 		this.audioPlayer.on(AudioPlayerStatus.Idle, () => this._handleIdle());
 		this.audioPlayer.on('error', error => this._onError(error));
@@ -177,9 +198,9 @@ class Player {
 		return this.manager.bot.guilds.cache.get(this.guild);
 	}
 
+	// Position in the current track (ms), worked out from the audio actually played so pauses and stalls don't count
 	get currentPosition() {
-		if (this.paused) return this.position;
-		return this.position + (this.startedAt ? Date.now() - this.startedAt : 0);
+		return this.position + Math.round((this.resource?.playbackDuration || 0) * this.resourceRate);
 	}
 
 	async connect() {
@@ -191,30 +212,58 @@ class Player {
 		if (!guild?.voiceAdapterCreator) throw new Error('Guild voice adapter is not ready.');
 
 		this.state = 'CONNECTING';
-		this.connection = joinVoiceChannel({
+		const connection = joinVoiceChannel({
 			channelId: this.voiceChannel,
 			guildId: this.guild,
 			adapterCreator: guild.voiceAdapterCreator,
 			selfDeaf: this.selfDeafen,
 		});
-		this.connection.subscribe(this.audioPlayer);
-		this.connection.on(VoiceConnectionStatus.Disconnected, async () => {
-			try {
-				await entersState(this.connection, VoiceConnectionStatus.Connecting, 5000);
-			} catch {
-				if (!this.destroyed) this.destroy();
-			}
-		});
 
-		this.connecting = entersState(this.connection, VoiceConnectionStatus.Ready, 30000)
-			.then(connection => {
+		// joinVoiceChannel hands back the existing connection when there is one, which is already set up
+		if (connection !== this.connection) {
+			this.connection = connection;
+			connection.subscribe(this.audioPlayer);
+			// Unhandled 'error' events would crash the bot
+			connection.on('error', error => this._debug(`Voice connection error: ${error.message}`));
+			connection.on(VoiceConnectionStatus.Disconnected, (oldState, newState) => this._onDisconnect(connection, newState));
+			connection.on(VoiceConnectionStatus.Destroyed, () => {
+				if (connection === this.connection && !this.destroyed) this.destroy();
+			});
+		}
+
+		this.connecting = entersState(connection, VoiceConnectionStatus.Ready, 30000)
+			.then(ready => {
 				this.state = 'CONNECTED';
-				return connection;
+				return ready;
 			})
 			.finally(() => {
 				this.connecting = null;
 			});
 		return this.connecting;
+	}
+
+	async _onDisconnect(connection, state) {
+		if (this.destroyed || connection !== this.connection) return;
+		this.state = 'DISCONNECTED';
+
+		try {
+			if (state.reason === VoiceConnectionDisconnectReason.WebSocketClose && state.closeCode === 4014) {
+				// Kicked, moved or the channel was deleted. A move reconnects by itself, anything else is final.
+				await entersState(connection, VoiceConnectionStatus.Connecting, 5000);
+			} else if (connection.rejoinAttempts < 5) {
+				// Network drop - rejoin with a back-off. The audio player stays subscribed, so playback carries on where it was.
+				await wait((connection.rejoinAttempts + 1) * 5000);
+				if (this.destroyed || connection.state.status !== VoiceConnectionStatus.Disconnected) return;
+				connection.rejoin();
+			} else {
+				throw new Error('Couldn\'t reconnect to the voice channel.');
+			}
+			await entersState(connection, VoiceConnectionStatus.Ready, 20000);
+			this.state = 'CONNECTED';
+		} catch (error) {
+			this._debug(error.message);
+			if (!this.destroyed && connection === this.connection && connection.state.status !== VoiceConnectionStatus.Ready) this.destroy();
+		}
 	}
 
 	async setVoiceChannel(channel) {
@@ -286,15 +335,18 @@ class Player {
 			...extra,
 		};
 
+		const youtubeArgs = [];
 		if (config.poToken) {
 			// Tokens are given as CLIENT.CONTEXT+TOKEN, a bare token is a web streaming (GVS) token
 			const token = config.poToken.includes('+') ? config.poToken : `web.gvs+${config.poToken}`;
-			options.extractorArgs = `youtube:po_token=${token}`;
+			youtubeArgs.push(`po_token=${token}`);
 		} else if (config.cookiesFromBrowser) {
 			options.cookiesFromBrowser = config.cookiesFromBrowser;
 		} else if (config.cookiesFile) {
 			options.cookies = config.cookiesFile;
 		}
+		if (config.playerClient) youtubeArgs.push(`player_client=${config.playerClient}`);
+		if (youtubeArgs.length) options.extractorArgs = `youtube:${youtubeArgs.join(';')}`;
 		return options;
 	}
 
@@ -399,12 +451,7 @@ class Player {
 		const preview = formats.length
 			? formats.every(format => /preview/.test(format.format_id || ''))
 			: number(info.duration) > 0 && number(info.duration) <= 30;
-		const uri = info.webpage_url || info.url;
-		const track = this._track(info, requester, {
-			provider: 'soundcloud',
-			preview,
-			getStream: preview ? undefined : () => this._getExternalInput(uri),
-		});
+		const track = this._track(info, requester, { provider: 'soundcloud', preview });
 		if (preview) {
 			track.duration = 0;
 			track.query = `${track.title} ${track.author}`;
@@ -632,11 +679,6 @@ class Player {
 				identifier: attachment.id || crypto.createHash('sha256').update(attachment.url).digest('hex'),
 				provider: 'upload',
 				thumbnail: /^video\//i.test(mediaType) ? attachment.url : null,
-				getStream: async () => (await axios.get(attachment.url, {
-					responseType: 'stream',
-					timeout: 30000,
-					headers: { 'User-Agent': 'Mozilla/5.0' },
-				})).data,
 			}, requester)],
 		};
 	}
@@ -661,7 +703,6 @@ class Player {
 				uri: url,
 				identifier: crypto.createHash('sha256').update(url).digest('hex'),
 				provider: 'streamdeck',
-				getStream: () => this._getStreamDeckStream(url),
 			}, requester)],
 		};
 	}
@@ -681,11 +722,11 @@ class Player {
 			playlistEnd: this.maxPlaylistSize,
 		}));
 		const entries = (info.entries || []).filter(Boolean);
-		const tracks = (entries.length ? entries : (info ? [info] : [])).map(entry => this._track(entry, requester, {
-			provider: source.id,
-			external: true,
-			getStream: () => this._getExternalInput(entry.webpage_url || entry.original_url || entry.url || input),
-		}));
+		const tracks = (entries.length ? entries : (info ? [info] : [])).map(entry => {
+			const track = this._track(entry, requester, { provider: source.id, external: true });
+			track.uri ||= input;
+			return track;
+		});
 		return entries.length
 			? { loadType: 'playlist', playlist: { name: info.title, tracks }, tracks }
 			: { loadType: tracks.length ? 'search' : 'empty', tracks };
@@ -734,7 +775,6 @@ class Player {
 			requester,
 			isSeekable: false,
 			provider: data.provider,
-			getStream: data.getStream,
 		};
 	}
 
@@ -773,12 +813,14 @@ class Player {
 
 	// Starts a track, reporting the error and moving on to the next track if it can't be played
 	async _startOrSkip(track, offset = 0) {
+		const token = ++this.startToken;
 		try {
-			await this._start(track, offset);
+			await this._start(track, offset, token);
 		} catch (error) {
-			if (this.destroyed || track !== this.queue.current) return;
+			if (this.destroyed || token !== this.startToken) return;
 			this.manager.emit('trackError', this, track, { error: error.message || String(error) });
 			// Never repeat a track that just failed
+			this.failed = true;
 			this.stopRequested = true;
 			this._onIdle();
 		}
@@ -786,22 +828,79 @@ class Player {
 
 	// Works out what FFmpeg should read for a track: a readable stream, or a URL with optional headers
 	async _resolveInput(track) {
-		if (track.getStream) return track.getStream();
-		if (track.streamUrl) return { url: track.streamUrl };
-		if (track.resolved && Date.now() - track.resolved.at < RESOLVED_TTL) return track.resolved;
+		if (!track.query) {
+			try {
+				const input = await this._providerStream(track);
+				if (input) return input;
+			} catch (error) {
+				// DRM-protected uploads (some SoundCloud label tracks) play the same song from YouTube instead
+				if (!/DRM/i.test(error.message || '')) throw error;
+				track.query = `${track.title} ${track.author}`;
+			}
+		}
+		if (track.streamUrl && !track.query) return { url: track.streamUrl };
+		return this._resolveUrl(track);
+	}
 
-		const target = track.query ? await this._findOnYouTube(track) : track.uri;
-		const info = await youtubedl(target, this._ytdlOptions({
-			dumpSingleJson: true,
-			format: 'bestaudio/best',
-			noPlaylist: true,
-		}));
-		const media = info?.entries ? info.entries.find(Boolean) : info;
-		if (!media?.url) throw new Error(`No playable stream was found for ${track.title}.`);
+	// Streams for tracks that are played straight from their provider, or null to resolve the track with yt-dlp
+	async _providerStream(track) {
+		if (!STREAM_PROVIDERS.has(track.provider) && !track.external) return null;
 
-		if (!track.duration && media.duration) track.duration = Math.round(number(media.duration) * 1000);
-		track.resolved = { url: media.url, headers: media.http_headers || {}, at: Date.now() };
-		return track.resolved;
+		switch (track.provider) {
+			case 'tidal':
+				// Saved Tidal tracks still play when the bot no longer has a Tidal server
+				if (this.manager.tidal.configured && this._isProviderEnabled('tidal')) return this.manager.tidal.getStream(track.identifier);
+				track.query = `${track.title} ${track.author}`;
+				return null;
+			case 'upload':
+				return (await axios.get(track.uri, {
+					responseType: 'stream',
+					timeout: 30000,
+					headers: { 'User-Agent': 'Mozilla/5.0' },
+				})).data;
+			case 'streamdeck':
+				return this._getStreamDeckStream(track.uri);
+			default:
+				return this._getExternalInput(track.uri);
+		}
+	}
+
+	// Resolves a track's stream URL with yt-dlp. Shared with preloading, so a track is only looked up once.
+	_resolveUrl(track) {
+		if (track.resolved && Date.now() - track.resolved.at < RESOLVED_TTL) return Promise.resolve(track.resolved);
+		if (this.pendingResolves.has(track)) return this.pendingResolves.get(track);
+
+		const pending = (async () => {
+			const target = track.query ? await this._findOnYouTube(track) : track.uri;
+			const info = await youtubedl(target, this._ytdlOptions({
+				dumpSingleJson: true,
+				format: 'bestaudio/best',
+				noPlaylist: true,
+			}));
+			const media = info?.entries ? info.entries.find(Boolean) : info;
+			if (!media?.url) throw new Error(`No playable stream was found for ${track.title}.`);
+
+			const duration = Math.round(number(media.duration) * 1000);
+			if (!track.duration && duration) track.duration = duration;
+			// Not saved with the track, since the stream URL expires
+			Object.defineProperty(track, 'resolved', {
+				value: { url: media.url, headers: media.http_headers || {}, duration, at: Date.now() },
+				configurable: true,
+				writable: true,
+				enumerable: false,
+			});
+			return track.resolved;
+		})().finally(() => this.pendingResolves.delete(track));
+
+		this.pendingResolves.set(track, pending);
+		return pending;
+	}
+
+	// Looks up the next track while the current one plays, so there's no gap between songs
+	_preload(track) {
+		if (!track || track.resolved || STREAM_PROVIDERS.has(track.provider) || track.external) return;
+		if (track.streamUrl && !track.query) return;
+		this._resolveUrl(track).catch(error => this._debug(`Preloading ${track.title} failed: ${error.message}`));
 	}
 
 	// Picks the YouTube upload that best matches a track from another service (Spotify, SoundCloud previews, saved playlists)
@@ -828,10 +927,15 @@ class Player {
 		return match.uri;
 	}
 
-	async _start(track, offset = 0) {
+	async _start(track, offset, token) {
 		this.position = Math.max(0, number(offset));
+		this.resource = null;
 		const resolvedInput = await this._resolveInput(track);
-		if (this.destroyed || track !== this.queue.current) return;
+		if (this.destroyed || token !== this.startToken) {
+			// Overtaken by a skip, seek or stop while looking the stream up
+			if (typeof resolvedInput?.destroy === 'function') resolvedInput.destroy();
+			return;
+		}
 
 		const stream = resolvedInput && typeof resolvedInput.pipe === 'function' ? resolvedInput : null;
 		const input = stream ? null : String(typeof resolvedInput === 'string' ? resolvedInput : resolvedInput?.url || '').trim();
@@ -885,9 +989,11 @@ class Player {
 			inputType: StreamType.Raw,
 			inlineVolume: true,
 		});
+		this.resourceRate = this._timescale().speed;
 		this.resource.volume.setVolume(this.volume / 100);
 		this.audioPlayer.play(this.resource);
 		this.manager.emit('trackStart', this, track);
+		this._preload(this.queue[0]);
 	}
 
 	_killProcess() {
@@ -896,41 +1002,80 @@ class Player {
 		if (ffmpeg && ffmpeg.exitCode === null) ffmpeg.kill();
 	}
 
+	_timescale() {
+		const timescale = this.presetTimescale || this.filter.timescale || {};
+		return {
+			speed: number(timescale.speed ?? this.speed ?? 1) || 1,
+			pitch: number(timescale.pitch ?? 1) || 1,
+		};
+	}
+
 	_ffmpegFilters() {
 		const filters = [];
 		const bass = typeof this.bassboost === 'number'
 			? this.bassboost
 			: (this.bassboost ? 0.65 : 0);
-		const timescale = this.presetTimescale || this.filter.timescale || {};
-		const speed = number(timescale.speed ?? this.speed ?? 1);
-		const pitch = number(timescale.pitch ?? 1);
+		const { speed, pitch } = this._timescale();
 
 		if (bass) filters.push(`equalizer=f=100:t=q:w=1:g=${bass * 10}`);
+		// asetrate changes pitch and speed together, so atempo corrects the speed back to what was asked for
 		if (pitch !== 1) filters.push(`asetrate=48000*${pitch}`, 'aresample=48000');
-		if (speed !== 1) filters.push(`atempo=${Math.max(0.5, Math.min(2, speed))}`);
+		let tempo = speed / pitch;
+		// atempo only takes 0.5 - 2 in older FFmpeg builds, so larger changes are chained
+		while (tempo < 0.5 || tempo > 2) {
+			const step = tempo < 0.5 ? 0.5 : 2;
+			filters.push(`atempo=${step}`);
+			tempo /= step;
+		}
+		if (Math.abs(tempo - 1) > 0.001) filters.push(`atempo=${tempo.toFixed(4)}`);
 		return filters;
 	}
 
 	_handleIdle() {
-		if (this.ignoreNextIdle) {
-			this.ignoreNextIdle = false;
-			return;
-		}
+		// The resource was swapped on purpose (seek, filter change)
+		if (this.restarting) return;
+		if (!this.stopRequested && this._recover()) return;
 		this._onIdle();
+	}
+
+	// Picks a track back up where it stopped when its stream ended or broke well before the end of the song
+	_recover() {
+		const track = this.queue.current;
+		if (!track || this.destroyed || this.recoveries >= MAX_RECOVERIES) return false;
+
+		const length = track.resolved?.duration || track.duration;
+		const played = this.resource?.playbackDuration || 0;
+		const position = this.currentPosition;
+		// Unknown length (live streams, TTS), nothing played since the last start, or it really did finish
+		if (!length || !track.isSeekable || !played || length - position < 10000) return false;
+
+		this.recoveries++;
+		this._debug(`Stream for ${track.title} stopped at ${Math.round(position / 1000)}s, picking it back up.`);
+		this._restart(position);
+		return true;
 	}
 
 	_onIdle() {
 		if (!this.queue.current || this.destroyed) return;
 
+		// Drop any stream that is still being looked up for the track that just ended, and its FFmpeg - left running,
+		// its broken pipe would be reported as an error on the next track
+		this.startToken++;
+		this._killProcess();
 		const ended = this.queue.current;
+		const { failed, requeued } = this;
+		this.failed = false;
+		this.requeued = false;
+		this.recoveries = 0;
 		this.queue.previous = ended;
-		this.previousTracks.push(ended);
+		if (this.previousTracks[this.previousTracks.length - 1] !== ended) this.previousTracks.push(ended);
+		if (this.previousTracks.length > MAX_PREVIOUS_TRACKS) this.previousTracks.shift();
 		this.manager.emit('trackEnd', this, ended);
 
 		this.position = 0;
-		this.startedAt = 0;
+		this.resource = null;
 		if (this.trackRepeat && !this.stopRequested) return this._startOrSkip(ended);
-		if (this.queueRepeat && !this.stopRequested) this.queue.push(ended);
+		if (this.queueRepeat && !failed && !requeued) this.queue.push(ended);
 
 		this.queue.current = this.queue.shift() || null;
 		if (this.queue.current) {
@@ -939,50 +1084,94 @@ class Player {
 		}
 
 		this.playing = false;
+		// A manual pause doesn't carry over to whatever is played next
+		this.pauseReasons.delete('manual');
+		this.paused = this.pauseReasons.size > 0;
 		this.manager.emit('queueEnd', this, ended);
 	}
 
 	_onError(error) {
 		if (this.destroyed || this.stopRequested) return;
+		// A stream that broke mid-song is picked up again where it stopped
+		if (this._recover()) return;
+
 		this.manager.emit('trackError', this, this.queue.current, {
 			error: error.message || String(error),
 		});
+		this.failed = true;
 		this.stopRequested = true;
-		this.audioPlayer.stop(true);
+		this._killProcess();
+		if (this.audioPlayer.state.status === AudioPlayerStatus.Idle) this._onIdle();
+		else this.audioPlayer.stop(true);
 	}
 
-	pause(value) {
-		if (value) {
-			this.position = this.currentPosition;
-			this.audioPlayer.pause(true);
-			this.paused = true;
-		} else {
-			this.audioPlayer.unpause();
-			this.paused = false;
-			this.startedAt = Date.now();
+	/**
+	 * Pauses or resumes playback. Playback only resumes once every reason it was paused for is gone.
+	 * @param {boolean} value Whether to pause
+	 * @param {string} [reason] Why: manual (commands), alone, suppressed, ...
+	*/
+	pause(value, reason = 'manual') {
+		if (value) this.pauseReasons.add(reason);
+		else this.pauseReasons.delete(reason);
+
+		this.paused = this.pauseReasons.size > 0;
+		if (this.paused) this.audioPlayer.pause(true);
+		else this.audioPlayer.unpause();
+		return this;
+	}
+
+	// Pauses while nobody is listening and leaves after `timeout` ms unless 24/7 mode is on, `onTimeout` is called before leaving
+	setAlone(alone, timeout, onTimeout) {
+		if (!alone) {
+			clearTimeout(this.aloneTimeout);
+			this.aloneTimeout = null;
+			return this.pause(false, 'alone');
 		}
+
+		this.pause(true, 'alone');
+		if (this.twentyFourSeven || this.aloneTimeout) return this;
+		this.aloneTimeout = setTimeout(() => {
+			this.aloneTimeout = null;
+			if (this.destroyed || this.twentyFourSeven) return;
+			onTimeout?.();
+			this.destroy();
+		}, timeout);
 		return this;
 	}
 
 	stop(amount = 0) {
-		if (amount > 1) this.queue.splice(0, amount - 1);
+		const skipped = amount > 1 ? this.queue.splice(0, amount - 1) : [];
+		// Keep the order of a looping queue: the skipped songs come round again after the current one
+		if (this.queueRepeat && this.queue.current) {
+			this.queue.push(this.queue.current, ...skipped);
+			this.requeued = true;
+		}
 		this.stopRequested = true;
-		this.audioPlayer.stop(true);
+		// Nothing is playing yet (the stream is still being looked up), so move on straight away
+		if (this.audioPlayer.state.status === AudioPlayerStatus.Idle) this._onIdle();
+		else this.audioPlayer.stop(true);
 		return this;
 	}
 
+	// Seeks the current track. Resolves once playback restarted; if that fails the error is reported and the next track plays.
 	async seek(position) {
-		this.position = Math.max(0, number(position));
-		this.ignoreNextIdle = true;
-		this.stopRequested = true;
-		this.audioPlayer.stop(true);
-		this.stopRequested = false;
-		try {
-			return await this._start(this.queue.current, this.position);
-		} catch (error) {
-			this.ignoreNextIdle = false;
-			throw error;
+		if (!this.queue.current) return this;
+		await this._restart(Math.max(0, number(position)));
+		return this;
+	}
+
+	// Restarts the current track at `offset` without it counting as ended
+	_restart(offset) {
+		const track = this.queue.current;
+		if (this.audioPlayer.state.status !== AudioPlayerStatus.Idle) {
+			// stop() goes idle straight away, which _handleIdle ignores while restarting
+			this.restarting = true;
+			this.audioPlayer.stop(true);
+			this.restarting = false;
 		}
+		this._killProcess();
+		this.stopRequested = false;
+		return this._startOrSkip(track, offset);
 	}
 
 	setVolume(value) {
@@ -1055,8 +1244,10 @@ class Player {
 	}
 
 	_restartForFilter() {
-		if (this.playing && this.queue.current) {
-			this.seek(this.currentPosition).catch(error => this._onError(error));
+		const track = this.queue.current;
+		if (this.playing && track && this.resource) {
+			// Live streams and streams of unknown length can't seek, they pick up from the live edge again
+			this._restart(track.duration > 0 ? this.currentPosition : 0);
 		}
 		return this;
 	}
@@ -1066,14 +1257,34 @@ class Player {
 		return this;
 	}
 
+	// A plain copy of the player's queue and settings, used to carry on playing after a restart
+	toJSON() {
+		return {
+			guildID: this.guild,
+			voiceChannel: this.voiceChannel,
+			textChannel: this.textChannel,
+			current: this.queue.current ? AudioManager.serializeTrack(this.queue.current) : null,
+			position: this.queue.current ? this.currentPosition : 0,
+			queue: this.queue.map(track => AudioManager.serializeTrack(track)),
+			volume: this.volume,
+			paused: this.pauseReasons.has('manual'),
+			trackRepeat: this.trackRepeat,
+			queueRepeat: this.queueRepeat,
+			autoplay: this.autoplay,
+			twentyFourSeven: this.twentyFourSeven,
+		};
+	}
+
 	destroy() {
 		if (this.destroyed) return;
 
 		this.destroyed = true;
+		this.startToken++;
 		clearTimeout(this.timeout);
+		clearTimeout(this.aloneTimeout);
 		this.audioPlayer.stop(true);
 		this._killProcess();
-		this.connection?.destroy();
+		if (this.connection?.state.status !== VoiceConnectionStatus.Destroyed) this.connection?.destroy();
 		this.state = 'DISCONNECTED';
 		this.manager.players.delete(this.guild);
 		this.manager.emit('playerDestroy', this);
@@ -1104,7 +1315,28 @@ class AudioManager extends EventEmitter {
 		return this._tidal ??= new Tidal(this.musicConfig.tidal);
 	}
 
+	// Whether queues are saved so playback carries on after a restart (Music.persistQueue, on by default)
+	get persistQueue() {
+		return this.musicConfig.persistQueue !== false;
+	}
+
 	init() {
+		if (this.initialized) return this;
+		this.initialized = true;
+		if (!this.persistQueue) return this;
+
+		this.saveTimers = new Map();
+		this.on('trackStart', player => this.save(player));
+		this.on('queueEnd', player => this.save(player));
+		this.on('playerDestroy', player => this.forget(player.guild));
+		// Keep saved positions fresh, so a restart resumes close to where playback was
+		setInterval(() => {
+			for (const player of this.players.values()) {
+				if (player.queue.current && !player.paused) this.save(player);
+			}
+		}, 15000).unref();
+
+		this.restore().catch(err => this.bot.logger.error(`Music: restoring queues failed: ${err.message}`));
 		return this;
 	}
 
@@ -1122,6 +1354,91 @@ class AudioManager extends EventEmitter {
 		return player;
 	}
 
+	// Saves a player's queue (debounced), or removes the saved queue once there's nothing left to play
+	save(player, delay = 1000) {
+		if (!this.persistQueue || !this.saveTimers || player.destroyed) return;
+		clearTimeout(this.saveTimers.get(player.guild));
+		this.saveTimers.set(player.guild, setTimeout(() => {
+			this.saveTimers.delete(player.guild);
+			this.saveNow(player).catch(err => this._debug(`Saving the queue for ${player.guild} failed: ${err.message}`));
+		}, delay));
+	}
+
+	async saveNow(player) {
+		if (player.destroyed) return;
+		const state = player.toJSON();
+		if (!state.current && !state.queue.length && !state.twentyFourSeven) return this.forget(player.guild);
+		await PlayerStateSchema.findOneAndUpdate({ guildID: player.guild }, { ...state, updatedAt: Date.now() }, { upsert: true });
+	}
+
+	// Saves every player straight away (used on shutdown)
+	async saveAll() {
+		if (!this.persistQueue || !this.saveTimers) return;
+		for (const timer of this.saveTimers.values()) clearTimeout(timer);
+		this.saveTimers.clear();
+		await Promise.allSettled([...this.players.values()].map(player => this.saveNow(player)));
+	}
+
+	forget(guildID) {
+		if (!this.persistQueue || !this.saveTimers) return;
+		clearTimeout(this.saveTimers.get(guildID));
+		this.saveTimers.delete(guildID);
+		return PlayerStateSchema.deleteOne({ guildID }).catch(err => this._debug(`Removing the saved queue for ${guildID} failed: ${err.message}`));
+	}
+
+	// Carries on playing the queues that were saved when the bot last stopped
+	async restore() {
+		const states = await PlayerStateSchema.find({});
+		const users = new Map();
+		const fetchUser = async id => {
+			if (!id) return null;
+			if (!users.has(id)) users.set(id, await this.bot.users.fetch(id).catch(() => ({ id })));
+			return users.get(id);
+		};
+
+		for (const state of states) {
+			// Guilds on other shards are restored by their own shard
+			const guild = this.bot.guilds.cache.get(state.guildID);
+			if (!guild) continue;
+
+			const channel = guild.channels.cache.get(state.voiceChannel);
+			const listeners = channel?.members.filter(member => !member.user.bot).size ?? 0;
+			// Stale saves (older than a day) and empty channels aren't resumed, unless 24/7 mode keeps the bot there
+			const stale = Date.now() - new Date(state.updatedAt).getTime() > 24 * 60 * 60 * 1000;
+			if (!channel || stale || (!listeners && !state.twentyFourSeven) || this.players.has(guild.id)) {
+				await this.forget(state.guildID);
+				continue;
+			}
+
+			try {
+				const player = this.create({ guild: guild.id, voiceChannel: channel.id, textChannel: state.textChannel, selfDeafen: true });
+				const restoreTrack = async data => AudioManager.restoreTrack(data, await fetchUser(data.requester));
+				player.queue.current = state.current ? await restoreTrack(state.current) : null;
+				for (const data of state.queue || []) player.queue.push(await restoreTrack(data));
+				player.position = player.queue.current?.isSeekable ? number(state.position) : 0;
+				player.setVolume(state.volume ?? 100);
+				player.setTrackRepeat(state.trackRepeat);
+				player.setQueueRepeat(state.queueRepeat);
+				player.autoplay = Boolean(state.autoplay);
+				player.twentyFourSeven = Boolean(state.twentyFourSeven);
+				if (state.paused) player.pause(true);
+				if (!listeners) player.pause(true, 'alone');
+
+				if (player.queue.current) await player.play();
+				else await player.connect();
+				this.bot.logger.log(`Music: resumed the queue in guild: ${guild.id}.`);
+			} catch (err) {
+				this.bot.logger.error(`Music: couldn't resume the queue in guild ${guild.id}: ${err.message}`);
+				this.players.get(guild.id)?.destroy();
+				await this.forget(state.guildID);
+			}
+		}
+	}
+
+	_debug(message) {
+		if (this.bot.config?.debug) this.bot.logger.debug(`Music: ${message}`);
+	}
+
 	async search(query, requester, source) {
 		const player = new Player(this, {
 			guild: '',
@@ -1134,8 +1451,31 @@ class AudioManager extends EventEmitter {
 	}
 }
 
-// Rebuilds a saved track (e.g. from a playlist). YouTube links play directly, anything else is found on YouTube again.
-AudioManager.buildUnresolved = (data, requester) => {
+// A plain, JSON-safe copy of a track for saving (playlists, the queue across restarts)
+AudioManager.serializeTrack = track => {
+	const data = {};
+	for (const field of SAVED_FIELDS) {
+		if (track[field] !== undefined && track[field] !== null) data[field] = track[field];
+	}
+	data.requester = track.requester?.id ?? null;
+	return data;
+};
+
+// Rebuilds a saved track. Tracks saved by this player keep their provider; older saves (from Lavalink) play
+// directly when they are YouTube links and are found on YouTube again otherwise.
+AudioManager.restoreTrack = (data, requester) => {
+	if (data.provider && data.uri) {
+		const track = { streamUrl: null, thumbnail: null, isSeekable: true, requester };
+		for (const field of SAVED_FIELDS) {
+			if (data[field] !== undefined && data[field] !== null) track[field] = data[field];
+		}
+		track.title ||= 'Unknown track';
+		track.author ||= 'Unknown artist';
+		track.duration = number(track.duration);
+		track.identifier ||= track.uri;
+		return track;
+	}
+
 	const title = data.title || 'Unknown track';
 	const author = data.author || 'Unknown artist';
 	const query = `${title} ${author}`;
@@ -1150,9 +1490,11 @@ AudioManager.buildUnresolved = (data, requester) => {
 		thumbnail: data.thumbnail || null,
 		requester,
 		isSeekable: data.isSeekable ?? true,
-		provider: data.provider || 'youtube',
+		provider: 'youtube',
 		query: playable ? undefined : query,
 	};
 };
+
+AudioManager.buildUnresolved = AudioManager.restoreTrack;
 
 module.exports = AudioManager;

@@ -23,17 +23,22 @@ class TrackStart extends Event {
 	 * @readonly
 	*/
 	async run(bot, player, track) {
+		// clear timeout (for queueEnd event)
+		clearTimeout(player.timeout);
+		player.timeout = null;
+
 		// When a song starts
-		const embed = new Embed(bot, bot.guilds.cache.get(player.guild))
-			.setColor(bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id).displayHexColor)
+		const guild = bot.guilds.cache.get(player.guild);
+		if (!guild) return;
+		const requester = track.requester?.id ? guild.members.cache.get(track.requester.id) : null;
+		const embed = new Embed(bot, guild)
 			.setTitle('music/np:AUTHOR')
-			.setDescription(`[${track.title}](${track.uri}) [${bot.guilds.cache.get(player.guild).members.cache.get(track.requester.id)}]`);
+			.setDescription(`[${track.title}](${track.uri})${requester ? ` [${requester}]` : ''}`);
+		if (requester) embed.setColor(requester.displayHexColor);
 
 		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
-			.then(m => m.timedDelete({ timeout: (track.duration > 0 && track.duration < 6.048e+8) ? track.duration : 60000 }));
-
-		// clear timeout (for queueEnd event)
-		if (player.timeout != null) return clearTimeout(player.timeout);
+			.then(m => m.timedDelete({ timeout: (track.duration > 0 && track.duration < 6.048e+8) ? track.duration : 60000 }))
+			.catch(err => bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`));
 	}
 }
 

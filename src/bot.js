@@ -77,6 +77,17 @@ async function loadEvents() {
 	});
 }
 
+// Save the music queues before shutting down, so playback carries on after a restart
+for (const signal of ['SIGINT', 'SIGTERM']) {
+	process.once(signal, async () => {
+		try {
+			await Promise.race([bot.manager.saveAll(), bot.delay(5000)]);
+		} finally {
+			process.exit(0);
+		}
+	});
+}
+
 // handle unhandledRejection errors
 process.on('unhandledRejection', err => {
 	bot.logger.error(`Unhandled promise rejection: ${err.message}.`);

@@ -31,10 +31,12 @@ class PlayerMove extends Event {
 			bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] });
 			player.destroy();
 		} else {
-			await player.setVoiceChannel(newChannel);
-			player.pause(true);
-			await bot.delay(1000);
-			player.pause(false);
+			// The audio player stays subscribed to the connection, so playback carries on in the new channel
+			try {
+				await player.setVoiceChannel(newChannel);
+			} catch (err) {
+				bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`);
+			}
 		}
 	}
 }

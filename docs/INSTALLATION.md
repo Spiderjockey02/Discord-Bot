@@ -10,7 +10,7 @@ Want to host the bot yourself, if not [invite him](https://discord.com/oauth2/au
 
 ### Setting up server
 * The system you are using to host on must have [Node.js](https://nodejs.org/en/) 18 or later.
-* Music playback uses native Discord voice, yt-dlp and the bundled FFmpeg binary. Java and a separate audio server are not required.
+* Music playback uses native Discord voice, yt-dlp and FFmpeg. A system FFmpeg (on `PATH`, or set with the `FFMPEG_PATH` environment variable) is used first, otherwise the bundled ffmpeg-static binary. yt-dlp needs Python 3. Java and a separate audio server are not required.
 * (Optional) You can also host the [mongo](https://www.mongodb.com/) database on your system but this is optional.
 
 ### Setting up the database
