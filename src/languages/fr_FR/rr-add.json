@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Créer un message permettant d'associer un rôle à une réaction - **réaction rôle**",
+  "USAGE": "rr-add [channelID]",
+  "NEED_PREMIUM": "Seul la soucription d'un abonnement Premium pour ton serveur permet de créer plus de message **reaction role**. Les serveurs Premium peuvent créer jusqu'à `10` *reaction role*",
+  "MAX_RR": "Le nombre maximum de **reaction role** a été atteint.",
+  "INCORRECT_EMOJIS": "Il n'y a pas le bon nombre d'émojis",
+  "SEND_ROLES": "Merci de saisir une liste de rôles (ID ou mention) séparé par un espace sous ce message. Saisir **cancel** pour annuler cette action.",
+  "SEND_EMOJIS": "Merci de saisir une liste d'émojis séparé par un espace sous ce message. L'ordre des émojis correspondra à l'ordre des rôles saisi précédemment. Saisir **cancel** pour annuler cette action",
+  "TITLE": "Réaction Rôle :",
+  "REACT_BELOW": "Merci de choisir ton rôle en utilisant la réaction correspondante !"
+}

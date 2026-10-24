@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Le Bot reste dans le salon vocal même si personne n'y est.",
+  "USAGE": "24/7",
+  "RESP": "Mode 24/7 est désormais : {{TOGGLE}}."
+}

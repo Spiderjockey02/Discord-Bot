@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Joue la chanson précédente dans la file d'attente.",
+  "USAGE": "back",
+  "NO_PREV": "Il n'y a pas de chanson précédente."
+}

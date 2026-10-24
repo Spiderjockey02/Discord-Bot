@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Lanza una moneda al aire.",
+  "USAGE": "lanza",
+  "HEADS": "Cabeza",
+  "TAILS": "Cola"
+}

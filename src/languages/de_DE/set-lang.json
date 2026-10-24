@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Wähle die Sprache für das Spiel.",
+  "USAGE": "setlang <language>",
+  "MISSING_LANG": "Bitte gebe eine gültige Sprache von dieser Liste ein: {{list}}",
+  "SUCCESS": "Die Sprache dieses Servers ist jetzt {{NAME}}!"
+}

@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Défini le Pitch du lecteur. L'option \"reset\", restaure la valeur par défaut.",
+  "USAGE": "pitch",
+  "PITCH_OFF": "Reset **pitch**. Cela prendra effet dans quelques instants...",
+  "DESC_1": "Reset **pitch**",
+  "INVALID": "La valeur doit être un nombre réel.",
+  "INCORRECT": "La valeur doit être entre 1 et 10.",
+  "PITCH_ON": "Défini le Pitch à **{{NUM}}**. Cela prendra effet dans quelques instants...",
+  "DESC_2": "Pitch défini à : **{{NUM}}**"
+}

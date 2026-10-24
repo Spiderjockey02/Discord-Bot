@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Slowmodus in einem Kanal aktivieren.",
+  "USAGE": "slowmode <time / off>",
+  "SUCCESS": "Slowmode auf **{{TIME}} ** gesetzt."
+}

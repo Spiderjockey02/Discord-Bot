@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Benutzer melden.",
+  "USAGE": "<user> [reason] melden",
+  "AUTHOR": "~Mitglied gemeldet~",
+  "MEMBER": "Mitglied:",
+  "BY": "Gemeldet von:",
+  "IN": "Gemeldet in:",
+  "REASON": "Grund:",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich gemeldet*."
+}

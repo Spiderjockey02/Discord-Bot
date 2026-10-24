@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Envoyer un avertissement à un membre.",
+  "USAGE": "warn <user> [time] [reason]",
+  "TOO_POWERFUL": "Je ne suis pas en mesure d'envoyer un avertissement à ce membre en raison de ses droits.",
+  "SUCCESS": "{{USER}} a reçu un avertissement",
+  "REASON": "**Motif :** {{REASON}}",
+  "TITLE": "Avertissement",
+  "WARN_BY": "Averti par :",
+  "WARN_IN": "Tu as reçu un avertissement depuis {{NAME}}.",
+  "WARN_CNTR": "Avertissement :",
+  "KICKED": "*Le membre {{USER}} a été expulsé suite à un nombre important d'avertissements*."
+}

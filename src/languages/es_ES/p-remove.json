@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "remove a song from the playlist",
+  "USAGE": "p-remove <playlist name> <position> [position]",
+  "SUCCESS": "Successfully updated playlist.",
+  "NO_PLAYLIST": "No playlist found"
+}

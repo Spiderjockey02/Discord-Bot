@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Get information on a Fortnite account.",
+  "USAGE": "fortnite <kbm / gamepad / touch> <user>",
+  "FETCHING": "{{EMOJI}} Fetching {{ITEM}} account info...",
+  "TITLE": "Stats for {{USER}}",
+  "DESC": "**Top placements**\n\n**Top 3's:** *{{TOP_3}}*\n**Top 5's:** *{{TOP_5}}*\n**Top 6's:** *{{TOP_6}}*\n**Top 12's:** *{{TOP_12}}*\n**Top 25's:** *{{TOP_25}}*",
+  "TOTAL": "Total Score:",
+  "PLAYED": "Matches Played:",
+  "WINS": "Wins:",
+  "WINS_PRE": "Win percentage: ",
+  "KILLS": "Kills: ",
+  "K/D": "K/D Ratio: "
+}

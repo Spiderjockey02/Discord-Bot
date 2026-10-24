@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Faire frire une image.",
+  "USAGE": "deepfry [file]"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Skips the current song.",
+  "USAGE": "skip",
+  "SKIPPING_SONG": "Skipping song!",
+  "SKIPPING_SONGS": "Skipping {{NUM}} songs!"
+}

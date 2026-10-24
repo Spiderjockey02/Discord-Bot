@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Lire un titre.",
+  "USAGE": "play <link / song name>",
+  "NOT_VC": "Tu n'es pas dans un salon vocal auquel j'ai accès.",
+  "INVALID_FILE": "Ce format de fichier n'est pas supporté.",
+  "ERROR": "Une erreur s'est produite lors de la recherche : `{{ERROR}}`",
+  "NO_INPUT": "Merci de saisir un lien ou bien un titre",
+  "QUEUED": "En file d'attente **{{NUM}}** titres",
+  "SONG_ADD": "Ajouté à la file d'attente : [{{TITLE}}]({{URL}})",
+  "NO_SONG": "Je ne trouve pas ce titre.",
+  "QUEUE": "Successfully started queue."
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Lade einen Befehl neu.",
+  "USAGE": "<command/event> neuladen...",
+  "SUCCESS": "Befehl `{{NAME}}` wurde neu geladen.",
+  "SUCCESS_EVENT": "Ereigniss `{{NAME}}` wurde neu geladen.",
+  "INCORRECT_DETAILS": "{{NAME}} ist kein Befehl oder Ereignis."
+}

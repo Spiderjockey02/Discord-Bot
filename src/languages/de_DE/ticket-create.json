@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Ein Ticket erstellen",
+  "USAGE": "Ticketerstellung [reason]",
+  "TICKET_EXISTS": "Du hast bereits einen Ticket-Kanal",
+  "NO_SUPPORT_ROLE": "Auf diesem Server wurde noch keine Support-Rolle eingestellt/erstellt.",
+  "NO_CATEGORY": "Bitte aktualisiere die Kategorie-Kanal-ID.",
+  "TITLE": "✅ Erfolgreich!",
+  "DESC": "Dein Ticket wurde erstellt: <#{{CHANNEL}}>",
+  "FIELD1": "Hallo {{USERNAME}}!",
+  "FIELDT": "Unser Supportteam wird sich umgehend mit dir in Verbindung setzen.",
+  "FIELD2": "Grund: ",
+  "TICKET": "Ticket: ",
+  "USER": "Benutzer: ",
+  "LOG_TITLE": "Ticket geöffnet!",
+  "COOLDOWN": "Du kannst ein Ticket in {{NUM}} Minuten öffnen."
+}

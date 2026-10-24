@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Test un code JS.",
+  "USAGE": "eval <code>",
+  "RESPONSE": "*Executé en {{DIFF}}ms.*```javascript\n{{CODE}}\n```"
+}

@@ -1,0 +1,4 @@
+{
+  "DESCRIPTION": "Deepfry an image.",
+  "USAGE": "deepfry [file]"
+}

@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Erstelle Reaktionsrollen",
+  "USAGE": "reaktionRollen <messagelink>",
+  "INVALID": "Ungültiger Bildlink",
+  "SUCCESS": "Kanal wurde gelöscht"
+}

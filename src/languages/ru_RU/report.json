@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Report a user.",
+  "USAGE": "report <user> [reason]",
+  "AUTHOR": "~Member Reported~",
+  "MEMBER": "Member:",
+  "BY": "Reported by:",
+  "IN": "Reported in:",
+  "REASON": "Reason:",
+  "SUCCESS": "*<@{{USER}}> has been successfully reported*."
+}

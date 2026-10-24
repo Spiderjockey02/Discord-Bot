@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Informations sur un membre du serveur.",
+  "USAGE": "user-info [user]",
+  "USERNAME": "✍ Utilisateur",
+  "DISCRIM": "#️⃣ Discriminateur",
+  "ROBOT": "🤖 Robot",
+  "CREATE": "Création",
+  "STATUS": "État",
+  "ROLE": "🔼 Rôle le plus élevé",
+  "JOIN": "Ici depuis",
+  "NICK": "📝 Pseudo",
+  "ROLES": "Rôles",
+  "BOT": "Bot Helpers"
+}

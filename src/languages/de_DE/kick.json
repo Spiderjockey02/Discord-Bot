@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Einen Benutzer aus einem Kanal werfen.",
+  "USAGE": "<user> [reason] kicken",
+  "TITLE": "GEKICKT",
+  "TOO_POWERFUL": "Ich kann diesen Benutzer aufgrund seiner Stärke nicht kicken.",
+  "DESC": "Du wurdest von {{NAME}} gekickt.",
+  "KICKED": "Gekickt von:",
+  "SUCCESS": "*<@{{USER}}> wurde erfolgreich gekickt*."
+}

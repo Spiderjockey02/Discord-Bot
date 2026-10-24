@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Get lyrics on a song.",
+  "USAGE": "lyrics [song]",
+  "NO_LYRICS": "No lyrics found",
+  "FOOTER": "Requested by {{TAG}}"
+}

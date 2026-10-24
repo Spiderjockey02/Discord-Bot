@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Clear a certain amount of messages.",
+  "USAGE": "clear <Number> [member]",
+  "NO_PREM": "The server must be premium in order to clear more than `200` messages.",
+  "TITLE": "Clear Message Confirmation",
+  "DESC": "You are about to clear {{NUM}} messages from this channel, please react to confirm this action.",
+  "DEL_MSG": "Deleting {{NUM}} messages this will take around {{TIME}} seconds to complete.\nDO NOT SEND ANY MESSAGES WHILE THIS IS HAPPENING.",
+  "SUCCESS": "{{NUM}} messages were successfully deleted.",
+  "CON_CNC": "Confirmation cancelled",
+  "CON_TO": "Confirmation timed-out."
+}

@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "احصل على القاموس الحضري لكلمة.",
+  "USAGE": "المناطق الحضرية <word>",
+  "INCORRECT_URBAN": "العبارة: `{{PHRASE}}` لم يتم العثور على في القاموس الحضري.",
+  "TITLE": "تعريف {{WORD}}",
+  "DESC": "{{DEFINTION}}\n**مثال:**\n{{EXAMPLES}}"
+}

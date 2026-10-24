@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Get information on the server.",
+  "USAGE": "user-info [user]",
+  "USERNAME": "✍ Username",
+  "DISCRIM": "#️⃣ Discriminator",
+  "ROBOT": "🤖 Robot",
+  "CREATE": "Creation",
+  "STATUS": "Status",
+  "ROLE": "🔼 Highest role",
+  "JOIN": "Join",
+  "NICK": "📝 Nickname",
+  "ROLES": "Roles",
+  "BOT": "Bot Helpers"
+}

@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Lien d'invitation pour m'ajouter sur un serveur.",
+  "USAGE": "invite",
+  "LINK": "🤖 [Invite moi sur ton serveur]({{LINK}} 'C'est toi qui décide !')"
+}

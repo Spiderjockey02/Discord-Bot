@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Einen Benutzer warnen.",
+  "USAGE": "<user> [time] [reason] warnen",
+  "TOO_POWERFUL": "Ich kann diesen Benutzer wegen seiner Stärke nicht warnen.",
+  "SUCCESS": "{{USER}} wurde gewarnt",
+  "REASON": "**Grund:** {{REASON}}",
+  "TITLE": "WARNUNG",
+  "WARN_BY": "Verwarnt von:",
+  "WARN_IN": "Du wurdest in {{NAME}} gewarnt.",
+  "WARN_CNTR": "Warnungen:",
+  "KICKED": "*{{USER}} wurde erfolgreich gekickt, weil es zu viele Warnungen* gab."
+}

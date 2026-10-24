@@ -1,0 +1,5 @@
+{
+  "DESCRIPTION": "Sendet einen Link zu den Datenschutzrichtlinien.",
+  "USAGE": "Privatsphäre",
+  "LINK": "[📝 Datenschutzrichtlinie]({{LINK}})"
+}

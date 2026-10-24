@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Wiedergabeliste anzeigen",
+  "USAGE": "p-Ansicht <playlist name>",
+  "NO_PLAYLIST": "Wiedergabeliste nicht gefunden",
+  "AVAIABLE": "Verfügbare Wiedergabelisten sind `{{NAMES}}`."
+}

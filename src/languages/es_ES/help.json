@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Sends information about all the commands that I can do.",
+  "USAGE": "help [command]",
+  "AUTHOR": "Available commands",
+  "PREFIX_DESC": "**Prefix:** `{{PREFIX}}` (You can also use <@!{{ID}}> as a prefix)",
+  "INFO_DESC": "**Type `{{PREFIX}}{{USAGE}}` for command specific information.**",
+  "TITLE": "`Command: {{COMMAND}}`",
+  "DESC": "**Description:** {{DESC}}",
+  "ALIAS": "**Aliases:** {{ALIAS}}",
+  "COOLDOWN": "**Cooldown:** {{CD}} seconds",
+  "USE": "**Usage:** {{USAGE}}",
+  "EXAMPLE": "**Example:** {{EX}}",
+  "LAYOUT": "\n**Layout**: `<> = required, [] = optional`",
+  "NO_COMMAND": "That is not a command."
+}

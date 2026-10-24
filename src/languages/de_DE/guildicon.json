@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Erhalte das Serverlogo.",
+  "USAGE": "Serverlogo",
+  "ICON": "[Download]({{URL}})",
+  "NO_GUILD_ICON": "Dieser Server hat kein Serverlogo."
+}

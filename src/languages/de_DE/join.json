@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Lass den Bot sich mit deinem aktuellen Sprachkanal verbinden.",
+  "USAGE": "beitreten",
+  "NO_VC": "Du bist in keinem Sprachkanal, mit dem ich dich verbinden kann.",
+  "JOIN": "Ich bin erfolgreich dem Kanal beigetreten.",
+  "MOVED": "Ich habe den Kanal erfolgreich verschoben."
+}
