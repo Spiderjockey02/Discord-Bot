@@ -48,7 +48,7 @@ class SeekTo extends Command {
 		const player = bot.manager?.players.get(message.guild.id);
 
 		// Make sure song isn't a stream
-		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVESTREAM');
 
 		// Make sure a time was inputted
@@ -86,7 +86,7 @@ class SeekTo extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 		if (!player.queue.current.isSeekable) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/seek:LIVESTREAM', { ERROR: null }, true)] });
 
 		// update the time

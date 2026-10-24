@@ -17,9 +17,10 @@
 	"SELF_PUNISH": "شما نمیتوانید خود را مجازات کنید.",
 	"MISSING_ROLE": "نداری DJ شما رول.",
 	"NOT_VOICE": "شما با من در یک ویس نیستید.",
-	"NO_QUEUE": "درحال حاظر هیچ آهنگی در این سرور پخش نمیشود.",
 	"ENABLED": "فعال",
 	"DISABLED": "غیر فعال",
 	"MISSING_CHANNEL": "من نمیتوانم چنل را پیدا کنم.",
-	"INVALID_FILE": "لطفا از یکی از این فرمت ها استفاده کنید: `png`, `jpeg`, `tiff`, `jpg`, `webp`."
+	"INVALID_FILE": "لطفا از یکی از این فرمت ها استفاده کنید: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
+	"NOTHING": "هیچ چی",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

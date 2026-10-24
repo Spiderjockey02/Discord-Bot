@@ -161,6 +161,7 @@ class Player {
 		this.nightcore = false;
 		this.slowmo = false;
 		this.vaporwave = false;
+		this.eightD = false;
 		this.filter = {};
 		this.presetTimescale = null;
 		this.connection = null;
@@ -811,11 +812,12 @@ class Player {
 		return this._startOrSkip(this.queue.current, this.position);
 	}
 
-	// Starts a track, reporting the error and moving on to the next track if it can't be played
-	async _startOrSkip(track, offset = 0) {
+	// Starts a track, reporting the error and moving on to the next track if it can't be played.
+	// Restarts (seek, filter change, picking a dropped stream back up) don't count as the track starting.
+	async _startOrSkip(track, offset = 0, restart = false) {
 		const token = ++this.startToken;
 		try {
-			await this._start(track, offset, token);
+			await this._start(track, offset, token, restart);
 		} catch (error) {
 			if (this.destroyed || token !== this.startToken) return;
 			this.manager.emit('trackError', this, track, { error: error.message || String(error) });
@@ -927,7 +929,7 @@ class Player {
 		return match.uri;
 	}
 
-	async _start(track, offset, token) {
+	async _start(track, offset, token, restart = false) {
 		this.position = Math.max(0, number(offset));
 		this.resource = null;
 		const resolvedInput = await this._resolveInput(track);
@@ -992,7 +994,7 @@ class Player {
 		this.resourceRate = this._timescale().speed;
 		this.resource.volume.setVolume(this.volume / 100);
 		this.audioPlayer.play(this.resource);
-		this.manager.emit('trackStart', this, track);
+		if (!restart) this.manager.emit('trackStart', this, track);
 		this._preload(this.queue[0]);
 	}
 
@@ -1018,6 +1020,8 @@ class Player {
 		const { speed, pitch } = this._timescale();
 
 		if (bass) filters.push(`equalizer=f=100:t=q:w=1:g=${bass * 10}`);
+		// eightD: sound slowly circling between the ears, with a light tremolo and bass lift
+		if (this.eightD) filters.push('equalizer=f=50:t=q:w=1:g=3', 'apulsator=hz=0.2', 'tremolo=f=14:d=0.3');
 		// asetrate changes pitch and speed together, so atempo corrects the speed back to what was asked for
 		if (pitch !== 1) filters.push(`asetrate=48000*${pitch}`, 'aresample=48000');
 		let tempo = speed / pitch;
@@ -1171,7 +1175,7 @@ class Player {
 		}
 		this._killProcess();
 		this.stopRequested = false;
-		return this._startOrSkip(track, offset);
+		return this._startOrSkip(track, offset, true);
 	}
 
 	setVolume(value) {
@@ -1210,6 +1214,11 @@ class Player {
 		return this._setPreset('vaporwave', value, { speed: 0.7, pitch: 0.8 });
 	}
 
+	setEightD(value) {
+		this.eightD = Boolean(value);
+		return this._restartForFilter();
+	}
+
 	setSlowmo(value) {
 		return this._setPreset('slowmo', value, { speed: 0.7, pitch: 1 });
 	}
@@ -1240,6 +1249,7 @@ class Player {
 		this.nightcore = false;
 		this.slowmo = false;
 		this.vaporwave = false;
+		this.eightD = false;
 		return restart ? this._restartForFilter() : this;
 	}
 

@@ -1,5 +1,5 @@
 // Dependencies
-const	{ Embed } = require('../../utils'),
+const { Embed } = require('../../utils'),
 	Event = require('../../structures/Event');
 
 /**
@@ -36,9 +36,14 @@ class TrackStart extends Event {
 			.setDescription(`[${track.title}](${track.uri})${requester ? ` [${requester}]` : ''}`);
 		if (requester) embed.setColor(requester.displayHexColor);
 
-		bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
-			.then(m => m.timedDelete({ timeout: (track.duration > 0 && track.duration < 6.048e+8) ? track.duration : 60000 }))
+		const message = await bot.channels.cache.get(player.textChannel)?.send({ embeds: [embed] })
 			.catch(err => bot.logger.error(`Event: '${this.conf.name}' has error: ${err.message}.`));
+		if (!message) return;
+
+		// Only keep the latest now playing message
+		if (player.nowPlayingMessage?.deletable) player.nowPlayingMessage.delete().catch(() => null);
+		player.nowPlayingMessage = message;
+		message.timedDelete({ timeout: (track.duration > 0 && track.duration < 6.048e+8) ? track.duration : 60000 });
 	}
 }
 

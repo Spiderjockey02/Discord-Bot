@@ -17,9 +17,10 @@
 	"SELF_PUNISH": "Je kan jezelf niet verbannen.",
 	"MISSING_ROLE": "Je mist de DJ-rol.",
 	"NOT_VOICE": "Je zit niet in hetzelfde spraakkanaal.",
-	"NO_QUEUE": "Er worden momenteel geen liedjes afgespeeld in deze server.",
 	"ENABLED": "Ingeschakeld",
 	"DISABLED": "Uitschakelen",
 	"MISSING_CHANNEL": "Ik kon dit kanaal niet vinden.",
-	"INVALID_FILE": "Gebruik een van de volgende bestandstypen voor afbeeldingen: `png`, `jpeg`, `tiff`, `jpg`, `webp`."
+	"INVALID_FILE": "Gebruik een van de volgende bestandstypen voor afbeeldingen: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
+	"NOTHING": "Niets",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

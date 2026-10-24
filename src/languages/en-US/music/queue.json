@@ -2,6 +2,8 @@
   "DESCRIPTION": "Displays the queue.",
   "USAGE": "queue [pageNumber]",
   "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "TITLE": "Queue - {{NAME}}",
+  "NOW_PLAYING": "**Now Playing**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Up Next**: {{NEXT}}",
+  "PAGE": "Page {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} total duration",
+  "LOADED": "Loaded Queue"
 }

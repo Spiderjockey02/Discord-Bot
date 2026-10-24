@@ -9,12 +9,12 @@ const { functions: { checkMusic } } = require('../../utils'),
 */
 class Skip extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	   * @param {Client} client The instantiating client
+	   * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
-			name:  'skip',
+			name: 'skip',
 			guildOnly: true,
 			dirname: __dirname,
 			aliases: ['next', 'skipto'],
@@ -34,10 +34,10 @@ class Skip extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
+	   * Function for receiving message.
+	   * @param {bot} bot The instantiating client
+	   * @param {message} message The message that ran the command
+	   * @readonly
   */
 	async run(bot, message) {
 		// check to make sure bot can play music based on permissions
@@ -46,26 +46,26 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 
 		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
 		const amount = parseInt(message.args[0]);
 		if (amount > 1 && amount <= player.queue.length) {
 			player.stop(amount);
-			message.channel.send({ content: `Skipping ${amount} songs!` });
+			message.channel.send({ content: message.translate('music/skip:SKIPPING_SONGS', { NUM: amount }) });
 		} else {
-			message.channel.send({ content: 'Skipped song!' });
+			message.channel.send({ content: message.translate('music/skip:SKIPPING_SONG') });
 			player.stop();
 		}
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
+	   * Function for receiving interaction.
+	   * @param {bot} bot The instantiating client
+	   * @param {interaction} interaction The interaction that ran the command
+	   * @param {guild} guild The guild the interaction ran in
 	 * @param {args} args The options provided in the command, if any
- 	 * @readonly
+	   * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
 		const member = guild.members.cache.get(interaction.user.id),
@@ -78,14 +78,14 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', {}, true)], ephemeral: true });
+		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('music/misc:NO_QUEUE', {}, true)], ephemeral: true });
 
 		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
 		if (amount > 1 && amount <= player.queue.length) {
 			player.stop(amount);
-			interaction.reply({ content: `Skipping ${amount} songs!` });
+			interaction.reply({ content: guild.translate('music/skip:SKIPPING_SONGS', { NUM: amount }) });
 		} else {
-			interaction.reply({ content: 'Skipped song!' });
+			interaction.reply({ content: guild.translate('music/skip:SKIPPING_SONG') });
 			player.stop();
 		}
 	}

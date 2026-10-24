@@ -1,0 +1,8 @@
+{
+    "SONG": "Liedje",
+    "SONGS": "Liedjes",
+    "NAN": "Pagina moet een getal zijn",
+    "TOO_HIGH": "Er zijn slechts {{NUM}} pagina's beschikbaar",
+    "NO_QUEUE": "Er worden momenteel geen nummers afgespeeld op deze server",
+    "SONG_TIMED": "You didn't choose a song in time."
+}

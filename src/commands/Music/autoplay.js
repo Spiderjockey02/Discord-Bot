@@ -9,8 +9,8 @@ const { functions: { checkMusic } } = require('../../utils'),
 */
 class Autoplay extends Command {
 	/**
- 	 * @param {Client} client The instantiating client
- 	 * @param {CommandData} data The data for the command
+	   * @param {Client} client The instantiating client
+	   * @param {CommandData} data The data for the command
 	*/
 	constructor(bot) {
 		super(bot, {
@@ -27,10 +27,10 @@ class Autoplay extends Command {
 	}
 
 	/**
- 	 * Function for receiving message.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {message} message The message that ran the command
- 	 * @readonly
+	 * Function for receiving message.
+	 * @param {bot} bot The instantiating client
+	 * @param {message} message The message that ran the command
+	 * @readonly
   */
 	async run(bot, message) {
 		// check for DJ role, same VC and that a song is actually playing
@@ -44,11 +44,11 @@ class Autoplay extends Command {
 	}
 
 	/**
- 	 * Function for receiving interaction.
- 	 * @param {bot} bot The instantiating client
- 	 * @param {interaction} interaction The interaction that ran the command
- 	 * @param {guild} guild The guild the interaction ran in
- 	 * @readonly
+	 * Function for receiving interaction.
+	 * @param {bot} bot The instantiating client
+	 * @param {interaction} interaction The interaction that ran the command
+	 * @param {guild} guild The guild the interaction ran in
+	 * @readonly
 	*/
 	async callback(bot, interaction, guild) {
 		const member = guild.members.cache.get(interaction.user.id),

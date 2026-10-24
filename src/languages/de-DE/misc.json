@@ -17,9 +17,10 @@
 	"SELF_PUNISH": "Du kannst dich nicht selbst bestrafen.",
 	"MISSING_ROLE": "Dir fehlt die DJ-Rolle.",
 	"NOT_VOICE": "Du bist nicht im selben Sprachkanal mit mir.",
-	"NO_QUEUE": "Derzeit werden keine Songs auf diesem Server abgespielt.",
 	"ENABLED": "Aktiviert",
 	"DISABLED": "Deaktiviert",
 	"MISSING_CHANNEL": "Ich konnte diesen Kanal nicht finden.",
-	"INVALID_FILE": "Bitte verwende eine der folgenden Dateitypen für Bilder: `png`, `jpeg`, `tiff`, `jpg`, `webp`."
+	"INVALID_FILE": "Bitte verwende eine der folgenden Dateitypen für Bilder: `png`, `jpeg`, `tiff`, `jpg`, `webp`.",
+	"NOTHING": "Niets",
+	"CANCELLED_SELECTION": "Cancelled selection"
 }

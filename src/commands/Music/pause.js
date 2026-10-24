@@ -37,7 +37,7 @@ class Pause extends Command {
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 
 		// The music is already paused
 		if (player.paused) return message.channel.error('music/pause:IS_PAUSED', { PREFIX: settings.prefix });
@@ -64,7 +64,7 @@ class Pause extends Command {
 
 		// The music is already paused
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:NO_QUEUE', {}, true)] });
+		if (!player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', {}, true)] });
 		if (player.paused) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/pause:IS_PAUSED', {}, true)] });
 
 		// Pauses the music

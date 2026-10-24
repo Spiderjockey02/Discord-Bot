@@ -47,7 +47,7 @@ class SeekFastForward extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current) return message.channel.error('misc:NO_QUEUE');
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 		if (!player.queue.current.isSeekable) return message.channel.error('music/fast-forward:LIVESTREAM');
 
 		// update the time
@@ -83,7 +83,7 @@ class SeekFastForward extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(member.guild.id);
-		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('misc:NO_QUEUE', { ERROR: null }, true)], ephemeral: true });
+		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)], ephemeral: true });
 		if (!player.queue.current.isSeekable) return interaction.reply({ embeds: [channel.error('music/fast-forward:LIVESTREAM', { ERROR: null }, true)], ephemeral: true });
 
 		// update the time

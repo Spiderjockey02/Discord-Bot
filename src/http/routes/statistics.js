@@ -1,5 +1,6 @@
 // Dependencies
 const express = require('express'),
+	{ ChannelType } = require('discord.js'),
 	router = express.Router();
 
 module.exports = (bot) => {
@@ -13,8 +14,8 @@ module.exports = (bot) => {
 			uptime: Math.round(process.uptime() * 1000),
 			commandCount: bot.commands.size,
 			memoryUsed: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
-			textChannels: bot.channels.cache.filter(({ type }) => type === 'GUILD_TEXT').size,
-			voiceChannels: bot.channels.cache.filter(({ type }) => type === 'GUILD_VOICE').size,
+			textChannels: bot.channels.cache.filter(c => [ChannelType.GuildAnnouncement, ChannelType.GuildText].includes(c.type)).size,
+			voiceChannels: bot.channels.cache.filter(c => [ChannelType.GuildVoice, ChannelType.GuildStageVoice].includes(c.type)).size,
 			MessagesSeen: bot.messagesSent,
 			CommandsRan: bot.commandsUsed,
 			ping: Math.round(bot.ws.ping),

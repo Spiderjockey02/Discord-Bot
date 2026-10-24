@@ -10,10 +10,11 @@ module.exports = function(bot) {
 		// fetch guild's basic information
 		const guild = bot.guilds.cache.get(req.params.guildId);
 		if (guild) {
-			const { id, name, icon, members: { size } } = guild;
-			const userMembers = guild.members.cache.filter(m => !m.user.bot).size;
-			const botMembers = size - userMembers;
-			return res.status(200).json({ id, name, icon, totalMembers: size, userMembers, botMembers });
+			const { id, name, icon } = guild;
+			const members = await guild.members.fetch();
+			const users = members.filter(m => !m.user.bot).size;
+			const bots = members.size - users;
+			return res.status(200).json({ id, name, icon, totalMembers: members.size, users, bots });
 		}
 		res.status(400).json({ error: 'Guild not found!' });
 	});

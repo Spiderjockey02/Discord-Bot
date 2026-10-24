@@ -1,7 +1,9 @@
 {
   "DESCRIPTION": "Displays the queue.",
   "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "EMPTY": "La coda è vuota",
+  "TITLE": "Coda - {{NAME}}",
+  "NOW_PLAYING": "**Ora in riproduzione**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**Avanti il ​​prossimo**: {{NEXT}}",
+  "PAGE": "Pagina {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} durata totale",
+  "LOADED": "Coda caricata"
 }

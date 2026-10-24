@@ -1,7 +1,9 @@
 {
   "DESCRIPTION": "Displays the queue.",
   "USAGE": "queue [pageNumber]",
-  "EMPTY": "Queue is empty",
-  "NAN": "Page must be a number.",
-  "TOO_HIGH": "There are only {{NUM}} pages available."
+  "EMPTY": "قائمة الانتظار فارغة",
+  "TITLE": "طابور - {{NAME}}",
+  "NOW_PLAYING": "**التشغيل الآن**: [{{NAME}}]({{URI}}) `[{{DURATION}}]` • {{USER}}.\n\n**التالي**: {{NEXT}}",
+  "PAGE": "صفحة {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}} | {{DURATION}} المدة الإجمالية",
+  "LOADED": "قائمة الانتظار المحملة"
 }

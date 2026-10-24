@@ -1,4 +1,9 @@
 {
   "DESCRIPTION": "Affiche les titres joués précédemment.",
-  "USAGE": "previous [Numéro_de_page]"
+  "USAGE": "previous [Numéro_de_page]",
+  "TITLE": "Pistes précédentes - {{NAME}}",
+  "LAST_TRACK": "**Dernière piste**: {{TRACK}}",
+  "PAGE": "Page {{PAGE}}/{{PAGES}} | {{LENGTH}} {{SONG}}",
+  "PREVIOUS_TRACKS": "Aucune piste précédente n'a été lue",
+  "LOADED": "Loaded Previous Tracks"
 }

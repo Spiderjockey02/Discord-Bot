@@ -2,6 +2,7 @@ const { GuildSchema, userSchema, TagsSchema } = require('../../database/models')
 	{ PermissionsBitField: { Flags } } = require('discord.js'),
 	Event = require('../../structures/Event');
 
+
 /**
  * Ready event
  * @event Egglord#Ready
