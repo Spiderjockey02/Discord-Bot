@@ -4,7 +4,7 @@ const	{ ApplicationCommandOptionType, EmbedBuilder } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * Lavalink command
+ * User management command
  * @extends {Command}
 */
 class UserBan extends Command {
@@ -17,8 +17,8 @@ class UserBan extends Command {
 			name: 'user-info',
 			ownerOnly: true,
 			dirname: __dirname,
-			description: 'Interact with the Lavalink nodes',
-			usage: 'lavalink [list | add | remove] <information>',
+			description: 'Display information about a user.',
+			usage: 'user info <user>',
 			cooldown: 3000,
 			slash: false,
 			isSubCmd: true,

@@ -97,7 +97,10 @@ class ClickMenu extends Event {
 				if (channel.type == ChannelType.DM) return interaction.reply({ embeds: [channel.error('events/message:GUILD_ONLY', {}, true)], ephemeral: true });
 
 				const message = await channel.messages.fetch(interaction.targetId);
-				const args = new Map().set('track', { value: message.content });
+				// Queue the message's text, or the file attached to it
+				const args = message.content
+					? new Map().set('track', { value: message.content })
+					: new Map().set('file', { attachment: message.attachments.first() });
 				bot.commands.get('play').callback(bot, interaction, guild, args);
 				break;
 			}

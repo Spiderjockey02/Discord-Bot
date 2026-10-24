@@ -27,8 +27,8 @@ class TrackError extends Event {
 		// when a track causes an error
 		if (bot.config.debug) bot.logger.log(`Track error: ${payload.error} in guild: ${player.guild}.`);
 
-		// reset player filter (might be the cause)
-		player.resetFilter();
+		// Reset filters without restarting the failed track; the player will advance normally.
+		player.resetFilter(false);
 
 		// send embed
 		const embed = new EmbedBuilder()

@@ -19,10 +19,10 @@ module.exports = (bot) => {
 			MessagesSeen: bot.messagesSent,
 			CommandsRan: bot.commandsUsed,
 			ping: Math.round(bot.ws.ping),
-			Lavalink: bot.manager.nodes.map(node => ({
-				name: node.options.identifier,
-				stats: node.stats,
-			})),
+			audio: {
+				activePlayers: bot.manager.players.size,
+				playingPlayers: [...bot.manager.players.values()].filter(player => player.playing).length,
+			},
 		});
 	});
 

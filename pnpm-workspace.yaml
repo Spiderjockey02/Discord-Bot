@@ -1,0 +1,9 @@
+allowBuilds:
+  bufferutil: true
+  canvacord: true
+  erlpack@https://codeload.github.com/discord/erlpack/tar.gz/2a4c0e832f3cd4e07c92d4baec326a631ed50f59: true
+  ffmpeg-static: true
+  puppeteer: true
+  utf-8-validate: true
+  youtube-dl-exec: true
+  zlib-sync: true

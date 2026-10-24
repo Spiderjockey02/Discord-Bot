@@ -5,6 +5,9 @@ const { Embed } = require('../../utils'),
 	rfc3986EncodeURIComponent = (str) => encodeURIComponent(str).replace(/[!'()*]/g, escape),
 	Command = require('../../structures/Command.js');
 
+// Nothing is playing or about to play, so newly added tracks need playback started
+const isIdle = player => !player.playing && !player.paused && !player.queue.current;
+
 /**
  * play command
  * @extends {Command}
@@ -24,14 +27,28 @@ class Play extends Command {
 			description: 'Play a song.',
 			usage: 'play <link / song name>',
 			cooldown: 3000,
-			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
+			examples: ['play palaye royale', 'play <attachment>', 'play https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'play https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'],
 			slash: true,
 			options: [{
 				name: 'track',
 				description: 'The link or name of the track.',
 				type: ApplicationCommandOptionType.String,
-				required: true,
 				autocomplete: true,
+			},
+			{
+				name: 'file',
+				description: 'An audio or video file to play.',
+				type: ApplicationCommandOptionType.Attachment,
+			},
+			{
+				name: 'source',
+				description: 'Where to play searches from.',
+				type: ApplicationCommandOptionType.String,
+				choices: [
+					{ name: 'YouTube', value: 'youtube' },
+					{ name: 'SoundCloud', value: 'soundcloud' },
+					{ name: 'Tidal', value: 'tidal' },
+				],
 			},
 			{
 				name: 'flag',
@@ -84,24 +101,15 @@ class Play extends Command {
 			return message.channel.error('misc:ERROR_MESSAGE', { ERROR: 'player couldn\'t be created' });
 		}
 
-		// Make sure something was entered
-		if (message.args.length == 0) {
-			// Check if a file was uploaded to play instead
-			const fileTypes = ['mp3', 'mp4', 'wav', 'm4a', 'webm', 'aac', 'ogg'];
-			if (message.attachments.size > 0) {
-				const url = message.attachments.first().url;
-				for (const type of fileTypes) {
-					if (url.endsWith(type)) message.args.push(url);
-				}
-				if (!message.args[0]) return message.channel.error('music/play:INVALID_FILE');
-			} else {
-				return message.channel.error('music/play:NO_INPUT');
-			}
+		// Make sure something was entered, or a file was uploaded to play instead
+		if (message.args.length == 0 && message.attachments.size == 0) {
+			if (!player.queue.current) player.destroy();
+			return message.channel.error('music/play:NO_INPUT');
 		}
 
 		// Get search query
 		let res;
-		const search = message.args.join(' ');
+		const search = message.args.length ? message.args.join(' ') : { source: 'upload', attachment: message.attachments.first() };
 
 		// Search for track
 		try {
@@ -126,17 +134,19 @@ class Play extends Command {
 			// Show how many songs have been added
 			const embed = new Embed(bot, message.guild)
 				.setColor(message.member.displayHexColor)
-				.setDescription(message.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 }));
+				.setDescription(message.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length }));
 			message.channel.send({ embeds: [embed] });
 
 			// Add songs to queue and then pLay the song(s) if not already
+			const idle = isIdle(player);
 			player.queue.add(res.playlist.tracks);
-			if (!player.playing && !player.paused && player.queue.totalSize === (res.playlist.tracks.length + 1)) player.play();
+			if (idle) player.play();
 		} else {
 			// add track to queue and play
 			if (player.state !== 'CONNECTED') player.connect();
+			const idle = isIdle(player);
 			player.queue.add(res.tracks[0]);
-			if (!player.playing && !player.paused && !player.queue.size) {
+			if (idle) {
 				player.play();
 			} else {
 				const embed = new Embed(bot, message.guild)
@@ -159,10 +169,15 @@ class Play extends Command {
 		const channel = guild.channels.cache.get(interaction.channelId),
 			member = guild.members.cache.get(interaction.user.id),
 			flag = args.get('flag')?.value,
-			search = args.get('track').value;
+			source = args.get('source')?.value,
+			attachment = args.get('file')?.attachment,
+			search = args.get('track')?.value ?? (attachment ? { source: 'upload', attachment } : null);
 
 		// make sure user is in a voice channel
-		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('misc:MISSING_ROLE', null, true)] });
+		if (!member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NOT_VC', null, true)] });
+
+		// Make sure something was entered
+		if (!search) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/play:NO_INPUT', null, true)] });
 
 		// Check that user is in the same voice channel
 		if (bot.manager?.players.get(guild.id)) {
@@ -178,7 +193,7 @@ class Play extends Command {
 		await interaction.deferReply();
 
 		// Create player
-		let player, res;
+		let player, res, idle;
 		try {
 			player = bot.manager.create({
 				guild: guild.id,
@@ -193,7 +208,7 @@ class Play extends Command {
 
 		// Search for track
 		try {
-			res = await player.search(search, member);
+			res = await player.search(search, member, source);
 			if (res.loadType === 'error') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
@@ -211,6 +226,7 @@ class Play extends Command {
 			case 'playlist':
 				// Connect to voice channel if not already
 				if (player.state !== 'CONNECTED') player.connect();
+				idle = isIdle(player);
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-r':
@@ -229,16 +245,14 @@ class Play extends Command {
 						player.queue.add(res.playlist.tracks);
 				}
 
-				if (!player.playing && !player.paused && player.queue.totalSize === (res.playlist.tracks.length + 1)) player.play();
-				return interaction.followUp({
-					embeds: [new Embed(bot, guild)
-						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length + 1 })),
-					],
-				});
+				if (idle) player.play();
+				return interaction.followUp({ embeds: [new Embed(bot, guild)
+					.setColor(member.displayHexColor)
+					.setDescription(guild.translate('music/play:QUEUED', { NUM: res.playlist.tracks.length }))] });
 			default:
 				// add track to queue and play
 				if (player.state !== 'CONNECTED') player.connect();
+				idle = isIdle(player);
 				// Add songs to queue depending on flag (if any)
 				switch (flag) {
 					case '-n':
@@ -249,7 +263,7 @@ class Play extends Command {
 						player.queue.add(res.tracks[0]);
 				}
 
-				if (!player.playing && !player.paused && player.queue.size == 0) {
+				if (idle) {
 					try {
 						await player.play();
 						return interaction.followUp({ embeds: [channel.success('music/play:QUEUE', {}, true)] });
@@ -260,7 +274,7 @@ class Play extends Command {
 				} else {
 					const embed = new Embed(bot, guild)
 						.setColor(member.displayHexColor)
-						.setDescription(bot.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
+						.setDescription(guild.translate('music/play:SONG_ADD', { TITLE: res.tracks[0].title, URL: res.tracks[0].uri }));
 					return interaction.followUp({ embeds: [embed] });
 				}
 		}

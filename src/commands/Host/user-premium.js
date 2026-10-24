@@ -4,7 +4,7 @@ const	{ ApplicationCommandOptionType } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
 /**
- * Lavalink command
+ * User management command
  * @extends {Command}
 */
 class UserPremium extends Command {
@@ -17,8 +17,8 @@ class UserPremium extends Command {
 			name: 'user-premium',
 			ownerOnly: true,
 			dirname: __dirname,
-			description: 'Interact with the Lavalink nodes',
-			usage: 'lavalink [list | add | remove] <information>',
+			description: 'Update a user\'s premium status.',
+			usage: 'user premium <user> <premium>',
 			cooldown: 3000,
 			slash: false,
 			isSubCmd: true,

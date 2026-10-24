@@ -1,5 +1,5 @@
 // Dependencies
-const { paginate, functions: { checkMusic } } = require('../../utils'),
+const { paginate } = require('../../utils'),
 	{ Embed } = require('../../utils'),
 	{ time: { getReadableTime } } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
@@ -39,71 +39,39 @@ class Previous extends Command {
 	 * Function for receiving message.
 	 * @param {bot} bot The instantiating client
 	 * @param {message} message The message that ran the command
+	 * @param {settings} settings The settings of the channel the command ran in
 	 * @readonly
 	*/
-	async run(bot, message) {
+	async run(bot, message, settings) {
+		// Check if the member has role to interact with music plugin
+		if (message.guild.roles.cache.get(settings.MusicDJRole)) {
+			if (!message.member.roles.cache.has(settings.MusicDJRole)) {
+				return message.channel.error('misc:MISSING_ROLE');
+			}
+		}
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-
-		// check for DJ role, same VC and that a song is actually playing
-		const playable = typeof checkMusic(message.member, bot) === 'boolean';
-		if (!playable) {
-			return message.channel.error(playable);
-		}
+		if (!player) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Make sure at least one previous track is recorder is not empty
-		const queue = player.previousTracks;
-		if (!queue?.size) {
+		const pages = this.createPages(bot, message.guild, player);
+		if (!pages) {
 			const embed = new Embed(bot, message.guild)
-				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
+				.setTitle(message.translate('music/previous:PREVIOUS_TRACKS'));
 			return message.channel.send({ embeds: [embed] });
 		}
-
-		// get total page number
-		const pagesNum = Math.max(Math.ceil(player.previousTracks.length / 10), 1);
-
-		// fetch data to show on pages
-		const songStrings = [];
-		for (let i = 0; i < player.previousTracks.length; i++) {
-			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
-			const user = song.requester.id ?? song.requester;
-			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
-				`);
-		}
-		// create pages for pageinator
-		const pages = [];
-		for (let i = 0; i < pagesNum; i++) {
-			const start = i * 10;
-			const end = start + 10;
-			const str = songStrings.slice(start, end).join('');
-
-			const previouslength = player.previousTracks.length;
-			const songTextKey = previouslength === 1 ? 'music/misc:SONG' : 'music/misc:SONGS';
-			const songlength = bot.translate(songTextKey);
-			const lasttracklength = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
-
-			const embed = new Embed(bot, message.guild)
-				.setAuthor(bot.translate('music/previous:TITLE', { NAME: message.guild.name }), { iconURL: message.guild.iconURL() })
-				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
-				.setFooter(bot.translate('music/previous:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: previouslength, SONG: songlength }));
-			pages.push(embed);
-		}
+		const pagesNum = pages.length;
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (PageCheck(pages, pagesNum, player)) {
-				paginate(bot, message, pages, message.author.id);
-			} else {
-				return message.channel.send({ embeds: [pages[0]] });
-			}
+			if (pagesNum > 1) paginate(bot, message.channel, pages, message.author.id);
+			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			const pageNum = parseInt(message.args[0]);
-			const pageIndex = Math.max(0, Math.min(pageNum - 1, pagesNum - 1));
-			if (isNaN(pageNum)) return message.channel.send(bot.translate('music/misc:NAN'));
-			if (pageNum > pagesNum) return message.channel.send(bot.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
-			return message.channel.send({ embeds: [pages[pageIndex]] });
+			if (isNaN(pageNum)) return message.channel.send(message.translate('music/misc:NAN'));
+			if (pageNum > pagesNum) return message.channel.send(message.translate('music/misc:TOO_HIGH', { NUM: pagesNum }));
+			return message.channel.send({ embeds: [pages[Math.max(1, pageNum) - 1]] });
 		}
 	}
 
@@ -116,79 +84,76 @@ class Previous extends Command {
 	 * @readonly
 	*/
 	async callback(bot, interaction, guild, args) {
-		const member = guild.members.cache.get(interaction.user.id);
-		const channel = guild.channels.cache.get(interaction.channelId);
-		const page = args.get('page')?.value;
+		const member = guild.members.cache.get(interaction.user.id),
+			channel = guild.channels.cache.get(interaction.channelId),
+			page = args.get('page')?.value;
+
+		// Check if the member has role to interact with music plugin
+		if (guild.roles.cache.get(guild.settings.MusicDJRole)) {
+			if (!member.roles.cache.has(guild.settings.MusicDJRole)) {
+				return interaction.reply({ embeds: [channel.error('misc:MISSING_ROLE', {}, true)], ephemeral: true });
+			}
+		}
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
+		if (!player) return interaction.reply({ embeds: [channel.error('music/misc:NO_QUEUE', {}, true)], ephemeral: true });
 
-		// check for DJ role, same VC and that a song is actually playing
-		const playable = typeof checkMusic(member, bot) === 'boolean';
-		if (!playable) {
-			return interaction.reply({ embeds: [channel.error(playable, {}, true)], ephemeral: true });
-		}
-
-
-		// Make sure at least one previous track is recorder is not empty
-		const queue = player.previousTracks;
-		if (!queue?.size) {
+		const pages = this.createPages(bot, guild, player);
+		if (!pages) {
 			const embed = new Embed(bot, guild)
-				.setTitle(bot.translate('music/previous:PREVIOUS_TRACKS'));
+				.setTitle(guild.translate('music/previous:PREVIOUS_TRACKS'));
 			return interaction.reply({ embeds: [embed] });
-		}
-
-		// get total page number
-		const pagesNum = Math.max(Math.ceil(player.previousTracks.length / 10), 1);
-
-		// fetch data to show on pages
-		const songStrings = [];
-		for (let i = 0; i < player.previousTracks.length; i++) {
-			const song = player.previousTracks[player.previousTracks.length - (i + 1)];
-			const user = !song.requester.id ? song.requester : song.requester.id;
-			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
-				`);
-		}
-		// create pages for pageinator
-		const pages = [];
-		for (let i = 0; i < pagesNum; i++) {
-			const start = i * 10;
-			const end = start + 10;
-			const str = songStrings.slice(start, end).join('');
-
-			const previouslength = player.previousTracks.length;
-			const songTextKey = previouslength === 1 ? 'music/misc:SONG' : 'music/misc:SONGS';
-			const songlength = bot.translate(songTextKey);
-			const lasttracklength = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
-
-			const embed = new Embed(bot, guild)
-				.setAuthor(bot.translate('music/previous:TITLE', { NAME: guild.name }), { iconURL: guild.iconURL() })
-				.setDescription(bot.translate('music/previous:LAST_TRACK', { TRACK: lasttracklength }))
-				.setFooter(bot.translate('music/previous:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: previouslength, SONG: songlength }));
-			pages.push(embed);
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
-			if (PageCheck(pages, pagesNum, player)) {
-				paginate(bot, interaction, pages, member.id);
-				return interaction.reply(bot.translate('music/previous:LOADED'));
-			} else {
-				return interaction.reply({ embeds: [pages[0]] });
-			}
-		} else {
-			const pageNum = Math.max(0, Math.min(page - 1, pagesNum - 1));
-			if (page > pagesNum) {
-				return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pagesNum }, true)] });
-			}
-			return interaction.reply({ embeds: [pages[pageNum]] });
+			if (pages.length > 1) return paginate(bot, interaction, pages, member.id);
+			return interaction.reply({ embeds: [pages[0]] });
 		}
+		if (page > pages.length) {
+			return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:TOO_HIGH', { NUM: pages.length }, true)] });
+		}
+		return interaction.reply({ embeds: [pages[Math.max(1, page) - 1]] });
 	}
-}
 
-function PageCheck(pages, pagesNum, player) {
-	return pages.length == pagesNum && player.previousTracks.length > 10;
+	/**
+	 * Builds the pages of previously played tracks, newest first.
+	 * @param {bot} bot The instantiating client
+	 * @param {guild} guild The guild the player is in
+	 * @param {Player} player The guild's player
+	 * @returns {?Array<Embed>} The pages, or null when nothing has been played yet
+	*/
+	createPages(bot, guild, player) {
+		const tracks = player.previousTracks;
+		if (tracks.length == 0) return null;
+
+		// get total page number
+		const pagesNum = Math.max(1, Math.ceil(tracks.length / 10));
+
+		// fetch data to show on pages
+		const songStrings = [];
+		for (let i = 0; i < tracks.length; i++) {
+			const song = tracks[tracks.length - (i + 1)];
+			const requester = song.requester?.id ?? song.requester;
+			songStrings.push(
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${song.duration ? getReadableTime(song.duration) : 'LIVE'}]\`${requester ? ` • <@${requester}>` : ''}
+				`);
+		}
+
+		// create pages for pageinator
+		const songText = guild.translate(tracks.length === 1 ? 'music/misc:SONG' : 'music/misc:SONGS');
+		const pages = [];
+		for (let i = 0; i < pagesNum; i++) {
+			const str = songStrings.slice(i * 10, i * 10 + 10).join('');
+			const embed = new Embed(bot, guild)
+				.setAuthor({ name: guild.translate('music/previous:TITLE', { NAME: guild.name }), iconURL: guild.iconURL() })
+				.setDescription(guild.translate('music/previous:LAST_TRACK', { TRACK: str ? '\n\n' + str : ` ${guild.translate('misc:NOTHING')}` }))
+				.setFooter({ text: guild.translate('music/previous:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: tracks.length, SONG: songText }) });
+			pages.push(embed);
+		}
+		return pages;
+	}
 }
 
 module.exports = Previous;

@@ -45,7 +45,8 @@ class Seek extends Command {
 
 		// Make sure song isn't a stream
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVSTREAM');
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
+		if (!player.queue.current.isSeekable) return message.channel.error('music/seek:LIVESTREAM');
 
 		// Make sure a time was inputted
 		if (!message.args[0]) return message.channel.error('misc:INCORRECT_FORMAT', { EXAMPLE: settings.prefix.concat(message.translate('music/seek:USAGE')) });
@@ -53,7 +54,7 @@ class Seek extends Command {
 		// update the time
 		const time = read24hrFormat((message.args[0]) ? message.args[0] : '10');
 
-		if (time > player.queue.current.duration) {
+		if (player.queue.current.duration && time > player.queue.current.duration) {
 			message.channel.send(message.translate('music/seek:INVALID', { TIME: new Date(player.queue.current.duration).toISOString().slice(11, 19) }));
 		} else {
 			player.seek(time);

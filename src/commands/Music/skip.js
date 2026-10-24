@@ -44,16 +44,17 @@ class Skip extends Command {
 		const playable = checkMusic(message.member, bot);
 		if (typeof (playable) !== 'boolean') return message.channel.error(playable);
 
-		const amount = message.args[0];
-
 		// skip song
 		const player = bot.manager?.players.get(message.guild.id);
-		const queuelength = player.queue.length;
-		if (!isNaN(amount) && amount < queuelength) {
-			player.stop(parseInt(amount));
-			message.channel.send({ content: `${bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount })}` });
+		if (!player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
+
+		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
+		const amount = parseInt(message.args[0]);
+		if (amount > 1 && amount <= player.queue.length) {
+			player.stop(amount);
+			message.channel.send({ content: message.translate('music/skip:SKIPPING_SONGS', { NUM: amount }) });
 		} else {
-			message.channel.send({ content: `${bot.translate('music/skip:SKIPPING_SONG')}` });
+			message.channel.send({ content: message.translate('music/skip:SKIPPING_SONG') });
 			player.stop();
 		}
 	}
@@ -77,12 +78,14 @@ class Skip extends Command {
 
 		// skip song
 		const player = bot.manager?.players.get(member.guild.id);
-		const queueLength = player.queue.length;
-		if (!isNaN(amount) && amount < queueLength) {
+		if (!player.queue.current) return interaction.reply({ embeds: [channel.error('music/misc:NO_QUEUE', {}, true)], ephemeral: true });
+
+		// stop(amount) ends the current song and skips amount - 1 queued songs, so the last queued song is still reachable
+		if (amount > 1 && amount <= player.queue.length) {
 			player.stop(amount);
-			interaction.reply({ content: `${bot.translate('music/skip:SKIPPING_SONGS', { NUM: amount })}` });
+			interaction.reply({ content: guild.translate('music/skip:SKIPPING_SONGS', { NUM: amount }) });
 		} else {
-			interaction.reply({ content: `${bot.translate('music/skip:SKIPPING_SONG')}` });
+			interaction.reply({ content: guild.translate('music/skip:SKIPPING_SONG') });
 			player.stop();
 		}
 	}

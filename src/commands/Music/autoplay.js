@@ -39,8 +39,8 @@ class Autoplay extends Command {
 
 		// toggle autoplay mode off and on
 		const player = bot.manager?.players.get(message.guild.id);
-		player.setAutoplay(!player.isAutoplay, bot.user);
-		message.channel.send(message.translate('music/autoplay:RESP', { TOGGLE: player.isAutoplay }));
+		player.autoplay = !player.autoplay;
+		message.channel.send(message.translate('music/autoplay:RESP', { TOGGLE: player.autoplay }));
 	}
 
 	/**
@@ -60,8 +60,8 @@ class Autoplay extends Command {
 
 		// toggle autplay mode off and on
 		const player = bot.manager?.players.get(member.guild.id);
-		player.setAutoplay(!player.isAutoplay, bot.user);
-		await interaction.reply({ content: guild.translate('music/autoplay:RESP', { TOGGLE: player.isAutoplay }) });
+		player.autoplay = !player.autoplay;
+		await interaction.reply({ content: guild.translate('music/autoplay:RESP', { TOGGLE: player.autoplay }) });
 	}
 }
 

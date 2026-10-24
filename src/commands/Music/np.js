@@ -44,17 +44,19 @@ class NowPlaying extends Command {
 		if (!player || !player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Get current song information
-		const { title, requester, thumbnail, uri, duration } = player.queue.current;
-		const end = (duration > 6.048e+8) ? message.translate('music/np:LIVE') : new Date(duration).toISOString().slice(11, 19);
+		const { title, requester, thumbnail, uri, duration, isSeekable } = player.queue.current;
+		const position = player.currentPosition;
+		const live = !isSeekable || !duration;
+		const end = live ? message.translate('music/np:LIVE') : new Date(duration).toISOString().slice(11, 19);
 		// Display current song information
 		try {
 			const embed = new Embed(bot, message.guild)
 				.setAuthor({ name: message.translate('music/np:AUTHOR') })
 				.setColor(message.member.displayHexColor)
 				.setThumbnail(thumbnail)
-				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester.id)}]`)
+				.setDescription(`[${title}](${uri}) [${message.guild.members.cache.get(requester?.id) ?? requester}]`)
 				.addFields(
-					{ name: '\u200b', value: new Date(player.position * (player.filters.timescale?.speed ?? 1)).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * (player.filters.timescale?.speed ?? 1) : duration, player.position * (player.filters.timescale?.speed ?? 1), 15)[0] + '] ' + end },
+					{ name: '\u200b', value: new Date(position).toISOString().slice(11, 19) + ' [' + splitBar(live ? Math.max(position, 1) : duration, position, 15)[0] + '] ' + end },
 				);
 			message.channel.send({ embeds: [embed] });
 		} catch (err) {
@@ -84,20 +86,22 @@ class NowPlaying extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player || !player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Get current song information
-		const { title, requester, thumbnail, uri, duration } = player.queue.current;
-		const end = (duration > 6.048e+8) ? bot.translate('music/np:LIVE') : new Date(duration).toISOString().slice(11, 19);
+		const { title, requester, thumbnail, uri, duration, isSeekable } = player.queue.current;
+		const position = player.currentPosition;
+		const live = !isSeekable || !duration;
+		const end = live ? guild.translate('music/np:LIVE') : new Date(duration).toISOString().slice(11, 19);
 		// Display current song information
 		try {
 			const embed = new Embed(bot, guild)
-				.setAuthor({ name: bot.translate('music/np:AUTHOR') })
+				.setAuthor({ name: guild.translate('music/np:AUTHOR') })
 				.setColor(member.displayHexColor)
 				.setThumbnail(thumbnail)
-				.setDescription(`[${title}](${uri}) [${guild.members.cache.get(requester.id)}]`)
+				.setDescription(`[${title}](${uri}) [${guild.members.cache.get(requester?.id) ?? requester}]`)
 				.addFields(
-					{ name: '\u200b', value: new Date(player.position * (player.filters.timescale?.speed ?? 1)).toISOString().slice(11, 19) + ' [' + splitBar(duration > 6.048e+8 ? player.position * (player.filters.timescale?.speed ?? 1) : duration, player.position * (player.filters.timescale?.speed ?? 1), 15)[0] + '] ' + end },
+					{ name: '\u200b', value: new Date(position).toISOString().slice(11, 19) + ' [' + splitBar(live ? Math.max(position, 1) : duration, position, 15)[0] + '] ' + end },
 				);
 			interaction.reply({ embeds: [embed] });
 		} catch (err) {

@@ -64,7 +64,6 @@ class Filters extends Command {
 		const embed = new EmbedBuilder()
 			.setDescription(guild.translate(`music/${filter}:DESC_${player[filter] ? '1' : '2'}`));
 		await bot.delay(5000);
-		if (player.nightcore) player.speed = 1.2;
 		return interaction.editReply({ content: '​​ ', embeds: [embed] });
 	}
 }

@@ -103,9 +103,9 @@ class UserInfo extends Command {
 		try {
 			const memberInSupportGuild = await supportGuild.members.fetch(member.user.id);
 			if (memberInSupportGuild !== null) {
-				isContributor = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.ContributorRole);
-				isSupport = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.SupportRole);
-				isDev = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff.DeveloperRole);
+				isContributor = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff?.ContributorRole);
+				isSupport = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff?.SupportRole);
+				isDev = memberInSupportGuild.roles.cache.some(role => role.id === bot.config.Staff?.DeveloperRole);
 			}
 		} catch (err) {
 			bot.logger.error(`Command: '${this.help.name}' has error: ${err.message}.`);
@@ -126,7 +126,7 @@ class UserInfo extends Command {
 			.setColor(3447003)
 			.setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }))
 			.addFields(
-				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.displayName, inline: true },
+				{ name: bot.translate('guild/user-info:USERNAME', {}, guild.settings?.Language), value: member.user.globalName, inline: true },
 				{ name: bot.translate('guild/user-info:DISCRIM', {}, guild.settings?.Language), value: `${member.user.discriminator}`, inline: true },
 				{ name: bot.translate('guild/user-info:ROBOT', {}, guild.settings?.Language), value: bot.translate(`misc:${member.user.bot ? 'YES' : 'NO'}`, {}, guild.settings?.Language), inline: true },
 				{ name: bot.translate('guild/user-info:CREATE', {}, guild.settings?.Language), value: moment(member.user.createdAt).format('lll'), inline: true },
@@ -145,9 +145,9 @@ class UserInfo extends Command {
 
 		// Staff only vales
 		if (isContributor | isSupport | isDev) {
-			const contributer = isContributor ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.ContributorRole).name}` : ``;
-			const support = isSupport ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.SupportRole).name}` : ``;
-			const dev = isDev ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff.DeveloperRole).name}` : ``;
+			const contributer = isContributor ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff?.ContributorRole).name}` : '';
+			const support = isSupport ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff?.SupportRole).name}` : '';
+			const dev = isDev ? `${supportGuild.roles.cache.find(role => role.id === bot.config.Staff?.DeveloperRole).name}` : '';
 			embed.addFields({ name: bot.translate('guild/user-info:BOT', {}, guild.settings?.Language), value: `${contributer} ${support} ${dev}`, inline: true });
 		}
 		return embed;

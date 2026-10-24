@@ -1,6 +1,0 @@
-{
-  "DESCRIPTION": "Toevoegen/verwijderen van een node voor lavalink.",
-  "USAGE": "node <add / remove> [host] [password] [port]",
-  "ADDED_NODE": "Nieuwe node succesvol toegevoegd",
-  "REMOVED_NODE": "Succesvol node verwijderd"
-}

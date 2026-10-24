@@ -1,7 +1,7 @@
 // Dependencies
 const	{ Embed } = require('../../utils'),
 	{ PlaylistSchema } = require('../../database/models'),
-	{ TrackUtils } = require('magmastream'),
+	AudioManager = require('../../base/Audio-Manager'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
 	Command = require('../../structures/Command.js');
 
@@ -144,19 +144,10 @@ class PLoad extends Command {
 				return channel.error('misc:ERROR_MESSAGE', { ERROR: err.message }, true);
 			}
 
-			// add songs to queue
-			// eslint-disable-next-line no-async-promise-executor
-			await new Promise(async function(resolve) {
-				for (let i = 0; i < playlist.songs.length; i++) {
-					player.queue.add(TrackUtils.buildUnresolved({
-						title: playlist.songs[i].title,
-						author: playlist.songs[i].author,
-						duration: playlist.songs[i].duration,
-					}, member.user));
-					if (!player.playing && !player.paused && !player.queue.length) player.play();
-					if (i == playlist.songs.length - 1) resolve();
-				}
-			});
+			// add songs to queue, and start playing if nothing is
+			const idle = !player.playing && !player.paused && !player.queue.current;
+			player.queue.add(playlist.songs.map(song => AudioManager.buildUnresolved(song, member.user)));
+			if (idle) player.play();
 
 			const embed = new Embed(bot, channel.guild)
 				.setDescription(channel.guild.translate('music/p-load:QUEUE', { NUM: playlist.songs.length, TITLE: playlistName }));

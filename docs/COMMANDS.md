@@ -55,8 +55,6 @@
 |---------------|--------------------|--------------|
 | docs	|	Displays Discord.js documentation.	|	`docs <query>`	|
 | eval	|	Evaluates JS code.	|	`eval <code>`	|
-| lavalink	|	Displays Lavalink node information	|	`lavalink [host / list]`	|
-| node	|	Add/remove a Node for lavalink.	|	`node <add / remove> [host] [password] [port]`	|
 | reload	|	Reloads a command.	|	`reload <command / event>`	|
 | script	|	Runs a script file.	|	`script <file name> [...params]`	|
 | shutdown	|	Shutdowns the bot.	|	`shutdown`	|

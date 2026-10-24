@@ -8,7 +8,6 @@
 
 <h3 align=center>A fully customizable bot built with <a href=https://github.com/discordjs/discord.js>discord.js</a></h3>
 
-
 <div align=center>
 
  [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
@@ -110,10 +109,6 @@ Released under the [Apache License 2.0](https://github.com/Spiderjockey02/Discor
 ## :scroll: Credits
 * **[tovade](https://github.com/tovade)** - Initial reaction role system.
 * **[josh_0242](https://github.com/ChaosArising)** - Initial slash commands & tags system.
-* **[thororen](https://github.com/thororen1234)** - Updated Music system to support new Lavalink v4.
-* **[duncte123#1245](https://github.com/duncte123)** - [Skybot plugin](https://github.com/DuncteBot/skybot-lavalink-plugin) (TTS, Reddit, TikTok, Phub, Mixcloud etc).
-* **[topi314](https://github.com/topi314)** - [LavaSrc plugin](https://github.com/topi314/LavaSrc) (Spotify, Apple Music, Deezer & Yandex)
-* **[topi314](https://github.com/topi314)** - [LavaSearch plugin](https://github.com/topi314/LavaSearch) (Search module for LavaSrc)
-* **[lavalink-devs](https://github.com/lavalink-devs)** - [Youtube source plugin](https://github.com/lavalink-devs/youtube-source) (Add Youtube support back onto lavalink)
+* **[thororen](https://github.com/thororen1234)** - Migrated the music system from Lavalink to native Discord voice playback with yt-dlp and FFmpeg.
 * **[Our translators](https://crowdin.com/project/egglord-discord-bot)** - Everyone over at Crowdin who helps make this bot multilingual.
 * Want to be on this list, as well? - Check out the [Contributing page](https://github.com/Spiderjockey02/Discord-Bot/blob/master/docs/CONTRIBUTING.md).

@@ -1,7 +1,11 @@
 // Dependencies
 const { paginate, Embed, time: { getReadableTime } } = require('../../utils'),
 	{ ApplicationCommandOptionType, PermissionsBitField: { Flags } } = require('discord.js'),
-	Command = require('../../structures/Command.js');
+	Command = require('../../structures/Command.js'),
+	// Live/unknown streams have no duration
+	readDuration = (ms) => ms ? getReadableTime(ms) : 'LIVE',
+	// Tracks restored without a known requester have none
+	mention = (requester, prefix = '') => (requester?.id ?? requester) ? `${prefix}<@${requester?.id ?? requester}>` : '';
 
 /**
  * queue command
@@ -49,7 +53,7 @@ class Queue extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(message.guild.id);
-		if (!player) return message.channel.error('music/misc:NO_QUEUE');
+		if (!player || !player.queue.current) return message.channel.error('music/misc:NO_QUEUE');
 
 		// Make sure queue is not empty
 		const queue = player.queue;
@@ -65,19 +69,18 @@ class Queue extends Command {
 
 		// fetch data to show on pages
 		const { title, requester, duration, uri } = player.queue.current;
-		const parsedDuration = getReadableTime(duration);
-		const parsedQueueDuration = getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const parsedDuration = readDuration(duration);
+		const parsedQueueDuration = readDuration(player.queue.reduce((prev, curr) => prev + (curr.duration || 0), 0) + (duration || 0));
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
-			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${readDuration(song.duration)}]\`${mention(song.requester, ' • ')}
 				`);
 		}
 
 		// create pages for pageinator
-		const user = `<@${!requester.id ? requester : requester.id}>`;
+		const user = mention(requester);
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const start = i * 10;
@@ -85,25 +88,25 @@ class Queue extends Command {
 			const str = songStrings.slice(start, end).join('');
 
 			const queuelength = player.queue.length;
-			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+			const songlength = queuelength === 1 ? message.translate('music/misc:SONG') : message.translate('music/misc:SONGS');
+			const upnext = str ? '\n\n' + str : ` ${message.translate('misc:NOTHING')}`;
 
 			const embed = new Embed(bot, message.guild)
-				.setAuthor({ name: bot.translate('music/queue:TITLE', { NAME: message.guild.name }), iconURL: message.guild.iconURL() })
-				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter({ text: bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
+				.setAuthor({ name: message.translate('music/queue:TITLE', { NAME: message.guild.name }), iconURL: message.guild.iconURL() })
+				.setDescription(message.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
+				.setFooter({ text: message.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
 			pages.push(embed);
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!message.args[0]) {
-			if (PageCheck(pages, pagesNum, player)) paginate(bot, message.channel, pages, message.author.id);
+			if (pagesNum > 1) paginate(bot, message.channel, pages, message.author.id);
 			else return message.channel.send({ embeds: [pages[0]] });
 		} else {
 			const pageNum = parseInt(message.args[0]);
 			const pageIndex = Math.max(0, Math.min(pageNum - 1, pagesNum - 1));
 			if (isNaN(pageNum)) return message.channel.send({ content: message.translate('music/misc:NAN') });
-			if (pageNum > pagesNum) return message.channel.send({ content: message.translate('music/queue:TOO_HIGH', { NUM: pagesNum }) });
+			if (pageNum > pagesNum) return message.channel.send({ content: message.translate('music/misc:TOO_HIGH', { NUM: pagesNum }) });
 			return message.channel.send({ embeds: [pages[pageIndex]] });
 		}
 	}
@@ -130,7 +133,7 @@ class Queue extends Command {
 
 		// Check that a song is being played
 		const player = bot.manager?.players.get(guild.id);
-		if (!player) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
+		if (!player || !player.queue.current) return interaction.reply({ ephemeral: true, embeds: [channel.error('music/misc:NO_QUEUE', { ERROR: null }, true)] });
 
 		// Make sure queue is not empty
 		const queue = player.queue;
@@ -146,19 +149,18 @@ class Queue extends Command {
 
 		// fetch data to show on pages
 		const { title, requester, duration, uri } = player.queue.current;
-		const parsedDuration = getReadableTime(duration);
-		const parsedQueueDuration = getReadableTime(player.queue.reduce((prev, curr) => prev + curr.duration, 0) + player.queue.current.duration);
+		const parsedDuration = readDuration(duration);
+		const parsedQueueDuration = readDuration(player.queue.reduce((prev, curr) => prev + (curr.duration || 0), 0) + (duration || 0));
 		const songStrings = [];
 		for (let i = 0; i < player.queue.length; i++) {
 			const song = player.queue[i];
-			const user = !song.requester.id ? song.requester : song.requester.id;
 			songStrings.push(
-				`**${i + 1}.** [${song.title}](${song.uri}) \`[${getReadableTime(song.duration)}]\` • <@${user}>
+				`**${i + 1}.** [${song.title}](${song.uri}) \`[${readDuration(song.duration)}]\`${mention(song.requester, ' • ')}
 				`);
 		}
 
 		// create pages for pageinator
-		const user = `<@${!requester.id ? requester : requester.id}>`;
+		const user = mention(requester);
 		const pages = [];
 		for (let i = 0; i < pagesNum; i++) {
 			const start = i * 10;
@@ -166,21 +168,20 @@ class Queue extends Command {
 			const str = songStrings.slice(start, end).join('');
 
 			const queuelength = player.queue.length;
-			const songlength = queuelength === 1 ? bot.translate('music/misc:SONG') : bot.translate('music/misc:SONGS');
-			const upnext = str ? '\n\n' + str : ` ${bot.translate('misc:NOTHING')}`;
+			const songlength = queuelength === 1 ? guild.translate('music/misc:SONG') : guild.translate('music/misc:SONGS');
+			const upnext = str ? '\n\n' + str : ` ${guild.translate('misc:NOTHING')}`;
 
 			const embed = new Embed(bot, guild)
-				.setAuthor({ name: bot.translate('music/queue:TITLE', { NAME: guild.name }), iconURL: guild.iconURL() })
-				.setDescription(bot.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
-				.setFooter({ text: bot.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
+				.setAuthor({ name: guild.translate('music/queue:TITLE', { NAME: guild.name }), iconURL: guild.iconURL() })
+				.setDescription(guild.translate('music/queue:NOW_PLAYING', { NAME: title, URI: uri, DURATION: parsedDuration, USER: user, NEXT: upnext }))
+				.setFooter({ text: guild.translate('music/queue:PAGE', { PAGE: i + 1, PAGES: pagesNum, LENGTH: queuelength, SONG: songlength, DURATION: parsedQueueDuration }) });
 			pages.push(embed);
 		}
 
 		// If a user specified a page number then show page if not show pagintor.
 		if (!page) {
-			if (PageCheck(pages, pagesNum, player)) {
-				paginate(bot, channel, pages, member.id);
-				return interaction.reply({ content: bot.translate('music/queue:LOADED') });
+			if (pagesNum > 1) {
+				return paginate(bot, interaction, pages, member.id);
 			} else {
 				return interaction.reply({ embeds: [pages[0]] });
 			}
@@ -190,10 +191,6 @@ class Queue extends Command {
 			return interaction.reply({ embeds: [pages[pageNum]] });
 		}
 	}
-}
-
-function PageCheck(pages, pagesNum, player) {
-	return pages.length == pagesNum && player.queue.length > 10;
 }
 
 module.exports = Queue;

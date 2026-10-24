@@ -21,7 +21,7 @@ class PlayerDestroy extends Event {
 	 * @readonly
 	*/
 	async run(bot, player) {
-		if (bot.config.debug) bot.logger.log(`Lavalink player destroyed in guild: ${player.guild}.`);
+		if (bot.config.debug) bot.logger.log(`Audio player destroyed in guild: ${player.guild}.`);
 	}
 }
 
